@@ -7,7 +7,7 @@ Public Class dlgTVRegExProfiles
 
 #Region "Fields"
 
-    Public ShowRegex As New List(Of Settings.TVShowRegEx)
+    Public ShowRegex As New List(Of Settings.regexp)
     Private MyTVShowRegExProfiles As New TVShowRegExProfiles
 
 #End Region 'Fields
@@ -96,7 +96,7 @@ Public Class dlgTVRegExProfiles
     Class TVShowRegExProfile
         Public Name As String
         Public Description As String
-        Public ShowRegex As New List(Of Settings.TVShowRegEx)
+        Public ShowRegex As New List(Of Settings.regexp)
     End Class
 
 #End Region 'Nested Types

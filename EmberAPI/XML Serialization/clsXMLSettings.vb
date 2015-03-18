@@ -349,6 +349,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockshowtitle As Boolean
     Private _tvlockshowvotes As Boolean
     Private _tvmetadataperfiletype As List(Of MetadataPerType)
+    Private _tvmultipartmatching As String
     Private _tvscanordermodify As Boolean
     Private _tvscraperdurationruntimeformat As String
     Private _tvscraperepisodeactors As Boolean
@@ -431,6 +432,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
     Private _tvshowlandscapeoverwrite As Boolean
+    Private _tvshowmatching As List(Of regexp)
     Private _tvshowmissingbanner As Boolean
     Private _tvshowmissingcharacterart As Boolean
     Private _tvshowmissingclearart As Boolean
@@ -447,7 +449,6 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
-    Private _tvshowregexes As List(Of TVShowRegEx)
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
     Private _tvsorttokensisempty As Boolean
@@ -4411,12 +4412,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowRegexes() As List(Of TVShowRegEx)
+    Public Property TVMultiPartMatching() As String
         Get
-            Return Me._tvshowregexes
+            Return Me._tvmultipartmatching
         End Get
-        Set(ByVal value As List(Of TVShowRegEx))
-            Me._tvshowregexes = value
+        Set(ByVal value As String)
+            Me._tvmultipartmatching = value
+        End Set
+    End Property
+
+    Public Property TVShowMatching() As List(Of regexp)
+        Get
+            Return Me._tvshowmatching
+        End Get
+        Set(ByVal value As List(Of regexp))
+            Me._tvshowmatching = value
         End Set
     End Property
 

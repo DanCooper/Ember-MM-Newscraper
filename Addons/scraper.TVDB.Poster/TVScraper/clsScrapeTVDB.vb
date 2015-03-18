@@ -108,8 +108,8 @@ Public Class Scraper
         Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
-        Return sObject.GetSingleEpisodeByAired(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .Aired = Aired, .showLang = Lang, .Ordering = Ordering, .Options = Options})
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+        Return sObject.GetSingleEpisodeByAired(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iEpisode = -999, .iSeason = -999, .Aired = Aired, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
     Public Sub GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.ImageType_TV, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef RetImage As Images)
@@ -470,7 +470,7 @@ Public Class Scraper
             Dim tEp As New MediaContainers.EpisodeDetails
 
             DownloadSeries(sInfo)
-            tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Aired = sInfo.Aired)
+            tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Aired = sInfo.Aired)
             If tEp IsNot Nothing Then
                 Return tEp
             End If
@@ -1174,6 +1174,8 @@ Public Class Scraper
                                 byTitle = False
                                 tOrdering = Enums.Ordering.Standard
 
+                                If iEp = -1 AndAlso Not String.IsNullOrEmpty(eAired) Then iEp = -999
+
                                 If tShow.TVShow IsNot Nothing Then Episode.TVShow = tShow.TVShow
 
                                 If sInfo.Ordering = Enums.Ordering.DVD Then
@@ -1223,7 +1225,7 @@ Public Class Scraper
                                 If xE IsNot Nothing Then
                                     With Episode.TVEp
                                         If sInfo.Options.bEpTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso Not String.IsNullOrEmpty(xE.Element("EpisodeName").Value) Then .Title = xE.Element("EpisodeName").Value
-                                        If byTitle OrElse .Episode = -999 Then
+                                        If byTitle OrElse iEp = -999 Then
                                             If tOrdering = Enums.Ordering.DVD Then
                                                 If sInfo.Options.bEpSeason Then .Season = If(xE.Element("DVD_season") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("DVD_season").Value), 0, Convert.ToInt32(xE.Element("DVD_season").Value))
                                                 If sInfo.Options.bEpEpisode Then .Episode = If(xE.Element("DVD_episodenumber") Is Nothing OrElse String.IsNullOrEmpty(xE.Element("DVD_episodenumber").Value), 0, Convert.ToInt32(xE.Element("DVD_episodenumber").Value))

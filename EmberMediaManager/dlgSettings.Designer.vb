@@ -772,33 +772,32 @@ Partial Class dlgSettings
         Me.btnTVSourceAdd = New System.Windows.Forms.Button()
         Me.tpTVSourcesRegex = New System.Windows.Forms.TabPage()
         Me.tblTVSourcesRegex = New System.Windows.Forms.TableLayoutPanel()
-        Me.lvTVShowRegex = New System.Windows.Forms.ListView()
-        Me.colTVShowRegexID = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colTVShowRegexSeason = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colTVShowRegexSeasonApply = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colTVShowRegexEpisode = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colTVShowRegexEpisodeApply = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colTVShowRegexAired = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.gbTVSourcesRegexMatch = New System.Windows.Forms.GroupBox()
-        Me.tblTVSourcesRegexMatch = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnTVShowRegexAdd = New System.Windows.Forms.Button()
-        Me.btnTVShowRegexClear = New System.Windows.Forms.Button()
-        Me.lblTVSeasonMatch = New System.Windows.Forms.Label()
-        Me.lblTVSeasonRetrieve = New System.Windows.Forms.Label()
-        Me.cbTVEpisodeRetrieve = New System.Windows.Forms.ComboBox()
-        Me.lblTVEpisodeRetrieve = New System.Windows.Forms.Label()
-        Me.txtTVSeasonRegex = New System.Windows.Forms.TextBox()
-        Me.txtTVEpisodeRegex = New System.Windows.Forms.TextBox()
-        Me.cbTVSeasonRetrieve = New System.Windows.Forms.ComboBox()
-        Me.lblTVEpisodeMatch = New System.Windows.Forms.Label()
-        Me.chkTVEpisodeAired = New System.Windows.Forms.CheckBox()
-        Me.lblTVEpisodeAired = New System.Windows.Forms.Label()
-        Me.btnTVShowRegexEdit = New System.Windows.Forms.Button()
-        Me.btnTVShowRegexReset = New System.Windows.Forms.Button()
-        Me.btnTVShowRegexUp = New System.Windows.Forms.Button()
-        Me.btnTVShowRegexDown = New System.Windows.Forms.Button()
-        Me.btnTVShowRegexRemove = New System.Windows.Forms.Button()
-        Me.btnTVShowRegexGet = New System.Windows.Forms.Button()
+        Me.gbTVSourcesRegexMultiPartMatching = New System.Windows.Forms.GroupBox()
+        Me.tblTVSourcesRegexMultiPartMatching = New System.Windows.Forms.TableLayoutPanel()
+        Me.txtTVSourcesRegexMultiPartMatching = New System.Windows.Forms.TextBox()
+        Me.btnTVSourcesRegexMultiPartMatchingReset = New System.Windows.Forms.Button()
+        Me.gbTVSourcesRegexTVShowMatching = New System.Windows.Forms.GroupBox()
+        Me.tblTVSourcesRegexTVShowMatching = New System.Windows.Forms.TableLayoutPanel()
+        Me.lvTVSourcesRegexTVShowMatching = New System.Windows.Forms.ListView()
+        Me.colTVSourcesRegexTVShowMatchingID = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.colTVSourcesRegexTVShowMatchingRegex = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.coTVSourcesRegexTVShowMatchingDefaultSeason = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.colTVSourcesRegexTVShowMatchingByDate = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.btnTVSourcesRegexTVShowMatchingClear = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingDown = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingUp = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingEdit = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingReset = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingGet = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingRemove = New System.Windows.Forms.Button()
+        Me.btnTVSourcesRegexTVShowMatchingAdd = New System.Windows.Forms.Button()
+        Me.tblTVSourcesRegexTVShowMatchingEdit = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblTVSourcesRegexTVShowMatchingRegex = New System.Windows.Forms.Label()
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason = New System.Windows.Forms.Label()
+        Me.txtTVSourcesRegexTVShowMatchingRegex = New System.Windows.Forms.TextBox()
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason = New System.Windows.Forms.TextBox()
+        Me.lblTVSourcesRegexTVShowMatchingByDate = New System.Windows.Forms.Label()
+        Me.chkTVSourcesRegexTVShowMatchingByDate = New System.Windows.Forms.CheckBox()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlTVImages = New System.Windows.Forms.Panel()
@@ -1550,8 +1549,11 @@ Partial Class dlgSettings
         Me.tblTVSourcesMiscOpts.SuspendLayout
         Me.tpTVSourcesRegex.SuspendLayout
         Me.tblTVSourcesRegex.SuspendLayout
-        Me.gbTVSourcesRegexMatch.SuspendLayout
-        Me.tblTVSourcesRegexMatch.SuspendLayout
+        Me.gbTVSourcesRegexMultiPartMatching.SuspendLayout
+        Me.tblTVSourcesRegexMultiPartMatching.SuspendLayout
+        Me.gbTVSourcesRegexTVShowMatching.SuspendLayout
+        Me.tblTVSourcesRegexTVShowMatching.SuspendLayout
+        Me.tblTVSourcesRegexTVShowMatchingEdit.SuspendLayout
         Me.pnlTVImages.SuspendLayout
         Me.tblTVImages.SuspendLayout
         Me.tcTVImages.SuspendLayout
@@ -11210,338 +11212,346 @@ Partial Class dlgSettings
         'tblTVSourcesRegex
         '
         Me.tblTVSourcesRegex.AutoSize = true
-        Me.tblTVSourcesRegex.ColumnCount = 9
+        Me.tblTVSourcesRegex.ColumnCount = 2
         Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.Controls.Add(Me.lvTVShowRegex, 0, 1)
-        Me.tblTVSourcesRegex.Controls.Add(Me.gbTVSourcesRegexMatch, 0, 3)
-        Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexEdit, 0, 2)
-        Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexReset, 7, 0)
-        Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexUp, 2, 2)
-        Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexDown, 3, 2)
-        Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexRemove, 5, 2)
-        Me.tblTVSourcesRegex.Controls.Add(Me.btnTVShowRegexGet, 6, 0)
+        Me.tblTVSourcesRegex.Controls.Add(Me.gbTVSourcesRegexMultiPartMatching, 0, 1)
+        Me.tblTVSourcesRegex.Controls.Add(Me.gbTVSourcesRegexTVShowMatching, 0, 0)
         Me.tblTVSourcesRegex.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesRegex.Location = New System.Drawing.Point(0, 0)
         Me.tblTVSourcesRegex.Name = "tblTVSourcesRegex"
-        Me.tblTVSourcesRegex.RowCount = 5
-        Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegex.RowCount = 3
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.Size = New System.Drawing.Size(822, 474)
-        Me.tblTVSourcesRegex.TabIndex = 8
+        Me.tblTVSourcesRegex.TabIndex = 9
         '
-        'lvTVShowRegex
+        'gbTVSourcesRegexMultiPartMatching
         '
-        Me.lvTVShowRegex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVShowRegexID, Me.colTVShowRegexSeason, Me.colTVShowRegexSeasonApply, Me.colTVShowRegexEpisode, Me.colTVShowRegexEpisodeApply, Me.colTVShowRegexAired})
-        Me.tblTVSourcesRegex.SetColumnSpan(Me.lvTVShowRegex, 8)
-        Me.lvTVShowRegex.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lvTVShowRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lvTVShowRegex.FullRowSelect = true
-        Me.lvTVShowRegex.HideSelection = false
-        Me.lvTVShowRegex.Location = New System.Drawing.Point(3, 32)
-        Me.lvTVShowRegex.Name = "lvTVShowRegex"
-        Me.lvTVShowRegex.Size = New System.Drawing.Size(800, 135)
-        Me.lvTVShowRegex.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvTVShowRegex.TabIndex = 0
-        Me.lvTVShowRegex.UseCompatibleStateImageBehavior = false
-        Me.lvTVShowRegex.View = System.Windows.Forms.View.Details
+        Me.gbTVSourcesRegexMultiPartMatching.AutoSize = true
+        Me.gbTVSourcesRegexMultiPartMatching.Controls.Add(Me.tblTVSourcesRegexMultiPartMatching)
+        Me.gbTVSourcesRegexMultiPartMatching.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVSourcesRegexMultiPartMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVSourcesRegexMultiPartMatching.Location = New System.Drawing.Point(3, 377)
+        Me.gbTVSourcesRegexMultiPartMatching.Name = "gbTVSourcesRegexMultiPartMatching"
+        Me.gbTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(812, 50)
+        Me.gbTVSourcesRegexMultiPartMatching.TabIndex = 8
+        Me.gbTVSourcesRegexMultiPartMatching.TabStop = false
+        Me.gbTVSourcesRegexMultiPartMatching.Text = "TV Show Multi Part Matching"
         '
-        'colTVShowRegexID
+        'tblTVSourcesRegexMultiPartMatching
         '
-        Me.colTVShowRegexID.DisplayIndex = 4
-        Me.colTVShowRegexID.Width = 0
+        Me.tblTVSourcesRegexMultiPartMatching.AutoSize = true
+        Me.tblTVSourcesRegexMultiPartMatching.ColumnCount = 2
+        Me.tblTVSourcesRegexMultiPartMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexMultiPartMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexMultiPartMatching.Controls.Add(Me.txtTVSourcesRegexMultiPartMatching, 0, 0)
+        Me.tblTVSourcesRegexMultiPartMatching.Controls.Add(Me.btnTVSourcesRegexMultiPartMatchingReset, 1, 0)
+        Me.tblTVSourcesRegexMultiPartMatching.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVSourcesRegexMultiPartMatching.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVSourcesRegexMultiPartMatching.Name = "tblTVSourcesRegexMultiPartMatching"
+        Me.tblTVSourcesRegexMultiPartMatching.RowCount = 2
+        Me.tblTVSourcesRegexMultiPartMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexMultiPartMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(806, 29)
+        Me.tblTVSourcesRegexMultiPartMatching.TabIndex = 0
         '
-        'colTVShowRegexSeason
+        'txtTVSourcesRegexMultiPartMatching
         '
-        Me.colTVShowRegexSeason.DisplayIndex = 0
-        Me.colTVShowRegexSeason.Text = "Season Regex"
-        Me.colTVShowRegexSeason.Width = 280
+        Me.txtTVSourcesRegexMultiPartMatching.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtTVSourcesRegexMultiPartMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtTVSourcesRegexMultiPartMatching.Location = New System.Drawing.Point(3, 3)
+        Me.txtTVSourcesRegexMultiPartMatching.Name = "txtTVSourcesRegexMultiPartMatching"
+        Me.txtTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(759, 22)
+        Me.txtTVSourcesRegexMultiPartMatching.TabIndex = 0
         '
-        'colTVShowRegexSeasonApply
+        'btnTVSourcesRegexMultiPartMatchingReset
         '
-        Me.colTVShowRegexSeasonApply.DisplayIndex = 1
-        Me.colTVShowRegexSeasonApply.Text = "Apply To"
-        Me.colTVShowRegexSeasonApply.Width = 70
+        Me.btnTVSourcesRegexMultiPartMatchingReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnTVSourcesRegexMultiPartMatchingReset.Image = CType(resources.GetObject("btnTVSourcesRegexMultiPartMatchingReset.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexMultiPartMatchingReset.Location = New System.Drawing.Point(780, 3)
+        Me.btnTVSourcesRegexMultiPartMatchingReset.Name = "btnTVSourcesRegexMultiPartMatchingReset"
+        Me.btnTVSourcesRegexMultiPartMatchingReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSourcesRegexMultiPartMatchingReset.TabIndex = 3
+        Me.btnTVSourcesRegexMultiPartMatchingReset.UseVisualStyleBackColor = true
         '
-        'colTVShowRegexEpisode
+        'gbTVSourcesRegexTVShowMatching
         '
-        Me.colTVShowRegexEpisode.DisplayIndex = 2
-        Me.colTVShowRegexEpisode.Text = "Episode Regex"
-        Me.colTVShowRegexEpisode.Width = 219
+        Me.gbTVSourcesRegexTVShowMatching.AutoSize = true
+        Me.gbTVSourcesRegexTVShowMatching.Controls.Add(Me.tblTVSourcesRegexTVShowMatching)
+        Me.gbTVSourcesRegexTVShowMatching.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVSourcesRegexTVShowMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVSourcesRegexTVShowMatching.Location = New System.Drawing.Point(3, 3)
+        Me.gbTVSourcesRegexTVShowMatching.Name = "gbTVSourcesRegexTVShowMatching"
+        Me.gbTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(812, 368)
+        Me.gbTVSourcesRegexTVShowMatching.TabIndex = 7
+        Me.gbTVSourcesRegexTVShowMatching.TabStop = false
+        Me.gbTVSourcesRegexTVShowMatching.Text = "TV Show Matching"
         '
-        'colTVShowRegexEpisodeApply
+        'tblTVSourcesRegexTVShowMatching
         '
-        Me.colTVShowRegexEpisodeApply.DisplayIndex = 3
-        Me.colTVShowRegexEpisodeApply.Text = "Apply To"
-        Me.colTVShowRegexEpisodeApply.Width = 70
+        Me.tblTVSourcesRegexTVShowMatching.AutoSize = true
+        Me.tblTVSourcesRegexTVShowMatching.ColumnCount = 9
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.lvTVSourcesRegexTVShowMatching, 0, 1)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingClear, 0, 4)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingDown, 3, 2)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingUp, 2, 2)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingEdit, 0, 2)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingReset, 7, 0)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingGet, 6, 0)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingRemove, 5, 2)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.btnTVSourcesRegexTVShowMatchingAdd, 5, 4)
+        Me.tblTVSourcesRegexTVShowMatching.Controls.Add(Me.tblTVSourcesRegexTVShowMatchingEdit, 0, 3)
+        Me.tblTVSourcesRegexTVShowMatching.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVSourcesRegexTVShowMatching.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVSourcesRegexTVShowMatching.Name = "tblTVSourcesRegexTVShowMatching"
+        Me.tblTVSourcesRegexTVShowMatching.RowCount = 6
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(806, 347)
+        Me.tblTVSourcesRegexTVShowMatching.TabIndex = 8
         '
-        'colTVShowRegexAired
+        'lvTVSourcesRegexTVShowMatching
         '
-        Me.colTVShowRegexAired.Text = "Aired"
+        Me.lvTVSourcesRegexTVShowMatching.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVSourcesRegexTVShowMatchingID, Me.colTVSourcesRegexTVShowMatchingRegex, Me.coTVSourcesRegexTVShowMatchingDefaultSeason, Me.colTVSourcesRegexTVShowMatchingByDate})
+        Me.tblTVSourcesRegexTVShowMatching.SetColumnSpan(Me.lvTVSourcesRegexTVShowMatching, 8)
+        Me.lvTVSourcesRegexTVShowMatching.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lvTVSourcesRegexTVShowMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lvTVSourcesRegexTVShowMatching.FullRowSelect = true
+        Me.lvTVSourcesRegexTVShowMatching.HideSelection = false
+        Me.lvTVSourcesRegexTVShowMatching.Location = New System.Drawing.Point(3, 32)
+        Me.lvTVSourcesRegexTVShowMatching.Name = "lvTVSourcesRegexTVShowMatching"
+        Me.lvTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(800, 200)
+        Me.lvTVSourcesRegexTVShowMatching.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvTVSourcesRegexTVShowMatching.TabIndex = 0
+        Me.lvTVSourcesRegexTVShowMatching.UseCompatibleStateImageBehavior = false
+        Me.lvTVSourcesRegexTVShowMatching.View = System.Windows.Forms.View.Details
         '
-        'gbTVSourcesRegexMatch
+        'colTVSourcesRegexTVShowMatchingID
         '
-        Me.gbTVSourcesRegexMatch.AutoSize = true
-        Me.tblTVSourcesRegex.SetColumnSpan(Me.gbTVSourcesRegexMatch, 8)
-        Me.gbTVSourcesRegexMatch.Controls.Add(Me.tblTVSourcesRegexMatch)
-        Me.gbTVSourcesRegexMatch.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVSourcesRegexMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVSourcesRegexMatch.Location = New System.Drawing.Point(3, 202)
-        Me.gbTVSourcesRegexMatch.Name = "gbTVSourcesRegexMatch"
-        Me.gbTVSourcesRegexMatch.Size = New System.Drawing.Size(800, 146)
-        Me.gbTVSourcesRegexMatch.TabIndex = 7
-        Me.gbTVSourcesRegexMatch.TabStop = false
-        Me.gbTVSourcesRegexMatch.Text = "Show Match Regex"
+        Me.colTVSourcesRegexTVShowMatchingID.DisplayIndex = 2
+        Me.colTVSourcesRegexTVShowMatchingID.Width = 0
         '
-        'tblTVSourcesRegexMatch
+        'colTVSourcesRegexTVShowMatchingRegex
         '
-        Me.tblTVSourcesRegexMatch.AutoSize = true
-        Me.tblTVSourcesRegexMatch.ColumnCount = 3
-        Me.tblTVSourcesRegexMatch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegexMatch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegexMatch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.btnTVShowRegexAdd, 1, 4)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.btnTVShowRegexClear, 0, 4)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.lblTVSeasonMatch, 0, 0)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.lblTVSeasonRetrieve, 1, 0)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.cbTVEpisodeRetrieve, 1, 3)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.lblTVEpisodeRetrieve, 1, 2)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.txtTVSeasonRegex, 0, 1)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.txtTVEpisodeRegex, 0, 3)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.cbTVSeasonRetrieve, 1, 1)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.lblTVEpisodeMatch, 0, 2)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.chkTVEpisodeAired, 2, 3)
-        Me.tblTVSourcesRegexMatch.Controls.Add(Me.lblTVEpisodeAired, 2, 2)
-        Me.tblTVSourcesRegexMatch.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVSourcesRegexMatch.Location = New System.Drawing.Point(3, 18)
-        Me.tblTVSourcesRegexMatch.Name = "tblTVSourcesRegexMatch"
-        Me.tblTVSourcesRegexMatch.RowCount = 6
-        Me.tblTVSourcesRegexMatch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblTVSourcesRegexMatch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegexMatch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblTVSourcesRegexMatch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegexMatch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegexMatch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegexMatch.Size = New System.Drawing.Size(794, 125)
-        Me.tblTVSourcesRegexMatch.TabIndex = 8
+        Me.colTVSourcesRegexTVShowMatchingRegex.DisplayIndex = 0
+        Me.colTVSourcesRegexTVShowMatchingRegex.Text = "Regex"
+        Me.colTVSourcesRegexTVShowMatchingRegex.Width = 600
         '
-        'btnTVShowRegexAdd
+        'coTVSourcesRegexTVShowMatchingDefaultSeason
         '
-        Me.btnTVShowRegexAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnTVShowRegexAdd.AutoSize = true
-        Me.btnTVShowRegexAdd.Enabled = false
-        Me.btnTVShowRegexAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexAdd.Image = CType(resources.GetObject("btnTVShowRegexAdd.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTVShowRegexAdd.Location = New System.Drawing.Point(426, 99)
-        Me.btnTVShowRegexAdd.Name = "btnTVShowRegexAdd"
-        Me.btnTVShowRegexAdd.Size = New System.Drawing.Size(135, 23)
-        Me.btnTVShowRegexAdd.TabIndex = 9
-        Me.btnTVShowRegexAdd.Text = "Add Regex"
-        Me.btnTVShowRegexAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexAdd.UseVisualStyleBackColor = true
+        Me.coTVSourcesRegexTVShowMatchingDefaultSeason.DisplayIndex = 1
+        Me.coTVSourcesRegexTVShowMatchingDefaultSeason.Text = "Default Season"
+        Me.coTVSourcesRegexTVShowMatchingDefaultSeason.Width = 90
         '
-        'btnTVShowRegexClear
+        'colTVSourcesRegexTVShowMatchingByDate
         '
-        Me.btnTVShowRegexClear.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnTVShowRegexClear.AutoSize = true
-        Me.btnTVShowRegexClear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexClear.Image = CType(resources.GetObject("btnTVShowRegexClear.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTVShowRegexClear.Location = New System.Drawing.Point(3, 99)
-        Me.btnTVShowRegexClear.Name = "btnTVShowRegexClear"
-        Me.btnTVShowRegexClear.Size = New System.Drawing.Size(104, 23)
-        Me.btnTVShowRegexClear.TabIndex = 8
-        Me.btnTVShowRegexClear.Text = "Clear"
-        Me.btnTVShowRegexClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexClear.UseVisualStyleBackColor = true
+        Me.colTVSourcesRegexTVShowMatchingByDate.Text = "by Date"
         '
-        'lblTVSeasonMatch
+        'btnTVSourcesRegexTVShowMatchingClear
         '
-        Me.lblTVSeasonMatch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSeasonMatch.AutoSize = true
-        Me.lblTVSeasonMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonMatch.Location = New System.Drawing.Point(3, 3)
-        Me.lblTVSeasonMatch.Name = "lblTVSeasonMatch"
-        Me.lblTVSeasonMatch.Size = New System.Drawing.Size(116, 13)
-        Me.lblTVSeasonMatch.TabIndex = 0
-        Me.lblTVSeasonMatch.Text = "Season Match Regex:"
+        Me.btnTVSourcesRegexTVShowMatchingClear.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVSourcesRegexTVShowMatchingClear.AutoSize = true
+        Me.btnTVSourcesRegexTVShowMatchingClear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVSourcesRegexTVShowMatchingClear.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingClear.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnTVSourcesRegexTVShowMatchingClear.Location = New System.Drawing.Point(3, 321)
+        Me.btnTVSourcesRegexTVShowMatchingClear.Name = "btnTVSourcesRegexTVShowMatchingClear"
+        Me.btnTVSourcesRegexTVShowMatchingClear.Size = New System.Drawing.Size(100, 23)
+        Me.btnTVSourcesRegexTVShowMatchingClear.TabIndex = 8
+        Me.btnTVSourcesRegexTVShowMatchingClear.Text = "Clear"
+        Me.btnTVSourcesRegexTVShowMatchingClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnTVSourcesRegexTVShowMatchingClear.UseVisualStyleBackColor = true
         '
-        'lblTVSeasonRetrieve
+        'btnTVSourcesRegexTVShowMatchingDown
         '
-        Me.lblTVSeasonRetrieve.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSeasonRetrieve.AutoSize = true
-        Me.lblTVSeasonRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSeasonRetrieve.Location = New System.Drawing.Point(426, 3)
-        Me.lblTVSeasonRetrieve.Name = "lblTVSeasonRetrieve"
-        Me.lblTVSeasonRetrieve.Size = New System.Drawing.Size(54, 13)
-        Me.lblTVSeasonRetrieve.TabIndex = 2
-        Me.lblTVSeasonRetrieve.Text = "Apply To:"
+        Me.btnTVSourcesRegexTVShowMatchingDown.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnTVSourcesRegexTVShowMatchingDown.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingDown.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingDown.Location = New System.Drawing.Point(406, 238)
+        Me.btnTVSourcesRegexTVShowMatchingDown.Name = "btnTVSourcesRegexTVShowMatchingDown"
+        Me.btnTVSourcesRegexTVShowMatchingDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSourcesRegexTVShowMatchingDown.TabIndex = 5
+        Me.btnTVSourcesRegexTVShowMatchingDown.UseVisualStyleBackColor = true
         '
-        'cbTVEpisodeRetrieve
+        'btnTVSourcesRegexTVShowMatchingUp
         '
-        Me.cbTVEpisodeRetrieve.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbTVEpisodeRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVEpisodeRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.cbTVEpisodeRetrieve.FormattingEnabled = true
-        Me.cbTVEpisodeRetrieve.Items.AddRange(New Object() {"Folder Name", "File Name", "Season Result"})
-        Me.cbTVEpisodeRetrieve.Location = New System.Drawing.Point(426, 71)
-        Me.cbTVEpisodeRetrieve.Name = "cbTVEpisodeRetrieve"
-        Me.cbTVEpisodeRetrieve.Size = New System.Drawing.Size(135, 21)
-        Me.cbTVEpisodeRetrieve.TabIndex = 7
+        Me.btnTVSourcesRegexTVShowMatchingUp.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnTVSourcesRegexTVShowMatchingUp.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingUp.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingUp.Location = New System.Drawing.Point(377, 238)
+        Me.btnTVSourcesRegexTVShowMatchingUp.Name = "btnTVSourcesRegexTVShowMatchingUp"
+        Me.btnTVSourcesRegexTVShowMatchingUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSourcesRegexTVShowMatchingUp.TabIndex = 4
+        Me.btnTVSourcesRegexTVShowMatchingUp.UseVisualStyleBackColor = true
         '
-        'lblTVEpisodeRetrieve
+        'btnTVSourcesRegexTVShowMatchingEdit
         '
-        Me.lblTVEpisodeRetrieve.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVEpisodeRetrieve.AutoSize = true
-        Me.lblTVEpisodeRetrieve.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVEpisodeRetrieve.Location = New System.Drawing.Point(426, 51)
-        Me.lblTVEpisodeRetrieve.Name = "lblTVEpisodeRetrieve"
-        Me.lblTVEpisodeRetrieve.Size = New System.Drawing.Size(54, 13)
-        Me.lblTVEpisodeRetrieve.TabIndex = 6
-        Me.lblTVEpisodeRetrieve.Text = "Apply To:"
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnTVSourcesRegexTVShowMatchingEdit.AutoSize = true
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingEdit.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Location = New System.Drawing.Point(3, 238)
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Name = "btnTVSourcesRegexTVShowMatchingEdit"
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Size = New System.Drawing.Size(100, 23)
+        Me.btnTVSourcesRegexTVShowMatchingEdit.TabIndex = 3
+        Me.btnTVSourcesRegexTVShowMatchingEdit.Text = "Edit Regex"
+        Me.btnTVSourcesRegexTVShowMatchingEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnTVSourcesRegexTVShowMatchingEdit.UseVisualStyleBackColor = true
         '
-        'txtTVSeasonRegex
+        'btnTVSourcesRegexTVShowMatchingReset
         '
-        Me.txtTVSeasonRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtTVSeasonRegex.Location = New System.Drawing.Point(3, 23)
-        Me.txtTVSeasonRegex.Name = "txtTVSeasonRegex"
-        Me.txtTVSeasonRegex.Size = New System.Drawing.Size(417, 22)
-        Me.txtTVSeasonRegex.TabIndex = 1
+        Me.btnTVSourcesRegexTVShowMatchingReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVSourcesRegexTVShowMatchingReset.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingReset.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingReset.Location = New System.Drawing.Point(780, 3)
+        Me.btnTVSourcesRegexTVShowMatchingReset.Name = "btnTVSourcesRegexTVShowMatchingReset"
+        Me.btnTVSourcesRegexTVShowMatchingReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSourcesRegexTVShowMatchingReset.TabIndex = 2
+        Me.btnTVSourcesRegexTVShowMatchingReset.UseVisualStyleBackColor = true
         '
-        'txtTVEpisodeRegex
+        'btnTVSourcesRegexTVShowMatchingGet
         '
-        Me.txtTVEpisodeRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtTVEpisodeRegex.Location = New System.Drawing.Point(3, 71)
-        Me.txtTVEpisodeRegex.Name = "txtTVEpisodeRegex"
-        Me.txtTVEpisodeRegex.Size = New System.Drawing.Size(417, 22)
-        Me.txtTVEpisodeRegex.TabIndex = 5
+        Me.btnTVSourcesRegexTVShowMatchingGet.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVSourcesRegexTVShowMatchingGet.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingGet.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingGet.Location = New System.Drawing.Point(751, 3)
+        Me.btnTVSourcesRegexTVShowMatchingGet.Name = "btnTVSourcesRegexTVShowMatchingGet"
+        Me.btnTVSourcesRegexTVShowMatchingGet.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVSourcesRegexTVShowMatchingGet.TabIndex = 1
+        Me.btnTVSourcesRegexTVShowMatchingGet.UseVisualStyleBackColor = true
         '
-        'cbTVSeasonRetrieve
+        'btnTVSourcesRegexTVShowMatchingRemove
         '
-        Me.cbTVSeasonRetrieve.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbTVSeasonRetrieve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVSeasonRetrieve.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.cbTVSeasonRetrieve.FormattingEnabled = true
-        Me.cbTVSeasonRetrieve.Items.AddRange(New Object() {"Folder Name", "File Name"})
-        Me.cbTVSeasonRetrieve.Location = New System.Drawing.Point(426, 23)
-        Me.cbTVSeasonRetrieve.Name = "cbTVSeasonRetrieve"
-        Me.cbTVSeasonRetrieve.Size = New System.Drawing.Size(135, 21)
-        Me.cbTVSeasonRetrieve.TabIndex = 3
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVSourcesRegexTVShowMatchingRemove.AutoSize = true
+        Me.tblTVSourcesRegexTVShowMatching.SetColumnSpan(Me.btnTVSourcesRegexTVShowMatchingRemove, 3)
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingRemove.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Location = New System.Drawing.Point(703, 238)
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Name = "btnTVSourcesRegexTVShowMatchingRemove"
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Size = New System.Drawing.Size(100, 23)
+        Me.btnTVSourcesRegexTVShowMatchingRemove.TabIndex = 6
+        Me.btnTVSourcesRegexTVShowMatchingRemove.Text = "Remove"
+        Me.btnTVSourcesRegexTVShowMatchingRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnTVSourcesRegexTVShowMatchingRemove.UseVisualStyleBackColor = true
         '
-        'lblTVEpisodeMatch
+        'btnTVSourcesRegexTVShowMatchingAdd
         '
-        Me.lblTVEpisodeMatch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVEpisodeMatch.AutoSize = true
-        Me.lblTVEpisodeMatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVEpisodeMatch.Location = New System.Drawing.Point(3, 51)
-        Me.lblTVEpisodeMatch.Name = "lblTVEpisodeMatch"
-        Me.lblTVEpisodeMatch.Size = New System.Drawing.Size(120, 13)
-        Me.lblTVEpisodeMatch.TabIndex = 4
-        Me.lblTVEpisodeMatch.Text = "Episode Match Regex:"
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVSourcesRegexTVShowMatchingAdd.AutoSize = true
+        Me.tblTVSourcesRegexTVShowMatching.SetColumnSpan(Me.btnTVSourcesRegexTVShowMatchingAdd, 3)
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Enabled = false
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingAdd.Image"),System.Drawing.Image)
+        Me.btnTVSourcesRegexTVShowMatchingAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Location = New System.Drawing.Point(703, 321)
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Name = "btnTVSourcesRegexTVShowMatchingAdd"
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Size = New System.Drawing.Size(100, 23)
+        Me.btnTVSourcesRegexTVShowMatchingAdd.TabIndex = 9
+        Me.btnTVSourcesRegexTVShowMatchingAdd.Text = "Add Regex"
+        Me.btnTVSourcesRegexTVShowMatchingAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnTVSourcesRegexTVShowMatchingAdd.UseVisualStyleBackColor = true
         '
-        'chkTVEpisodeAired
+        'tblTVSourcesRegexTVShowMatchingEdit
         '
-        Me.chkTVEpisodeAired.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVEpisodeAired.AutoSize = true
-        Me.chkTVEpisodeAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVEpisodeAired.Location = New System.Drawing.Point(671, 75)
-        Me.chkTVEpisodeAired.Name = "chkTVEpisodeAired"
-        Me.chkTVEpisodeAired.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVEpisodeAired.TabIndex = 10
-        Me.chkTVEpisodeAired.UseVisualStyleBackColor = true
+        Me.tblTVSourcesRegexTVShowMatchingEdit.AutoSize = true
+        Me.tblTVSourcesRegexTVShowMatchingEdit.ColumnCount = 3
+        Me.tblTVSourcesRegexTVShowMatching.SetColumnSpan(Me.tblTVSourcesRegexTVShowMatchingEdit, 8)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatchingEdit.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatchingEdit.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Controls.Add(Me.lblTVSourcesRegexTVShowMatchingRegex, 0, 0)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Controls.Add(Me.lblTVSourcesRegexTVShowMatchingDefaultSeason, 1, 0)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Controls.Add(Me.txtTVSourcesRegexTVShowMatchingRegex, 0, 1)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Controls.Add(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason, 1, 1)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Controls.Add(Me.lblTVSourcesRegexTVShowMatchingByDate, 2, 0)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Controls.Add(Me.chkTVSourcesRegexTVShowMatchingByDate, 2, 1)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Location = New System.Drawing.Point(3, 267)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Name = "tblTVSourcesRegexTVShowMatchingEdit"
+        Me.tblTVSourcesRegexTVShowMatchingEdit.RowCount = 2
+        Me.tblTVSourcesRegexTVShowMatchingEdit.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVSourcesRegexTVShowMatchingEdit.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVSourcesRegexTVShowMatchingEdit.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVSourcesRegexTVShowMatchingEdit.Size = New System.Drawing.Size(800, 48)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.TabIndex = 12
         '
-        'lblTVEpisodeAired
+        'lblTVSourcesRegexTVShowMatchingRegex
         '
-        Me.lblTVEpisodeAired.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVEpisodeAired.AutoSize = true
-        Me.lblTVEpisodeAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVEpisodeAired.Location = New System.Drawing.Point(637, 51)
-        Me.lblTVEpisodeAired.Name = "lblTVEpisodeAired"
-        Me.lblTVEpisodeAired.Size = New System.Drawing.Size(84, 13)
-        Me.lblTVEpisodeAired.TabIndex = 6
-        Me.lblTVEpisodeAired.Text = "by ""Aired"" Date"
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesRegexTVShowMatchingRegex.AutoSize = true
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Location = New System.Drawing.Point(3, 3)
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Name = "lblTVSourcesRegexTVShowMatchingRegex"
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Size = New System.Drawing.Size(38, 13)
+        Me.lblTVSourcesRegexTVShowMatchingRegex.TabIndex = 0
+        Me.lblTVSourcesRegexTVShowMatchingRegex.Text = "Regex"
         '
-        'btnTVShowRegexEdit
+        'lblTVSourcesRegexTVShowMatchingDefaultSeason
         '
-        Me.btnTVShowRegexEdit.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnTVShowRegexEdit.AutoSize = true
-        Me.btnTVShowRegexEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexEdit.Image = CType(resources.GetObject("btnTVShowRegexEdit.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTVShowRegexEdit.Location = New System.Drawing.Point(3, 173)
-        Me.btnTVShowRegexEdit.Name = "btnTVShowRegexEdit"
-        Me.btnTVShowRegexEdit.Size = New System.Drawing.Size(104, 23)
-        Me.btnTVShowRegexEdit.TabIndex = 3
-        Me.btnTVShowRegexEdit.Text = "Edit Regex"
-        Me.btnTVShowRegexEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexEdit.UseVisualStyleBackColor = true
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.AutoSize = true
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Location = New System.Drawing.Point(575, 3)
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Name = "lblTVSourcesRegexTVShowMatchingDefaultSeason"
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Size = New System.Drawing.Size(90, 13)
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.TabIndex = 2
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = "Default Seasons"
         '
-        'btnTVShowRegexReset
+        'txtTVSourcesRegexTVShowMatchingRegex
         '
-        Me.btnTVShowRegexReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVShowRegexReset.Image = CType(resources.GetObject("btnTVShowRegexReset.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexReset.Location = New System.Drawing.Point(780, 3)
-        Me.btnTVShowRegexReset.Name = "btnTVShowRegexReset"
-        Me.btnTVShowRegexReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVShowRegexReset.TabIndex = 2
-        Me.btnTVShowRegexReset.UseVisualStyleBackColor = true
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Location = New System.Drawing.Point(3, 23)
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Name = "txtTVSourcesRegexTVShowMatchingRegex"
+        Me.txtTVSourcesRegexTVShowMatchingRegex.Size = New System.Drawing.Size(566, 22)
+        Me.txtTVSourcesRegexTVShowMatchingRegex.TabIndex = 1
         '
-        'btnTVShowRegexUp
+        'txtTVSourcesRegexTVShowMatchingDefaultSeason
         '
-        Me.btnTVShowRegexUp.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnTVShowRegexUp.Image = CType(resources.GetObject("btnTVShowRegexUp.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexUp.Location = New System.Drawing.Point(307, 173)
-        Me.btnTVShowRegexUp.Name = "btnTVShowRegexUp"
-        Me.btnTVShowRegexUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVShowRegexUp.TabIndex = 4
-        Me.btnTVShowRegexUp.UseVisualStyleBackColor = true
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Location = New System.Drawing.Point(575, 23)
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Name = "txtTVSourcesRegexTVShowMatchingDefaultSeason"
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Size = New System.Drawing.Size(90, 22)
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.TabIndex = 11
         '
-        'btnTVShowRegexDown
+        'lblTVSourcesRegexTVShowMatchingByDate
         '
-        Me.btnTVShowRegexDown.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnTVShowRegexDown.Image = CType(resources.GetObject("btnTVShowRegexDown.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexDown.Location = New System.Drawing.Point(336, 173)
-        Me.btnTVShowRegexDown.Name = "btnTVShowRegexDown"
-        Me.btnTVShowRegexDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVShowRegexDown.TabIndex = 5
-        Me.btnTVShowRegexDown.UseVisualStyleBackColor = true
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblTVSourcesRegexTVShowMatchingByDate.AutoSize = true
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Location = New System.Drawing.Point(692, 3)
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Name = "lblTVSourcesRegexTVShowMatchingByDate"
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Size = New System.Drawing.Size(84, 13)
+        Me.lblTVSourcesRegexTVShowMatchingByDate.TabIndex = 6
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Text = "by ""Aired"" Date"
         '
-        'btnTVShowRegexRemove
+        'chkTVSourcesRegexTVShowMatchingByDate
         '
-        Me.btnTVShowRegexRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVShowRegexRemove.AutoSize = true
-        Me.tblTVSourcesRegex.SetColumnSpan(Me.btnTVShowRegexRemove, 3)
-        Me.btnTVShowRegexRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVShowRegexRemove.Image = CType(resources.GetObject("btnTVShowRegexRemove.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTVShowRegexRemove.Location = New System.Drawing.Point(699, 173)
-        Me.btnTVShowRegexRemove.Name = "btnTVShowRegexRemove"
-        Me.btnTVShowRegexRemove.Size = New System.Drawing.Size(104, 23)
-        Me.btnTVShowRegexRemove.TabIndex = 6
-        Me.btnTVShowRegexRemove.Text = "Remove"
-        Me.btnTVShowRegexRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnTVShowRegexRemove.UseVisualStyleBackColor = true
-        '
-        'btnTVShowRegexGet
-        '
-        Me.btnTVShowRegexGet.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVShowRegexGet.Image = CType(resources.GetObject("btnTVShowRegexGet.Image"),System.Drawing.Image)
-        Me.btnTVShowRegexGet.Location = New System.Drawing.Point(611, 3)
-        Me.btnTVShowRegexGet.Name = "btnTVShowRegexGet"
-        Me.btnTVShowRegexGet.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVShowRegexGet.TabIndex = 1
-        Me.btnTVShowRegexGet.UseVisualStyleBackColor = true
+        Me.chkTVSourcesRegexTVShowMatchingByDate.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVSourcesRegexTVShowMatchingByDate.AutoSize = true
+        Me.chkTVSourcesRegexTVShowMatchingByDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSourcesRegexTVShowMatchingByDate.Location = New System.Drawing.Point(726, 27)
+        Me.chkTVSourcesRegexTVShowMatchingByDate.Name = "chkTVSourcesRegexTVShowMatchingByDate"
+        Me.chkTVSourcesRegexTVShowMatchingByDate.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVSourcesRegexTVShowMatchingByDate.TabIndex = 10
+        Me.chkTVSourcesRegexTVShowMatchingByDate.UseVisualStyleBackColor = true
         '
         'pnlTVImages
         '
@@ -13740,7 +13750,7 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperGlobalOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperGlobalOpts.Name = "tblTVScraperGlobalOpts"
-        Me.tblTVScraperGlobalOpts.RowCount = 21
+        Me.tblTVScraperGlobalOpts.RowCount = 20
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -15825,7 +15835,6 @@ Partial Class dlgSettings
         Me.chkMovieScraperTags.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperTags.TabIndex = 27
         Me.chkMovieScraperTags.UseVisualStyleBackColor = true
-        Me.chkMovieScraperTags.Visible = false
         '
         'chkMovieLockTags
         '
@@ -15837,7 +15846,6 @@ Partial Class dlgSettings
         Me.chkMovieLockTags.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockTags.TabIndex = 64
         Me.chkMovieLockTags.UseVisualStyleBackColor = true
-        Me.chkMovieLockTags.Visible = false
         '
         'lblMovieScraperGlobalTrailer
         '
@@ -19230,10 +19238,16 @@ Partial Class dlgSettings
         Me.tpTVSourcesRegex.PerformLayout
         Me.tblTVSourcesRegex.ResumeLayout(false)
         Me.tblTVSourcesRegex.PerformLayout
-        Me.gbTVSourcesRegexMatch.ResumeLayout(false)
-        Me.gbTVSourcesRegexMatch.PerformLayout
-        Me.tblTVSourcesRegexMatch.ResumeLayout(false)
-        Me.tblTVSourcesRegexMatch.PerformLayout
+        Me.gbTVSourcesRegexMultiPartMatching.ResumeLayout(false)
+        Me.gbTVSourcesRegexMultiPartMatching.PerformLayout
+        Me.tblTVSourcesRegexMultiPartMatching.ResumeLayout(false)
+        Me.tblTVSourcesRegexMultiPartMatching.PerformLayout
+        Me.gbTVSourcesRegexTVShowMatching.ResumeLayout(false)
+        Me.gbTVSourcesRegexTVShowMatching.PerformLayout
+        Me.tblTVSourcesRegexTVShowMatching.ResumeLayout(false)
+        Me.tblTVSourcesRegexTVShowMatching.PerformLayout
+        Me.tblTVSourcesRegexTVShowMatchingEdit.ResumeLayout(false)
+        Me.tblTVSourcesRegexTVShowMatchingEdit.PerformLayout
         Me.pnlTVImages.ResumeLayout(false)
         Me.pnlTVImages.PerformLayout
         Me.tblTVImages.ResumeLayout(false)
@@ -19681,24 +19695,16 @@ End Sub
     Friend WithEvents tcTVSources As System.Windows.Forms.TabControl
     Friend WithEvents tpTVSourcesGeneral As System.Windows.Forms.TabPage
     Friend WithEvents tpTVSourcesRegex As System.Windows.Forms.TabPage
-    Friend WithEvents lvTVShowRegex As System.Windows.Forms.ListView
-    Friend WithEvents colTVShowRegexSeason As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colTVShowRegexSeasonApply As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colTVShowRegexEpisode As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colTVShowRegexEpisodeApply As System.Windows.Forms.ColumnHeader
-    Friend WithEvents btnTVShowRegexAdd As System.Windows.Forms.Button
-    Friend WithEvents btnTVShowRegexEdit As System.Windows.Forms.Button
-    Friend WithEvents btnTVShowRegexRemove As System.Windows.Forms.Button
-    Friend WithEvents txtTVSeasonRegex As System.Windows.Forms.TextBox
-    Friend WithEvents cbTVEpisodeRetrieve As System.Windows.Forms.ComboBox
-    Friend WithEvents txtTVEpisodeRegex As System.Windows.Forms.TextBox
-    Friend WithEvents cbTVSeasonRetrieve As System.Windows.Forms.ComboBox
-    Friend WithEvents lblTVSeasonMatch As System.Windows.Forms.Label
-    Friend WithEvents gbTVSourcesRegexMatch As System.Windows.Forms.GroupBox
-    Friend WithEvents lblTVEpisodeRetrieve As System.Windows.Forms.Label
-    Friend WithEvents lblTVSeasonRetrieve As System.Windows.Forms.Label
-    Friend WithEvents lblTVEpisodeMatch As System.Windows.Forms.Label
-    Friend WithEvents colTVShowRegexID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lvTVSourcesRegexTVShowMatching As System.Windows.Forms.ListView
+    Friend WithEvents colTVSourcesRegexTVShowMatchingRegex As System.Windows.Forms.ColumnHeader
+    Friend WithEvents coTVSourcesRegexTVShowMatchingDefaultSeason As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingEdit As System.Windows.Forms.Button
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingRemove As System.Windows.Forms.Button
+    Friend WithEvents txtTVSourcesRegexTVShowMatchingRegex As System.Windows.Forms.TextBox
+    Friend WithEvents lblTVSourcesRegexTVShowMatchingRegex As System.Windows.Forms.Label
+    Friend WithEvents gbTVSourcesRegexTVShowMatching As System.Windows.Forms.GroupBox
+    Friend WithEvents lblTVSourcesRegexTVShowMatchingDefaultSeason As System.Windows.Forms.Label
+    Friend WithEvents colTVSourcesRegexTVShowMatchingID As System.Windows.Forms.ColumnHeader
     Friend WithEvents pnlTVImages As System.Windows.Forms.Panel
     Friend WithEvents gbTVImagesShowFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVShowFanartWidth As System.Windows.Forms.TextBox
@@ -19858,14 +19864,13 @@ End Sub
     Friend WithEvents btnTVEpisodeFilterReset As System.Windows.Forms.Button
     Friend WithEvents btnMovieFilterReset As System.Windows.Forms.Button
     Friend WithEvents btnFileSystemValidVideoExtsReset As System.Windows.Forms.Button
-    Friend WithEvents btnTVShowRegexReset As System.Windows.Forms.Button
-    Friend WithEvents btnTVShowRegexDown As System.Windows.Forms.Button
-    Friend WithEvents btnTVShowRegexUp As System.Windows.Forms.Button
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingReset As System.Windows.Forms.Button
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingDown As System.Windows.Forms.Button
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingUp As System.Windows.Forms.Button
     Friend WithEvents lblTVSkipLessThanMB As System.Windows.Forms.Label
     Friend WithEvents txtTVSkipLessThan As System.Windows.Forms.TextBox
     Friend WithEvents lblTVSkipLessThan As System.Windows.Forms.Label
-    Friend WithEvents btnTVShowRegexClear As System.Windows.Forms.Button
-    Friend WithEvents btnTVShowRegexGet As System.Windows.Forms.Button
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingGet As System.Windows.Forms.Button
     Friend WithEvents chkMovieClickScrapeAsk As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieClickScrape As System.Windows.Forms.CheckBox
     Friend WithEvents chkMoviePosterPrefOnly As System.Windows.Forms.CheckBox
@@ -20715,8 +20720,7 @@ End Sub
     Friend WithEvents tblTVImagesEpisodePosterOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVImagesEpisodeFanartOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVImages As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblTVSourcesRegexMatch As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblTVSourcesRegex As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblTVSourcesRegexTVShowMatching As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVSourcesGeneral As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVSourcesMiscOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents gbTVSourcesFileNamingXBMCTvTunesOpts As System.Windows.Forms.GroupBox
@@ -20823,9 +20827,9 @@ End Sub
     Friend WithEvents colTVGeneralSeasonListSortingHide As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnTVGeneralSeasonListSortingReset As System.Windows.Forms.Button
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colTVShowRegexAired As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chkTVEpisodeAired As System.Windows.Forms.CheckBox
-    Friend WithEvents lblTVEpisodeAired As System.Windows.Forms.Label
+    Friend WithEvents colTVSourcesRegexTVShowMatchingByDate As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chkTVSourcesRegexTVShowMatchingByDate As System.Windows.Forms.CheckBox
+    Friend WithEvents lblTVSourcesRegexTVShowMatchingByDate As System.Windows.Forms.Label
     Friend WithEvents btnMovieSortTokenReset As System.Windows.Forms.Button
     Friend WithEvents btnTVSortTokenReset As System.Windows.Forms.Button
     Friend WithEvents btnMovieSetSortTokenReset As System.Windows.Forms.Button
@@ -20839,4 +20843,13 @@ End Sub
     Friend WithEvents txtMovieSetDiscArtExpertParent As System.Windows.Forms.TextBox
     Friend WithEvents lblTVScraperGlobalGuestStars As System.Windows.Forms.Label
     Friend WithEvents chkTVScraperEpisodeGuestStars As System.Windows.Forms.CheckBox
+    Friend WithEvents txtTVSourcesRegexTVShowMatchingDefaultSeason As System.Windows.Forms.TextBox
+    Friend WithEvents gbTVSourcesRegexMultiPartMatching As System.Windows.Forms.GroupBox
+    Friend WithEvents tblTVSourcesRegexMultiPartMatching As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents txtTVSourcesRegexMultiPartMatching As System.Windows.Forms.TextBox
+    Friend WithEvents btnTVSourcesRegexMultiPartMatchingReset As System.Windows.Forms.Button
+    Friend WithEvents tblTVSourcesRegex As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblTVSourcesRegexTVShowMatchingEdit As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingClear As System.Windows.Forms.Button
+    Friend WithEvents btnTVSourcesRegexTVShowMatchingAdd As System.Windows.Forms.Button
 End Class

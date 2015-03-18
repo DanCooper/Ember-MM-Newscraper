@@ -42,16 +42,6 @@ Public Class Settings
 
 #End Region 'Constructors
 
-#Region "Enumerations"
-
-    Public Enum EpRetrieve As Integer
-        FromDirectory = 0
-        FromFilename = 1
-        FromSeasonResult = 2
-    End Enum
-
-#End Region 'Enumerations
-
     'Trick: all the data is now in the shared private variable _XMLSettings. To avoid changing EVERY reference to a settings
     ' we create here property stubs that read the corresponding property of the _XMLSettings
 
@@ -3619,12 +3609,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowRegexes() As List(Of TVShowRegEx)
+    Public Property TVMultiPartMatching() As String
         Get
-            Return Settings._XMLSettings.TVShowRegexes
+            Return Settings._XMLSettings.TVMultiPartMatching
         End Get
-        Set(ByVal value As List(Of TVShowRegEx))
-            Settings._XMLSettings.TVShowRegexes = value
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVMultiPartMatching = value
+        End Set
+    End Property
+
+    Public Property TVShowMatching() As List(Of regexp)
+        Get
+            Return Settings._XMLSettings.TVShowMatching
+        End Get
+        Set(ByVal value As List(Of regexp))
+            Settings._XMLSettings.TVShowMatching = value
         End Set
     End Property
 
@@ -6064,6 +6063,7 @@ Public Class Settings
         Me.TVLockShowTitle = False
         Me.TVLockShowVotes = False
         Me.TVMetadataPerFileType = New List(Of MetadataPerType)
+        Me.TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)"
         Me.TVScanOrderModify = False
         Me.TVScraperDurationRuntimeFormat = "<m>"
         Me.TVScraperEpisodeActors = True
@@ -6146,6 +6146,7 @@ Public Class Settings
         Me.TVShowFilterCustom = New List(Of String)
         Me.TVShowFilterCustomIsEmpty = False
         Me.TVShowLandscapeOverwrite = True
+        Me.TVShowMatching = New List(Of regexp)
         Me.TVShowMissingBanner = False
         Me.TVShowMissingCharacterArt = False
         Me.TVShowMissingClearArt = False
@@ -6162,7 +6163,6 @@ Public Class Settings
         Me.TVShowPosterResize = False
         Me.TVShowPosterWidth = 0
         Me.TVShowProperCase = True
-        Me.TVShowRegexes = New List(Of TVShowRegEx)
         Me.TVSkipLessThan = 0
         Me.TVSortTokens = New List(Of String)
         Me.TVSortTokensIsEmpty = False
@@ -6305,17 +6305,15 @@ Public Class Settings
             Master.eSettings.FileSystemValidThemeExts.AddRange(".flac,.m4a,.mp3,.wav,.wma".Split(","c))
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowRegex) AndAlso (Force OrElse Master.eSettings.TVShowRegexes.Count <= 0) Then
-            Master.eSettings.TVShowRegexes.Clear()
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 0, .SeasonRegex = "((?<season>[0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", .SeasonFromDirectory = False, .EpisodeRegex = "(?<aired>([0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult, .byDate = True})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 1, .SeasonRegex = "((0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-](?<season>[0-9]{4}))", .SeasonFromDirectory = False, .EpisodeRegex = "(?<aired>(0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-]([0-9]{4}))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult, .byDate = True})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 2, .SeasonRegex = "([\/\._ -](?<season>[0-9]+)([0-9][0-9]))[\._ -]", .SeasonFromDirectory = False, .EpisodeRegex = "[0-9]+(?<episode>[0-9]{2})", .EpisodeRetrieve = EpRetrieve.FromSeasonResult, .byDate = False})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))([\W_]*(\.?(-|(e(pisode[\W_]*)?))[0-9]+)+)?", .SeasonFromDirectory = False, .EpisodeRegex = "(-|(e(pisode[\W_]*)?))(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult, .byDate = False})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 4, .SeasonRegex = "(([0-9]{4}-[0-9]{2}(-[0-9]{2})?)|([0-9]{2}-[0-9]{2}-[0-9]{4})|((?<season>[0-9]+)([x-][0-9]+)+))", .SeasonFromDirectory = False, .EpisodeRegex = "[x-](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult, .byDate = False})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 5, .SeasonRegex = "(([0-9]{4}-[0-9]{2}(-[0-9]{2})?)|([0-9]{2}-[0-9]{2}-[0-9]{4})|((?<season>[0-9]+)(-?[0-9]{2,})+(?![0-9])))", .SeasonFromDirectory = False, .EpisodeRegex = "(\([0-9]{4}\))|((([0-9]+|-)(?<episode>[0-9]{2,})))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult, .byDate = False})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 6, .SeasonRegex = "(?<season>specials?)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename, .byDate = False})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 7, .SeasonRegex = "^(s(eason)?)?[\W_]*(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename, .byDate = False})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 8, .SeasonRegex = "[^\w]s(eason)?[\W_]*(?<season>[0-9]+)", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename, .byDate = False})
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowMatching) AndAlso (Force OrElse Master.eSettings.TVShowMatching.Count <= 0) Then
+            Master.eSettings.TVShowMatching.Clear()
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 0, .byDate = False, .defaultSeason = -1, .Regexp = "s([0-9]+)[ ._-]*e([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 1, .byDate = False, .defaultSeason = 1, .Regexp = "[\\._ -]()e(?:p[ ._-]?)?([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 2, .byDate = True, .defaultSeason = -1, .Regexp = "([0-9]{4})[\\.-]([0-9]{2})[\\.-]([0-9]{2})"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 3, .byDate = True, .defaultSeason = -1, .Regexp = "([0-9]{2})[\\.-]([0-9]{2})[\\.-]([0-9]{4})"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 3, .byDate = False, .defaultSeason = -1, .Regexp = "[\\\\/\\._ \\[\\(-]([0-9]+)x([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 4, .byDate = False, .defaultSeason = -1, .Regexp = "[\\\\/\\._ -]([0-9]+)([0-9][0-9](?:(?:[a-i]|\\.[1-9])(?![0-9]))?)([\\._ -][^\\\\/]*)$"})
+            Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 5, .byDate = False, .defaultSeason = -1, .Regexp = "[\\/._ -]p(?:ar)?t[_. -]()([ivx]+|[0-9]+)([._ -][^\\/]*)$"})
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
@@ -6838,16 +6836,14 @@ Public Class Settings
 
     End Class
 
-    Public Class TVShowRegEx
+    Public Class regexp
 
 #Region "Fields"
 
         Private _bydate As Boolean
-        Private _episoderegex As String
-        Private _episoderetrieve As EpRetrieve
+        Private _defaultSeason As Integer
         Private _id As Integer
-        Private _seasonfromdirectory As Boolean
-        Private _seasonregex As String
+        Private _regexp As String
 
 #End Region 'Fields
 
@@ -6870,21 +6866,12 @@ Public Class Settings
             End Set
         End Property
 
-        Public Property EpisodeRegex() As String
+        Public Property defaultSeason() As Integer
             Get
-                Return Me._episoderegex
+                Return Me._defaultSeason
             End Get
-            Set(ByVal value As String)
-                Me._episoderegex = value
-            End Set
-        End Property
-
-        Public Property EpisodeRetrieve() As EpRetrieve
-            Get
-                Return Me._episoderetrieve
-            End Get
-            Set(ByVal value As EpRetrieve)
-                Me._episoderetrieve = value
+            Set(ByVal value As Integer)
+                Me._defaultSeason = value
             End Set
         End Property
 
@@ -6897,21 +6884,12 @@ Public Class Settings
             End Set
         End Property
 
-        Public Property SeasonFromDirectory() As Boolean
+        Public Property Regexp() As String
             Get
-                Return Me._seasonfromdirectory
-            End Get
-            Set(ByVal value As Boolean)
-                Me._seasonfromdirectory = value
-            End Set
-        End Property
-
-        Public Property SeasonRegex() As String
-            Get
-                Return Me._seasonregex
+                Return Me._regexp
             End Get
             Set(ByVal value As String)
-                Me._seasonregex = value
+                Me._regexp = value
             End Set
         End Property
 
@@ -6921,11 +6899,9 @@ Public Class Settings
 
         Public Sub Clear()
             Me._bydate = False
+            Me._defaultSeason = -1
             Me._id = -1
-            Me._seasonregex = String.Empty
-            Me._seasonfromdirectory = True
-            Me._episoderegex = String.Empty
-            Me._episoderetrieve = EpRetrieve.FromSeasonResult
+            Me._regexp = String.Empty
         End Sub
 
 #End Region 'Methods
