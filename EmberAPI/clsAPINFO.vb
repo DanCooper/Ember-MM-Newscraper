@@ -166,7 +166,7 @@ Public Class NFO
             End If
 
             'Rating
-            If (String.IsNullOrEmpty(DBMovie.Movie.Rating) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockRating) AndAlso Options.bRating AndAlso _
+            If (String.IsNullOrEmpty(DBMovie.Movie.Rating) OrElse DBMovie.Movie.Rating = "0" OrElse Not Master.eSettings.MovieLockRating) AndAlso Options.bRating AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Rating) AndAlso Not scrapedmovie.Rating = "0" AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
                 DBMovie.Movie.Rating = scrapedmovie.Rating
                 new_Rating = True
