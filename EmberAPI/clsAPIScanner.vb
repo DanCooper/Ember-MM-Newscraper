@@ -547,14 +547,14 @@ Public Class Scanner
                         cSeason = New Seasons
 
                         If Not String.IsNullOrEmpty(sMatch.Groups("season").Value) Then
-                            If IsNumeric(sMatch.Groups("season").Value) Then
+                            If Integer.TryParse(sMatch.Groups("season").Value, 0) Then
                                 cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
                             ElseIf Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
                                 cSeason.Season = 0
                             Else
                                 For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
                                     For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
-                                        If IsNumeric(sfMatch.Groups("season").Value) Then
+                                        If Integer.TryParse(sfMatch.Groups("season").Value, 0) Then
                                             cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
                                         ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
                                             cSeason.Season = 0
@@ -567,7 +567,7 @@ Public Class Scanner
                         Else
                             For Each sShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(r) r.SeasonFromDirectory = True)
                                 For Each sfMatch As Match In Regex.Matches(Directory.GetParent(sPath).Name, sShow.SeasonRegex, RegexOptions.IgnoreCase)
-                                    If IsNumeric(sfMatch.Groups("season").Value) Then
+                                    If Integer.TryParse(sfMatch.Groups("season").Value, 0) Then
                                         cSeason.Season = Convert.ToInt32(sfMatch.Groups("season").Value)
                                     ElseIf Regex.IsMatch(sfMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
                                         cSeason.Season = 0
@@ -582,10 +582,10 @@ Public Class Scanner
                             For Each eMatch As Match In Regex.Matches(sMatch.Value, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
                                 If Not String.IsNullOrEmpty(eMatch.Groups("aired").Value) Then
                                     If Regex.IsMatch(eMatch.Groups("aired").Value, "(([0-9]{4})[\.-](0[1-9]|1[0-2])[\.-](0[1-9]|[1-2][0-9]|3[0-1]))", RegexOptions.IgnoreCase) Then
-                                        cSeason.Aired.Add(Replace(eMatch.Groups("aired").Value, ".", "-"))
+                                        cSeason.Aired.Add(eMatch.Groups("aired").Value.Replace(".", "-"))
                                         cSeason.byDate = True
                                     ElseIf Regex.IsMatch(eMatch.Groups("aired").Value, "((0[1-9]|[1-2][0-9]|3[0-1])[\.-](0[1-9]|1[0-2])[\.-]([0-9]{4}))", RegexOptions.IgnoreCase) Then
-                                        Dim aDate As Date = DateTime.ParseExact(Replace(eMatch.Groups("aired").Value, ".", "-"), "dd-MM-yyyy", Globalization.CultureInfo.InvariantCulture)
+                                        Dim aDate As Date = DateTime.ParseExact(eMatch.Groups("aired").Value.Replace(".", "-"), "dd-MM-yyyy", Globalization.CultureInfo.InvariantCulture)
                                         cSeason.Aired.Add(aDate.ToString("yyyy-MM-dd"))
                                         cSeason.byDate = True
                                     End If
@@ -1100,12 +1100,12 @@ Public Class Scanner
                                             If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
                                                 If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
                                                     tmpTVDB.TVEp.Poster.FromFile(tmpTVDB.TVEp.LocalFile)
-                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                    If tmpTVDB.TVEp.Poster.Image IsNot Nothing Then
                                                         tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
                                                     End If
                                                 ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
                                                     tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
-                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                    If tmpTVDB.TVEp.Poster.Image IsNot Nothing Then
                                                         Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
                                                         tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)
                                                         tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
@@ -1193,12 +1193,12 @@ Public Class Scanner
                                             If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
                                                 If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
                                                     tmpTVDB.TVEp.Poster.FromFile(tmpTVDB.TVEp.LocalFile)
-                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                    If tmpTVDB.TVEp.Poster.Image IsNot Nothing Then
                                                         tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
                                                     End If
                                                 ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
                                                     tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
-                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                    If tmpTVDB.TVEp.Poster.Image IsNot Nothing Then
                                                         Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
                                                         tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)
                                                         tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
@@ -1602,13 +1602,13 @@ Public Class Scanner
                             Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
                             While SQLreader.Read
                                 Try
-                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
+                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), DateTime.Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
                                 Catch ex As Exception
-                                    SourceLastScan = Now
+                                    SourceLastScan = DateTime.Now
                                 End Try
                                 If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > SourceLastScan) Then
                                     'save the scan time back to the db
-                                    parLastScan.Value = Now
+                                    parLastScan.Value = DateTime.Now
                                     parID.Value = SQLreader("ID")
                                     SQLUpdatecommand.ExecuteNonQuery()
                                     Try
@@ -1678,12 +1678,12 @@ Public Class Scanner
                             Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
                             While SQLreader.Read
                                 Try
-                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
+                                    SourceLastScan = If(DBNull.Value.Equals(SQLreader("LastScan")), DateTime.Now, Convert.ToDateTime(SQLreader("LastScan").ToString))
                                 Catch ex As Exception
-                                    SourceLastScan = Now
+                                    SourceLastScan = DateTime.Now
                                 End Try
                                 'save the scan time back to the db
-                                parLastScan.Value = Now
+                                parLastScan.Value = DateTime.Now
                                 parID.Value = SQLreader("ID")
                                 SQLUpdatecommand.ExecuteNonQuery()
                                 ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering), DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting))

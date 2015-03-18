@@ -410,7 +410,7 @@ Public Class Database
                                 End If
                             Else
                                 tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
-                                If Not IsNothing(tSource) Then
+                                If tSource IsNot Nothing Then
                                     If Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).Name.ToLower = "bdmv" Then
                                         tPath = Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).FullName
                                     Else
@@ -639,10 +639,10 @@ Public Class Database
         CloseDatabase(_myvideosDBConn)
         'CloseDatabase(_jobsDBConn)
 
-        If Not IsNothing(_myvideosDBConn) Then
+        If _myvideosDBConn IsNot Nothing Then
             _myvideosDBConn = Nothing
         End If
-        'If Not IsNothing(_jobsDBConn) Then
+        'If _jobsDBConn IsNot Nothing Then
         '    _jobsDBConn = Nothing
         'End If
     End Sub
@@ -652,7 +652,7 @@ Public Class Database
     ''' <param name="connection">Database connection on which to perform closing activities</param>
     ''' <remarks></remarks>
     Protected Sub CloseDatabase(ByRef connection As SQLiteConnection)
-        If IsNothing(connection) Then
+        If connection Is Nothing Then
             Return
         End If
 
@@ -665,7 +665,7 @@ Public Class Database
 
             connection.Close()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "There was a problem closing the media database.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "There was a problem closing the media database.", ex)
         Finally
             connection.Dispose()
         End Try
@@ -684,7 +684,7 @@ Public Class Database
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
 
         'TODO Warning - This method should be marked as Protected and references re-directed to Connect() above
-        If Not IsNothing(_myvideosDBConn) Then
+        If _myvideosDBConn IsNot Nothing Then
             Return False
             'Throw New InvalidOperationException("A database connection is already open, can't open another.")
         End If
@@ -710,7 +710,7 @@ Public Class Database
             _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, MyVideosDBFile))
             _myvideosDBConn.Open()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Unable to open media database connection.", ex)
         End Try
 
         Try
@@ -726,7 +726,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error creating database", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error creating database", ex)
             File.Delete(MyVideosDBFile)
         End Try
         Return isNew
@@ -2034,7 +2034,7 @@ Public Class Database
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Unable to open media database connection.", ex)
             _myvideosDBConn.Close()
         End Try
     End Sub
@@ -2430,7 +2430,7 @@ Public Class Database
                 Else
                     Select Case Master.eSettings.GeneralDateTime
                         Case Enums.DateTime.Now
-                            par_movie_DateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdded)
+                            par_movie_DateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateAdded)
                         Case Enums.DateTime.mtime
                             Dim mtime As Date = System.IO.File.GetLastWriteTime(_movieDB.Filename)
                             If mtime.Year > 1601 Then
@@ -2451,7 +2451,7 @@ Public Class Database
                 End If
                 _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             Catch
-                par_movie_DateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdded)
+                par_movie_DateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateAdded)
                 _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
@@ -2460,15 +2460,15 @@ Public Class Database
                     Dim DateTimeDateModified As DateTime = DateTime.ParseExact(_movieDB.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_movie_DateModified.Value = Functions.ConvertToUnixTimestamp(DateTimeDateModified)
                 ElseIf Not IsNew Then
-                    par_movie_DateModified.Value = Functions.ConvertToUnixTimestamp(Now)
+                    par_movie_DateModified.Value = Functions.ConvertToUnixTimestamp(DateTime.Now)
                 End If
-                If Not IsNothing(par_movie_DateModified.Value) Then
+                If par_movie_DateModified.Value IsNot Nothing Then
                     _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateModified.Value)).ToString("yyyy-MM-dd HH:mm:ss")
                 Else
                     _movieDB.Movie.DateModified = String.Empty
                 End If
             Catch
-                par_movie_DateModified.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateModified)
+                par_movie_DateModified.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateModified)
                 _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
@@ -3243,7 +3243,7 @@ Public Class Database
                 Else
                     Select Case Master.eSettings.GeneralDateTime
                         Case Enums.DateTime.Now
-                            parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdded)
+                            parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _TVEpDB.DateAdded)
                         Case Enums.DateTime.mtime
                             Dim mtime As Date = System.IO.File.GetLastWriteTime(_TVEpDB.Filename)
                             If mtime.Year > 1601 Then
@@ -3264,7 +3264,7 @@ Public Class Database
                 End If
                 _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             Catch ex As Exception
-                parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdded)
+                parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _TVEpDB.DateAdded)
                 _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
@@ -3817,7 +3817,7 @@ Public Class Database
 
     '''''''''''''''''''''''''''''''''''''''''''
     'Protected Sub ConnectJobsDB()
-    '    If Not IsNothing(_myvideosDBConn) Then
+    '    If _myvideosDBConn IsNot Nothing Then
     '        Return
     '        'Throw New InvalidOperationException("A database connection is already open, can't open another.")
     '    End If
@@ -3862,7 +3862,7 @@ Public Class Database
             Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLCommand.CommandText = String.Concat("SELECT Version FROM Addons WHERE AddonID = ", AddonID, ";")
                 Dim tES As Object = SQLCommand.ExecuteScalar
-                If Not IsNothing(tES) Then
+                If tES IsNot Nothing Then
                     Dim tSing As Single = 0
                     If Single.TryParse(tES.ToString, tSing) Then
                         Return tSing

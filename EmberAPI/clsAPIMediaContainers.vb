@@ -270,7 +270,7 @@ Namespace MediaContainers
                 Return _credits
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _credits.Clear()
                 Else
                     _credits = value
@@ -320,7 +320,7 @@ Namespace MediaContainers
                 Return _directors
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _directors.Clear()
                 Else
                     _directors = value
@@ -428,7 +428,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property DateAddedSpecified() As Boolean
             Get
-                Return Not IsNothing(Me._dateadded)
+                Return Me._dateadded IsNot Nothing
             End Get
         End Property
 
@@ -834,7 +834,7 @@ Namespace MediaContainers
                 Return _countries
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _countries.Clear()
                 Else
                     _countries = value
@@ -869,7 +869,7 @@ Namespace MediaContainers
         <XmlElement("votes")> _
         Public Property Votes() As String
             Get
-                Return Me._votes
+                Return Me._votes.Replace(",", String.Empty)
             End Get
             Set(ByVal value As String)
                 Me._votes = value
@@ -918,7 +918,7 @@ Namespace MediaContainers
                 Return _certifications
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _certifications.Clear()
                 Else
                     _certifications = value
@@ -939,7 +939,7 @@ Namespace MediaContainers
                 Return _tags
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _tags.Clear()
                 Else
                     _tags = value
@@ -972,7 +972,7 @@ Namespace MediaContainers
                 Return _genres
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _genres.Clear()
                 Else
                     _genres = value
@@ -1005,7 +1005,7 @@ Namespace MediaContainers
                 Return _studios
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _studios.Clear()
                 Else
                     _studios = value
@@ -1038,7 +1038,7 @@ Namespace MediaContainers
                 Return _directors
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _directors.Clear()
                 Else
                     _directors = value
@@ -1071,7 +1071,7 @@ Namespace MediaContainers
                 Return _credits
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _credits.Clear()
                 Else
                     _credits = value
@@ -1361,7 +1361,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property FileInfoSpecified() As Boolean
             Get
-                If Not IsNothing(Me._fileInfo.StreamDetails.Video) AndAlso _
+                If Me._fileInfo.StreamDetails.Video IsNot Nothing AndAlso _
                 (Me._fileInfo.StreamDetails.Video.Count > 0 OrElse _
                  Me._fileInfo.StreamDetails.Audio.Count > 0 OrElse _
                  Me._fileInfo.StreamDetails.Subtitle.Count > 0) Then
@@ -1435,10 +1435,10 @@ Namespace MediaContainers
             <XmlText()> _
             Public Property ID() As String
                 Get
-                    Return If(Strings.Left(_imdbid, 2) = "tt", If(Not String.IsNullOrEmpty(_moviedb) AndAlso _imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", If(Not String.IsNullOrEmpty(_imdbid), String.Concat("tt", _imdbid), String.Empty), _imdbid))
+                    Return If(Not String.IsNullOrEmpty(_imdbid), If(_imdbid.Substring(0, 2) = "tt", If(Not String.IsNullOrEmpty(_moviedb) AndAlso _imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", If(Not String.IsNullOrEmpty(_imdbid), String.Concat("tt", _imdbid), String.Empty), _imdbid)), String.Empty)
                 End Get
                 Set(ByVal value As String)
-                    _imdbid = If(Not String.IsNullOrEmpty(value), If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value)), String.Empty)
+                    _imdbid = If(Not String.IsNullOrEmpty(value), If(value.Substring(0, 2) = "tt", value.Trim, String.Concat("tt", value.Trim)), String.Empty)
                 End Set
             End Property
 
@@ -2110,7 +2110,7 @@ Namespace MediaContainers
                 Return Me._id
             End Get
             Set(ByVal value As String)
-                If IsNumeric(value) Then Me._id = value
+                If Integer.TryParse(value, 0) Then Me._id = value
             End Set
         End Property
 
@@ -2127,7 +2127,7 @@ Namespace MediaContainers
                 Return Me._boxeeTvDb
             End Get
             Set(ByVal value As String)
-                If IsNumeric(value) Then Me._boxeeTvDb = value
+                If Integer.TryParse(value, 0) Then Me._boxeeTvDb = value
             End Set
         End Property
 
@@ -2207,7 +2207,7 @@ Namespace MediaContainers
                 Return _genres
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _genres.Clear()
                 Else
                     _genres = value
@@ -2228,7 +2228,7 @@ Namespace MediaContainers
                 Return _directors
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _directors.Clear()
                 Else
                     _directors = value
@@ -2346,7 +2346,7 @@ Namespace MediaContainers
                 Return _tags
             End Get
             Set(ByVal value As List(Of String))
-                If IsNothing(value) Then
+                If value Is Nothing Then
                     _tags.Clear()
                 Else
                     _tags = value

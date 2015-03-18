@@ -88,10 +88,10 @@ Partial Public Class genresName
     <System.Xml.Serialization.XmlIgnore()> _
     Public Property languages() As List(Of String)
         Get
-            Return Split(Me._languageField, "|").ToList()
+            Return Me._languageField.Split("|"c).ToList()
         End Get
         Set(value As List(Of String))
-            Me._languageField = Join(value.ToArray(), "|")
+            Me._languageField = String.Join("|", value.ToArray())
         End Set
     End Property
 End Class

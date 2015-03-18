@@ -165,7 +165,7 @@ Public Class Themes
 #Region "Methods"
 
     Private Sub Clear()
-        If Not IsNothing(_ms) Then
+        If _ms IsNot Nothing Then
             Me.Dispose(True)
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
@@ -196,7 +196,7 @@ Public Class Themes
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -217,7 +217,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -234,7 +234,7 @@ Public Class Themes
     ''' <param name="sPath">Path to the theme file</param>
     ''' <remarks></remarks>
     Public Sub FromFile(ByVal sPath As String)
-        If Not IsNothing(Me._ms) Then
+        If Me._ms IsNot Nothing Then
             Me._ms.Dispose()
         End If
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
@@ -253,7 +253,7 @@ Public Class Themes
                     Me._url = sPath
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -272,7 +272,7 @@ Public Class Themes
             tTheme = WebPage.DownloadFile(sURL, "", True, "theme", webURL)
             If Not String.IsNullOrEmpty(tTheme) Then
 
-                If Not IsNothing(Me._ms) Then
+                If Me._ms IsNot Nothing Then
                     Me._ms.Dispose()
                 End If
                 Me._ms = New MemoryStream()
@@ -289,7 +289,7 @@ Public Class Themes
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated

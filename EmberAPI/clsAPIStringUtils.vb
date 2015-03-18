@@ -88,7 +88,7 @@ Public Class StringUtils
     ''' </remarks>
     Public Shared Function AlphaNumericOnly(ByVal KeyChar As Char, Optional ByVal AllowSpecial As Boolean = False) As Boolean
         If Char.IsLetterOrDigit(KeyChar) OrElse (AllowSpecial AndAlso (Char.IsControl(KeyChar) OrElse _
-        Char.IsWhiteSpace(KeyChar) OrElse Asc(KeyChar) = 44 OrElse Asc(KeyChar) = 45 OrElse Asc(KeyChar) = 46 OrElse Asc(KeyChar) = 58)) Then
+        Char.IsWhiteSpace(KeyChar) OrElse Convert.ToInt32(KeyChar) = 44 OrElse Convert.ToInt32(KeyChar) = 45 OrElse Convert.ToInt32(KeyChar) = 46 OrElse Convert.ToInt32(KeyChar) = 58)) Then
             Return True
         Else
             Return False
@@ -133,7 +133,7 @@ Public Class StringUtils
     Public Shared Function GenreFilter(aGenres As String) As String
 
         If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
-            Dim sGenres() As String = Strings.Split(aGenres, "/")   'List of supplied Genres from the parameter
+            Dim sGenres() As String = aGenres.Split("/"c)   'List of supplied Genres from the parameter
             'Dim fGenres() As String = APIXML.GetGenreListString     'List of Ember's configured Genres
             Dim rGenres As New List(Of String)  'List of Ember Genres to return
 
@@ -152,7 +152,7 @@ Public Class StringUtils
             Next
 
             If rGenres.Count > 0 Then
-                Dim tGenres = Strings.Join(rGenres.ToArray, "/").Trim
+                Dim tGenres = String.Join("/", rGenres.ToArray).Trim
                 Return tGenres
             Else
                 Return String.Empty
@@ -202,7 +202,7 @@ Public Class StringUtils
     ''' </summary>
     ''' <param name="strPlotOutline"></param>
     ''' <remarks></remarks>
-    Public Shared Function CleanPlotOutline(ByRef strPlotOutline As String) As String
+    Public Shared Function CleanPlotOutline(ByVal strPlotOutline As String) As String
         Dim strResult As String = String.Empty
         Try
             If Not String.IsNullOrEmpty(strPlotOutline) Then
@@ -218,8 +218,9 @@ Public Class StringUtils
                 strPlotOutline = strPlotOutline.Replace("</p>", String.Empty)
                 strPlotOutline = strPlotOutline.Replace("<strong>", String.Empty)
                 strPlotOutline = strPlotOutline.Replace("</strong>", String.Empty)
-                strPlotOutline = strPlotOutline.Replace(vbCrLf, " ")
-                strPlotOutline = strPlotOutline.Replace(vbLf, " ")
+                strPlotOutline = strPlotOutline.Replace(Convert.ToChar(10), " ")    'vbLf
+                strPlotOutline = strPlotOutline.Replace(Convert.ToChar(13), " ")    'vbCrLf
+                strPlotOutline = strPlotOutline.Replace(Environment.NewLine, " ")
                 strPlotOutline = strPlotOutline.Replace("  ", " ")
                 strResult = strPlotOutline.Trim()
             End If
@@ -357,17 +358,17 @@ Public Class StringUtils
             'run through each of the custom filters
             For Each Str As String In filters
                 If Str.IndexOf("[->]") > 0 Then
-                    strSplit = Strings.Split(Str, "[->]")
-                    name = Strings.Replace(name, Regex.Match(name, strSplit.First).ToString, strSplit.Last)
+                    strSplit = Str.Split(New String() {"[->]"}, StringSplitOptions.None)
+                    name = name.Replace(Regex.Match(name, strSplit.First).ToString, strSplit.Last)
                 Else
-                    name = Strings.Replace(name, Regex.Match(name, Str).ToString, String.Empty)
+                    name = name.Replace(Regex.Match(name, Str).ToString, String.Empty)
                 End If
                 'everything was already filtered out, return an empty string
                 If String.IsNullOrEmpty(name) Then Return String.Empty
             Next
             Return name.Trim
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Name: " & name & " generated an error message", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Name: " & name & " generated an error message", ex)
         End Try
         Return String.Empty
     End Function
@@ -417,7 +418,7 @@ Public Class StringUtils
             TVEpName = CleanStackingMarkers(TVEpName)
 
             'remove the show name from the episode name
-            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName.Trim, String.Empty, 1, -1, CompareMethod.Text)
+            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = TVEpName.Replace(TVShowName.Trim, String.Empty)
 
             'Convert String To Proper Case
             If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
@@ -505,7 +506,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -553,7 +554,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -601,7 +602,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -682,7 +683,7 @@ Public Class StringUtils
             Next
             Return result.ToString()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Input <" & stext & "> generated an error message", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & stext & "> generated an error message", ex)
         End Try
 
         'If we get here, something went wrong.
@@ -711,7 +712,7 @@ Public Class StringUtils
             End If
             Return bReturn
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Input <" & sName & "><" & VTS & "> generated an error message", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & sName & "><" & VTS & "> generated an error message", ex)
         End Try
 
         'If we get here, something went wrong.
@@ -764,7 +765,7 @@ Public Class StringUtils
     ''' </remarks>
     Public Shared Function NumericOnly(ByVal KeyChar As Char, Optional ByVal isIP As Boolean = False) As Boolean
         'TODO Dekker500 - This method is horribly named. It should be something like "IsInvalidNumericChar". Also, why are we allowing control chars, whitespace, or period?
-        If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse Char.IsWhiteSpace(KeyChar) OrElse (isIP AndAlso Asc(KeyChar) = 46) Then
+        If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse Char.IsWhiteSpace(KeyChar) OrElse (isIP AndAlso Convert.ToInt32(KeyChar) = 46) Then
             Return False
         Else
             Return True
@@ -791,7 +792,7 @@ Public Class StringUtils
             Next
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
             'Return the source string and move along
             sReturn = sString.Trim
         End Try
@@ -820,7 +821,7 @@ Public Class StringUtils
             'TODO Dekker500 - This used to be "sReturn.ToLower", but didn't make sense why it did... Investigate up the chain! (What does the case have to do with punctuation anyway???)
             sReturn = Regex.Replace(sReturn, "\s\s(\s+)?", " ")
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
             'Return the source string and move along
             sReturn = sString
         End Try
@@ -844,11 +845,11 @@ Public Class StringUtils
         Try
             Dim source As String = sString.ToLowerInvariant
             If Regex.IsMatch(source, "^[0-9]+x[0-9]+$", RegexOptions.IgnoreCase) Then
-                Dim SplitSize() As String = Strings.Split(source, "x")
+                Dim SplitSize() As String = source.Split("x"c)
                 Return New Size(Convert.ToInt32(SplitSize(0)), Convert.ToInt32(SplitSize(1)))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
         End Try
         'If you get here, something went wrong
         Return New Size(0, 0)
@@ -881,21 +882,21 @@ Public Class StringUtils
         Try
             Dim sEnd As String = String.Empty
             If EndOnly Then
-                Return Strings.Right(sString, MaxLength)
+                Return sString.Substring(sString.Length - MaxLength)
             Else
-                sEnd = Strings.Right(sString, sString.Length - sString.LastIndexOf("/"))
+                sEnd = sString.Substring(sString.LastIndexOf("/"))
                 If ((MaxLength - sEnd.Length) - 3) > 0 Then
-                    Return String.Format("{0}...{1}", Strings.Left(sString, (MaxLength - sEnd.Length) - 3), sEnd)
+                    Return String.Format("{0}...{1}", sString.Substring(0, (MaxLength - sEnd.Length) - 3), sEnd)
                 Else
                     If sEnd.Length >= MaxLength Then
-                        Return String.Format("...{0}", Strings.Right(sEnd, MaxLength - 3))
+                        Return String.Format("...{0}", sEnd.Substring(sEnd.Length - MaxLength + 3))
                     Else
                         Return sEnd
                     End If
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
         End Try
 
         'If you get here, something went wrong

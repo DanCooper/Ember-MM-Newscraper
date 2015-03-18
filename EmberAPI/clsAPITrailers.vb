@@ -220,7 +220,7 @@ Public Class Trailers
 #Region "Methods"
 
     Private Sub Clear()
-        If Not IsNothing(_ms) Then
+        If _ms IsNot Nothing Then
             Me.Dispose(True)
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
@@ -252,7 +252,7 @@ Public Class Trailers
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -273,7 +273,7 @@ Public Class Trailers
                 Next
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -290,7 +290,7 @@ Public Class Trailers
     ''' <param name="sPath">Path to the trailer file</param>
     ''' <remarks></remarks>
     Public Sub FromFile(ByVal sPath As String)
-        If Not IsNothing(Me._ms) Then
+        If Me._ms IsNot Nothing Then
             Me._ms.Dispose()
         End If
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
@@ -309,7 +309,7 @@ Public Class Trailers
                     Me._videourl = sPath
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -367,7 +367,7 @@ Public Class Trailers
             Try
                 tTrailerOutput = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, "", True, "trailer")
                 If Not String.IsNullOrEmpty(tTrailerOutput) Then
-                    If Not IsNothing(Me._ms) Then
+                    If Me._ms IsNot Nothing Then
                         Me._ms.Dispose()
                     End If
                     Me._ms = New MemoryStream()
@@ -384,7 +384,7 @@ Public Class Trailers
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sTrailerLinksContainer.VideoURL & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">", ex)
             End Try
         End If
 
@@ -445,7 +445,7 @@ Public Class Trailers
                 tTrailerOutput = WebPage.DownloadFile(sTrailer.VideoURL, "", True, "trailer")
                 If Not String.IsNullOrEmpty(tTrailerOutput) Then
 
-                    If Not IsNothing(Me._ms) Then
+                    If Me._ms IsNot Nothing Then
                         Me._ms.Dispose()
                     End If
                     Me._ms = New MemoryStream()
@@ -462,7 +462,7 @@ Public Class Trailers
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sTrailer.VideoURL & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.VideoURL & ">", ex)
             End Try
         End If
 
@@ -481,7 +481,7 @@ Public Class Trailers
         Try
             tTrailer = WebPage.DownloadFile(sURL, "", True, "trailer")
             If Not String.IsNullOrEmpty(tTrailer) Then
-                If Not IsNothing(Me._ms) Then
+                If Me._ms IsNot Nothing Then
                     Me._ms.Dispose()
                 End If
                 Me._ms = New MemoryStream()
@@ -495,7 +495,7 @@ Public Class Trailers
                 logger.Warn("Trailer NOT downloaded: " & sURL)
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub

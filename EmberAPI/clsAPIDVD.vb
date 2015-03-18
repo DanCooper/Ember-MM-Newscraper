@@ -337,7 +337,7 @@ Public Class DVD
     ''' <returns>Integer value of the input hexadecimal string</returns>
     ''' <remarks></remarks>
     Private Function fctHexOffset(ByVal strHexString As String) As Integer
-        Return Convert.ToInt32(Val(String.Concat("&H", (strHexString).ToUpper)))
+        Return Convert.ToInt32(Microsoft.VisualBasic.Val(String.Concat("&H", (strHexString).ToUpper))) 'TODO: remove old VB code
     End Function
     ''' <summary>
     ''' 

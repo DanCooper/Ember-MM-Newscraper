@@ -178,8 +178,8 @@ Public Class NFO
             If (String.IsNullOrEmpty(DBMovie.Movie.Trailer) OrElse Not Master.eSettings.MovieLockTrailer) AndAlso Options.bTrailer AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Trailer) AndAlso Master.eSettings.MovieScraperTrailer AndAlso Not new_Trailer Then
                 If Master.eSettings.MovieScraperXBMCTrailerFormat Then
-                    DBMovie.Movie.Trailer = Replace(scrapedmovie.Trailer.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                    DBMovie.Movie.Trailer = Replace(DBMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                    DBMovie.Movie.Trailer = scrapedmovie.Trailer.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                    DBMovie.Movie.Trailer = DBMovie.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                 Else
                     DBMovie.Movie.Trailer = scrapedmovie.Trailer
                 End If
@@ -298,11 +298,11 @@ Public Class NFO
                 scrapedmovie.Genres.Count > 0 AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
                 'Check if scraped genre(s) are in user language and filter list if not!
                 'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
-                Dim tGenre As String = Strings.Join(scrapedmovie.Genres.ToArray, "/").Trim
+                Dim tGenre As String = String.Join("/", scrapedmovie.Genres.ToArray).Trim
                 Dim _genres As New List(Of String)
                 tGenre = StringUtils.GenreFilter(tGenre)
                 If Not String.IsNullOrEmpty(tGenre) Then
-                    Dim sGenres() As String = Strings.Split(tGenre, "/")
+                    Dim sGenres() As String = tGenre.Split("/"c)
                     _genres.AddRange(sGenres.ToList)
                 End If
 
@@ -388,7 +388,7 @@ Public Class NFO
                 For Each movieset In scrapedmovie.Sets
                     If Not String.IsNullOrEmpty(movieset.Title) Then
                         For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-                            movieset.Title = Replace(movieset.Title, sett.Name.Substring(21), sett.Value)
+                            movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
                         Next
                     End If
                 Next
@@ -475,8 +475,8 @@ Public Class NFO
     End Sub
 
     Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
-        If Not IsNothing(mNFO) Then
-            mNFO.Genre = Strings.Join(mNFO.Genres.ToArray, " / ")
+        If mNFO IsNot Nothing Then
+            mNFO.Genre = String.Join(" / ", mNFO.Genres.ToArray)
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             If mNFO.FileInfoSpecified Then
@@ -505,7 +505,7 @@ Public Class NFO
     End Function
 
     Public Shared Function CleanNFO_TVEpisodes(ByVal eNFO As MediaContainers.EpisodeDetails) As MediaContainers.EpisodeDetails
-        If Not IsNothing(eNFO) Then
+        If eNFO IsNot Nothing Then
             If eNFO.FileInfoSpecified Then
                 If eNFO.FileInfo.StreamDetails.AudioSpecified Then
                     For Each aStream In eNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
@@ -535,54 +535,54 @@ Public Class NFO
         Dim iSS As Integer = 1
 
         Try
-            If Not IsNothing(miFI) Then
+            If miFI IsNot Nothing Then
 
-                If Not IsNothing(miFI.StreamDetails) Then
+                If miFI.StreamDetails IsNot Nothing Then
                     If miFI.StreamDetails.Video.Count > 0 Then
-                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), miFI.StreamDetails.Video.Count.ToString, vbNewLine)
+                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), miFI.StreamDetails.Video.Count.ToString, Environment.NewLine)
                     End If
 
                     If miFI.StreamDetails.Audio.Count > 0 Then
-                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), miFI.StreamDetails.Audio.Count.ToString, vbNewLine)
+                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), miFI.StreamDetails.Audio.Count.ToString, Environment.NewLine)
                     End If
 
                     If miFI.StreamDetails.Subtitle.Count > 0 Then
-                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
+                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), miFI.StreamDetails.Subtitle.Count.ToString, Environment.NewLine)
                     End If
 
                     For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
-                        strOutput.AppendFormat("{0}{1} {2}{0}", vbNewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
+                        strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
                         If Not String.IsNullOrEmpty(miVideo.Width) AndAlso Not String.IsNullOrEmpty(miVideo.Height) Then
-                            strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), vbNewLine)
+                            strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), Environment.NewLine)
                         End If
-                        If Not String.IsNullOrEmpty(miVideo.Aspect) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.MultiViewCount) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.MultiViewLayout) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Aspect) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.MultiViewCount) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.MultiViewLayout) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, Environment.NewLine)
                         If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(609, "Duration"), miVideo.Duration)
-                        If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("{0}- {1}: {2}", vbNewLine, Master.eLang.GetString(610, "Language"), miVideo.LongLanguage)
+                        If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("{0}- {1}: {2}", Environment.NewLine, Master.eLang.GetString(610, "Language"), miVideo.LongLanguage)
                         iVS += 1
                     Next
 
-                    strOutput.Append(vbNewLine)
+                    strOutput.Append(Environment.NewLine)
 
                     For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                         'audio
-                        strOutput.AppendFormat("{0}{1} {2}{0}", vbNewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
-                        If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, vbNewLine)
-                        If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(611, "Channels"), miAudio.Channels, vbNewLine)
-                        If Not String.IsNullOrEmpty(miAudio.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miAudio.Bitrate, vbNewLine)
+                        strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
+                        If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(611, "Channels"), miAudio.Channels, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miAudio.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miAudio.Bitrate, Environment.NewLine)
                         If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miAudio.LongLanguage)
                         iAS += 1
                     Next
 
-                    strOutput.Append(vbNewLine)
+                    strOutput.Append(Environment.NewLine)
 
                     For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
-                        strOutput.AppendFormat("{0}{1} {2}{0}", vbNewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
+                        strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
                         If Not String.IsNullOrEmpty(miSub.LongLanguage) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
                         iSS += 1
                     Next
@@ -663,11 +663,11 @@ Public Class NFO
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
                     sinChans = NumUtils.ConvertToSingle(EmberAPI.MediaInfo.FormatAudioChannel(miAudio.Channels))
                     sinBitrate = 0
-                    If IsNumeric(miAudio.Bitrate) Then
+                    If Integer.TryParse(miAudio.Bitrate, 0) Then
                         sinBitrate = CInt(miAudio.Bitrate)
                     End If
                     If sinChans >= sinMostChannels AndAlso (sinBitrate > sinMostBitrate OrElse miAudio.Codec.ToLower.Contains("dtshd") OrElse sinBitrate = 0) Then
-                        If IsNumeric(miAudio.Bitrate) Then
+                        If Integer.TryParse(miAudio.Bitrate, 0) Then
                             sinMostBitrate = CInt(miAudio.Bitrate)
                         End If
                         sinMostChannels = sinChans
@@ -991,7 +991,7 @@ Public Class NFO
                         Return True
                     Else
                         testSer = Nothing
-                        If Not IsNothing(testEp) Then
+                        If testEp IsNot Nothing Then
                             testEp = Nothing
                         End If
                         Return False
@@ -1003,10 +1003,10 @@ Public Class NFO
                 Return False
             End If
         Catch
-            If Not IsNothing(testSer) Then
+            If testSer IsNot Nothing Then
                 testSer = Nothing
             End If
-            If Not IsNothing(testEp) Then
+            If testEp IsNot Nothing Then
                 testEp = Nothing
             End If
             Return False
@@ -1029,7 +1029,7 @@ Public Class NFO
                 Return False
             End If
         Catch
-            If Not IsNothing(testSer) Then
+            If testSer IsNot Nothing Then
                 testSer = Nothing
             End If
 
@@ -1053,7 +1053,7 @@ Public Class NFO
                 Return False
             End If
         Catch
-            If Not IsNothing(testSer) Then
+            If testSer IsNot Nothing Then
                 testSer = Nothing
             End If
 
@@ -1122,7 +1122,7 @@ Public Class NFO
                 End If
             End Try
 
-            If Not IsNothing(xmlSer) Then
+            If xmlSer IsNot Nothing Then
                 xmlSer = Nothing
             End If
         End If
@@ -1195,7 +1195,7 @@ Public Class NFO
                 'End If
             End Try
 
-            If Not IsNothing(xmlSer) Then
+            If xmlSer IsNot Nothing Then
                 xmlSer = Nothing
             End If
         End If
@@ -1339,7 +1339,7 @@ Public Class NFO
                     Using xmlSR As StreamReader = New StreamReader(sPath)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                         xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
-                        xmlShow.Genre = Strings.Join(xmlShow.Genres.ToArray, " / ")
+                        xmlShow.Genre = String.Join(" / ", xmlShow.Genres.ToArray)
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
@@ -1371,7 +1371,7 @@ Public Class NFO
                 End If
             End If
 
-            If Not IsNothing(xmlSer) Then
+            If xmlSer IsNot Nothing Then
                 xmlSer = Nothing
             End If
         End If
@@ -1575,8 +1575,8 @@ Public Class NFO
                             Using xmlSW As New Utf8StringWriter
                                 xmlSer.Serialize(xmlSW, tvEp, NS)
                                 If sBuilder.Length > 0 Then
-                                    sBuilder.Append(vbNewLine)
-                                    xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(vbNewLine) + 1)
+                                    sBuilder.Append(Environment.NewLine)
+                                    xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
                                 End If
                                 sBuilder.Append(xmlSW.ToString)
                             End Using
@@ -1720,7 +1720,7 @@ Public Class NFO
         Try
             Dim tRuntime As String = String.Empty
             If Master.eSettings.TVScraperUseMDDuration Then
-                If Not IsNothing(_TVEpDB.TVEp.FileInfo.StreamDetails) AndAlso _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                If _TVEpDB.TVEp.FileInfo.StreamDetails IsNot Nothing AndAlso _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
                     Dim cTotal As String = String.Empty
                     For Each tVid As MediaInfo.Video In _TVEpDB.TVEp.FileInfo.StreamDetails.Video
                         cTotal = cTotal + tVid.Duration

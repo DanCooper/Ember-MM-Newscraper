@@ -1426,7 +1426,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Failed trying to identify last thumb from path: " & sPath, ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last thumb from path: " & sPath, ex)
         End Try
 
         Return iMod
@@ -1474,11 +1474,11 @@ Public Class Functions
                 For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
                     For Each sMatch As Match In Regex.Matches(FileUtils.Common.GetDirectory(sDir.FullName), rShow.SeasonRegex, RegexOptions.IgnoreCase)
                         Try
-                            If (IsNumeric(sMatch.Groups("season").Value) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
+                            If (Integer.TryParse(sMatch.Groups("season").Value, 0) AndAlso iSeason = Convert.ToInt32(sMatch.Groups("season").Value)) OrElse (Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) AndAlso iSeason = 0) Then
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & vbTab & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
+                            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
                         End Try
                     Next
                 Next
@@ -1801,7 +1801,7 @@ Public Class Functions
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Destination & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Destination & ">", ex)
             Return False
         End Try
         'If you got here, everything went fine
@@ -1832,7 +1832,7 @@ Public Class Functions
             'End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & dllPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & dllPath & ">", ex)
         End Try
     End Sub
 
@@ -1879,7 +1879,7 @@ Public Class Functions
                 My_Process.Close()
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Process_Name & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Process_Name & ">", ex)
         End Try
 
         Return OutputString

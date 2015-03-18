@@ -26,6 +26,7 @@ Imports System.Xml.Serialization
 Imports System.Text
 Imports NLog
 Imports System.Runtime.Serialization
+Imports System.Windows.Forms
 
 Public Class Localization
 
@@ -70,12 +71,12 @@ Public Class Localization
             objStreamReader.Close()
 
             If _ISOLanguages.Language.Count = 0 Then
-                logger.Fatal("Cannot load Language.xml." & vbNewLine & "Path: {0}", lPath)
-                MsgBox(String.Concat("Cannot load Language.xml.", vbNewLine, vbNewLine, "Path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+                logger.Fatal("Cannot load Language.xml." & Environment.NewLine & "Path: {0}", lPath)
+                MessageBox.Show(String.Concat("Cannot load Language.xml.", Environment.NewLine, Environment.NewLine, "Path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
         Else
-            logger.Fatal("Cannot find Language.xml." & vbNewLine & "Expected path: {0}", lPath)
-            MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+            logger.Fatal("Cannot find Language.xml." & Environment.NewLine & "Expected path: {0}", lPath)
+            MessageBox.Show(String.Concat("Cannot find Language.xml.", Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
 
@@ -305,19 +306,19 @@ Public Class Localization
                 _disabled = GetString(571, Master.eLang.Disabled)
             Else
                 Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
-                If Not IsNothing(tLocs) Then
+                If tLocs.htStrings IsNot Nothing Then
                     tLocs.htStrings = htStrings
                 Else
                     htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
                 End If
             End If
         Else
-            logger.Error("Cannot find {0}.xml." & vbNewLine & "Expected path: {1}", Language, lPath)
-            MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+            logger.Error("Cannot find {0}.xml." & Environment.NewLine & "Expected path: {1}", Language, lPath)
+            MessageBox.Show(String.Concat(String.Format("Cannot find {0}.xml.", Language), Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
 
-            ' Need to change Globaly Langs_all
-            Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
+        ' Need to change Globaly Langs_all
+        Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
     End Sub
 
 #End Region 'Methods

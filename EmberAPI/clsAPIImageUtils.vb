@@ -185,7 +185,7 @@ Public Class ImageUtils
     Public Shared Sub ResizePB(ByRef pbDestination As PictureBox, ByRef pbSource As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
         If pbSource Is Nothing OrElse pbSource.Image Is Nothing Then Return
 
-        If Not IsNothing(pbSource.Image) Then
+        If pbSource.Image IsNot Nothing Then
             Try
                 If Not pbDestination.Image Is Nothing Then pbDestination.Image.Dispose()
 

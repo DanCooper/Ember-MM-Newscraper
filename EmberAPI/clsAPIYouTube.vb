@@ -102,7 +102,7 @@ Namespace YouTube
 
             Dim FormatMap As String = YouTubeMatch.Groups(1).Value
             Dim decoded As String = Web.HttpUtility.UrlDecode(FormatMap)
-            Dim FormatArray() As String = Split(decoded.Replace(", ", ";"), ",")
+            Dim FormatArray() As String = decoded.Replace(", ", ";").Split(","c)
 
             Dim rurl As New Regex("url=([^\\]+)", RegexOptions.IgnoreCase)
             Dim ritag As New Regex("itag=(\d+)", RegexOptions.IgnoreCase)

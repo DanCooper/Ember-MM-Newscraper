@@ -149,7 +149,7 @@ Namespace FileUtils
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">", ex)
                 Return String.Empty
             End Try
         End Function
@@ -209,7 +209,7 @@ Namespace FileUtils
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(Now, "YYYYMMDD") & Format(Now, "HHMMSS") & ".xml")
+            Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(DateTime.Now, "YYYYMMDD") & Format(DateTime.Now, "HHMMSS") & ".xml")
             Try
                 File.Move(fname, destPath)
             Catch ex As Exception
@@ -516,7 +516,7 @@ Namespace FileUtils
 
         Public Shared Function CheckDroppedImage(ByVal e As DragEventArgs) As Boolean
             Dim strFile() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-            If Not IsNothing(strFile) Then
+            If strFile IsNot Nothing Then
                 Dim fi As New System.IO.FileInfo(strFile(0))
                 If fi.Extension = ".gif" Or fi.Extension = ".bmp" Or fi.Extension = ".jpg" Or fi.Extension = ".jpeg" Or fi.Extension = ".png" Then
                     Return True
@@ -536,19 +536,19 @@ Namespace FileUtils
 
                 If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
                     tImage.FromWeb(imageSrc)
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         Return tImage
                     End If
                 Else
                     tImage.FromWeb(baseURL + imageSrc.Substring(1))
-                    If Not IsNothing(tImage.Image) Then
+                    If tImage.Image IsNot Nothing Then
                         Return tImage
                     End If
                 End If
             ElseIf e.Data.GetDataPresent(DataFormats.FileDrop, False) Then
                 Dim localImage() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                 tImage.FromFile(localImage(0).ToString)
-                If Not IsNothing(tImage.Image) Then
+                If tImage.Image IsNot Nothing Then
                     Return tImage
                 End If
             End If

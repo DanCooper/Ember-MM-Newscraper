@@ -168,7 +168,7 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub Clear()
         'Out with the old...
-        If Not IsNothing(_ms) Or Not IsNothing(_image) Then
+        If _ms IsNot Nothing Or _image IsNot Nothing Then
             Me.Dispose(True)
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
@@ -190,7 +190,7 @@ Public Class Images
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -209,7 +209,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -227,7 +227,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -245,7 +245,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -263,7 +263,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -281,7 +281,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -299,7 +299,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -317,7 +317,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -335,7 +335,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -353,7 +353,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -371,7 +371,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -389,7 +389,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -407,7 +407,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -425,7 +425,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -443,7 +443,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -461,7 +461,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -479,7 +479,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -497,7 +497,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -515,7 +515,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -533,7 +533,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -551,7 +551,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -585,7 +585,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -619,7 +619,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -653,7 +653,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -687,7 +687,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -705,7 +705,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -723,7 +723,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -741,7 +741,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -759,7 +759,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -777,7 +777,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -795,7 +795,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -813,7 +813,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -822,10 +822,10 @@ Public Class Images
     ''' <param name="sPath">Path to the image file</param>
     ''' <remarks></remarks>
     Public Sub FromFile(ByVal sPath As String)
-        If Not IsNothing(Me._ms) Then
+        If Me._ms IsNot Nothing Then
             Me._ms.Dispose()
         End If
-        If Not IsNothing(Me._image) Then
+        If Me._image IsNot Nothing Then
             Me._image.Dispose()
         End If
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
@@ -844,7 +844,7 @@ Public Class Images
                     _image = New Bitmap(Me._ms)
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -863,8 +863,8 @@ Public Class Images
                 Threading.Thread.Sleep(50)
             End While
 
-            If Not IsNothing(sHTTP.Image) Then
-                If Not IsNothing(Me._ms) Then
+            If sHTTP.Image IsNot Nothing Then
+                If Me._ms IsNot Nothing Then
                     Me._ms.Dispose()
                 End If
                 Me._ms = New MemoryStream()
@@ -883,7 +883,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -1092,7 +1092,7 @@ Public Class Images
                 Return
             End If
 
-            If IsNothing(_image) Then Exit Sub
+            If _image Is Nothing Then Exit Sub
 
             Dim doesExist As Boolean = File.Exists(sPath)
             Dim fAtt As New FileAttributes
@@ -2657,7 +2657,7 @@ Public Class Images
     Private Shared Function GetEncoderInfo(ByVal Format As ImageFormat) As ImageCodecInfo
         Dim Encoders() As ImageCodecInfo = ImageCodecInfo.GetImageEncoders()
 
-        For i As Integer = 0 To UBound(Encoders)
+        For i As Integer = 0 To Encoders.Count - 1
             If Encoders(i).FormatID = Format.Guid Then
                 Return Encoders(i)
             End If

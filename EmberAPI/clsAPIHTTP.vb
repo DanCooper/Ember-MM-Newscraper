@@ -166,7 +166,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -196,7 +196,7 @@ Public Class HTTP
     Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
-        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Now)).ToString
+        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(DateTime.Now)).ToString
         Dim Boundary As String = String.Format("--{0}", Idboundary)
         Dim postDataBytes As New List(Of Byte())
         Me.Clear()
@@ -254,7 +254,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -328,7 +328,7 @@ Public Class HTTP
                 If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
                     Using Ms As Stream = wrResponse.GetResponseStream
-                        If Len(LocalFile) > 0 Then
+                        If LocalFile.Length > 0 Then
 
                             If File.Exists(outFile) Then File.Delete(outFile)
 
@@ -365,8 +365,8 @@ Public Class HTTP
                                 bytesRead += Ms.Read(buffer, bytesRead, count - bytesRead)
                                 iCurrent = bytesRead
                                 If ReportUpdate Then
-                                    IProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
-                                    RaiseEvent ProgressUpdated(IProgress)
+                                    iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
+                                    RaiseEvent ProgressUpdated(iProgress)
                                 End If
                             Loop Until bytesRead = count
                             Ms.Close()
@@ -382,7 +382,7 @@ Public Class HTTP
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
             outFile = ""
         End Try
 
@@ -440,7 +440,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & Me._URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & Me._URL & ">", ex)
         End Try
     End Sub
 
@@ -464,7 +464,7 @@ Public Class HTTP
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
         End Try
 
         Return Nothing

@@ -227,19 +227,19 @@ Public Class clsAdvancedSettings
 
             'Add complex settings to general advancedsettings.xml if those settings don't exist
             Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
-            If IsNothing(formatconversions) Then
+            If formatconversions Is Nothing Then
                 Using settings = New clsAdvancedSettings()
                     settings.SetDefaults(True, "VideoFormatConverts")
                 End Using
             End If
             formatconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
-            If IsNothing(formatconversions) Then
+            If formatconversions Is Nothing Then
                 Using settings = New clsAdvancedSettings()
                     settings.SetDefaults(True, "AudioFormatConverts")
                 End Using
             End If
             formatconversions = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
-            If IsNothing(formatconversions) Then
+            If formatconversions Is Nothing Then
                 Using settings = New clsAdvancedSettings()
                     settings.SetDefaults(True, "MovieSources")
                 End Using
@@ -374,7 +374,7 @@ Public Class clsAdvancedSettings
             aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
             objStreamReader.Close()
             _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
-            While Not IsNothing(_AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section))
+            While _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section) IsNot Nothing
                 _AdvancedSettings.ComplexSettings.Remove(_AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section))
             End While
             _AdvancedSettings.ComplexSettings.AddRange(aAdvancedSettings.ComplexSettings)

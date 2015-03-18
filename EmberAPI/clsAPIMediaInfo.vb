@@ -335,7 +335,7 @@ Public Class MediaInfo
             'duration so we need to keep a consistent duration format while scanning
             'it's easier to format at the end so we don't need to bother with creating a generic
             'conversion routine
-            If Not IsNothing(fiInfo.StreamDetails) AndAlso fiInfo.StreamDetails.Video.Count > 0 Then
+            If fiInfo.StreamDetails IsNot Nothing AndAlso fiInfo.StreamDetails.Video.Count > 0 Then
                 For Each tVid As Video In fiInfo.StreamDetails.Video
                     tVid.Duration = DurationToSeconds(tVid.Duration, False)
                 Next
@@ -390,7 +390,7 @@ Public Class MediaInfo
 
         If sFormat.ToLower.Contains("dts") AndAlso (sProfile.ToLower = "hra / core" OrElse sProfile.ToLower = "ma / core") Then
             tCodec = sProfile
-        ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
+        ElseIf Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) Then
             tCodec = sCodecID
         ElseIf Not String.IsNullOrEmpty(sCodecHint) Then
             tCodec = sCodecHint
@@ -421,7 +421,7 @@ Public Class MediaInfo
     Private Function ConvertVFormat(ByVal sCodecID As String, ByVal sFormat As String, ByVal sVersion As String) As String
         Dim tCodec As String = String.Empty
 
-        If Not String.IsNullOrEmpty(sCodecID) AndAlso Not IsNumeric(sCodecID) Then
+        If Not String.IsNullOrEmpty(sCodecID) AndAlso Not Integer.TryParse(sCodecID, 0) Then
             tCodec = sCodecID
         ElseIf sFormat.ToLower.Contains("mpeg") AndAlso Not String.IsNullOrEmpty(sVersion) Then
             tCodec = String.Concat("mpeg", sVersion.Replace("Version", String.Empty).Trim, "video").Trim
@@ -952,7 +952,7 @@ Public Class MediaInfo
         'Dim sRuntime As String = String.Empty
 
         'new handling: only seconds as tdur
-        If IsNumeric(tDur) Then
+        If Integer.TryParse(tDur, 0) Then
             Dim ts As New TimeSpan(0, 0, Convert.ToInt32(tDur))
             sHour = ts.Hours
             sMin = ts.Minutes
@@ -1226,9 +1226,9 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property StreamDetailsSpecified() As Boolean
             Get
-                Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
-                (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
-                (Not IsNothing(_streamdetails.Subtitle) AndAlso _streamdetails.Subtitle.Count > 0)
+                Return (_streamdetails.Video IsNot Nothing AndAlso _streamdetails.Video.Count > 0) OrElse _
+                (_streamdetails.Audio IsNot Nothing AndAlso _streamdetails.Audio.Count > 0) OrElse _
+                (_streamdetails.Subtitle IsNot Nothing AndAlso _streamdetails.Subtitle.Count > 0)
             End Get
         End Property
 
@@ -1368,7 +1368,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property SubsForcedSpecified() As Boolean
             Get
-                Return Not IsNothing(Me._subs_foced)
+                Return Me._subs_foced
             End Get
         End Property
 

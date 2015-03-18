@@ -212,11 +212,11 @@ Public Class APIXML
             Try
                 Dim vRes As String = NFO.GetResFromDimensions(tVideo).ToLower
                 Dim vresFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = vRes AndAlso f.Type = FlagType.VideoResolution)
-                If Not IsNothing(vresFlag) Then
+                If vresFlag IsNot Nothing Then
                     iReturn(0) = vresFlag.Image
                 Else
                     vresFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoResolution)
-                    If Not IsNothing(vresFlag) Then
+                    If vresFlag IsNot Nothing Then
                         iReturn(0) = vresFlag.Image
                     Else
                         iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
@@ -226,11 +226,11 @@ Public Class APIXML
 
                 Dim vSource As String = videoSource 'GetFileSource(fName)
                 Dim vSourceFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name.ToLower = vSource.ToLower AndAlso f.Type = FlagType.VideoSource)
-                If Not IsNothing(vSourceFlag) Then
+                If vSourceFlag IsNot Nothing Then
                     iReturn(1) = vSourceFlag.Image
                 Else
                     vSourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoSource)
-                    If Not IsNothing(vSourceFlag) Then
+                    If vSourceFlag IsNot Nothing Then
                         iReturn(1) = vSourceFlag.Image
                     Else
                         iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
@@ -238,11 +238,11 @@ Public Class APIXML
                 End If
 
                 Dim vcodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = FlagType.VideoCodec)
-                If Not IsNothing(vcodecFlag) Then
+                If vcodecFlag IsNot Nothing Then
                     iReturn(2) = vcodecFlag.Image
                 Else
                     vcodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoCodec)
-                    If Not IsNothing(vcodecFlag) Then
+                    If vcodecFlag IsNot Nothing Then
                         iReturn(2) = vcodecFlag.Image
                     Else
                         iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
@@ -250,7 +250,7 @@ Public Class APIXML
                 End If
 
                 Dim acodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = FlagType.AudioCodec)
-                If Not IsNothing(acodecFlag) Then
+                If acodecFlag IsNot Nothing Then
                     If tAudio.HasPreferred Then
                         Dim acodecFlagTemp As Image = acodecFlag.Image
                         iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
@@ -259,7 +259,7 @@ Public Class APIXML
                     End If
                 Else
                     acodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioCodec)
-                    If Not IsNothing(acodecFlag) Then
+                    If acodecFlag IsNot Nothing Then
                         If tAudio.HasPreferred Then
                             Dim acodecFlagTemp As Image = acodecFlag.Image
                             iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
@@ -276,11 +276,11 @@ Public Class APIXML
                 End If
 
                 Dim achanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = FlagType.AudioChan)
-                If Not IsNothing(achanFlag) Then
+                If achanFlag IsNot Nothing Then
                     iReturn(4) = achanFlag.Image
                 Else
                     achanFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioChan)
-                    If Not IsNothing(achanFlag) Then
+                    If achanFlag IsNot Nothing Then
                         iReturn(4) = achanFlag.Image
                     Else
                         iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
@@ -296,19 +296,19 @@ Public Class APIXML
                         If fiAV.StreamDetails.Audio(i).LanguageSpecified Then
                             Dim aLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Audio(i).Language)
                             aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
-                            aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Audio(i).LongLanguage)
-                            If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
-                            If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
-                            If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
+                            aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Audio(i).LongLanguage)
+                            If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
+                            If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
+                            If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
                             iReturn(aIcon) = aLangFlag
                             aIcon += 1
                         Else
                             Dim aLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
                             aLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(618, "Audio Stream"), i)
-                            aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
-                            If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
-                            If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
-                            If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, vbNewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
+                            aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
+                            If fiAV.StreamDetails.Audio(i).CodecSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(604, "Codec"), fiAV.StreamDetails.Audio(i).Codec)
+                            If fiAV.StreamDetails.Audio(i).ChannelsSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(611, "Channels"), fiAV.StreamDetails.Audio(i).Channels)
+                            If fiAV.StreamDetails.Audio(i).BitrateSpecified Then aLangFlag.Tag = String.Format("{0}{1}{2}: {3}", aLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1158, "Bitrate"), fiAV.StreamDetails.Audio(i).Bitrate)
                             iReturn(aIcon) = aLangFlag
                             aIcon += 1
                         End If
@@ -318,7 +318,7 @@ Public Class APIXML
                         Dim pImage As Image
                         Dim pLang As String = String.Empty
                         For i = 7 To fiAV.StreamDetails.Audio.Count - 1
-                            pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Audio(i).LongLanguage))
+                            pLang = String.Concat(pLang, String.Format("{0}{1}", Environment.NewLine, fiAV.StreamDetails.Audio(i).LongLanguage))
                         Next
                         pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
                         pImage.Tag = pLang
@@ -333,16 +333,16 @@ Public Class APIXML
                         If fiAV.StreamDetails.Subtitle(i).LanguageSpecified Then
                             Dim sLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Subtitle(i).Language)
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
-                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
-                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"), _
                                                           If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             sIcon += 1
                         Else
                             Dim sLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
-                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
-                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, vbNewLine, Master.eLang.GetString(1287, "Forced"), _
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"), _
                                                           If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             aIcon += 1
@@ -353,7 +353,7 @@ Public Class APIXML
                         Dim pImage As Image
                         Dim pLang As String = String.Empty
                         For i = 7 To fiAV.StreamDetails.Subtitle.Count - 1
-                            pLang = String.Concat(pLang, String.Format("{0}{1}", vbNewLine, fiAV.StreamDetails.Subtitle(i).LongLanguage))
+                            pLang = String.Concat(pLang, String.Format("{0}{1}", Environment.NewLine, fiAV.StreamDetails.Subtitle(i).LongLanguage))
                         Next
                         pImage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguageMore.png"))
                         pImage.Tag = pLang
@@ -409,7 +409,7 @@ Public Class APIXML
             End If
         End If
 
-        If IsNothing(imgLanguage) Then imgLanguage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
+        If imgLanguage Is Nothing Then imgLanguage = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
 
         Return imgLanguage
     End Function
@@ -485,7 +485,7 @@ Public Class APIXML
             Else
                 Dim splitLang() As String
                 For Each gen In GenreXML.name
-                    If Not IsNothing(gen.language) Then
+                    If gen.language IsNot Nothing Then
                         splitLang = gen.language.Split(Convert.ToChar("|"))
                         For Each strGen As String In splitLang
                             If Not retGenre.Contains(gen.searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
@@ -514,7 +514,7 @@ Public Class APIXML
     '            Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
     '            If xGenre.Count > 0 Then
     '                For i As Integer = 0 To xGenre.Count - 1
-    '                    If Not IsNothing(xGenre(i).language) Then
+    '                    If xGenre(i).language IsNot Nothing Then
     '                        splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
     '                        For Each strGen As String In splitLang
     '                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
@@ -603,7 +603,7 @@ Public Class APIXML
             End Using
         End If
 
-        If IsNothing(imgStudio) Then imgStudio = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+        If imgStudio Is Nothing Then imgStudio = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
 
         Return imgStudio
     End Function
