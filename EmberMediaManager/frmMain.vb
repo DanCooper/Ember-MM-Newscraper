@@ -6548,7 +6548,7 @@ doCancel:
             Dim MovieId As Int64 = -1
 
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                MovieId = Convert.ToInt64(sRow.Cells("idEpisode").Value)
+                MovieId = Convert.ToInt64(sRow.Cells("idMovie").Value)
                 If Not MoviesToDelete.ContainsKey(MovieId) Then
                     MoviesToDelete.Add(MovieId, 0)
                 End If
@@ -16008,7 +16008,6 @@ doCancel:
         End If
     End Sub
 
-
     Private Sub RunFilter_MovieCustom(ByVal CustomFilterString As String)
         Try
             If Me.Visible Then
@@ -16035,7 +16034,7 @@ doCancel:
                             If String.IsNullOrEmpty(filterstring) Then
                                 filterstring = filterstring & "idMovie = " & resultrow.Item(idColumnname).ToString
                             Else
-                                filterstring = filterstring & " OR " & "idMovie  = " & resultrow.Item(idColumnname).ToString
+                                filterstring = filterstring & " OR " & "idMovie = " & resultrow.Item(idColumnname).ToString
                             End If
 
                         End If
