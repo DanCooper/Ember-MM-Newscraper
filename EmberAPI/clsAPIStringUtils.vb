@@ -352,6 +352,7 @@ Public Class StringUtils
     Friend Shared Function ApplyFilters(ByVal name As String, ByRef filters As List(Of String)) As String
         If String.IsNullOrEmpty(name) Then Return String.Empty
         If filters Is Nothing OrElse filters.Count = 0 Then Return name
+        Dim newName As String = name
 
         Dim strSplit() As String
         Try
@@ -359,18 +360,18 @@ Public Class StringUtils
             For Each Str As String In filters
                 If Str.IndexOf("[->]") > 0 Then
                     strSplit = Str.Split(New String() {"[->]"}, StringSplitOptions.None)
-                    name = name.Replace(Regex.Match(name, strSplit.First).ToString, strSplit.Last)
+                    newName = Regex.Replace(newName, strSplit.First, strSplit.Last)
                 Else
-                    name = name.Replace(Regex.Match(name, Str).ToString, String.Empty)
+                    newName = Regex.Replace(newName, Str, String.Empty)
                 End If
                 'everything was already filtered out, return an empty string
-                If String.IsNullOrEmpty(name) Then Return String.Empty
+                If String.IsNullOrEmpty(newName) Then Return String.Empty
             Next
-            Return name.Trim
+            Return newName.Trim
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Name: " & name & " generated an error message", ex)
         End Try
-        Return String.Empty
+        Return name
     End Function
     ''' <summary>
     ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
@@ -394,7 +395,7 @@ Public Class StringUtils
             movieName = ProperCase(movieName)
         End If
 
-        If doExtras Then movieName = FilterTokens_Movie(movieName.Trim)
+        If doExtras Then movieName = SortTokens_Movie(movieName.Trim)
         If remPunct Then movieName = RemovePunctuation(movieName.Trim)
 
         Return movieName.Trim
@@ -459,7 +460,7 @@ Public Class StringUtils
             TVShowName = ProperCase(TVShowName)
         End If
 
-        If doExtras Then TVShowName = FilterTokens_TV(TVShowName.Trim)
+        If doExtras Then TVShowName = SortTokens_TV(TVShowName.Trim)
         If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
 
         Return TVShowName.Trim
@@ -479,7 +480,7 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function FilterTokens_Movie(ByVal sTitle As String) As String
+    Public Shared Function SortTokens_Movie(ByVal sTitle As String) As String
         If String.IsNullOrEmpty(sTitle) Then Return String.Empty
         Dim newTitle As String = sTitle
 
@@ -527,7 +528,7 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function FilterTokens_MovieSet(ByVal sTitle As String) As String
+    Public Shared Function SortTokens_MovieSet(ByVal sTitle As String) As String
         If String.IsNullOrEmpty(sTitle) Then Return String.Empty
         Dim newTitle As String = sTitle
 
@@ -575,7 +576,7 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function FilterTokens_TV(ByVal sTitle As String) As String
+    Public Shared Function SortTokens_TV(ByVal sTitle As String) As String
         If String.IsNullOrEmpty(sTitle) Then Return String.Empty
         Dim newTitle As String = sTitle
 
