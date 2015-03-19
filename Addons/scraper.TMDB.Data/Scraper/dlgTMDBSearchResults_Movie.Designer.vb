@@ -55,6 +55,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.Label4 = New System.Windows.Forms.Label()
         Me.btnOpenFolder = New System.Windows.Forms.Button()
         Me.txtFileName = New System.Windows.Forms.TextBox()
+        Me.txtYear = New System.Windows.Forms.TextBox()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -92,7 +93,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.tvResults.ShowPlusMinus = False
         Me.tvResults.ShowRootLines = False
         Me.tvResults.Size = New System.Drawing.Size(281, 299)
-        Me.tvResults.TabIndex = 4
+        Me.tvResults.TabIndex = 5
         '
         'pbPoster
         '
@@ -173,7 +174,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.txtTMDBID.Location = New System.Drawing.Point(143, 429)
         Me.txtTMDBID.Name = "txtTMDBID"
         Me.txtTMDBID.Size = New System.Drawing.Size(100, 22)
-        Me.txtTMDBID.TabIndex = 6
+        Me.txtTMDBID.TabIndex = 7
         '
         'pnlTop
         '
@@ -230,7 +231,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.chkManual.Location = New System.Drawing.Point(8, 433)
         Me.chkManual.Name = "chkManual"
         Me.chkManual.Size = New System.Drawing.Size(130, 17)
-        Me.chkManual.TabIndex = 5
+        Me.chkManual.TabIndex = 6
         Me.chkManual.Text = "Manual TMDB Entry:"
         Me.chkManual.UseVisualStyleBackColor = True
         '
@@ -241,7 +242,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.btnVerify.Location = New System.Drawing.Point(249, 429)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
-        Me.btnVerify.TabIndex = 7
+        Me.btnVerify.TabIndex = 8
         Me.btnVerify.Text = "Verify"
         Me.btnVerify.UseVisualStyleBackColor = True
         '
@@ -317,14 +318,14 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.btnSearch.Location = New System.Drawing.Point(266, 100)
         Me.btnSearch.Name = "btnSearch"
         Me.btnSearch.Size = New System.Drawing.Size(23, 23)
-        Me.btnSearch.TabIndex = 3
+        Me.btnSearch.TabIndex = 4
         Me.btnSearch.UseVisualStyleBackColor = True
         '
         'txtSearch
         '
         Me.txtSearch.Location = New System.Drawing.Point(8, 101)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(252, 22)
+        Me.txtSearch.Size = New System.Drawing.Size(211, 22)
         Me.txtSearch.TabIndex = 2
         '
         'pnlLoading
@@ -393,6 +394,13 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.txtFileName.Size = New System.Drawing.Size(598, 22)
         Me.txtFileName.TabIndex = 24
         '
+        'txtYear
+        '
+        Me.txtYear.Location = New System.Drawing.Point(225, 101)
+        Me.txtYear.Name = "txtYear"
+        Me.txtYear.Size = New System.Drawing.Size(35, 22)
+        Me.txtYear.TabIndex = 3
+        '
         'dlgTMDBSearchResults_Movie
         '
         Me.AcceptButton = Me.OK_Button
@@ -401,6 +409,7 @@ Partial Class dlgTMDBSearchResults_Movie
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(664, 494)
         Me.ControlBox = False
+        Me.Controls.Add(Me.txtYear)
         Me.Controls.Add(Me.btnOpenFolder)
         Me.Controls.Add(Me.txtFileName)
         Me.Controls.Add(Me.pnlLoading)
@@ -478,5 +487,6 @@ Partial Class dlgTMDBSearchResults_Movie
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents btnOpenFolder As System.Windows.Forms.Button
     Friend WithEvents txtFileName As System.Windows.Forms.TextBox
+    Friend WithEvents txtYear As System.Windows.Forms.TextBox
 
 End Class

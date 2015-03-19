@@ -71,6 +71,7 @@ Public Class dlgTMDBSearchResults_Movie
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
         Me.txtFileName.Text = sMovieFilename
+        Me.txtYear.Text = sMovieYear
         chkManual.Enabled = False
 
         TMDB.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
@@ -95,7 +96,7 @@ Public Class dlgTMDBSearchResults_Movie
     End Function
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
-        If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+        If Not String.IsNullOrEmpty(Me.txtSearch.Text) AndAlso (String.IsNullOrEmpty(Me.txtYear.Text) OrElse Integer.TryParse(Me.txtYear.Text, 0)) Then
             Me.OK_Button.Enabled = False
             pnlPicStatus.Visible = False
             _InfoCache.Clear()
@@ -106,7 +107,7 @@ Public Class dlgTMDBSearchResults_Movie
             chkManual.Enabled = False
             TMDB.CancelAsync()
 
-            TMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions)
+            TMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions, Me.txtYear.Text)
         End If
     End Sub
 
@@ -430,6 +431,10 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
+        Me.AcceptButton = Me.btnSearch
+    End Sub
+
+    Private Sub txtYear_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtYear.GotFocus
         Me.AcceptButton = Me.btnSearch
     End Sub
 
