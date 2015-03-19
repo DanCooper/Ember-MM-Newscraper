@@ -2992,6 +2992,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkGeneralDigitGrpSymbolVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDigitGrpSymbolVotes.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTagline.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3531,6 +3535,7 @@ Public Class dlgSettings
             Me.chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
             Me.chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
             Me.chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
+            Me.chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
             Me.chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
             Me.chkGeneralHideBanner.Checked = .GeneralHideBanner
             Me.chkGeneralHideCharacterArt.Checked = .GeneralHideCharacterArt
@@ -5174,6 +5179,7 @@ Public Class dlgSettings
             .RestartScraper = Me.chkGeneralResumeScraper.Checked
             .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
             .GeneralDateAddedIgnoreNFO = Me.chkGeneralDateAddedIgnoreNFO.Checked
+            .GeneralDigitGrpSymbolVotes = Me.chkGeneralDigitGrpSymbolVotes.Checked
             If Me.cbGeneralDateTime.SelectedValue IsNot Nothing Then
                 .GeneralDateTime = CType(Me.cbGeneralDateTime.SelectedValue, Enums.DateTime)
             End If
@@ -6630,6 +6636,7 @@ Public Class dlgSettings
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.btnGeneralDigitGrpSymbolSettings.Text = Master.eLang.GetString(420, "Settings")
         Me.btnMovieSetScraperTitleRenamerAdd.Text = Master.eLang.GetString(28, "Add")
         Me.btnMovieSetScraperTitleRenamerRemove.Text = Master.eLang.GetString(30, "Remove")
         Me.btnMovieSourceAdd.Text = Master.eLang.GetString(407, "Add Source")
@@ -6647,6 +6654,7 @@ Public Class dlgSettings
         Me.chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         Me.chkGeneralCheckUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
         Me.chkGeneralDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore <dateadded> from NFO")
+        Me.chkGeneralDigitGrpSymbolVotes.Text = Master.eLang.GetString(1387, "Use digit grouping symbol for Votes count")
         Me.chkGeneralDoubleClickScrape.Text = Master.eLang.GetString(1198, "Enable Image Scrape On Double Right Click")
         Me.chkGeneralHideBanner.Text = Master.eLang.GetString(1146, "Do Not Display Banner")
         Me.chkGeneralHideCharacterArt.Text = Master.eLang.GetString(1147, "Do Not Display CharacterArt")
@@ -7412,10 +7420,18 @@ Public Class dlgSettings
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.FileName) Then
                         Me.txtGeneralDaemonPath.Text = .FileName
-
+                        Me.SetApplyButton(True)
                     End If
                 End If
             End With
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnGeneralDigitGrpSymbolSettings_Click(sender As Object, e As EventArgs) Handles btnGeneralDigitGrpSymbolSettings.Click
+        Try
+            Process.Start("INTL.CPL")
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

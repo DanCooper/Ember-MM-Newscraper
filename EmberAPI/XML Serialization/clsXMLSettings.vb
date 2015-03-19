@@ -33,6 +33,7 @@ Partial Public Class clsXMLSettings
     Private _filesystemvalidthemeexts As List(Of String)
     Private _generalcheckupdates As Boolean
     Private _generaldateaddedignorenfo As Boolean
+    Private _generaldigitgrpsymbolvotes As Boolean
     Private _generaldatetime As Enums.DateTime
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
@@ -4679,6 +4680,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._generaldateaddedignorenfo = value
+        End Set
+    End Property
+
+    Public Property GeneralDigitGrpSymbolVotes() As Boolean
+        Get
+            Return Me._generaldigitgrpsymbolvotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generaldigitgrpsymbolvotes = value
         End Set
     End Property
 

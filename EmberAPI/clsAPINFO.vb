@@ -191,7 +191,7 @@ Public Class NFO
             'Votes
             If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Options.bVotes AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Not scrapedmovie.Votes = "0" AndAlso Master.eSettings.MovieScraperVotes AndAlso Not new_Votes Then
-                DBMovie.Movie.Votes = scrapedmovie.Votes
+                DBMovie.Movie.Votes = Regex.Replace(scrapedmovie.Votes, "\D", String.Empty)
                 new_Votes = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperVotes AndAlso Not Master.eSettings.MovieLockVotes Then
                 DBMovie.Movie.Votes = String.Empty
@@ -479,6 +479,7 @@ Public Class NFO
             mNFO.Genre = String.Join(" / ", mNFO.Genres.ToArray)
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            mNFO.Votes = Regex.Replace(mNFO.Votes, "\D", String.Empty)
             If mNFO.FileInfoSpecified Then
                 If mNFO.FileInfo.StreamDetails.AudioSpecified Then
                     For Each aStream In mNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
@@ -506,6 +507,7 @@ Public Class NFO
 
     Public Shared Function CleanNFO_TVEpisodes(ByVal eNFO As MediaContainers.EpisodeDetails) As MediaContainers.EpisodeDetails
         If eNFO IsNot Nothing Then
+            eNFO.Votes = Regex.Replace(eNFO.Votes, "\D", String.Empty)
             If eNFO.FileInfoSpecified Then
                 If eNFO.FileInfo.StreamDetails.AudioSpecified Then
                     For Each aStream In eNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
@@ -1340,6 +1342,7 @@ Public Class NFO
                         xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                         xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
                         xmlShow.Genre = String.Join(" / ", xmlShow.Genres.ToArray)
+                        xmlShow.Votes = Regex.Replace(xmlShow.Votes, "\D", String.Empty)
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
@@ -1380,9 +1383,7 @@ Public Class NFO
     End Function
 
     Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Structures.DBMovie)
-        '//
-        ' Serialize MediaContainers.Movie to an NFO
-        '\\
+
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {movieToSave})
@@ -1399,12 +1400,20 @@ Public Class NFO
                 Dim fAttWritable As Boolean = True
 
                 'YAMJ support
-                If Master.eSettings.TVUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
+                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
                     If movieToSave.Movie.TMDBIDSpecified Then
                         movieToSave.Movie.TMDBID = Nothing
                     End If
                     If movieToSave.Movie.IDMovieDBSpecified Then
                         movieToSave.Movie.IDMovieDB = Nothing
+                    End If
+                End If
+
+                'digit grouping symbol for Votes count
+                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                    If movieToSave.Movie.VotesSpecified Then
+                        Dim vote As String = Double.Parse(movieToSave.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        If vote IsNot Nothing Then movieToSave.Movie.Votes = vote
                     End If
                 End If
 
@@ -1438,9 +1447,7 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Structures.DBMovieSet)
-        '//
-        ' Serialize MediaContainers.MovieSet to an NFO
-        '\\
+
         Try
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
@@ -1521,6 +1528,7 @@ Public Class NFO
     End Class
 
     Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Structures.DBTV)
+
         Try
 
             If Not String.IsNullOrEmpty(tvEpToSave.Filename) Then
@@ -1572,6 +1580,15 @@ Public Class NFO
                         NS.Add(String.Empty, String.Empty)
 
                         For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
+
+                            'digit grouping symbol for Votes count
+                            If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                                If tvEp.VotesSpecified Then
+                                    Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                                    If vote IsNot Nothing Then tvEp.Votes = vote
+                                End If
+                            End If
+
                             Using xmlSW As New Utf8StringWriter
                                 xmlSer.Serialize(xmlSW, tvEp, NS)
                                 If sBuilder.Length > 0 Then
@@ -1600,9 +1617,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveTVShowToNFO(ByRef tvShowToSave As Structures.DBTV)
-        '//
-        ' Serialize MediaContainers.TVShow to an NFO
-        '\\
 
         Try
             Dim params As New List(Of Object)(New Object() {tvShowToSave})
@@ -1632,6 +1646,14 @@ Public Class NFO
                     If tvShowToSave.TVShow.IDSpecified() Then
                         tvShowToSave.TVShow.BoxeeTvDb = tvShowToSave.TVShow.ID
                         tvShowToSave.TVShow.BlankId()
+                    End If
+                End If
+                
+                'digit grouping symbol for Votes count
+                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                    If tvShowToSave.TVShow.VotesSpecified Then
+                        Dim vote As String = Double.Parse(tvShowToSave.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        If vote IsNot Nothing Then tvShowToSave.TVShow.Votes = vote
                     End If
                 End If
 

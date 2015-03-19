@@ -303,8 +303,6 @@ Namespace IMDB
                 'Votes
                 If Options.bVotes Then
                     nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
-                    'Votes should be rounded value
-                    nMovie.Votes = nMovie.Votes.Replace(".", "").Replace(",", "")
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing

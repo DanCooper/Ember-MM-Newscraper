@@ -869,7 +869,7 @@ Namespace MediaContainers
         <XmlElement("votes")> _
         Public Property Votes() As String
             Get
-                Return Me._votes.Replace(",", String.Empty)
+                Return Me._votes
             End Get
             Set(ByVal value As String)
                 Me._votes = value

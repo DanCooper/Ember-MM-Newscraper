@@ -1476,4 +1476,5 @@
   <string id="1384">Ember Database</string>
   <string id="1385">Name, query and type of filter needs to be set!</string>
   <string id="1386">Invalid SQL!</string>
+  <string id="1387">Use digit grouping symbol for Votes count</string>
 </strings>

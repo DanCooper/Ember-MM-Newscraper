@@ -25,6 +25,7 @@ Imports System.Xml.Serialization
 Imports System.Data.SQLite
 Imports System.Xml.Linq
 Imports NLog
+Imports System.Text.RegularExpressions
 
 ''' <summary>
 ''' Class defining and implementing the interface to the database
@@ -2530,7 +2531,7 @@ Public Class Database
                 par_movie_Title.Value = .Title
                 par_movie_Top250.Value = .Top250
                 par_movie_Trailer.Value = .Trailer
-                par_movie_Votes.Value = .Votes
+                par_movie_Votes.Value = Regex.Replace(.Votes, "\D", String.Empty).Trim
                 par_movie_Year.Value = .Year
             End With
 
@@ -3294,7 +3295,7 @@ Public Class Database
                 parCredits.Value = .OldCredits
                 parPlaycount.Value = If(Not String.IsNullOrEmpty(.Playcount) AndAlso CInt(.Playcount) > 0, .Playcount, Nothing) 'need to be NOTHING instead of "0"
                 parRuntime.Value = .Runtime
-                parVotes.Value = .Votes
+                parVotes.Value = Regex.Replace(.Votes, "\D", String.Empty).Trim
                 If .displaySEset Then
                     parDisplaySeason.Value = .DisplaySeason
                     parDisplayEpisode.Value = .DisplayEpisode
@@ -3601,7 +3602,7 @@ Public Class Database
                 parRating.Value = .Rating
                 parStatus.Value = .Status
                 parRuntime.Value = .Runtime
-                parVotes.Value = .Votes
+                parVotes.Value = Regex.Replace(.Votes, "\D", String.Empty).Trim
             End With
 
             ' First let's save it to NFO, even because we will need the NFO path

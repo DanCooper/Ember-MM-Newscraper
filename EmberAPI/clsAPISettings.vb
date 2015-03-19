@@ -3879,6 +3879,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralDigitGrpSymbolVotes() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralDigitGrpSymbolVotes
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralDigitGrpSymbolVotes = value
+        End Set
+    End Property
+
     Public Property MovieUseFrodo() As Boolean
         Get
             Return Settings._XMLSettings.MovieUseFrodo
@@ -5746,10 +5755,11 @@ Public Class Settings
         Me.FileSystemValidSubtitlesExts = New List(Of String)
         Me.FileSystemValidThemeExts = New List(Of String)
         Me.GeneralCheckUpdates = False
-        Me.GeneralDateAddedIgnoreNFO = False
-        Me.GeneralDateTime = Enums.DateTime.Now
         Me.GeneralDaemonDrive = String.Empty
         Me.GeneralDaemonPath = String.Empty
+        Me.GeneralDateAddedIgnoreNFO = False
+        Me.GeneralDateTime = Enums.DateTime.Now
+        Me.GeneralDigitGrpSymbolVotes = False
         Me.GeneralDoubleClickScrape = False
         Me.GeneralFilterPanelStateMovie = False
         Me.GeneralFilterPanelStateMovieSet = False
