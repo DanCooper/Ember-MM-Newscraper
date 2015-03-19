@@ -614,7 +614,7 @@ Public Class TMDB_Data
         End If
 
         If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
-            tTitle = StringUtils.FilterTokens_MovieSet(DBMovieSet.MovieSet.Title)
+            tTitle = StringUtils.SortTokens_MovieSet(DBMovieSet.MovieSet.Title)
             DBMovieSet.ListTitle = tTitle
         End If
 

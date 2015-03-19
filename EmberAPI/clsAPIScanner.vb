@@ -896,7 +896,7 @@ Public Class Scanner
             End If
 
             'ListTitle
-            Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
+            Dim tTitle As String = StringUtils.SortTokens_Movie(tmpMovieDB.Movie.Title)
             If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
                 tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
             Else
@@ -1001,7 +1001,7 @@ Public Class Scanner
                         tmpTVDB.TVShow.Title = FileUtils.Common.GetDirectory(TVContainer.ShowPath)
                     End If
                 Else
-                    Dim tTitle As String = StringUtils.FilterTokens_TV(tmpTVDB.TVShow.Title)
+                    Dim tTitle As String = StringUtils.SortTokens_TV(tmpTVDB.TVShow.Title)
                     If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpTVDB.TVShow.Status) Then
                         tmpTVDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpTVDB.TVShow.Status)
                     Else

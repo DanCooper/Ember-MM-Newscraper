@@ -2942,9 +2942,9 @@ Public Class dlgEditMovie
                     Master.currMovie.Movie.Title = .txtTitle.Text.Trim
 
                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
-                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
+                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_Movie(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
                     Else
-                        Master.currMovie.ListTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
+                        Master.currMovie.ListTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
                     End If
                 End If
 
@@ -2953,7 +2953,7 @@ Public Class dlgEditMovie
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
                     Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
                 Else
-                    Master.currMovie.Movie.SortTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
+                    Master.currMovie.Movie.SortTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
                 End If
 
                 Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim

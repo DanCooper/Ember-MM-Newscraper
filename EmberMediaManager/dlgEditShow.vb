@@ -2288,9 +2288,9 @@ Public Class dlgEditShow
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
                     If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(.txtStatus.Text.Trim) Then
-                        Master.currShow.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_TV(.txtTitle.Text.Trim), .txtStatus.Text.Trim)
+                        Master.currShow.ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_TV(.txtTitle.Text.Trim), .txtStatus.Text.Trim)
                     Else
-                        Master.currShow.ListTitle = StringUtils.FilterTokens_TV(.txtTitle.Text.Trim)
+                        Master.currShow.ListTitle = StringUtils.SortTokens_TV(.txtTitle.Text.Trim)
                     End If
                 End If
                 

@@ -430,7 +430,7 @@ Public Class NFO
 
         'set ListTitle at the end of merging
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            Dim tTitle As String = StringUtils.FilterTokens_Movie(DBMovie.Movie.Title)
+            Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
             If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
                 DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
             Else

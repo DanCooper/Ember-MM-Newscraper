@@ -219,7 +219,7 @@ Public Class dlgEditMovieSet
                             currMovieSet.MovieSet.ID = tmpMovie.Movie.TMDBColID
                         End If
                     End If
-                    Dim newMovie As New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID}
+                    Dim newMovie As New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.SortTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID}
                     Me.MoviesInSet.Add(newMovie)
                     bsMovies.Remove(sRow.DataBoundItem)
                 End If
@@ -747,7 +747,7 @@ Public Class dlgEditMovieSet
                         tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                             Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
-                            MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(StringUtils.FilterTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
+                            MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(StringUtils.SortTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
                         End If
                         Me.bwLoadMoviesInSet.ReportProgress(iProg, tmpMovie.Movie.Title)
                         iProg += 1
@@ -1342,7 +1342,7 @@ Public Class dlgEditMovieSet
             Master.currMovieSet.IsMark = Me.chkMark.Checked
 
             If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                Master.currMovieSet.ListTitle = StringUtils.FilterTokens_MovieSet(.txtTitle.Text.Trim)
+                Master.currMovieSet.ListTitle = StringUtils.SortTokens_MovieSet(.txtTitle.Text.Trim)
                 Master.currMovieSet.MovieSet.Title = .txtTitle.Text.Trim
             End If
 

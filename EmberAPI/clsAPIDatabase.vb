@@ -2849,7 +2849,7 @@ Public Class Database
                                     Dim parSets_Lock As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Lock", DbType.Boolean, 0, "Lock")
 
                                     parSets_SetName.Value = s.Title
-                                    parSets_ListTitle.Value = StringUtils.FilterTokens_MovieSet(s.Title)
+                                    parSets_ListTitle.Value = StringUtils.SortTokens_MovieSet(s.Title)
                                     parSets_TMDBColID.Value = s.TMDBColID
                                     parSets_Plot.Value = String.Empty
                                     parSets_NfoPath.Value = String.Empty

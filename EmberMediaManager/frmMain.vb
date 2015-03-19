@@ -11050,7 +11050,7 @@ doCancel:
                                         End If
                                     End If
                                 Else
-                                    Dim tTitle As String = StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title)
+                                    Dim tTitle As String = StringUtils.SortTokens_Movie(Master.currMovie.Movie.Title)
                                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                                         Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
                                     Else
@@ -15310,7 +15310,7 @@ doCancel:
                     End If
                 End If
             Else
-                Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
+                Dim tTitle As String = StringUtils.SortTokens_Movie(tmpMovieDB.Movie.Title)
                 If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
                     tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
                 Else
@@ -15446,7 +15446,7 @@ doCancel:
             End If
         End If
 
-        Dim tTitle As String = StringUtils.FilterTokens_MovieSet(tmpMovieSetDB.MovieSet.Title)
+        Dim tTitle As String = StringUtils.SortTokens_MovieSet(tmpMovieSetDB.MovieSet.Title)
         If Not String.IsNullOrEmpty(tTitle) Then
             tmpMovieSetDB.ListTitle = tTitle
         Else
@@ -15597,7 +15597,7 @@ doCancel:
                 tmpShowDb.ListTitle = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath))
                 tmpShowDb.TVShow.Title = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
             Else
-                Dim tTitle As String = StringUtils.FilterTokens_TV(tmpShowDb.TVShow.Title)
+                Dim tTitle As String = StringUtils.SortTokens_TV(tmpShowDb.TVShow.Title)
                 If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpShowDb.TVShow.Status) Then
                     tmpShowDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpShowDb.TVShow.Status)
                 Else
