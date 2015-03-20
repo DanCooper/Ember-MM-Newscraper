@@ -3274,7 +3274,7 @@ Public Class Database
 
             parTVShowID.Value = _TVEpDB.ShowID
             parNfoPath.Value = _TVEpDB.EpNfoPath
-            parHasSub.Value = _TVEpDB.EpSubtitles.Count > 0 OrElse _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
+            parHasSub.Value = (_TVEpDB.EpSubtitles IsNot Nothing AndAlso _TVEpDB.EpSubtitles.Count > 0) OrElse _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
             parNew.Value = IsNew
             parMark.Value = _TVEpDB.IsMarkEp
             parTVEpPathID.Value = PathID
