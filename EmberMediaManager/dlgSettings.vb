@@ -5180,9 +5180,7 @@ Public Class dlgSettings
             .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
             .GeneralDateAddedIgnoreNFO = Me.chkGeneralDateAddedIgnoreNFO.Checked
             .GeneralDigitGrpSymbolVotes = Me.chkGeneralDigitGrpSymbolVotes.Checked
-            If Me.cbGeneralDateTime.SelectedValue IsNot Nothing Then
-                .GeneralDateTime = CType(Me.cbGeneralDateTime.SelectedValue, Enums.DateTime)
-            End If
+            .GeneralDateTime = CType(Me.cbGeneralDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTime)).Value
             .GeneralDoubleClickScrape = Me.chkGeneralDoubleClickScrape.Checked
             .GeneralDaemonDrive = Me.cbGeneralDaemonDrive.Text
             .GeneralDaemonPath = Me.txtGeneralDaemonPath.Text
@@ -5218,9 +5216,7 @@ Public Class dlgSettings
             .MovieBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieBannerHeight.Text), Convert.ToInt32(Me.txtMovieBannerHeight.Text), 0)
             .MovieBannerOverwrite = Me.chkMovieBannerOverwrite.Checked
             .MovieBannerPrefOnly = Me.chkMovieBannerPrefOnly.Checked
-            If Me.cbMovieBannerPrefType.SelectedValue IsNot Nothing Then
-                .MovieBannerPrefType = CType(Me.cbMovieBannerPrefType.SelectedValue, Enums.MovieBannerType)
-            End If
+            .MovieBannerPrefType = CType(Me.cbMovieBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerType)).Value
             .MovieBannerResize = Me.chkMovieBannerResize.Checked
             .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
             .MovieCleanDB = Me.chkMovieCleanDB.Checked
@@ -5234,26 +5230,20 @@ Public Class dlgSettings
             .MovieEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsLimit.Text), Convert.ToInt32(Me.txtMovieEFanartsLimit.Text), 0)
             .MovieEFanartsOverwrite = Me.chkMovieEFanartsOverwrite.Checked
             .MovieEFanartsPrefOnly = Me.chkMovieEFanartsPrefOnly.Checked
-            If Me.cbMovieEFanartsPrefSize.SelectedValue IsNot Nothing Then
-                .MovieEFanartsPrefSize = CType(Me.cbMovieEFanartsPrefSize.SelectedValue, Enums.FanartSize)
-            End If
+            .MovieEFanartsPrefSize = CType(Me.cbMovieEFanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
             .MovieEFanartsResize = Me.chkMovieEFanartsResize.Checked
             .MovieEFanartsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsWidth.Text), Convert.ToInt32(Me.txtMovieEFanartsWidth.Text), 0)
             .MovieEThumbsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsHeight.Text), Convert.ToInt32(Me.txtMovieEThumbsHeight.Text), 0)
             .MovieEThumbsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsLimit.Text), Convert.ToInt32(Me.txtMovieEThumbsLimit.Text), 0)
             .MovieEThumbsOverwrite = Me.chkMovieEThumbsOverwrite.Checked
             .MovieEThumbsPrefOnly = Me.chkMovieEThumbsPrefOnly.Checked
-            If Me.cbMovieEThumbsPrefSize.SelectedValue IsNot Nothing Then
-                .MovieEThumbsPrefSize = CType(Me.cbMovieEThumbsPrefSize.SelectedValue, Enums.FanartSize)
-            End If
+            .MovieEThumbsPrefSize = CType(Me.cbMovieEThumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
             .MovieEThumbsResize = Me.chkMovieEThumbsResize.Checked
             .MovieEThumbsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsWidth.Text), Convert.ToInt32(Me.txtMovieEThumbsWidth.Text), 0)
             .MovieFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieFanartHeight.Text), Convert.ToInt32(Me.txtMovieFanartHeight.Text), 0)
             .MovieFanartOverwrite = Me.chkMovieFanartOverwrite.Checked
             .MovieFanartPrefOnly = Me.chkMovieFanartPrefOnly.Checked
-            If Me.cbMovieFanartPrefSize.SelectedValue IsNot Nothing Then
-                .MovieFanartPrefSize = CType(Me.cbMovieFanartPrefSize.SelectedValue, Enums.FanartSize)
-            End If
+            .MovieFanartPrefSize = CType(Me.cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
             .MovieFanartResize = Me.chkMovieFanartResize.Checked
             .MovieFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieFanartWidth.Text), Convert.ToInt32(Me.txtMovieFanartWidth.Text), 0)
             .MovieFilterCustom.Clear()
@@ -5310,18 +5300,14 @@ Public Class dlgSettings
             .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
             .MoviePosterOverwrite = Me.chkMoviePosterOverwrite.Checked
             .MoviePosterPrefOnly = Me.chkMoviePosterPrefOnly.Checked
-            If Me.cbMoviePosterPrefSize.SelectedValue IsNot Nothing Then
-                .MoviePosterPrefSize = CType(Me.cbMoviePosterPrefSize.SelectedValue, Enums.PosterSize)
-            End If
+            .MoviePosterPrefSize = CType(Me.cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.PosterSize)).Value
             .MoviePosterResize = Me.chkMoviePosterResize.Checked
             .MoviePosterWidth = If(Not String.IsNullOrEmpty(Me.txtMoviePosterWidth.Text), Convert.ToInt32(Me.txtMoviePosterWidth.Text), 0)
             .MovieProperCase = Me.chkMovieProperCase.Checked
             .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerHeight.Text), Convert.ToInt32(Me.txtMovieSetBannerHeight.Text), 0)
             .MovieSetBannerOverwrite = Me.chkMovieSetBannerOverwrite.Checked
             .MovieSetBannerPrefOnly = Me.chkMovieSetBannerPrefOnly.Checked
-            If Me.cbMovieSetBannerPrefType.SelectedValue IsNot Nothing Then
-                .MovieSetBannerPrefType = CType(Me.cbMovieSetBannerPrefType.SelectedValue, Enums.MovieBannerType)
-            End If
+            .MovieSetBannerPrefType = CType(Me.cbMovieSetBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerType)).Value
             .MovieSetBannerResize = Me.chkMovieSetBannerResize.Checked
             .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerWidth.Text), Convert.ToInt32(Me.txtMovieSetBannerWidth.Text), 0)
             .MovieSetCleanDB = Me.chkMovieSetCleanDB.Checked
@@ -5333,9 +5319,7 @@ Public Class dlgSettings
             .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartHeight.Text), Convert.ToInt32(Me.txtMovieSetFanartHeight.Text), 0)
             .MovieSetFanartOverwrite = Me.chkMovieSetFanartOverwrite.Checked
             .MovieSetFanartPrefOnly = Me.chkMovieSetFanartPrefOnly.Checked
-            If Me.cbMovieSetFanartPrefSize.SelectedValue IsNot Nothing Then
-                .MovieSetFanartPrefSize = CType(Me.cbMovieSetFanartPrefSize.SelectedValue, Enums.FanartSize)
-            End If
+            .MovieSetFanartPrefSize = CType(Me.cbMovieSetFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
             .MovieSetFanartResize = Me.chkMovieSetFanartResize.Checked
             .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartWidth.Text), Convert.ToInt32(Me.txtMovieSetFanartWidth.Text), 0)
             .MovieSetGeneralMarkNew = Me.chkMovieSetGeneralMarkNew.Checked
@@ -5347,9 +5331,7 @@ Public Class dlgSettings
             .MovieSetPosterHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterHeight.Text), Convert.ToInt32(Me.txtMovieSetPosterHeight.Text), 0)
             .MovieSetPosterOverwrite = Me.chkMovieSetPosterOverwrite.Checked
             .MovieSetPosterPrefOnly = Me.chkMovieSetPosterPrefOnly.Checked
-            If Me.cbMovieSetPosterPrefSize.SelectedValue IsNot Nothing Then
-                .MovieSetPosterPrefSize = CType(Me.cbMovieSetPosterPrefSize.SelectedValue, Enums.PosterSize)
-            End If
+            .MovieSetPosterPrefSize = CType(Me.cbMovieSetPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.PosterSize)).Value
             .MovieSetPosterResize = Me.chkMovieSetPosterResize.Checked
             .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterWidth.Text), Convert.ToInt32(Me.txtMovieSetPosterWidth.Text), 0)
             .MovieSetScraperPlot = Me.chkMovieSetScraperPlot.Checked
@@ -5440,32 +5422,22 @@ Public Class dlgSettings
             .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
             .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
             .MovieTrailerOverwrite = Me.chkMovieTrailerOverwrite.Checked
-            If Me.cbMovieTrailerMinVideoQual.SelectedValue IsNot Nothing Then
-                .MovieTrailerMinVideoQual = CType(Me.cbMovieTrailerMinVideoQual.SelectedValue, Enums.TrailerVideoQuality)
-            End If
-            If Me.cbMovieTrailerPrefVideoQual.SelectedValue IsNot Nothing Then
-                .MovieTrailerPrefVideoQual = CType(Me.cbMovieTrailerPrefVideoQual.SelectedValue, Enums.TrailerVideoQuality)
-            End If
+            .MovieTrailerMinVideoQual = CType(Me.cbMovieTrailerMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
+            .MovieTrailerPrefVideoQual = CType(Me.cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
             .TVASBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVASBannerHeight.Text), Convert.ToInt32(Me.txtTVASBannerHeight.Text), 0)
             .TVASBannerOverwrite = Me.chkTVASBannerOverwrite.Checked
-            If Me.cbTVASBannerPrefType.SelectedValue IsNot Nothing Then
-                .TVASBannerPrefType = CType(Me.cbTVASBannerPrefType.SelectedValue, Enums.TVShowBannerType)
-            End If
+            .TVASBannerPrefType = CType(Me.cbTVASBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.TVShowBannerType)).Value
             .TVASBannerResize = Me.chkTVASBannerResize.Checked
             .TVASBannerWidth = If(Not String.IsNullOrEmpty(Me.txtTVASBannerWidth.Text), Convert.ToInt32(Me.txtTVASBannerWidth.Text), 0)
             .TVASFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVASFanartHeight.Text), Convert.ToInt32(Me.txtTVASFanartHeight.Text), 0)
             .TVASFanartOverwrite = Me.chkTVASFanartOverwrite.Checked
-            If Me.cbTVASFanartPrefSize.SelectedValue IsNot Nothing Then
-                .TVASFanartPrefSize = CType(Me.cbTVASFanartPrefSize.SelectedValue, Enums.TVFanartSize)
-            End If
+            .TVASFanartPrefSize = CType(Me.cbTVASFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVASFanartResize = Me.chkTVASFanartResize.Checked
             .TVASFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVASFanartWidth.Text), Convert.ToInt32(Me.txtTVASFanartWidth.Text), 0)
             .TVASLandscapeOverwrite = Me.chkTVASLandscapeOverwrite.Checked
             .TVASPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVASPosterHeight.Text), Convert.ToInt32(Me.txtTVASPosterHeight.Text), 0)
             .TVASPosterOverwrite = Me.chkTVASPosterOverwrite.Checked
-            If Me.cbTVASPosterPrefSize.SelectedValue IsNot Nothing Then
-                .TVASPosterPrefSize = CType(Me.cbTVASPosterPrefSize.SelectedValue, Enums.TVPosterSize)
-            End If
+            .TVASPosterPrefSize = CType(Me.cbTVASPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
             .TVASPosterResize = Me.chkTVASPosterResize.Checked
             .TVASPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVASPosterWidth.Text), Convert.ToInt32(Me.txtTVASPosterWidth.Text), 0)
             .TVCleanDB = Me.chkTVCleanDB.Checked
@@ -5473,9 +5445,7 @@ Public Class dlgSettings
             .TVDisplayStatus = Me.chkTVDisplayStatus.Checked
             .TVEpisodeFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVEpisodeFanartHeight.Text), Convert.ToInt32(Me.txtTVEpisodeFanartHeight.Text), 0)
             .TVEpisodeFanartOverwrite = Me.chkTVEpisodeFanartOverwrite.Checked
-            If Me.cbTVEpisodeFanartPrefSize.SelectedValue IsNot Nothing Then
-                .TVEpisodeFanartPrefSize = CType(Me.cbTVEpisodeFanartPrefSize.SelectedValue, Enums.TVFanartSize)
-            End If
+            .TVEpisodeFanartPrefSize = CType(Me.cbTVEpisodeFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVEpisodeFanartResize = Me.chkTVEpisodeFanartResize.Checked
             .TVEpisodeFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVEpisodeFanartWidth.Text), Convert.ToInt32(Me.txtTVEpisodeFanartWidth.Text), 0)
             .TVEpisodeFilterCustom.Clear()
@@ -5533,9 +5503,7 @@ Public Class dlgSettings
             .TVScraperEpisodeTitle = Me.chkTVScraperEpisodeTitle.Checked
             .TVScraperEpisodeVotes = Me.chkTVScraperEpisodeVotes.Checked
             .TVScraperMetaDataScan = Me.chkTVScraperMetaDataScan.Checked
-            If Me.cbTVScraperOptionsOrdering.SelectedValue IsNot Nothing Then
-                .TVScraperOptionsOrdering = CType(Me.cbTVScraperOptionsOrdering.SelectedValue, Enums.Ordering)
-            End If
+            .TVScraperOptionsOrdering = CType(Me.cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
             If String.IsNullOrEmpty(Me.cbTVScraperRatingRegion.Text) Then
                 .TVScraperRatingRegion = "usa"
             Else
@@ -5554,41 +5522,29 @@ Public Class dlgSettings
             .TVScraperShowStudio = Me.chkTVScraperShowStudio.Checked
             .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
             .TVScraperShowVotes = Me.chkTVScraperShowVotes.Checked
-            If Me.cbTVScraperUpdateTime.SelectedValue IsNot Nothing Then
-                .TVScraperUpdateTime = CType(Me.cbTVScraperUpdateTime.SelectedValue, Enums.TVScraperUpdateTime)
-            End If
+            .TVScraperUpdateTime = CType(Me.cbTVScraperUpdateTime.SelectedItem, KeyValuePair(Of String, Enums.TVScraperUpdateTime)).Value
             .TVScraperUseMDDuration = Me.chkTVScraperUseMDDuration.Checked
             .TVScraperUseSRuntimeForEp = Me.chkTVScraperUseSRuntimeForEp.Checked
             .TVSeasonBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerHeight.Text), Convert.ToInt32(Me.txtTVSeasonBannerHeight.Text), 0)
             .TVSeasonBannerOverwrite = Me.chkTVSeasonBannerOverwrite.Checked
-            If Me.cbTVSeasonBannerPrefType.SelectedValue IsNot Nothing Then
-                .TVSeasonBannerPrefType = CType(Me.cbTVSeasonBannerPrefType.SelectedValue, Enums.TVSeasonBannerType)
-            End If
+            .TVSeasonBannerPrefType = CType(Me.cbTVSeasonBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.TVSeasonBannerType)).Value
             .TVSeasonBannerResize = Me.chkTVSeasonBannerResize.Checked
             .TVSeasonBannerWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerWidth.Text), Convert.ToInt32(Me.txtTVSeasonBannerWidth.Text), 0)
             .TVSeasonFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonFanartHeight.Text), Convert.ToInt32(Me.txtTVSeasonFanartHeight.Text), 0)
             .TVSeasonFanartOverwrite = Me.chkTVSeasonFanartOverwrite.Checked
-            If Me.cbTVSeasonFanartPrefSize.SelectedValue IsNot Nothing Then
-                .TVSeasonFanartPrefSize = CType(Me.cbTVSeasonFanartPrefSize.SelectedValue, Enums.TVFanartSize)
-            End If
+            .TVSeasonFanartPrefSize = CType(Me.cbTVSeasonFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVSeasonFanartResize = Me.chkTVSeasonFanartResize.Checked
             .TVSeasonFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonFanartWidth.Text), Convert.ToInt32(Me.txtTVSeasonFanartWidth.Text), 0)
             .TVSeasonLandscapeOverwrite = Me.chkTVSeasonLandscapeOverwrite.Checked
             .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterHeight.Text), Convert.ToInt32(Me.txtTVSeasonPosterHeight.Text), 0)
             .TVSeasonPosterOverwrite = Me.chkTVSeasonPosterOverwrite.Checked
-            If Me.cbTVSeasonPosterPrefSize.SelectedValue IsNot Nothing Then
-                .TVSeasonPosterPrefSize = CType(Me.cbTVSeasonPosterPrefSize.SelectedValue, Enums.TVPosterSize)
-            End If
-            If Me.cbTVEpisodePosterPrefSize.SelectedValue IsNot Nothing Then
-                .TVEpisodePosterPrefSize = CType(Me.cbTVEpisodePosterPrefSize.SelectedValue, Enums.TVEpisodePosterSize)
-            End If
+            .TVSeasonPosterPrefSize = CType(Me.cbTVSeasonPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
+            .TVEpisodePosterPrefSize = CType(Me.cbTVEpisodePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVEpisodePosterSize)).Value
             .TVSeasonPosterResize = Me.chkTVSeasonPosterResize.Checked
             .TVSeasonPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterWidth.Text), Convert.ToInt32(Me.txtTVSeasonPosterWidth.Text), 0)
             .TVShowBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowBannerHeight.Text), Convert.ToInt32(Me.txtTVShowBannerHeight.Text), 0)
             .TVShowBannerOverwrite = Me.chkTVShowBannerOverwrite.Checked
-            If Me.cbTVShowBannerPrefType.SelectedValue IsNot Nothing Then
-                .TVShowBannerPrefType = CType(Me.cbTVShowBannerPrefType.SelectedValue, Enums.TVShowBannerType)
-            End If
+            .TVShowBannerPrefType = CType(Me.cbTVShowBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.TVShowBannerType)).Value
             .TVShowBannerResize = Me.chkTVShowBannerResize.Checked
             .TVShowBannerWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowBannerWidth.Text), Convert.ToInt32(Me.txtTVShowBannerWidth.Text), 0)
             .TVShowCharacterArtOverwrite = Me.chkTVShowCharacterArtOverwrite.Checked
@@ -5598,16 +5554,12 @@ Public Class dlgSettings
             .TVShowEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtTVShowEFanartsLimit.Text), Convert.ToInt32(Me.txtTVShowEFanartsLimit.Text), 0)
             .TVShowEFanartsOverwrite = Me.chkTVShowEFanartsOverwrite.Checked
             .TVShowEFanartsPrefOnly = Me.chkTVShowEFanartsPrefOnly.Checked
-            If Me.cbTVShowEFanartsPrefSize.SelectedValue IsNot Nothing Then
-                .TVShowEFanartsPrefSize = CType(Me.cbTVShowEFanartsPrefSize.SelectedValue, Enums.TVFanartSize)
-            End If
+            .TVShowEFanartsPrefSize = CType(Me.cbTVShowEFanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVShowEFanartsResize = Me.chkTVShowEFanartsResize.Checked
             .TVShowEFanartsWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowEFanartsWidth.Text), Convert.ToInt32(Me.txtTVShowEFanartsWidth.Text), 0)
             .TVShowFanartHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowFanartHeight.Text), Convert.ToInt32(Me.txtTVShowFanartHeight.Text), 0)
             .TVShowFanartOverwrite = Me.chkTVShowFanartOverwrite.Checked
-            If Me.cbTVShowFanartPrefSize.SelectedValue IsNot Nothing Then
-                .TVShowFanartPrefSize = CType(Me.cbTVShowFanartPrefSize.SelectedValue, Enums.TVFanartSize)
-            End If
+            .TVShowFanartPrefSize = CType(Me.cbTVShowFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVShowFanartResize = Me.chkTVShowFanartResize.Checked
             .TVShowFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowFanartWidth.Text), Convert.ToInt32(Me.txtTVShowFanartWidth.Text), 0)
             .TVShowFilterCustom.Clear()
@@ -5616,9 +5568,7 @@ Public Class dlgSettings
             .TVShowLandscapeOverwrite = Me.chkTVShowLandscapeOverwrite.Checked
             .TVShowPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterHeight.Text), Convert.ToInt32(Me.txtTVShowPosterHeight.Text), 0)
             .TVShowPosterOverwrite = Me.chkTVShowPosterOverwrite.Checked
-            If Me.cbTVShowPosterPrefSize.SelectedValue IsNot Nothing Then
-                .TVShowPosterPrefSize = CType(Me.cbTVShowPosterPrefSize.SelectedValue, Enums.TVPosterSize)
-            End If
+            .TVShowPosterPrefSize = CType(Me.cbTVShowPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
             .TVShowPosterResize = Me.chkTVShowPosterResize.Checked
             .TVShowPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVShowPosterWidth.Text), Convert.ToInt32(Me.txtTVShowPosterWidth.Text), 0)
             .TVShowProperCase = Me.chkTVShowProperCase.Checked
