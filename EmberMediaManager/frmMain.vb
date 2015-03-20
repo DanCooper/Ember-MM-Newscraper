@@ -4677,7 +4677,7 @@ doCancel:
     End Sub
 
     Private Sub mnuMainToolsClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsClearCache.Click, cmnuTrayToolsClearCache.Click
-        'for future use
+        FileUtils.Delete.Cache_All()
     End Sub
 
     Private Sub ClearFilters_Movies(Optional ByVal Reload As Boolean = False)

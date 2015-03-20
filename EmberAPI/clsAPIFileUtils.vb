@@ -232,6 +232,28 @@ Namespace FileUtils
 
 #Region "Methods"
 
+        Public Shared Sub Cache_All()
+            If MessageBox.Show(Master.eLang.GetString(104, "Are you sure?"), Master.eLang.GetString(565, "Clear Cache"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                If Directory.Exists(Master.TempPath) Then
+                    Try
+                        Dim dInfo As New DirectoryInfo(Master.TempPath)
+                        Dim dList As IEnumerable(Of DirectoryInfo)
+                        Dim fList As New List(Of FileInfo)
+                        dList = dInfo.GetDirectories
+                        fList.AddRange(dInfo.GetFiles())
+                        For Each inDir As DirectoryInfo In dList
+                            Directory.Delete(inDir.FullName, True)
+                        Next
+                        For Each fFile As FileInfo In fList
+                            File.Delete(fFile.FullName)
+                        Next
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                End If
+            End If
+        End Sub
+
         Public Shared Sub Cache_Show(ByVal TVDBIDs As List(Of String), ByVal cData As Boolean, ByVal cImages As Boolean)
             If TVDBIDs IsNot Nothing AndAlso TVDBIDs.Count > 0 Then
                 If MessageBox.Show(Master.eLang.GetString(104, "Are you sure?"), Master.eLang.GetString(565, "Clear Cache"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
