@@ -618,29 +618,32 @@ Public Class Scanner
                 ' as second run might modify or empty it.
                 Dim remainder As String = sMatch.Groups(3).Value.ToString
 
-                Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+                If Not String.IsNullOrEmpty(Master.eSettings.TVMultiPartMatching) Then
+                    Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
 
-                ' check the remainder of the string for any further episodes.
-                If Not rShow.byDate AndAlso reg2.IsMatch(remainder) Then
-                    ' we want "long circuit" OR below so that both offsets are evaluated
-                    While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
-                        regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
-                        regexp2pos = If(reg2.IsMatch(remainder), reg2.Match(remainder).Index, -1)
-                        If (regexppos <= regexp2pos AndAlso regexppos <> -1) OrElse (regexppos >= 0 AndAlso regexp2pos = -1) Then
-                            eItem = New EpisodeItem
-                            GetEpisodeAndSeasonFromRegExp(reg.Match(remainder), eItem, defaultSeason)
-                            retEpisodeItemsList.Add(eItem)
-                            logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
-                            remainder = reg.Match(remainder).Groups(3).Value
-                        ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
-                            eItem = New EpisodeItem With {.Season = eItem.Season}
-                            eItem.Episode = CInt(reg2.Match(remainder).Groups(1).Value)
-                            retEpisodeItemsList.Add(eItem)
-                            logger.Info(String.Format("VideoInfoScanner: Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
-                            remainder = remainder.Substring(reg2.Match(remainder).Length)
-                        End If
-                    End While
+                    ' check the remainder of the string for any further episodes.
+                    If Not rShow.byDate AndAlso reg2.IsMatch(remainder) Then
+                        ' we want "long circuit" OR below so that both offsets are evaluated
+                        While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
+                            regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
+                            regexp2pos = If(reg2.IsMatch(remainder), reg2.Match(remainder).Index, -1)
+                            If (regexppos <= regexp2pos AndAlso regexppos <> -1) OrElse (regexppos >= 0 AndAlso regexp2pos = -1) Then
+                                eItem = New EpisodeItem
+                                GetEpisodeAndSeasonFromRegExp(reg.Match(remainder), eItem, defaultSeason)
+                                retEpisodeItemsList.Add(eItem)
+                                logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
+                                remainder = reg.Match(remainder).Groups(3).Value
+                            ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
+                                eItem = New EpisodeItem With {.Season = eItem.Season}
+                                eItem.Episode = CInt(reg2.Match(remainder).Groups(1).Value)
+                                retEpisodeItemsList.Add(eItem)
+                                logger.Info(String.Format("VideoInfoScanner: Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
+                                remainder = remainder.Substring(reg2.Match(remainder).Length)
+                            End If
+                        End While
+                    End If
                 End If
+
                 Exit For
             End If
         Next
