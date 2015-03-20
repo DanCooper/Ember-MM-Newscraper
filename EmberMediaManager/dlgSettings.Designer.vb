@@ -4039,7 +4039,7 @@ Partial Class dlgSettings
         Me.lblSettingsTopDetails.ForeColor = System.Drawing.Color.White
         Me.lblSettingsTopDetails.Location = New System.Drawing.Point(61, 38)
         Me.lblSettingsTopDetails.Name = "lblSettingsTopDetails"
-        Me.lblSettingsTopDetails.Size = New System.Drawing.Size(245, 13)
+        Me.lblSettingsTopDetails.Size = New System.Drawing.Size(246, 13)
         Me.lblSettingsTopDetails.TabIndex = 1
         Me.lblSettingsTopDetails.Text = "Configure Ember's appearance and operation."
         '
@@ -6491,7 +6491,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Name = "gbMovieSourcesFileNamingNMTDefaultsOpts"
         Me.tblMovieSourcesFileNamingNMT.SetRowSpan(Me.gbMovieSourcesFileNamingNMTDefaultsOpts, 2)
-        Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(142, 161)
+        Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(143, 161)
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.TabIndex = 3
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.TabStop = false
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = "Defaults"
@@ -6536,7 +6536,7 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(136, 140)
+        Me.tblMovieSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(137, 140)
         Me.tblMovieSourcesFileNamingNMTDefaultsOpts.TabIndex = 9
         '
         'lblMovieSourcesFileNamingNMTDefaultsBanner
@@ -6555,7 +6555,7 @@ Partial Class dlgSettings
         Me.chkMovieTrailerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieTrailerNMJ.AutoSize = true
         Me.chkMovieTrailerNMJ.Enabled = false
-        Me.chkMovieTrailerNMJ.Location = New System.Drawing.Point(109, 123)
+        Me.chkMovieTrailerNMJ.Location = New System.Drawing.Point(110, 123)
         Me.chkMovieTrailerNMJ.Name = "chkMovieTrailerNMJ"
         Me.chkMovieTrailerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieTrailerNMJ.TabIndex = 14
@@ -6599,7 +6599,7 @@ Partial Class dlgSettings
         Me.chkMoviePosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMoviePosterNMJ.AutoSize = true
         Me.chkMoviePosterNMJ.Enabled = false
-        Me.chkMoviePosterNMJ.Location = New System.Drawing.Point(109, 103)
+        Me.chkMoviePosterNMJ.Location = New System.Drawing.Point(110, 103)
         Me.chkMoviePosterNMJ.Name = "chkMoviePosterNMJ"
         Me.chkMoviePosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMoviePosterNMJ.TabIndex = 12
@@ -6612,7 +6612,7 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(58, 3)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Name = "lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ"
-        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(37, 13)
+        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.TabIndex = 1
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.Text = "YAMJ"
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderYAMJ.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -6633,7 +6633,7 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.AutoSize = true
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(101, 3)
+        Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(102, 3)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Name = "lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ"
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.Size = New System.Drawing.Size(32, 13)
         Me.lblMovieSourcesFileNamingNMTDefaultsHeaderNMJ.TabIndex = 2
@@ -6699,7 +6699,7 @@ Partial Class dlgSettings
         Me.chkMovieNFONMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieNFONMJ.AutoSize = true
         Me.chkMovieNFONMJ.Enabled = false
-        Me.chkMovieNFONMJ.Location = New System.Drawing.Point(109, 83)
+        Me.chkMovieNFONMJ.Location = New System.Drawing.Point(110, 83)
         Me.chkMovieNFONMJ.Name = "chkMovieNFONMJ"
         Me.chkMovieNFONMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieNFONMJ.TabIndex = 11
@@ -6710,7 +6710,7 @@ Partial Class dlgSettings
         Me.chkMovieFanartNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieFanartNMJ.AutoSize = true
         Me.chkMovieFanartNMJ.Enabled = false
-        Me.chkMovieFanartNMJ.Location = New System.Drawing.Point(109, 63)
+        Me.chkMovieFanartNMJ.Location = New System.Drawing.Point(110, 63)
         Me.chkMovieFanartNMJ.Name = "chkMovieFanartNMJ"
         Me.chkMovieFanartNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieFanartNMJ.TabIndex = 13
@@ -6732,7 +6732,7 @@ Partial Class dlgSettings
         Me.chkMovieBannerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieBannerNMJ.AutoSize = true
         Me.chkMovieBannerNMJ.Enabled = false
-        Me.chkMovieBannerNMJ.Location = New System.Drawing.Point(109, 43)
+        Me.chkMovieBannerNMJ.Location = New System.Drawing.Point(110, 43)
         Me.chkMovieBannerNMJ.Name = "chkMovieBannerNMJ"
         Me.chkMovieBannerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieBannerNMJ.TabIndex = 15
@@ -6742,7 +6742,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieUseNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieUseNMJ.AutoSize = true
-        Me.chkMovieUseNMJ.Location = New System.Drawing.Point(109, 23)
+        Me.chkMovieUseNMJ.Location = New System.Drawing.Point(110, 23)
         Me.chkMovieUseNMJ.Name = "chkMovieUseNMJ"
         Me.chkMovieUseNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieUseNMJ.TabIndex = 16
@@ -6764,7 +6764,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingNMTOptionalOpts)
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Location = New System.Drawing.Point(151, 3)
+        Me.gbMovieSourcesFileNamingNMTOptionalOpts.Location = New System.Drawing.Point(152, 3)
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Name = "gbMovieSourcesFileNamingNMTOptionalOpts"
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Size = New System.Drawing.Size(261, 95)
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.TabIndex = 18
@@ -10825,7 +10825,7 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(115, 3)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ"
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(37, 13)
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(38, 13)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.TabIndex = 0
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Text = "YAMJ"
         '
@@ -11542,9 +11542,9 @@ Partial Class dlgSettings
         Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Location = New System.Drawing.Point(575, 3)
         Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Name = "lblTVSourcesRegexTVShowMatchingDefaultSeason"
-        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Size = New System.Drawing.Size(90, 13)
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Size = New System.Drawing.Size(85, 13)
         Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.TabIndex = 2
-        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = "Default Seasons"
+        Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = "Default Season"
         '
         'txtTVSourcesRegexTVShowMatchingRegex
         '
@@ -11569,11 +11569,11 @@ Partial Class dlgSettings
         Me.lblTVSourcesRegexTVShowMatchingByDate.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesRegexTVShowMatchingByDate.AutoSize = true
         Me.lblTVSourcesRegexTVShowMatchingByDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesRegexTVShowMatchingByDate.Location = New System.Drawing.Point(692, 3)
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Location = New System.Drawing.Point(711, 3)
         Me.lblTVSourcesRegexTVShowMatchingByDate.Name = "lblTVSourcesRegexTVShowMatchingByDate"
-        Me.lblTVSourcesRegexTVShowMatchingByDate.Size = New System.Drawing.Size(84, 13)
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Size = New System.Drawing.Size(46, 13)
         Me.lblTVSourcesRegexTVShowMatchingByDate.TabIndex = 6
-        Me.lblTVSourcesRegexTVShowMatchingByDate.Text = "by ""Aired"" Date"
+        Me.lblTVSourcesRegexTVShowMatchingByDate.Text = "by Date"
         '
         'chkTVSourcesRegexTVShowMatchingByDate
         '
@@ -15868,19 +15868,19 @@ Partial Class dlgSettings
         Me.chkMovieScraperTags.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieScraperTags.TabIndex = 27
         Me.chkMovieScraperTags.UseVisualStyleBackColor = true
-        Me.chkMovieScraperTags.Visible = False
+        Me.chkMovieScraperTags.Visible = false
         '
         'chkMovieLockTags
         '
         Me.chkMovieLockTags.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkMovieLockTags.AutoSize = True
-        Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieLockTags.AutoSize = true
+        Me.chkMovieLockTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieLockTags.Location = New System.Drawing.Point(135, 293)
         Me.chkMovieLockTags.Name = "chkMovieLockTags"
         Me.chkMovieLockTags.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLockTags.TabIndex = 64
-        Me.chkMovieLockTags.UseVisualStyleBackColor = True
-        Me.chkMovieLockTags.Visible = False
+        Me.chkMovieLockTags.UseVisualStyleBackColor = true
+        Me.chkMovieLockTags.Visible = false
         '
         'lblMovieScraperGlobalTrailer
         '
@@ -16633,7 +16633,7 @@ Partial Class dlgSettings
         Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(3, 119)
         Me.lblMovieTrailerMinQual.Name = "lblMovieTrailerMinQual"
-        Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(97, 13)
+        Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(98, 13)
         Me.lblMovieTrailerMinQual.TabIndex = 8
         Me.lblMovieTrailerMinQual.Text = "Minimum Quality:"
         '
@@ -16644,7 +16644,7 @@ Partial Class dlgSettings
         Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 72)
         Me.lblMovieTrailerPrefQual.Name = "lblMovieTrailerPrefQual"
-        Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(96, 13)
+        Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(97, 13)
         Me.lblMovieTrailerPrefQual.TabIndex = 6
         Me.lblMovieTrailerPrefQual.Text = "Preferred Quality:"
         '

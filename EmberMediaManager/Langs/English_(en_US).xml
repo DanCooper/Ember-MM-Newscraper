@@ -693,10 +693,10 @@
   <string id="692">Season Match Regex:</string>
   <string id="693">Episode Match Regex:</string>
   <string id="694">Apply To</string>
-  <string id="695"></string>
+  <string id="695">Default Season</string>
   <string id="696">Season Regex</string>
   <string id="697">Episode Regex</string>
-  <string id="698"></string>
+  <string id="698">by Date</string>
   <string id="699">Regex</string>
   <string id="700">TV Show</string>
   <string id="701">TV Episode</string>
