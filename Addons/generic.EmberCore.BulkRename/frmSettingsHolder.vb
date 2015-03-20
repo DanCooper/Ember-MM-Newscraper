@@ -269,6 +269,26 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
+    Private Sub btnFilePatternEpisodesReset_Click(sender As Object, e As EventArgs) Handles btnFilePatternEpisodesReset.Click
+        Me.txtFilePatternEpisodes.Text = "$Z - $W2S?2E?{ - $T}"
+    End Sub
+
+    Private Sub btnFilePatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFilePatternMoviesReset.Click
+        Me.txtFilePatternMovies.Text = "$T{.$S}"
+    End Sub
+
+    Private Sub btnFolderPatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternMoviesReset.Click
+        Me.txtFolderPatternMovies.Text = "$T {($Y)}"
+    End Sub
+
+    Private Sub btnFolderPatternSeasonsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternSeasonsReset.Click
+        Me.txtFolderPatternSeasons.Text = "Season $K2?"
+    End Sub
+
+    Private Sub btnFolderPatternShowsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternShowsReset.Click
+        Me.txtFolderPatternShows.Text = "$Z"
+    End Sub
+
     Private Sub chkBulRenamer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBulkRenamer.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub

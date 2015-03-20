@@ -22,6 +22,7 @@ Partial Class frmSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
@@ -62,6 +63,11 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
+        Me.btnFolderPatternShowsReset = New System.Windows.Forms.Button()
+        Me.btnFolderPatternSeasonsReset = New System.Windows.Forms.Button()
+        Me.btnFilePatternEpisodesReset = New System.Windows.Forms.Button()
+        Me.btnFolderPatternMoviesReset = New System.Windows.Forms.Button()
+        Me.btnFilePatternMoviesReset = New System.Windows.Forms.Button()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
@@ -129,10 +135,10 @@ Partial Class frmSettingsHolder
         Me.gbRenamerPatternsTV.AutoSize = True
         Me.gbRenamerPatternsTV.Controls.Add(Me.tblRenamerPatternsTV)
         Me.gbRenamerPatternsTV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbRenamerPatternsTV.Location = New System.Drawing.Point(3, 241)
+        Me.gbRenamerPatternsTV.Location = New System.Drawing.Point(3, 243)
         Me.gbRenamerPatternsTV.Name = "gbRenamerPatternsTV"
         Me.tblSettingsMain.SetRowSpan(Me.gbRenamerPatternsTV, 2)
-        Me.gbRenamerPatternsTV.Size = New System.Drawing.Size(293, 257)
+        Me.gbRenamerPatternsTV.Size = New System.Drawing.Size(321, 260)
         Me.gbRenamerPatternsTV.TabIndex = 5
         Me.gbRenamerPatternsTV.TabStop = False
         Me.gbRenamerPatternsTV.Text = "Default TV Renaming Patterns"
@@ -140,9 +146,12 @@ Partial Class frmSettingsHolder
         'tblRenamerPatternsTV
         '
         Me.tblRenamerPatternsTV.AutoSize = True
-        Me.tblRenamerPatternsTV.ColumnCount = 2
+        Me.tblRenamerPatternsTV.ColumnCount = 3
         Me.tblRenamerPatternsTV.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblRenamerPatternsTV.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblRenamerPatternsTV.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblRenamerPatternsTV.Controls.Add(Me.btnFolderPatternSeasonsReset, 1, 3)
+        Me.tblRenamerPatternsTV.Controls.Add(Me.btnFolderPatternShowsReset, 1, 1)
         Me.tblRenamerPatternsTV.Controls.Add(Me.chkRenameSingleShows, 0, 7)
         Me.tblRenamerPatternsTV.Controls.Add(Me.lblFolderPatternShows, 0, 0)
         Me.tblRenamerPatternsTV.Controls.Add(Me.chkRenameMultiShows, 0, 6)
@@ -153,6 +162,7 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsTV.Controls.Add(Me.txtFolderPatternSeasons, 0, 3)
         Me.tblRenamerPatternsTV.Controls.Add(Me.chkRenameEditEpisodes, 0, 9)
         Me.tblRenamerPatternsTV.Controls.Add(Me.chkRenameUpdateEpisodes, 0, 8)
+        Me.tblRenamerPatternsTV.Controls.Add(Me.btnFilePatternEpisodesReset, 1, 5)
         Me.tblRenamerPatternsTV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblRenamerPatternsTV.Location = New System.Drawing.Point(3, 18)
         Me.tblRenamerPatternsTV.Name = "tblRenamerPatternsTV"
@@ -168,7 +178,7 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblRenamerPatternsTV.Size = New System.Drawing.Size(287, 236)
+        Me.tblRenamerPatternsTV.Size = New System.Drawing.Size(315, 239)
         Me.tblRenamerPatternsTV.TabIndex = 7
         '
         'chkRenameSingleShows
@@ -176,8 +186,9 @@ Partial Class frmSettingsHolder
         Me.chkRenameSingleShows.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRenameSingleShows.AutoSize = True
         Me.chkRenameSingleShows.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.tblRenamerPatternsTV.SetColumnSpan(Me.chkRenameSingleShows, 2)
         Me.chkRenameSingleShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameSingleShows.Location = New System.Drawing.Point(3, 170)
+        Me.chkRenameSingleShows.Location = New System.Drawing.Point(3, 173)
         Me.chkRenameSingleShows.Name = "chkRenameSingleShows"
         Me.chkRenameSingleShows.Size = New System.Drawing.Size(281, 17)
         Me.chkRenameSingleShows.TabIndex = 5
@@ -201,8 +212,9 @@ Partial Class frmSettingsHolder
         Me.chkRenameMultiShows.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRenameMultiShows.AutoSize = True
         Me.chkRenameMultiShows.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.tblRenamerPatternsTV.SetColumnSpan(Me.chkRenameMultiShows, 2)
         Me.chkRenameMultiShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameMultiShows.Location = New System.Drawing.Point(3, 147)
+        Me.chkRenameMultiShows.Location = New System.Drawing.Point(3, 150)
         Me.chkRenameMultiShows.Name = "chkRenameMultiShows"
         Me.chkRenameMultiShows.Size = New System.Drawing.Size(276, 17)
         Me.chkRenameMultiShows.TabIndex = 4
@@ -223,7 +235,7 @@ Partial Class frmSettingsHolder
         '
         Me.txtFilePatternEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtFilePatternEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilePatternEpisodes.Location = New System.Drawing.Point(3, 119)
+        Me.txtFilePatternEpisodes.Location = New System.Drawing.Point(3, 121)
         Me.txtFilePatternEpisodes.Name = "txtFilePatternEpisodes"
         Me.txtFilePatternEpisodes.Size = New System.Drawing.Size(280, 22)
         Me.txtFilePatternEpisodes.TabIndex = 3
@@ -233,7 +245,7 @@ Partial Class frmSettingsHolder
         Me.lblFilePatternEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblFilePatternEpisodes.AutoSize = True
         Me.lblFilePatternEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilePatternEpisodes.Location = New System.Drawing.Point(3, 99)
+        Me.lblFilePatternEpisodes.Location = New System.Drawing.Point(3, 101)
         Me.lblFilePatternEpisodes.Name = "lblFilePatternEpisodes"
         Me.lblFilePatternEpisodes.Size = New System.Drawing.Size(114, 13)
         Me.lblFilePatternEpisodes.TabIndex = 2
@@ -244,7 +256,7 @@ Partial Class frmSettingsHolder
         Me.lblFolderPatternSeasons.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblFolderPatternSeasons.AutoSize = True
         Me.lblFolderPatternSeasons.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFolderPatternSeasons.Location = New System.Drawing.Point(3, 51)
+        Me.lblFolderPatternSeasons.Location = New System.Drawing.Point(3, 52)
         Me.lblFolderPatternSeasons.Name = "lblFolderPatternSeasons"
         Me.lblFolderPatternSeasons.Size = New System.Drawing.Size(125, 13)
         Me.lblFolderPatternSeasons.TabIndex = 0
@@ -254,7 +266,7 @@ Partial Class frmSettingsHolder
         '
         Me.txtFolderPatternSeasons.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtFolderPatternSeasons.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFolderPatternSeasons.Location = New System.Drawing.Point(3, 71)
+        Me.txtFolderPatternSeasons.Location = New System.Drawing.Point(3, 72)
         Me.txtFolderPatternSeasons.Name = "txtFolderPatternSeasons"
         Me.txtFolderPatternSeasons.Size = New System.Drawing.Size(280, 22)
         Me.txtFolderPatternSeasons.TabIndex = 1
@@ -264,8 +276,9 @@ Partial Class frmSettingsHolder
         Me.chkRenameEditEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRenameEditEpisodes.AutoSize = True
         Me.chkRenameEditEpisodes.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.tblRenamerPatternsTV.SetColumnSpan(Me.chkRenameEditEpisodes, 2)
         Me.chkRenameEditEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameEditEpisodes.Location = New System.Drawing.Point(3, 216)
+        Me.chkRenameEditEpisodes.Location = New System.Drawing.Point(3, 219)
         Me.chkRenameEditEpisodes.Name = "chkRenameEditEpisodes"
         Me.chkRenameEditEpisodes.Size = New System.Drawing.Size(260, 17)
         Me.chkRenameEditEpisodes.TabIndex = 5
@@ -278,8 +291,9 @@ Partial Class frmSettingsHolder
         Me.chkRenameUpdateEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRenameUpdateEpisodes.AutoSize = True
         Me.chkRenameUpdateEpisodes.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.tblRenamerPatternsTV.SetColumnSpan(Me.chkRenameUpdateEpisodes, 2)
         Me.chkRenameUpdateEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameUpdateEpisodes.Location = New System.Drawing.Point(3, 193)
+        Me.chkRenameUpdateEpisodes.Location = New System.Drawing.Point(3, 196)
         Me.chkRenameUpdateEpisodes.Name = "chkRenameUpdateEpisodes"
         Me.chkRenameUpdateEpisodes.Size = New System.Drawing.Size(252, 17)
         Me.chkRenameUpdateEpisodes.TabIndex = 5
@@ -314,7 +328,7 @@ Partial Class frmSettingsHolder
         Me.gbRenamerPatternsMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbRenamerPatternsMovie.Location = New System.Drawing.Point(3, 49)
         Me.gbRenamerPatternsMovie.Name = "gbRenamerPatternsMovie"
-        Me.gbRenamerPatternsMovie.Size = New System.Drawing.Size(293, 186)
+        Me.gbRenamerPatternsMovie.Size = New System.Drawing.Size(322, 188)
         Me.gbRenamerPatternsMovie.TabIndex = 3
         Me.gbRenamerPatternsMovie.TabStop = False
         Me.gbRenamerPatternsMovie.Text = "Default Movie Renaming Patterns"
@@ -322,16 +336,19 @@ Partial Class frmSettingsHolder
         'tblRenamerPatternsMovie
         '
         Me.tblRenamerPatternsMovie.AutoSize = True
-        Me.tblRenamerPatternsMovie.ColumnCount = 2
+        Me.tblRenamerPatternsMovie.ColumnCount = 3
+        Me.tblRenamerPatternsMovie.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblRenamerPatternsMovie.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblRenamerPatternsMovie.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblRenamerPatternsMovie.Controls.Add(Me.chkRenameSingleMovies, 0, 5)
+        Me.tblRenamerPatternsMovie.Controls.Add(Me.btnFolderPatternMoviesReset, 1, 1)
         Me.tblRenamerPatternsMovie.Controls.Add(Me.lblFolderPatternMovies, 0, 0)
         Me.tblRenamerPatternsMovie.Controls.Add(Me.chkRenameMultiMovies, 0, 4)
         Me.tblRenamerPatternsMovie.Controls.Add(Me.txtFolderPatternMovies, 0, 1)
         Me.tblRenamerPatternsMovie.Controls.Add(Me.txtFilePatternMovies, 0, 3)
         Me.tblRenamerPatternsMovie.Controls.Add(Me.lblFilePatternMovies, 0, 2)
         Me.tblRenamerPatternsMovie.Controls.Add(Me.chkRenameEditMovies, 0, 6)
+        Me.tblRenamerPatternsMovie.Controls.Add(Me.btnFilePatternMoviesReset, 1, 3)
         Me.tblRenamerPatternsMovie.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblRenamerPatternsMovie.Location = New System.Drawing.Point(3, 18)
         Me.tblRenamerPatternsMovie.Name = "tblRenamerPatternsMovie"
@@ -344,7 +361,7 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsMovie.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsMovie.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsMovie.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblRenamerPatternsMovie.Size = New System.Drawing.Size(287, 165)
+        Me.tblRenamerPatternsMovie.Size = New System.Drawing.Size(316, 167)
         Me.tblRenamerPatternsMovie.TabIndex = 7
         '
         'chkRenameSingleMovies
@@ -353,7 +370,7 @@ Partial Class frmSettingsHolder
         Me.chkRenameSingleMovies.AutoSize = True
         Me.chkRenameSingleMovies.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameSingleMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameSingleMovies.Location = New System.Drawing.Point(3, 122)
+        Me.chkRenameSingleMovies.Location = New System.Drawing.Point(3, 124)
         Me.chkRenameSingleMovies.Name = "chkRenameSingleMovies"
         Me.chkRenameSingleMovies.Size = New System.Drawing.Size(281, 17)
         Me.chkRenameSingleMovies.TabIndex = 5
@@ -378,7 +395,7 @@ Partial Class frmSettingsHolder
         Me.chkRenameMultiMovies.AutoSize = True
         Me.chkRenameMultiMovies.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameMultiMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameMultiMovies.Location = New System.Drawing.Point(3, 99)
+        Me.chkRenameMultiMovies.Location = New System.Drawing.Point(3, 101)
         Me.chkRenameMultiMovies.Name = "chkRenameMultiMovies"
         Me.chkRenameMultiMovies.Size = New System.Drawing.Size(276, 17)
         Me.chkRenameMultiMovies.TabIndex = 4
@@ -399,7 +416,7 @@ Partial Class frmSettingsHolder
         '
         Me.txtFilePatternMovies.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtFilePatternMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilePatternMovies.Location = New System.Drawing.Point(3, 71)
+        Me.txtFilePatternMovies.Location = New System.Drawing.Point(3, 72)
         Me.txtFilePatternMovies.Name = "txtFilePatternMovies"
         Me.txtFilePatternMovies.Size = New System.Drawing.Size(280, 22)
         Me.txtFilePatternMovies.TabIndex = 3
@@ -409,7 +426,7 @@ Partial Class frmSettingsHolder
         Me.lblFilePatternMovies.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblFilePatternMovies.AutoSize = True
         Me.lblFilePatternMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilePatternMovies.Location = New System.Drawing.Point(3, 51)
+        Me.lblFilePatternMovies.Location = New System.Drawing.Point(3, 52)
         Me.lblFilePatternMovies.Name = "lblFilePatternMovies"
         Me.lblFilePatternMovies.Size = New System.Drawing.Size(70, 13)
         Me.lblFilePatternMovies.TabIndex = 2
@@ -421,7 +438,7 @@ Partial Class frmSettingsHolder
         Me.chkRenameEditMovies.AutoSize = True
         Me.chkRenameEditMovies.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameEditMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRenameEditMovies.Location = New System.Drawing.Point(3, 145)
+        Me.chkRenameEditMovies.Location = New System.Drawing.Point(3, 147)
         Me.chkRenameEditMovies.Name = "chkRenameEditMovies"
         Me.chkRenameEditMovies.Size = New System.Drawing.Size(216, 17)
         Me.chkRenameEditMovies.TabIndex = 5
@@ -433,7 +450,7 @@ Partial Class frmSettingsHolder
         '
         Me.lblTips.AutoSize = True
         Me.lblTips.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTips.Location = New System.Drawing.Point(302, 0)
+        Me.lblTips.Location = New System.Drawing.Point(331, 0)
         Me.lblTips.MaximumSize = New System.Drawing.Size(475, 360)
         Me.lblTips.Name = "lblTips"
         Me.tblSettingsMain.SetRowSpan(Me.lblTips, 4)
@@ -447,7 +464,7 @@ Partial Class frmSettingsHolder
         Me.gbPreview.Controls.Add(Me.tblPreview)
         Me.gbPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbPreview.Location = New System.Drawing.Point(302, 285)
+        Me.gbPreview.Location = New System.Drawing.Point(331, 290)
         Me.gbPreview.Name = "gbPreview"
         Me.gbPreview.Size = New System.Drawing.Size(412, 213)
         Me.gbPreview.TabIndex = 6
@@ -601,6 +618,56 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'btnFolderPatternShowsReset
+        '
+        Me.btnFolderPatternShowsReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFolderPatternShowsReset.Image = CType(resources.GetObject("btnFolderPatternShowsReset.Image"), System.Drawing.Image)
+        Me.btnFolderPatternShowsReset.Location = New System.Drawing.Point(289, 23)
+        Me.btnFolderPatternShowsReset.Name = "btnFolderPatternShowsReset"
+        Me.btnFolderPatternShowsReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFolderPatternShowsReset.TabIndex = 6
+        Me.btnFolderPatternShowsReset.UseVisualStyleBackColor = True
+        '
+        'btnFolderPatternSeasonsReset
+        '
+        Me.btnFolderPatternSeasonsReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFolderPatternSeasonsReset.Image = CType(resources.GetObject("btnFolderPatternSeasonsReset.Image"), System.Drawing.Image)
+        Me.btnFolderPatternSeasonsReset.Location = New System.Drawing.Point(289, 72)
+        Me.btnFolderPatternSeasonsReset.Name = "btnFolderPatternSeasonsReset"
+        Me.btnFolderPatternSeasonsReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFolderPatternSeasonsReset.TabIndex = 7
+        Me.btnFolderPatternSeasonsReset.UseVisualStyleBackColor = True
+        '
+        'btnFilePatternEpisodesReset
+        '
+        Me.btnFilePatternEpisodesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFilePatternEpisodesReset.Image = CType(resources.GetObject("btnFilePatternEpisodesReset.Image"), System.Drawing.Image)
+        Me.btnFilePatternEpisodesReset.Location = New System.Drawing.Point(289, 121)
+        Me.btnFilePatternEpisodesReset.Name = "btnFilePatternEpisodesReset"
+        Me.btnFilePatternEpisodesReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFilePatternEpisodesReset.TabIndex = 7
+        Me.btnFilePatternEpisodesReset.UseVisualStyleBackColor = True
+        '
+        'btnFolderPatternMoviesReset
+        '
+        Me.btnFolderPatternMoviesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFolderPatternMoviesReset.Image = CType(resources.GetObject("btnFolderPatternMoviesReset.Image"), System.Drawing.Image)
+        Me.btnFolderPatternMoviesReset.Location = New System.Drawing.Point(290, 23)
+        Me.btnFolderPatternMoviesReset.Name = "btnFolderPatternMoviesReset"
+        Me.btnFolderPatternMoviesReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFolderPatternMoviesReset.TabIndex = 6
+        Me.btnFolderPatternMoviesReset.UseVisualStyleBackColor = True
+        '
+        'btnFilePatternMoviesReset
+        '
+        Me.btnFilePatternMoviesReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFilePatternMoviesReset.Image = CType(resources.GetObject("btnFilePatternMoviesReset.Image"), System.Drawing.Image)
+        Me.btnFilePatternMoviesReset.Location = New System.Drawing.Point(290, 72)
+        Me.btnFilePatternMoviesReset.Name = "btnFilePatternMoviesReset"
+        Me.btnFilePatternMoviesReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnFilePatternMoviesReset.TabIndex = 6
+        Me.btnFilePatternMoviesReset.UseVisualStyleBackColor = True
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -677,4 +744,9 @@ Partial Class frmSettingsHolder
     Friend WithEvents txtSingleMovieFile As System.Windows.Forms.TextBox
     Friend WithEvents lblMultiSeasonFile As System.Windows.Forms.Label
     Friend WithEvents txtMultiSeasonFile As System.Windows.Forms.TextBox
+    Friend WithEvents btnFolderPatternShowsReset As System.Windows.Forms.Button
+    Friend WithEvents btnFolderPatternSeasonsReset As System.Windows.Forms.Button
+    Friend WithEvents btnFilePatternEpisodesReset As System.Windows.Forms.Button
+    Friend WithEvents btnFolderPatternMoviesReset As System.Windows.Forms.Button
+    Friend WithEvents btnFilePatternMoviesReset As System.Windows.Forms.Button
 End Class

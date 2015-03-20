@@ -889,11 +889,13 @@ Public Class FileFolderRenamer
                         End If
                         EpisodeFile.IsBDMV = True
                     Else
+                        EpisodeFile.Parent = Directory.GetParent(_tmpTVEpisode.Filename).FullName.Replace(Path.Combine(i, EpisodeFile.ShowPath), String.Empty).Trim
                         EpisodeFile.Path = Directory.GetParent(_tmpTVEpisode.Filename).FullName.Replace(i, String.Empty)
                     End If
                 End If
             Next
 
+            EpisodeFile.Parent = If(EpisodeFile.Parent.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.Parent.Substring(1), EpisodeFile.Parent)
             EpisodeFile.Path = If(EpisodeFile.Path.StartsWith(Path.DirectorySeparatorChar), EpisodeFile.Path.Substring(1), EpisodeFile.Path)
 
             If Not EpisodeFile.IsVideo_TS AndAlso Not EpisodeFile.IsBDMV Then
@@ -1553,9 +1555,11 @@ Public Class FileFolderRenamer
                 End If
 
                 ' removes all dots at the end of the name (dots are not allowed)
-                While pattern.Last = "."
-                    pattern = pattern.Remove(pattern.Length - 1)
-                End While
+                If Not String.IsNullOrEmpty(pattern) Then
+                    While pattern.Last = "."
+                        pattern = pattern.Remove(pattern.Length - 1)
+                    End While
+                End If
 
                 Return pattern.Trim
             Else

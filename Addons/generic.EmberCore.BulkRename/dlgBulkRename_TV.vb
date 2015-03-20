@@ -527,7 +527,7 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub txtFolderPatternSeasons_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternSeasons.TextChanged
         Try
-            If String.IsNullOrEmpty(txtFolderPatternSeasons.Text) Then txtFolderPatternSeasons.Text = "Season $K?"
+            If String.IsNullOrEmpty(txtFolderPatternSeasons.Text) Then txtFolderPatternSeasons.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
