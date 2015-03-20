@@ -423,7 +423,9 @@ Public Class Scraper
                                         .Plot = If(Episode.Element("Overview") Is Nothing, String.Empty, Episode.Element("Overview").Value.ToString.Trim)
                                         .Director = If(Episode.Element("Director") Is Nothing, String.Empty, String.Join(" / ", Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
                                         .OldCredits = If(Episode.Element("Writer") Is Nothing, String.Empty, String.Join(" / ", Episode.Element("Writer").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
-                                        .Actors = Actors
+                                        .Actors.Clear()
+                                        .Actors.AddRange(Actors)
+                                        If sInfo.Options.bEpGuestStars Then .Actors.AddRange(GuestStarsToActors(Episode.Element("GuestStars").Value))
                                         .PosterURL = If(Episode.Element("filename") Is Nothing, String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Episode.Element("filename").Value))
                                         .LocalFile = If(Episode.Element("filename") Is Nothing, String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
                                     End With
@@ -1505,11 +1507,19 @@ Public Class Scraper
             Dim gRole As String = Master.eLang.GetString(947, "Guest Star")
 
             If Not String.IsNullOrEmpty(sGStars) Then
-                For Each gStar In sGStars.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))
-                    If Not String.IsNullOrEmpty(gStar) Then
-                        gActors.Add(New MediaContainers.Person With {.Name = gStar, .Role = gRole})
-                    End If
-                Next
+                If sGStars.Contains("|") Then
+                    For Each gStar In sGStars.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))
+                        If Not String.IsNullOrEmpty(gStar) Then
+                            gActors.Add(New MediaContainers.Person With {.Name = gStar, .Role = gRole})
+                        End If
+                    Next
+                ElseIf sGStars.Contains(",") Then
+                    For Each gStar In sGStars.Trim(Convert.ToChar(",")).Split(Convert.ToChar(","))
+                        If Not String.IsNullOrEmpty(gStar) Then
+                            gActors.Add(New MediaContainers.Person With {.Name = gStar, .Role = gRole})
+                        End If
+                    Next
+                End If
             End If
             Return gActors
         End Function
