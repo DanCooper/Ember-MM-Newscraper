@@ -563,9 +563,9 @@
   <string id="562">Reloading Show</string>
   <string id="563">Reloading Season</string>
   <string id="564">YAMJ Specific NFO fields</string>
-  <string id="565"></string>
-  <string id="566"></string>
-  <string id="567"></string>
+  <string id="565">Clear Cache</string>
+  <string id="566">Data Only</string>
+  <string id="567">Images Only</string>
   <string id="568">Generating Actor Thumbs:</string>
   <string id="569">All</string>
   <string id="570">[none]</string>
@@ -581,7 +581,7 @@
   <string id="580">Display only movies from the selected video source.</string>
   <string id="581">Missing Items Filter</string>
   <string id="582">Missing</string>
-  <string id="583"></string>
+  <string id="583">Data and Images</string>
   <string id="584"></string>
   <string id="585"></string>
   <string id="586"></string>

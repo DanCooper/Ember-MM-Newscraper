@@ -4940,6 +4940,30 @@ doCancel:
         End If
     End Sub
 
+    Private Sub cmnuShowClearCacheDataAndImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowClearCacheDataAndImages.Click
+        Dim idList As New List(Of String)
+        For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+            idList.Add(sRow.Cells("TVDB").Value.ToString)
+        Next
+        FileUtils.Delete.Cache_Show(idList, True, True)
+    End Sub
+
+    Private Sub cmnuShowClearCacheDataOnly_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowClearCacheDataOnly.Click
+        Dim idList As New List(Of String)
+        For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+            idList.Add(sRow.Cells("TVDB").Value.ToString)
+        Next
+        FileUtils.Delete.Cache_Show(idList, True, False)
+    End Sub
+
+    Private Sub cmnuShowClearCacheImagesOnly_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowClearCacheImagesOnly.Click
+        Dim idList As New List(Of String)
+        For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+            idList.Add(sRow.Cells("TVDB").Value.ToString)
+        Next
+        FileUtils.Delete.Cache_Show(idList, False, True)
+    End Sub
+
     Private Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
@@ -18802,6 +18826,10 @@ doCancel:
                 .cmnuSeasonRemoveFromDisk.Text = Master.eLang.GetString(771, "Delete Season")
                 .cmnuSeasonRescrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
                 .cmnuShowChange.Text = Master.eLang.GetString(767, "Change Show")
+                .cmnuShowClearCache.Text = Master.eLang.GetString(565, "Clear Cache")
+                .cmnuShowClearCacheDataAndImages.Text = Master.eLang.GetString(583, "Data and Images")
+                .cmnuShowClearCacheDataOnly.Text = Master.eLang.GetString(566, "Data Only")
+                .cmnuShowClearCacheImagesOnly.Text = Master.eLang.GetString(567, "Images Only")
                 .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
                 .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
                 .cmnuShowLanguage.Text = Master.eLang.GetString(1200, "Change Language")

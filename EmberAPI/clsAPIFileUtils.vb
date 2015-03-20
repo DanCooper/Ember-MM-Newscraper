@@ -28,11 +28,12 @@ Namespace FileUtils
     Public Class Common
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
 #End Region 'Fields
 
 #Region "Methods"
-
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
         ''' </summary>
@@ -131,7 +132,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -222,12 +223,47 @@ Namespace FileUtils
     End Class
 
     Public Class Delete
+
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
 #End Region 'Fields
 
 #Region "Methods"
 
+        Public Shared Sub Cache_Show(ByVal TVDBIDs As List(Of String), ByVal cData As Boolean, ByVal cImages As Boolean)
+            If TVDBIDs IsNot Nothing AndAlso TVDBIDs.Count > 0 Then
+                If MessageBox.Show(Master.eLang.GetString(104, "Are you sure?"), Master.eLang.GetString(565, "Clear Cache"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                    For Each id As String In TVDBIDs
+                        Try
+                            Dim basePath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, id))
+                            If Directory.Exists(basePath) Then
+                                If cData AndAlso cImages Then
+                                    Directory.Delete(basePath, True)
+                                ElseIf cData Then
+                                    Dim dInfo As New DirectoryInfo(basePath)
+                                    Dim fList As New List(Of FileInfo)
+                                    fList.AddRange(dInfo.GetFiles("*.zip"))
+                                    For Each fFile As FileInfo In fList
+                                        File.Delete(fFile.FullName)
+                                    Next
+                                ElseIf cImages Then
+                                    Dim dInfo As New DirectoryInfo(basePath)
+                                    Dim dList As IEnumerable(Of DirectoryInfo)
+                                    dList = dInfo.GetDirectories
+                                    For Each inDir As DirectoryInfo In dList
+                                        Directory.Delete(inDir.FullName, True)
+                                    Next
+                                End If
+                            End If
+                        Catch ex As Exception
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                        End Try
+                    Next
+                End If
+            End If
+        End Sub
         ''' <summary>
         ''' Safer method of deleting a diretory and all it's contents
         ''' </summary>
@@ -271,7 +307,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -508,8 +544,11 @@ Namespace FileUtils
     End Class
 
     Public Class DragAndDrop
+
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
 #End Region 'Fields
 
 #Region "Methods"
@@ -578,8 +617,11 @@ Namespace FileUtils
     End Class
 
     Public Class GetFilenameList
+
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
 #End Region 'Fields
 
 #Region "Methods"
@@ -1754,12 +1796,14 @@ Namespace FileUtils
     ''' </summary>
     ''' <remarks></remarks>
     Public Module FileSorter
+
 #Region "Fields"
+
         Dim logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
 #End Region 'Fields
 
 #Region "Events"
-
         ''' <summary>
         ''' Event that is raised when SortFiles desires the progress indicator to be updated
         ''' </summary>
@@ -1771,7 +1815,6 @@ Namespace FileUtils
 #End Region 'Events
 
 #Region "Methods"
-
         ''' <summary>
         ''' Reorganize the media files in the given folder into subfolders.
         ''' </summary>
@@ -1873,7 +1916,7 @@ Namespace FileUtils
                     di = Nothing
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 

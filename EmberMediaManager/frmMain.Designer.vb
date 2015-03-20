@@ -290,9 +290,13 @@ Partial Class frmMain
         Me.cmnuShowLanguageLanguages = New System.Windows.Forms.ToolStripComboBox()
         Me.cmnuShowLanguageSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowChange = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuShowClearCache = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowClearCacheDataOnly = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowClearCacheImagesOnly = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
@@ -1175,6 +1179,7 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
+        Me.cmnuShowClearCacheDataAndImages = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -3703,7 +3708,7 @@ Partial Class frmMain
         '
         Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload, Me.cmnuMovieSetMark, Me.cmnuMovieSetLock, Me.cmnuMovieSetSep2, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetRemove, Me.cmnuMovieSetSep3, Me.cmnuMovieSetRescrape})
         Me.cmnuMovieSet.Name = "cmnuMovieSets"
-        Me.cmnuMovieSet.Size = New System.Drawing.Size(222, 220)
+        Me.cmnuMovieSet.Size = New System.Drawing.Size(222, 198)
         '
         'cmnuMovieSetTitle
         '
@@ -3835,9 +3840,9 @@ Partial Class frmMain
         '
         'cmnuShow
         '
-        Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowRefresh, Me.cmnuShowLanguage, Me.cmnuShowChange, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowRemove})
+        Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowRefresh, Me.cmnuShowLanguage, Me.cmnuShowChange, Me.ToolStripSeparator1, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowClearCache, Me.ToolStripSeparator11, Me.cmnuShowRemove})
         Me.cmnuShow.Name = "mnuShows"
-        Me.cmnuShow.Size = New System.Drawing.Size(247, 298)
+        Me.cmnuShow.Size = New System.Drawing.Size(247, 348)
         '
         'cmnuShowTitle
         '
@@ -3946,10 +3951,10 @@ Partial Class frmMain
         Me.cmnuShowChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowChange.Text = "Change Show"
         '
-        'ToolStripSeparator11
+        'ToolStripSeparator1
         '
-        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(243, 6)
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowOpenFolder
         '
@@ -3963,6 +3968,31 @@ Partial Class frmMain
         '
         Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
         Me.ToolStripSeparator20.Size = New System.Drawing.Size(243, 6)
+        '
+        'cmnuShowClearCache
+        '
+        Me.cmnuShowClearCache.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowClearCacheDataAndImages, Me.cmnuShowClearCacheDataOnly, Me.cmnuShowClearCacheImagesOnly})
+        Me.cmnuShowClearCache.Image = CType(resources.GetObject("cmnuShowClearCache.Image"),System.Drawing.Image)
+        Me.cmnuShowClearCache.Name = "cmnuShowClearCache"
+        Me.cmnuShowClearCache.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuShowClearCache.Text = "Clear Cache"
+        '
+        'cmnuShowClearCacheDataOnly
+        '
+        Me.cmnuShowClearCacheDataOnly.Name = "cmnuShowClearCacheDataOnly"
+        Me.cmnuShowClearCacheDataOnly.Size = New System.Drawing.Size(162, 22)
+        Me.cmnuShowClearCacheDataOnly.Text = "Data Only"
+        '
+        'cmnuShowClearCacheImagesOnly
+        '
+        Me.cmnuShowClearCacheImagesOnly.Name = "cmnuShowClearCacheImagesOnly"
+        Me.cmnuShowClearCacheImagesOnly.Size = New System.Drawing.Size(162, 22)
+        Me.cmnuShowClearCacheImagesOnly.Text = "Images Only"
+        '
+        'ToolStripSeparator11
+        '
+        Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowRemove
         '
@@ -11986,6 +12016,12 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
+        'cmnuShowClearCacheDataAndImages
+        '
+        Me.cmnuShowClearCacheDataAndImages.Name = "cmnuShowClearCacheDataAndImages"
+        Me.cmnuShowClearCacheDataAndImages.Size = New System.Drawing.Size(162, 22)
+        Me.cmnuShowClearCacheDataAndImages.Text = "Data and Images"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -13519,4 +13555,9 @@ End Sub
     Friend WithEvents pbBannerCache As System.Windows.Forms.PictureBox
     Friend WithEvents cbFilterCustom_Movies As System.Windows.Forms.ComboBox
     Friend WithEvents cmnuMovieUpSelCollectionID As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuShowClearCache As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuShowClearCacheDataOnly As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuShowClearCacheImagesOnly As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuShowClearCacheDataAndImages As System.Windows.Forms.ToolStripMenuItem
 End Class
