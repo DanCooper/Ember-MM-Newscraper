@@ -108,7 +108,7 @@
   <string id="107">Unmark</string>
   <string id="108">Unlock</string>
   <string id="109">WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE</string>
-  <string id="110">Refreshing Media:</string>
+  <string id="110">Refreshing Media</string>
   <string id="111">Unable to load directories. Please check settings.</string>
   <string id="112">Runtime: {0}</string>
   <string id="113">Now select the default language you would like Ember to look for when scraping TV Show items.</string>
@@ -560,8 +560,8 @@
   <string id="559">Scrapers - Trailers</string>
   <string id="560">TV Show Options</string>
   <string id="561">YAMJ Compatible Sets</string>
-  <string id="562"></string>
-  <string id="563"></string>
+  <string id="562">Reloading Show</string>
+  <string id="563">Reloading Season</string>
   <string id="564">YAMJ Specific NFO fields</string>
   <string id="565"></string>
   <string id="566"></string>
@@ -729,7 +729,7 @@
   <string id="728">Aired</string>
   <string id="729">Credits</string>
   <string id="730">Preferred Type:</string>
-  <string id="731">Refreshing Show:</string>
+  <string id="731">Refreshing Show</string>
   <string id="732">&lt;h&gt;=Hours{0}&lt;m&gt;=Minutes{0}&lt;s&gt;=Seconds</string>
   <string id="733">Display Missing Episodes</string>
   <string id="734">Build Episode Title Instead of Filtering</string>
