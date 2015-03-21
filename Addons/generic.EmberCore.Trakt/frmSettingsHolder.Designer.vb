@@ -32,6 +32,7 @@ Partial Class frmSettingsHolder
         Me.lblPassword = New System.Windows.Forms.Label()
         Me.txtUsername = New System.Windows.Forms.TextBox()
         Me.lblUsername = New System.Windows.Forms.Label()
+        Me.chkGetShowProgress = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsTop.SuspendLayout()
@@ -51,7 +52,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(351, 23)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(398, 23)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -68,7 +69,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(351, 23)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(398, 23)
         Me.tblSettingsTop.TabIndex = 21
         '
         'chkEnabled
@@ -93,10 +94,10 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 2
+        Me.tblSettingsMain.RowCount = 1
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsMain.Size = New System.Drawing.Size(351, 105)
+        Me.tblSettingsMain.Size = New System.Drawing.Size(398, 216)
         Me.tblSettingsMain.TabIndex = 21
         '
         'gbSettingsGeneral
@@ -106,7 +107,7 @@ Partial Class frmSettingsHolder
         Me.gbSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSettingsGeneral.Location = New System.Drawing.Point(3, 3)
         Me.gbSettingsGeneral.Name = "gbSettingsGeneral"
-        Me.gbSettingsGeneral.Size = New System.Drawing.Size(276, 77)
+        Me.gbSettingsGeneral.Size = New System.Drawing.Size(383, 210)
         Me.gbSettingsGeneral.TabIndex = 20
         Me.gbSettingsGeneral.TabStop = False
         Me.gbSettingsGeneral.Text = "General Settings"
@@ -122,14 +123,16 @@ Partial Class frmSettingsHolder
         Me.tblSettingsGeneral.Controls.Add(Me.lblPassword, 0, 1)
         Me.tblSettingsGeneral.Controls.Add(Me.txtUsername, 1, 0)
         Me.tblSettingsGeneral.Controls.Add(Me.lblUsername, 0, 0)
+        Me.tblSettingsGeneral.Controls.Add(Me.chkGetShowProgress, 1, 3)
         Me.tblSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsGeneral.Location = New System.Drawing.Point(3, 18)
         Me.tblSettingsGeneral.Name = "tblSettingsGeneral"
-        Me.tblSettingsGeneral.RowCount = 3
+        Me.tblSettingsGeneral.RowCount = 4
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.Size = New System.Drawing.Size(270, 56)
+        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettingsGeneral.Size = New System.Drawing.Size(377, 189)
         Me.tblSettingsGeneral.TabIndex = 21
         '
         'txtPassword
@@ -168,6 +171,16 @@ Partial Class frmSettingsHolder
         Me.lblUsername.TabIndex = 40
         Me.lblUsername.Text = "Username"
         '
+        'chkGetShowProgress
+        '
+        Me.chkGetShowProgress.AutoSize = True
+        Me.chkGetShowProgress.Location = New System.Drawing.Point(67, 59)
+        Me.chkGetShowProgress.Name = "chkGetShowProgress"
+        Me.chkGetShowProgress.Size = New System.Drawing.Size(307, 17)
+        Me.chkGetShowProgress.TabIndex = 44
+        Me.chkGetShowProgress.Text = "Display watched progress for shows (Time consuming!)"
+        Me.chkGetShowProgress.UseVisualStyleBackColor = True
+        '
         'pnlSettingsMain
         '
         Me.pnlSettingsMain.AutoSize = True
@@ -175,7 +188,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 23)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(351, 105)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(398, 216)
         Me.pnlSettingsMain.TabIndex = 1
         '
         'pnlSettings
@@ -186,7 +199,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(351, 128)
+        Me.pnlSettings.Size = New System.Drawing.Size(398, 239)
         Me.pnlSettings.TabIndex = 1
         '
         'frmSettingsHolder
@@ -195,7 +208,7 @@ Partial Class frmSettingsHolder
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(351, 128)
+        Me.ClientSize = New System.Drawing.Size(398, 239)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -235,5 +248,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
+    Friend WithEvents chkGetShowProgress As System.Windows.Forms.CheckBox
 
 End Class
