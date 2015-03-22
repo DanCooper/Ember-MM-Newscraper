@@ -101,12 +101,62 @@ Public Class Theming
         frmMain.lblRuntime.ForeColor = xTheme.TopPanelForeColor
         frmMain.lblTagline.ForeColor = xTheme.TopPanelForeColor
 
-        frmMain.pbFanart.BackColor = xTheme.FanartBackColor
-        frmMain.scMain.Panel2.BackColor = xTheme.FanartBackColor
-        frmMain.pnlPoster.BackColor = xTheme.PosterBackColor
-        frmMain.pbPoster.BackColor = xTheme.PosterBackColor
+
+   
         frmMain.pnlMPAA.BackColor = xTheme.MPAABackColor
         frmMain.pbMPAA.BackColor = xTheme.MPAABackColor
+
+        'Poster-Style
+        frmMain.pnlPoster.BackColor = xTheme.PosterBackColor
+        frmMain.pbPoster.BackColor = xTheme.PosterBackColor
+        frmMain.pnlPosterMain.BackColor = xTheme.PosterBackColor
+        frmMain.pnlPosterBottom.BackColor = xTheme.PosterBottomBackColor
+        frmMain.pnlPosterTop.BackColor = xTheme.PosterTopBackColor
+        'Fanart-Style
+        frmMain.scMain.Panel2.BackColor = xTheme.FanartBigBackColor
+        frmMain.pbFanart.BackColor = xTheme.FanartBigBackColor
+        frmMain.pnlFanartSmall.BackColor = xTheme.FanartBackColor
+        frmMain.pbFanartSmall.BackColor = xTheme.FanartBackColor
+        frmMain.pnlFanartSmallMain.BackColor = xTheme.FanartBackColor
+        frmMain.pnlFanartSmallBottom.BackColor = xTheme.FanartBottomBackColor
+        frmMain.pnlFanartSmallTop.BackColor = xTheme.FanartTopBackColor
+        'Banner-Style
+        frmMain.pnlBanner.BackColor = xTheme.BannerBackColor
+        frmMain.pbBanner.BackColor = xTheme.BannerBackColor
+        frmMain.pnlBannerMain.BackColor = xTheme.BannerBackColor
+        frmMain.pnlBannerBottom.BackColor = xTheme.BannerBottomBackColor
+        frmMain.pnlBannerTop.BackColor = xTheme.BannerTopBackColor
+        'CharacterArt-Style
+        frmMain.pnlCharacterArt.BackColor = xTheme.CharacterArtBackColor
+        frmMain.pbCharacterArt.BackColor = xTheme.CharacterArtBackColor
+        frmMain.pnlCharacterArtMain.BackColor = xTheme.CharacterArtBackColor
+        frmMain.pnlCharacterArtBottom.BackColor = xTheme.CharacterArtBottomBackColor
+        frmMain.pnlCharacterArtTop.BackColor = xTheme.CharacterArtTopBackColor
+        'ClearArt-Style
+        frmMain.pnlClearArt.BackColor = xTheme.ClearArtBackColor
+        frmMain.pbClearArt.BackColor = xTheme.ClearArtBackColor
+        frmMain.pnlClearArtMain.BackColor = xTheme.ClearArtBackColor
+        frmMain.pnlClearArtBottom.BackColor = xTheme.ClearArtBottomBackColor
+        frmMain.pnlClearArtTop.BackColor = xTheme.ClearArtTopBackColor
+        'ClearLogo-Style
+        frmMain.pnlClearLogo.BackColor = xTheme.ClearlogoBackColor
+        frmMain.pbClearLogo.BackColor = xTheme.ClearlogoBackColor
+        frmMain.pnlClearLogoMain.BackColor = xTheme.ClearlogoBackColor
+        frmMain.pnlClearLogoBottom.BackColor = xTheme.ClearlogoBottomBackColor
+        frmMain.pnlClearLogoTop.BackColor = xTheme.ClearlogoTopBackColor
+        'DiscArt-Style
+        frmMain.pnlDiscArt.BackColor = xTheme.DiscartBackColor
+        frmMain.pbDiscArt.BackColor = xTheme.DiscartBackColor
+        frmMain.pnlDiscArtMain.BackColor = xTheme.DiscartBackColor
+        frmMain.pnlDiscArtBottom.BackColor = xTheme.DiscartBottomBackColor
+        frmMain.pnlDiscArtTop.BackColor = xTheme.DiscartTopBackColor
+        'Landscape-Style
+        frmMain.pnlLandscape.BackColor = xTheme.LandscapeBackColor
+        frmMain.pbLandscape.BackColor = xTheme.LandscapeBackColor
+        frmMain.pnlLandscapeMain.BackColor = xTheme.LandscapeBackColor
+        frmMain.pnlLandscapeBottom.BackColor = xTheme.LandscapeBottomBackColor
+        frmMain.pnlLandscapeTop.BackColor = xTheme.LandscapeTopBackColor
+
 
         frmMain.GenrePanelColor = xTheme.GenreBackColor
         frmMain.PosterMaxWidth = xTheme.PosterMaxWidth
@@ -240,26 +290,325 @@ Public Class Theming
         'top panel
         Try
             Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
+
             If xTop.Count > 0 Then
-                If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then tTheme.TopPanelBackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
-                If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
+                If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then
+                    If Integer.TryParse(xTop.<backcolor>.Value, 0) = True Then
+                        tTheme.TopPanelBackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
+                    Else
+                        tTheme.TopPanelBackColor = System.Drawing.ColorTranslator.FromHtml(xTop.<backcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then
+                    If Integer.TryParse(xTop.<forecolor>.Value, 0) = True Then
+                        tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
+                    Else
+                        tTheme.TopPanelForeColor = System.Drawing.ColorTranslator.FromHtml(xTop.<forecolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then
+                    If Integer.TryParse(xTop.<forecolor>.Value, 0) = True Then
+                        tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
+                    Else
+                        tTheme.TopPanelForeColor = System.Drawing.ColorTranslator.FromHtml(xTop.<forecolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then
+                    If Integer.TryParse(xTop.<forecolor>.Value, 0) = True Then
+                        tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
+                    Else
+                        tTheme.TopPanelForeColor = System.Drawing.ColorTranslator.FromHtml(xTop.<forecolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then
+                    If Integer.TryParse(xTop.<forecolor>.Value, 0) = True Then
+                        tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
+                    Else
+                        tTheme.TopPanelForeColor = System.Drawing.ColorTranslator.FromHtml(xTop.<forecolor>.Value)
+                    End If
+                End If
+
             End If
+
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         'images
         Try
             Dim xImages = From xTheme In ThemeXML...<theme>...<images>
             If xImages.Count > 0 Then
-                If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then tTheme.FanartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
-                If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then tTheme.PosterBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
-                If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then tTheme.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
+
+                'Fanart
+                If Not String.IsNullOrEmpty(xImages.<fanartbigbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<fanartbigbackcolor>.Value, 0) = True Then
+                        tTheme.FanartBigBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbigbackcolor>.Value))
+                    Else
+                        tTheme.FanartBigBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartbigbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<fanartbackcolor>.Value, 0) = True Then
+                        tTheme.FanartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
+                    Else
+                        tTheme.FanartBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<fanarttopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<fanarttopbackcolor>.Value, 0) = True Then
+                        tTheme.FanartTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanarttopbackcolor>.Value))
+                    Else
+                        tTheme.FanartTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanarttopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<fanartbottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<fanartbottombackcolor>.Value, 0) = True Then
+                        tTheme.FanartBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbottombackcolor>.Value))
+                    Else
+                        tTheme.FanartBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartbottombackcolor>.Value)
+                    End If
+                End If
+
+                'Poster
+                If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<posterbackcolor>.Value, 0) = True Then
+                        tTheme.PosterBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
+                    Else
+                        tTheme.PosterBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<posterbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<postertopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<postertopbackcolor>.Value, 0) = True Then
+                        tTheme.PosterTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<postertopbackcolor>.Value))
+                    Else
+                        tTheme.PosterTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<postertopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<posterbottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<posterbottombackcolor>.Value, 0) = True Then
+                        tTheme.PosterBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbottombackcolor>.Value))
+                    Else
+                        tTheme.PosterBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<posterbottombackcolor>.Value)
+                    End If
+                End If
+
+                'Banner
+                If Not String.IsNullOrEmpty(xImages.<bannerbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<bannerbackcolor>.Value, 0) = True Then
+                        tTheme.BannerBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannerbackcolor>.Value))
+                    Else
+                        tTheme.BannerBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<bannerbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<bannertopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<bannertopbackcolor>.Value, 0) = True Then
+                        tTheme.BannerTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannertopbackcolor>.Value))
+                    Else
+                        tTheme.BannerTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<bannertopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<bannerbottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<bannerbottombackcolor>.Value, 0) = True Then
+                        tTheme.BannerBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannerbottombackcolor>.Value))
+                    Else
+                        tTheme.BannerBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<bannerbottombackcolor>.Value)
+                    End If
+                End If
+
+                'Clearart
+                If Not String.IsNullOrEmpty(xImages.<clearartbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<clearartbackcolor>.Value, 0) = True Then
+                        tTheme.ClearArtBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearartbackcolor>.Value))
+                    Else
+                        tTheme.ClearArtBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearartbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<cleararttopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<cleararttopbackcolor>.Value, 0) = True Then
+                        tTheme.ClearArtTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<cleararttopbackcolor>.Value))
+                    Else
+                        tTheme.ClearArtTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<cleararttopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<clearartbottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<clearartbottombackcolor>.Value, 0) = True Then
+                        tTheme.ClearArtBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearartbottombackcolor>.Value))
+                    Else
+                        tTheme.ClearArtBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearartbottombackcolor>.Value)
+                    End If
+                End If
+
+                'Clearlogo
+                If Not String.IsNullOrEmpty(xImages.<clearlogobackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<clearlogobackcolor>.Value, 0) = True Then
+                        tTheme.ClearlogoBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogobackcolor>.Value))
+                    Else
+                        tTheme.ClearlogoBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearlogobackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<clearlogotopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<clearlogotopbackcolor>.Value, 0) = True Then
+                        tTheme.ClearlogoTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogotopbackcolor>.Value))
+                    Else
+                        tTheme.ClearlogoTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearlogotopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<clearlogobottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<clearlogobottombackcolor>.Value, 0) = True Then
+                        tTheme.ClearlogoBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogobottombackcolor>.Value))
+                    Else
+                        tTheme.ClearlogoBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearlogobottombackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<mpaabackcolor>.Value, 0) = True Then
+                        tTheme.MPAABackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
+                    Else
+                        tTheme.MPAABackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<mpaabackcolor>.Value)
+                    End If
+                End If
+
+                'Discart
+                If Not String.IsNullOrEmpty(xImages.<discartbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<discartbackcolor>.Value, 0) = True Then
+                        tTheme.DiscartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<discartbackcolor>.Value))
+                    Else
+                        tTheme.DiscartBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<discartbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<discarttopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<discarttopbackcolor>.Value, 0) = True Then
+                        tTheme.DiscartTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<discarttopbackcolor>.Value))
+                    Else
+                        tTheme.DiscartTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<discarttopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<discartbottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<discartbottombackcolor>.Value, 0) = True Then
+                        tTheme.DiscartBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<discartbottombackcolor>.Value))
+                    Else
+                        tTheme.DiscartBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<discartbottombackcolor>.Value)
+                    End If
+                End If
+
+                'Landscape
+                If Not String.IsNullOrEmpty(xImages.<landscapebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<landscapebackcolor>.Value, 0) = True Then
+                        tTheme.LandscapeBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapebackcolor>.Value))
+                    Else
+                        tTheme.LandscapeBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<landscapebackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<landscapetopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<landscapetopbackcolor>.Value, 0) = True Then
+                        tTheme.LandscapeTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapetopbackcolor>.Value))
+                    Else
+                        tTheme.LandscapeTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<landscapetopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<landscapebottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<landscapebottombackcolor>.Value, 0) = True Then
+                        tTheme.LandscapeBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapebottombackcolor>.Value))
+                    Else
+                        tTheme.LandscapeBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<landscapebottombackcolor>.Value)
+                    End If
+                End If
+
+                'Characterart
+                If Not String.IsNullOrEmpty(xImages.<characterartbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<characterartbackcolor>.Value, 0) = True Then
+                        tTheme.CharacterArtBackColor = Color.FromArgb(Convert.ToInt32(xImages.<characterartbackcolor>.Value))
+                    Else
+                        tTheme.CharacterArtBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<characterartbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<characterarttopbackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<characterarttopbackcolor>.Value, 0) = True Then
+                        tTheme.CharacterArtTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<characterarttopbackcolor>.Value))
+                    Else
+                        tTheme.CharacterArtTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<characterarttopbackcolor>.Value)
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(xImages.<characterartbottombackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<characterartbottombackcolor>.Value, 0) = True Then
+                        tTheme.CharacterArtBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<characterartbottombackcolor>.Value))
+                    Else
+                        tTheme.CharacterArtBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<characterartbottombackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
+                    If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) = True Then
+                        tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+                    Else
+                        tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
+                    End If
+                End If
+
+
+                If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then
+                    If Integer.TryParse(xImages.<postermaxheight>.Value, 0) = True Then
+                        tTheme.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
+                    End If
+                End If
+
                 If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then tTheme.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
                 If Not String.IsNullOrEmpty(xImages.<fanartsmallmaxheight>.Value) Then tTheme.FanartSmallMaxHeight = Convert.ToInt32(xImages.<fanartsmallmaxheight>.Value)
                 If Not String.IsNullOrEmpty(xImages.<fanartsmallmaxwidth>.Value) Then tTheme.FanartSmallMaxWidth = Convert.ToInt32(xImages.<fanartsmallmaxwidth>.Value)
-                If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then tTheme.MPAABackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
-                If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+     
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name,ex)
@@ -269,7 +618,13 @@ Public Class Theming
             'info panel
             Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
             If xIPMain.Count > 0 Then
-                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then tTheme.InfoPanelBackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
+                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then
+                    If Integer.TryParse(xIPMain(0).backcolor, 0) = True Then
+                        tTheme.InfoPanelBackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
+                    Else
+                        tTheme.InfoPanelBackColor = System.Drawing.ColorTranslator.FromHtml(xIPMain(0).backcolor)
+                    End If
+                End If
                 If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then tTheme.IPUp = Convert.ToInt32(xIPMain(0).ipup)
                 If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then tTheme.IPMid = Convert.ToInt32(xIPMain(0).ipmid)
             End If
@@ -286,8 +641,20 @@ Public Class Theming
                         If Not String.IsNullOrEmpty(xIP.<height>.Value) Then cControl.Height = xIP.<height>.Value
                         If Not String.IsNullOrEmpty(xIP.<left>.Value) Then cControl.Left = xIP.<left>.Value
                         If Not String.IsNullOrEmpty(xIP.<top>.Value) Then cControl.Top = xIP.<top>.Value
-                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then cControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
-                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then cControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
+                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then
+                            If Integer.TryParse(xIP.<backcolor>.Value, 0) = True Then
+                                cControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
+                            Else
+                                cControl.BackColor = System.Drawing.ColorTranslator.FromHtml(xIP.<backcolor>.Value)
+                            End If
+                        End If
+                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then
+                            If Integer.TryParse(xIP.<forecolor>.Value, 0) = True Then
+                                cControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
+                            Else
+                                cControl.ForeColor = System.Drawing.ColorTranslator.FromHtml(xIP.<forecolor>.Value)
+                            End If
+                        End If
                         If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then cControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
                         If Not String.IsNullOrEmpty(xIP.<visible>.Value) Then cControl.Visible = Convert.ToBoolean(xIP.<visible>.Value)
 
@@ -498,19 +865,52 @@ Public Class Theming
 #Region "Fields"
 
         Dim _controls As List(Of Controls)
-        Dim _fanartbackcolor As Color
+
+
         Dim _genrebackcolor As Color
         Dim _infopanelbackcolor As Color
         Dim _ipmid As Integer
         Dim _ipup As Integer
         Dim _mpaabackcolor As Color
-        Dim _posterbackcolor As Color
         Dim _postermaxheight As Integer
         Dim _postermaxwidth As Integer
         Dim _fanartsmallmaxheight As Integer
         Dim _fanartsmallmaxwidth As Integer
         Dim _toppanelbackcolor As Color
         Dim _toppanelforecolor As Color
+
+        Dim _posterbackcolor As Color
+        Dim _postertopbackcolor As Color
+        Dim _posterbottombackcolor As Color
+
+        Dim _fanartbigbackcolor As Color
+        Dim _fanartbackcolor As Color
+        Dim _fanarttopbackcolor As Color
+        Dim _fanartbottombackcolor As Color
+
+        Dim _bannerbackcolor As Color
+        Dim _bannertopbackcolor As Color
+        Dim _bannerbottombackcolor As Color
+
+        Dim _clearartbackcolor As Color
+        Dim _cleararttopbackcolor As Color
+        Dim _clearartbottombackcolor As Color
+
+        Dim _landscapebackcolor As Color
+        Dim _landscapetopbackcolor As Color
+        Dim _landscapebottombackcolor As Color
+
+        Dim _discartbackcolor As Color
+        Dim _discarttopbackcolor As Color
+        Dim _discartbottombackcolor As Color
+
+        Dim _characterartbackcolor As Color
+        Dim _characterarttopbackcolor As Color
+        Dim _characterartbottombackcolor As Color
+
+        Dim _clearlogobackcolor As Color
+        Dim _clearlogotopbackcolor As Color
+        Dim _clearlogobottombackcolor As Color
 
 #End Region 'Fields
 
@@ -533,14 +933,7 @@ Public Class Theming
             End Set
         End Property
 
-        Public Property FanartBackColor() As Color
-            Get
-                Return _fanartbackcolor
-            End Get
-            Set(ByVal value As Color)
-                _fanartbackcolor = value
-            End Set
-        End Property
+
 
         Public Property GenreBackColor() As Color
             Get
@@ -587,14 +980,7 @@ Public Class Theming
             End Set
         End Property
 
-        Public Property PosterBackColor() As Color
-            Get
-                Return _posterbackcolor
-            End Get
-            Set(ByVal value As Color)
-                _posterbackcolor = value
-            End Set
-        End Property
+       
 
         Public Property PosterMaxHeight() As Integer
             Get
@@ -650,6 +1036,241 @@ Public Class Theming
             End Set
         End Property
 
+        'Poster-Styling
+        Public Property PosterBackColor() As Color
+            Get
+                Return _posterbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _posterbackcolor = value
+            End Set
+        End Property
+
+        Public Property PosterTopBackColor() As Color
+            Get
+                Return _Postertopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _Postertopbackcolor = value
+            End Set
+        End Property
+
+        Public Property PosterBottomBackColor() As Color
+            Get
+                Return _Posterbottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _Posterbottombackcolor = value
+            End Set
+        End Property
+
+        'Fanart-Styling
+
+        Public Property FanartBigBackColor() As Color
+            Get
+                Return _fanartbigbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _fanartbigbackcolor = value
+            End Set
+        End Property
+
+        Public Property FanartBackColor() As Color
+            Get
+                Return _fanartbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _fanartbackcolor = value
+            End Set
+        End Property
+
+        Public Property FanartTopBackColor() As Color
+            Get
+                Return _Fanarttopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _Fanarttopbackcolor = value
+            End Set
+        End Property
+
+        Public Property FanartBottomBackColor() As Color
+            Get
+                Return _Fanartbottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _Fanartbottombackcolor = value
+            End Set
+        End Property
+
+        'Banner-Styling
+        Public Property BannerBackColor() As Color
+            Get
+                Return _bannerbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _bannerbackcolor = value
+            End Set
+        End Property
+
+        Public Property BannerTopBackColor() As Color
+            Get
+                Return _bannertopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _bannertopbackcolor = value
+            End Set
+        End Property
+
+        Public Property BannerBottomBackColor() As Color
+            Get
+                Return _bannerbottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _bannerbottombackcolor = value
+            End Set
+        End Property
+
+        'Clearlogo-Styling
+        Public Property ClearlogoBackColor() As Color
+            Get
+                Return _clearlogobackcolor
+            End Get
+            Set(ByVal value As Color)
+                _clearlogobackcolor = value
+            End Set
+        End Property
+
+        Public Property ClearlogoTopBackColor() As Color
+            Get
+                Return _clearlogotopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _clearlogotopbackcolor = value
+            End Set
+        End Property
+
+        Public Property ClearlogoBottomBackColor() As Color
+            Get
+                Return _clearlogobottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _clearlogobottombackcolor = value
+            End Set
+        End Property
+
+        'ClearArt-Styling
+        Public Property ClearArtBackColor() As Color
+            Get
+                Return _clearartbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _clearartbackcolor = value
+            End Set
+        End Property
+
+        Public Property ClearArtTopBackColor() As Color
+            Get
+                Return _cleararttopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _cleararttopbackcolor = value
+            End Set
+        End Property
+
+        Public Property ClearArtBottomBackColor() As Color
+            Get
+                Return _clearartbottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _clearartbottombackcolor = value
+            End Set
+        End Property
+
+        'Discart-Styling
+        Public Property DiscartBackColor() As Color
+            Get
+                Return _discartbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _discartbackcolor = value
+            End Set
+        End Property
+
+        Public Property DiscartTopBackColor() As Color
+            Get
+                Return _discarttopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _discarttopbackcolor = value
+            End Set
+        End Property
+
+        Public Property DiscartBottomBackColor() As Color
+            Get
+                Return _discartbottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _discartbottombackcolor = value
+            End Set
+        End Property
+
+        'CharacterArt-Styling
+        Public Property CharacterArtBackColor() As Color
+            Get
+                Return _characterartbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _characterartbackcolor = value
+            End Set
+        End Property
+
+        Public Property CharacterArtTopBackColor() As Color
+            Get
+                Return _characterarttopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _characterarttopbackcolor = value
+            End Set
+        End Property
+
+        Public Property CharacterArtBottomBackColor() As Color
+            Get
+                Return _characterartbottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _characterartbottombackcolor = value
+            End Set
+        End Property
+
+        'Landscape-Styling
+        Public Property LandscapeBackColor() As Color
+            Get
+                Return _landscapebackcolor
+            End Get
+            Set(ByVal value As Color)
+                _landscapebackcolor = value
+            End Set
+        End Property
+
+        Public Property LandscapeTopBackColor() As Color
+            Get
+                Return _landscapetopbackcolor
+            End Get
+            Set(ByVal value As Color)
+                _landscapetopbackcolor = value
+            End Set
+        End Property
+
+        Public Property LandscapeBottomBackColor() As Color
+            Get
+                Return _landscapebottombackcolor
+            End Get
+            Set(ByVal value As Color)
+                _landscapebottombackcolor = value
+            End Set
+        End Property
+
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -657,8 +1278,32 @@ Public Class Theming
         Public Sub Clear()
             _toppanelbackcolor = Color.Gainsboro
             _toppanelforecolor = Color.Black
-            _fanartbackcolor = Color.Gainsboro
             _posterbackcolor = Color.Gainsboro
+            _posterbottombackcolor = Color.Gainsboro
+            _postertopbackcolor = Color.Gainsboro
+            _fanartbigbackcolor = Color.Gainsboro
+            _fanartbackcolor = Color.Gainsboro
+            _fanartbottombackcolor = Color.Gainsboro
+            _fanarttopbackcolor = Color.Gainsboro
+            _bannerbackcolor = Color.Gainsboro
+            _bannerbottombackcolor = Color.Gainsboro
+            _bannertopbackcolor = Color.Gainsboro
+            _characterartbackcolor = Color.Gainsboro
+            _characterartbottombackcolor = Color.Gainsboro
+            _characterarttopbackcolor = Color.Gainsboro
+            _clearartbackcolor = Color.Gainsboro
+            _clearartbottombackcolor = Color.Gainsboro
+            _cleararttopbackcolor = Color.Gainsboro
+            _clearlogobackcolor = Color.Gainsboro
+            _clearlogobottombackcolor = Color.Gainsboro
+            _clearlogotopbackcolor = Color.Gainsboro
+            _discartbackcolor = Color.Gainsboro
+            _discartbottombackcolor = Color.Gainsboro
+            _discarttopbackcolor = Color.Gainsboro
+            _landscapebackcolor = Color.Gainsboro
+            _landscapebottombackcolor = Color.Gainsboro
+            _landscapetopbackcolor = Color.Gainsboro
+
             _postermaxwidth = 160
             _postermaxheight = 160
             _fanartsmallmaxwidth = 285
