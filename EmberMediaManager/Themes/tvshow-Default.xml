@@ -19,6 +19,10 @@ be anchor code 5.
 
 Can be combined by adding values. For example, bold and underlined would be
 fontstyle code 5.
+
+### Color Help ###
+Color can be a "system-defined color" https://msdn.microsoft.com/en-us/library/system.drawing.knowncolor%28v=vs.110%29.aspx
+or a "32-bit ARGB value"
 -->
 
 <theme>
