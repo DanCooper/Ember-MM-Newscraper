@@ -2666,6 +2666,46 @@ Public Class Images
         Return Nothing
     End Function
     ''' <summary>
+    ''' Select the single most preferred Banner image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredMovieBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MovieBannerPrefSize)
+        If aDesc.Count = 0 Then Return False
+
+        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
+        If x.Count > 0 Then
+            imgResult = x(0)
+            Return True
+        End If
+        Return False
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Banner image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredMovieSetBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MovieSetBannerPrefSize)
+        If aDesc.Count = 0 Then Return False
+
+        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
+        If x.Count > 0 Then
+            imgResult = x(0)
+            Return True
+        End If
+        Return False
+    End Function
+    ''' <summary>
     ''' Select the single most preferred Poster image
     ''' </summary>
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available posters</param>

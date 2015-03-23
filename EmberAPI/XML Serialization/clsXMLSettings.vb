@@ -80,7 +80,7 @@ Partial Public Class clsXMLSettings
     Private _moviebannerheight As Integer
     Private _moviebanneroverwrite As Boolean
     Private _moviebannerprefonly As Boolean
-    Private _moviebannerpreftype As Enums.MovieBannerType
+    Private _moviebannerprefsize As Enums.MovieBannerSize
     Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
@@ -222,7 +222,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetbannerheight As Integer
     Private _moviesetbanneroverwrite As Boolean
     Private _moviesetbannerprefonly As Boolean
-    Private _moviesetbannerpreftype As Enums.MovieBannerType
+    Private _moviesetbannerprefsize As Enums.MovieBannerSize
     Private _moviesetbannerresize As Boolean
     Private _moviesetbannerwidth As Integer
     Private _moviesetcleandb As Boolean
@@ -3369,21 +3369,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieBannerPrefType() As Enums.MovieBannerType
+    Public Property MovieBannerPrefSize() As Enums.MovieBannerSize
         Get
-            Return Me._moviebannerpreftype
+            Return Me._moviebannerprefsize
         End Get
-        Set(ByVal value As Enums.MovieBannerType)
-            Me._moviebannerpreftype = value
+        Set(ByVal value As Enums.MovieBannerSize)
+            Me._moviebannerprefsize = value
         End Set
     End Property
 
-    Public Property MovieSetBannerPrefType() As Enums.MovieBannerType
+    Public Property MovieSetBannerPrefSize() As Enums.MovieBannerSize
         Get
-            Return Me._moviesetbannerpreftype
+            Return Me._moviesetbannerprefsize
         End Get
-        Set(ByVal value As Enums.MovieBannerType)
-            Me._moviesetbannerpreftype = value
+        Set(ByVal value As Enums.MovieBannerSize)
+            Me._moviesetbannerprefsize = value
         End Set
     End Property
 

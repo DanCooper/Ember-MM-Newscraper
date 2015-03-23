@@ -128,9 +128,9 @@ Partial Class dlgSettings
         Me.tblMovieImagesBannerOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.txtMovieBannerWidth = New System.Windows.Forms.TextBox()
         Me.lblMovieBannerHeight = New System.Windows.Forms.Label()
-        Me.lblMovieBannerType = New System.Windows.Forms.Label()
+        Me.lblMovieBannerSize = New System.Windows.Forms.Label()
         Me.lblMovieBannerWidth = New System.Windows.Forms.Label()
-        Me.cbMovieBannerPrefType = New System.Windows.Forms.ComboBox()
+        Me.cbMovieBannerPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieBannerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieBannerResize = New System.Windows.Forms.CheckBox()
         Me.chkMovieBannerPrefOnly = New System.Windows.Forms.CheckBox()
@@ -204,6 +204,7 @@ Partial Class dlgSettings
         Me.colFolder = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.colSingle = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.colExclude = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.colGetYear = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.btnMovieSourceRemove = New System.Windows.Forms.Button()
         Me.btnMovieSourceAdd = New System.Windows.Forms.Button()
         Me.btnOK = New System.Windows.Forms.Button()
@@ -1331,9 +1332,9 @@ Partial Class dlgSettings
         Me.txtMovieSetBannerWidth = New System.Windows.Forms.TextBox()
         Me.lblMovieSetBannerHeight = New System.Windows.Forms.Label()
         Me.chkMovieSetBannerPrefOnly = New System.Windows.Forms.CheckBox()
-        Me.lblMovieSetBannerType = New System.Windows.Forms.Label()
+        Me.lblMovieSetBannerSize = New System.Windows.Forms.Label()
         Me.lblMovieSetBannerWidth = New System.Windows.Forms.Label()
-        Me.cbMovieSetBannerPrefType = New System.Windows.Forms.ComboBox()
+        Me.cbMovieSetBannerPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieSetBannerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetBannerResize = New System.Windows.Forms.CheckBox()
         Me.gbMovieSetImagesFanartOpts = New System.Windows.Forms.GroupBox()
@@ -1355,7 +1356,6 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.colGetYear = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -2976,9 +2976,9 @@ Partial Class dlgSettings
         Me.tblMovieImagesBannerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImagesBannerOpts.Controls.Add(Me.txtMovieBannerWidth, 1, 4)
         Me.tblMovieImagesBannerOpts.Controls.Add(Me.lblMovieBannerHeight, 2, 4)
-        Me.tblMovieImagesBannerOpts.Controls.Add(Me.lblMovieBannerType, 0, 0)
+        Me.tblMovieImagesBannerOpts.Controls.Add(Me.lblMovieBannerSize, 0, 0)
         Me.tblMovieImagesBannerOpts.Controls.Add(Me.lblMovieBannerWidth, 0, 4)
-        Me.tblMovieImagesBannerOpts.Controls.Add(Me.cbMovieBannerPrefType, 0, 1)
+        Me.tblMovieImagesBannerOpts.Controls.Add(Me.cbMovieBannerPrefSize, 0, 1)
         Me.tblMovieImagesBannerOpts.Controls.Add(Me.chkMovieBannerOverwrite, 0, 2)
         Me.tblMovieImagesBannerOpts.Controls.Add(Me.chkMovieBannerResize, 0, 3)
         Me.tblMovieImagesBannerOpts.Controls.Add(Me.chkMovieBannerPrefOnly, 3, 1)
@@ -3018,17 +3018,17 @@ Partial Class dlgSettings
         Me.lblMovieBannerHeight.TabIndex = 7
         Me.lblMovieBannerHeight.Text = "Max Height:"
         '
-        'lblMovieBannerType
+        'lblMovieBannerSize
         '
-        Me.lblMovieBannerType.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieBannerType.AutoSize = true
-        Me.tblMovieImagesBannerOpts.SetColumnSpan(Me.lblMovieBannerType, 5)
-        Me.lblMovieBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieBannerType.Location = New System.Drawing.Point(3, 3)
-        Me.lblMovieBannerType.Name = "lblMovieBannerType"
-        Me.lblMovieBannerType.Size = New System.Drawing.Size(83, 13)
-        Me.lblMovieBannerType.TabIndex = 0
-        Me.lblMovieBannerType.Text = "Preferred Type:"
+        Me.lblMovieBannerSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieBannerSize.AutoSize = true
+        Me.tblMovieImagesBannerOpts.SetColumnSpan(Me.lblMovieBannerSize, 5)
+        Me.lblMovieBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieBannerSize.Location = New System.Drawing.Point(3, 3)
+        Me.lblMovieBannerSize.Name = "lblMovieBannerSize"
+        Me.lblMovieBannerSize.Size = New System.Drawing.Size(80, 13)
+        Me.lblMovieBannerSize.TabIndex = 0
+        Me.lblMovieBannerSize.Text = "Preferred Size:"
         '
         'lblMovieBannerWidth
         '
@@ -3041,17 +3041,17 @@ Partial Class dlgSettings
         Me.lblMovieBannerWidth.TabIndex = 5
         Me.lblMovieBannerWidth.Text = "Max Width:"
         '
-        'cbMovieBannerPrefType
+        'cbMovieBannerPrefSize
         '
-        Me.cbMovieBannerPrefType.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblMovieImagesBannerOpts.SetColumnSpan(Me.cbMovieBannerPrefType, 3)
-        Me.cbMovieBannerPrefType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieBannerPrefType.FormattingEnabled = true
-        Me.cbMovieBannerPrefType.Location = New System.Drawing.Point(3, 23)
-        Me.cbMovieBannerPrefType.Name = "cbMovieBannerPrefType"
-        Me.cbMovieBannerPrefType.Size = New System.Drawing.Size(148, 21)
-        Me.cbMovieBannerPrefType.TabIndex = 1
+        Me.cbMovieBannerPrefSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblMovieImagesBannerOpts.SetColumnSpan(Me.cbMovieBannerPrefSize, 3)
+        Me.cbMovieBannerPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieBannerPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieBannerPrefSize.FormattingEnabled = true
+        Me.cbMovieBannerPrefSize.Location = New System.Drawing.Point(3, 23)
+        Me.cbMovieBannerPrefSize.Name = "cbMovieBannerPrefSize"
+        Me.cbMovieBannerPrefSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbMovieBannerPrefSize.TabIndex = 1
         '
         'chkMovieBannerOverwrite
         '
@@ -3953,6 +3953,10 @@ Partial Class dlgSettings
         'colExclude
         '
         Me.colExclude.Text = "Exclude"
+        '
+        'colGetYear
+        '
+        Me.colGetYear.Text = "Get Year"
         '
         'btnMovieSourceRemove
         '
@@ -18367,7 +18371,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetImagesClearLogoOpts.Location = New System.Drawing.Point(254, 151)
         Me.gbMovieSetImagesClearLogoOpts.Name = "gbMovieSetImagesClearLogoOpts"
-        Me.gbMovieSetImagesClearLogoOpts.Size = New System.Drawing.Size(262, 44)
+        Me.gbMovieSetImagesClearLogoOpts.Size = New System.Drawing.Size(259, 44)
         Me.gbMovieSetImagesClearLogoOpts.TabIndex = 15
         Me.gbMovieSetImagesClearLogoOpts.TabStop = false
         Me.gbMovieSetImagesClearLogoOpts.Text = "ClearLogo"
@@ -18383,7 +18387,7 @@ Partial Class dlgSettings
         Me.tblMovieSetImagesClearLogoOpts.Name = "tblMovieSetImagesClearLogoOpts"
         Me.tblMovieSetImagesClearLogoOpts.RowCount = 1
         Me.tblMovieSetImagesClearLogoOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetImagesClearLogoOpts.Size = New System.Drawing.Size(256, 23)
+        Me.tblMovieSetImagesClearLogoOpts.Size = New System.Drawing.Size(253, 23)
         Me.tblMovieSetImagesClearLogoOpts.TabIndex = 16
         '
         'chkMovieSetClearLogoOverwrite
@@ -18444,7 +18448,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetImagesBannerOpts.Location = New System.Drawing.Point(254, 3)
         Me.gbMovieSetImagesBannerOpts.Name = "gbMovieSetImagesBannerOpts"
-        Me.gbMovieSetImagesBannerOpts.Size = New System.Drawing.Size(262, 142)
+        Me.gbMovieSetImagesBannerOpts.Size = New System.Drawing.Size(259, 142)
         Me.gbMovieSetImagesBannerOpts.TabIndex = 12
         Me.gbMovieSetImagesBannerOpts.TabStop = false
         Me.gbMovieSetImagesBannerOpts.Text = "Banner"
@@ -18463,9 +18467,9 @@ Partial Class dlgSettings
         Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.txtMovieSetBannerWidth, 1, 4)
         Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.lblMovieSetBannerHeight, 2, 4)
         Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.chkMovieSetBannerPrefOnly, 3, 1)
-        Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.lblMovieSetBannerType, 0, 0)
+        Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.lblMovieSetBannerSize, 0, 0)
         Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.lblMovieSetBannerWidth, 0, 4)
-        Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.cbMovieSetBannerPrefType, 0, 1)
+        Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.cbMovieSetBannerPrefSize, 0, 1)
         Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.chkMovieSetBannerOverwrite, 0, 2)
         Me.tblMovieSetImagesBannerOpts.Controls.Add(Me.chkMovieSetBannerResize, 0, 3)
         Me.tblMovieSetImagesBannerOpts.Dock = System.Windows.Forms.DockStyle.Fill
@@ -18478,7 +18482,7 @@ Partial Class dlgSettings
         Me.tblMovieSetImagesBannerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesBannerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesBannerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetImagesBannerOpts.Size = New System.Drawing.Size(256, 121)
+        Me.tblMovieSetImagesBannerOpts.Size = New System.Drawing.Size(253, 121)
         Me.tblMovieSetImagesBannerOpts.TabIndex = 16
         '
         'txtMovieSetBannerHeight
@@ -18486,7 +18490,7 @@ Partial Class dlgSettings
         Me.txtMovieSetBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetBannerHeight.Enabled = false
         Me.txtMovieSetBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtMovieSetBannerHeight.Location = New System.Drawing.Point(213, 96)
+        Me.txtMovieSetBannerHeight.Location = New System.Drawing.Point(210, 96)
         Me.txtMovieSetBannerHeight.Name = "txtMovieSetBannerHeight"
         Me.txtMovieSetBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieSetBannerHeight.TabIndex = 8
@@ -18496,7 +18500,7 @@ Partial Class dlgSettings
         Me.txtMovieSetBannerWidth.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieSetBannerWidth.Enabled = false
         Me.txtMovieSetBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtMovieSetBannerWidth.Location = New System.Drawing.Point(92, 96)
+        Me.txtMovieSetBannerWidth.Location = New System.Drawing.Point(89, 96)
         Me.txtMovieSetBannerWidth.Name = "txtMovieSetBannerWidth"
         Me.txtMovieSetBannerWidth.Size = New System.Drawing.Size(40, 22)
         Me.txtMovieSetBannerWidth.TabIndex = 6
@@ -18507,7 +18511,7 @@ Partial Class dlgSettings
         Me.lblMovieSetBannerHeight.AutoSize = true
         Me.tblMovieSetImagesBannerOpts.SetColumnSpan(Me.lblMovieSetBannerHeight, 2)
         Me.lblMovieSetBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSetBannerHeight.Location = New System.Drawing.Point(138, 100)
+        Me.lblMovieSetBannerHeight.Location = New System.Drawing.Point(135, 100)
         Me.lblMovieSetBannerHeight.Name = "lblMovieSetBannerHeight"
         Me.lblMovieSetBannerHeight.Size = New System.Drawing.Size(69, 13)
         Me.lblMovieSetBannerHeight.TabIndex = 7
@@ -18519,23 +18523,23 @@ Partial Class dlgSettings
         Me.chkMovieSetBannerPrefOnly.AutoSize = true
         Me.tblMovieSetImagesBannerOpts.SetColumnSpan(Me.chkMovieSetBannerPrefOnly, 2)
         Me.chkMovieSetBannerPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieSetBannerPrefOnly.Location = New System.Drawing.Point(175, 25)
+        Me.chkMovieSetBannerPrefOnly.Location = New System.Drawing.Point(172, 25)
         Me.chkMovieSetBannerPrefOnly.Name = "chkMovieSetBannerPrefOnly"
         Me.chkMovieSetBannerPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetBannerPrefOnly.TabIndex = 2
         Me.chkMovieSetBannerPrefOnly.Text = "Only"
         Me.chkMovieSetBannerPrefOnly.UseVisualStyleBackColor = true
         '
-        'lblMovieSetBannerType
+        'lblMovieSetBannerSize
         '
-        Me.lblMovieSetBannerType.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieSetBannerType.AutoSize = true
-        Me.lblMovieSetBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieSetBannerType.Location = New System.Drawing.Point(3, 3)
-        Me.lblMovieSetBannerType.Name = "lblMovieSetBannerType"
-        Me.lblMovieSetBannerType.Size = New System.Drawing.Size(83, 13)
-        Me.lblMovieSetBannerType.TabIndex = 0
-        Me.lblMovieSetBannerType.Text = "Preferred Type:"
+        Me.lblMovieSetBannerSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetBannerSize.AutoSize = true
+        Me.lblMovieSetBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieSetBannerSize.Location = New System.Drawing.Point(3, 3)
+        Me.lblMovieSetBannerSize.Name = "lblMovieSetBannerSize"
+        Me.lblMovieSetBannerSize.Size = New System.Drawing.Size(80, 13)
+        Me.lblMovieSetBannerSize.TabIndex = 0
+        Me.lblMovieSetBannerSize.Text = "Preferred Size:"
         '
         'lblMovieSetBannerWidth
         '
@@ -18548,17 +18552,17 @@ Partial Class dlgSettings
         Me.lblMovieSetBannerWidth.TabIndex = 5
         Me.lblMovieSetBannerWidth.Text = "Max Width:"
         '
-        'cbMovieSetBannerPrefType
+        'cbMovieSetBannerPrefSize
         '
-        Me.cbMovieSetBannerPrefType.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblMovieSetImagesBannerOpts.SetColumnSpan(Me.cbMovieSetBannerPrefType, 3)
-        Me.cbMovieSetBannerPrefType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieSetBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieSetBannerPrefType.FormattingEnabled = true
-        Me.cbMovieSetBannerPrefType.Location = New System.Drawing.Point(3, 23)
-        Me.cbMovieSetBannerPrefType.Name = "cbMovieSetBannerPrefType"
-        Me.cbMovieSetBannerPrefType.Size = New System.Drawing.Size(148, 21)
-        Me.cbMovieSetBannerPrefType.TabIndex = 1
+        Me.cbMovieSetBannerPrefSize.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblMovieSetImagesBannerOpts.SetColumnSpan(Me.cbMovieSetBannerPrefSize, 3)
+        Me.cbMovieSetBannerPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieSetBannerPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieSetBannerPrefSize.FormattingEnabled = true
+        Me.cbMovieSetBannerPrefSize.Location = New System.Drawing.Point(3, 23)
+        Me.cbMovieSetBannerPrefSize.Name = "cbMovieSetBannerPrefSize"
+        Me.cbMovieSetBannerPrefSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbMovieSetBannerPrefSize.TabIndex = 1
         '
         'chkMovieSetBannerOverwrite
         '
@@ -18592,7 +18596,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesFanartOpts.Controls.Add(Me.tblMovieSetImagesFanartOpts)
         Me.gbMovieSetImagesFanartOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieSetImagesFanartOpts.Location = New System.Drawing.Point(522, 3)
+        Me.gbMovieSetImagesFanartOpts.Location = New System.Drawing.Point(519, 3)
         Me.gbMovieSetImagesFanartOpts.Name = "gbMovieSetImagesFanartOpts"
         Me.gbMovieSetImagesFanartOpts.Size = New System.Drawing.Size(245, 142)
         Me.gbMovieSetImagesFanartOpts.TabIndex = 3
@@ -18743,7 +18747,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesLandscapeOpts.Controls.Add(Me.tblMovieSetImagesLandscapeOpts)
         Me.gbMovieSetImagesLandscapeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbMovieSetImagesLandscapeOpts.Location = New System.Drawing.Point(522, 151)
+        Me.gbMovieSetImagesLandscapeOpts.Location = New System.Drawing.Point(519, 151)
         Me.gbMovieSetImagesLandscapeOpts.Name = "gbMovieSetImagesLandscapeOpts"
         Me.gbMovieSetImagesLandscapeOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieSetImagesLandscapeOpts.TabIndex = 14
@@ -18872,10 +18876,6 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
-        '
-        'colGetYear
-        '
-        Me.colGetYear.Text = "Get Year"
         '
         'dlgSettings
         '
@@ -20211,8 +20211,8 @@ End Sub
     Friend WithEvents lblMovieBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieBannerResize As System.Windows.Forms.CheckBox
-    Friend WithEvents lblMovieBannerType As System.Windows.Forms.Label
-    Friend WithEvents cbMovieBannerPrefType As System.Windows.Forms.ComboBox
+    Friend WithEvents lblMovieBannerSize As System.Windows.Forms.Label
+    Friend WithEvents cbMovieBannerPrefSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkMovieBannerOverwrite As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieImagesLandscapeOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieLandscapeOverwrite As System.Windows.Forms.CheckBox
@@ -20348,8 +20348,8 @@ End Sub
     Friend WithEvents lblMovieSetBannerWidth As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetBannerHeight As System.Windows.Forms.Label
     Friend WithEvents chkMovieSetBannerResize As System.Windows.Forms.CheckBox
-    Friend WithEvents lblMovieSetBannerType As System.Windows.Forms.Label
-    Friend WithEvents cbMovieSetBannerPrefType As System.Windows.Forms.ComboBox
+    Friend WithEvents lblMovieSetBannerSize As System.Windows.Forms.Label
+    Friend WithEvents cbMovieSetBannerPrefSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkMovieSetBannerOverwrite As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieSetImagesLandscapeOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieSetLandscapeOverwrite As System.Windows.Forms.CheckBox

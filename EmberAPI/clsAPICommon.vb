@@ -1002,11 +1002,8 @@ Public Class Enums
         Wide = 2
     End Enum
 
-    Public Enum MovieBannerType As Integer 'TODO: add correct fanart.tv types
-        None = 0
-        Blank = 1
-        Graphical = 2
-        Text = 3
+    Public Enum MovieBannerSize As Integer
+        HD185 = 0       'Fanart.tv has only 1000x185
     End Enum
 
     Public Enum TVSeasonBannerType As Integer

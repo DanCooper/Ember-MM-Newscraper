@@ -1834,7 +1834,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub cbMovieBannerPrefType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieBannerPrefType.SelectedIndexChanged
+    Private Sub cbMovieBannerPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieBannerPrefSize.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1842,7 +1842,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub cbMovieSetBannerPrefType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetBannerPrefType.SelectedIndexChanged
+    Private Sub cbMovieSetBannerPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetBannerPrefSize.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3493,13 +3493,13 @@ Public Class dlgSettings
             Me.cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
             Me.cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
             Me.cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
-            Me.cbMovieBannerPrefType.SelectedValue = .MovieBannerPrefType
+            Me.cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             Me.cbMovieEFanartsPrefSize.SelectedValue = .MovieEFanartsPrefSize
             Me.cbMovieEThumbsPrefSize.SelectedValue = .MovieEThumbsPrefSize
             Me.cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
             Me.cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
             Me.cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
-            Me.cbMovieSetBannerPrefType.SelectedValue = .MovieSetBannerPrefType
+            Me.cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
             Me.cbMovieSetFanartPrefSize.SelectedValue = .MovieSetFanartPrefSize
             Me.cbMovieSetPosterPrefSize.SelectedValue = .MovieSetPosterPrefSize
             Me.cbMovieTrailerMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
@@ -4522,18 +4522,15 @@ Public Class dlgSettings
         Me.cbMovieSetPosterPrefSize.ValueMember = "Value"
     End Sub
 
-    Private Sub LoadMovieBannerTypes()
-        Dim items As New Dictionary(Of String, Enums.MovieBannerType)
-        items.Add(Master.eLang.GetString(745, "None"), Enums.MovieBannerType.None)
-        items.Add(Master.eLang.GetString(746, "Blank"), Enums.MovieBannerType.Blank)
-        items.Add(Master.eLang.GetString(747, "Graphical"), Enums.MovieBannerType.Graphical)
-        items.Add(Master.eLang.GetString(748, "Text"), Enums.MovieBannerType.Text)
-        Me.cbMovieBannerPrefType.DataSource = items.ToList
-        Me.cbMovieBannerPrefType.DisplayMember = "Key"
-        Me.cbMovieBannerPrefType.ValueMember = "Value"
-        Me.cbMovieSetBannerPrefType.DataSource = items.ToList
-        Me.cbMovieSetBannerPrefType.DisplayMember = "Key"
-        Me.cbMovieSetBannerPrefType.ValueMember = "Value"
+    Private Sub LoadMovieBannerSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
+        items.Add("1000x185", Enums.MovieBannerSize.HD185)
+        Me.cbMovieBannerPrefSize.DataSource = items.ToList
+        Me.cbMovieBannerPrefSize.DisplayMember = "Key"
+        Me.cbMovieBannerPrefSize.ValueMember = "Value"
+        Me.cbMovieSetBannerPrefSize.DataSource = items.ToList
+        Me.cbMovieSetBannerPrefSize.DisplayMember = "Key"
+        Me.cbMovieSetBannerPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieTrailerQualities()
@@ -5218,7 +5215,7 @@ Public Class dlgSettings
             .MovieBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieBannerHeight.Text), Convert.ToInt32(Me.txtMovieBannerHeight.Text), 0)
             .MovieBannerOverwrite = Me.chkMovieBannerOverwrite.Checked
             .MovieBannerPrefOnly = Me.chkMovieBannerPrefOnly.Checked
-            .MovieBannerPrefType = CType(Me.cbMovieBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerType)).Value
+            .MovieBannerPrefSize = CType(Me.cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
             .MovieBannerResize = Me.chkMovieBannerResize.Checked
             .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
             .MovieCleanDB = Me.chkMovieCleanDB.Checked
@@ -5309,7 +5306,7 @@ Public Class dlgSettings
             .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerHeight.Text), Convert.ToInt32(Me.txtMovieSetBannerHeight.Text), 0)
             .MovieSetBannerOverwrite = Me.chkMovieSetBannerOverwrite.Checked
             .MovieSetBannerPrefOnly = Me.chkMovieSetBannerPrefOnly.Checked
-            .MovieSetBannerPrefType = CType(Me.cbMovieSetBannerPrefType.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerType)).Value
+            .MovieSetBannerPrefSize = CType(Me.cbMovieSetBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
             .MovieSetBannerResize = Me.chkMovieSetBannerResize.Checked
             .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerWidth.Text), Convert.ToInt32(Me.txtMovieSetBannerWidth.Text), 0)
             .MovieSetCleanDB = Me.chkMovieSetCleanDB.Checked
@@ -6462,10 +6459,12 @@ Public Class dlgSettings
 
         'Preferred Size:
         Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
+        Me.lblMovieBannerSize.Text = strPreferredSize
         Me.lblMovieEFanartsSize.Text = strPreferredSize
         Me.lblMovieEThumbsSize.Text = strPreferredSize
         Me.lblMovieFanartSize.Text = strPreferredSize
         Me.lblMoviePosterSize.Text = strPreferredSize
+        Me.lblMovieSetBannerSize.Text = strPreferredSize
         Me.lblMovieSetFanartSize.Text = strPreferredSize
         Me.lblMovieSetPosterSize.Text = strPreferredSize
         Me.lblTVASFanartSize.Text = strPreferredSize
@@ -6480,8 +6479,6 @@ Public Class dlgSettings
 
         'Preferred Type:
         Dim strPreferredType As String = Master.eLang.GetString(730, "Preferred Type:")
-        Me.lblMovieBannerType.Text = strPreferredType
-        Me.lblMovieSetBannerType.Text = strPreferredType
         Me.lblTVASBannerType.Text = strPreferredType
         Me.lblTVSeasonBannerType.Text = strPreferredType
         Me.lblTVShowBannerType.Text = strPreferredType
@@ -6797,7 +6794,7 @@ Public Class dlgSettings
         Me.LoadGeneralDateTime()
         Me.LoadGenericFanartSizes()
         Me.LoadGenericPosterSizes()
-        Me.LoadMovieBannerTypes()
+        Me.LoadMovieBannerSizes()
         Me.LoadMovieTrailerQualities()
         Me.LoadTVFanartSizes()
         Me.LoadTVPosterSizes()

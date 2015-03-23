@@ -2574,21 +2574,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerPrefType() As Enums.MovieBannerType
+    Public Property MovieBannerPrefSize() As Enums.MovieBannerSize
         Get
-            Return Settings._XMLSettings.MovieBannerPrefType
+            Return Settings._XMLSettings.MovieBannerPrefSize
         End Get
-        Set(ByVal value As Enums.MovieBannerType)
-            Settings._XMLSettings.MovieBannerPrefType = value
+        Set(ByVal value As Enums.MovieBannerSize)
+            Settings._XMLSettings.MovieBannerPrefSize = value
         End Set
     End Property
 
-    Public Property MovieSetBannerPrefType() As Enums.MovieBannerType
+    Public Property MovieSetBannerPrefSize() As Enums.MovieBannerSize
         Get
-            Return Settings._XMLSettings.MovieSetBannerPrefType
+            Return Settings._XMLSettings.MovieSetBannerPrefSize
         End Get
-        Set(ByVal value As Enums.MovieBannerType)
-            Settings._XMLSettings.MovieSetBannerPrefType = value
+        Set(ByVal value As Enums.MovieBannerSize)
+            Settings._XMLSettings.MovieSetBannerPrefSize = value
         End Set
     End Property
 
@@ -5803,7 +5803,7 @@ Public Class Settings
         Me.MovieBannerHeight = 0
         Me.MovieBannerOverwrite = True
         Me.MovieBannerPrefOnly = False
-        Me.MovieBannerPrefType = Enums.MovieBannerType.Graphical
+        Me.MovieBannerPrefSize = Enums.MovieBannerSize.HD185
         Me.MovieBannerResize = False
         Me.MovieBannerWidth = 0
         Me.MovieCleanDB = False
@@ -5945,7 +5945,7 @@ Public Class Settings
         Me.MovieSetBannerHeight = 0
         Me.MovieSetBannerOverwrite = True
         Me.MovieSetBannerPrefOnly = False
-        Me.MovieSetBannerPrefType = Enums.MovieBannerType.Graphical
+        Me.MovieSetBannerPrefSize = Enums.MovieBannerSize.HD185
         Me.MovieSetBannerResize = False
         Me.MovieSetBannerWidth = 0
         Me.MovieSetCleanDB = False

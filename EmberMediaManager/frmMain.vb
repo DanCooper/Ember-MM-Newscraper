@@ -2367,7 +2367,7 @@ Public Class frmMain
                     tURL = String.Empty
                     If Banner.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Banner) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieBanner(aList, Banner) Then
                                 If aList.Count > 0 Then Banner = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
                                     Banner.WebImage.FromWeb(Banner.URL)
@@ -3135,7 +3135,7 @@ Public Class frmMain
                     tURL = String.Empty
                     If Banner.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ImageType_Movie.Banner) Then
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetBanner(aList, Banner) Then
                                 If aList.Count > 0 Then Banner = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
                                     Banner.WebImage.FromWeb(Banner.URL)
