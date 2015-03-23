@@ -854,7 +854,7 @@ Public Class Scanner
             End If
 
             'Year
-            If String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+            If String.IsNullOrEmpty(tmpMovieDB.Movie.Year) AndAlso mContainer.getYear Then
                 If FileUtils.Common.isVideoTS(mContainer.Filename) Then
                     tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
                 ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
@@ -1267,7 +1267,7 @@ Public Class Scanner
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
+    Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean)
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
         Dim fList As New List(Of String)
@@ -1367,7 +1367,7 @@ Public Class Scanner
                     End If
 
                     For Each s As String In fList
-                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
+                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False), .GetYear = bGetYear})
                     Next
                 End If
 
@@ -1409,7 +1409,7 @@ Public Class Scanner
     ''' <param name="bRecur">Scan directory recursively?</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanMovieSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal doScan As Boolean)
+    Public Sub ScanMovieSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean, ByVal doScan As Boolean)
         If Directory.Exists(sPath) Then
             Dim sMoviePath As String = String.Empty
 
@@ -1419,7 +1419,7 @@ Public Class Scanner
             Try
 
                 'check if there are any movies in the parent folder
-                If doScan Then ScanForMovieFiles(sPath, sSource, bUseFolder, bSingle)
+                If doScan Then ScanForMovieFiles(sPath, sSource, bUseFolder, bSingle, bGetYear)
 
                 If Master.eSettings.MovieScanOrderModify Then
                     Try
@@ -1436,9 +1436,9 @@ Public Class Scanner
                 For Each inDir As DirectoryInfo In dList
 
                     If Me.bwPrelim.CancellationPending Then Return
-                    ScanForMovieFiles(inDir.FullName, sSource, bUseFolder, bSingle)
+                    ScanForMovieFiles(inDir.FullName, sSource, bUseFolder, bSingle, bGetYear)
                     If bRecur Then
-                        ScanMovieSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle, False)
+                        ScanMovieSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle, bGetYear, False)
                     End If
                 Next
 
@@ -1588,9 +1588,9 @@ Public Class Scanner
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Not String.IsNullOrEmpty(Args.SourceName) Then
-                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
+                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
                     Else
-                        SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources WHERE Exclude = 0;"
+                        SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources WHERE Exclude = 0;"
                     End If
 
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1616,7 +1616,7 @@ Public Class Scanner
                                     Catch ex As Exception
                                         logger.Error(New StackFrame().GetMethod().Name, ex)
                                     End Try
-                                    ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
+                                    ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), Convert.ToBoolean(SQLreader("GetYear")), True)
                                 End If
                                 If Me.bwPrelim.CancellationPending Then
                                     e.Cancel = True
@@ -1889,6 +1889,7 @@ Public Class Scanner
         Private _ethumbs As String
         Private _fanart As String
         Private _filename As String
+        Private _getyear As Boolean
         Private _landscape As String
         Private _nfo As String
         Private _poster As String
@@ -1992,6 +1993,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property getYear() As Boolean
+            Get
+                Return _getyear
+            End Get
+            Set(ByVal value As Boolean)
+                _getyear = value
+            End Set
+        End Property
+
         Public Property isSingle() As Boolean
             Get
                 Return _single
@@ -2087,6 +2097,7 @@ Public Class Scanner
             _ethumbs = String.Empty
             _fanart = String.Empty
             _filename = String.Empty
+            _getyear = True
             _landscape = String.Empty
             _nfo = String.Empty
             _poster = String.Empty

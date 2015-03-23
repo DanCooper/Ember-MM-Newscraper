@@ -132,6 +132,14 @@ Public Class dlgMovieSource
         If Not Me.chkSingle.Checked Then Me.chkUseFolderName.Checked = False
     End Sub
 
+    Private Sub chkUseFolderName_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseFolderName.CheckedChanged
+        If chkUseFolderName.Checked Then
+            Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
+        Else
+            Me.chkGetYear.Text = Master.eLang.GetString(584, "Get year from file name")
+        End If
+    End Sub
+
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         Try
@@ -144,6 +152,7 @@ Public Class dlgMovieSource
                     Me.chkScanRecursive.Checked = s.Recursive
                     Me.chkSingle.Checked = s.IsSingle
                     Me.chkUseFolderName.Checked = s.UseFolderName
+                    Me.chkGetYear.Checked = s.GetYear
                     Me.autoName = False
                 End If
             End If
@@ -183,9 +192,9 @@ Public Class dlgMovieSource
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?), lastscan = (?), exclude = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?), lastscan = (?), exclude = (?), getyear = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan, Exclude) VALUES (?,?,?,?,?,?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan, Exclude, GetYear) VALUES (?,?,?,?,?,?,?,?);"
                     End If
                     Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
@@ -194,6 +203,7 @@ Public Class dlgMovieSource
                     Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "single")
                     Dim parLastScan As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
                     Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "Exclude")
+                    Dim parGetYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGetYear", DbType.Boolean, 0, "GetYear")
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
                     parRecur.Value = chkScanRecursive.Checked
@@ -201,6 +211,7 @@ Public Class dlgMovieSource
                     parSingle.Value = chkSingle.Checked
                     parLastScan.Value = DateTime.Now
                     parExclude.Value = chkExclude.Checked
+                    parGetYear.Value = chkGetYear.Checked
 
                     SQLcommand.ExecuteNonQuery()
                 End Using
@@ -225,6 +236,7 @@ Public Class dlgMovieSource
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
         Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
+        Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
         Me.chkSingle.Text = Master.eLang.GetString(202, "Movies are in separate folders *")
         Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
         Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")

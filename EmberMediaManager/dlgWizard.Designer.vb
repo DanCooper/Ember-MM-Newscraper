@@ -462,6 +462,7 @@ Partial Class dlgWizard
         Me.lblMovieSetBannerExpertParent = New System.Windows.Forms.Label()
         Me.chkMovieSetUseExpert = New System.Windows.Forms.CheckBox()
         Me.Label48 = New System.Windows.Forms.Label()
+        Me.colGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.tblMovieSettings.SuspendLayout()
@@ -3608,7 +3609,7 @@ Partial Class dlgWizard
         '
         'lvMovies
         '
-        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle, Me.colExclude})
+        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle, Me.colExclude, Me.colGetYear})
         Me.lvMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvMovies.FullRowSelect = True
         Me.lvMovies.HideSelection = False
@@ -5955,6 +5956,10 @@ Partial Class dlgWizard
         Me.Label48.Text = resources.GetString("Label48.Text")
         Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'colGetYear
+        '
+        Me.colGetYear.Text = "Get Year"
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -5963,6 +5968,7 @@ Partial Class dlgWizard
         Me.AutoSize = True
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(734, 572)
+        Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVShowSettings)
         Me.Controls.Add(Me.pnlMovieSetSettings)
         Me.Controls.Add(Me.pnlMovieSettings)
@@ -5972,7 +5978,6 @@ Partial Class dlgWizard
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.pnlTVShowSource)
-        Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlDone)
         Me.Controls.Add(Me.pnlWelcome)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -6623,4 +6628,5 @@ End Sub
     Friend WithEvents tpTVSourcesFileNamingExpert As System.Windows.Forms.TabPage
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colGetYear As System.Windows.Forms.ColumnHeader
 End Class

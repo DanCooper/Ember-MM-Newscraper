@@ -20,6 +20,7 @@
 
 Imports System.Globalization
 Imports NLog
+Imports System.Text.RegularExpressions
 
 Public Class NumUtils
 
@@ -63,9 +64,19 @@ Public Class NumUtils
 
         'If we got here, something went wrong
         Dim trace = New StackTrace()
-        logger.Error( "Failed to convert <{0}>", sNumber)
+        logger.Error("Failed to convert <{0}>", sNumber)
         Return 0.0F
 
+    End Function
+
+    Public Shared Function CleanVotes(ByVal strVotes As String) As String
+        If Not String.IsNullOrEmpty(strVotes) Then
+            Dim strCleanVotes As String = String.Empty
+            strCleanVotes = Regex.Replace(strVotes, "\D", String.Empty).Trim
+            Return strCleanVotes
+        Else
+            Return String.Empty
+        End If
     End Function
 
 #End Region 'Methods

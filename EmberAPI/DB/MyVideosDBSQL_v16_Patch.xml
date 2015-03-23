@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <transaction name="MyVideosDBSQL_v16_to_v15">
+  <transaction name="MyVideosDBSQL_v16_to_v17">
     <command type="DB">
       <description>edit view seasonslist</description>
       <execute>

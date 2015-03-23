@@ -4871,6 +4871,7 @@ Public Class dlgSettings
             lvItem.SubItems.Add(If(s.UseFolderName, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(If(s.GetYear, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvMovieSources.Items.Add(lvItem)
         Next
     End Sub
@@ -6755,6 +6756,7 @@ Public Class dlgSettings
         Me.lvMovieSources.Columns(4).Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.lvMovieSources.Columns(5).Text = Master.eLang.GetString(413, "Single Video")
         Me.lvMovieSources.Columns(6).Text = Master.eLang.GetString(264, "Exclude")
+        Me.lvMovieSources.Columns(7).Text = Master.eLang.GetString(586, "Get Year")
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
         Me.lvTVSources.Columns(3).Text = Master.eLang.GetString(610, "Language")

@@ -582,9 +582,9 @@
   <string id="581">Missing Items Filter</string>
   <string id="582">Missing</string>
   <string id="583">Data and Images</string>
-  <string id="584"></string>
-  <string id="585"></string>
-  <string id="586"></string>
+  <string id="584">Get year from file name</string>
+  <string id="585">Get year from folder name</string>
+  <string id="586">Get Year</string>
   <string id="587"></string>
   <string id="588">Season Fanart as &lt;Episode&gt;SxxE01.fanart.jpg</string>
   <string id="589">Episode Poster as &lt;Show&gt;.videoimage.jpg</string>

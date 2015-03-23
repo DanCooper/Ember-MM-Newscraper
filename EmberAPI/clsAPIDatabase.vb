@@ -679,7 +679,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 17
+        Dim MyVideosDBVersion As Integer = 18
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -2032,6 +2032,17 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
 
+            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 18
+                        CleanVotesCount("idEpisode", "episode", True)
+                        CleanVotesCount("idMovie", "movie", True)
+                        CleanVotesCount("idShow", "tvshow", True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
@@ -2071,6 +2082,31 @@ Public Class Database
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
+    End Sub
+
+    Private Sub CleanVotesCount(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Clean Votes count...")
+
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT {0}, Votes FROM {1};", idField, table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("Votes")) AndAlso Not String.IsNullOrEmpty(SQLreader("Votes").ToString) AndAlso Not Integer.TryParse(SQLreader("Votes").ToString, 0) Then
+                        Using SQLcommand_update_votes As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                            SQLcommand_update_votes.CommandText = String.Format("UPDATE {0} SET Votes=? WHERE {1}={2}", table, idField, SQLreader(idField))
+                            Dim par_update_Votes As SQLite.SQLiteParameter = SQLcommand_update_votes.Parameters.Add("par_update_Votes", DbType.String, 0, "Vote")
+                            par_update_Votes.Value = NumUtils.CleanVotes(SQLreader("Votes").ToString)
+                            SQLcommand_update_votes.ExecuteNonQuery()
+                        End Using
+                    End If
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
     Private Sub PrepareTable_country(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
@@ -2531,7 +2567,7 @@ Public Class Database
                 par_movie_Title.Value = .Title
                 par_movie_Top250.Value = .Top250
                 par_movie_Trailer.Value = .Trailer
-                par_movie_Votes.Value = Regex.Replace(.Votes, "\D", String.Empty).Trim
+                par_movie_Votes.Value = NumUtils.CleanVotes(.Votes)
                 par_movie_Year.Value = .Year
             End With
 
@@ -3295,7 +3331,7 @@ Public Class Database
                 parCredits.Value = .OldCredits
                 parPlaycount.Value = If(Not String.IsNullOrEmpty(.Playcount) AndAlso CInt(.Playcount) > 0, .Playcount, Nothing) 'need to be NOTHING instead of "0"
                 parRuntime.Value = .Runtime
-                parVotes.Value = Regex.Replace(.Votes, "\D", String.Empty).Trim
+                parVotes.Value = NumUtils.CleanVotes(.Votes)
                 If .displaySEset Then
                     parDisplaySeason.Value = .DisplaySeason
                     parDisplayEpisode.Value = .DisplayEpisode
@@ -3602,7 +3638,7 @@ Public Class Database
                 parRating.Value = .Rating
                 parStatus.Value = .Status
                 parRuntime.Value = .Runtime
-                parVotes.Value = Regex.Replace(.Votes, "\D", String.Empty).Trim
+                parVotes.Value = NumUtils.CleanVotes(.Votes)
             End With
 
             ' First let's save it to NFO, even because we will need the NFO path
@@ -3741,7 +3777,7 @@ Public Class Database
     Public Sub LoadMovieSourcesFromDB()
         Master.MovieSources.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude FROM Sources;"
+            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -3753,6 +3789,7 @@ Public Class Database
                         msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
                         msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
                         msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
+                        msource.GetYear = Convert.ToBoolean(SQLreader("GetYear"))
                         Master.MovieSources.Add(msource)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name, ex)
