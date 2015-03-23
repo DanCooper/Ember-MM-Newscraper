@@ -477,6 +477,7 @@ Public Class frmMain
                 .lblPosterSize.Text = String.Empty
                 .lblRating.Text = String.Empty
                 .lblRuntime.Text = String.Empty
+                .lblStudio.Text = String.Empty
                 .pnlTop250.Visible = False
                 .lblTop250.Text = String.Empty
                 .pbStar1.Image = Nothing

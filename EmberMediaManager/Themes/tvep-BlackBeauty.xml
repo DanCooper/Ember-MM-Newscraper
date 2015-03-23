@@ -28,37 +28,37 @@ fontstyle code 5.
   </toppanel>
  
   <images>
-    <fanartbigbackcolor>black</fanartbigbackcolor>
+    <bannerbackcolor>black</bannerbackcolor>
+    <bannerbottombackcolor>black</bannerbottombackcolor>
+    <bannertopbackcolor>FireBrick</bannertopbackcolor>
+    <characterartbackcolor>black</characterartbackcolor>
+    <characterartbottombackcolor>black</characterartbottombackcolor>
+    <characterarttopbackcolor>FireBrick</characterarttopbackcolor>
+    <clearartbackcolor>black</clearartbackcolor>
+    <clearartbottombackcolor>black</clearartbottombackcolor>
+    <cleararttopbackcolor>FireBrick</cleararttopbackcolor>
+    <clearlogobackcolor>black</clearlogobackcolor>
+    <clearlogobottombackcolor>black</clearlogobottombackcolor>
+    <clearlogotopbackcolor>FireBrick</clearlogotopbackcolor>
+    <discartbackcolor>black</discartbackcolor>
+    <discartbottombackcolor>black</discartbottombackcolor>
+    <discarttopbackcolor>FireBrick</discarttopbackcolor>
     <fanartbackcolor>black</fanartbackcolor>
-	<fanarttopbackcolor>FireBrick</fanarttopbackcolor>
-	<fanartbottombackcolor>black</fanartbottombackcolor>
-    <posterbackcolor>black</posterbackcolor>
-	<postertopbackcolor>FireBrick</postertopbackcolor>
-	<posterbottombackcolor>black</posterbottombackcolor>
-	<bannerbackcolor>black</bannerbackcolor>
-	<bannertopbackcolor>FireBrick</bannertopbackcolor>
-	<bannerbottombackcolor>black</bannerbottombackcolor>
-	<clearartbackcolor>black</clearartbackcolor>
-	<cleararttopbackcolor>FireBrick</cleararttopbackcolor>
-	<clearartbottombackcolor>black</clearartbottombackcolor>
-	<clearlogobackcolor>black</clearlogobackcolor>
-	<clearlogotopbackcolor>FireBrick</clearlogotopbackcolor>
-	<clearlogobottombackcolor>black</clearlogobottombackcolor>
-	<landscapebackcolor>black</landscapebackcolor>
-	<landscapetopbackcolor>FireBrick</landscapetopbackcolor>
-	<landscapebottombackcolor>black</landscapebottombackcolor>
-	<discartbackcolor>black</discartbackcolor>
-	<discarttopbackcolor>FireBrick</discarttopbackcolor>
-	<discartbottombackcolor>black</discartbottombackcolor>
-	<characterartbackcolor>black</characterartbackcolor>
-	<characterarttopbackcolor>FireBrick</characterarttopbackcolor>
-	<characterartbottombackcolor>black</characterartbottombackcolor>
-	<mpaabackcolor>#FEFCFF</mpaabackcolor>
-    <genrebackcolor>white</genrebackcolor>
-    <postermaxwidth>160</postermaxwidth>
-    <postermaxheight>160</postermaxheight>
-    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <fanartsmallbackcolor>black</fanartsmallbackcolor>
+    <fanartsmallbottombackcolor>black</fanartsmallbottombackcolor>
     <fanartsmallmaxheight>160</fanartsmallmaxheight>
+    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <fanartsmalltopbackcolor>FireBrick</fanartsmalltopbackcolor>
+    <genrebackcolor>white</genrebackcolor>
+    <landscapebackcolor>black</landscapebackcolor>
+    <landscapebottombackcolor>black</landscapebottombackcolor>
+    <landscapetopbackcolor>FireBrick</landscapetopbackcolor>
+    <mpaabackcolor>#FEFCFF</mpaabackcolor>
+    <posterbackcolor>black</posterbackcolor>
+    <posterbottombackcolor>black</posterbottombackcolor>
+    <postermaxheight>160</postermaxheight>
+    <postermaxwidth>160</postermaxwidth>
+    <postertopbackcolor>FireBrick</postertopbackcolor>
   </images>
    
   <infopanel>
