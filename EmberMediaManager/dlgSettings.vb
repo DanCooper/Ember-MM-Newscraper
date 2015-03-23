@@ -4581,6 +4581,7 @@ Public Class dlgSettings
 
     Private Sub LoadTVPosterSizes()
         Dim items As New Dictionary(Of String, Enums.TVPosterSize)
+        items.Add("1000x1426", Enums.TVPosterSize.HD1426)
         items.Add("680x1000", Enums.TVPosterSize.HD1000)
         Me.cbTVASPosterPrefSize.DataSource = items.ToList
         Me.cbTVASPosterPrefSize.DisplayMember = "Key"

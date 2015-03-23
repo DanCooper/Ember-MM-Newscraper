@@ -983,12 +983,13 @@ Public Class Enums
     End Enum
 
     Public Enum TVFanartSize As Integer
-        HD1080 = 0      'TVDB has only 1280x720 and 1920x1080
-        HD720 = 1
+        HD1080 = 0      'Fanart.tv has only 1920x1080
+        HD720 = 1       'TVDB has 1280x720 and 1920x1080
     End Enum
 
     Public Enum TVPosterSize As Integer
-        HD1000 = 0      'TVDB has only 680x1000
+        HD1426 = 0      'Fanart.tv has only 1000x1426
+        HD1000 = 1      'TVDB has only 680x1000
     End Enum
 
     Public Enum TVEpisodePosterSize As Integer
