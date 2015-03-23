@@ -784,6 +784,18 @@
     <None Include="Resources\tmdb.png" />
     <None Include="Resources\undo.png" />
     <None Include="Resources\noposter.jpg" />
+    <Content Include="Themes\movie-BlackBeauty.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\movieset-BlackBeauty.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\tvep-BlackBeauty.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\tvshow-BlackBeauty.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

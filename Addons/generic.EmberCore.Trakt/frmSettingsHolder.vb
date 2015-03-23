@@ -46,35 +46,19 @@ Public Class frmSettingsHolder
         Me.gbSettingsGeneral.Text = Master.eLang.GetString(38, "General Settings")
         lblUsername.Text = Master.eLang.GetString(425, "Username")
         lblPassword.Text = Master.eLang.GetString(426, "Password")
-
-        txtUsername.Text = Master.eSettings.TraktUsername
-        txtPassword.Text = Master.eSettings.TraktPassword
+        chkGetShowProgress.Text = Master.eLang.GetString(1388, "Display watched progress for shows (Time consuming!)")
         txtPassword.PasswordChar = "*"c
-
-        'If Not String.IsNullOrEmpty(Master.eSettings.UseTrakt.ToString) Then
-        '    chkUseTrakt.Checked = Master.eSettings.UseTrakt
-        'End If
-
-        'If Master.eSettings.UseTrakt = True Then
-        '    txtTraktUsername.Enabled = True
-        '    txtTraktPassword.Enabled = True
-        'Else
-        '    txtTraktUsername.Enabled = False
-        '    txtTraktPassword.Enabled = False
-        'End If
     End Sub
 
-    Public Sub SaveChanges()
-        Master.eSettings.TraktUsername = txtUsername.Text
-        Master.eSettings.TraktPassword = txtPassword.Text
-        Master.eSettings.UseTrakt = chkEnabled.Checked
-    End Sub
 
     Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub txtPassword_TextChanged(sender As Object, e As EventArgs) Handles txtPassword.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+    Private Sub chkGetShowProgress_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetShowProgress.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

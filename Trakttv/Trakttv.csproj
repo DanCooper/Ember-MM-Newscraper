@@ -113,6 +113,7 @@
     <Compile Include="Model\Show\TraktEpisodeImages.cs" />
     <Compile Include="Model\Show\TraktEpisodeSummary.cs" />
     <Compile Include="Model\Show\TraktEpisodeWatched.cs" />
+    <Compile Include="Model\Show\TraktShowWatchedProgress.cs" />
     <Compile Include="Model\Show\TraktSeason.cs" />
     <Compile Include="Model\Show\TraktSeasonId.cs" />
     <Compile Include="Model\Show\TraktSeasonImages.cs" />

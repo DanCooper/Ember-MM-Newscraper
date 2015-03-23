@@ -161,6 +161,7 @@ Public Class Trakt_Generic
         Me._setup.chkEnabled.Checked = Me._enabled
         Me._setup.txtUsername.Text = MySettings.Username
         Me._setup.txtPassword.Text = MySettings.Password
+        Me._setup.chkGetShowProgress.Checked = MySettings.GetShowProgress
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
         SPanel.Prefix = "Trakt_"
@@ -186,12 +187,13 @@ Public Class Trakt_Generic
     Sub LoadSettings()
         MySettings.Username = clsAdvancedSettings.GetSetting("Username", "")
         MySettings.Password = clsAdvancedSettings.GetSetting("Password", "")
+        MySettings.GetShowProgress = clsAdvancedSettings.GetBooleanSetting("GetShowProgress", False)
     End Sub
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
-        MySettings.Username = _setup.txtUsername.Text
-        MySettings.Password = _setup.txtPassword.Text
-
+        MySettings.Username = Me._setup.txtUsername.Text
+        MySettings.Password = Me._setup.txtPassword.Text
+        MySettings.GetShowProgress = Me._setup.chkGetShowProgress.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -204,6 +206,7 @@ Public Class Trakt_Generic
         Using settings = New clsAdvancedSettings()
             settings.SetSetting("Username", MySettings.Username)
             settings.SetSetting("Password", MySettings.Password)
+            settings.SetBooleanSetting("GetShowProgress", MySettings.GetShowProgress)
         End Using
     End Sub
 
@@ -214,10 +217,9 @@ Public Class Trakt_Generic
     Structure _MySettings
 
 #Region "Fields"
-
         Dim Username As String
         Dim Password As String
-
+        Dim GetShowProgress As Boolean
 #End Region 'Fields
 
     End Structure
