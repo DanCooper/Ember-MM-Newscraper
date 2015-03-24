@@ -2406,7 +2406,11 @@ Public Class dlgSettings
         Me.btnTVEpisodeFilterRemove.Enabled = Not Me.chkTVEpisodeNoFilter.Checked
     End Sub
 
-    Private Sub chkNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNoSaveImagesToNfo.CheckedChanged
+    Private Sub chkMovieImageSelect_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayImageSelect.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNoSaveImagesToNfo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3568,6 +3572,7 @@ Public Class dlgSettings
             Me.chkMovieClickScrape.Checked = .MovieClickScrape
             Me.chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
             Me.chkMovieDiscArtOverwrite.Checked = .MovieDiscArtOverwrite
+            Me.chkMovieDisplayImageSelect.Checked = .MovieDisplayImageSelect
             Me.chkMovieDisplayYear.Checked = .MovieDisplayYear
             Me.chkMovieEFanartsOverwrite.Checked = .MovieEFanartsOverwrite
             Me.chkMovieEFanartsPrefOnly.Checked = .MovieEFanartsPrefOnly
@@ -5224,6 +5229,7 @@ Public Class dlgSettings
             .MovieClickScrape = Me.chkMovieClickScrape.Checked
             .MovieClickScrapeAsk = Me.chkMovieClickScrapeAsk.Checked
             .MovieDiscArtOverwrite = Me.chkMovieDiscArtOverwrite.Checked
+            .MovieDisplayImageSelect = Me.chkMovieDisplayImageSelect.Checked
             .MovieDisplayYear = Me.chkMovieDisplayYear.Checked
             .MovieEFanartsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsHeight.Text), Convert.ToInt32(Me.txtMovieEFanartsHeight.Text), 0)
             .MovieEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsLimit.Text), Convert.ToInt32(Me.txtMovieEFanartsLimit.Text), 0)
@@ -6623,6 +6629,7 @@ Public Class dlgSettings
         Me.chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
         Me.chkMovieSourcesBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
+        Me.chkMovieDisplayImageSelect.Text = Master.eLang.GetString(499, "Display ""Image Select"" dialog while single scraping")
         Me.chkMovieDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
         Me.chkMovieGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")

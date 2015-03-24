@@ -89,6 +89,7 @@ Partial Public Class clsXMLSettings
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
     Private _moviediscartoverwrite As Boolean
+    Private _moviedisplayimageselect As Boolean
     Private _moviedisplayyear As Boolean
     Private _movieefanartsheight As Integer
     Private _movieefanartslimit As Integer
@@ -1227,6 +1228,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvdisplaystatus = value
+        End Set
+    End Property
+
+    Public Property MovieDisplayImageSelect() As Boolean
+        Get
+            Return Me._moviedisplayimageselect
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviedisplayimageselect = value
         End Set
     End Property
 

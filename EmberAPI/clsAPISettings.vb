@@ -434,6 +434,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieDisplayImageSelect() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieDisplayImageSelect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieDisplayImageSelect = value
+        End Set
+    End Property
+
     Public Property MovieDisplayYear() As Boolean
         Get
             Return Settings._XMLSettings.MovieDisplayYear
@@ -5812,6 +5821,7 @@ Public Class Settings
         Me.MovieClickScrape = False
         Me.MovieClickScrapeAsk = False
         Me.MovieDiscArtOverwrite = True
+        Me.MovieDisplayImageSelect = True
         Me.MovieDisplayYear = False
         Me.MovieEFanartsHeight = 0
         Me.MovieEFanartsLimit = 4
