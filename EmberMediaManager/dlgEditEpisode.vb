@@ -435,45 +435,50 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
-        If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
-            tcEditEpisode.TabPages.Remove(tpEpisodePoster)
-            tcEditEpisode.TabPages.Remove(tpFrameExtraction)
+        If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+            If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
+            If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
+                tcEditEpisode.TabPages.Remove(tpEpisodePoster)
+                tcEditEpisode.TabPages.Remove(tpFrameExtraction)
+            End If
+
+            Me.pbEpisodeFanart.AllowDrop = True
+            Me.pbEpisodePoster.AllowDrop = True
+
+            Me.SetUp()
+
+            Me.lvwActorSorter = New ListViewColumnSorter()
+            Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
+
+            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
+
+            Dim dFileInfoEdit As New dlgFileInfo
+            dFileInfoEdit.TopLevel = False
+            dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
+            dFileInfoEdit.BackColor = Color.White
+            dFileInfoEdit.Cancel_Button.Visible = False
+            Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+            Dim oldwidth As Integer = dFileInfoEdit.Width
+            dFileInfoEdit.Width = pnlFileInfo.Width
+            dFileInfoEdit.Height = pnlFileInfo.Height
+            dFileInfoEdit.Show(True)
+
+            Dim params As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_TVEpisode, params, Nothing, True)
+            pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
+            If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
+                tcEditEpisode.TabPages.Remove(tpFrameExtraction)
+            End If
+
+            Me.FillInfo()
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
         End If
-
-        Me.pbEpisodeFanart.AllowDrop = True
-        Me.pbEpisodePoster.AllowDrop = True
-
-        Me.SetUp()
-
-        Me.lvwActorSorter = New ListViewColumnSorter()
-        Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-        Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-        End Using
-
-        Dim dFileInfoEdit As New dlgFileInfo
-        dFileInfoEdit.TopLevel = False
-        dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
-        dFileInfoEdit.BackColor = Color.White
-        dFileInfoEdit.Cancel_Button.Visible = False
-        Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
-        Dim oldwidth As Integer = dFileInfoEdit.Width
-        dFileInfoEdit.Width = pnlFileInfo.Width
-        dFileInfoEdit.Height = pnlFileInfo.Height
-        dFileInfoEdit.Show(True)
-
-        Dim params As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_TVEpisode, params, Nothing, True)
-        pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
-        If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-            tcEditEpisode.TabPages.Remove(tpFrameExtraction)
-        End If
-
-        Me.FillInfo()
     End Sub
 
     Private Sub EditActor()

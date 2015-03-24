@@ -1244,46 +1244,51 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVASBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
-        If Not Master.eSettings.TVASFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
-        If Not Master.eSettings.TVASLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
-        If Not Master.eSettings.TVASPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
-        If Not Master.eSettings.TVShowBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
-        If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowCharacterArt)
-        If Not Master.eSettings.TVShowClearArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearArt)
-        If Not Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearLogo)
-        If Not Master.eSettings.TVShowEFanartsAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowEFanarts)
-        If Not Master.eSettings.TVShowFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
-        If Not Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
-        If Not Master.eSettings.TVShowPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
+        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+            If Not Master.eSettings.TVASBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
+            If Not Master.eSettings.TVASFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
+            If Not Master.eSettings.TVASLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
+            If Not Master.eSettings.TVASPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
+            If Not Master.eSettings.TVShowBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
+            If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowCharacterArt)
+            If Not Master.eSettings.TVShowClearArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearArt)
+            If Not Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearLogo)
+            If Not Master.eSettings.TVShowEFanartsAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowEFanarts)
+            If Not Master.eSettings.TVShowFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
+            If Not Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
+            If Not Master.eSettings.TVShowPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
 
-        Me.pbASBanner.AllowDrop = True
-        Me.pbASFanart.AllowDrop = True
-        Me.pbASLandscape.AllowDrop = True
-        Me.pbASPoster.AllowDrop = True
-        Me.pbShowBanner.AllowDrop = True
-        Me.pbShowCharacterArt.AllowDrop = True
-        Me.pbShowClearArt.AllowDrop = True
-        Me.pbShowClearLogo.AllowDrop = True
-        Me.pbShowFanart.AllowDrop = True
-        Me.pbShowLandscape.AllowDrop = True
-        Me.pbShowPoster.AllowDrop = True
+            Me.pbASBanner.AllowDrop = True
+            Me.pbASFanart.AllowDrop = True
+            Me.pbASLandscape.AllowDrop = True
+            Me.pbASPoster.AllowDrop = True
+            Me.pbShowBanner.AllowDrop = True
+            Me.pbShowCharacterArt.AllowDrop = True
+            Me.pbShowClearArt.AllowDrop = True
+            Me.pbShowClearLogo.AllowDrop = True
+            Me.pbShowFanart.AllowDrop = True
+            Me.pbShowLandscape.AllowDrop = True
+            Me.pbShowPoster.AllowDrop = True
 
-        Me.SetUp()
+            Me.SetUp()
 
-        Me.lvwActorSorter = New ListViewColumnSorter()
-        Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
+            Me.lvwActorSorter = New ListViewColumnSorter()
+            Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
 
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-        Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-        End Using
+            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
 
-        Me.LoadGenres()
-        Me.LoadRatings()
+            Me.LoadGenres()
+            Me.LoadRatings()
 
-        Me.FillInfo()
+            Me.FillInfo()
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End If
     End Sub
 
     Private Sub DoSelectEF(ByVal iIndex As Integer, tPoster As Images)
@@ -2293,7 +2298,7 @@ Public Class dlgEditShow
                         Master.currShow.ListTitle = StringUtils.SortTokens_TV(.txtTitle.Text.Trim)
                     End If
                 End If
-                
+
                 Master.currShow.TVShow.MPAA = .txtMPAA.Text.Trim
 
                 Master.currShow.TVShow.Rating = .tmpRating

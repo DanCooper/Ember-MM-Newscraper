@@ -2156,7 +2156,7 @@ Public Class frmMain
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
-                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie) Then
+                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie, ScrapeList.Count = 1) Then
                         Cancelled = True
                         Exit Try
                     End If
@@ -2167,7 +2167,7 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
                         Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-                        If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt) Then
+                        If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt, ScrapeList.Count = 1) Then
                             Exit For
                         End If
                     End If
@@ -2248,7 +2248,7 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Poster) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                     Poster.WebImage.FromWeb(Poster.URL)
@@ -2306,7 +2306,7 @@ Public Class frmMain
                     etList.Clear()
                     tURL = String.Empty
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Fanart) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
@@ -2366,7 +2366,7 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Banner.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Banner) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieBanner(aList, Banner) Then
                                 If aList.Count > 0 Then Banner = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
@@ -2423,7 +2423,7 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.Landscape) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                 If aList.Count > 0 Then Landscape = aList.Item(0)
                                 If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
@@ -2474,7 +2474,7 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.ClearArt) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                 If aList.Count > 0 Then ClearArt = aList.Item(0)
                                 If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
@@ -2525,7 +2525,7 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.ClearLogo) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                 If aList.Count > 0 Then ClearLogo = aList.Item(0)
                                 If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
@@ -2576,7 +2576,7 @@ Public Class frmMain
                     aList.Clear()
                     tURL = String.Empty
                     If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.DiscArt) Then
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList, ScrapeList.Count = 1) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                 If aList.Count > 0 Then DiscArt = aList.Item(0)
                                 If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
@@ -2735,7 +2735,7 @@ Public Class frmMain
                         aList.Clear()
                         etList.Clear()
                         If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.EThumbs) Then
-                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
+                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList, ScrapeList.Count = 1) Then
                                 etList = Images.GetPreferredMovieEThumbs(aList)
                                 If etList.Count > 0 Then
                                     Dim eti As Integer = 0
@@ -2767,7 +2767,7 @@ Public Class frmMain
                         aList.Clear()
                         efList.Clear()
                         If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType_Movie.EFanarts) Then
-                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
+                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList, ScrapeList.Count = 1) Then
                                 efList = Images.GetPreferredMovieEFanarts(aList)
                                 If efList.Count > 0 Then
                                     Dim efi As Integer = 0
@@ -6174,16 +6174,21 @@ doCancel:
         Dim doFill As Boolean = False
         Dim tFill As Boolean = False
 
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                tFill = Me.ReloadEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-                If tFill Then doFill = True
-            Next
+        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    tFill = Me.ReloadEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
+                    If tFill Then doFill = True
+                Next
 
-            Master.DB.CleanSeasons(True)
+                Master.DB.CleanSeasons(True)
 
-            SQLtransaction.Commit()
-        End Using
+                SQLtransaction.Commit()
+            End Using
+        ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
+            tFill = Me.ReloadEpisode(Convert.ToInt64(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), False)
+            If tFill Then doFill = True
+        End If
 
         Me.dgvTVShows.Cursor = Cursors.Default
         Me.dgvTVSeasons.Cursor = Cursors.Default
@@ -6364,6 +6369,7 @@ doCancel:
     Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRescrape.Click
         Me.SetControlsEnabled(False, True)
         ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item("idShow", Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item("Episode", Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item("Season", Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToString(Me.dgvTVEpisodes.Item("Aired", Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
+        Me.SetControlsEnabled(True)
     End Sub
 
     Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRefresh.Click
@@ -13774,7 +13780,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Banner, aList, efList, etList, True) = DialogResult.OK Then
@@ -13996,7 +14002,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
@@ -14120,7 +14126,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearLogo, aList, efList, etList, True) = DialogResult.OK Then
@@ -14244,7 +14250,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.DiscArt, aList, efList, etList, True) = DialogResult.OK Then
@@ -14352,7 +14358,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -14539,7 +14545,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = DialogResult.OK Then
@@ -14701,7 +14707,7 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList, True) Then
                             If aList.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Poster, aList, efList, etList, True) = DialogResult.OK Then
@@ -15252,7 +15258,7 @@ doCancel:
 
         tmpShowDb = Master.DB.LoadTVEpFromDB(ID, True)
 
-        If File.Exists(tmpShowDb.Filename) Then
+        If tmpShowDb.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(tmpShowDb, Not BatchMode) Then
 
             If FromNfo Then
                 If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
@@ -15314,10 +15320,16 @@ doCancel:
                     DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
                 End If
             End If
-
         Else
-            Master.DB.DeleteTVEpFromDB(ID, False, True, BatchMode)
-            Return True
+            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
+                                                     Master.eLang.GetString(738, "Remove episode from library"), _
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                Master.DB.DeleteTVEpFromDB(ID, False, True, BatchMode)
+                Return True
+            Else
+                Return False
+            End If
         End If
 
         If Not BatchMode Then
@@ -15353,7 +15365,7 @@ doCancel:
 
         OldTitle = tmpMovieDB.Movie.Title
 
-        If File.Exists(tmpMovieDB.Filename) Then
+        If tmpMovieDB.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tmpMovieDB, Not BatchMode) Then
 
             If FromNfo Then
                 If String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
@@ -15471,8 +15483,15 @@ doCancel:
             End If
 
         Else
-            Master.DB.DeleteMovieFromDB(ID, BatchMode)
-            Return True
+            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
+                                                     Master.eLang.GetString(654, "Remove movie from library"), _
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                Master.DB.DeleteMovieFromDB(ID, BatchMode)
+                Return True
+            Else
+                Return False
+            End If
         End If
 
         If Not BatchMode Then
@@ -15660,7 +15679,7 @@ doCancel:
 
         tmpShowDb = Master.DB.LoadTVFullShowFromDB(ID)
 
-        If Directory.Exists(tmpShowDb.ShowPath) Then
+        If tmpShowDb.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(tmpShowDb, Not BatchMode) Then
 
             If FromNfo Then
                 If String.IsNullOrEmpty(tmpShowDb.ShowNfoPath) Then
@@ -15762,8 +15781,15 @@ doCancel:
                 Master.DB.CleanSeasons(True)
             End If
         Else
-            Master.DB.DeleteTVShowFromDB(ID, WithEpisodes)
-            Return True
+            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
+                                                     Master.eLang.GetString(776, "Remove tv show from library"), _
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                Master.DB.DeleteTVShowFromDB(ID, WithEpisodes)
+                Return True
+            Else
+                Return False
+            End If
         End If
 
         If Not BatchMode Then

@@ -585,7 +585,7 @@
   <string id="584">Get year from file name</string>
   <string id="585">Get year from folder name</string>
   <string id="586">Get Year</string>
-  <string id="587"></string>
+  <string id="587">This file is no longer available</string>
   <string id="588">Season Fanart as &lt;Episode&gt;SxxE01.fanart.jpg</string>
   <string id="589">Episode Poster as &lt;Show&gt;.videoimage.jpg</string>
   <string id="590">Show All Season as Set_&lt;Show&gt;_1.banner.jpg</string>
@@ -628,7 +628,7 @@
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
   <string id="629">GUI Themes</string>
-  <string id="630"></string>
+  <string id="630">Reconnect the source and press Retry</string>
   <string id="631">Fanart as backdrop.jpg</string>
   <string id="632">Media Browser mymovies.xml</string>
   <string id="633">Experimental module</string>
@@ -652,7 +652,7 @@
   <string id="651">No Information is Available for This Show</string>
   <string id="652">No Information is Available for This Episode</string>
   <string id="653">TV Shows</string>
-  <string id="654"></string>
+  <string id="654">Remove movie from library</string>
   <string id="655">Season Specials</string>
   <string id="656">Edit Episode</string>
   <string id="657">Edit the details for the selected episode.</string>
@@ -701,7 +701,7 @@
   <string id="700">TV Show</string>
   <string id="701">TV Episode</string>
   <string id="702">Change</string>
-  <string id="703"></string>
+  <string id="703">Whould you like to remove it from the library?</string>
   <string id="704">Genres Filter</string>
   <string id="705">TV Source</string>
   <string id="706">Select the parent folder for your TV Series folders/files.</string>
@@ -717,7 +717,7 @@
   <string id="716">Re-Scrape</string>
   <string id="717">Preparing for upgrade ...</string>
   <string id="718">We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?</string>
-  <string id="719"></string>
+  <string id="719">This path is no longer available</string>
   <string id="720">No</string>
   <string id="721">Upgrade</string>
   <string id="722">Certification</string>
@@ -736,7 +736,7 @@
   <string id="735">All Seasons Posters</string>
   <string id="736">Only Get Images for the Selected Language</string>
   <string id="737">Also Get English Images</string>
-  <string id="738"></string>
+  <string id="738">Remove episode from library</string>
   <string id="739">Episode Ordering:</string>
   <string id="740">Re-download Show Information Every:</string>
   <string id="741">Preferred Language:</string>
@@ -774,7 +774,7 @@
   <string id="773">Delete Episode</string>
   <string id="774">Enabled</string>
   <string id="775">File Extension</string>
-  <string id="776"></string>
+  <string id="776">Remove tv show from library</string>
   <string id="777">Writer</string>
   <string id="778">Use trakt.tv as source for "Playcount"</string>
   <string id="779">Get watched movies</string>

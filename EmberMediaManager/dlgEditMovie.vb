@@ -490,7 +490,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -566,7 +566,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -642,7 +642,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -718,7 +718,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -824,7 +824,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList, True) = DialogResult.OK Then
@@ -904,7 +904,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -980,7 +980,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -1832,72 +1832,77 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            Me.pbMovieBanner.AllowDrop = True
-            Me.pbMovieClearArt.AllowDrop = True
-            Me.pbMovieClearLogo.AllowDrop = True
-            Me.pbMovieDiscArt.AllowDrop = True
-            Me.pbMovieFanart.AllowDrop = True
-            Me.pbMovieLandscape.AllowDrop = True
-            Me.pbMoviePoster.AllowDrop = True
+        If Master.currMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(Master.currMovie, True) Then
+            Try
+                Me.pbMovieBanner.AllowDrop = True
+                Me.pbMovieClearArt.AllowDrop = True
+                Me.pbMovieClearLogo.AllowDrop = True
+                Me.pbMovieDiscArt.AllowDrop = True
+                Me.pbMovieFanart.AllowDrop = True
+                Me.pbMovieLandscape.AllowDrop = True
+                Me.pbMoviePoster.AllowDrop = True
 
-            Me.SetUp()
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Master.currMovie)
-            Me.lvwActorSorter = New ListViewColumnSorter()
-            Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-            'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            'Me.lvEThumbs.ListViewItemSorter = Me.lvwEThumbsSorter
-            'Me.lvwEFanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            'Me.lvEFanarts.ListViewItemSorter = Me.lvwEFanartsSorter
+                Me.SetUp()
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Master.currMovie)
+                Me.lvwActorSorter = New ListViewColumnSorter()
+                Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
+                'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+                'Me.lvEThumbs.ListViewItemSorter = Me.lvwEThumbsSorter
+                'Me.lvwEFanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+                'Me.lvEFanarts.ListViewItemSorter = Me.lvwEFanartsSorter
 
-            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-            Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                Me.pnlTop.BackgroundImage = iBackground
-            End Using
+                Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+                Using g As Graphics = Graphics.FromImage(iBackground)
+                    g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                    Me.pnlTop.BackgroundImage = iBackground
+                End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo
-            dFileInfoEdit.TopLevel = False
-            dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
-            dFileInfoEdit.BackColor = Color.White
-            dFileInfoEdit.Cancel_Button.Visible = False
-            Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
-            Dim oldwidth As Integer = dFileInfoEdit.Width
-            dFileInfoEdit.Width = pnlFileInfo.Width
-            dFileInfoEdit.Height = pnlFileInfo.Height
-            dFileInfoEdit.Show(False)
+                Dim dFileInfoEdit As New dlgFileInfo
+                dFileInfoEdit.TopLevel = False
+                dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
+                dFileInfoEdit.BackColor = Color.White
+                dFileInfoEdit.Cancel_Button.Visible = False
+                Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+                Dim oldwidth As Integer = dFileInfoEdit.Width
+                dFileInfoEdit.Width = pnlFileInfo.Width
+                dFileInfoEdit.Height = pnlFileInfo.Height
+                dFileInfoEdit.Show(False)
 
-            Me.LoadGenres()
-            Me.LoadRatings()
+                Me.LoadGenres()
+                Me.LoadRatings()
 
-            Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
-            pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
-            If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-                tcEditMovie.TabPages.Remove(tpFrameExtraction)
-            End If
+                Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
+                pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
+                If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
+                    tcEditMovie.TabPages.Remove(tpFrameExtraction)
+                End If
 
-            Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
-            pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
-            If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
-                AnyThemePlayerEnabled = True
-                pnlThemePreviewNoPlayer.Visible = False
-            End If
+                Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
+                pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
+                If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
+                    AnyThemePlayerEnabled = True
+                    pnlThemePreviewNoPlayer.Visible = False
+                End If
 
-            Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
-            pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
-            If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
-                AnyTrailerPlayerEnabled = True
-                pnlTrailerPreviewNoPlayer.Visible = False
-            End If
+                Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
+                pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
+                If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
+                    AnyTrailerPlayerEnabled = True
+                    pnlTrailerPreviewNoPlayer.Visible = False
+                End If
 
-            Me.FillInfo()
+                Me.FillInfo()
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End If
     End Sub
 
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

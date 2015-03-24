@@ -1079,6 +1079,7 @@ Public Class Database
         _TVDB.EpisodeSorting = _tmpTVDB.EpisodeSorting
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
+        _TVDB.isOnlineShow = _tmpTVDB.isOnlineShow
         _TVDB.ListTitle = _tmpTVDB.ListTitle
         _TVDB.Ordering = _tmpTVDB.Ordering
         _TVDB.ShowBannerPath = _tmpTVDB.ShowBannerPath
@@ -1401,6 +1402,9 @@ Public Class Database
                 End While
             End Using
         End Using
+
+        'Check if the file is available and ready to edit
+        If File.Exists(_movieDB.Filename) Then _movieDB.IsOnline = True
 
         Return _movieDB
     End Function
@@ -1729,6 +1733,9 @@ Public Class Database
             FillTVSeasonFromDB(_TVDB, _TVDB.TVEp.Season)
         End If
 
+        'Check if the file is available and ready to edit
+        If File.Exists(_TVDB.Filename) Then _TVDB.IsOnlineEp = True
+
         Return _TVDB
     End Function
     ''' <summary>
@@ -1931,6 +1938,10 @@ Public Class Database
             logger.Error(New StackFrame().GetMethod().Name, ex)
             _TVDB.ShowID = -1
         End Try
+
+        'Check if the path is available and ready to edit
+        If Directory.Exists(_TVDB.ShowPath) Then _TVDB.isOnlineShow = True
+
         Return _TVDB
     End Function
 

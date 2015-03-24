@@ -159,63 +159,75 @@ Public Class BulkRenamerModule
     End Function
 
     Private Sub cmnuRenamerAuto_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVEpisode.Click
-        Cursor.Current = Cursors.WaitCursor
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
-        FileFolderRenamer.RenameSingle_Episode(Master.currShow, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True, True)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
-        Cursor.Current = Cursors.Default
+        If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+            Cursor.Current = Cursors.WaitCursor
+            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
+            FileFolderRenamer.RenameSingle_Episode(Master.currShow, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True, True)
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
+            Cursor.Current = Cursors.Default
+        End If
     End Sub
 
     Private Sub cmnuRenamerManual_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVEpisode.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
-        Using dRenameManual As New dlgRenameManual_TVEpisode
-            Select Case dRenameManual.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
-            End Select
-        End Using
+        If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
+            Using dRenameManual As New dlgRenameManual_TVEpisode
+                Select Case dRenameManual.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
+                End Select
+            End Using
+        End If
     End Sub
 
     Private Sub cmnuRenamerAuto_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_Movie.Click
-        Cursor.Current = Cursors.WaitCursor
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
-        FileFolderRenamer.RenameSingle_Movie(Master.currMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True, True)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID, indX}))
-        Cursor.Current = Cursors.Default
+        If Master.currMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(Master.currMovie, True) Then
+            Cursor.Current = Cursors.WaitCursor
+            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
+            FileFolderRenamer.RenameSingle_Movie(Master.currMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True, True)
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID, indX}))
+            Cursor.Current = Cursors.Default
+        End If
     End Sub
 
     Private Sub cmnuRenamerManual_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_Movie.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
-        Using dRenameManual As New dlgRenameManual_Movie
-            Select Case dRenameManual.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID, indX}))
-            End Select
-        End Using
+        If Master.currMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(Master.currMovie, True) Then
+            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
+            Using dRenameManual As New dlgRenameManual_Movie
+                Select Case dRenameManual.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID, indX}))
+                End Select
+            End Using
+        End If
     End Sub
 
     Private Sub cmnuRenamerAuto_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVShow.Click
-        Cursor.Current = Cursors.WaitCursor
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
-        FileFolderRenamer.RenameSingle_Show(Master.currShow, MySettings.FoldersPattern_Shows, False, False, True, True)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID, indX}))
-        Cursor.Current = Cursors.Default
+        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+            Cursor.Current = Cursors.WaitCursor
+            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
+            FileFolderRenamer.RenameSingle_Show(Master.currShow, MySettings.FoldersPattern_Shows, False, False, True, True)
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID, indX}))
+            Cursor.Current = Cursors.Default
+        End If
     End Sub
 
     Private Sub cmnuRenamerManual_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVShows.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
-        Using dRenameManual As New dlgRenameManual_TVShow
-            Select Case dRenameManual.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID, indX}))
-            End Select
-        End Using
+        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
+            Using dRenameManual As New dlgRenameManual_TVShow
+                Select Case dRenameManual.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID, indX}))
+                End Select
+            End Using
+        End If
     End Sub
 
     Sub Disable()

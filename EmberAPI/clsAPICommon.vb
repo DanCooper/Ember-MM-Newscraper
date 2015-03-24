@@ -1970,6 +1970,7 @@ Public Class Structures
         Dim IsMarkCustom2 As Boolean
         Dim IsMarkCustom3 As Boolean
         Dim IsMarkCustom4 As Boolean
+        Dim IsOnline As Boolean
         Dim IsSingle As Boolean
         Dim LandscapePath As String
         Dim ListTitle As String
@@ -2060,6 +2061,8 @@ Public Class Structures
         Dim IsMarkEp As Boolean
         Dim IsMarkSeason As Boolean
         Dim IsMarkShow As Boolean
+        Dim IsOnlineEp As Boolean
+        Dim isOnlineShow As Boolean
         Dim ListTitle As String
         Dim Ordering As Enums.Ordering
         Dim RemoveActorThumbs As Boolean

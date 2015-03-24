@@ -788,7 +788,7 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList) Then
+                If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aList, True) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType_Movie.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -824,7 +824,7 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList) Then
+                If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aList, True) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType_Movie.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then

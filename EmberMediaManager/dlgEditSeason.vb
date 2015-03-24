@@ -285,25 +285,30 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVSeasonBannerAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonBanner)
-        If Not Master.eSettings.TVSeasonFanartAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonFanart)
-        If Not Master.eSettings.TVSeasonLandscapeAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonLandscape)
-        If Not Master.eSettings.TVSeasonPosterAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonPoster)
+        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+            If Not Master.eSettings.TVSeasonBannerAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonBanner)
+            If Not Master.eSettings.TVSeasonFanartAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonFanart)
+            If Not Master.eSettings.TVSeasonLandscapeAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonLandscape)
+            If Not Master.eSettings.TVSeasonPosterAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonPoster)
 
-        Me.pbSeasonBanner.AllowDrop = True
-        Me.pbSeasonFanart.AllowDrop = True
-        Me.pbSeasonLandscape.AllowDrop = True
-        Me.pbSeasonPoster.AllowDrop = True
+            Me.pbSeasonBanner.AllowDrop = True
+            Me.pbSeasonFanart.AllowDrop = True
+            Me.pbSeasonLandscape.AllowDrop = True
+            Me.pbSeasonPoster.AllowDrop = True
 
-        Me.SetUp()
+            Me.SetUp()
 
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-        Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-        End Using
+            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
 
-        Me.FillInfo()
+            Me.FillInfo()
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        End If
     End Sub
 
     Private Sub FillInfo()
