@@ -176,7 +176,7 @@ Public Class dlgMovieSource
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                         parSource.Value = prevSource
-                        SQLcommand.CommandText = "SELECT Id FROM movies WHERE source = (?);"
+                        SQLcommand.CommandText = "SELECT Id FROM movie WHERE source = (?);"
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
                                 Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
