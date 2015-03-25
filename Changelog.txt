@@ -1,3 +1,64 @@
+Changelog 1.4.3.0 (2015-03-25)
+
+[Main]
+fixed: CodecMapping is always converted to lowercase
+fixed: ComboBox settings will not be saved after settings panel has changed
+fixed: "Edit Actor" dialog size
+fixed: bug with movie rating scraping
+fixed: "Remove Movie from Disk"
+fixed: confusing description of tv show reloading/refreshing
+fixed: error with episode subtitles recognition/saving
+fixed: "Clear All Cache" in tools menu (works now)
+fixed: SQL error in "Movie Source" dialog
+fixed: movie InfoPanel state after closing settings dialog
+fixed: "Custom Scraper" New/Marked movies
+fixed: movie/movieset/tvshow ID are not always trimmed after reading from NFOs
+fixed: missing linktable cleaning in database
+fixed: "Clean DB" does not remove all orphaned entries
+fixed: "Clean DB" and "Clear All Cache" is not enabled if all lists are empty
+added: option to disable "Image Select" dialog while single movie scraping
+added: some checks to block editing/scraping if a movie/tv show/episode file/path is offline
+added: option "Get Year from folder/file name" for movie sources
+added: preferred tv show/season poster size "1000x1426"
+added: more options for theming
+added: a dark infopanel theme
+added: "TMDB ID" to movie InfoPanel
+added: new tv show regex system (based on Kodi regex system)
+added: ability to add a custom rating string for not rated movies/tv shows
+added: option "Use digit grouping symbol for Votes count" (based on Windows region settings)
+added: field "Collection ID" to "Scrape Single Field" menu
+added: DiscArt for MovieSets (as expert settings, MSAA does not support DiscArts)
+added: new setting to add episode "Guest Stars" to actors list with role "Guest Star"
+added: "Clear Cache" to tv show context menu
+changed: replaced "Pref Movie(-Set) Banner Type" with "Banner Size"
+removed: "Tags" from global movie scraper settings (we do not want support that)
+
+[Renamer]
+fixed: renamer does not rename new movies/episodes
+fixed: some issues in preview
+fixed: $D and $F support for season/episode renamer
+fixed: episode actor thumbs folder handling
+added: "Reset" button for all pattern fields
+
+[Apple Trailers]
+fixed: no download possible if preferred quality is set to "All"
+
+[Trakt.tv]
+fixed: episode playcount synchronization
+fixed: database traffic while syncing
+added: option to disable "Progress" status (get information faster from Trakt.tv)
+
+[TMDB]
+added: "Year" textbox to "Movie Search Results" dialog
+
+[TVDB]
+added: option to scrape episode "Guest Stars"
+
+[MovieExporter]
+fixed: some issues with new database
+
+
+
 Changelog 1.4.2.0 (2015-03-05)
 
 [Main]
