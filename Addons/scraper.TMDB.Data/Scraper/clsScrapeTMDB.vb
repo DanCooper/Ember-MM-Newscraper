@@ -1050,7 +1050,7 @@ Namespace TMDB
                                 t1 = aMI.imdb_id.ToString
                             End If
                             t2 = CStr(If(String.IsNullOrEmpty(aMovie.title), "", aMovie.title))
-                            t3 = CStr(If(String.IsNullOrEmpty(aMovie.release_date), "", aMovie.release_date)).Substring(0, 4)
+                            t3 = CStr(If(String.IsNullOrEmpty(aMovie.release_date), "", aMovie.release_date.Substring(0, 4)))
                             Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie(t1, t2, t3, 0)
                             lNewMovie.TMDBID = aMI.id.ToString
                             R.Matches.Add(lNewMovie)
