@@ -294,6 +294,7 @@ CREATE TABLE movie (
         DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
         DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
         DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
         DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
@@ -431,6 +432,7 @@ CREATE TABLE tvshow (
         DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
         DELETE FROM movielinktvshow WHERE idShow=old.idShow;
         DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
         DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
         END;
 

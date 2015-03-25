@@ -7,6 +7,51 @@
         ALTER TABLE Sources ADD GetYear BOOL NOT NULL DEFAULT 1;
       </execute>
     </command>
+    <command type="DB">
+      <description>edit trigger delete_movie</description>
+      <execute>
+        DROP TRIGGER delete_movie;
+
+        CREATE TRIGGER delete_movie
+        AFTER DELETE
+        ON movie
+        BEGIN
+        DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSets WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
+        END;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit trigger delete_tvshow</description>
+      <execute>
+        DROP TRIGGER delete_tvshow;
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
+        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
+        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        END;
+      </execute>
+    </command>
   </transaction>
   <noTransaction type="">
   </noTransaction>
