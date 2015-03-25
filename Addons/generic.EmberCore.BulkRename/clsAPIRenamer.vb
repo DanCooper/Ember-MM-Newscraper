@@ -643,6 +643,7 @@ Public Class FileFolderRenamer
                 EpisodeFile.NewFileName = EpisodeFile.FileName
             End If
 
+            ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
             While EpisodeFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
                 EpisodeFile.NewPath = EpisodeFile.NewPath.Remove(0, 1)
             End While
@@ -685,6 +686,7 @@ Public Class FileFolderRenamer
                 MovieFile.NewFileName = MovieFile.FileName
             End If
 
+            ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
             While MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
                 MovieFile.NewPath = MovieFile.NewPath.Remove(0, 1)
             End While
@@ -715,6 +717,7 @@ Public Class FileFolderRenamer
                 ShowFile.NewPath = Path.Combine(ShowFile.OldPath, ProccessPattern(ShowFile, folderPatternShows, True).Trim)
             End If
 
+            ' removes all leading DirectorySeparatorChar (otherwise, Path.Combine later does not work)
             While ShowFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
                 ShowFile.NewPath = ShowFile.NewPath.Remove(0, 1)
             End While
