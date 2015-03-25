@@ -222,7 +222,11 @@ Public Class Localization
                 logger.Error(New StackFrame().GetMethod().Name, String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault))
                 tStr = strDefault
             Else
-                tStr = x1(0).Value
+                If Not String.IsNullOrEmpty(x1(0).Value) Then
+                    tStr = x1(0).Value
+                Else
+                    tStr = strDefault
+                End If
             End If
         End If
 
