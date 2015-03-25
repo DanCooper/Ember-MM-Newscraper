@@ -304,11 +304,37 @@ or a "32-bit ARGB value"
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
     </object>
+
+    <object name="lblTMDBHeader">
+      <width>108</width>
+      <height>17</height>
+      <left>117</left>
+      <top>188</top>
+      <backcolor>-9868951</backcolor>
+      <forecolor>-1</forecolor>
+      <anchor>5</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+    </object>
+
+    <object name="txtTMDBID">
+      <width>108</width>
+      <height>20</height>
+      <left>117</left>
+      <top>208</top>
+      <backcolor>-1</backcolor>
+      <forecolor>-16777216</forecolor>
+      <anchor>5</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+    </object>
     
     <object name="lblCertsHeader">
-      <width>pnlInfoPanel.Width - 428</width>
+      <width>pnlInfoPanel.Width - 542</width>
       <height>17</height>
-      <left>116</left>
+      <left>231</left>
       <top>188</top>
       <backcolor>-9868951</backcolor>
       <forecolor>-1</forecolor>
@@ -321,7 +347,7 @@ or a "32-bit ARGB value"
     <object name="txtCerts">
       <width>lblCertsHeader.Width</width>
       <height>20</height>
-      <left>116</left>
+      <left>231</left>
       <top>208</top>
       <backcolor>-1</backcolor>
       <forecolor>-16777216</forecolor>

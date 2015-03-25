@@ -518,6 +518,7 @@ Public Class frmMain
                 .txtFilePath.Text = String.Empty
                 .txtOutline.Text = String.Empty
                 .txtPlot.Text = String.Empty
+                .txtTMDBID.Text = String.Empty
                 .lblTagline.Text = String.Empty
                 If .pbMPAA.Image IsNot Nothing Then
                     .pbMPAA.Image.Dispose()
@@ -10171,6 +10172,7 @@ doCancel:
             Me.lblDirector.Text = Master.currMovie.Movie.Director
 
             Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
+            Me.txtTMDBID.Text = Master.currMovie.Movie.TMDBID
 
             Me.txtFilePath.Text = Master.currMovie.Filename
 
@@ -10325,6 +10327,7 @@ doCancel:
             'Me.lblDirector.Text = Master.currMovie.Movie.Director
 
             'Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
+            'Me.txtTMDBID.Text = Master.currMovie.Movie.TMDBID
 
             'Me.txtFilePath.Text = Master.currMovie.Filename
 
@@ -19963,6 +19966,32 @@ doCancel:
             lblIMDBHeader.ForeColor = DirectCast(lblIMDBHeader.Tag, Color)
             Me.Cursor = Cursors.Default
             lblIMDBHeader.Tag = Nothing
+        End If
+    End Sub
+
+    Private Sub lblTMDBHeader_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTMDBHeader.Click
+        If Not String.IsNullOrEmpty(txtTMDBID.Text) Then
+            If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
+                Functions.Launch(My.Resources.urlTheMovieDb & "/movie/" & txtTMDBID.Text)
+            Else
+                Functions.Launch(My.Resources.urlTheMovieDb & "movie/" & txtTMDBID.Text)
+            End If
+        End If
+    End Sub
+
+    Private Sub lblTMDBHeader_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTMDBHeader.MouseEnter
+        If Not String.IsNullOrEmpty(txtTMDBID.Text) Then
+            lblTMDBHeader.Tag = lblTMDBHeader.ForeColor
+            lblTMDBHeader.ForeColor = Color.FromArgb(Not lblTMDBHeader.ForeColor.R, Not lblTMDBHeader.ForeColor.G, Not lblTMDBHeader.ForeColor.B)
+            Me.Cursor = Cursors.Hand
+        End If
+    End Sub
+
+    Private Sub lblTMDBHeader_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblTMDBHeader.MouseLeave
+        If Not lblTMDBHeader.Tag Is Nothing Then
+            lblTMDBHeader.ForeColor = DirectCast(lblTMDBHeader.Tag, Color)
+            Me.Cursor = Cursors.Default
+            lblTMDBHeader.Tag = Nothing
         End If
     End Sub
 

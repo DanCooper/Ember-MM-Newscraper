@@ -221,7 +221,7 @@ Public Class Theming
     Public Sub BuildControlList()
         Try
             _availablecontrols.Clear()
-            Const PossibleControls As String = "pnlInfoPanel,lblInfoPanelHeader,btnUp,btnMid,btnDown,lblDirectorHeader,lblDirector,lblReleaseDateHeader,lblReleaseDate,pnlTop250,pbTop250,lblTop250,lblOutlineHeader,txtOutline,lblIMDBHeader,txtIMDBID,lblCertsHeader,txtCerts,lblFilePathHeader,txtFilePath,btnPlay,pnlActors,lblActorsHeader,lstActors,pbActors,pbActLoad,lblPlotHeader,txtPlot,lblMetaDataHeader,btnMetaDataRefresh,txtMetaData,pbMILoading,pnlMoviesInSet,lblMoviesInSetHeader,lvMoviesInSet"
+            Const PossibleControls As String = "pnlInfoPanel,lblInfoPanelHeader,btnUp,btnMid,btnDown,lblDirectorHeader,lblDirector,lblReleaseDateHeader,lblReleaseDate,pnlTop250,pbTop250,lblTop250,lblOutlineHeader,txtOutline,lblIMDBHeader,txtIMDBID,lblTMDBHeader,txtTMDBID,lblCertsHeader,txtCerts,lblFilePathHeader,txtFilePath,btnPlay,pnlActors,lblActorsHeader,lstActors,pbActors,pbActLoad,lblPlotHeader,txtPlot,lblMetaDataHeader,btnMetaDataRefresh,txtMetaData,pbMILoading,pnlMoviesInSet,lblMoviesInSetHeader,lvMoviesInSet"
             For Each sCon As String In PossibleControls.Split(Convert.ToChar(","))
                 _availablecontrols.Add(New Controls With {.Control = sCon})
             Next

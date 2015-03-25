@@ -151,6 +151,14 @@ or a "32-bit ARGB value"
     <object name="txtIMDBID">
       <visible>false</visible>
     </object>
+
+    <object name="lblTMDBHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="txtTMDBID">
+      <visible>false</visible>
+    </object>
     
     <object name="lblCertsHeader">
       <visible>false</visible>

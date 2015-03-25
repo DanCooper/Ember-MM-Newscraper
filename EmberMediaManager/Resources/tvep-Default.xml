@@ -19,6 +19,10 @@ be anchor code 5.
 
 Can be combined by adding values. For example, bold and underlined would be
 fontstyle code 5.
+
+### Color Help ###
+Color can be a "system-defined color" https://msdn.microsoft.com/en-us/library/system.drawing.knowncolor%28v=vs.110%29.aspx
+or a "32-bit ARGB value"
 -->
 
 <theme>
@@ -28,14 +32,49 @@ fontstyle code 5.
   </toppanel>
  
   <images>
-    <fanartbackcolor>-9868951</fanartbackcolor>
-    <posterbackcolor>-2302756</posterbackcolor>
-    <postermaxwidth>160</postermaxwidth>
-    <postermaxheight>160</postermaxheight>
-    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <bannerbackcolor>Gainsboro</bannerbackcolor>
+    <bannerbottombackcolor>DimGray</bannerbottombackcolor>
+    <bannermaxheight>160</bannermaxheight>
+    <bannermaxwidth>285</bannermaxwidth>
+    <bannertopbackcolor>DimGray</bannertopbackcolor>
+    <characterartbackcolor>Gainsboro</characterartbackcolor>
+    <characterartbottombackcolor>DimGray</characterartbottombackcolor>
+    <characterartmaxheight>160</characterartmaxheight>
+    <characterartmaxwidth>160</characterartmaxwidth>
+    <characterarttopbackcolor>DimGray</characterarttopbackcolor>
+    <clearartbackcolor>Gainsboro</clearartbackcolor>
+    <clearartbottombackcolor>DimGray</clearartbottombackcolor>
+    <clearartmaxheight>160</clearartmaxheight>
+    <clearartmaxwidth>285</clearartmaxwidth>
+    <cleararttopbackcolor>DimGray</cleararttopbackcolor>
+    <clearlogobackcolor>Gainsboro</clearlogobackcolor>
+    <clearlogobottombackcolor>DimGray</clearlogobottombackcolor>
+    <clearlogomaxheight>160</clearlogomaxheight>
+    <clearlogomaxwidth>285</clearlogomaxwidth>
+    <clearlogotopbackcolor>DimGray</clearlogotopbackcolor>
+    <discartbackcolor>Gainsboro</discartbackcolor>
+    <discartbottombackcolor>DimGray</discartbottombackcolor>
+    <discartmaxheight>160</discartmaxheight>
+    <discartmaxwidth>160</discartmaxwidth>
+    <discarttopbackcolor>DimGray</discarttopbackcolor>
+    <fanartbackcolor>Gray</fanartbackcolor>
+    <fanartsmallbackcolor>Gainsboro</fanartsmallbackcolor>
+    <fanartsmallbottombackcolor>DimGray</fanartsmallbottombackcolor>
     <fanartsmallmaxheight>160</fanartsmallmaxheight>
-    <mpaabackcolor>-2302756</mpaabackcolor>
-    <genrebackcolor>-2302756</genrebackcolor>
+    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <fanartsmalltopbackcolor>DimGray</fanartsmalltopbackcolor>
+    <genrebackcolor>Gainsboro</genrebackcolor>
+    <landscapebackcolor>Gainsboro</landscapebackcolor>
+    <landscapebottombackcolor>DimGray</landscapebottombackcolor>
+    <landscapemaxheight>160</landscapemaxheight>
+    <landscapemaxwidth>285</landscapemaxwidth>
+    <landscapetopbackcolor>DimGray</landscapetopbackcolor>
+    <mpaabackcolor>Gainsboro</mpaabackcolor>
+    <posterbackcolor>Gainsboro</posterbackcolor>
+    <posterbottombackcolor>DimGray</posterbottombackcolor>
+    <postermaxheight>160</postermaxheight>
+    <postermaxwidth>160</postermaxwidth>
+    <postertopbackcolor>DimGray</postertopbackcolor>
   </images>
    
   <infopanel>
@@ -112,6 +151,14 @@ fontstyle code 5.
     <object name="txtIMDBID">
       <visible>false</visible>
     </object>
+
+    <object name="lblTMDBHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="txtTMDBID">
+      <visible>false</visible>
+    </object>
     
     <object name="lblCertsHeader">
       <visible>false</visible>
@@ -120,6 +167,20 @@ fontstyle code 5.
     <object name="txtCerts">
       <visible>false</visible>
     </object>
+
+    <object name="pnlMoviesInSet">
+      <visible>false</visible>
+    </object>
+
+    <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
+    <object name="lblMoviesInSetHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="lvMoviesInSet">
+      <visible>false</visible>
+    </object>
+    <!-- END INTERNAL TO PNLMOVIESINSET -->
     
     <object name="lblMetaDataHeader">
       <width>237</width>

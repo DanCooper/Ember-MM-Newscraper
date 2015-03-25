@@ -293,11 +293,37 @@ fontstyle code 5.
       <fontsize>9</fontsize>
       <fontstyle>0</fontstyle>
     </object>
+
+    <object name="lblTMDBHeader">
+      <width>108</width>
+      <height>18</height>
+      <left>117</left>
+      <top>188</top>
+      <backcolor>FireBrick</backcolor>
+      <forecolor>White</forecolor>
+      <anchor>5</anchor>
+      <font>Arial</font>
+      <fontsize>9</fontsize>
+      <fontstyle>1</fontstyle>
+    </object>
+
+    <object name="txtTMDBID">
+      <width>108</width>
+      <height>20</height>
+      <left>117</left>
+      <top>208</top>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>White</forecolor>
+      <anchor>5</anchor>
+      <font>Arial</font>
+      <fontsize>9</fontsize>
+      <fontstyle>0</fontstyle>
+    </object>
     
     <object name="lblCertsHeader">
-      <width>pnlInfoPanel.Width - 428</width>
+      <width>pnlInfoPanel.Width - 542</width>
       <height>18</height>
-      <left>116</left>
+      <left>231</left>
       <top>188</top>
       <backcolor>FireBrick</backcolor>
       <forecolor>White</forecolor>
@@ -310,7 +336,7 @@ fontstyle code 5.
     <object name="txtCerts">
       <width>lblCertsHeader.Width</width>
       <height>20</height>
-      <left>116</left>
+      <left>231</left>
       <top>208</top>
       <backcolor>#2A2728</backcolor>
       <forecolor>White</forecolor>
