@@ -629,7 +629,7 @@ Public Class FileFolderRenamer
     Public Shared Sub Process_Episode(ByRef EpisodeFile As FileRename, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String)
         Try
             Dim pSeason As String = ProccessPattern(EpisodeFile, folderPatternSeasons, True).Trim
-            Dim nPath As String = Path.Combine(EpisodeFile.ShowPath, pSeason)
+            EpisodeFile.NewPath = Path.Combine(EpisodeFile.ShowPath, pSeason)
 
             If Not EpisodeFile.IsVideo_TS AndAlso Not EpisodeFile.IsBDMV Then
                 If EpisodeFile.FileName.ToLower = "video_ts" Then
