@@ -396,6 +396,7 @@ Public Class dlgExportMovies
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         row = row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
+                        row = row.Replace("<$TVSHOWS>", StringUtils.HtmlEncode(AllTVShowList)) 'A long string of all tvshows, seperated with |!
                         row = row.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(_curMovie))) 'All sets which movie belongs to, seperated with ;!
                         row = row.Replace("<$VIDEOBITRATE>", _vidBitrate)
                         row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiViewCount)
