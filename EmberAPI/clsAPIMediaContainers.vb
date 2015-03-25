@@ -1452,10 +1452,10 @@ Namespace MediaContainers
             <XmlAttribute("moviedb")> _
             Public Property IDMovieDB() As String
                 Get
-                    Return _moviedb
+                    Return _moviedb.Trim
                 End Get
                 Set(ByVal value As String)
-                    Me._moviedb = value
+                    Me._moviedb = value.Trim
                 End Set
             End Property
 
@@ -1469,10 +1469,10 @@ Namespace MediaContainers
             <XmlAttribute("TMDB")> _
             Public Property IDTMDB() As String
                 Get
-                    Return _tmdbid
+                    Return _tmdbid.Trim
                 End Get
                 Set(ByVal value As String)
-                    Me._tmdbid = value
+                    Me._tmdbid = value.Trim
                 End Set
             End Property
 
@@ -1773,10 +1773,10 @@ Namespace MediaContainers
         <XmlElement("id")> _
         Public Property ID() As String
             Get
-                Return Me._id
+                Return Me._id.Trim
             End Get
             Set(ByVal value As String)
-                Me._id = value
+                Me._id = value.Trim
             End Set
         End Property
 
@@ -2107,10 +2107,10 @@ Namespace MediaContainers
         <XmlElement("id")> _
         Public Property ID() As String
             Get
-                Return Me._id
+                Return Me._id.Trim
             End Get
             Set(ByVal value As String)
-                If Integer.TryParse(value, 0) Then Me._id = value
+                If Integer.TryParse(value, 0) Then Me._id = value.Trim
             End Set
         End Property
 
@@ -2391,10 +2391,10 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public Property TVDBID() As String
             Get
-                Return Me._id
+                Return Me._id.Trim
             End Get
             Set(ByVal value As String)
-                Me._id = value
+                Me._id = value.Trim
             End Set
         End Property
 
