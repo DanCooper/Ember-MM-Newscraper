@@ -110,8 +110,8 @@ Public Class clsAdvancedSettings
     End Function
 
     Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.Content_Type = Enums.Content_Type.None) As String
+        Dim Assembly As String = cAssembly
         Try
-            Dim Assembly As String = cAssembly
             If Assembly = "" Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
@@ -121,14 +121,14 @@ Public Class clsAdvancedSettings
 
             If cContent = Enums.Content_Type.None Then
                 Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-                Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
+                Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, defvalue, v(0).Value.ToString)
             Else
                 Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
-                Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
+                Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, defvalue, v(0).Value.ToString)
             End If
 
         Catch ex As Exception
-            logger.Info(New StackFrame().GetMethod().Name, ex)
+            logger.Info("Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function

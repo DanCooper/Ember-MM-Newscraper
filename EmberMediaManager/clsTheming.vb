@@ -319,7 +319,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then
                     If Integer.TryParse(xTop.<backcolor>.Value, 0) Then
                         tTheme.TopPanelBackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
-                    ElseIf Color.FromName(xTop.<backcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xTop.<backcolor>.Value).IsKnownColor OrElse xTop.<backcolor>.Value.StartsWith("#") Then
                         tTheme.TopPanelBackColor = System.Drawing.ColorTranslator.FromHtml(xTop.<backcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xTop.<backcolor>.Value))
@@ -329,7 +329,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then
                     If Integer.TryParse(xTop.<forecolor>.Value, 0) Then
                         tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
-                    ElseIf Color.FromName(xTop.<forecolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xTop.<forecolor>.Value).IsKnownColor OrElse xTop.<forecolor>.Value.StartsWith("#") Then
                         tTheme.TopPanelForeColor = System.Drawing.ColorTranslator.FromHtml(xTop.<forecolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xTop.<forecolor>.Value))
@@ -350,7 +350,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<bannerbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<bannerbackcolor>.Value, 0) Then
                         tTheme.BannerBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannerbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<bannerbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<bannerbackcolor>.Value).IsKnownColor OrElse xImages.<bannerbackcolor>.Value.StartsWith("#") Then
                         tTheme.BannerBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<bannerbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<bannerbackcolor>.Value))
@@ -359,7 +359,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<bannerbottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<bannerbottombackcolor>.Value, 0) Then
                         tTheme.BannerBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannerbottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<bannerbottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<bannerbottombackcolor>.Value).IsKnownColor OrElse xImages.<bannerbottombackcolor>.Value.StartsWith("#") Then
                         tTheme.BannerBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<bannerbottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<bannerbottombackcolor>.Value))
@@ -378,7 +378,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<bannertopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<bannertopbackcolor>.Value, 0) Then
                         tTheme.BannerTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<bannertopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<bannertopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<bannertopbackcolor>.Value).IsKnownColor OrElse xImages.<bannertopbackcolor>.Value.StartsWith("#") Then
                         tTheme.BannerTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<bannertopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<bannertopbackcolor>.Value))
@@ -389,7 +389,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<characterartbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<characterartbackcolor>.Value, 0) Then
                         tTheme.CharacterArtBackColor = Color.FromArgb(Convert.ToInt32(xImages.<characterartbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<characterartbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<characterartbackcolor>.Value).IsKnownColor OrElse xImages.<characterartbackcolor>.Value.StartsWith("#") Then
                         tTheme.CharacterArtBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<characterartbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<characterartbackcolor>.Value))
@@ -398,7 +398,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<characterartbottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<characterartbottombackcolor>.Value, 0) Then
                         tTheme.CharacterArtBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<characterartbottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<characterartbottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<characterartbottombackcolor>.Value).IsKnownColor OrElse xImages.<characterartbottombackcolor>.Value.StartsWith("#") Then
                         tTheme.CharacterArtBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<characterartbottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<characterartbottombackcolor>.Value))
@@ -417,7 +417,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<characterarttopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<characterarttopbackcolor>.Value, 0) Then
                         tTheme.CharacterArtTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<characterarttopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<characterarttopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<characterarttopbackcolor>.Value).IsKnownColor OrElse xImages.<characterarttopbackcolor>.Value.StartsWith("#") Then
                         tTheme.CharacterArtTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<characterarttopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<characterarttopbackcolor>.Value))
@@ -428,7 +428,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<clearartbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<clearartbackcolor>.Value, 0) Then
                         tTheme.ClearArtBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearartbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<clearartbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<clearartbackcolor>.Value).IsKnownColor OrElse xImages.<clearartbackcolor>.Value.StartsWith("#") Then
                         tTheme.ClearArtBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearartbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<clearartbackcolor>.Value))
@@ -437,7 +437,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<clearartbottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<clearartbottombackcolor>.Value, 0) Then
                         tTheme.ClearArtBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearartbottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<clearartbottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<clearartbottombackcolor>.Value).IsKnownColor OrElse xImages.<clearartbottombackcolor>.Value.StartsWith("#") Then
                         tTheme.ClearArtBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearartbottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<clearartbottombackcolor>.Value))
@@ -456,7 +456,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<cleararttopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<cleararttopbackcolor>.Value, 0) Then
                         tTheme.ClearArtTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<cleararttopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<cleararttopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<cleararttopbackcolor>.Value).IsKnownColor OrElse xImages.<cleararttopbackcolor>.Value.StartsWith("#") Then
                         tTheme.ClearArtTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<cleararttopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<cleararttopbackcolor>.Value))
@@ -467,7 +467,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<clearlogobackcolor>.Value) Then
                     If Integer.TryParse(xImages.<clearlogobackcolor>.Value, 0) Then
                         tTheme.ClearlogoBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogobackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<clearlogobackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<clearlogobackcolor>.Value).IsKnownColor OrElse xImages.<clearlogobackcolor>.Value.StartsWith("#") Then
                         tTheme.ClearlogoBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearlogobackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<clearlogobackcolor>.Value))
@@ -476,7 +476,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<clearlogobottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<clearlogobottombackcolor>.Value, 0) Then
                         tTheme.ClearLogoBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogobottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<clearlogobottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<clearlogobottombackcolor>.Value).IsKnownColor OrElse xImages.<clearlogobottombackcolor>.Value.StartsWith("#") Then
                         tTheme.ClearLogoBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearlogobottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<clearlogobottombackcolor>.Value))
@@ -495,7 +495,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<clearlogotopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<clearlogotopbackcolor>.Value, 0) Then
                         tTheme.ClearLogoTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<clearlogotopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<clearlogotopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<clearlogotopbackcolor>.Value).IsKnownColor OrElse xImages.<clearlogotopbackcolor>.Value.StartsWith("#") Then
                         tTheme.ClearLogoTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<clearlogotopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<clearlogotopbackcolor>.Value))
@@ -506,7 +506,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<discartbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<discartbackcolor>.Value, 0) Then
                         tTheme.DiscartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<discartbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<discartbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<discartbackcolor>.Value).IsKnownColor OrElse xImages.<discartbackcolor>.Value.StartsWith("#") Then
                         tTheme.DiscartBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<discartbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<discartbackcolor>.Value))
@@ -515,7 +515,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<discartbottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<discartbottombackcolor>.Value, 0) Then
                         tTheme.DiscartBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<discartbottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<discartbottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<discartbottombackcolor>.Value).IsKnownColor OrElse xImages.<discartbottombackcolor>.Value.StartsWith("#") Then
                         tTheme.DiscartBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<discartbottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<discartbottombackcolor>.Value))
@@ -534,7 +534,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<discarttopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<discarttopbackcolor>.Value, 0) Then
                         tTheme.DiscartTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<discarttopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<discarttopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<discarttopbackcolor>.Value).IsKnownColor OrElse xImages.<discarttopbackcolor>.Value.StartsWith("#") Then
                         tTheme.DiscartTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<discarttopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<discarttopbackcolor>.Value))
@@ -545,7 +545,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<fanartbackcolor>.Value, 0) Then
                         tTheme.FanartBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<fanartbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<fanartbackcolor>.Value).IsKnownColor OrElse xImages.<fanartbackcolor>.Value.StartsWith("#") Then
                         tTheme.FanartBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<fanartbackcolor>.Value))
@@ -556,7 +556,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<fanartsmallbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<fanartsmallbackcolor>.Value, 0) Then
                         tTheme.FanartSmallBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartsmallbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<fanartsmallbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<fanartsmallbackcolor>.Value).IsKnownColor OrElse xImages.<fanartsmallbackcolor>.Value.StartsWith("#") Then
                         tTheme.FanartSmallBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartsmallbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<fanartsmallbackcolor>.Value))
@@ -565,7 +565,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<fanartsmallbottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<fanartsmallbottombackcolor>.Value, 0) Then
                         tTheme.FanartSmallBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartsmallbottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<fanartsmallbottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<fanartsmallbottombackcolor>.Value).IsKnownColor OrElse xImages.<fanartsmallbottombackcolor>.Value.StartsWith("#") Then
                         tTheme.FanartSmallBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartsmallbottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<fanartsmallbottombackcolor>.Value))
@@ -584,7 +584,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<fanartsmalltopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<fanartsmalltopbackcolor>.Value, 0) Then
                         tTheme.FanartSmallTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartsmalltopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<fanartsmalltopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<fanartsmalltopbackcolor>.Value).IsKnownColor OrElse xImages.<fanartsmalltopbackcolor>.Value.StartsWith("#") Then
                         tTheme.FanartSmallTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<fanartsmalltopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<fanartsmalltopbackcolor>.Value))
@@ -595,7 +595,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<landscapebackcolor>.Value) Then
                     If Integer.TryParse(xImages.<landscapebackcolor>.Value, 0) Then
                         tTheme.LandscapeBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapebackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<landscapebackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<landscapebackcolor>.Value).IsKnownColor OrElse xImages.<landscapebackcolor>.Value.StartsWith("#") Then
                         tTheme.LandscapeBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<landscapebackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<landscapebackcolor>.Value))
@@ -604,7 +604,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<landscapebottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<landscapebottombackcolor>.Value, 0) Then
                         tTheme.LandscapeBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapebottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<landscapebottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<landscapebottombackcolor>.Value).IsKnownColor OrElse xImages.<landscapebottombackcolor>.Value.StartsWith("#") Then
                         tTheme.LandscapeBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<landscapebottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<landscapebottombackcolor>.Value))
@@ -623,7 +623,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<landscapetopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<landscapetopbackcolor>.Value, 0) Then
                         tTheme.LandscapeTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<landscapetopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<landscapetopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<landscapetopbackcolor>.Value).IsKnownColor OrElse xImages.<landscapetopbackcolor>.Value.StartsWith("#") Then
                         tTheme.LandscapeTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<landscapetopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<landscapetopbackcolor>.Value))
@@ -634,7 +634,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<posterbackcolor>.Value, 0) Then
                         tTheme.PosterBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<posterbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<posterbackcolor>.Value).IsKnownColor OrElse xImages.<posterbackcolor>.Value.StartsWith("#") Then
                         tTheme.PosterBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<posterbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<posterbackcolor>.Value))
@@ -643,7 +643,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<posterbottombackcolor>.Value) Then
                     If Integer.TryParse(xImages.<posterbottombackcolor>.Value, 0) Then
                         tTheme.PosterBottomBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbottombackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<posterbottombackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<posterbottombackcolor>.Value).IsKnownColor OrElse xImages.<posterbottombackcolor>.Value.StartsWith("#") Then
                         tTheme.PosterBottomBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<posterbottombackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<posterbottombackcolor>.Value))
@@ -662,7 +662,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<postertopbackcolor>.Value) Then
                     If Integer.TryParse(xImages.<postertopbackcolor>.Value, 0) Then
                         tTheme.PosterTopBackColor = Color.FromArgb(Convert.ToInt32(xImages.<postertopbackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<postertopbackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<postertopbackcolor>.Value).IsKnownColor OrElse xImages.<postertopbackcolor>.Value.StartsWith("#") Then
                         tTheme.PosterTopBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<postertopbackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<postertopbackcolor>.Value))
@@ -673,7 +673,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then
                     If Integer.TryParse(xImages.<genrebackcolor>.Value, 0) Then
                         tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<genrebackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<genrebackcolor>.Value).IsKnownColor OrElse xImages.<genrebackcolor>.Value.StartsWith("#") Then
                         tTheme.GenreBackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<genrebackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<genrebackcolor>.Value))
@@ -684,7 +684,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then
                     If Integer.TryParse(xImages.<mpaabackcolor>.Value, 0) Then
                         tTheme.MPAABackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
-                    ElseIf Color.FromName(xImages.<mpaabackcolor>.Value).IsKnownColor Then
+                    ElseIf Color.FromName(xImages.<mpaabackcolor>.Value).IsKnownColor OrElse xImages.<mpaabackcolor>.Value.StartsWith("#") Then
                         tTheme.MPAABackColor = System.Drawing.ColorTranslator.FromHtml(xImages.<mpaabackcolor>.Value)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xImages.<mpaabackcolor>.Value))
@@ -703,7 +703,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then
                     If Integer.TryParse(xIPMain(0).backcolor, 0) Then
                         tTheme.InfoPanelBackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
-                    ElseIf Color.FromName(xIPMain(0).backcolor).IsKnownColor Then
+                    ElseIf Color.FromName(xIPMain(0).backcolor).IsKnownColor OrElse xIPMain(0).backcolor.StartsWith("#") Then
                         tTheme.InfoPanelBackColor = System.Drawing.ColorTranslator.FromHtml(xIPMain(0).backcolor)
                     Else
                         logger.Error(String.Concat("No valid color value: ", xIPMain(0).backcolor))
@@ -728,7 +728,7 @@ Public Class Theming
                         If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then
                             If Integer.TryParse(xIP.<backcolor>.Value, 0) Then
                                 cControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
-                            ElseIf Color.FromName(xIP.<backcolor>.Value).IsKnownColor Then
+                            ElseIf Color.FromName(xIP.<backcolor>.Value).IsKnownColor OrElse xIP.<backcolor>.Value.StartsWith("#") Then
                                 cControl.BackColor = System.Drawing.ColorTranslator.FromHtml(xIP.<backcolor>.Value)
                             Else
                                 logger.Error(String.Concat("No valid color value: ", xIP.<backcolor>.Value))
@@ -737,7 +737,7 @@ Public Class Theming
                         If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then
                             If Integer.TryParse(xIP.<forecolor>.Value, 0) Then
                                 cControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
-                            ElseIf Color.FromName(xIP.<forecolor>.Value).IsKnownColor Then
+                            ElseIf Color.FromName(xIP.<forecolor>.Value).IsKnownColor OrElse xIP.<forecolor>.Value.StartsWith("#") Then
                                 cControl.ForeColor = System.Drawing.ColorTranslator.FromHtml(xIP.<forecolor>.Value)
                             Else
                                 logger.Error(String.Concat("No valid color value: ", xIP.<forecolor>.Value))
