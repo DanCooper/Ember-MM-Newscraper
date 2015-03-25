@@ -91,9 +91,9 @@ namespace Trakttv
             if (oAuth)
             {
                 request.Headers.Add("trakt-user-login", TraktSettings.Username ?? string.Empty);
-                logger.Info("[READFromTrakt] trakt-user-login: " + TraktSettings.Username);
+                //logger.Info("[READFromTrakt] trakt-user-login: " + TraktSettings.Username);
                 request.Headers.Add("trakt-user-token", TraktSettings.Token ?? string.Empty);
-                logger.Info("[READFromTrakt] trakt-user-token: " + TraktMethods.MaskSensibleString(TraktSettings.Token));  
+                //logger.Info("[READFromTrakt] trakt-user-token: " + TraktMethods.MaskSensibleString(TraktSettings.Token));  
             }
             logger.Info("[READFromTrakt] Header: " + request.Headers);
             try
@@ -153,7 +153,7 @@ namespace Trakttv
 
            // address = address.Replace("https://", "http://");
             logger.Info("[SENDToTrakt] Address: " + address);
-            logger.Info("[SENDToTrakt] Post: " + uploadstring);
+            //logger.Info("[SENDToTrakt] Post: " + uploadstring);
 
           
             if (OnDataSend != null && oAuth)
@@ -201,7 +201,7 @@ namespace Trakttv
                 Stream responseStream = response.GetResponseStream();
                 var reader = new StreamReader(responseStream);
                 string strResponse = reader.ReadToEnd();
-                logger.Info("[SENDToTrakt] Response: " + strResponse);
+                //logger.Info("[SENDToTrakt] Response: " + strResponse);
                 if (OnDataReceived != null)
                     OnDataReceived(strResponse);
 
