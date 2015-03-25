@@ -734,7 +734,7 @@ Public Class dlgSettings
             Dim selRex = From lRegex As Settings.regexp In Me.TVShowMatching Where lRegex.ID = Convert.ToInt32(Me.btnTVSourcesRegexTVShowMatchingAdd.Tag)
             If selRex.Count > 0 Then
                 selRex(0).Regexp = Me.txtTVSourcesRegexTVShowMatchingRegex.Text
-                selRex(0).defaultSeason = CInt(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)
+                selRex(0).defaultSeason = CInt(If(String.IsNullOrEmpty(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-1", Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
                 selRex(0).byDate = Me.chkTVSourcesRegexTVShowMatchingByDate.Checked
             End If
         End If
@@ -3398,7 +3398,7 @@ Public Class dlgSettings
         Me.btnTVSourcesRegexTVShowMatchingAdd.Tag = lItem.Text
 
         Me.txtTVSourcesRegexTVShowMatchingRegex.Text = lItem.SubItems(1).Text.ToString
-        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = lItem.SubItems(2).Text
+        Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text = If(Not lItem.SubItems(2).Text = "-1", lItem.SubItems(2).Text, String.Empty)
 
         Select Case lItem.SubItems(3).Text
             Case "Yes"
@@ -4444,7 +4444,7 @@ Public Class dlgSettings
         For Each rShow As Settings.regexp In Me.TVShowMatching
             lvItem = New ListViewItem(rShow.ID.ToString)
             lvItem.SubItems.Add(rShow.Regexp)
-            lvItem.SubItems.Add(rShow.defaultSeason.ToString)
+            lvItem.SubItems.Add(If(Not rShow.defaultSeason.ToString = "-1", rShow.defaultSeason.ToString, String.Empty))
             lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
             Me.lvTVSourcesRegexTVShowMatching.Items.Add(lvItem)
         Next
