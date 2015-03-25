@@ -630,7 +630,6 @@ Public Class FileFolderRenamer
         Try
             Dim pSeason As String = ProccessPattern(EpisodeFile, folderPatternSeasons, True).Trim
             Dim nPath As String = Path.Combine(EpisodeFile.ShowPath, pSeason)
-            EpisodeFile.NewPath = If(nPath.StartsWith(Path.DirectorySeparatorChar), nPath.Substring(1), nPath)
 
             If Not EpisodeFile.IsVideo_TS AndAlso Not EpisodeFile.IsBDMV Then
                 If EpisodeFile.FileName.ToLower = "video_ts" Then
@@ -643,6 +642,10 @@ Public Class FileFolderRenamer
             Else
                 EpisodeFile.NewFileName = EpisodeFile.FileName
             End If
+
+            While EpisodeFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
+                EpisodeFile.NewPath = EpisodeFile.NewPath.Remove(0, 1)
+            End While
 
             ' removes all dots at the end of the foldername (dots are not allowed)
             While EpisodeFile.NewPath.Last = "."
@@ -669,7 +672,6 @@ Public Class FileFolderRenamer
             Else
                 MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(MovieFile.IsSingle, folderPattern, "$D"), True).Trim)
             End If
-            MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
 
             If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
                 If MovieFile.FileName.ToLower = "video_ts" Then
@@ -682,6 +684,10 @@ Public Class FileFolderRenamer
             Else
                 MovieFile.NewFileName = MovieFile.FileName
             End If
+
+            While MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
+                MovieFile.NewPath = MovieFile.NewPath.Remove(0, 1)
+            End While
 
             ' removes all dots at the end of the foldername (dots are not allowed)
             While MovieFile.NewPath.Last = "."
@@ -708,7 +714,10 @@ Public Class FileFolderRenamer
             Else
                 ShowFile.NewPath = Path.Combine(ShowFile.OldPath, ProccessPattern(ShowFile, folderPatternShows, True).Trim)
             End If
-            ShowFile.NewPath = If(ShowFile.NewPath.StartsWith(Path.DirectorySeparatorChar), ShowFile.NewPath.Substring(1), ShowFile.NewPath)
+
+            While ShowFile.NewPath.StartsWith(Path.DirectorySeparatorChar)
+                ShowFile.NewPath = ShowFile.NewPath.Remove(0, 1)
+            End While
 
             ' removes all dots at the end of the foldername (dots are not allowed)
             While ShowFile.NewPath.Last = "."
