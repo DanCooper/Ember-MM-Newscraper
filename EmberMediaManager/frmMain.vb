@@ -61,9 +61,9 @@ Public Class frmMain
     Private FilterRaise_MovieSets As Boolean = False
     Private FilterRaise_Shows As Boolean = False
     Private aniRaise As Boolean = False
-    Private aniMovieType As Integer = 0 '0 = down, 1 = mid, 2 = up
-    Private aniMovieSetType As Integer = 0 '0 = down, 1 = mid, 2 = up
-    Private aniShowType As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private MovieInfoPanelState As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private MovieSetInfoPanelState As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private TVShowInfoPanelState As Integer = 0 '0 = down, 1 = mid, 2 = up
 
     Private bsEpisodes As New BindingSource
     Private bsMovies As New BindingSource
@@ -824,7 +824,7 @@ Public Class frmMain
 
         Me.tmrAni.Stop()
 
-        Select Case If(Me.tcMain.SelectedIndex = 0, aniMovieType, If(Me.tcMain.SelectedIndex = 1, aniMovieSetType, aniShowType))
+        Select Case If(Me.tcMain.SelectedIndex = 0, MovieInfoPanelState, If(Me.tcMain.SelectedIndex = 1, MovieSetInfoPanelState, TVShowInfoPanelState))
             Case 1
                 If Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
@@ -834,11 +834,11 @@ Public Class frmMain
                 ElseIf Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniMovieType = 2
+                        MovieInfoPanelState = 2
                     ElseIf Me.tcMain.SelectedIndex = 1 Then
-                        aniMovieSetType = 2
+                        MovieSetInfoPanelState = 2
                     Else
-                        aniShowType = 2
+                        TVShowInfoPanelState = 2
                     End If
                     Me.btnUp.Enabled = False
                     Me.btnMid.Enabled = True
@@ -846,49 +846,17 @@ Public Class frmMain
                 Else
                     Me.pnlInfoPanel.Height = 25
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniMovieType = 0
+                        MovieInfoPanelState = 0
                     ElseIf Me.tcMain.SelectedIndex = 1 Then
-                        aniMovieSetType = 0
+                        MovieSetInfoPanelState = 0
                     Else
-                        aniShowType = 0
+                        TVShowInfoPanelState = 0
                     End If
                     Me.btnUp.Enabled = True
                     Me.btnMid.Enabled = True
                     Me.btnDown.Enabled = False
                 End If
             Case 2
-                If Me.btnMid.Visible Then
-                    Me.pnlInfoPanel.Height = Me._ipmid
-                    Me.btnUp.Enabled = True
-                    Me.btnMid.Enabled = False
-                    Me.btnDown.Enabled = True
-                ElseIf Me.btnUp.Visible Then
-                    Me.pnlInfoPanel.Height = Me._ipup
-                    If Me.tcMain.SelectedIndex = 0 Then
-                        aniMovieType = 2
-                    ElseIf Me.tcMain.SelectedIndex = 1 Then
-                        aniMovieSetType = 2
-                    Else
-                        aniShowType = 2
-                    End If
-                    Me.btnUp.Enabled = False
-                    Me.btnMid.Enabled = True
-                    Me.btnDown.Enabled = True
-                Else
-                    Me.pnlInfoPanel.Height = 25
-                    If Me.tcMain.SelectedIndex = 0 Then
-                        aniMovieType = 0
-                    ElseIf Me.tcMain.SelectedIndex = 1 Then
-                        aniMovieSetType = 0
-                    Else
-                        aniShowType = 0
-                    End If
-                    Me.btnUp.Enabled = True
-                    Me.btnMid.Enabled = True
-                    Me.btnDown.Enabled = False
-                End If
-
-            Case 3
                 If Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
                     Me.btnUp.Enabled = False
@@ -898,11 +866,11 @@ Public Class frmMain
                     Me.pnlInfoPanel.Height = Me._ipmid
 
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniMovieType = 1
+                        MovieInfoPanelState = 1
                     ElseIf Me.tcMain.SelectedIndex = 1 Then
-                        aniMovieSetType = 1
+                        MovieSetInfoPanelState = 1
                     Else
-                        aniShowType = 1
+                        TVShowInfoPanelState = 1
                     End If
 
                     Me.btnUp.Enabled = True
@@ -911,11 +879,11 @@ Public Class frmMain
                 Else
                     Me.pnlInfoPanel.Height = 25
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniMovieType = 0
+                        MovieInfoPanelState = 0
                     ElseIf Me.tcMain.SelectedIndex = 1 Then
-                        aniMovieSetType = 0
+                        MovieSetInfoPanelState = 0
                     Else
-                        aniShowType = 0
+                        TVShowInfoPanelState = 0
                     End If
                     Me.btnUp.Enabled = True
                     Me.btnMid.Enabled = True
@@ -924,11 +892,11 @@ Public Class frmMain
             Case Else
                 Me.pnlInfoPanel.Height = 25
                 If Me.tcMain.SelectedIndex = 0 Then
-                    aniMovieType = 0
+                    MovieInfoPanelState = 0
                 ElseIf Me.tcMain.SelectedIndex = 1 Then
-                    aniMovieSetType = 0
+                    MovieSetInfoPanelState = 0
                 Else
-                    aniShowType = 0
+                    TVShowInfoPanelState = 0
                 End If
 
                 Me.btnUp.Enabled = True
@@ -975,17 +943,13 @@ Public Class frmMain
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        '//
-        ' Begin animation to lower panel all the way down
-        '\\
-
         Me.tcMain.Focus()
         If Me.tcMain.SelectedIndex = 0 Then
-            Me.aniMovieType = 0
+            Me.MovieInfoPanelState = 0
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-            Me.aniMovieSetType = 0
+            Me.MovieSetInfoPanelState = 0
         Else
-            Me.aniShowType = 0
+            Me.TVShowInfoPanelState = 0
         End If
         Me.aniRaise = False
         Me.tmrAni.Start()
@@ -1047,10 +1011,6 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
-        '//
-        ' Begin animation to raise/lower panel to mid point
-        '\\
-
         Me.tcMain.Focus()
         If Me.pnlInfoPanel.Height = Me.IPUp Then
             Me.aniRaise = False
@@ -1059,11 +1019,11 @@ Public Class frmMain
         End If
 
         If Me.tcMain.SelectedIndex = 0 Then
-            Me.aniMovieType = 1
+            Me.MovieInfoPanelState = 1
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-            Me.aniMovieSetType = 1
+            Me.MovieSetInfoPanelState = 1
         Else
-            Me.aniShowType = 1
+            Me.TVShowInfoPanelState = 1
         End If
 
         Me.tmrAni.Start()
@@ -1267,17 +1227,13 @@ Public Class frmMain
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        '//
-        ' Begin animation to raise panel all the way up
-        '\\
-
         Me.tcMain.Focus()
         If Me.tcMain.SelectedIndex = 0 Then
-            Me.aniMovieType = 2
+            Me.MovieInfoPanelState = 2
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-            Me.aniMovieSetType = 2
+            Me.MovieSetInfoPanelState = 2
         Else
-            Me.aniShowType = 2
+            Me.TVShowInfoPanelState = 2
         End If
         Me.aniRaise = True
         Me.tmrAni.Start()
@@ -10794,9 +10750,9 @@ doCancel:
                 Master.eSettings.GeneralWindowLoc = Me.Location
                 Master.eSettings.GeneralWindowSize = Me.Size
                 Master.eSettings.GeneralWindowState = Me.WindowState
-                Master.eSettings.GeneralMovieInfoPanelState = Me.aniMovieType
-                Master.eSettings.GeneralMovieSetInfoPanelState = Me.aniMovieSetType
-                Master.eSettings.GeneralTVShowInfoPanelState = Me.aniShowType
+                Master.eSettings.GeneralMovieInfoPanelState = Me.MovieInfoPanelState
+                Master.eSettings.GeneralMovieSetInfoPanelState = Me.MovieSetInfoPanelState
+                Master.eSettings.GeneralTVShowInfoPanelState = Me.TVShowInfoPanelState
                 Master.eSettings.GeneralFilterPanelStateMovie = Me.FilterRaise_Movies
                 Master.eSettings.GeneralFilterPanelStateMovieSet = Me.FilterRaise_MovieSets
                 Master.eSettings.GeneralFilterPanelStateShow = Me.FilterRaise_Shows
@@ -11274,8 +11230,8 @@ doCancel:
                 Me.WindowState = Master.eSettings.GeneralWindowState
                 Master.AppPos = Me.Bounds
 
-                Me.aniMovieType = Master.eSettings.GeneralMovieInfoPanelState
-                Select Case Me.aniMovieType
+                Me.MovieInfoPanelState = Master.eSettings.GeneralMovieInfoPanelState
+                Select Case Me.MovieInfoPanelState
                     Case 0
                         Me.pnlInfoPanel.Height = 25
                         Me.btnDown.Enabled = False
@@ -11293,9 +11249,9 @@ doCancel:
                         Me.btnMid.Enabled = True
                 End Select
 
-                Me.aniMovieSetType = Master.eSettings.GeneralMovieSetInfoPanelState
+                Me.MovieSetInfoPanelState = Master.eSettings.GeneralMovieSetInfoPanelState
 
-                Me.aniShowType = Master.eSettings.GeneralTVShowInfoPanelState
+                Me.TVShowInfoPanelState = Master.eSettings.GeneralTVShowInfoPanelState
 
                 Me.FilterRaise_Movies = Master.eSettings.GeneralFilterPanelStateMovie
                 If Me.FilterRaise_Movies Then
@@ -19236,7 +19192,7 @@ doCancel:
 
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
         Try
-            Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, If(Me.tcMain.SelectedIndex = 1, Me.aniMovieSetType, Me.aniShowType))
+            Select Case If(Me.tcMain.SelectedIndex = 0, Me.MovieInfoPanelState, If(Me.tcMain.SelectedIndex = 1, Me.MovieSetInfoPanelState, Me.TVShowInfoPanelState))
                 Case 0
                     Me.pnlInfoPanel.Height = 25
 
@@ -19250,7 +19206,7 @@ doCancel:
             Me.MoveGenres()
             Me.MoveMPAA()
 
-            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, If(Me.tcMain.SelectedIndex = 1, Me.aniMovieSetType, Me.aniShowType))
+            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.MovieInfoPanelState, If(Me.tcMain.SelectedIndex = 1, Me.MovieSetInfoPanelState, Me.TVShowInfoPanelState))
             Select Case aType
                 Case 0
                     If Me.pnlInfoPanel.Height = 25 Then

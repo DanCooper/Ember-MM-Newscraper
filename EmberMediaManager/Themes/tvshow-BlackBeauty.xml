@@ -80,7 +80,7 @@ or a "32-bit ARGB value"
   <infopanel>
     
     <ipup>290</ipup> <!-- Must be in multiples of 5!! -->
-    <ipmid>280</ipmid> <!-- Must be in multiples of 5!! -->
+    <ipmid>290</ipmid> <!-- Must be in multiples of 5!! -->
      
 	 <object name="pnlInfoPanel">
 	 <backcolor>#2A2728</backcolor>

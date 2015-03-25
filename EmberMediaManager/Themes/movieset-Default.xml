@@ -80,7 +80,7 @@ or a "32-bit ARGB value"
   <infopanel>
     <backcolor>-2302756</backcolor>
     <ipup>290</ipup> <!-- Must be in multiples of 5!! -->
-    <ipmid>280</ipmid> <!-- Must be in multiples of 5!! -->
+    <ipmid>290</ipmid> <!-- Must be in multiples of 5!! -->
 
     <object name="lblInfoPanelHeader">
       <width>pnlInfoPanel.Width - 8</width>

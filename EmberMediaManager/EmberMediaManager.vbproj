@@ -779,6 +779,7 @@
     </Content>
     <None Include="Resources\hasSet.png" />
     <None Include="Resources\ad.png" />
+    <Content Include="Resources\movieset-Default.xml" />
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />
     <None Include="Resources\tmdb.png" />
