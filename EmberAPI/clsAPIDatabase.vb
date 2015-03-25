@@ -370,7 +370,7 @@ Public Class Database
 
         Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
             If CleanMovies Then
-
+                logger.Info("Cleaning movies started")
                 Dim MoviePaths As List(Of String) = GetMoviePaths()
                 MoviePaths.Sort()
 
@@ -434,9 +434,11 @@ Public Class Database
                         End While
                     End Using
                 End Using
+                logger.Info("Cleaning movies done")
             End If
 
             If CleanMovieSets Then
+                logger.Info("Cleaning moviesets started")
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand.CommandText = "SELECT sets.idSet, COUNT(MoviesSets.MovieID) AS 'Count' FROM sets LEFT OUTER JOIN MoviesSets ON sets.idSet = MoviesSets.SetID GROUP BY sets.idSet ORDER BY sets.idSet COLLATE NOCASE;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -447,9 +449,11 @@ Public Class Database
                         End While
                     End Using
                 End Using
+                logger.Info("Cleaning moviesets done")
             End If
 
             If CleanTV Then
+                logger.Info("Cleaning tv shows started")
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     If String.IsNullOrEmpty(source) Then
                         SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
@@ -465,24 +469,25 @@ Public Class Database
                             End If
                         End While
                     End Using
-                    'tvshows with no more real episodes
+
+                    logger.Info("Removing tvshows with no more existing local episodes")
                     SQLcommand.CommandText = "DELETE FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow = tvshow.idShow AND episode.Missing = 0);"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "DELETE FROM tvshow WHERE idShow NOT IN (SELECT idShow FROM episode);"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "DELETE FROM actorlinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
-                    SQLcommand.ExecuteNonQuery()
+                    logger.Info("Removing episodes with no more existing tvshows")
                     SQLcommand.CommandText = "DELETE FROM episode WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
-                    'orphaned paths
+                    logger.Info("Removing orphaned episode paths")
                     SQLcommand.CommandText = "DELETE FROM TVEpPaths WHERE NOT EXISTS (SELECT episode.TVEpPathID FROM episode WHERE episode.TVEpPathID = TVEpPaths.ID AND episode.Missing = 0)"
                     SQLcommand.ExecuteNonQuery()
                 End Using
 
+                logger.Info("Removing seasons with no more existing episodes")
                 CleanSeasons(True)
+                logger.Info("Cleaning tv shows done")
             End If
 
             'global cleaning
+            logger.Info("Cleaning global tables started")
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 'clean all link tables
                 logger.Info("Cleaning actorlinkepisode table")
@@ -558,6 +563,7 @@ Public Class Database
                                                          "AND NOT EXISTS (SELECT 1 FROM studiolinktvshow WHERE studiolinktvshow.idStudio = studio.idStudio)")
                 SQLcommand.ExecuteNonQuery()
             End Using
+            logger.Info("Cleaning global tables done")
 
             SQLtransaction.Commit()
             logger.Info("Cleaning videodatabase done")
