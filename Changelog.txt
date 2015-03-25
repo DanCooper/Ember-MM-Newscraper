@@ -1,3 +1,15 @@
+Changelog 1.4.3.1 (2015-03-25)
+
+[Renamer]
+fixed: episodes can not be renamed
+
+[TMDB]
+fixed: bug while search movies on TMDB
+
+[MovieExporter]
+fixed: no tv show list in exports
+
+
 Changelog 1.4.3.0 (2015-03-25)
 
 [Main]
@@ -56,7 +68,6 @@ added: option to scrape episode "Guest Stars"
 
 [MovieExporter]
 fixed: some issues with new database
-
 
 
 Changelog 1.4.2.0 (2015-03-05)
