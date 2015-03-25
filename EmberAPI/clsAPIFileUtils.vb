@@ -34,6 +34,44 @@ Namespace FileUtils
 #End Region 'Fields
 
 #Region "Methods"
+
+        Public Shared Sub DirectoryCopy( _
+        ByVal sourceDirName As String, _
+        ByVal destDirName As String, _
+        ByVal copySubDirs As Boolean, _
+        ByVal overwriteFiles As Boolean)
+
+            ' Get the subdirectories for the specified directory.
+            Dim dir As DirectoryInfo = New DirectoryInfo(sourceDirName)
+            Dim dirs As DirectoryInfo() = dir.GetDirectories()
+
+            If Not dir.Exists Then
+                Throw New DirectoryNotFoundException( _
+                    "Source directory does not exist or could not be found: " _
+                    + sourceDirName)
+            End If
+
+            ' If the destination directory doesn't exist, create it.
+            If Not Directory.Exists(destDirName) Then
+                Directory.CreateDirectory(destDirName)
+            End If
+            ' Get the files in the directory and copy them to the new location.
+            Dim files As FileInfo() = dir.GetFiles()
+            For Each cFile In files
+                Dim temppath As String = Path.Combine(destDirName, cFile.Name)
+                If Not File.Exists(temppath) OrElse overwriteFiles Then
+                    cFile.CopyTo(temppath, overwriteFiles)
+                End If
+            Next cFile
+
+            ' If copying subdirectories, copy them and their contents to new location.
+            If copySubDirs Then
+                For Each subdir In dirs
+                    Dim temppath As String = Path.Combine(destDirName, subdir.Name)
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs, overwriteFiles)
+                Next subdir
+            End If
+        End Sub
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
         ''' </summary>

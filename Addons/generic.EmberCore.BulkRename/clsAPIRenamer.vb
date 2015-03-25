@@ -190,6 +190,11 @@ Public Class FileFolderRenamer
                         Else
                             If Not Directory.Exists(destDir) Then Directory.CreateDirectory(destDir)
                         End If
+
+                        'copy actor thumbs folder
+                        If Directory.Exists(Path.Combine(srcDir, ".actors")) Then
+                            FileUtils.Common.DirectoryCopy(Path.Combine(srcDir, ".actors"), Path.Combine(destDir, ".actors"), True, True)
+                        End If
                     Catch ex As Exception
                         If ShowError Then
                             MessageBox.Show(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), Environment.NewLine, ex.Message), Master.eLang.GetString(165, "Unable to Rename Directory"), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -271,8 +276,9 @@ Public Class FileFolderRenamer
                         Catch
                         End Try
 
-                        If fileCount = 0 AndAlso dirCount = 0 Then
-                            di.Delete()
+                        If fileCount = 0 AndAlso dirCount = 0 OrElse _
+                            fileCount = 0 AndAlso dirCount = 1 AndAlso di.GetDirectories.First.Name = ".actors" Then
+                            di.Delete(True)
                         End If
                     End If
                 End If
