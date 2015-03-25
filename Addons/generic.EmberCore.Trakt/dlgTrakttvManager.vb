@@ -1097,15 +1097,18 @@ Public Class dlgTrakttvManager
     ''' Used in thread: Saves playcount to database
     ''' </remarks>
     Private Sub SaveMoviePlaycount()
-        Dim i As Integer = 0
-        For Each watchedMovieData In mydictWatchedMovies
-            i += 1
-            '  logger.Info("[SaveMoviePlaycount] MovieID" & watchedMovieData.Value.Key & " Playcount: " & watchedMovieData.Value.Value.ToString)
-            Master.DB.SaveMoviePlayCountInDatabase(watchedMovieData)
-            ' Invoke to update UI from thread...
-            prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
-            Threading.Thread.Sleep(10)
-        Next
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Dim i As Integer = 0
+            For Each watchedMovieData In mydictWatchedMovies
+                i += 1
+                '  logger.Info("[SaveMoviePlaycount] MovieID" & watchedMovieData.Value.Key & " Playcount: " & watchedMovieData.Value.Value.ToString)
+                Master.DB.SaveMoviePlayCountInDatabase(watchedMovieData, True)
+                ' Invoke to update UI from thread...
+                prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
+                Threading.Thread.Sleep(10)
+            Next
+            SQLtransaction.Commit()
+        End Using
     End Sub
 
     ''' <summary>
@@ -1116,23 +1119,26 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub SaveEpisodePlaycount()
 
-        Dim i As Integer = 0
-        For Each watchedShowData In mydictWatchedEpisodes
-            i += 1
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Dim i As Integer = 0
+            For Each watchedShowData In mydictWatchedEpisodes
+                i += 1
 
-            '  loop through every season of certain tvshow
-            For z = 0 To watchedShowData.Value.Count - 1
-                ' now go to every episode of current season
-                For Each episode In watchedShowData.Value(z).Value
-                    '..and save playcount of every episode to database
-                    '    logger.Info("[SaveEpisodePlaycount] ShowID" & watchedShowData.Key & " Season: " & watchedShowData.Value(z).Key.ToString & " Episode: " & episode.Number.ToString)
-                    Master.DB.SaveEpisodePlayCountInDatabase(watchedShowData.Key, watchedShowData.Value(z).Key.ToString, episode.Number.ToString)
+                '  loop through every season of certain tvshow
+                For z = 0 To watchedShowData.Value.Count - 1
+                    ' now go to every episode of current season
+                    For Each episode In watchedShowData.Value(z).Value
+                        '..and save playcount of every episode to database
+                        '    logger.Info("[SaveEpisodePlaycount] ShowID" & watchedShowData.Key & " Season: " & watchedShowData.Value(z).Key.ToString & " Episode: " & episode.Number.ToString)
+                        Master.DB.SaveEpisodePlayCountInDatabase(watchedShowData.Key, watchedShowData.Value(z).Key.ToString, episode.Number.ToString, True)
+                    Next
                 Next
+                ' Invoke to update UI from thread...
+                prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
+                Threading.Thread.Sleep(10)
             Next
-            ' Invoke to update UI from thread...
-            prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
-            Threading.Thread.Sleep(10)
-        Next
+            SQLtransaction.Commit()
+        End Using
     End Sub
 
 

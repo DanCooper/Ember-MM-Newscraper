@@ -4017,7 +4017,7 @@ Public Class Database
     ''' not using loop here, only do one movie a time (call function repeatedly!)! -> only deliver keypair instead of whole dictionary
     ''' Old-> Public Sub SaveMoviePlayCountInDatabase(ByVal myWatchedMovies As Dictionary(Of String, KeyValuePair(Of String, String)))
     ''' </remarks>
-    Public Sub SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer)))
+    Public Sub SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer)), ByVal BatchMode As Boolean)
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Format("SELECT idMovie, Playcount FROM movie WHERE Imdb = '{0}';", WatchedMovieData.Value.Key)
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -4027,7 +4027,7 @@ Public Class Database
                         If currPlaycount Is Nothing OrElse Not CInt(currPlaycount) = WatchedMovieData.Value.Value Then
                             Dim _movieSavetoNFO = Master.DB.LoadMovieFromDB(CInt(SQLreader("idMovie")))
                             _movieSavetoNFO.Movie.PlayCount = WatchedMovieData.Value.Value.ToString
-                            Master.DB.SaveMovieToDB(_movieSavetoNFO, False, False, True)
+                            Master.DB.SaveMovieToDB(_movieSavetoNFO, False, BatchMode, True)
 
                             'create .watched files
                             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -4054,7 +4054,7 @@ Public Class Database
     ''' cocotus 2013/03 Trakt.tv syncing - Episodes
     ''' not using loop here, only do one episode a time (call function repeatedly!)!
     '''</remarks>
-    Public Sub SaveEpisodePlayCountInDatabase(ByVal strTVDBID As String, ByVal strSeason As String, ByVal strEpisode As String)
+    Public Sub SaveEpisodePlayCountInDatabase(ByVal strTVDBID As String, ByVal strSeason As String, ByVal strEpisode As String, ByVal BatchMode As Boolean)
         Dim tempTVDBID As String = String.Empty
 
         'First get the internal ID of TVShow using the TVDBID info
@@ -4085,7 +4085,7 @@ Public Class Database
                         If currPlaycount Is Nothing Then
                             Dim _episodeSavetoNFO = Master.DB.LoadTVEpFromDB(CInt(SQLreader("idEpisode")), True)
                             _episodeSavetoNFO.TVEp.Playcount = "1"
-                            Master.DB.SaveTVEpToDB(_episodeSavetoNFO, False, False, False, True)
+                            Master.DB.SaveTVEpToDB(_episodeSavetoNFO, False, False, BatchMode, True)
                         End If
                     End While
                 End If
