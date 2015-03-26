@@ -1885,12 +1885,12 @@ Public Class dlgTVImageSelect
         Dim tImages As New Images
         Dim tImage As Image = Nothing
         Dim iTag As ImageTag = DirectCast(DirectCast(sender, PictureBox).Tag, ImageTag)
-        If Not iTag.isFanart Then
-            DownloadFullsizeImage(iTag, tImages)
-            tImage = tImages.Image
-        Else
-            tImage = DirectCast(sender, PictureBox).Image
-        End If
+        'If iTag.isFanart Then
+        DownloadFullsizeImage(iTag, tImages)
+        tImage = tImages.Image
+        'Else
+        '    tImage = DirectCast(sender, PictureBox).Image
+        'End If
 
         ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage)
     End Sub
