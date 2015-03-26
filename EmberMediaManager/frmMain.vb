@@ -11228,7 +11228,9 @@ doCancel:
                 Me.Location = Master.eSettings.GeneralWindowLoc
                 Me.Size = Master.eSettings.GeneralWindowSize
                 Me.WindowState = Master.eSettings.GeneralWindowState
-                Master.AppPos = Me.Bounds
+                If Not Me.WindowState = FormWindowState.Minimized Then
+                    Master.AppPos = Me.Bounds
+                End If
 
                 Me.MovieInfoPanelState = Master.eSettings.GeneralMovieInfoPanelState
                 Select Case Me.MovieInfoPanelState
@@ -11359,7 +11361,9 @@ doCancel:
     End Sub
 
     Private Sub frmMain_Move(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Move
-        Master.AppPos = Me.Bounds
+        If Not Me.WindowState = FormWindowState.Minimized Then
+            Master.AppPos = Me.Bounds
+        End If
     End Sub
     ''' <summary>
     ''' The form has been resized, so re-position those controls that need to be re-located
@@ -11369,7 +11373,9 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub frmMain_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
         If Me.Created Then
-            Master.AppPos = Me.Bounds
+            If Not Me.WindowState = FormWindowState.Minimized Then
+                Master.AppPos = Me.Bounds
+            End If
             Me.MoveMPAA()
             Me.MoveGenres()
             ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
