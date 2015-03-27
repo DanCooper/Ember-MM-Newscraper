@@ -117,7 +117,8 @@ Public Class frmMain
     Private prevSeasonRow As Integer = -1
     Private prevShowRow As Integer = -1
 
-    'filter movies
+    'filters and lists movies
+    Private currList_Movies As String = "movielist" 'default movielist SQLite view
     Private bDoingSearch_Movies As Boolean = False
     Private FilterArray_Movies As New List(Of String)
     Private filDataField_Movies As String = String.Empty
@@ -3687,20 +3688,14 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-    Private Sub cbFilterCustom_Movies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterCustom_Movies.SelectedIndexChanged
-            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
+    Private Sub cbFilterLists_Movies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterLists_Movies.SelectedIndexChanged
+        While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRewriteMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
         End While
-        If Not String.IsNullOrEmpty(cbFilterCustom_Movies.Text) Then
-            Dim result = From t In APIXML.FilterXML.filter.Where(Function(f) f.name = cbFilterCustom_Movies.Text)
-            If result.Count > 0 Then
-                Me.RunFilter_MovieCustom(result(0).query)
-            Else
-                Me.RunFilter_Movies()
-            End If
-        Else
-            Me.RunFilter_Movies()
+        If Not cbFilterLists_Movies.Text = Me.currList_Movies Then
+            Me.currList_Movies = cbFilterLists_Movies.Text
+            FillList(True, False, False)
         End If
     End Sub
 
@@ -4735,12 +4730,6 @@ doCancel:
                 Me.cbFilterVideoSource_Movies.SelectedIndex = 0
             End If
             AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
-
-            RemoveHandler cbFilterCustom_Movies.SelectedIndexChanged, AddressOf cbFilterCustom_Movies_SelectedIndexChanged
-            If Me.cbFilterCustom_Movies.Items.Count > 0 Then
-                Me.cbFilterCustom_Movies.SelectedIndex = 0
-            End If
-            AddHandler cbFilterCustom_Movies.SelectedIndexChanged, AddressOf cbFilterCustom_Movies_SelectedIndexChanged
 
             If Reload Then Me.FillList(True, False, False)
 
@@ -8916,7 +8905,7 @@ doCancel:
         Me.btnFilterSortYear_Movies.Enabled = isEnabled
         Me.cbFilterDataField_Movies.Enabled = isEnabled
         Me.cbFilterVideoSource_Movies.Enabled = isEnabled
-        Me.cbFilterCustom_Movies.Enabled = isEnabled
+        Me.cbFilterLists_Movies.Enabled = isEnabled
         Me.cbFilterYearFrom_Movies.Enabled = isEnabled
         Me.cbFilterYearModFrom_Movies.Enabled = isEnabled
         Me.cbSearchMovies.Enabled = isEnabled
@@ -9163,24 +9152,25 @@ doCancel:
             Me.bsMovies.DataSource = Nothing
             Me.dgvMovies.DataSource = Nothing
             Me.ClearInfo()
+
             If Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT movielist.* FROM actors ", _
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT """, Me.currList_Movies, """.* FROM actors ", _
                                                                    "LEFT OUTER JOIN actorlinkmovie ON (actors.idActor = actorlinkmovie.idActor) ", _
-                                                                   "INNER JOIN movielist ON (actorlinkmovie.idMovie = movielist.idMovie) ", _
+                                                                   "INNER JOIN """, Me.currList_Movies, """ ON (actorlinkmovie.idMovie = """, Me.currList_Movies, """.idMovie) ", _
                                                                    "WHERE actors.strActor LIKE '%", Me.filSearch_Movies, "%' ", _
-                                                                   "ORDER BY movielist.ListTitle COLLATE NOCASE;"))
+                                                                   "ORDER BY """, Me.currList_Movies, """.ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT movielist.* FROM actorlinkmovie ", _
-                                                                   "INNER JOIN movielist ON (actorlinkmovie.idMovie = movielist.idMovie) ", _
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT """, Me.currList_Movies, """.* FROM actorlinkmovie ", _
+                                                                   "INNER JOIN """, Me.currList_Movies, """ ON (actorlinkmovie.idMovie = """, Me.currList_Movies, """.idMovie) ", _
                                                                    "WHERE actorlinkmovie.strRole LIKE '%", Me.filSearch_Movies, "%' ", _
-                                                                   "ORDER BY movielist.ListTitle COLLATE NOCASE;"))
+                                                                   "ORDER BY """, Me.currList_Movies, """.ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDuplicates_Movies.Checked Then
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
-                                                                       "WHERE imdb IN (SELECT imdb FROM movielist WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ", _
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM """, Me.currList_Movies, """ ", _
+                                                                       "WHERE imdb IN (SELECT imdb FROM """, Me.currList_Movies, """ WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ", _
                                                                        "ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM """, Me.currList_Movies, """ ", _
                                                                        "ORDER BY ListTitle COLLATE NOCASE;"))
                 End If
             End If
@@ -14925,7 +14915,7 @@ doCancel:
             Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
             Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
             Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
-            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All OrElse Not Me.cbFilterCustom_Movies.SelectedIndex = 0 Then Me.RunFilter_Movies()
+            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
@@ -15057,7 +15047,7 @@ doCancel:
             Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
             Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
             Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
-            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All OrElse Not Me.cbFilterCustom_Movies.SelectedIndex = 0 Then Me.RunFilter_Movies()
+            Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
@@ -17747,12 +17737,12 @@ doCancel:
                 AddHandler Me.cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterVideoSource_Movies_SelectedIndexChanged
 
 
-                RemoveHandler Me.cbFilterCustom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterCustom_Movies_SelectedIndexChanged
-                Me.cbFilterCustom_Movies.Items.Clear()
-                Me.cbFilterCustom_Movies.Items.Add("")
-                Me.cbFilterCustom_Movies.Items.AddRange((From fname In APIXML.FilterXML.filter Where fname.type = "movie" Select fname.name).ToArray)
-                Me.cbFilterVideoSource_Movies.SelectedIndex = 0
-                AddHandler Me.cbFilterCustom_Movies.SelectedIndexChanged, AddressOf Me.cbFilterCustom_Movies_SelectedIndexChanged
+                RemoveHandler Me.cbFilterLists_Movies.SelectedIndexChanged, AddressOf Me.cbFilterLists_Movies_SelectedIndexChanged
+                Me.cbFilterLists_Movies.Items.Clear()
+                Me.cbFilterLists_Movies.Items.Add("movielist")
+                Me.cbFilterLists_Movies.Items.AddRange(Master.DB.GetViewList.ToArray)
+                Me.cbFilterLists_Movies.SelectedIndex = 0
+                AddHandler Me.cbFilterLists_Movies.SelectedIndexChanged, AddressOf Me.cbFilterLists_Movies_SelectedIndexChanged
             End If
 
         End With

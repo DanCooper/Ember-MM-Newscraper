@@ -306,6 +306,22 @@ Public Class Database
         AddToLinkTable("writerlinkmovie", "idWriter", idWriter, "idMovie", idMovie)
     End Sub
 
+    Public Sub AddView()
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand_view_add As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_view_add.CommandText = String.Concat("CREATE VIEW test ", _
+                                                                "AS ", _
+                                                                "SELECT movielist.* FROM movielist INNER JOIN MoviesVStreams ON (movielist.idMovie = MoviesVStreams.MovieID) WHERE MoviesVStreams.Video_Codec = 'xvid';")
+                SQLcommand_view_add.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub SetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String, ByVal url As String)
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
@@ -1044,6 +1060,22 @@ Public Class Database
         Return True
     End Function
 
+    Public Function DeleteView(ByVal vName As String) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DROP VIEW IF EXISTS """, vName, """;")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+        Return True
+    End Function
+
     ''' <summary>
     ''' Fill DataTable with data returned from the provided command
     ''' </summary>
@@ -1191,6 +1223,27 @@ Public Class Database
         End Try
 
         Return sLang
+    End Function
+
+    Public Function GetViewList() As List(Of String)
+        Dim ViewList As New List(Of String)
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT name FROM sqlite_master WHERE type ='view';"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    ViewList.Add(SQLreader("name").ToString)
+                End While
+            End Using
+        End Using
+
+        'remove default lists
+        If ViewList.Contains("episodelist") Then ViewList.Remove("episodelist")
+        If ViewList.Contains("movielist") Then ViewList.Remove("movielist")
+        If ViewList.Contains("seasonslist") Then ViewList.Remove("seasonslist")
+        If ViewList.Contains("setslist") Then ViewList.Remove("setslist")
+        If ViewList.Contains("tvshowlist") Then ViewList.Remove("tvshowlist")
+
+        Return ViewList
     End Function
     ''' <summary>
     ''' Load all the information for a movie.

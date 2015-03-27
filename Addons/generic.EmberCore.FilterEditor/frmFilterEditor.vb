@@ -96,7 +96,8 @@ Public Class frmFilterEditor
     End Sub
 
     Private Sub btnAddFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddFilter.Click
-
+        'AddNewView()
+        Master.DB.DeleteView("dsssssssssssssssssssssssfewgreger w tzt ttrzwrt ")
         If String.IsNullOrEmpty(txt_FilterName.Text) OrElse String.IsNullOrEmpty(txt_FilterQuery.Text) OrElse String.IsNullOrEmpty(cbo_FilterType.Text) Then
             Dim response As String = Master.eLang.GetString(1385, "Name, query and type of filter needs to be set!")
             MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
@@ -173,6 +174,10 @@ Public Class frmFilterEditor
     Private Sub linklbl_FilterURL_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linklbl_FilterURL.LinkClicked
         linklbl_FilterURL.LinkVisited = True
         System.Diagnostics.Process.Start("https://dl.dropboxusercontent.com/u/7856680/EmberDatabase/Tables/Index.html")
+    End Sub
+
+    Private Sub AddNewView()
+        Master.DB.AddView()
     End Sub
 
 #Region "Nested Types"
