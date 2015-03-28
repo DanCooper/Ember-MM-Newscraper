@@ -1478,4 +1478,5 @@
   <string id="1386">Invalid SQL!</string>
   <string id="1387">Use digit grouping symbol for Votes count</string>
   <string id="1388">Display watched progress for shows (Time consuming!)</string>
+  <string id="1389">Short Titles ({0})</string>
 </strings>

@@ -194,6 +194,10 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkShortTitles_CheckedChanged(sender As Object, e As EventArgs) Handles chkShortTitles.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub

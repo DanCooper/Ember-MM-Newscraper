@@ -37,6 +37,7 @@ Namespace IMDB
         Private _PopularTitles As New List(Of MediaContainers.Movie)
         Private _TvTitles As New List(Of MediaContainers.Movie)
         Private _VideoTitles As New List(Of MediaContainers.Movie)
+        Private _ShortTitles As New List(Of MediaContainers.Movie)
 
 #End Region 'Fields
 
@@ -84,6 +85,15 @@ Namespace IMDB
             End Get
             Set(ByVal value As List(Of MediaContainers.Movie))
                 _VideoTitles = value
+            End Set
+        End Property
+
+        Public Property ShortTitles() As List(Of MediaContainers.Movie)
+            Get
+                Return _ShortTitles
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Movie))
+                _ShortTitles = value
             End Set
         End Property
 
@@ -907,6 +917,7 @@ mPlot:          'Plot
                 Dim HTMLm As String = String.Empty
                 Dim HTMLe As String = String.Empty
                 Dim HTMLv As String = String.Empty
+                Dim HTMLs As String = String.Empty
                 Dim rUri As String = String.Empty
 
                 intHTTP = New HTTP
@@ -919,6 +930,9 @@ mPlot:          'Plot
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False) Then
                     HTMLv = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=video"))
+                End If
+                If clsAdvancedSettings.GetBooleanSetting("SearchShortTitles", False) Then
+                    HTMLs = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=short"))
                 End If
                 If clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
                     HTMLm = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
@@ -979,7 +993,7 @@ mTv:
 
 mVideo:
                 D = HTMLv.IndexOf("<table class=""results"">")
-                If D <= 0 Then GoTo mExact
+                If D <= 0 Then GoTo mShort
                 W = HTMLv.IndexOf("</table>", D) + 8
 
                 Table = HTMLv.Substring(D, W - D).ToString
@@ -989,6 +1003,19 @@ mVideo:
                                      Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
                 R.VideoTitles = qvideo.ToList
+
+mShort:
+                D = HTMLs.IndexOf("<table class=""results"">")
+                If D <= 0 Then GoTo mExact
+                W = HTMLs.IndexOf("</table>", D) + 8
+
+                Table = HTMLs.Substring(D, W - D).ToString
+                Dim qshort = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN) _
+                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                    Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
+                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+
+                R.ShortTitles = qshort.ToList
 
 mExact:
                 D = HTMLe.IndexOf("</a>Titles</h3>")

@@ -70,6 +70,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkPartialTitles = New System.Windows.Forms.CheckBox()
         Me.chkTvTitles = New System.Windows.Forms.CheckBox()
         Me.chkVideoTitles = New System.Windows.Forms.CheckBox()
+        Me.chkShortTitles = New System.Windows.Forms.CheckBox()
         Me.pnlSettingBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
@@ -603,7 +604,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 191)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(469, 117)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(469, 140)
         Me.gbScraperOpts.TabIndex = 97
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -624,6 +625,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.tblScraperOpts.Controls.Add(Me.chkPartialTitles, 0, 1)
         Me.tblScraperOpts.Controls.Add(Me.chkTvTitles, 0, 2)
         Me.tblScraperOpts.Controls.Add(Me.chkVideoTitles, 0, 3)
+        Me.tblScraperOpts.Controls.Add(Me.chkShortTitles, 0, 4)
         Me.tblScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperOpts.Name = "tblScraperOpts"
@@ -633,7 +635,8 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.Size = New System.Drawing.Size(463, 96)
+        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperOpts.Size = New System.Drawing.Size(463, 119)
         Me.tblScraperOpts.TabIndex = 1
         '
         'chkCountryAbbreviation
@@ -734,6 +737,18 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkVideoTitles.TabIndex = 3
         Me.chkVideoTitles.Text = "Video Titles"
         Me.chkVideoTitles.UseVisualStyleBackColor = True
+        '
+        'chkShortTitles
+        '
+        Me.chkShortTitles.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkShortTitles.AutoSize = True
+        Me.chkShortTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShortTitles.Location = New System.Drawing.Point(3, 99)
+        Me.chkShortTitles.Name = "chkShortTitles"
+        Me.chkShortTitles.Size = New System.Drawing.Size(83, 17)
+        Me.chkShortTitles.TabIndex = 80
+        Me.chkShortTitles.Text = "Short Titles"
+        Me.chkShortTitles.UseVisualStyleBackColor = True
         '
         'pnlSettingBottom
         '
@@ -871,6 +886,7 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkPartialTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkPopularTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkVideoTitles As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShortTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkFallBackworldwide As System.Windows.Forms.CheckBox
     Friend WithEvents cbForceTitleLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
