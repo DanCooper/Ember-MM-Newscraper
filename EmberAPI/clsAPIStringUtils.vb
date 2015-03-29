@@ -641,6 +641,12 @@ Public Class StringUtils
             Return Master.eLang.GetString(138, "Unknown")
         End If
     End Function
+
+    Public Shared Function GetIMDBID(ByVal sString As String) As String
+        If String.IsNullOrEmpty(sString) Then Return String.Empty
+        Dim strIMDBID As String = Regex.Match(sString, "tt\d*").Value
+        Return strIMDBID.Trim
+    End Function
     ''' <summary>
     ''' Get the four-digit year from the given <c>String</c>
     ''' </summary>

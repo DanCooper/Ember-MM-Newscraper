@@ -6197,12 +6197,13 @@ Public Class Settings
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
             Master.eSettings.MovieFilterCustom.Clear()
-            Master.eSettings.MovieFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]tt\d*")            'IMDB ID
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]1080.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]divx.*")
@@ -6217,8 +6218,8 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\[offline\].*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ntsc.*")
             Master.eSettings.MovieFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.MovieFilterCustom.Add("\.[->] ")
-            Master.eSettings.MovieFilterCustom.Add("_[->] ")
+            Master.eSettings.MovieFilterCustom.Add("\.[->] ")                   'convert dots to space
+            Master.eSettings.MovieFilterCustom.Add("_[->] ")                    'convert underscore to space
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then

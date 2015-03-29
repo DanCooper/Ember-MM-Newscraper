@@ -868,6 +868,21 @@ Public Class Scanner
                 End If
             End If
 
+            'IMDB ID
+            If String.IsNullOrEmpty(tmpMovieDB.Movie.IMDBID) Then
+                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
+                    tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
+                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
+                    tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
+                Else
+                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
+                        tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(mContainer.Filename).Name)
+                    Else
+                        tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Path.GetFileNameWithoutExtension(mContainer.Filename))
+                    End If
+                End If
+            End If
+
             'Title
             If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                 'no title so assume it's an invalid nfo, clear nfo path if exists
