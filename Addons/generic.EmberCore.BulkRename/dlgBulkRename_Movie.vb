@@ -394,6 +394,7 @@ Public Class dlgBulkRenamer_Movie
         Try
             FFRenamer.SetIsLocked_Movies(String.Empty, String.Empty, False)
             For Each row As DataGridViewRow In dgvMoviesList.Rows
+                FFRenamer.SetIsLocked_Movies(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
                 row.Cells(5).Value = lock
             Next
 
