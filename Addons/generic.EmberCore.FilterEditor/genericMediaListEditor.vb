@@ -20,13 +20,14 @@
 
 Imports EmberAPI
 
-Public Class genericFilterEditor
+Public Class genericMediaListEditor
     Implements Interfaces.GenericModule
 
 #Region "Fields"
 
-    Private _setup As frmFilterEditor
     Private _AssemblyName As String = String.Empty
+    Private _name As String = "Media List Editor"
+    Private _setup As frmMediaListEditor
 
 #End Region 'Fields
 
@@ -52,7 +53,7 @@ Public Class genericFilterEditor
 
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.GenericModule.ModuleName
         Get
-            Return "Filter Editor"
+            Return _name
         End Get
     End Property
 
@@ -79,10 +80,10 @@ Public Class genericFilterEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmFilterEditor
+        Me._setup = New frmMediaListEditor
         SPanel.Name = Master.eLang.GetString(9999, "Filter Editor")
         SPanel.Text = Master.eLang.GetString(9999, "Filter Editor")
-        SPanel.Prefix = "FilterEditor_"
+        SPanel.Prefix = "MediaListEditor_"
         SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.FilterEditor
@@ -101,7 +102,6 @@ Public Class genericFilterEditor
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        If Not _setup Is Nothing Then _setup.SaveChanges()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
@@ -112,6 +112,6 @@ Public Class genericFilterEditor
 
 #Region "Nested Types"
 
-#End Region	'Nested Types
+#End Region 'Nested Types
 
 End Class

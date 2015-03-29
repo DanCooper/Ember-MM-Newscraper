@@ -306,22 +306,6 @@ Public Class Database
         AddToLinkTable("writerlinkmovie", "idWriter", idWriter, "idMovie", idMovie)
     End Sub
 
-    Public Sub AddView()
-        Try
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            SQLtransaction = _myvideosDBConn.BeginTransaction()
-            Using SQLcommand_view_add As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand_view_add.CommandText = String.Concat("CREATE VIEW test ", _
-                                                                "AS ", _
-                                                                "SELECT movielist.* FROM movielist INNER JOIN MoviesVStreams ON (movielist.idMovie = MoviesVStreams.MovieID) WHERE MoviesVStreams.Video_Codec = 'xvid';")
-                SQLcommand_view_add.ExecuteNonQuery()
-            End Using
-            SQLtransaction.Commit()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
     Private Sub SetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String, ByVal url As String)
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
@@ -1060,22 +1044,6 @@ Public Class Database
         Return True
     End Function
 
-    Public Function DeleteView(ByVal vName As String) As Boolean
-        Try
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            SQLtransaction = _myvideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("DROP VIEW IF EXISTS """, vName, """;")
-                SQLcommand.ExecuteNonQuery()
-            End Using
-            SQLtransaction.Commit()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return False
-        End Try
-        Return True
-    End Function
-
     ''' <summary>
     ''' Fill DataTable with data returned from the provided command
     ''' </summary>
@@ -1223,6 +1191,59 @@ Public Class Database
         End Try
 
         Return sLang
+    End Function
+
+    Public Function AddView(ByVal dbCommand As String) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand_view_add As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_view_add.CommandText = dbCommand
+                SQLcommand_view_add.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+            Return True
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+    End Function
+
+    Public Function DeleteView(ByVal ViewName As String) As Boolean
+        If String.IsNullOrEmpty(ViewName) Then Return False
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DROP VIEW IF EXISTS """, ViewName, """;")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+            Return True
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+    End Function
+
+    Public Function GetViewDetails(ByVal ViewName As String) As String
+        If Not String.IsNullOrEmpty(ViewName) Then
+            Try
+                Dim SQLStatement As String = String.Empty
+                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = String.Concat("SELECT sql FROM sqlite_master WHERE type ='view' AND name='", ViewName, "';")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        While SQLreader.Read
+                            SQLStatement = SQLreader("sql").ToString
+                        End While
+                    End Using
+                End Using
+                Return SQLStatement
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
+        Return String.Empty
     End Function
 
     Public Function GetViewList() As List(Of String)
