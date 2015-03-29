@@ -1517,7 +1517,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click, btnMovieFilterReset.Click
+    Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             Me.RefreshTVShowFilters()
@@ -1533,7 +1533,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnMovieFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnMovieFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             Me.RefreshMovieFilters()
