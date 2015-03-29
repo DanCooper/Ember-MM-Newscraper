@@ -158,6 +158,7 @@ Public Class IMDB_Data
         _setup.chkPopularTitles.Checked = _MySettings.SearchPopularTitles
         _setup.chkTvTitles.Checked = _MySettings.SearchTvTitles
         _setup.chkVideoTitles.Checked = _MySettings.SearchVideoTitles
+        _setup.chkShortTitles.Checked = _MySettings.SearchShortTitles
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -210,6 +211,7 @@ Public Class IMDB_Data
         _MySettings.SearchPopularTitles = clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
         _MySettings.SearchTvTitles = clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
         _MySettings.SearchVideoTitles = clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
+        _MySettings.SearchShortTitles = clsAdvancedSettings.GetBooleanSetting("SearchShortTitles", False)
     End Sub
 
     Sub SaveSettings()
@@ -245,6 +247,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("SearchPopularTitles", _MySettings.SearchPopularTitles)
             settings.SetBooleanSetting("SearchTvTitles", _MySettings.SearchTvTitles)
             settings.SetBooleanSetting("SearchVideoTitles", _MySettings.SearchVideoTitles)
+            settings.SetBooleanSetting("SearchShortTitles", _MySettings.SearchShortTitles)
             settings.SetSetting("ForceTitleLanguage", _MySettings.ForceTitleLanguage)
         End Using
     End Sub
@@ -282,6 +285,7 @@ Public Class IMDB_Data
         _MySettings.SearchPopularTitles = _setup.chkPopularTitles.Checked
         _MySettings.SearchTvTitles = _setup.chkTvTitles.Checked
         _MySettings.SearchVideoTitles = _setup.chkVideoTitles.Checked
+        _MySettings.SearchShortTitles = _setup.chkShortTitles.Checked
 
         SaveSettings()
         If DoDispose Then
@@ -378,6 +382,7 @@ Public Class IMDB_Data
         Dim SearchPopularTitles As Boolean
         Dim SearchTvTitles As Boolean
         Dim SearchVideoTitles As Boolean
+        Dim SearchShortTitles As Boolean
         Dim CountryAbbreviation As Boolean
 #End Region 'Fields
 
