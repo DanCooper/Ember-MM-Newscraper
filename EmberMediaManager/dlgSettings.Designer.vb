@@ -2516,18 +2516,18 @@ Partial Class dlgSettings
         Me.pnlMovieImages.Name = "pnlMovieImages"
         Me.pnlMovieImages.Size = New System.Drawing.Size(763, 481)
         Me.pnlMovieImages.TabIndex = 12
-        Me.pnlMovieImages.Visible = False
+        Me.pnlMovieImages.Visible = false
         '
         'tblMovieImages
         '
-        Me.tblMovieImages.AutoScroll = True
-        Me.tblMovieImages.AutoSize = True
+        Me.tblMovieImages.AutoScroll = true
+        Me.tblMovieImages.AutoSize = true
         Me.tblMovieImages.ColumnCount = 4
         Me.tblMovieImages.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImages.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImages.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImages.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieImages.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieImages.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblMovieImages.Controls.Add(Me.gbMovieImagesOpts, 0, 0)
         Me.tblMovieImages.Controls.Add(Me.gbMovieImagesLandscapeOpts, 2, 6)
         Me.tblMovieImages.Controls.Add(Me.gbMovieImagesDiscArtOpts, 2, 5)
@@ -2556,21 +2556,21 @@ Partial Class dlgSettings
         '
         'gbMovieImagesOpts
         '
-        Me.gbMovieImagesOpts.AutoSize = True
+        Me.gbMovieImagesOpts.AutoSize = true
         Me.tblMovieImages.SetColumnSpan(Me.gbMovieImagesOpts, 2)
         Me.gbMovieImagesOpts.Controls.Add(Me.tblMovieImagesOpts)
         Me.gbMovieImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieImagesOpts.Name = "gbMovieImagesOpts"
         Me.gbMovieImagesOpts.Size = New System.Drawing.Size(496, 67)
         Me.gbMovieImagesOpts.TabIndex = 0
-        Me.gbMovieImagesOpts.TabStop = False
+        Me.gbMovieImagesOpts.TabStop = false
         Me.gbMovieImagesOpts.Text = "Images"
         '
         'tblMovieImagesOpts
         '
-        Me.tblMovieImagesOpts.AutoSize = True
+        Me.tblMovieImagesOpts.AutoSize = true
         Me.tblMovieImagesOpts.ColumnCount = 2
         Me.tblMovieImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -2589,20 +2589,20 @@ Partial Class dlgSettings
         'chkMovieNoSaveImagesToNfo
         '
         Me.chkMovieNoSaveImagesToNfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieNoSaveImagesToNfo.AutoSize = True
+        Me.chkMovieNoSaveImagesToNfo.AutoSize = true
         Me.chkMovieNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNoSaveImagesToNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNoSaveImagesToNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieNoSaveImagesToNfo.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieNoSaveImagesToNfo.Name = "chkMovieNoSaveImagesToNfo"
         Me.chkMovieNoSaveImagesToNfo.Size = New System.Drawing.Size(187, 17)
         Me.chkMovieNoSaveImagesToNfo.TabIndex = 2
         Me.chkMovieNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
         Me.chkMovieNoSaveImagesToNfo.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieNoSaveImagesToNfo.UseVisualStyleBackColor = True
+        Me.chkMovieNoSaveImagesToNfo.UseVisualStyleBackColor = true
         '
         'chkMovieDisplayImageSelect
         '
-        Me.chkMovieDisplayImageSelect.AutoSize = True
+        Me.chkMovieDisplayImageSelect.AutoSize = true
         Me.chkMovieDisplayImageSelect.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.chkMovieDisplayImageSelect.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieDisplayImageSelect.Name = "chkMovieDisplayImageSelect"
@@ -11437,7 +11437,7 @@ Partial Class dlgSettings
         '
         Me.btnTVSourcesRegexTVShowMatchingDown.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnTVSourcesRegexTVShowMatchingDown.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingDown.Image"),System.Drawing.Image)
-        Me.btnTVSourcesRegexTVShowMatchingDown.Location = New System.Drawing.Point(406, 238)
+        Me.btnTVSourcesRegexTVShowMatchingDown.Location = New System.Drawing.Point(366, 238)
         Me.btnTVSourcesRegexTVShowMatchingDown.Name = "btnTVSourcesRegexTVShowMatchingDown"
         Me.btnTVSourcesRegexTVShowMatchingDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexTVShowMatchingDown.TabIndex = 5
@@ -11447,7 +11447,7 @@ Partial Class dlgSettings
         '
         Me.btnTVSourcesRegexTVShowMatchingUp.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnTVSourcesRegexTVShowMatchingUp.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingUp.Image"),System.Drawing.Image)
-        Me.btnTVSourcesRegexTVShowMatchingUp.Location = New System.Drawing.Point(377, 238)
+        Me.btnTVSourcesRegexTVShowMatchingUp.Location = New System.Drawing.Point(337, 238)
         Me.btnTVSourcesRegexTVShowMatchingUp.Name = "btnTVSourcesRegexTVShowMatchingUp"
         Me.btnTVSourcesRegexTVShowMatchingUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexTVShowMatchingUp.TabIndex = 4
@@ -11482,11 +11482,12 @@ Partial Class dlgSettings
         '
         Me.btnTVSourcesRegexTVShowMatchingGet.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnTVSourcesRegexTVShowMatchingGet.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingGet.Image"),System.Drawing.Image)
-        Me.btnTVSourcesRegexTVShowMatchingGet.Location = New System.Drawing.Point(751, 3)
+        Me.btnTVSourcesRegexTVShowMatchingGet.Location = New System.Drawing.Point(671, 3)
         Me.btnTVSourcesRegexTVShowMatchingGet.Name = "btnTVSourcesRegexTVShowMatchingGet"
         Me.btnTVSourcesRegexTVShowMatchingGet.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexTVShowMatchingGet.TabIndex = 1
         Me.btnTVSourcesRegexTVShowMatchingGet.UseVisualStyleBackColor = true
+        Me.btnTVSourcesRegexTVShowMatchingGet.Visible = false
         '
         'btnTVSourcesRegexTVShowMatchingRemove
         '
