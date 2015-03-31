@@ -1587,7 +1587,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexMultiPartMatchingReset.Click
-        Me.txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)"
+        Me.txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         Me.SetApplyButton(True)
     End Sub
 

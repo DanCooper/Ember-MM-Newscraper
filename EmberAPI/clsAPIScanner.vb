@@ -570,20 +570,40 @@ Public Class Scanner
         Dim tEpisode As String = reg.Groups(2).Value
 
         If Not String.IsNullOrEmpty(tSeason) OrElse Not String.IsNullOrEmpty(tEpisode) Then
+            Dim endPattern As String = String.Empty
             If String.IsNullOrEmpty(tSeason) AndAlso Not String.IsNullOrEmpty(tEpisode) Then
                 'no season specified -> assume defaultSeason
                 eItem.Season = defaultSeason
-                eItem.Episode = CInt(tEpisode)
+                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
+                eItem.Episode = CInt(Episode.Groups(1).Value)
+                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
             ElseIf Not String.IsNullOrEmpty(tSeason) AndAlso String.IsNullOrEmpty(tEpisode) Then
                 'no episode specification -> assume defaultSeason
                 eItem.Season = defaultSeason
-                eItem.Episode = CInt(tEpisode)
+                eItem.Episode = CInt(tSeason)
             Else
                 'season and episode specified
                 eItem.Season = CInt(tSeason)
-                eItem.Episode = CInt(tEpisode)
+                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
+                eItem.Episode = CInt(Episode.Groups(1).Value)
+                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
             End If
             eItem.byDate = False
+
+            If Not String.IsNullOrEmpty(endPattern) Then
+                If Regex.IsMatch(endPattern.ToLower, "[a-i]", RegexOptions.IgnoreCase) Then
+                    Dim count As Integer = 1
+                    For Each c As Char In "abcdefghi".ToCharArray()
+                        If c = endPattern.ToLower Then
+                            eItem.SubEpisode = count
+                            Exit For
+                        End If
+                        count += 1
+                    Next
+                ElseIf endPattern.StartsWith(".") Then
+                    eItem.SubEpisode = CInt(endPattern.Substring(1))
+                End If
+            End If
             Return True
         End If
 
@@ -1240,10 +1260,12 @@ Public Class Scanner
 
                                 If tmpTVDB.TVEp.Season = -999 Then tmpTVDB.TVEp.Season = sEpisode.Season
                                 If tmpTVDB.TVEp.Episode = -999 Then tmpTVDB.TVEp.Episode = i
+                                If tmpTVDB.TVEp.SubEpisode = -999 AndAlso Not sEpisode.SubEpisode = -1 Then tmpTVDB.TVEp.SubEpisode = sEpisode.SubEpisode
 
                                 If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                     'nothing usable in the title after filters have runs
-                                    tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")), tmpTVDB.TVEp.Episode.ToString.PadLeft(2, Convert.ToChar("0")))
+                                    tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}{3}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")), _
+                                                                       tmpTVDB.TVEp.Episode.ToString.PadLeft(2, Convert.ToChar("0")), If(tmpTVDB.TVEp.SubEpisodeSpecified, String.Concat(".", tmpTVDB.TVEp.SubEpisode), String.Empty))
                                 End If
 
                                 Me.GetTVSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)
@@ -2263,6 +2285,7 @@ Public Class Scanner
         Private _bydate As Boolean
         Private _episode As Integer
         Private _season As Integer
+        Private _subepisode As Integer
 
 #End Region
 
@@ -2312,6 +2335,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property SubEpisode() As Integer
+            Get
+                Return _subepisode
+            End Get
+            Set(ByVal value As Integer)
+                _subepisode = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -2321,6 +2353,7 @@ Public Class Scanner
             Me._bydate = False
             Me._episode = -1
             Me._season = -1
+            Me._subepisode = -1
         End Sub
 
 #End Region 'Methods

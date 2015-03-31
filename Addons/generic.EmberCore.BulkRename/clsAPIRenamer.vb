@@ -759,12 +759,13 @@ Public Class FileFolderRenamer
                 For Each aSeason As Integer In aSeasonsList
                     Dim aEpisodesList As New List(Of Episode)
                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title FROM episode WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, " AND Season = ", aSeason, ";")
+                        SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title, SubEpisode FROM episode WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, " AND Season = ", aSeason, ";")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                             While SQLReader.Read
                                 Dim aEpisode As New Episode
                                 aEpisode.ID = Convert.ToInt32(SQLReader("idEpisode"))
                                 aEpisode.Episode = Convert.ToInt32(SQLReader("Episode"))
+                                If Not DBNull.Value.Equals(SQLReader("SubEpisode")) Then aEpisode.SubEpisode = Convert.ToInt32(SQLReader("SubEpisode"))
                                 aEpisode.Title = SQLReader("Title").ToString
                                 aEpisodesList.Add(aEpisode)
                             End While
@@ -1337,7 +1338,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "Y", f.Year)
                 pattern = ApplyPattern(pattern, "Z", f.ShowTitle)
 
-
+                'season and episode
                 nextC = pattern.IndexOf("$W")
                 If Not nextC = -1 Then
                     If pattern.Length > nextC + 2 Then
@@ -1404,7 +1405,11 @@ Public Class FileFolderRenamer
                         For Each season As SeasonsEpisodes In f.SeasonsEpisodes
                             seString = String.Concat(seString, sSeparator, sPrefix, String.Format(sFormat, season.Season))
                             For Each episode In season.Episodes
-                                seString = String.Concat(seString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
+                                If Not episode.SubEpisode = -1 Then
+                                    seString = String.Concat(seString, eSeparator, ePrefix, String.Concat(String.Format(eFormat, episode.Episode), ".", episode.SubEpisode))
+                                Else
+                                    seString = String.Concat(seString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
+                                End If
                             Next
                         Next
 
@@ -1414,6 +1419,7 @@ Public Class FileFolderRenamer
                     End If
                 End If
 
+                'season
                 nextC = pattern.IndexOf("$K")
                 If Not nextC = -1 Then
                     If pattern.Length > nextC + 1 Then
@@ -1460,6 +1466,7 @@ Public Class FileFolderRenamer
                     End If
                 End If
 
+                'episode
                 nextC = pattern.IndexOf("$Q")
                 If Not nextC = -1 Then
                     If pattern.Length > nextC + 2 Then
@@ -1498,7 +1505,11 @@ Public Class FileFolderRenamer
 
                         For Each season As SeasonsEpisodes In f.SeasonsEpisodes
                             For Each episode In season.Episodes
-                                eString = String.Concat(eString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
+                                If Not episode.SubEpisode = -1 Then
+                                    eString = String.Concat(eString, eSeparator, ePrefix, String.Concat(String.Format(eFormat, episode.Episode), ".", episode.SubEpisode))
+                                Else
+                                    eString = String.Concat(eString, eSeparator, ePrefix, String.Format(eFormat, episode.Episode))
+                                End If
                             Next
                         Next
 
@@ -2354,6 +2365,7 @@ Public Class FileFolderRenamer
 
         Private _id As Integer
         Private _episode As Integer
+        Private _subepisode As Integer
         Private _title As String
 
 #End Region 'Fields
@@ -2378,6 +2390,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property SubEpisode() As Integer
+            Get
+                Return Me._subepisode
+            End Get
+            Set(ByVal value As Integer)
+                Me._subepisode = value
+            End Set
+        End Property
+
         Public Property Title() As String
             Get
                 Return Me._title
@@ -2394,12 +2415,14 @@ Public Class FileFolderRenamer
         Public Sub New()
             _id = -1
             _episode = -1
+            _subepisode = -1
             _title = String.Empty
         End Sub
 
         Public Sub Clear()
             _id = -1
             _episode = -1
+            _subepisode = -1
             _title = String.Empty
         End Sub
 

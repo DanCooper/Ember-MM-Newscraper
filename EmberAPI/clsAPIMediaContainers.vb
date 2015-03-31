@@ -45,6 +45,7 @@ Namespace MediaContainers
         Private _rating As String
         Private _runtime As String
         Private _season As Integer
+        Private _subepisode As Integer
         Private _title As String
         Private _videosource As String
         Private _votes As String
@@ -198,6 +199,23 @@ Namespace MediaContainers
         Public ReadOnly Property EpisodeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._episode.ToString)
+            End Get
+        End Property
+
+        <XmlElement("subepisode")> _
+        Public Property SubEpisode() As Integer
+            Get
+                Return Me._subepisode
+            End Get
+            Set(ByVal value As Integer)
+                Me._subepisode = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SubEpisodeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._subepisode.ToString) AndAlso Me._subepisode > 0
             End Get
         End Property
 
@@ -455,6 +473,7 @@ Namespace MediaContainers
             Me._rating = String.Empty
             Me._runtime = String.Empty
             Me._season = -999
+            Me._subepisode = -999
             Me._title = String.Empty
             Me._videosource = String.Empty
             Me._votes = String.Empty
