@@ -17662,6 +17662,11 @@ doCancel:
             Me.cmnuShowLanguageLanguages.Items.Clear()
             Me.cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
+            Me.cbFilterLists_Movies.Items.Clear()
+            Me.cbFilterLists_Movies.Items.Add("movielist")
+            Me.cbFilterLists_Movies.Items.AddRange(Master.DB.GetViewList(Enums.Content_Type.Movie).ToArray)
+            Me.cbFilterLists_Movies.SelectedIndex = 0
+
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then
 
@@ -17735,14 +17740,6 @@ doCancel:
                 Me.cbFilterVideoSource_Movies.Items.Add(Master.eLang.None)
                 Me.cbFilterVideoSource_Movies.SelectedIndex = 0
                 AddHandler Me.cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf Me.cbFilterVideoSource_Movies_SelectedIndexChanged
-
-
-                RemoveHandler Me.cbFilterLists_Movies.SelectedIndexChanged, AddressOf Me.cbFilterLists_Movies_SelectedIndexChanged
-                Me.cbFilterLists_Movies.Items.Clear()
-                Me.cbFilterLists_Movies.Items.Add("movielist")
-                Me.cbFilterLists_Movies.Items.AddRange(Master.DB.GetViewList.ToArray)
-                Me.cbFilterLists_Movies.SelectedIndex = 0
-                AddHandler Me.cbFilterLists_Movies.SelectedIndexChanged, AddressOf Me.cbFilterLists_Movies_SelectedIndexChanged
             End If
 
         End With

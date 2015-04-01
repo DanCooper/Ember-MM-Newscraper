@@ -1226,15 +1226,15 @@ Public Class Database
         End Try
     End Function
 
-    Public Function GetViewDetails(ByVal ViewName As String) As String
+    Public Function GetViewDetails(ByVal ViewName As String) As Dictionary(Of String, String)
+        Dim SQLStatement As New Dictionary(Of String, String)
         If Not String.IsNullOrEmpty(ViewName) Then
             Try
-                Dim SQLStatement As String = String.Empty
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT sql FROM sqlite_master WHERE type ='view' AND name='", ViewName, "';")
+                    SQLcommand.CommandText = String.Concat("SELECT name, sql FROM sqlite_master WHERE type ='view' AND name='", ViewName, "';")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            SQLStatement = SQLreader("sql").ToString
+                            SQLStatement.Add(SQLreader("name").ToString, SQLreader("sql").ToString)
                         End While
                     End Using
                 End Using
@@ -1243,26 +1243,43 @@ Public Class Database
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
-        Return String.Empty
+        Return SQLStatement
     End Function
 
-    Public Function GetViewList() As List(Of String)
+    Public Function GetViewList(ByVal Type As Enums.Content_Type) As List(Of String)
         Dim ViewList As New List(Of String)
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT name FROM sqlite_master WHERE type ='view';"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    ViewList.Add(SQLreader("name").ToString)
-                End While
-            End Using
-        End Using
+        Dim ContentType As String = String.Empty
 
-        'remove default lists
-        If ViewList.Contains("episodelist") Then ViewList.Remove("episodelist")
-        If ViewList.Contains("movielist") Then ViewList.Remove("movielist")
-        If ViewList.Contains("seasonslist") Then ViewList.Remove("seasonslist")
-        If ViewList.Contains("setslist") Then ViewList.Remove("setslist")
-        If ViewList.Contains("tvshowlist") Then ViewList.Remove("tvshowlist")
+        Select Case Type
+            Case Enums.Content_Type.Episode
+                ContentType = "episode-"
+            Case Enums.Content_Type.Movie
+                ContentType = "movie-"
+            Case Enums.Content_Type.MovieSet
+                ContentType = "sets-"
+            Case Enums.Content_Type.Season
+                ContentType = "seasons-"
+            Case Enums.Content_Type.Show
+                ContentType = "tvshow-"
+        End Select
+
+        If Not String.IsNullOrEmpty(ContentType) OrElse Type = Enums.Content_Type.None Then
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Format("SELECT name FROM sqlite_master WHERE type ='view' AND name LIKE '{0}%';", ContentType)
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        ViewList.Add(SQLreader("name").ToString)
+                    End While
+                End Using
+            End Using
+
+            'remove default lists
+            If ViewList.Contains("episodelist") Then ViewList.Remove("episodelist")
+            If ViewList.Contains("movielist") Then ViewList.Remove("movielist")
+            If ViewList.Contains("seasonslist") Then ViewList.Remove("seasonslist")
+            If ViewList.Contains("setslist") Then ViewList.Remove("setslist")
+            If ViewList.Contains("tvshowlist") Then ViewList.Remove("tvshowlist")
+        End If
 
         Return ViewList
     End Function
