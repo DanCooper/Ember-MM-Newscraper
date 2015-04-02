@@ -1226,24 +1226,25 @@ Public Class Database
         End Try
     End Function
 
-    Public Function GetViewDetails(ByVal ViewName As String) As Dictionary(Of String, String)
-        Dim SQLStatement As New Dictionary(Of String, String)
+    Public Function GetViewDetails(ByVal ViewName As String) As SQLViewProperty
+        Dim ViewProperty As New SQLViewProperty
         If Not String.IsNullOrEmpty(ViewName) Then
             Try
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT name, sql FROM sqlite_master WHERE type ='view' AND name='", ViewName, "';")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            SQLStatement.Add(SQLreader("name").ToString, SQLreader("sql").ToString)
+                            ViewProperty.Name = SQLreader("name").ToString
+                            ViewProperty.Statement = SQLreader("sql").ToString
                         End While
                     End Using
                 End Using
-                Return SQLStatement
+                Return ViewProperty
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
-        Return SQLStatement
+        Return ViewProperty
     End Function
 
     Public Function GetViewList(ByVal Type As Enums.Content_Type) As List(Of String)
@@ -4386,6 +4387,55 @@ Public Class Database
         Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
             Return (Me.Order).CompareTo(other.Order)
         End Function
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class SQLViewProperty
+
+#Region "Fields"
+
+        Private _name As String
+        Private _statement As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+        Public Property Statement() As String
+            Get
+                Return Me._statement
+            End Get
+            Set(ByVal value As String)
+                Me._statement = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._name = String.Empty
+            Me._statement = String.Empty
+        End Sub
 
 #End Region 'Methods
 

@@ -117,8 +117,11 @@ Public Class frmMain
     Private prevSeasonRow As Integer = -1
     Private prevShowRow As Integer = -1
 
-    'filters and lists movies
+    'list movies
     Private currList_Movies As String = "movielist" 'default movielist SQLite view
+    Private listViews_Movies As New Dictionary(Of String, String)
+
+    'filter movies
     Private bDoingSearch_Movies As Boolean = False
     Private FilterArray_Movies As New List(Of String)
     Private filDataField_Movies As String = String.Empty
@@ -3693,8 +3696,8 @@ doCancel:
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
-        If Not cbFilterLists_Movies.Text = Me.currList_Movies Then
-            Me.currList_Movies = cbFilterLists_Movies.Text
+        If Not Me.currList_Movies = CType(Me.cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
+            Me.currList_Movies = CType(Me.cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
             FillList(True, False, False)
         End If
     End Sub
@@ -17662,10 +17665,17 @@ doCancel:
             Me.cmnuShowLanguageLanguages.Items.Clear()
             Me.cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
-            Me.cbFilterLists_Movies.Items.Clear()
-            Me.cbFilterLists_Movies.Items.Add("movielist")
-            Me.cbFilterLists_Movies.Items.AddRange(Master.DB.GetViewList(Enums.Content_Type.Movie).ToArray)
+            'RemoveHandler Me.cbFilterLists_Movies.SelectedIndexChanged, AddressOf Me.cbFilterLists_Movies_SelectedIndexChanged
+            Me.listViews_Movies.Clear()
+            Me.listViews_Movies.Add(Master.eLang.GetString(9999, "Default List"), "movielist")
+            For Each cList As String In Master.DB.GetViewList(Enums.Content_Type.Movie)
+                Me.listViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
+            Next
+            Me.cbFilterLists_Movies.DataSource = Me.listViews_Movies.ToList
+            Me.cbFilterLists_Movies.DisplayMember = "Key"
+            Me.cbFilterLists_Movies.ValueMember = "Value"
             Me.cbFilterLists_Movies.SelectedIndex = 0
+            'AddHandler Me.cbFilterLists_Movies.SelectedIndexChanged, AddressOf Me.cbFilterLists_Movies_SelectedIndexChanged
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then
@@ -17785,6 +17795,10 @@ doCancel:
         Me.pnlLoadSettings.Visible = False
         Me.cmnuTraySettings.Enabled = True
         Me.cmnuTrayExit.Enabled = True
+
+        'set all lists back to default before run "FillList"
+        Me.currList_Movies = "movielist"
+
         If Not dresult.DidCancel Then
 
             Me.SetUp(True)

@@ -87,7 +87,7 @@ Public Class genericMediaListEditor
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.FilterEditor
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlFilter
+        SPanel.Panel = Me._setup.pnlMediaListEditor
         AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
