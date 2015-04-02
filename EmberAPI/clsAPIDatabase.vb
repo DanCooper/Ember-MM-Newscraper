@@ -1192,6 +1192,98 @@ Public Class Database
 
         Return sLang
     End Function
+
+    Public Function AddView(ByVal dbCommand As String) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand_view_add As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_view_add.CommandText = dbCommand
+                SQLcommand_view_add.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+            Return True
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+    End Function
+
+    Public Function DeleteView(ByVal ViewName As String) As Boolean
+        If String.IsNullOrEmpty(ViewName) Then Return False
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DROP VIEW IF EXISTS """, ViewName, """;")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
+            Return True
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+    End Function
+
+    Public Function GetViewDetails(ByVal ViewName As String) As SQLViewProperty
+        Dim ViewProperty As New SQLViewProperty
+        If Not String.IsNullOrEmpty(ViewName) Then
+            Try
+                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = String.Concat("SELECT name, sql FROM sqlite_master WHERE type ='view' AND name='", ViewName, "';")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        While SQLreader.Read
+                            ViewProperty.Name = SQLreader("name").ToString
+                            ViewProperty.Statement = SQLreader("sql").ToString
+                        End While
+                    End Using
+                End Using
+                Return ViewProperty
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
+        Return ViewProperty
+    End Function
+
+    Public Function GetViewList(ByVal Type As Enums.Content_Type) As List(Of String)
+        Dim ViewList As New List(Of String)
+        Dim ContentType As String = String.Empty
+
+        Select Case Type
+            Case Enums.Content_Type.Episode
+                ContentType = "episode-"
+            Case Enums.Content_Type.Movie
+                ContentType = "movie-"
+            Case Enums.Content_Type.MovieSet
+                ContentType = "sets-"
+            Case Enums.Content_Type.Season
+                ContentType = "seasons-"
+            Case Enums.Content_Type.Show
+                ContentType = "tvshow-"
+        End Select
+
+        If Not String.IsNullOrEmpty(ContentType) OrElse Type = Enums.Content_Type.None Then
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Format("SELECT name FROM sqlite_master WHERE type ='view' AND name LIKE '{0}%';", ContentType)
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        ViewList.Add(SQLreader("name").ToString)
+                    End While
+                End Using
+            End Using
+
+            'remove default lists
+            If ViewList.Contains("episodelist") Then ViewList.Remove("episodelist")
+            If ViewList.Contains("movielist") Then ViewList.Remove("movielist")
+            If ViewList.Contains("seasonslist") Then ViewList.Remove("seasonslist")
+            If ViewList.Contains("setslist") Then ViewList.Remove("setslist")
+            If ViewList.Contains("tvshowlist") Then ViewList.Remove("tvshowlist")
+        End If
+
+        Return ViewList
+    End Function
     ''' <summary>
     ''' Load all the information for a movie.
     ''' </summary>
@@ -4300,6 +4392,55 @@ Public Class Database
         Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
             Return (Me.Order).CompareTo(other.Order)
         End Function
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class SQLViewProperty
+
+#Region "Fields"
+
+        Private _name As String
+        Private _statement As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+        Public Property Statement() As String
+            Get
+                Return Me._statement
+            End Get
+            Set(ByVal value As String)
+                Me._statement = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._name = String.Empty
+            Me._statement = String.Empty
+        End Sub
 
 #End Region 'Methods
 
