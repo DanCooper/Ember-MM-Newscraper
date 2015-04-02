@@ -80,8 +80,8 @@ Public Class genericMediaListEditor
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmMediaListEditor
-        SPanel.Name = Master.eLang.GetString(9999, "Filter Editor")
-        SPanel.Text = Master.eLang.GetString(9999, "Filter Editor")
+        SPanel.Name = Master.eLang.GetString(9999, "Media List Editor")
+        SPanel.Text = Master.eLang.GetString(9999, "Media List Editor")
         SPanel.Prefix = "MediaListEditor_"
         SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1

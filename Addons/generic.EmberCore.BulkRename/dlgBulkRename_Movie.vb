@@ -43,6 +43,7 @@ Public Class dlgBulkRenamer_Movie
     Public FilterMovies As String = String.Empty
     Public FilterMoviesSearch As String = String.Empty
     Public FilterMoviesType As String = String.Empty
+    Public ListMovies As String = String.Empty
 
 #End Region 'Fields
 
@@ -119,9 +120,9 @@ Public Class dlgBulkRenamer_Movie
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movielist;")
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM '{0}';", ListMovies)
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM movielist WHERE {0};", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM '{0}' WHERE {1};", ListMovies, dbFilter)
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -129,9 +130,9 @@ Public Class dlgBulkRenamer_Movie
                     End If
                 End Using
                 If Not hasFilter Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idMovie FROM movielist ORDER BY Title ASC;")
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idMovie FROM '{0}' ORDER BY Title ASC;", ListMovies)
                 Else
-                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idMovie FROM movielist WHERE {0} ORDER BY Title ASC;", dbFilter)
+                    SQLNewcommand.CommandText = String.Format("SELECT NfoPath, idMovie FROM '{0}' WHERE {1} ORDER BY Title ASC;", ListMovies, dbFilter)
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then

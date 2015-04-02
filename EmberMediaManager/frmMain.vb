@@ -3698,6 +3698,7 @@ doCancel:
         End While
         If Not Me.currList_Movies = CType(Me.cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
             Me.currList_Movies = CType(Me.cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
+            ModulesManager.Instance.RuntimeObjects.ListMovies = Me.currList_Movies
             FillList(True, False, False)
         End If
     End Sub

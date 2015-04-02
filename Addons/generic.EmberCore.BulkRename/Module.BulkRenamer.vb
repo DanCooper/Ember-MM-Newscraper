@@ -421,6 +421,7 @@ Public Class BulkRenamerModule
                     dBulkRename.FilterMovies = ModulesManager.Instance.RuntimeObjects.FilterMovies
                     dBulkRename.FilterMoviesSearch = ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch
                     dBulkRename.FilterMoviesType = ModulesManager.Instance.RuntimeObjects.FilterMoviesType
+                    dBulkRename.ListMovies = ModulesManager.Instance.RuntimeObjects.ListMovies
                     dBulkRename.txtFilePattern.Text = MySettings.FilesPattern_Movies
                     dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
                     dBulkRename.ShowDialog()

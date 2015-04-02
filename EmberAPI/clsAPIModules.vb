@@ -1842,6 +1842,7 @@ Public Class ModulesManager
         Private _FilterShows As String
         Private _FilterShowsSearch As String
         Private _FilterShowsType As String
+        Private _ListMovies As String
 
 
 #End Region 'Fields
@@ -1856,6 +1857,15 @@ Public Class ModulesManager
 #End Region 'Delegates
 
 #Region "Properties"
+
+        Public Property ListMovies() As String
+            Get
+                Return If(_ListMovies IsNot Nothing, _ListMovies, "movielist")
+            End Get
+            Set(ByVal value As String)
+                _ListMovies = value
+            End Set
+        End Property
 
         Public Property FilterMovies() As String
             Get
