@@ -6007,11 +6007,11 @@ Partial Class frmMain
         Me.btnClearFilters_Shows.TabIndex = 5
         Me.btnClearFilters_Shows.Text = "Clear Filters"
         Me.btnClearFilters_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnClearFilters_Shows.UseVisualStyleBackColor = true
+        Me.btnClearFilters_Shows.UseVisualStyleBackColor = True
         '
         'pnlFilterTop_Shows
         '
-        Me.pnlFilterTop_Shows.AutoSize = true
+        Me.pnlFilterTop_Shows.AutoSize = True
         Me.pnlFilterTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterTop_Shows.Controls.Add(Me.tblFilterTop_Shows)
         Me.pnlFilterTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
@@ -6022,10 +6022,10 @@ Partial Class frmMain
         '
         'tblFilterTop_Shows
         '
-        Me.tblFilterTop_Shows.AutoSize = true
+        Me.tblFilterTop_Shows.AutoSize = True
         Me.tblFilterTop_Shows.ColumnCount = 4
         Me.tblFilterTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblFilterTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblFilterTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterTop_Shows.Controls.Add(Me.lblFilter_Shows, 0, 0)
@@ -6043,9 +6043,9 @@ Partial Class frmMain
         'lblFilter_Shows
         '
         Me.lblFilter_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilter_Shows.AutoSize = true
+        Me.lblFilter_Shows.AutoSize = True
         Me.lblFilter_Shows.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilter_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFilter_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFilter_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilter_Shows.Location = New System.Drawing.Point(3, 4)
         Me.lblFilter_Shows.Name = "lblFilter_Shows"
@@ -6058,32 +6058,32 @@ Partial Class frmMain
         '
         Me.btnFilterUp_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnFilterUp_Shows.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.btnFilterUp_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnFilterUp_Shows.Location = New System.Drawing.Point(505, 0)
         Me.btnFilterUp_Shows.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterUp_Shows.Name = "btnFilterUp_Shows"
         Me.btnFilterUp_Shows.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterUp_Shows.TabIndex = 1
-        Me.btnFilterUp_Shows.TabStop = false
+        Me.btnFilterUp_Shows.TabStop = False
         Me.btnFilterUp_Shows.Text = "^"
         Me.btnFilterUp_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterUp_Shows.UseVisualStyleBackColor = false
+        Me.btnFilterUp_Shows.UseVisualStyleBackColor = False
         '
         'btnFilterDown_Shows
         '
         Me.btnFilterDown_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnFilterDown_Shows.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterDown_Shows.Enabled = false
-        Me.btnFilterDown_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.btnFilterDown_Shows.Enabled = False
+        Me.btnFilterDown_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnFilterDown_Shows.Location = New System.Drawing.Point(535, 0)
         Me.btnFilterDown_Shows.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterDown_Shows.Name = "btnFilterDown_Shows"
         Me.btnFilterDown_Shows.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterDown_Shows.TabIndex = 2
-        Me.btnFilterDown_Shows.TabStop = false
+        Me.btnFilterDown_Shows.TabStop = False
         Me.btnFilterDown_Shows.Text = "v"
         Me.btnFilterDown_Shows.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterDown_Shows.UseVisualStyleBackColor = false
+        Me.btnFilterDown_Shows.UseVisualStyleBackColor = False
         '
         'pnlCancel
         '
@@ -6096,7 +6096,7 @@ Partial Class frmMain
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(214, 63)
         Me.pnlCancel.TabIndex = 8
-        Me.pnlCancel.Visible = false
+        Me.pnlCancel.Visible = False
         '
         'prbCanceling
         '
@@ -6106,32 +6106,32 @@ Partial Class frmMain
         Me.prbCanceling.Size = New System.Drawing.Size(203, 20)
         Me.prbCanceling.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.prbCanceling.TabIndex = 2
-        Me.prbCanceling.Visible = false
+        Me.prbCanceling.Visible = False
         '
         'lblCanceling
         '
-        Me.lblCanceling.AutoSize = true
-        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblCanceling.AutoSize = True
+        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
         Me.lblCanceling.Name = "lblCanceling"
-        Me.lblCanceling.Size = New System.Drawing.Size(129, 17)
+        Me.lblCanceling.Size = New System.Drawing.Size(128, 17)
         Me.lblCanceling.TabIndex = 1
         Me.lblCanceling.Text = "Canceling Scraper..."
-        Me.lblCanceling.Visible = false
+        Me.lblCanceling.Visible = False
         '
         'btnCancel
         '
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"),System.Drawing.Image)
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnCancel.Location = New System.Drawing.Point(4, 4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(205, 55)
         Me.btnCancel.TabIndex = 0
-        Me.btnCancel.TabStop = false
+        Me.btnCancel.TabStop = False
         Me.btnCancel.Text = "Cancel Scraper"
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'pnlNoInfo
         '
@@ -6142,7 +6142,7 @@ Partial Class frmMain
         Me.pnlNoInfo.Name = "pnlNoInfo"
         Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
         Me.pnlNoInfo.TabIndex = 8
-        Me.pnlNoInfo.Visible = false
+        Me.pnlNoInfo.Visible = False
         '
         'pnlNoInfoBG
         '
@@ -6157,16 +6157,16 @@ Partial Class frmMain
         '
         'pbNoInfo
         '
-        Me.pbNoInfo.Image = CType(resources.GetObject("pbNoInfo.Image"),System.Drawing.Image)
+        Me.pbNoInfo.Image = CType(resources.GetObject("pbNoInfo.Image"), System.Drawing.Image)
         Me.pbNoInfo.Location = New System.Drawing.Point(7, 38)
         Me.pbNoInfo.Name = "pbNoInfo"
         Me.pbNoInfo.Size = New System.Drawing.Size(63, 63)
         Me.pbNoInfo.TabIndex = 1
-        Me.pbNoInfo.TabStop = false
+        Me.pbNoInfo.TabStop = False
         '
         'lblNoInfo
         '
-        Me.lblNoInfo.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblNoInfo.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblNoInfo.Location = New System.Drawing.Point(71, 29)
         Me.lblNoInfo.Name = "lblNoInfo"
         Me.lblNoInfo.Size = New System.Drawing.Size(173, 78)
@@ -6214,7 +6214,7 @@ Partial Class frmMain
         '
         'pnlMoviesInSet
         '
-        Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pnlMoviesInSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlMoviesInSet.Controls.Add(Me.lvMoviesInSet)
         Me.pnlMoviesInSet.Controls.Add(Me.lblMoviesInSetHeader)
@@ -6230,7 +6230,7 @@ Partial Class frmMain
         Me.lvMoviesInSet.Name = "lvMoviesInSet"
         Me.lvMoviesInSet.Size = New System.Drawing.Size(765, 182)
         Me.lvMoviesInSet.TabIndex = 41
-        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = false
+        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = False
         '
         'ilMoviesInSet
         '
@@ -6240,11 +6240,11 @@ Partial Class frmMain
         '
         'lblMoviesInSetHeader
         '
-        Me.lblMoviesInSetHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblMoviesInSetHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblMoviesInSetHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblMoviesInSetHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblMoviesInSetHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMoviesInSetHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMoviesInSetHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblMoviesInSetHeader.Location = New System.Drawing.Point(3, 3)
         Me.lblMoviesInSetHeader.Name = "lblMoviesInSetHeader"
@@ -6255,23 +6255,23 @@ Partial Class frmMain
         '
         'txtCerts
         '
-        Me.txtCerts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtCerts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCerts.Location = New System.Drawing.Point(231, 208)
         Me.txtCerts.Name = "txtCerts"
-        Me.txtCerts.ReadOnly = true
+        Me.txtCerts.ReadOnly = True
         Me.txtCerts.Size = New System.Drawing.Size(223, 22)
         Me.txtCerts.TabIndex = 3
-        Me.txtCerts.TabStop = false
+        Me.txtCerts.TabStop = False
         '
         'lblCertsHeader
         '
-        Me.lblCertsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblCertsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblCertsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblCertsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblCertsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblCertsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCertsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblCertsHeader.Location = New System.Drawing.Point(231, 188)
         Me.lblCertsHeader.Name = "lblCertsHeader"
@@ -6282,8 +6282,8 @@ Partial Class frmMain
         '
         'lblReleaseDate
         '
-        Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDate.ForeColor = System.Drawing.Color.Black
         Me.lblReleaseDate.Location = New System.Drawing.Point(288, 48)
         Me.lblReleaseDate.Name = "lblReleaseDate"
@@ -6293,10 +6293,10 @@ Partial Class frmMain
         '
         'lblReleaseDateHeader
         '
-        Me.lblReleaseDateHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblReleaseDateHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblReleaseDateHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblReleaseDateHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDateHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblReleaseDateHeader.Location = New System.Drawing.Point(288, 27)
         Me.lblReleaseDateHeader.Name = "lblReleaseDateHeader"
@@ -6307,46 +6307,46 @@ Partial Class frmMain
         '
         'btnMid
         '
-        Me.btnMid.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnMid.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMid.BackColor = System.Drawing.SystemColors.Control
         Me.btnMid.Location = New System.Drawing.Point(702, 1)
         Me.btnMid.Name = "btnMid"
         Me.btnMid.Size = New System.Drawing.Size(30, 22)
         Me.btnMid.TabIndex = 37
-        Me.btnMid.TabStop = false
+        Me.btnMid.TabStop = False
         Me.btnMid.Text = "-"
         Me.btnMid.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnMid.UseVisualStyleBackColor = false
+        Me.btnMid.UseVisualStyleBackColor = False
         '
         'pbMILoading
         '
-        Me.pbMILoading.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.pbMILoading.Image = CType(resources.GetObject("pbMILoading.Image"),System.Drawing.Image)
+        Me.pbMILoading.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pbMILoading.Image = CType(resources.GetObject("pbMILoading.Image"), System.Drawing.Image)
         Me.pbMILoading.Location = New System.Drawing.Point(604, 374)
         Me.pbMILoading.Name = "pbMILoading"
         Me.pbMILoading.Size = New System.Drawing.Size(41, 39)
         Me.pbMILoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbMILoading.TabIndex = 36
-        Me.pbMILoading.TabStop = false
-        Me.pbMILoading.Visible = false
+        Me.pbMILoading.TabStop = False
+        Me.pbMILoading.Visible = False
         '
         'btnMetaDataRefresh
         '
-        Me.btnMetaDataRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnMetaDataRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMetaDataRefresh.Location = New System.Drawing.Point(691, 278)
         Me.btnMetaDataRefresh.Name = "btnMetaDataRefresh"
         Me.btnMetaDataRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnMetaDataRefresh.TabIndex = 9
-        Me.btnMetaDataRefresh.TabStop = false
+        Me.btnMetaDataRefresh.TabStop = False
         Me.btnMetaDataRefresh.Text = "Refresh"
-        Me.btnMetaDataRefresh.UseVisualStyleBackColor = true
+        Me.btnMetaDataRefresh.UseVisualStyleBackColor = True
         '
         'lblMetaDataHeader
         '
-        Me.lblMetaDataHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblMetaDataHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblMetaDataHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblMetaDataHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblMetaDataHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMetaDataHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMetaDataHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblMetaDataHeader.Location = New System.Drawing.Point(467, 282)
         Me.lblMetaDataHeader.Name = "lblMetaDataHeader"
@@ -6357,50 +6357,50 @@ Partial Class frmMain
         '
         'txtMetaData
         '
-        Me.txtMetaData.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMetaData.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtMetaData.BackColor = System.Drawing.Color.Gainsboro
         Me.txtMetaData.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtMetaData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMetaData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMetaData.ForeColor = System.Drawing.Color.Black
         Me.txtMetaData.Location = New System.Drawing.Point(467, 303)
-        Me.txtMetaData.Multiline = true
+        Me.txtMetaData.Multiline = True
         Me.txtMetaData.Name = "txtMetaData"
-        Me.txtMetaData.ReadOnly = true
+        Me.txtMetaData.ReadOnly = True
         Me.txtMetaData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtMetaData.Size = New System.Drawing.Size(296, 184)
         Me.txtMetaData.TabIndex = 10
-        Me.txtMetaData.TabStop = false
+        Me.txtMetaData.TabStop = False
         '
         'btnPlay
         '
-        Me.btnPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
         Me.btnPlay.Location = New System.Drawing.Point(435, 254)
         Me.btnPlay.Name = "btnPlay"
         Me.btnPlay.Size = New System.Drawing.Size(20, 20)
         Me.btnPlay.TabIndex = 6
-        Me.btnPlay.TabStop = false
-        Me.btnPlay.UseVisualStyleBackColor = true
+        Me.btnPlay.TabStop = False
+        Me.btnPlay.UseVisualStyleBackColor = True
         '
         'txtFilePath
         '
-        Me.txtFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
         Me.txtFilePath.Name = "txtFilePath"
-        Me.txtFilePath.ReadOnly = true
+        Me.txtFilePath.ReadOnly = True
         Me.txtFilePath.Size = New System.Drawing.Size(429, 22)
         Me.txtFilePath.TabIndex = 5
-        Me.txtFilePath.TabStop = false
+        Me.txtFilePath.TabStop = False
         '
         'lblFilePathHeader
         '
-        Me.lblFilePathHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblFilePathHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblFilePathHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblFilePathHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilePathHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblFilePathHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFilePathHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilePathHeader.Location = New System.Drawing.Point(3, 234)
         Me.lblFilePathHeader.Name = "lblFilePathHeader"
@@ -6414,26 +6414,26 @@ Partial Class frmMain
         Me.txtTMDBID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTMDBID.Location = New System.Drawing.Point(117, 208)
         Me.txtTMDBID.Name = "txtTMDBID"
-        Me.txtTMDBID.ReadOnly = true
+        Me.txtTMDBID.ReadOnly = True
         Me.txtTMDBID.Size = New System.Drawing.Size(108, 22)
         Me.txtTMDBID.TabIndex = 1
-        Me.txtTMDBID.TabStop = false
+        Me.txtTMDBID.TabStop = False
         '
         'txtIMDBID
         '
         Me.txtIMDBID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtIMDBID.Location = New System.Drawing.Point(3, 208)
         Me.txtIMDBID.Name = "txtIMDBID"
-        Me.txtIMDBID.ReadOnly = true
+        Me.txtIMDBID.ReadOnly = True
         Me.txtIMDBID.Size = New System.Drawing.Size(108, 22)
         Me.txtIMDBID.TabIndex = 1
-        Me.txtIMDBID.TabStop = false
+        Me.txtIMDBID.TabStop = False
         '
         'lblTMDBHeader
         '
         Me.lblTMDBHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblTMDBHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblTMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTMDBHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblTMDBHeader.Location = New System.Drawing.Point(117, 188)
         Me.lblTMDBHeader.Name = "lblTMDBHeader"
@@ -6446,7 +6446,7 @@ Partial Class frmMain
         '
         Me.lblIMDBHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblIMDBHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblIMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblIMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblIMDBHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblIMDBHeader.Location = New System.Drawing.Point(3, 188)
         Me.lblIMDBHeader.Name = "lblIMDBHeader"
@@ -6457,23 +6457,24 @@ Partial Class frmMain
         '
         'lblDirector
         '
-        Me.lblDirector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblDirector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDirector.ForeColor = System.Drawing.Color.Black
         Me.lblDirector.Location = New System.Drawing.Point(3, 48)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(280, 16)
         Me.lblDirector.TabIndex = 27
         Me.lblDirector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblDirector.UseMnemonic = False
         '
         'lblDirectorHeader
         '
-        Me.lblDirectorHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblDirectorHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblDirectorHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblDirectorHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblDirectorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblDirectorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
         Me.lblDirectorHeader.Name = "lblDirectorHeader"
@@ -6484,7 +6485,7 @@ Partial Class frmMain
         '
         'pnlActors
         '
-        Me.pnlActors.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pnlActors.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlActors.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlActors.Controls.Add(Me.pbActLoad)
         Me.pnlActors.Controls.Add(Me.lstActors)
@@ -6497,27 +6498,27 @@ Partial Class frmMain
         '
         'pbActLoad
         '
-        Me.pbActLoad.Image = CType(resources.GetObject("pbActLoad.Image"),System.Drawing.Image)
+        Me.pbActLoad.Image = CType(resources.GetObject("pbActLoad.Image"), System.Drawing.Image)
         Me.pbActLoad.Location = New System.Drawing.Point(240, 111)
         Me.pbActLoad.Name = "pbActLoad"
         Me.pbActLoad.Size = New System.Drawing.Size(41, 39)
         Me.pbActLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbActLoad.TabIndex = 26
-        Me.pbActLoad.TabStop = false
-        Me.pbActLoad.Visible = false
+        Me.pbActLoad.TabStop = False
+        Me.pbActLoad.Visible = False
         '
         'lstActors
         '
         Me.lstActors.BackColor = System.Drawing.Color.Gainsboro
         Me.lstActors.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.lstActors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lstActors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lstActors.ForeColor = System.Drawing.Color.Black
-        Me.lstActors.FormattingEnabled = true
+        Me.lstActors.FormattingEnabled = True
         Me.lstActors.Location = New System.Drawing.Point(3, 21)
         Me.lstActors.Name = "lstActors"
         Me.lstActors.Size = New System.Drawing.Size(214, 221)
         Me.lstActors.TabIndex = 28
-        Me.lstActors.TabStop = false
+        Me.lstActors.TabStop = False
         '
         'pbActors
         '
@@ -6527,13 +6528,13 @@ Partial Class frmMain
         Me.pbActors.Size = New System.Drawing.Size(81, 106)
         Me.pbActors.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbActors.TabIndex = 27
-        Me.pbActors.TabStop = false
+        Me.pbActors.TabStop = False
         '
         'lblActorsHeader
         '
         Me.lblActorsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblActorsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblActorsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblActorsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblActorsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblActorsHeader.Location = New System.Drawing.Point(0, 0)
         Me.lblActorsHeader.Name = "lblActorsHeader"
@@ -6544,11 +6545,11 @@ Partial Class frmMain
         '
         'lblOutlineHeader
         '
-        Me.lblOutlineHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblOutlineHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblOutlineHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblOutlineHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblOutlineHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblOutlineHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOutlineHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblOutlineHeader.Location = New System.Drawing.Point(3, 81)
         Me.lblOutlineHeader.Name = "lblOutlineHeader"
@@ -6559,24 +6560,24 @@ Partial Class frmMain
         '
         'txtOutline
         '
-        Me.txtOutline.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtOutline.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtOutline.BackColor = System.Drawing.Color.Gainsboro
         Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtOutline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtOutline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtOutline.ForeColor = System.Drawing.Color.Black
         Me.txtOutline.Location = New System.Drawing.Point(3, 103)
-        Me.txtOutline.Multiline = true
+        Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
-        Me.txtOutline.ReadOnly = true
+        Me.txtOutline.ReadOnly = True
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtOutline.Size = New System.Drawing.Size(451, 78)
         Me.txtOutline.TabIndex = 16
-        Me.txtOutline.TabStop = false
+        Me.txtOutline.TabStop = False
         '
         'pnlTop250
         '
-        Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop250.Controls.Add(Me.lblTop250)
         Me.pnlTop250.Controls.Add(Me.pbTop250)
         Me.pnlTop250.Location = New System.Drawing.Point(397, 27)
@@ -6587,7 +6588,7 @@ Partial Class frmMain
         'lblTop250
         '
         Me.lblTop250.BackColor = System.Drawing.Color.Gainsboro
-        Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTop250.ForeColor = System.Drawing.Color.Black
         Me.lblTop250.Location = New System.Drawing.Point(1, 30)
         Me.lblTop250.Name = "lblTop250"
@@ -6598,21 +6599,21 @@ Partial Class frmMain
         '
         'pbTop250
         '
-        Me.pbTop250.Image = CType(resources.GetObject("pbTop250.Image"),System.Drawing.Image)
+        Me.pbTop250.Image = CType(resources.GetObject("pbTop250.Image"), System.Drawing.Image)
         Me.pbTop250.Location = New System.Drawing.Point(1, 1)
         Me.pbTop250.Name = "pbTop250"
         Me.pbTop250.Size = New System.Drawing.Size(54, 30)
         Me.pbTop250.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbTop250.TabIndex = 14
-        Me.pbTop250.TabStop = false
+        Me.pbTop250.TabStop = False
         '
         'lblPlotHeader
         '
-        Me.lblPlotHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblPlotHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblPlotHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblPlotHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblPlotHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblPlotHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPlotHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblPlotHeader.Location = New System.Drawing.Point(3, 282)
         Me.lblPlotHeader.Name = "lblPlotHeader"
@@ -6623,55 +6624,55 @@ Partial Class frmMain
         '
         'txtPlot
         '
-        Me.txtPlot.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtPlot.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtPlot.BackColor = System.Drawing.Color.Gainsboro
         Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.txtPlot.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtPlot.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPlot.ForeColor = System.Drawing.Color.Black
         Me.txtPlot.Location = New System.Drawing.Point(3, 303)
-        Me.txtPlot.Multiline = true
+        Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
-        Me.txtPlot.ReadOnly = true
+        Me.txtPlot.ReadOnly = True
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtPlot.Size = New System.Drawing.Size(451, 184)
         Me.txtPlot.TabIndex = 7
-        Me.txtPlot.TabStop = false
+        Me.txtPlot.TabStop = False
         '
         'btnDown
         '
-        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnDown.BackColor = System.Drawing.SystemColors.Control
         Me.btnDown.Location = New System.Drawing.Point(733, 1)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(30, 22)
         Me.btnDown.TabIndex = 6
-        Me.btnDown.TabStop = false
+        Me.btnDown.TabStop = False
         Me.btnDown.Text = "v"
         Me.btnDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnDown.UseVisualStyleBackColor = false
+        Me.btnDown.UseVisualStyleBackColor = False
         '
         'btnUp
         '
-        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnUp.BackColor = System.Drawing.SystemColors.Control
-        Me.btnUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.btnUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnUp.Location = New System.Drawing.Point(670, 1)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(30, 22)
         Me.btnUp.TabIndex = 1
-        Me.btnUp.TabStop = false
+        Me.btnUp.TabStop = False
         Me.btnUp.Text = "^"
         Me.btnUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnUp.UseVisualStyleBackColor = false
+        Me.btnUp.UseVisualStyleBackColor = False
         '
         'lblInfoPanelHeader
         '
-        Me.lblInfoPanelHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblInfoPanelHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblInfoPanelHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblInfoPanelHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblInfoPanelHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblInfoPanelHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblInfoPanelHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblInfoPanelHeader.Location = New System.Drawing.Point(3, 3)
         Me.lblInfoPanelHeader.Name = "lblInfoPanelHeader"
@@ -6686,12 +6687,12 @@ Partial Class frmMain
         Me.pbBannerCache.Name = "pbBannerCache"
         Me.pbBannerCache.Size = New System.Drawing.Size(50, 50)
         Me.pbBannerCache.TabIndex = 28
-        Me.pbBannerCache.TabStop = false
-        Me.pbBannerCache.Visible = false
+        Me.pbBannerCache.TabStop = False
+        Me.pbBannerCache.Visible = False
         '
         'pnlBanner
         '
-        Me.pnlBanner.AutoSize = true
+        Me.pnlBanner.AutoSize = True
         Me.pnlBanner.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlBanner.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -6703,11 +6704,11 @@ Partial Class frmMain
         Me.pnlBanner.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlBanner.Size = New System.Drawing.Size(56, 82)
         Me.pnlBanner.TabIndex = 27
-        Me.pnlBanner.Visible = false
+        Me.pnlBanner.Visible = False
         '
         'pnlBannerMain
         '
-        Me.pnlBannerMain.AutoSize = true
+        Me.pnlBannerMain.AutoSize = True
         Me.pnlBannerMain.Controls.Add(Me.tblBannerMain)
         Me.pnlBannerMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlBannerMain.Location = New System.Drawing.Point(2, 15)
@@ -6717,7 +6718,7 @@ Partial Class frmMain
         '
         'tblBannerMain
         '
-        Me.tblBannerMain.AutoSize = true
+        Me.tblBannerMain.AutoSize = True
         Me.tblBannerMain.ColumnCount = 1
         Me.tblBannerMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBannerMain.Controls.Add(Me.pbBanner, 0, 0)
@@ -6738,11 +6739,11 @@ Partial Class frmMain
         Me.pbBanner.Name = "pbBanner"
         Me.pbBanner.Size = New System.Drawing.Size(50, 50)
         Me.pbBanner.TabIndex = 0
-        Me.pbBanner.TabStop = false
+        Me.pbBanner.TabStop = False
         '
         'pnlBannerBottom
         '
-        Me.pnlBannerBottom.AutoSize = true
+        Me.pnlBannerBottom.AutoSize = True
         Me.pnlBannerBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlBannerBottom.Controls.Add(Me.tblBannerBottom)
         Me.pnlBannerBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -6753,11 +6754,11 @@ Partial Class frmMain
         '
         'tblBannerBottom
         '
-        Me.tblBannerBottom.AutoSize = true
+        Me.tblBannerBottom.AutoSize = True
         Me.tblBannerBottom.ColumnCount = 3
-        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblBannerBottom.Controls.Add(Me.lblBannerSize, 1, 0)
         Me.tblBannerBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBannerBottom.Location = New System.Drawing.Point(0, 0)
@@ -6771,9 +6772,9 @@ Partial Class frmMain
         'lblBannerSize
         '
         Me.lblBannerSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblBannerSize.AutoSize = true
+        Me.lblBannerSize.AutoSize = True
         Me.lblBannerSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblBannerSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblBannerSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblBannerSize.Location = New System.Drawing.Point(11, 0)
         Me.lblBannerSize.Name = "lblBannerSize"
@@ -6784,7 +6785,7 @@ Partial Class frmMain
         '
         'pnlBannerTop
         '
-        Me.pnlBannerTop.AutoSize = true
+        Me.pnlBannerTop.AutoSize = True
         Me.pnlBannerTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlBannerTop.Controls.Add(Me.tblBannerTop)
         Me.pnlBannerTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -6795,11 +6796,11 @@ Partial Class frmMain
         '
         'tblBannerTop
         '
-        Me.tblBannerTop.AutoSize = true
+        Me.tblBannerTop.AutoSize = True
         Me.tblBannerTop.ColumnCount = 3
-        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblBannerTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblBannerTop.Controls.Add(Me.lblBannerTitle, 1, 0)
         Me.tblBannerTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBannerTop.Location = New System.Drawing.Point(0, 0)
@@ -6813,9 +6814,9 @@ Partial Class frmMain
         'lblBannerTitle
         '
         Me.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblBannerTitle.AutoSize = true
+        Me.lblBannerTitle.AutoSize = True
         Me.lblBannerTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblBannerTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblBannerTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblBannerTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblBannerTitle.Location = New System.Drawing.Point(3, 0)
         Me.lblBannerTitle.Name = "lblBannerTitle"
@@ -6830,12 +6831,12 @@ Partial Class frmMain
         Me.pbCache.Name = "pbCache"
         Me.pbCache.Size = New System.Drawing.Size(50, 50)
         Me.pbCache.TabIndex = 26
-        Me.pbCache.TabStop = false
-        Me.pbCache.Visible = false
+        Me.pbCache.TabStop = False
+        Me.pbCache.Visible = False
         '
         'pnlClearLogo
         '
-        Me.pnlClearLogo.AutoSize = true
+        Me.pnlClearLogo.AutoSize = True
         Me.pnlClearLogo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlClearLogo.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlClearLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -6847,11 +6848,11 @@ Partial Class frmMain
         Me.pnlClearLogo.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlClearLogo.Size = New System.Drawing.Size(56, 82)
         Me.pnlClearLogo.TabIndex = 25
-        Me.pnlClearLogo.Visible = false
+        Me.pnlClearLogo.Visible = False
         '
         'pnlClearLogoMain
         '
-        Me.pnlClearLogoMain.AutoSize = true
+        Me.pnlClearLogoMain.AutoSize = True
         Me.pnlClearLogoMain.Controls.Add(Me.tblClearLogoMain)
         Me.pnlClearLogoMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlClearLogoMain.Location = New System.Drawing.Point(2, 15)
@@ -6861,7 +6862,7 @@ Partial Class frmMain
         '
         'tblClearLogoMain
         '
-        Me.tblClearLogoMain.AutoSize = true
+        Me.tblClearLogoMain.AutoSize = True
         Me.tblClearLogoMain.ColumnCount = 1
         Me.tblClearLogoMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblClearLogoMain.Controls.Add(Me.pbClearLogo, 0, 0)
@@ -6882,11 +6883,11 @@ Partial Class frmMain
         Me.pbClearLogo.Name = "pbClearLogo"
         Me.pbClearLogo.Size = New System.Drawing.Size(50, 50)
         Me.pbClearLogo.TabIndex = 0
-        Me.pbClearLogo.TabStop = false
+        Me.pbClearLogo.TabStop = False
         '
         'pnlClearLogoBottom
         '
-        Me.pnlClearLogoBottom.AutoSize = true
+        Me.pnlClearLogoBottom.AutoSize = True
         Me.pnlClearLogoBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlClearLogoBottom.Controls.Add(Me.tblClearLogoBottom)
         Me.pnlClearLogoBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -6897,11 +6898,11 @@ Partial Class frmMain
         '
         'tblClearLogoBottom
         '
-        Me.tblClearLogoBottom.AutoSize = true
+        Me.tblClearLogoBottom.AutoSize = True
         Me.tblClearLogoBottom.ColumnCount = 3
-        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearLogoBottom.Controls.Add(Me.lblClearLogoSize, 1, 0)
         Me.tblClearLogoBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblClearLogoBottom.Location = New System.Drawing.Point(0, 0)
@@ -6915,9 +6916,9 @@ Partial Class frmMain
         'lblClearLogoSize
         '
         Me.lblClearLogoSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblClearLogoSize.AutoSize = true
+        Me.lblClearLogoSize.AutoSize = True
         Me.lblClearLogoSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblClearLogoSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblClearLogoSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblClearLogoSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblClearLogoSize.Location = New System.Drawing.Point(11, 0)
         Me.lblClearLogoSize.Name = "lblClearLogoSize"
@@ -6928,7 +6929,7 @@ Partial Class frmMain
         '
         'pnlClearLogoTop
         '
-        Me.pnlClearLogoTop.AutoSize = true
+        Me.pnlClearLogoTop.AutoSize = True
         Me.pnlClearLogoTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlClearLogoTop.Controls.Add(Me.tblClearLogoTop)
         Me.pnlClearLogoTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -6939,11 +6940,11 @@ Partial Class frmMain
         '
         'tblClearLogoTop
         '
-        Me.tblClearLogoTop.AutoSize = true
+        Me.tblClearLogoTop.AutoSize = True
         Me.tblClearLogoTop.ColumnCount = 3
-        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearLogoTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearLogoTop.Controls.Add(Me.lblClearLogoTitle, 1, 0)
         Me.tblClearLogoTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblClearLogoTop.Location = New System.Drawing.Point(0, 0)
@@ -6957,9 +6958,9 @@ Partial Class frmMain
         'lblClearLogoTitle
         '
         Me.lblClearLogoTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblClearLogoTitle.AutoSize = true
+        Me.lblClearLogoTitle.AutoSize = True
         Me.lblClearLogoTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblClearLogoTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblClearLogoTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblClearLogoTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblClearLogoTitle.Location = New System.Drawing.Point(-5, 0)
         Me.lblClearLogoTitle.Name = "lblClearLogoTitle"
@@ -6970,7 +6971,7 @@ Partial Class frmMain
         '
         'pnlCharacterArt
         '
-        Me.pnlCharacterArt.AutoSize = true
+        Me.pnlCharacterArt.AutoSize = True
         Me.pnlCharacterArt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlCharacterArt.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlCharacterArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -6982,11 +6983,11 @@ Partial Class frmMain
         Me.pnlCharacterArt.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlCharacterArt.Size = New System.Drawing.Size(56, 82)
         Me.pnlCharacterArt.TabIndex = 24
-        Me.pnlCharacterArt.Visible = false
+        Me.pnlCharacterArt.Visible = False
         '
         'pnlCharacterArtMain
         '
-        Me.pnlCharacterArtMain.AutoSize = true
+        Me.pnlCharacterArtMain.AutoSize = True
         Me.pnlCharacterArtMain.Controls.Add(Me.tblCharacterArtMain)
         Me.pnlCharacterArtMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlCharacterArtMain.Location = New System.Drawing.Point(2, 15)
@@ -6996,7 +6997,7 @@ Partial Class frmMain
         '
         'tblCharacterArtMain
         '
-        Me.tblCharacterArtMain.AutoSize = true
+        Me.tblCharacterArtMain.AutoSize = True
         Me.tblCharacterArtMain.ColumnCount = 1
         Me.tblCharacterArtMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblCharacterArtMain.Controls.Add(Me.pbCharacterArt, 0, 0)
@@ -7017,11 +7018,11 @@ Partial Class frmMain
         Me.pbCharacterArt.Name = "pbCharacterArt"
         Me.pbCharacterArt.Size = New System.Drawing.Size(50, 50)
         Me.pbCharacterArt.TabIndex = 0
-        Me.pbCharacterArt.TabStop = false
+        Me.pbCharacterArt.TabStop = False
         '
         'pnlCharacterArtBottom
         '
-        Me.pnlCharacterArtBottom.AutoSize = true
+        Me.pnlCharacterArtBottom.AutoSize = True
         Me.pnlCharacterArtBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlCharacterArtBottom.Controls.Add(Me.tblCharacterArtBottom)
         Me.pnlCharacterArtBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -7032,11 +7033,11 @@ Partial Class frmMain
         '
         'tblCharacterArtBottom
         '
-        Me.tblCharacterArtBottom.AutoSize = true
+        Me.tblCharacterArtBottom.AutoSize = True
         Me.tblCharacterArtBottom.ColumnCount = 3
-        Me.tblCharacterArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblCharacterArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblCharacterArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblCharacterArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblCharacterArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblCharacterArtBottom.Controls.Add(Me.lblCharacterArtSize, 1, 0)
         Me.tblCharacterArtBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblCharacterArtBottom.Location = New System.Drawing.Point(0, 0)
@@ -7050,9 +7051,9 @@ Partial Class frmMain
         'lblCharacterArtSize
         '
         Me.lblCharacterArtSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblCharacterArtSize.AutoSize = true
+        Me.lblCharacterArtSize.AutoSize = True
         Me.lblCharacterArtSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblCharacterArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblCharacterArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCharacterArtSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblCharacterArtSize.Location = New System.Drawing.Point(11, 0)
         Me.lblCharacterArtSize.Name = "lblCharacterArtSize"
@@ -7063,7 +7064,7 @@ Partial Class frmMain
         '
         'pnlCharacterArtTop
         '
-        Me.pnlCharacterArtTop.AutoSize = true
+        Me.pnlCharacterArtTop.AutoSize = True
         Me.pnlCharacterArtTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlCharacterArtTop.Controls.Add(Me.tblCharacterArtTop)
         Me.pnlCharacterArtTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -7074,11 +7075,11 @@ Partial Class frmMain
         '
         'tblCharacterArtTop
         '
-        Me.tblCharacterArtTop.AutoSize = true
+        Me.tblCharacterArtTop.AutoSize = True
         Me.tblCharacterArtTop.ColumnCount = 3
-        Me.tblCharacterArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblCharacterArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblCharacterArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblCharacterArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblCharacterArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblCharacterArtTop.Controls.Add(Me.lblCharacterArtTitle, 1, 0)
         Me.tblCharacterArtTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblCharacterArtTop.Location = New System.Drawing.Point(0, 0)
@@ -7092,9 +7093,9 @@ Partial Class frmMain
         'lblCharacterArtTitle
         '
         Me.lblCharacterArtTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblCharacterArtTitle.AutoSize = true
+        Me.lblCharacterArtTitle.AutoSize = True
         Me.lblCharacterArtTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblCharacterArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblCharacterArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCharacterArtTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblCharacterArtTitle.Location = New System.Drawing.Point(-11, 0)
         Me.lblCharacterArtTitle.Name = "lblCharacterArtTitle"
@@ -7109,12 +7110,12 @@ Partial Class frmMain
         Me.pbCharacterArtCache.Name = "pbCharacterArtCache"
         Me.pbCharacterArtCache.Size = New System.Drawing.Size(50, 50)
         Me.pbCharacterArtCache.TabIndex = 23
-        Me.pbCharacterArtCache.TabStop = false
-        Me.pbCharacterArtCache.Visible = false
+        Me.pbCharacterArtCache.TabStop = False
+        Me.pbCharacterArtCache.Visible = False
         '
         'pnlDiscArt
         '
-        Me.pnlDiscArt.AutoSize = true
+        Me.pnlDiscArt.AutoSize = True
         Me.pnlDiscArt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlDiscArt.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlDiscArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -7126,11 +7127,11 @@ Partial Class frmMain
         Me.pnlDiscArt.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlDiscArt.Size = New System.Drawing.Size(56, 82)
         Me.pnlDiscArt.TabIndex = 22
-        Me.pnlDiscArt.Visible = false
+        Me.pnlDiscArt.Visible = False
         '
         'pnlDiscArtMain
         '
-        Me.pnlDiscArtMain.AutoSize = true
+        Me.pnlDiscArtMain.AutoSize = True
         Me.pnlDiscArtMain.Controls.Add(Me.tblDiscArtMain)
         Me.pnlDiscArtMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlDiscArtMain.Location = New System.Drawing.Point(2, 15)
@@ -7140,7 +7141,7 @@ Partial Class frmMain
         '
         'tblDiscArtMain
         '
-        Me.tblDiscArtMain.AutoSize = true
+        Me.tblDiscArtMain.AutoSize = True
         Me.tblDiscArtMain.ColumnCount = 1
         Me.tblDiscArtMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblDiscArtMain.Controls.Add(Me.pbDiscArt, 0, 0)
@@ -7161,11 +7162,11 @@ Partial Class frmMain
         Me.pbDiscArt.Name = "pbDiscArt"
         Me.pbDiscArt.Size = New System.Drawing.Size(50, 50)
         Me.pbDiscArt.TabIndex = 0
-        Me.pbDiscArt.TabStop = false
+        Me.pbDiscArt.TabStop = False
         '
         'pnlDiscArtBottom
         '
-        Me.pnlDiscArtBottom.AutoSize = true
+        Me.pnlDiscArtBottom.AutoSize = True
         Me.pnlDiscArtBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlDiscArtBottom.Controls.Add(Me.tblDiscArtBottom)
         Me.pnlDiscArtBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -7176,11 +7177,11 @@ Partial Class frmMain
         '
         'tblDiscArtBottom
         '
-        Me.tblDiscArtBottom.AutoSize = true
+        Me.tblDiscArtBottom.AutoSize = True
         Me.tblDiscArtBottom.ColumnCount = 3
-        Me.tblDiscArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblDiscArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblDiscArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblDiscArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblDiscArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblDiscArtBottom.Controls.Add(Me.lblDiscArtSize, 1, 0)
         Me.tblDiscArtBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblDiscArtBottom.Location = New System.Drawing.Point(0, 0)
@@ -7194,9 +7195,9 @@ Partial Class frmMain
         'lblDiscArtSize
         '
         Me.lblDiscArtSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblDiscArtSize.AutoSize = true
+        Me.lblDiscArtSize.AutoSize = True
         Me.lblDiscArtSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblDiscArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblDiscArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblDiscArtSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblDiscArtSize.Location = New System.Drawing.Point(11, 0)
         Me.lblDiscArtSize.Name = "lblDiscArtSize"
@@ -7207,7 +7208,7 @@ Partial Class frmMain
         '
         'pnlDiscArtTop
         '
-        Me.pnlDiscArtTop.AutoSize = true
+        Me.pnlDiscArtTop.AutoSize = True
         Me.pnlDiscArtTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlDiscArtTop.Controls.Add(Me.tblDiscArtTop)
         Me.pnlDiscArtTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -7218,11 +7219,11 @@ Partial Class frmMain
         '
         'tblDiscArtTop
         '
-        Me.tblDiscArtTop.AutoSize = true
+        Me.tblDiscArtTop.AutoSize = True
         Me.tblDiscArtTop.ColumnCount = 3
-        Me.tblDiscArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblDiscArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblDiscArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblDiscArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblDiscArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblDiscArtTop.Controls.Add(Me.lblDiscArtTitle, 1, 0)
         Me.tblDiscArtTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblDiscArtTop.Location = New System.Drawing.Point(0, 0)
@@ -7236,9 +7237,9 @@ Partial Class frmMain
         'lblDiscArtTitle
         '
         Me.lblDiscArtTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblDiscArtTitle.AutoSize = true
+        Me.lblDiscArtTitle.AutoSize = True
         Me.lblDiscArtTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblDiscArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblDiscArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblDiscArtTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblDiscArtTitle.Location = New System.Drawing.Point(3, 0)
         Me.lblDiscArtTitle.Name = "lblDiscArtTitle"
@@ -7253,8 +7254,8 @@ Partial Class frmMain
         Me.pbDiscArtCache.Name = "pbDiscArtCache"
         Me.pbDiscArtCache.Size = New System.Drawing.Size(50, 50)
         Me.pbDiscArtCache.TabIndex = 21
-        Me.pbDiscArtCache.TabStop = false
-        Me.pbDiscArtCache.Visible = false
+        Me.pbDiscArtCache.TabStop = False
+        Me.pbDiscArtCache.Visible = False
         '
         'pbClearLogoCache
         '
@@ -7262,12 +7263,12 @@ Partial Class frmMain
         Me.pbClearLogoCache.Name = "pbClearLogoCache"
         Me.pbClearLogoCache.Size = New System.Drawing.Size(50, 50)
         Me.pbClearLogoCache.TabIndex = 20
-        Me.pbClearLogoCache.TabStop = false
-        Me.pbClearLogoCache.Visible = false
+        Me.pbClearLogoCache.TabStop = False
+        Me.pbClearLogoCache.Visible = False
         '
         'pnlClearArt
         '
-        Me.pnlClearArt.AutoSize = true
+        Me.pnlClearArt.AutoSize = True
         Me.pnlClearArt.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlClearArt.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlClearArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -7279,11 +7280,11 @@ Partial Class frmMain
         Me.pnlClearArt.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlClearArt.Size = New System.Drawing.Size(56, 82)
         Me.pnlClearArt.TabIndex = 19
-        Me.pnlClearArt.Visible = false
+        Me.pnlClearArt.Visible = False
         '
         'pnlClearArtMain
         '
-        Me.pnlClearArtMain.AutoSize = true
+        Me.pnlClearArtMain.AutoSize = True
         Me.pnlClearArtMain.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlClearArtMain.Controls.Add(Me.tblClearArtMain)
         Me.pnlClearArtMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -7294,7 +7295,7 @@ Partial Class frmMain
         '
         'tblClearArtMain
         '
-        Me.tblClearArtMain.AutoSize = true
+        Me.tblClearArtMain.AutoSize = True
         Me.tblClearArtMain.ColumnCount = 1
         Me.tblClearArtMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblClearArtMain.Controls.Add(Me.pbClearArt, 0, 0)
@@ -7315,11 +7316,11 @@ Partial Class frmMain
         Me.pbClearArt.Name = "pbClearArt"
         Me.pbClearArt.Size = New System.Drawing.Size(50, 50)
         Me.pbClearArt.TabIndex = 0
-        Me.pbClearArt.TabStop = false
+        Me.pbClearArt.TabStop = False
         '
         'pnlClearArtBottom
         '
-        Me.pnlClearArtBottom.AutoSize = true
+        Me.pnlClearArtBottom.AutoSize = True
         Me.pnlClearArtBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlClearArtBottom.Controls.Add(Me.tblClearArtBottom)
         Me.pnlClearArtBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -7330,11 +7331,11 @@ Partial Class frmMain
         '
         'tblClearArtBottom
         '
-        Me.tblClearArtBottom.AutoSize = true
+        Me.tblClearArtBottom.AutoSize = True
         Me.tblClearArtBottom.ColumnCount = 3
-        Me.tblClearArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearArtBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearArtBottom.Controls.Add(Me.lblClearArtSize, 1, 0)
         Me.tblClearArtBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblClearArtBottom.Location = New System.Drawing.Point(0, 0)
@@ -7348,9 +7349,9 @@ Partial Class frmMain
         'lblClearArtSize
         '
         Me.lblClearArtSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblClearArtSize.AutoSize = true
+        Me.lblClearArtSize.AutoSize = True
         Me.lblClearArtSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblClearArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblClearArtSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblClearArtSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblClearArtSize.Location = New System.Drawing.Point(11, 0)
         Me.lblClearArtSize.Name = "lblClearArtSize"
@@ -7361,7 +7362,7 @@ Partial Class frmMain
         '
         'pnlClearArtTop
         '
-        Me.pnlClearArtTop.AutoSize = true
+        Me.pnlClearArtTop.AutoSize = True
         Me.pnlClearArtTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlClearArtTop.Controls.Add(Me.tblClearArtTop)
         Me.pnlClearArtTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -7372,11 +7373,11 @@ Partial Class frmMain
         '
         'tblClearArtTop
         '
-        Me.tblClearArtTop.AutoSize = true
+        Me.tblClearArtTop.AutoSize = True
         Me.tblClearArtTop.ColumnCount = 3
-        Me.tblClearArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblClearArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblClearArtTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblClearArtTop.Controls.Add(Me.lblClearArtTitle, 1, 0)
         Me.tblClearArtTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblClearArtTop.Location = New System.Drawing.Point(0, 0)
@@ -7390,9 +7391,9 @@ Partial Class frmMain
         'lblClearArtTitle
         '
         Me.lblClearArtTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblClearArtTitle.AutoSize = true
+        Me.lblClearArtTitle.AutoSize = True
         Me.lblClearArtTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblClearArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblClearArtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblClearArtTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblClearArtTitle.Location = New System.Drawing.Point(1, 0)
         Me.lblClearArtTitle.Name = "lblClearArtTitle"
@@ -7403,7 +7404,7 @@ Partial Class frmMain
         '
         'pnlLandscape
         '
-        Me.pnlLandscape.AutoSize = true
+        Me.pnlLandscape.AutoSize = True
         Me.pnlLandscape.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlLandscape.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -7415,11 +7416,11 @@ Partial Class frmMain
         Me.pnlLandscape.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlLandscape.Size = New System.Drawing.Size(56, 82)
         Me.pnlLandscape.TabIndex = 18
-        Me.pnlLandscape.Visible = false
+        Me.pnlLandscape.Visible = False
         '
         'pnlLandscapeMain
         '
-        Me.pnlLandscapeMain.AutoSize = true
+        Me.pnlLandscapeMain.AutoSize = True
         Me.pnlLandscapeMain.Controls.Add(Me.tblLandscapeMain)
         Me.pnlLandscapeMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlLandscapeMain.Location = New System.Drawing.Point(2, 15)
@@ -7429,7 +7430,7 @@ Partial Class frmMain
         '
         'tblLandscapeMain
         '
-        Me.tblLandscapeMain.AutoSize = true
+        Me.tblLandscapeMain.AutoSize = True
         Me.tblLandscapeMain.ColumnCount = 1
         Me.tblLandscapeMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblLandscapeMain.Controls.Add(Me.pbLandscape, 0, 0)
@@ -7450,11 +7451,11 @@ Partial Class frmMain
         Me.pbLandscape.Name = "pbLandscape"
         Me.pbLandscape.Size = New System.Drawing.Size(50, 50)
         Me.pbLandscape.TabIndex = 0
-        Me.pbLandscape.TabStop = false
+        Me.pbLandscape.TabStop = False
         '
         'pnlLandscapeBottom
         '
-        Me.pnlLandscapeBottom.AutoSize = true
+        Me.pnlLandscapeBottom.AutoSize = True
         Me.pnlLandscapeBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlLandscapeBottom.Controls.Add(Me.tblLandscapeBottom)
         Me.pnlLandscapeBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -7465,11 +7466,11 @@ Partial Class frmMain
         '
         'tblLandscapeBottom
         '
-        Me.tblLandscapeBottom.AutoSize = true
+        Me.tblLandscapeBottom.AutoSize = True
         Me.tblLandscapeBottom.ColumnCount = 3
-        Me.tblLandscapeBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblLandscapeBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblLandscapeBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblLandscapeBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblLandscapeBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblLandscapeBottom.Controls.Add(Me.lblLandscapeSize, 1, 0)
         Me.tblLandscapeBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblLandscapeBottom.Location = New System.Drawing.Point(0, 0)
@@ -7483,9 +7484,9 @@ Partial Class frmMain
         'lblLandscapeSize
         '
         Me.lblLandscapeSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblLandscapeSize.AutoSize = true
+        Me.lblLandscapeSize.AutoSize = True
         Me.lblLandscapeSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblLandscapeSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblLandscapeSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblLandscapeSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblLandscapeSize.Location = New System.Drawing.Point(11, 0)
         Me.lblLandscapeSize.Name = "lblLandscapeSize"
@@ -7496,7 +7497,7 @@ Partial Class frmMain
         '
         'pnlLandscapeTop
         '
-        Me.pnlLandscapeTop.AutoSize = true
+        Me.pnlLandscapeTop.AutoSize = True
         Me.pnlLandscapeTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlLandscapeTop.Controls.Add(Me.tblLandscapeTop)
         Me.pnlLandscapeTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -7507,11 +7508,11 @@ Partial Class frmMain
         '
         'tblLandscapeTop
         '
-        Me.tblLandscapeTop.AutoSize = true
+        Me.tblLandscapeTop.AutoSize = True
         Me.tblLandscapeTop.ColumnCount = 3
-        Me.tblLandscapeTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblLandscapeTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblLandscapeTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblLandscapeTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblLandscapeTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblLandscapeTop.Controls.Add(Me.lblLandscapeTitle, 1, 0)
         Me.tblLandscapeTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblLandscapeTop.Location = New System.Drawing.Point(0, 0)
@@ -7525,9 +7526,9 @@ Partial Class frmMain
         'lblLandscapeTitle
         '
         Me.lblLandscapeTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblLandscapeTitle.AutoSize = true
+        Me.lblLandscapeTitle.AutoSize = True
         Me.lblLandscapeTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblLandscapeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblLandscapeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblLandscapeTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblLandscapeTitle.Location = New System.Drawing.Point(-6, 0)
         Me.lblLandscapeTitle.Name = "lblLandscapeTitle"
@@ -7538,7 +7539,7 @@ Partial Class frmMain
         '
         'pnlFanartSmall
         '
-        Me.pnlFanartSmall.AutoSize = true
+        Me.pnlFanartSmall.AutoSize = True
         Me.pnlFanartSmall.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlFanartSmall.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlFanartSmall.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -7550,11 +7551,11 @@ Partial Class frmMain
         Me.pnlFanartSmall.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlFanartSmall.Size = New System.Drawing.Size(56, 82)
         Me.pnlFanartSmall.TabIndex = 14
-        Me.pnlFanartSmall.Visible = false
+        Me.pnlFanartSmall.Visible = False
         '
         'pnlFanartSmallMain
         '
-        Me.pnlFanartSmallMain.AutoSize = true
+        Me.pnlFanartSmallMain.AutoSize = True
         Me.pnlFanartSmallMain.Controls.Add(Me.tblFanartSmallMain)
         Me.pnlFanartSmallMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlFanartSmallMain.Location = New System.Drawing.Point(2, 15)
@@ -7564,7 +7565,7 @@ Partial Class frmMain
         '
         'tblFanartSmallMain
         '
-        Me.tblFanartSmallMain.AutoSize = true
+        Me.tblFanartSmallMain.AutoSize = True
         Me.tblFanartSmallMain.ColumnCount = 1
         Me.tblFanartSmallMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFanartSmallMain.Controls.Add(Me.pbFanartSmall, 0, 0)
@@ -7585,11 +7586,11 @@ Partial Class frmMain
         Me.pbFanartSmall.Name = "pbFanartSmall"
         Me.pbFanartSmall.Size = New System.Drawing.Size(50, 50)
         Me.pbFanartSmall.TabIndex = 0
-        Me.pbFanartSmall.TabStop = false
+        Me.pbFanartSmall.TabStop = False
         '
         'pnlFanartSmallBottom
         '
-        Me.pnlFanartSmallBottom.AutoSize = true
+        Me.pnlFanartSmallBottom.AutoSize = True
         Me.pnlFanartSmallBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlFanartSmallBottom.Controls.Add(Me.tblFanartSmallBottom)
         Me.pnlFanartSmallBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -7600,11 +7601,11 @@ Partial Class frmMain
         '
         'tblFanartSmallBottom
         '
-        Me.tblFanartSmallBottom.AutoSize = true
+        Me.tblFanartSmallBottom.AutoSize = True
         Me.tblFanartSmallBottom.ColumnCount = 3
-        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblFanartSmallBottom.Controls.Add(Me.lblFanartSmallSize, 1, 0)
         Me.tblFanartSmallBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFanartSmallBottom.Location = New System.Drawing.Point(0, 0)
@@ -7618,9 +7619,9 @@ Partial Class frmMain
         'lblFanartSmallSize
         '
         Me.lblFanartSmallSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFanartSmallSize.AutoSize = true
+        Me.lblFanartSmallSize.AutoSize = True
         Me.lblFanartSmallSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblFanartSmallSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFanartSmallSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFanartSmallSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFanartSmallSize.Location = New System.Drawing.Point(11, 0)
         Me.lblFanartSmallSize.Name = "lblFanartSmallSize"
@@ -7631,7 +7632,7 @@ Partial Class frmMain
         '
         'pnlFanartSmallTop
         '
-        Me.pnlFanartSmallTop.AutoSize = true
+        Me.pnlFanartSmallTop.AutoSize = True
         Me.pnlFanartSmallTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlFanartSmallTop.Controls.Add(Me.tblFanartSmallTop)
         Me.pnlFanartSmallTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -7642,11 +7643,11 @@ Partial Class frmMain
         '
         'tblFanartSmallTop
         '
-        Me.tblFanartSmallTop.AutoSize = true
+        Me.tblFanartSmallTop.AutoSize = True
         Me.tblFanartSmallTop.ColumnCount = 3
-        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblFanartSmallTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblFanartSmallTop.Controls.Add(Me.lblFanartSmallTitle, 1, 0)
         Me.tblFanartSmallTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFanartSmallTop.Location = New System.Drawing.Point(0, 0)
@@ -7660,9 +7661,9 @@ Partial Class frmMain
         'lblFanartSmallTitle
         '
         Me.lblFanartSmallTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFanartSmallTitle.AutoSize = true
+        Me.lblFanartSmallTitle.AutoSize = True
         Me.lblFanartSmallTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblFanartSmallTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblFanartSmallTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFanartSmallTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFanartSmallTitle.Location = New System.Drawing.Point(5, 0)
         Me.lblFanartSmallTitle.Name = "lblFanartSmallTitle"
@@ -7673,7 +7674,7 @@ Partial Class frmMain
         '
         'pnlPoster
         '
-        Me.pnlPoster.AutoSize = true
+        Me.pnlPoster.AutoSize = True
         Me.pnlPoster.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlPoster.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -7685,11 +7686,11 @@ Partial Class frmMain
         Me.pnlPoster.Padding = New System.Windows.Forms.Padding(2)
         Me.pnlPoster.Size = New System.Drawing.Size(56, 82)
         Me.pnlPoster.TabIndex = 2
-        Me.pnlPoster.Visible = false
+        Me.pnlPoster.Visible = False
         '
         'pnlPosterMain
         '
-        Me.pnlPosterMain.AutoSize = true
+        Me.pnlPosterMain.AutoSize = True
         Me.pnlPosterMain.Controls.Add(Me.tblPosterMain)
         Me.pnlPosterMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlPosterMain.Location = New System.Drawing.Point(2, 15)
@@ -7699,7 +7700,7 @@ Partial Class frmMain
         '
         'tblPosterMain
         '
-        Me.tblPosterMain.AutoSize = true
+        Me.tblPosterMain.AutoSize = True
         Me.tblPosterMain.ColumnCount = 1
         Me.tblPosterMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblPosterMain.Controls.Add(Me.pbPoster, 0, 0)
@@ -7720,11 +7721,11 @@ Partial Class frmMain
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(50, 50)
         Me.pbPoster.TabIndex = 0
-        Me.pbPoster.TabStop = false
+        Me.pbPoster.TabStop = False
         '
         'pnlPosterBottom
         '
-        Me.pnlPosterBottom.AutoSize = true
+        Me.pnlPosterBottom.AutoSize = True
         Me.pnlPosterBottom.BackColor = System.Drawing.Color.DimGray
         Me.pnlPosterBottom.Controls.Add(Me.tblPosterBottom)
         Me.pnlPosterBottom.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -7735,11 +7736,11 @@ Partial Class frmMain
         '
         'tblPosterBottom
         '
-        Me.tblPosterBottom.AutoSize = true
+        Me.tblPosterBottom.AutoSize = True
         Me.tblPosterBottom.ColumnCount = 3
-        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblPosterBottom.Controls.Add(Me.lblPosterSize, 1, 0)
         Me.tblPosterBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblPosterBottom.Location = New System.Drawing.Point(0, 0)
@@ -7753,9 +7754,9 @@ Partial Class frmMain
         'lblPosterSize
         '
         Me.lblPosterSize.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPosterSize.AutoSize = true
+        Me.lblPosterSize.AutoSize = True
         Me.lblPosterSize.BackColor = System.Drawing.Color.Transparent
-        Me.lblPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblPosterSize.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblPosterSize.Location = New System.Drawing.Point(11, 0)
         Me.lblPosterSize.Name = "lblPosterSize"
@@ -7766,7 +7767,7 @@ Partial Class frmMain
         '
         'pnlPosterTop
         '
-        Me.pnlPosterTop.AutoSize = true
+        Me.pnlPosterTop.AutoSize = True
         Me.pnlPosterTop.BackColor = System.Drawing.Color.DimGray
         Me.pnlPosterTop.Controls.Add(Me.tblPosterTop)
         Me.pnlPosterTop.Dock = System.Windows.Forms.DockStyle.Top
@@ -7777,11 +7778,11 @@ Partial Class frmMain
         '
         'tblPosterTop
         '
-        Me.tblPosterTop.AutoSize = true
+        Me.tblPosterTop.AutoSize = True
         Me.tblPosterTop.ColumnCount = 3
-        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.tblPosterTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblPosterTop.Controls.Add(Me.lblPosterTitle, 1, 0)
         Me.tblPosterTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblPosterTop.Location = New System.Drawing.Point(0, 0)
@@ -7795,9 +7796,9 @@ Partial Class frmMain
         'lblPosterTitle
         '
         Me.lblPosterTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPosterTitle.AutoSize = true
+        Me.lblPosterTitle.AutoSize = True
         Me.lblPosterTitle.BackColor = System.Drawing.Color.Transparent
-        Me.lblPosterTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblPosterTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblPosterTitle.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblPosterTitle.Location = New System.Drawing.Point(5, 0)
         Me.lblPosterTitle.Name = "lblPosterTitle"
@@ -7817,13 +7818,13 @@ Partial Class frmMain
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(773, 98)
         Me.pnlTop.TabIndex = 9
-        Me.pnlTop.Visible = false
+        Me.pnlTop.Visible = False
         '
         'tlpHeader
         '
-        Me.tlpHeader.AutoSize = true
+        Me.tlpHeader.AutoSize = True
         Me.tlpHeader.ColumnCount = 3
-        Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250!))
+        Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250.0!))
         Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tlpHeader.Controls.Add(Me.lblTitle, 0, 0)
@@ -7840,18 +7841,18 @@ Partial Class frmMain
         Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tlpHeader.Size = New System.Drawing.Size(346, 96)
         Me.tlpHeader.TabIndex = 39
         '
         'lblTitle
         '
         Me.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTitle.AutoSize = true
+        Me.lblTitle.AutoSize = True
         Me.lblTitle.BackColor = System.Drawing.Color.Transparent
         Me.tlpHeader.SetColumnSpan(Me.lblTitle, 3)
-        Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTitle.ForeColor = System.Drawing.Color.Black
         Me.lblTitle.Location = New System.Drawing.Point(3, 0)
         Me.lblTitle.Name = "lblTitle"
@@ -7859,12 +7860,12 @@ Partial Class frmMain
         Me.lblTitle.Size = New System.Drawing.Size(43, 22)
         Me.lblTitle.TabIndex = 25
         Me.lblTitle.Text = "Title"
-        Me.lblTitle.UseMnemonic = false
+        Me.lblTitle.UseMnemonic = False
         '
         'lblOriginalTitle
         '
         Me.lblOriginalTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblOriginalTitle.AutoSize = true
+        Me.lblOriginalTitle.AutoSize = True
         Me.lblOriginalTitle.BackColor = System.Drawing.Color.Transparent
         Me.tlpHeader.SetColumnSpan(Me.lblOriginalTitle, 3)
         Me.lblOriginalTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
@@ -7876,12 +7877,12 @@ Partial Class frmMain
         Me.lblOriginalTitle.TabIndex = 38
         Me.lblOriginalTitle.Text = "OriginalTitle"
         Me.lblOriginalTitle.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.lblOriginalTitle.UseMnemonic = false
+        Me.lblOriginalTitle.UseMnemonic = False
         '
         'pnlRating
         '
         Me.pnlRating.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pnlRating.AutoSize = true
+        Me.pnlRating.AutoSize = True
         Me.pnlRating.BackColor = System.Drawing.Color.Transparent
         Me.pnlRating.Controls.Add(Me.pbStar10)
         Me.pnlRating.Controls.Add(Me.pbStar9)
@@ -7904,7 +7905,7 @@ Partial Class frmMain
         Me.pbStar10.Name = "pbStar10"
         Me.pbStar10.Size = New System.Drawing.Size(24, 24)
         Me.pbStar10.TabIndex = 32
-        Me.pbStar10.TabStop = false
+        Me.pbStar10.TabStop = False
         '
         'pbStar9
         '
@@ -7912,7 +7913,7 @@ Partial Class frmMain
         Me.pbStar9.Name = "pbStar9"
         Me.pbStar9.Size = New System.Drawing.Size(24, 24)
         Me.pbStar9.TabIndex = 31
-        Me.pbStar9.TabStop = false
+        Me.pbStar9.TabStop = False
         '
         'pbStar8
         '
@@ -7920,7 +7921,7 @@ Partial Class frmMain
         Me.pbStar8.Name = "pbStar8"
         Me.pbStar8.Size = New System.Drawing.Size(24, 24)
         Me.pbStar8.TabIndex = 30
-        Me.pbStar8.TabStop = false
+        Me.pbStar8.TabStop = False
         '
         'pbStar7
         '
@@ -7928,7 +7929,7 @@ Partial Class frmMain
         Me.pbStar7.Name = "pbStar7"
         Me.pbStar7.Size = New System.Drawing.Size(24, 24)
         Me.pbStar7.TabIndex = 29
-        Me.pbStar7.TabStop = false
+        Me.pbStar7.TabStop = False
         '
         'pbStar6
         '
@@ -7936,7 +7937,7 @@ Partial Class frmMain
         Me.pbStar6.Name = "pbStar6"
         Me.pbStar6.Size = New System.Drawing.Size(24, 24)
         Me.pbStar6.TabIndex = 28
-        Me.pbStar6.TabStop = false
+        Me.pbStar6.TabStop = False
         '
         'pbStar5
         '
@@ -7944,7 +7945,7 @@ Partial Class frmMain
         Me.pbStar5.Name = "pbStar5"
         Me.pbStar5.Size = New System.Drawing.Size(24, 24)
         Me.pbStar5.TabIndex = 27
-        Me.pbStar5.TabStop = false
+        Me.pbStar5.TabStop = False
         '
         'pbStar4
         '
@@ -7952,7 +7953,7 @@ Partial Class frmMain
         Me.pbStar4.Name = "pbStar4"
         Me.pbStar4.Size = New System.Drawing.Size(24, 24)
         Me.pbStar4.TabIndex = 26
-        Me.pbStar4.TabStop = false
+        Me.pbStar4.TabStop = False
         '
         'pbStar3
         '
@@ -7960,7 +7961,7 @@ Partial Class frmMain
         Me.pbStar3.Name = "pbStar3"
         Me.pbStar3.Size = New System.Drawing.Size(24, 24)
         Me.pbStar3.TabIndex = 25
-        Me.pbStar3.TabStop = false
+        Me.pbStar3.TabStop = False
         '
         'pbStar2
         '
@@ -7968,7 +7969,7 @@ Partial Class frmMain
         Me.pbStar2.Name = "pbStar2"
         Me.pbStar2.Size = New System.Drawing.Size(24, 24)
         Me.pbStar2.TabIndex = 24
-        Me.pbStar2.TabStop = false
+        Me.pbStar2.TabStop = False
         '
         'pbStar1
         '
@@ -7976,14 +7977,14 @@ Partial Class frmMain
         Me.pbStar1.Name = "pbStar1"
         Me.pbStar1.Size = New System.Drawing.Size(24, 24)
         Me.pbStar1.TabIndex = 23
-        Me.pbStar1.TabStop = false
+        Me.pbStar1.TabStop = False
         '
         'lblTagline
         '
-        Me.lblTagline.AutoSize = true
+        Me.lblTagline.AutoSize = True
         Me.lblTagline.BackColor = System.Drawing.Color.Transparent
         Me.tlpHeader.SetColumnSpan(Me.lblTagline, 3)
-        Me.lblTagline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTagline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTagline.ForeColor = System.Drawing.Color.Black
         Me.lblTagline.Location = New System.Drawing.Point(3, 72)
         Me.lblTagline.Name = "lblTagline"
@@ -7992,13 +7993,13 @@ Partial Class frmMain
         Me.lblTagline.TabIndex = 26
         Me.lblTagline.Text = "Tagline"
         Me.lblTagline.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.lblTagline.UseMnemonic = false
+        Me.lblTagline.UseMnemonic = False
         '
         'lblRuntime
         '
         Me.lblRuntime.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblRuntime.AutoSize = true
-        Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblRuntime.AutoSize = True
+        Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Black
         Me.lblRuntime.Location = New System.Drawing.Point(297, 48)
         Me.lblRuntime.Name = "lblRuntime"
@@ -8010,8 +8011,8 @@ Partial Class frmMain
         'lblRating
         '
         Me.lblRating.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblRating.AutoSize = true
-        Me.lblRating.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblRating.AutoSize = True
+        Me.lblRating.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRating.ForeColor = System.Drawing.Color.Black
         Me.lblRating.Location = New System.Drawing.Point(253, 48)
         Me.lblRating.Name = "lblRating"
@@ -8057,7 +8058,7 @@ Partial Class frmMain
         Me.pbSubtitleLang6.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang6.TabIndex = 53
-        Me.pbSubtitleLang6.TabStop = false
+        Me.pbSubtitleLang6.TabStop = False
         '
         'pbSubtitleLang5
         '
@@ -8066,7 +8067,7 @@ Partial Class frmMain
         Me.pbSubtitleLang5.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang5.TabIndex = 52
-        Me.pbSubtitleLang5.TabStop = false
+        Me.pbSubtitleLang5.TabStop = False
         '
         'pbSubtitleLang4
         '
@@ -8075,7 +8076,7 @@ Partial Class frmMain
         Me.pbSubtitleLang4.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang4.TabIndex = 51
-        Me.pbSubtitleLang4.TabStop = false
+        Me.pbSubtitleLang4.TabStop = False
         '
         'pbSubtitleLang3
         '
@@ -8084,7 +8085,7 @@ Partial Class frmMain
         Me.pbSubtitleLang3.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang3.TabIndex = 50
-        Me.pbSubtitleLang3.TabStop = false
+        Me.pbSubtitleLang3.TabStop = False
         '
         'pbSubtitleLang2
         '
@@ -8093,7 +8094,7 @@ Partial Class frmMain
         Me.pbSubtitleLang2.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang2.TabIndex = 49
-        Me.pbSubtitleLang2.TabStop = false
+        Me.pbSubtitleLang2.TabStop = False
         '
         'pbSubtitleLang1
         '
@@ -8102,7 +8103,7 @@ Partial Class frmMain
         Me.pbSubtitleLang1.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang1.TabIndex = 48
-        Me.pbSubtitleLang1.TabStop = false
+        Me.pbSubtitleLang1.TabStop = False
         '
         'pbSubtitleLang0
         '
@@ -8111,7 +8112,7 @@ Partial Class frmMain
         Me.pbSubtitleLang0.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbSubtitleLang0.TabIndex = 47
-        Me.pbSubtitleLang0.TabStop = false
+        Me.pbSubtitleLang0.TabStop = False
         '
         'pbAudioLang6
         '
@@ -8120,7 +8121,7 @@ Partial Class frmMain
         Me.pbAudioLang6.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang6.TabIndex = 46
-        Me.pbAudioLang6.TabStop = false
+        Me.pbAudioLang6.TabStop = False
         '
         'pbAudioLang5
         '
@@ -8129,7 +8130,7 @@ Partial Class frmMain
         Me.pbAudioLang5.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang5.TabIndex = 45
-        Me.pbAudioLang5.TabStop = false
+        Me.pbAudioLang5.TabStop = False
         '
         'pbAudioLang4
         '
@@ -8138,7 +8139,7 @@ Partial Class frmMain
         Me.pbAudioLang4.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang4.TabIndex = 44
-        Me.pbAudioLang4.TabStop = false
+        Me.pbAudioLang4.TabStop = False
         '
         'pbAudioLang3
         '
@@ -8147,7 +8148,7 @@ Partial Class frmMain
         Me.pbAudioLang3.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang3.TabIndex = 43
-        Me.pbAudioLang3.TabStop = false
+        Me.pbAudioLang3.TabStop = False
         '
         'pbAudioLang2
         '
@@ -8156,7 +8157,7 @@ Partial Class frmMain
         Me.pbAudioLang2.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang2.TabIndex = 42
-        Me.pbAudioLang2.TabStop = false
+        Me.pbAudioLang2.TabStop = False
         '
         'pbAudioLang1
         '
@@ -8165,7 +8166,7 @@ Partial Class frmMain
         Me.pbAudioLang1.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang1.TabIndex = 41
-        Me.pbAudioLang1.TabStop = false
+        Me.pbAudioLang1.TabStop = False
         '
         'pbAudioLang0
         '
@@ -8174,17 +8175,18 @@ Partial Class frmMain
         Me.pbAudioLang0.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudioLang0.TabIndex = 40
-        Me.pbAudioLang0.TabStop = false
+        Me.pbAudioLang0.TabStop = False
         '
         'lblStudio
         '
-        Me.lblStudio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblStudio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblStudio.Location = New System.Drawing.Point(220, 5)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(167, 18)
         Me.lblStudio.TabIndex = 37
         Me.lblStudio.Text = "Studio"
         Me.lblStudio.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblStudio.UseMnemonic = False
         '
         'pbVType
         '

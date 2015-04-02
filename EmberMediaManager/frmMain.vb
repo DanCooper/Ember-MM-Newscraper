@@ -16899,11 +16899,14 @@ doCancel:
                     SQLcommand.ExecuteNonQuery()
 
                     Me.ReloadEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True)
+                    Application.DoEvents()
                 Next
                 For Each iSeason In SeasonsList
                     Me.ReloadSeason(iShow, iSeason, True)
+                    Application.DoEvents()
                 Next
                 Me.ReloadShow(iShow, True, False, False, False, False)
+                Application.DoEvents()
             End Using
             SQLtransaction.Commit()
         End Using
@@ -16951,6 +16954,7 @@ doCancel:
                     SQLcommand.ExecuteNonQuery()
 
                     Me.ReloadMovie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, False, True, True)
+                    Application.DoEvents()
                 Next
             End Using
             SQLtransaction.Commit()
@@ -17010,15 +17014,18 @@ doCancel:
                                     SQLcommand_update.ExecuteNonQuery()
 
                                     Me.ReloadEpisode(CInt(SQLreader("idEpisode")), True, False, True)
+                                    Application.DoEvents()
                                 End Using
                             End While
                         End Using
                     End Using
                     Me.ReloadSeason(iShow, iSeason, True)
+                    Application.DoEvents()
                 End If
             Next
             For Each iShowID In ShowsList
                 Me.ReloadShow(iShowID, True, False, False, False, False)
+                Application.DoEvents()
             Next
             SQLtransaction.Commit()
         End Using
@@ -17073,14 +17080,17 @@ doCancel:
                                 SQLcommand_update.ExecuteNonQuery()
 
                                 Me.ReloadEpisode(CInt(SQLreader("idEpisode")), True, False, True)
+                                Application.DoEvents()
                             End Using
                         End While
                     End Using
                 End Using
                 For Each iSeason In SeasonsList
                     Me.ReloadSeason(iShow, iSeason, True)
+                    Application.DoEvents()
                 Next
                 Me.ReloadShow(iShow, True, False, False, False, False)
+                Application.DoEvents()
             Next
             SQLtransaction.Commit()
         End Using
