@@ -404,7 +404,7 @@ Public Class Scanner
             'subtitles (external)
             For Each fFile As String In fList
                 For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
-                    If Regex.IsMatch(fFile.ToLower, String.Concat(Path.GetFileNameWithoutExtension(Episode.Filename).ToLower, ".*?\", ext)) Then
+                    If fFile.ToLower.StartsWith(tmpName.ToLower) AndAlso fFile.ToLower.EndsWith(ext) Then
                         Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                         Episode.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                     End If
