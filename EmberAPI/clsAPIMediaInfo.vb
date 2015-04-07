@@ -163,6 +163,7 @@ Public Class MediaInfo
                 If tinfo.StreamDetails.Video.Count > 0 OrElse tinfo.StreamDetails.Audio.Count > 0 OrElse tinfo.StreamDetails.Subtitle.Count > 0 Then
                     ' overwrite only if it get something from Mediainfo 
 
+                    If Master.eSettings.TVLockEpisodeLanguageV Then
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
