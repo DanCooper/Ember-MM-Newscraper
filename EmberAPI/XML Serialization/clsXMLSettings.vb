@@ -337,6 +337,8 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralmarknewshows As Boolean
     Private _tvgeneralseasonlistsorting As List(Of ListSorting)
     Private _tvgeneralshowlistsorting As List(Of ListSorting)
+    Private _tvlockepisodelanguagea As Boolean
+    Private _tvlockepisodelanguagev As Boolean
     Private _tvlockepisodeplot As Boolean
     Private _tvlockepisoderating As Boolean
     Private _tvlockepisoderuntime As Boolean
@@ -1302,6 +1304,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of String))
             Me._tvepisodefiltercustom = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeLanguageA() As Boolean
+        Get
+            Return Me._tvlockepisodelanguagea
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodelanguagea = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeLanguageV() As Boolean
+        Get
+            Return Me._tvlockepisodelanguagev
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodelanguagev = value
         End Set
     End Property
 

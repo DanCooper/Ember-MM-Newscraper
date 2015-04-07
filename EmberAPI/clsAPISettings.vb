@@ -508,6 +508,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockEpisodeLanguageA() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeLanguageA
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeLanguageA = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeLanguageV() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeLanguageV
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeLanguageV = value
+        End Set
+    End Property
+
     Public Property TVLockEpisodePlot() As Boolean
         Get
             Return Settings._XMLSettings.TVLockEpisodePlot
@@ -1210,6 +1228,7 @@ Public Class Settings
             Settings._XMLSettings.MovieLockLanguageV = value
         End Set
     End Property
+
     Public Property MovieLockLanguageA() As Boolean
         Get
             Return Settings._XMLSettings.MovieLockLanguageA
@@ -6069,6 +6088,8 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
+        Me.TVLockEpisodeLanguageA = False
+        Me.TVLockEpisodeLanguageV = False
         Me.TVLockEpisodePlot = False
         Me.TVLockEpisodeRating = False
         Me.TVLockEpisodeRuntime = False

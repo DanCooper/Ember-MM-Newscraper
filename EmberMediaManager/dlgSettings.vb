@@ -2170,6 +2170,14 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkTVLockEpisodeLanguageA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeLanguageA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVLockEpisodeLanguageV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeLanguageV.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVLockEpisodePlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodePlot.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -3750,6 +3758,8 @@ Public Class dlgSettings
             Me.chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             Me.chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
+            Me.chkTVLockEpisodeLanguageA.Checked = .TVLockEpisodeLanguageA
+            Me.chkTVLockEpisodeLanguageV.Checked = .TVLockEpisodeLanguageV
             Me.chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
             Me.chkTVLockEpisodeRating.Checked = .TVLockEpisodeRating
             Me.chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
@@ -5477,6 +5487,8 @@ Public Class dlgSettings
             .TVGeneralSeasonListSorting.AddRange(Me.TVGeneralSeasonListSorting)
             .TVGeneralShowListSorting.Clear()
             .TVGeneralShowListSorting.AddRange(Me.TVGeneralShowListSorting)
+            .TVLockEpisodeLanguageA = Me.chkTVLockEpisodeLanguageA.Checked
+            .TVLockEpisodeLanguageV = Me.chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
             .TVLockEpisodeRating = Me.chkTVLockEpisodeRating.Checked
             .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
@@ -6252,10 +6264,12 @@ Public Class dlgSettings
         'Language (Audio)
         Dim strLanguageAudio As String = Master.eLang.GetString(431, "Language (Audio)")
         Me.lblMovieScraperGlobalLanguageA.Text = strLanguageAudio
+        Me.lblTVScraperGlobalLanguageA.Text = strLanguageAudio
 
         'Language (Video)
         Dim strLanguageVideo As String = Master.eLang.GetString(435, "Language (Video)")
         Me.lblMovieScraperGlobalLanguageV.Text = strLanguageVideo
+        Me.lblTVScraperGlobalLanguageV.Text = strLanguageVideo
 
         'Limit
         Dim strLimit As String = Master.eLang.GetString(578, "Limit")

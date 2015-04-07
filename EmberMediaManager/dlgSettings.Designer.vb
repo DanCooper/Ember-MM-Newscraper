@@ -1019,6 +1019,10 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeVotes = New System.Windows.Forms.CheckBox()
         Me.lblTVScraperGlobalGuestStars = New System.Windows.Forms.Label()
         Me.chkTVScraperEpisodeGuestStars = New System.Windows.Forms.CheckBox()
+        Me.lblTVScraperGlobalLanguageA = New System.Windows.Forms.Label()
+        Me.lblTVScraperGlobalLanguageV = New System.Windows.Forms.Label()
+        Me.chkTVLockEpisodeLanguageA = New System.Windows.Forms.CheckBox()
+        Me.chkTVLockEpisodeLanguageV = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperMetaDataOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVScraperMetaDataOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVScraperDefFIExtOpts = New System.Windows.Forms.GroupBox()
@@ -11437,7 +11441,7 @@ Partial Class dlgSettings
         '
         Me.btnTVSourcesRegexTVShowMatchingDown.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnTVSourcesRegexTVShowMatchingDown.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingDown.Image"),System.Drawing.Image)
-        Me.btnTVSourcesRegexTVShowMatchingDown.Location = New System.Drawing.Point(366, 238)
+        Me.btnTVSourcesRegexTVShowMatchingDown.Location = New System.Drawing.Point(406, 238)
         Me.btnTVSourcesRegexTVShowMatchingDown.Name = "btnTVSourcesRegexTVShowMatchingDown"
         Me.btnTVSourcesRegexTVShowMatchingDown.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexTVShowMatchingDown.TabIndex = 5
@@ -11447,7 +11451,7 @@ Partial Class dlgSettings
         '
         Me.btnTVSourcesRegexTVShowMatchingUp.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnTVSourcesRegexTVShowMatchingUp.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingUp.Image"),System.Drawing.Image)
-        Me.btnTVSourcesRegexTVShowMatchingUp.Location = New System.Drawing.Point(337, 238)
+        Me.btnTVSourcesRegexTVShowMatchingUp.Location = New System.Drawing.Point(377, 238)
         Me.btnTVSourcesRegexTVShowMatchingUp.Name = "btnTVSourcesRegexTVShowMatchingUp"
         Me.btnTVSourcesRegexTVShowMatchingUp.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexTVShowMatchingUp.TabIndex = 4
@@ -11482,7 +11486,7 @@ Partial Class dlgSettings
         '
         Me.btnTVSourcesRegexTVShowMatchingGet.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnTVSourcesRegexTVShowMatchingGet.Image = CType(resources.GetObject("btnTVSourcesRegexTVShowMatchingGet.Image"),System.Drawing.Image)
-        Me.btnTVSourcesRegexTVShowMatchingGet.Location = New System.Drawing.Point(671, 3)
+        Me.btnTVSourcesRegexTVShowMatchingGet.Location = New System.Drawing.Point(751, 3)
         Me.btnTVSourcesRegexTVShowMatchingGet.Name = "btnTVSourcesRegexTVShowMatchingGet"
         Me.btnTVSourcesRegexTVShowMatchingGet.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexTVShowMatchingGet.TabIndex = 1
@@ -13693,7 +13697,7 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Controls.Add(Me.tblTVScraper)
         Me.pnlTVScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVScraper.Name = "pnlTVScraper"
-        Me.pnlTVScraper.Size = New System.Drawing.Size(686, 427)
+        Me.pnlTVScraper.Size = New System.Drawing.Size(686, 467)
         Me.pnlTVScraper.TabIndex = 19
         Me.pnlTVScraper.Visible = false
         '
@@ -13716,7 +13720,7 @@ Partial Class dlgSettings
         Me.tblTVScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraper.Size = New System.Drawing.Size(686, 427)
+        Me.tblTVScraper.Size = New System.Drawing.Size(686, 467)
         Me.tblTVScraper.TabIndex = 6
         '
         'gbTVScraperGlobalOpts
@@ -13728,7 +13732,7 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVScraperGlobalOpts.Name = "gbTVScraperGlobalOpts"
         Me.tblTVScraper.SetRowSpan(Me.gbTVScraperGlobalOpts, 3)
-        Me.gbTVScraperGlobalOpts.Size = New System.Drawing.Size(228, 421)
+        Me.gbTVScraperGlobalOpts.Size = New System.Drawing.Size(228, 461)
         Me.gbTVScraperGlobalOpts.TabIndex = 3
         Me.gbTVScraperGlobalOpts.TabStop = false
         Me.gbTVScraperGlobalOpts.Text = "Scraper Fields - Global"
@@ -13802,10 +13806,14 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeVotes, 4, 19)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalGuestStars, 0, 9)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVScraperEpisodeGuestStars, 3, 9)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalLanguageA, 0, 20)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.lblTVScraperGlobalLanguageV, 0, 21)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeLanguageA, 4, 20)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeLanguageV, 4, 21)
         Me.tblTVScraperGlobalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperGlobalOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperGlobalOpts.Name = "tblTVScraperGlobalOpts"
-        Me.tblTVScraperGlobalOpts.RowCount = 20
+        Me.tblTVScraperGlobalOpts.RowCount = 22
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -13827,7 +13835,8 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperGlobalOpts.Size = New System.Drawing.Size(222, 400)
+        Me.tblTVScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVScraperGlobalOpts.Size = New System.Drawing.Size(222, 440)
         Me.tblTVScraperGlobalOpts.TabIndex = 6
         '
         'chkTVLockShowVotes
@@ -14480,6 +14489,50 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeGuestStars.Size = New System.Drawing.Size(15, 14)
         Me.chkTVScraperEpisodeGuestStars.TabIndex = 3
         Me.chkTVScraperEpisodeGuestStars.UseVisualStyleBackColor = true
+        '
+        'lblTVScraperGlobalLanguageA
+        '
+        Me.lblTVScraperGlobalLanguageA.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVScraperGlobalLanguageA.AutoSize = true
+        Me.lblTVScraperGlobalLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVScraperGlobalLanguageA.Location = New System.Drawing.Point(3, 403)
+        Me.lblTVScraperGlobalLanguageA.Name = "lblTVScraperGlobalLanguageA"
+        Me.lblTVScraperGlobalLanguageA.Size = New System.Drawing.Size(98, 13)
+        Me.lblTVScraperGlobalLanguageA.TabIndex = 12
+        Me.lblTVScraperGlobalLanguageA.Text = "Language (Audio)"
+        '
+        'lblTVScraperGlobalLanguageV
+        '
+        Me.lblTVScraperGlobalLanguageV.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVScraperGlobalLanguageV.AutoSize = true
+        Me.lblTVScraperGlobalLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lblTVScraperGlobalLanguageV.Location = New System.Drawing.Point(3, 423)
+        Me.lblTVScraperGlobalLanguageV.Name = "lblTVScraperGlobalLanguageV"
+        Me.lblTVScraperGlobalLanguageV.Size = New System.Drawing.Size(97, 13)
+        Me.lblTVScraperGlobalLanguageV.TabIndex = 13
+        Me.lblTVScraperGlobalLanguageV.Text = "Language (Video)"
+        '
+        'chkTVLockEpisodeLanguageA
+        '
+        Me.chkTVLockEpisodeLanguageA.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVLockEpisodeLanguageA.AutoSize = true
+        Me.chkTVLockEpisodeLanguageA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkTVLockEpisodeLanguageA.Location = New System.Drawing.Point(195, 403)
+        Me.chkTVLockEpisodeLanguageA.Name = "chkTVLockEpisodeLanguageA"
+        Me.chkTVLockEpisodeLanguageA.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVLockEpisodeLanguageA.TabIndex = 14
+        Me.chkTVLockEpisodeLanguageA.UseVisualStyleBackColor = true
+        '
+        'chkTVLockEpisodeLanguageV
+        '
+        Me.chkTVLockEpisodeLanguageV.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVLockEpisodeLanguageV.AutoSize = true
+        Me.chkTVLockEpisodeLanguageV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkTVLockEpisodeLanguageV.Location = New System.Drawing.Point(195, 423)
+        Me.chkTVLockEpisodeLanguageV.Name = "chkTVLockEpisodeLanguageV"
+        Me.chkTVLockEpisodeLanguageV.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVLockEpisodeLanguageV.TabIndex = 15
+        Me.chkTVLockEpisodeLanguageV.UseVisualStyleBackColor = true
         '
         'gbTVScraperMetaDataOpts
         '
@@ -20917,4 +20970,8 @@ End Sub
     Friend WithEvents btnGeneralDigitGrpSymbolSettings As System.Windows.Forms.Button
     Friend WithEvents colGetYear As System.Windows.Forms.ColumnHeader
     Friend WithEvents chkMovieDisplayImageSelect As System.Windows.Forms.CheckBox
+    Friend WithEvents lblTVScraperGlobalLanguageA As System.Windows.Forms.Label
+    Friend WithEvents lblTVScraperGlobalLanguageV As System.Windows.Forms.Label
+    Friend WithEvents chkTVLockEpisodeLanguageA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVLockEpisodeLanguageV As System.Windows.Forms.CheckBox
 End Class
