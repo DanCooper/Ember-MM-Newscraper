@@ -1824,6 +1824,7 @@ Public Class ModulesManager
 
         Private _LoadMedia As LoadMedia
         Private _MainTool As System.Windows.Forms.ToolStrip
+        Private _MainTabControl As System.Windows.Forms.TabControl
         Private _MediaListMovies As System.Windows.Forms.DataGridView
         Private _MediaListEpisodes As System.Windows.Forms.DataGridView
         Private _MediaListShows As System.Windows.Forms.DataGridView
@@ -1835,7 +1836,7 @@ Public Class ModulesManager
         Private _OpenImageViewer As OpenImageViewer
         Private _TopMenu As System.Windows.Forms.MenuStrip
         Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
-        Private _MediaTabSelected As Integer = 0
+        Private _MediaTabSelected As Structures.MainTabType
         Private _FilterMovies As String
         Private _FilterMoviesSearch As String
         Private _FilterMoviesType As String
@@ -1920,11 +1921,11 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MediaTabSelected() As Integer
+        Public Property MediaTabSelected() As Structures.MainTabType
             Get
                 Return _MediaTabSelected
             End Get
-            Set(ByVal value As Integer)
+            Set(ByVal value As Structures.MainTabType)
                 _MediaTabSelected = value
             End Set
         End Property
@@ -2025,6 +2026,15 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
                 _TrayMenu = value
+            End Set
+        End Property
+
+        Public Property MainTabControl() As System.Windows.Forms.TabControl
+            Get
+                Return _MainTabControl
+            End Get
+            Set(ByVal value As System.Windows.Forms.TabControl)
+                _MainTabControl = value
             End Set
         End Property
 

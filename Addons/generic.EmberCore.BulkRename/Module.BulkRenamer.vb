@@ -29,7 +29,7 @@ Public Class BulkRenamerModule
     Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
 
-#End Region 'Fields
+#End Region 'Delegates
 
 #Region "Fields"
 
@@ -415,8 +415,8 @@ Public Class BulkRenamerModule
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
 
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-        Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected
-            Case 0
+        Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected.ContentType
+            Case Enums.Content_Type.Movie
                 Using dBulkRename As New dlgBulkRenamer_Movie
                     dBulkRename.FilterMovies = ModulesManager.Instance.RuntimeObjects.FilterMovies
                     dBulkRename.FilterMoviesSearch = ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch
@@ -426,7 +426,7 @@ Public Class BulkRenamerModule
                     dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
                     dBulkRename.ShowDialog()
                 End Using
-            Case 2
+            Case Enums.Content_Type.TV
                 Using dBulkRename As New dlgBulkRenamer_TV
                     dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterShows
                     dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterShowsSearch

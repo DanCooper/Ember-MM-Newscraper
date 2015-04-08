@@ -828,7 +828,9 @@ Public Class frmMain
 
         Me.tmrAni.Stop()
 
-        Select Case If(Me.tcMain.SelectedIndex = 0, MovieInfoPanelState, If(Me.tcMain.SelectedIndex = 1, MovieSetInfoPanelState, TVShowInfoPanelState))
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+
+        Select Case If(tagmenu.ContentType = Enums.Content_Type.Movie, MovieInfoPanelState, If(tagmenu.ContentType = Enums.Content_Type.MovieSet, MovieSetInfoPanelState, TVShowInfoPanelState))
             Case 1
                 If Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
@@ -837,11 +839,11 @@ Public Class frmMain
                     Me.btnDown.Enabled = True
                 ElseIf Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
-                    If Me.tcMain.SelectedIndex = 0 Then
+                    If tagmenu.ContentType = Enums.Content_Type.Movie Then
                         MovieInfoPanelState = 2
-                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
                         MovieSetInfoPanelState = 2
-                    Else
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
                         TVShowInfoPanelState = 2
                     End If
                     Me.btnUp.Enabled = False
@@ -849,11 +851,11 @@ Public Class frmMain
                     Me.btnDown.Enabled = True
                 Else
                     Me.pnlInfoPanel.Height = 25
-                    If Me.tcMain.SelectedIndex = 0 Then
+                    If tagmenu.ContentType = Enums.Content_Type.Movie Then
                         MovieInfoPanelState = 0
-                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
                         MovieSetInfoPanelState = 0
-                    Else
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
                         TVShowInfoPanelState = 0
                     End If
                     Me.btnUp.Enabled = True
@@ -869,11 +871,11 @@ Public Class frmMain
                 ElseIf Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
 
-                    If Me.tcMain.SelectedIndex = 0 Then
+                    If tagmenu.ContentType = Enums.Content_Type.Movie Then
                         MovieInfoPanelState = 1
-                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
                         MovieSetInfoPanelState = 1
-                    Else
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
                         TVShowInfoPanelState = 1
                     End If
 
@@ -882,11 +884,11 @@ Public Class frmMain
                     Me.btnDown.Enabled = True
                 Else
                     Me.pnlInfoPanel.Height = 25
-                    If Me.tcMain.SelectedIndex = 0 Then
+                    If tagmenu.ContentType = Enums.Content_Type.Movie Then
                         MovieInfoPanelState = 0
-                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
                         MovieSetInfoPanelState = 0
-                    Else
+                    ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
                         TVShowInfoPanelState = 0
                     End If
                     Me.btnUp.Enabled = True
@@ -895,11 +897,11 @@ Public Class frmMain
                 End If
             Case Else
                 Me.pnlInfoPanel.Height = 25
-                If Me.tcMain.SelectedIndex = 0 Then
+                If tagmenu.ContentType = Enums.Content_Type.Movie Then
                     MovieInfoPanelState = 0
-                ElseIf Me.tcMain.SelectedIndex = 1 Then
+                ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
                     MovieSetInfoPanelState = 0
-                Else
+                ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
                     TVShowInfoPanelState = 0
                 End If
 
@@ -947,12 +949,13 @@ Public Class frmMain
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
         Me.tcMain.Focus()
-        If Me.tcMain.SelectedIndex = 0 Then
+        If tagmenu.ContentType = Enums.Content_Type.Movie Then
             Me.MovieInfoPanelState = 0
-        ElseIf Me.tcMain.SelectedIndex = 1 Then
+        ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
             Me.MovieSetInfoPanelState = 0
-        Else
+        ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
             Me.TVShowInfoPanelState = 0
         End If
         Me.aniRaise = False
@@ -1015,6 +1018,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
         Me.tcMain.Focus()
         If Me.pnlInfoPanel.Height = Me.IPUp Then
             Me.aniRaise = False
@@ -1022,11 +1026,11 @@ Public Class frmMain
             Me.aniRaise = True
         End If
 
-        If Me.tcMain.SelectedIndex = 0 Then
+        If tagmenu.ContentType = Enums.Content_Type.Movie Then
             Me.MovieInfoPanelState = 1
-        ElseIf Me.tcMain.SelectedIndex = 1 Then
+        ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
             Me.MovieSetInfoPanelState = 1
-        Else
+        ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
             Me.TVShowInfoPanelState = 1
         End If
 
@@ -1034,17 +1038,15 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
-        '//
-        ' Refresh Media Info
-        '\\
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
 
-        If Me.tcMain.SelectedIndex = 0 Then
+        If tagmenu.ContentType = Enums.Content_Type.Movie Then
             If Not String.IsNullOrEmpty(Master.currMovie.Filename) AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
                 Me.LoadMovieInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
             End If
-        ElseIf Me.tcMain.SelectedIndex = 1 Then
+        ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
             'no NFO support for MovieSets
-        ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+        ElseIf tagmenu.ContentType = Enums.Content_Type.TV AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
             If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
@@ -1231,12 +1233,13 @@ Public Class frmMain
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
         Me.tcMain.Focus()
-        If Me.tcMain.SelectedIndex = 0 Then
+        If tagmenu.ContentType = Enums.Content_Type.Movie Then
             Me.MovieInfoPanelState = 2
-        ElseIf Me.tcMain.SelectedIndex = 1 Then
+        ElseIf tagmenu.ContentType = Enums.Content_Type.MovieSet Then
             Me.MovieSetInfoPanelState = 2
-        Else
+        ElseIf tagmenu.ContentType = Enums.Content_Type.TV Then
             Me.TVShowInfoPanelState = 2
         End If
         Me.aniRaise = True
@@ -2026,12 +2029,13 @@ Public Class frmMain
             End Try
 
             If Res.setEnabled Then
+                Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
                 Me.tcMain.Enabled = True
                 Me.mnuUpdate.Enabled = True
                 Me.cmnuTrayUpdate.Enabled = True
-                If (Me.tcMain.SelectedIndex = 0 AndAlso Me.dgvMovies.RowCount > 0) OrElse _
-                    (Me.tcMain.SelectedIndex = 1 AndAlso Me.dgvMovieSets.RowCount > 0) OrElse _
-                    (Me.tcMain.SelectedIndex = 2 AndAlso Me.dgvTVShows.RowCount > 0) Then
+                If (tagmenu.ContentType = Enums.Content_Type.Movie AndAlso Me.dgvMovies.RowCount > 0) OrElse _
+                    (tagmenu.ContentType = Enums.Content_Type.MovieSet AndAlso Me.dgvMovieSets.RowCount > 0) OrElse _
+                    (tagmenu.ContentType = Enums.Content_Type.TV AndAlso Me.dgvTVShows.RowCount > 0) Then
                     Me.SetControlsEnabled(True)
                 End If
             End If
@@ -6745,7 +6749,8 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
-        If Not Me.tcMain.SelectedIndex = 0 Then Return
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+        If Not tagmenu.ContentType = Enums.Content_Type.Movie Then Return
 
         Me.tmrWaitShow.Stop()
         Me.tmrWaitSeason.Stop()
@@ -7316,7 +7321,8 @@ doCancel:
     End Sub
 
     Private Sub dgvMovieSets_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellEnter
-        If Not Me.tcMain.SelectedIndex = 1 Then Return
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+        If Not tagmenu.ContentType = Enums.Content_Type.MovieSet Then Return
 
         Me.tmrWaitShow.Stop()
         Me.tmrWaitSeason.Stop()
@@ -7727,7 +7733,8 @@ doCancel:
     End Sub
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
-        If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 2 Then Return
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+        If Not tagmenu.ContentType = Enums.Content_Type.TV OrElse Not Me.currList = 2 Then Return
 
         Me.tmrWaitShow.Stop()
         Me.tmrWaitSeason.Stop()
@@ -8147,7 +8154,8 @@ doCancel:
     End Sub
 
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
-        If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 1 Then Return
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+        If Not tagmenu.ContentType = Enums.Content_Type.TV OrElse Not Me.currList = 1 Then Return
 
         Me.tmrWaitShow.Stop()
         Me.tmrWaitMovie.Stop()
@@ -8504,7 +8512,8 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
-        If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 0 Then Return
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+        If Not tagmenu.ContentType = Enums.Content_Type.TV OrElse Not Me.currList = 0 Then Return
 
         Me.tmrWaitMovie.Stop()
         Me.tmrWaitMovieSet.Stop()
@@ -10824,6 +10833,7 @@ doCancel:
             ModulesManager.Instance.RuntimeObjects.MediaListShows = Me.dgvTVShows
             ModulesManager.Instance.RuntimeObjects.TopMenu = Me.mnuMain
             ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
+            ModulesManager.Instance.RuntimeObjects.MainTabControl = Me.tcMain
             ModulesManager.Instance.RuntimeObjects.TrayMenu = Me.cmnuTray
             ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
             ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
@@ -11204,6 +11214,10 @@ doCancel:
             'Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
 
             If Not CloseApp Then
+                Me.tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.Content_Type.Movie, .DefaultList = "movielist"}
+                Me.tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.Content_Type.MovieSet, .DefaultList = "setslist"}
+                Me.tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV"), .ContentType = Enums.Content_Type.TV, .DefaultList = "tvshowlist"}
+
                 Me.SetUp(True)
 
                 If Me.cbSearchMovies.Items.Count > 0 Then
@@ -16786,6 +16800,11 @@ doCancel:
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
                     o.Enabled = isEnabled AndAlso ((Me.dgvMovies.RowCount > 0 AndAlso tcMain.SelectedIndex = 0) OrElse (Me.dgvMovieSets.RowCount > 0 AndAlso tcMain.SelectedIndex = 1) OrElse (Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 2)
+                ElseIf TypeOf o.Tag Is Structures.MainTabType Then
+                    Dim tagmenu As Structures.MainTabType = DirectCast(o.Tag, Structures.MainTabType)
+                    o.Enabled = isEnabled AndAlso ((Me.dgvMovies.RowCount > 0 AndAlso tagmenu.ContentType = Enums.Content_Type.Movie) OrElse _
+                                                   (Me.dgvMovieSets.RowCount > 0 AndAlso tagmenu.ContentType = Enums.Content_Type.MovieSet) OrElse _
+                                                   (Me.dgvTVShows.RowCount > 0 AndAlso tagmenu.ContentType = Enums.Content_Type.TV))
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
                     o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((tagmenu.IfTabMovies AndAlso tcMain.SelectedIndex = 0) OrElse _
@@ -16815,11 +16834,12 @@ doCancel:
                 Me.mnuMainToolsBackdrops.Enabled = False
             End If
         End With
+        Dim maintabtag As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
         Me.mnuMainEdit.Enabled = isEnabled
-        Me.mnuScrapeMovies.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
-        Me.mnuScrapeMovies.Visible = Me.tcMain.SelectedIndex = 0
-        Me.mnuScrapeMovieSets.Enabled = isEnabled AndAlso Me.dgvMovieSets.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 1
-        Me.mnuScrapeMovieSets.Visible = Me.tcMain.SelectedIndex = 1
+        Me.mnuScrapeMovies.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso maintabtag.ContentType = Enums.Content_Type.Movie
+        Me.mnuScrapeMovies.Visible = maintabtag.ContentType = Enums.Content_Type.Movie
+        Me.mnuScrapeMovieSets.Enabled = isEnabled AndAlso Me.dgvMovieSets.RowCount > 0 AndAlso maintabtag.ContentType = Enums.Content_Type.MovieSet
+        Me.mnuScrapeMovieSets.Visible = maintabtag.ContentType = Enums.Content_Type.MovieSet
         Me.mnuUpdate.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
         Me.cmnuMovie.Enabled = isEnabled
@@ -17157,13 +17177,14 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
         Dim mnuItem As ToolStripItem
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         With Master.eSettings
             If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
             .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
             .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse _
             (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
-                Me.mnuMainToolsCleanFiles.Enabled = True AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
+                Me.mnuMainToolsCleanFiles.Enabled = True AndAlso Me.dgvMovies.RowCount > 0 AndAlso tagmenu.ContentType = Enums.Content_Type.Movie
             Else
                 Me.mnuMainToolsCleanFiles.Enabled = False
             End If
@@ -17764,10 +17785,10 @@ doCancel:
             End If
 
         End With
-        Me.mnuScrapeMovies.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0)
-        Me.mnuScrapeMovies.Visible = Me.tcMain.SelectedIndex = 0
-        Me.mnuScrapeMovieSets.Enabled = (Me.dgvMovieSets.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 1)
-        Me.mnuScrapeMovieSets.Visible = Me.tcMain.SelectedIndex = 1
+        Me.mnuScrapeMovies.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso tagmenu.ContentType = Enums.Content_Type.Movie)
+        Me.mnuScrapeMovies.Visible = tagmenu.ContentType = Enums.Content_Type.Movie
+        Me.mnuScrapeMovieSets.Enabled = (Me.dgvMovieSets.RowCount > 0 AndAlso tagmenu.ContentType = Enums.Content_Type.MovieSet)
+        Me.mnuScrapeMovieSets.Visible = tagmenu.ContentType = Enums.Content_Type.MovieSet
         Me.cmnuTrayScrape.Enabled = Me.mnuScrapeMovies.Enabled
     End Sub
 
@@ -18958,9 +18979,9 @@ doCancel:
                 .rbFilterOr_Movies.Text = Master.eLang.GetString(46, "Or")
                 .rbFilterOr_MovieSets.Text = .rbFilterOr_Movies.Text
                 .rbFilterOr_Shows.Text = .rbFilterOr_Movies.Text
-                .tpMovies.Text = Master.eLang.GetString(36, "Movies")
-                .tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
-                .tpTVShows.Text = Master.eLang.GetString(653, "TV")
+                '.tpMovies.Text = Master.eLang.GetString(36, "Movies")
+                '.tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
+                '.tpTVShows.Text = Master.eLang.GetString(653, "TV")
                 .mnuScrapeMovies.Text = Master.eLang.GetString(67, "Scrape Movies")
                 .mnuScrapeMovieSets.Text = Master.eLang.GetString(1213, "Scrape MovieSets")
                 .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
@@ -19025,7 +19046,8 @@ doCancel:
 
                 If doTheme Then
                     Me.tTheme = New Theming
-                    .ApplyTheme(If(Me.tcMain.SelectedIndex = 0, Theming.ThemeType.Movie, If(Me.tcMain.SelectedIndex = 1, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
+                    Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+                    .ApplyTheme(If(tagmenu.ContentType = Enums.Content_Type.Movie, Theming.ThemeType.Movie, If(tagmenu.ContentType = Enums.Content_Type.MovieSet, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
                 End If
 
             End With
@@ -19091,9 +19113,12 @@ doCancel:
     Private Sub tcMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcMain.SelectedIndexChanged
         Me.ClearInfo()
         Me.ShowNoInfo(False)
-        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = tcMain.SelectedIndex
-        Select Case tcMain.SelectedIndex
-            Case 0 'Movies list
+        Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = tagmenu
+        Select Case tagmenu.ContentType
+            Case Enums.Content_Type.Movie
+                Me.currList_Movies = tagmenu.DefaultList
+                Me.FillList(True, False, False)
                 Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = True
@@ -19131,7 +19156,7 @@ doCancel:
                     Me.SetControlsEnabled(True)
                 End If
 
-            Case 1 'MovieSets list
+            Case Enums.Content_Type.MovieSet
                 Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = False
@@ -19168,7 +19193,7 @@ doCancel:
                     Me.SetControlsEnabled(True)
                 End If
 
-            Case 2 'TV Shows list
+            Case Enums.Content_Type.TV
                 Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = False
                 Me.mnuScrapeMovies.Enabled = False
@@ -19212,7 +19237,8 @@ doCancel:
 
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
         Try
-            Select Case If(Me.tcMain.SelectedIndex = 0, Me.MovieInfoPanelState, If(Me.tcMain.SelectedIndex = 1, Me.MovieSetInfoPanelState, Me.TVShowInfoPanelState))
+            Dim tagmenu As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
+            Select Case If(tagmenu.ContentType = Enums.Content_Type.Movie, Me.MovieInfoPanelState, If(tagmenu.ContentType = Enums.Content_Type.MovieSet, Me.MovieSetInfoPanelState, Me.TVShowInfoPanelState))
                 Case 0
                     Me.pnlInfoPanel.Height = 25
 
@@ -19226,7 +19252,7 @@ doCancel:
             Me.MoveGenres()
             Me.MoveMPAA()
 
-            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.MovieInfoPanelState, If(Me.tcMain.SelectedIndex = 1, Me.MovieSetInfoPanelState, Me.TVShowInfoPanelState))
+            Dim aType As Integer = If(tagmenu.ContentType = Enums.Content_Type.Movie, Me.MovieInfoPanelState, If(tagmenu.ContentType = Enums.Content_Type.MovieSet, Me.MovieSetInfoPanelState, Me.TVShowInfoPanelState))
             Select Case aType
                 Case 0
                     If Me.pnlInfoPanel.Height = 25 Then

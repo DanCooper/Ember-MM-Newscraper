@@ -19,15 +19,26 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports System.Windows.Forms
 
 Public Class genericMediaListEditor
     Implements Interfaces.GenericModule
+
+#Region "Delegates"
+
+    Public Delegate Sub Delegate_SetTabPageItem(value As System.Windows.Forms.TabPage)
+    Public Delegate Sub Delegate_RemoveTabPageItem(value As System.Windows.Forms.TabPage)
+    Public Delegate Sub Delegate_TabPageAdd(value As System.Windows.Forms.TabPage, tabc As System.Windows.Forms.TabControl)
+
+#End Region 'Delegates
 
 #Region "Fields"
 
     Private _AssemblyName As String = String.Empty
     Private _name As String = "Media List Editor"
     Private _setup As frmMediaListEditor
+
+    Private tpMediaListEditor_Test As New System.Windows.Forms.TabPage
 
 #End Region 'Fields
 
@@ -48,6 +59,7 @@ Public Class genericMediaListEditor
             Return True
         End Get
         Set(ByVal value As Boolean)
+            Enable()
         End Set
     End Property
 
@@ -105,6 +117,23 @@ Public Class genericMediaListEditor
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
+    End Sub
+
+    Sub Enable()
+        Dim tabc As New TabControl
+        'tpMediaListEditor_Test.Image = New Bitmap(My.Resources.icon)
+        tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
+        tpMediaListEditor_Test.Text = "Test"
+        tpMediaListEditor_Test.Tag = New Structures.MainTabType With {.ContentName = "Test", .ContentType = Enums.Content_Type.Movie, .DefaultList = "movie-Nur 1080p Filme auf deutsch"}
+        TabPageAdd(tpMediaListEditor_Test, tabc)
+    End Sub
+
+    Public Sub TabPageAdd(value As System.Windows.Forms.TabPage, tabc As System.Windows.Forms.TabControl)
+        If (tabc.InvokeRequired) Then
+            tabc.Invoke(New Delegate_TabPageAdd(AddressOf TabPageAdd), New Object() {value, tabc})
+            Exit Sub
+        End If
+        tabc.TabPages.Add(tpMediaListEditor_Test)
     End Sub
 
 #End Region 'Methods

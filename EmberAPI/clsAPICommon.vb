@@ -2251,6 +2251,12 @@ Public Class Structures
         Dim IfNoTVShows As Boolean      'Show also if the TV Shows list is empty
     End Structure
 
+    Public Structure MainTabType
+        Dim ContentName As String
+        Dim ContentType As Enums.Content_Type
+        Dim DefaultList As String
+    End Structure
+
 #End Region 'Nested Types
 
 End Class 'Structures
