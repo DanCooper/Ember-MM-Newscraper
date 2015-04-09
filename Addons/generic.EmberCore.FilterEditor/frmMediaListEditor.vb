@@ -22,17 +22,17 @@ Public Class frmMediaListEditor
         ' Add any initialization after the InitializeComponent() call.
         SetUp()
         GetViews()
+        LoadCustomTabs()
     End Sub
 
     Private Sub SetUp()
-        btnAddView.Text = Master.eLang.GetString(28, "Add")
-        btnRemoveView.Text = Master.eLang.GetString(30, "Remove")
-        gpMediaListCurrent.Text = Master.eLang.GetString(624, "Current Filter")
-        lbl_MediaLists.Text = Master.eLang.GetString(330, "Filter")
-        lbl_FilterType.Text = Master.eLang.GetString(1378, "Type")
-        lblHelp.Text = Master.eLang.GetString(1382, "Result of query must contain either field idMovie (Movie-Filter), idSet(Set-Filter) or idShow(Show-Filter) or/and idMedia!")
-        lbl_FilterURL.Text = Master.eLang.GetString(1383, "Complete overview of Ember datatables:")
-        linklbl_FilterURL.Text = Master.eLang.GetString(1384, "Ember Database")
+        'btnAddView.Text = Master.eLang.GetString(28, "Add")
+        'btnRemoveView.Text = Master.eLang.GetString(30, "Remove")
+        'gpMediaListCurrent.Text = Master.eLang.GetString(624, "Current Filter")
+        'lbl_FilterType.Text = Master.eLang.GetString(1378, "Type")
+        'lblHelp.Text = Master.eLang.GetString(1382, "Result of query must contain either field idMovie (Movie-Filter), idSet(Set-Filter) or idShow(Show-Filter) or/and idMedia!")
+        'lbl_FilterURL.Text = Master.eLang.GetString(1383, "Complete overview of Ember datatables:")
+        'linklbl_FilterURL.Text = Master.eLang.GetString(1384, "Ember Database")
     End Sub
 
     Private Sub GetViews()
@@ -41,12 +41,16 @@ Public Class frmMediaListEditor
         Me.txtView_Name.Text = String.Empty
         Me.txtView_Query.Enabled = False
         Me.txtView_Query.Text = String.Empty
+
         cbMediaList.Items.Clear()
+        colCustomTabsList.Items.Clear()
         For Each ViewName In Master.DB.GetViewList(Enums.Content_Type.None)
             cbMediaList.Items.Add(ViewName)
+            colCustomTabsList.Items.Add(ViewName)
         Next
         cbMediaList.SelectedIndex = -1
         cbMediaListType.SelectedIndex = -1
+
     End Sub
 
     Private Sub cbMediaList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMediaList.SelectedIndexChanged
@@ -129,6 +133,47 @@ Public Class frmMediaListEditor
         If Not String.IsNullOrEmpty(Me.txtView_Prefix.Text) AndAlso Not String.IsNullOrEmpty(Me.txtView_Name.Text) Then
             Me.btnRemoveView.Enabled = True
         End If
+    End Sub
+
+    Public Sub SaveChanges()
+        Dim deleteitem As New List(Of String)
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("CustomTabs:"))
+            deleteitem.Add(sett.Name)
+        Next
+        Using settings = New clsAdvancedSettings()
+            For Each s As String In deleteitem
+                settings.CleanSetting(s, "*EmberAPP")
+            Next
+
+            Dim CustomTabs As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            For Each r As DataGridViewRow In dgvCustomTabs.Rows
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (CustomTabs.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                    CustomTabs.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
+                End If
+            Next
+            If CustomTabs IsNot Nothing Then
+                settings.SetComplexSetting("CustomTabs", CustomTabs, "*EmberAPP")
+            End If
+        End Using
+    End Sub
+
+    Private Sub LoadCustomTabs()
+        dgvCustomTabs.Rows.Clear()
+        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
+        If CustomTabs IsNot Nothing Then
+            For Each sett In CustomTabs
+                Dim i As Integer = dgvCustomTabs.Rows.Add(New Object() {sett.Name, sett.Value})
+            Next
+        End If
+        dgvCustomTabs.ClearSelection()
+    End Sub
+
+    Private Sub btnCustomTabsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCustomTabsAdd.Click
+        Dim i As Integer = dgvCustomTabs.Rows.Add(New Object() {String.Empty, String.Empty})
+        dgvCustomTabs.Rows(i).Tag = False
+        dgvCustomTabs.CurrentCell = dgvCustomTabs.Rows(i).Cells(0)
+        dgvCustomTabs.BeginEdit(True)
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
 #Region "Nested Types"

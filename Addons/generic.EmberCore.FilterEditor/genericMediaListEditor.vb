@@ -26,9 +26,9 @@ Public Class genericMediaListEditor
 
 #Region "Delegates"
 
-    Public Delegate Sub Delegate_SetTabPageItem(value As System.Windows.Forms.TabPage)
-    Public Delegate Sub Delegate_RemoveTabPageItem(value As System.Windows.Forms.TabPage)
-    Public Delegate Sub Delegate_TabPageAdd(value As System.Windows.Forms.TabPage, tabc As System.Windows.Forms.TabControl)
+    Public Delegate Sub Delegate_SetTabPageItem(value As TabPage)
+    Public Delegate Sub Delegate_RemoveTabPageItem(value As TabPage)
+    Public Delegate Sub Delegate_TabPageAdd(cTabs As List(Of TabPage), tabc As System.Windows.Forms.TabControl)
 
 #End Region 'Delegates
 
@@ -37,8 +37,6 @@ Public Class genericMediaListEditor
     Private _AssemblyName As String = String.Empty
     Private _name As String = "Media List Editor"
     Private _setup As frmMediaListEditor
-
-    Private tpMediaListEditor_Test As New System.Windows.Forms.TabPage
 
 #End Region 'Fields
 
@@ -113,6 +111,7 @@ Public Class genericMediaListEditor
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
+        If Not _setup Is Nothing Then _setup.SaveChanges()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
@@ -120,20 +119,37 @@ Public Class genericMediaListEditor
     End Sub
 
     Sub Enable()
-        Dim tabc As New TabControl
-        'tpMediaListEditor_Test.Image = New Bitmap(My.Resources.icon)
-        tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
-        tpMediaListEditor_Test.Text = "Test"
-        tpMediaListEditor_Test.Tag = New Structures.MainTabType With {.ContentName = "Test", .ContentType = Enums.Content_Type.Movie, .DefaultList = "movie-Nur 1080p Filme auf deutsch"}
-        TabPageAdd(tpMediaListEditor_Test, tabc)
+        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
+        If CustomTabs IsNot Nothing Then
+            Dim tabc As New TabControl
+            Dim NewCustomTabs As New List(Of TabPage)
+            tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
+            For Each cTab In CustomTabs
+                Dim cTabType As Enums.Content_Type = Enums.Content_Type.None
+                If cTab.Value.StartsWith("movie-") Then
+                    cTabType = Enums.Content_Type.Movie
+                ElseIf cTab.Value.StartsWith("sets-") Then
+                    cTabType = Enums.Content_Type.MovieSet
+                ElseIf cTab.Value.StartsWith("tvshow-") Then
+                    cTabType = Enums.Content_Type.TV
+                End If
+                If Not cTabType = Enums.Content_Type.None AndAlso Not String.IsNullOrEmpty(cTab.Name) Then
+                    Dim NewTabPage As New TabPage
+                    NewTabPage.Text = cTab.Name
+                    NewTabPage.Tag = New Structures.MainTabType With {.ContentName = cTab.Name, .ContentType = cTabType, .DefaultList = cTab.Value}
+                    NewCustomTabs.Add(NewTabPage)
+                End If
+            Next
+            TabPageAdd(NewCustomTabs, tabc)
+        End If
     End Sub
 
-    Public Sub TabPageAdd(value As System.Windows.Forms.TabPage, tabc As System.Windows.Forms.TabControl)
+    Public Sub TabPageAdd(cTabs As List(Of TabPage), tabc As System.Windows.Forms.TabControl)
         If (tabc.InvokeRequired) Then
-            tabc.Invoke(New Delegate_TabPageAdd(AddressOf TabPageAdd), New Object() {value, tabc})
+            tabc.Invoke(New Delegate_TabPageAdd(AddressOf TabPageAdd), New Object() {cTabs, tabc})
             Exit Sub
         End If
-        tabc.TabPages.Add(tpMediaListEditor_Test)
+        tabc.TabPages.AddRange(cTabs.ToArray)
     End Sub
 
 #End Region 'Methods
