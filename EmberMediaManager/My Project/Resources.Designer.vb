@@ -256,7 +256,7 @@ Namespace My.Resources
         Friend ReadOnly Property hasLanguage() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("hasLanguage", resourceCulture)
-                Return CType(obj, System.Drawing.Bitmap)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -473,12 +473,9 @@ Namespace My.Resources
         '''
         '''Can be combined by adding values. For example, bold and underlined would be
         '''fontstyle code 5.
-        '''--&gt;
         '''
-        '''&lt;theme&gt;
-        '''  &lt;toppanel&gt;
-        '''    &lt;backcolor&gt;-2302756&lt;/backcolor&gt;
-        '''    &lt;forecolor&gt;-16777216&lt;/forecolo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''### Color Help ###
+        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property movie_Default() As String
             Get
@@ -606,12 +603,9 @@ Namespace My.Resources
         '''
         '''Can be combined by adding values. For example, bold and underlined would be
         '''fontstyle code 5.
-        '''--&gt;
         '''
-        '''&lt;theme&gt;
-        '''  &lt;toppanel&gt;
-        '''    &lt;backcolor&gt;-2302756&lt;/backcolor&gt;
-        '''    &lt;forecolor&gt;-16777216&lt;/forecolo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''### Color Help ###
+        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property movieset_Default() As String
             Get
@@ -721,12 +715,9 @@ Namespace My.Resources
         '''
         '''Can be combined by adding values. For example, bold and underlined would be
         '''fontstyle code 5.
-        '''--&gt;
         '''
-        '''&lt;theme&gt;
-        '''  &lt;toppanel&gt;
-        '''    &lt;backcolor&gt;-2302756&lt;/backcolor&gt;
-        '''    &lt;forecolor&gt;-16777216&lt;/forecolo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''### Color Help ###
+        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property tvep_Default() As String
             Get
@@ -756,12 +747,9 @@ Namespace My.Resources
         '''
         '''Can be combined by adding values. For example, bold and underlined would be
         '''fontstyle code 5.
-        '''--&gt;
         '''
-        '''&lt;theme&gt;
-        '''  &lt;toppanel&gt;
-        '''    &lt;backcolor&gt;-2302756&lt;/backcolor&gt;
-        '''    &lt;forecolor&gt;-16777216&lt;/forecolo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''### Color Help ###
+        '''Color can be a &quot;system-defined color&quot; https://msdn.microsoft.com/en-us/library/ [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property tvshow_Default() As String
             Get
@@ -826,7 +814,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.kodinerds.net/index.php?page=Board&amp;boardID=102 ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.kodinerds.net/index.php/Board/105-Ember-Media-Manager/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlForumGer() As String
             Get
