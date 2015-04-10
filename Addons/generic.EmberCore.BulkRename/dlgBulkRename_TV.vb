@@ -42,6 +42,7 @@ Public Class dlgBulkRenamer_TV
     Public FilterShows As String = String.Empty
     Public FilterShowsSearch As String = String.Empty
     Public FilterShowsType As String = String.Empty
+    Public ListShows As String = String.Empty
 
 #End Region 'Fields
 

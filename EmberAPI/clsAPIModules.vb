@@ -1844,6 +1844,8 @@ Public Class ModulesManager
         Private _FilterShowsSearch As String
         Private _FilterShowsType As String
         Private _ListMovies As String
+        Private _ListMovieSets As String
+        Private _ListShows As String
 
 
 #End Region 'Fields
@@ -1865,6 +1867,24 @@ Public Class ModulesManager
             End Get
             Set(ByVal value As String)
                 _ListMovies = value
+            End Set
+        End Property
+
+        Public Property ListMovieSets() As String
+            Get
+                Return If(_ListMovieSets IsNot Nothing, _ListMovieSets, "setslist")
+            End Get
+            Set(ByVal value As String)
+                _ListMovieSets = value
+            End Set
+        End Property
+
+        Public Property ListShows() As String
+            Get
+                Return If(_ListShows IsNot Nothing, _ListShows, "tvshowlist")
+            End Get
+            Set(ByVal value As String)
+                _ListShows = value
             End Set
         End Property
 

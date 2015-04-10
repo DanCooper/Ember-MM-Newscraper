@@ -653,7 +653,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
-        If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) AndAlso Not (Me.cbIntLang.SelectedItem.ToString = tLang) Then
+        If Not Me.cbIntLang.SelectedIndex = -1 AndAlso Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) AndAlso Not (Me.cbIntLang.SelectedItem.ToString = tLang) Then
             Master.eLang.LoadAllLanguage(Me.cbIntLang.SelectedItem.ToString, True)
             tLang = Me.cbIntLang.SelectedItem.ToString
             Me.SetUp()

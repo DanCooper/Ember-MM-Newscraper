@@ -431,6 +431,7 @@ Public Class BulkRenamerModule
                     dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterShows
                     dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterShowsSearch
                     dBulkRename.FilterShowsType = ModulesManager.Instance.RuntimeObjects.FilterShowsType
+                    dBulkRename.ListShows = ModulesManager.Instance.RuntimeObjects.ListShows
                     dBulkRename.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
                     dBulkRename.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
                     dBulkRename.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows

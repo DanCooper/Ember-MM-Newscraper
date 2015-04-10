@@ -25,6 +25,7 @@ Partial Class frmMediaListEditor
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediaListEditor))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMediaListEditor = New System.Windows.Forms.Panel()
         Me.tblMediaListEditor = New System.Windows.Forms.TableLayoutPanel()
@@ -412,6 +413,14 @@ Partial Class frmMediaListEditor
         Me.dgvCustomTabs.Location = New System.Drawing.Point(3, 3)
         Me.dgvCustomTabs.MultiSelect = False
         Me.dgvCustomTabs.Name = "dgvCustomTabs"
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvCustomTabs.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvCustomTabs.RowHeadersVisible = False
         Me.dgvCustomTabs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgvCustomTabs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect

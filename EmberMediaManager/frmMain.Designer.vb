@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -340,6 +340,11 @@ Partial Class frmMain
         Me.cmnuEpisodeRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlListTop = New System.Windows.Forms.Panel()
+        Me.tblListTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.tcMain = New System.Windows.Forms.TabControl()
+        Me.tpMovies = New System.Windows.Forms.TabPage()
+        Me.tpMovieSets = New System.Windows.Forms.TabPage()
+        Me.tpTVShows = New System.Windows.Forms.TabPage()
         Me.btnMarkAll = New System.Windows.Forms.Button()
         Me.pnlSearchMovies = New System.Windows.Forms.Panel()
         Me.cbSearchMovies = New System.Windows.Forms.ComboBox()
@@ -353,10 +358,6 @@ Partial Class frmMain
         Me.cbSearchShows = New System.Windows.Forms.ComboBox()
         Me.picSearchTVShows = New System.Windows.Forms.PictureBox()
         Me.txtSearchShows = New System.Windows.Forms.TextBox()
-        Me.tcMain = New System.Windows.Forms.TabControl()
-        Me.tpMovies = New System.Windows.Forms.TabPage()
-        Me.tpMovieSets = New System.Windows.Forms.TabPage()
-        Me.tpTVShows = New System.Windows.Forms.TabPage()
         Me.pnlFilter_Movies = New System.Windows.Forms.Panel()
         Me.tblFilter_Movies = New System.Windows.Forms.TableLayoutPanel()
         Me.gbFilterGeneral_Movies = New System.Windows.Forms.GroupBox()
@@ -1184,7 +1185,12 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.tblListTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbFilterLists_MovieSets = New System.Windows.Forms.GroupBox()
+        Me.tblFilterLists_MovieSets = New System.Windows.Forms.TableLayoutPanel()
+        Me.cbFilterLists_MovieSets = New System.Windows.Forms.ComboBox()
+        Me.gbFilterLists_Shows = New System.Windows.Forms.GroupBox()
+        Me.tblFilterLists_Shows = New System.Windows.Forms.TableLayoutPanel()
+        Me.cbFilterLists_Shows = New System.Windows.Forms.ComboBox()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1249,13 +1255,14 @@ Partial Class frmMain
         CType(Me.dgvTVEpisodes,System.ComponentModel.ISupportInitialize).BeginInit
         Me.cmnuEpisode.SuspendLayout
         Me.pnlListTop.SuspendLayout
+        Me.tblListTop.SuspendLayout
+        Me.tcMain.SuspendLayout
         Me.pnlSearchMovies.SuspendLayout
         CType(Me.picSearchMovies,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlSearchMovieSets.SuspendLayout
         CType(Me.picSearchMovieSets,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlSearchTVShows.SuspendLayout
         CType(Me.picSearchTVShows,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.tcMain.SuspendLayout
         Me.pnlFilter_Movies.SuspendLayout
         Me.tblFilter_Movies.SuspendLayout
         Me.gbFilterGeneral_Movies.SuspendLayout
@@ -1422,7 +1429,10 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlLoadSettings.SuspendLayout
-        Me.tblListTop.SuspendLayout
+        Me.gbFilterLists_MovieSets.SuspendLayout
+        Me.tblFilterLists_MovieSets.SuspendLayout
+        Me.gbFilterLists_Shows.SuspendLayout
+        Me.tblFilterLists_Shows.SuspendLayout
         Me.SuspendLayout
         '
         'BottomToolStripPanel
@@ -1558,7 +1568,7 @@ Partial Class frmMain
         '
         Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tsSpring, Me.tslLoading, Me.tspbLoading})
-        Me.StatusStrip.Location = New System.Drawing.Point(5, 711)
+        Me.StatusStrip.Location = New System.Drawing.Point(5, 923)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1344, 22)
         Me.StatusStrip.TabIndex = 6
@@ -1818,7 +1828,7 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
         Me.scMain.Panel2.Controls.Add(Me.tsMain)
         Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3)
-        Me.scMain.Size = New System.Drawing.Size(1344, 687)
+        Me.scMain.Size = New System.Drawing.Size(1344, 899)
         Me.scMain.SplitterDistance = 567
         Me.scMain.TabIndex = 7
         Me.scMain.TabStop = false
@@ -3054,8 +3064,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = false
         Me.dgvMovies.AllowUserToDeleteRows = false
         Me.dgvMovies.AllowUserToResizeRows = false
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3071,7 +3081,7 @@ Partial Class frmMain
         Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMovies.ShowCellErrors = false
         Me.dgvMovies.ShowRowErrors = false
-        Me.dgvMovies.Size = New System.Drawing.Size(567, 0)
+        Me.dgvMovies.Size = New System.Drawing.Size(567, 23)
         Me.dgvMovies.StandardTab = true
         Me.dgvMovies.TabIndex = 0
         '
@@ -3691,8 +3701,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = false
         Me.dgvMovieSets.AllowUserToDeleteRows = false
         Me.dgvMovieSets.AllowUserToResizeRows = false
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3708,7 +3718,7 @@ Partial Class frmMain
         Me.dgvMovieSets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMovieSets.ShowCellErrors = false
         Me.dgvMovieSets.ShowRowErrors = false
-        Me.dgvMovieSets.Size = New System.Drawing.Size(567, 0)
+        Me.dgvMovieSets.Size = New System.Drawing.Size(567, 23)
         Me.dgvMovieSets.StandardTab = true
         Me.dgvMovieSets.TabIndex = 17
         '
@@ -3815,8 +3825,8 @@ Partial Class frmMain
         '
         Me.scTV.Panel2.BackColor = System.Drawing.SystemColors.Control
         Me.scTV.Panel2.Controls.Add(Me.scTVSeasonsEpisodes)
-        Me.scTV.Size = New System.Drawing.Size(567, 0)
-        Me.scTV.SplitterDistance = 25
+        Me.scTV.Size = New System.Drawing.Size(567, 23)
+        Me.scTV.SplitterDistance = 39
         Me.scTV.TabIndex = 3
         Me.scTV.TabStop = false
         '
@@ -3825,8 +3835,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = false
         Me.dgvTVShows.AllowUserToDeleteRows = false
         Me.dgvTVShows.AllowUserToResizeRows = false
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3842,7 +3852,7 @@ Partial Class frmMain
         Me.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVShows.ShowCellErrors = false
         Me.dgvTVShows.ShowRowErrors = false
-        Me.dgvTVShows.Size = New System.Drawing.Size(567, 23)
+        Me.dgvTVShows.Size = New System.Drawing.Size(567, 37)
         Me.dgvTVShows.StandardTab = true
         Me.dgvTVShows.TabIndex = 0
         '
@@ -4047,7 +4057,7 @@ Partial Class frmMain
         'scTVSeasonsEpisodes.Panel2
         '
         Me.scTVSeasonsEpisodes.Panel2.Controls.Add(Me.dgvTVEpisodes)
-        Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 25)
+        Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 44)
         Me.scTVSeasonsEpisodes.SplitterDistance = 25
         Me.scTVSeasonsEpisodes.TabIndex = 0
         Me.scTVSeasonsEpisodes.TabStop = false
@@ -4057,8 +4067,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = false
         Me.dgvTVSeasons.AllowUserToDeleteRows = false
         Me.dgvTVSeasons.AllowUserToResizeRows = false
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4202,8 +4212,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = false
         Me.dgvTVEpisodes.AllowUserToDeleteRows = false
         Me.dgvTVEpisodes.AllowUserToResizeRows = false
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4363,6 +4373,70 @@ Partial Class frmMain
         Me.pnlListTop.Size = New System.Drawing.Size(567, 56)
         Me.pnlListTop.TabIndex = 14
         '
+        'tblListTop
+        '
+        Me.tblListTop.AutoSize = true
+        Me.tblListTop.ColumnCount = 2
+        Me.tblListTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.tblListTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblListTop.Controls.Add(Me.tcMain, 0, 0)
+        Me.tblListTop.Controls.Add(Me.btnMarkAll, 1, 0)
+        Me.tblListTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.tblListTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblListTop.Name = "tblListTop"
+        Me.tblListTop.RowCount = 1
+        Me.tblListTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblListTop.Size = New System.Drawing.Size(567, 20)
+        Me.tblListTop.TabIndex = 0
+        '
+        'tcMain
+        '
+        Me.tcMain.Controls.Add(Me.tpMovies)
+        Me.tcMain.Controls.Add(Me.tpMovieSets)
+        Me.tcMain.Controls.Add(Me.tpTVShows)
+        Me.tcMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tcMain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.tcMain.ItemSize = New System.Drawing.Size(50, 19)
+        Me.tcMain.Location = New System.Drawing.Point(0, 0)
+        Me.tcMain.Margin = New System.Windows.Forms.Padding(0)
+        Me.tcMain.Name = "tcMain"
+        Me.tcMain.SelectedIndex = 0
+        Me.tcMain.Size = New System.Drawing.Size(458, 20)
+        Me.tcMain.TabIndex = 0
+        Me.tcMain.TabStop = false
+        '
+        'tpMovies
+        '
+        Me.tpMovies.Location = New System.Drawing.Point(4, 23)
+        Me.tpMovies.Name = "tpMovies"
+        Me.tpMovies.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpMovies.Size = New System.Drawing.Size(450, 0)
+        Me.tpMovies.TabIndex = 0
+        Me.tpMovies.Tag = ""
+        Me.tpMovies.Text = "Movies"
+        Me.tpMovies.UseVisualStyleBackColor = true
+        '
+        'tpMovieSets
+        '
+        Me.tpMovieSets.Location = New System.Drawing.Point(4, 23)
+        Me.tpMovieSets.Name = "tpMovieSets"
+        Me.tpMovieSets.Size = New System.Drawing.Size(450, 0)
+        Me.tpMovieSets.TabIndex = 2
+        Me.tpMovieSets.Tag = ""
+        Me.tpMovieSets.Text = "Sets"
+        Me.tpMovieSets.UseVisualStyleBackColor = true
+        '
+        'tpTVShows
+        '
+        Me.tpTVShows.Location = New System.Drawing.Point(4, 23)
+        Me.tpTVShows.Name = "tpTVShows"
+        Me.tpTVShows.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpTVShows.Size = New System.Drawing.Size(450, 0)
+        Me.tpTVShows.TabIndex = 1
+        Me.tpTVShows.Tag = ""
+        Me.tpTVShows.Text = "TV Shows"
+        Me.tpTVShows.UseVisualStyleBackColor = true
+        '
         'btnMarkAll
         '
         Me.btnMarkAll.AutoSize = true
@@ -4517,54 +4591,6 @@ Partial Class frmMain
         Me.txtSearchShows.Size = New System.Drawing.Size(424, 22)
         Me.txtSearchShows.TabIndex = 0
         '
-        'tcMain
-        '
-        Me.tcMain.Controls.Add(Me.tpMovies)
-        Me.tcMain.Controls.Add(Me.tpMovieSets)
-        Me.tcMain.Controls.Add(Me.tpTVShows)
-        Me.tcMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tcMain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.tcMain.ItemSize = New System.Drawing.Size(50, 19)
-        Me.tcMain.Location = New System.Drawing.Point(0, 0)
-        Me.tcMain.Margin = New System.Windows.Forms.Padding(0)
-        Me.tcMain.Name = "tcMain"
-        Me.tcMain.SelectedIndex = 0
-        Me.tcMain.Size = New System.Drawing.Size(458, 20)
-        Me.tcMain.TabIndex = 0
-        Me.tcMain.TabStop = false
-        '
-        'tpMovies
-        '
-        Me.tpMovies.Location = New System.Drawing.Point(4, 23)
-        Me.tpMovies.Name = "tpMovies"
-        Me.tpMovies.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMovies.Size = New System.Drawing.Size(450, 0)
-        Me.tpMovies.TabIndex = 0
-        Me.tpMovies.Tag = ""
-        Me.tpMovies.Text = "Movies"
-        Me.tpMovies.UseVisualStyleBackColor = true
-        '
-        'tpMovieSets
-        '
-        Me.tpMovieSets.Location = New System.Drawing.Point(4, 23)
-        Me.tpMovieSets.Name = "tpMovieSets"
-        Me.tpMovieSets.Size = New System.Drawing.Size(559, 0)
-        Me.tpMovieSets.TabIndex = 2
-        Me.tpMovieSets.Tag = ""
-        Me.tpMovieSets.Text = "Sets"
-        Me.tpMovieSets.UseVisualStyleBackColor = true
-        '
-        'tpTVShows
-        '
-        Me.tpTVShows.Location = New System.Drawing.Point(4, 23)
-        Me.tpTVShows.Name = "tpTVShows"
-        Me.tpTVShows.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpTVShows.Size = New System.Drawing.Size(559, 0)
-        Me.tpTVShows.TabIndex = 1
-        Me.tpTVShows.Tag = ""
-        Me.tpTVShows.Text = "TV Shows"
-        Me.tpTVShows.UseVisualStyleBackColor = true
-        '
         'pnlFilter_Movies
         '
         Me.pnlFilter_Movies.AutoSize = true
@@ -4572,7 +4598,7 @@ Partial Class frmMain
         Me.pnlFilter_Movies.Controls.Add(Me.tblFilter_Movies)
         Me.pnlFilter_Movies.Controls.Add(Me.pnlFilterTop_Movies)
         Me.pnlFilter_Movies.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter_Movies.Location = New System.Drawing.Point(0, -25)
+        Me.pnlFilter_Movies.Location = New System.Drawing.Point(0, 79)
         Me.pnlFilter_Movies.Name = "pnlFilter_Movies"
         Me.pnlFilter_Movies.Size = New System.Drawing.Size(567, 349)
         Me.pnlFilter_Movies.TabIndex = 12
@@ -5372,9 +5398,9 @@ Partial Class frmMain
         Me.pnlFilter_MovieSets.Controls.Add(Me.tblFilter_MovieSets)
         Me.pnlFilter_MovieSets.Controls.Add(Me.pnlFilterTop_MovieSets)
         Me.pnlFilter_MovieSets.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter_MovieSets.Location = New System.Drawing.Point(0, 324)
+        Me.pnlFilter_MovieSets.Location = New System.Drawing.Point(0, 428)
         Me.pnlFilter_MovieSets.Name = "pnlFilter_MovieSets"
-        Me.pnlFilter_MovieSets.Size = New System.Drawing.Size(567, 170)
+        Me.pnlFilter_MovieSets.Size = New System.Drawing.Size(567, 224)
         Me.pnlFilter_MovieSets.TabIndex = 26
         Me.pnlFilter_MovieSets.Visible = false
         '
@@ -5386,17 +5412,19 @@ Partial Class frmMain
         Me.tblFilter_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilter_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilter_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterGeneral_MovieSets, 0, 0)
-        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterSpecific_MovieSets, 1, 0)
-        Me.tblFilter_MovieSets.Controls.Add(Me.btnClearFilters_MovieSets, 0, 1)
+        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterLists_MovieSets, 0, 0)
+        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterGeneral_MovieSets, 0, 1)
+        Me.tblFilter_MovieSets.Controls.Add(Me.gbFilterSpecific_MovieSets, 1, 1)
+        Me.tblFilter_MovieSets.Controls.Add(Me.btnClearFilters_MovieSets, 0, 2)
         Me.tblFilter_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFilter_MovieSets.Location = New System.Drawing.Point(0, 22)
         Me.tblFilter_MovieSets.Name = "tblFilter_MovieSets"
-        Me.tblFilter_MovieSets.RowCount = 3
+        Me.tblFilter_MovieSets.RowCount = 4
         Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilter_MovieSets.Size = New System.Drawing.Size(565, 146)
+        Me.tblFilter_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilter_MovieSets.Size = New System.Drawing.Size(565, 200)
         Me.tblFilter_MovieSets.TabIndex = 8
         '
         'gbFilterGeneral_MovieSets
@@ -5405,7 +5433,7 @@ Partial Class frmMain
         Me.gbFilterGeneral_MovieSets.Controls.Add(Me.tblFilterGeneral_MovieSets)
         Me.gbFilterGeneral_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFilterGeneral_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbFilterGeneral_MovieSets.Location = New System.Drawing.Point(3, 3)
+        Me.gbFilterGeneral_MovieSets.Location = New System.Drawing.Point(3, 57)
         Me.gbFilterGeneral_MovieSets.Name = "gbFilterGeneral_MovieSets"
         Me.gbFilterGeneral_MovieSets.Size = New System.Drawing.Size(121, 90)
         Me.gbFilterGeneral_MovieSets.TabIndex = 3
@@ -5490,7 +5518,7 @@ Partial Class frmMain
         Me.gbFilterSpecific_MovieSets.AutoSize = true
         Me.gbFilterSpecific_MovieSets.Controls.Add(Me.tblFilterSpecific_MovieSets)
         Me.gbFilterSpecific_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbFilterSpecific_MovieSets.Location = New System.Drawing.Point(130, 3)
+        Me.gbFilterSpecific_MovieSets.Location = New System.Drawing.Point(130, 57)
         Me.gbFilterSpecific_MovieSets.Name = "gbFilterSpecific_MovieSets"
         Me.tblFilter_MovieSets.SetRowSpan(Me.gbFilterSpecific_MovieSets, 2)
         Me.gbFilterSpecific_MovieSets.Size = New System.Drawing.Size(114, 140)
@@ -5612,7 +5640,7 @@ Partial Class frmMain
         Me.btnClearFilters_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.btnClearFilters_MovieSets.Image = CType(resources.GetObject("btnClearFilters_MovieSets.Image"),System.Drawing.Image)
         Me.btnClearFilters_MovieSets.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters_MovieSets.Location = New System.Drawing.Point(17, 116)
+        Me.btnClearFilters_MovieSets.Location = New System.Drawing.Point(17, 170)
         Me.btnClearFilters_MovieSets.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnClearFilters_MovieSets.Name = "btnClearFilters_MovieSets"
         Me.btnClearFilters_MovieSets.Size = New System.Drawing.Size(92, 20)
@@ -5704,9 +5732,9 @@ Partial Class frmMain
         Me.pnlFilter_Shows.Controls.Add(Me.tblFilter_Shows)
         Me.pnlFilter_Shows.Controls.Add(Me.pnlFilterTop_Shows)
         Me.pnlFilter_Shows.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter_Shows.Location = New System.Drawing.Point(0, 494)
+        Me.pnlFilter_Shows.Location = New System.Drawing.Point(0, 652)
         Me.pnlFilter_Shows.Name = "pnlFilter_Shows"
-        Me.pnlFilter_Shows.Size = New System.Drawing.Size(567, 193)
+        Me.pnlFilter_Shows.Size = New System.Drawing.Size(567, 247)
         Me.pnlFilter_Shows.TabIndex = 27
         Me.pnlFilter_Shows.Visible = false
         '
@@ -5718,17 +5746,19 @@ Partial Class frmMain
         Me.tblFilter_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilter_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilter_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilter_Shows.Controls.Add(Me.gbFilterGeneral_Shows, 0, 0)
-        Me.tblFilter_Shows.Controls.Add(Me.gbFilterSpecific_Shows, 1, 0)
-        Me.tblFilter_Shows.Controls.Add(Me.btnClearFilters_Shows, 0, 1)
+        Me.tblFilter_Shows.Controls.Add(Me.gbFilterLists_Shows, 0, 0)
+        Me.tblFilter_Shows.Controls.Add(Me.gbFilterGeneral_Shows, 0, 1)
+        Me.tblFilter_Shows.Controls.Add(Me.gbFilterSpecific_Shows, 1, 1)
+        Me.tblFilter_Shows.Controls.Add(Me.btnClearFilters_Shows, 0, 2)
         Me.tblFilter_Shows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFilter_Shows.Location = New System.Drawing.Point(0, 22)
         Me.tblFilter_Shows.Name = "tblFilter_Shows"
-        Me.tblFilter_Shows.RowCount = 3
+        Me.tblFilter_Shows.RowCount = 4
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilter_Shows.Size = New System.Drawing.Size(565, 169)
+        Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilter_Shows.Size = New System.Drawing.Size(565, 223)
         Me.tblFilter_Shows.TabIndex = 8
         '
         'gbFilterGeneral_Shows
@@ -5737,7 +5767,7 @@ Partial Class frmMain
         Me.gbFilterGeneral_Shows.Controls.Add(Me.tblFilterGeneral_Shows)
         Me.gbFilterGeneral_Shows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFilterGeneral_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbFilterGeneral_Shows.Location = New System.Drawing.Point(3, 3)
+        Me.gbFilterGeneral_Shows.Location = New System.Drawing.Point(3, 57)
         Me.gbFilterGeneral_Shows.Name = "gbFilterGeneral_Shows"
         Me.gbFilterGeneral_Shows.Size = New System.Drawing.Size(114, 44)
         Me.gbFilterGeneral_Shows.TabIndex = 3
@@ -5794,10 +5824,10 @@ Partial Class frmMain
         Me.gbFilterSpecific_Shows.Controls.Add(Me.tblFilterSpecific_Shows)
         Me.gbFilterSpecific_Shows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFilterSpecific_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbFilterSpecific_Shows.Location = New System.Drawing.Point(123, 3)
+        Me.gbFilterSpecific_Shows.Location = New System.Drawing.Point(123, 57)
         Me.gbFilterSpecific_Shows.Name = "gbFilterSpecific_Shows"
         Me.tblFilter_Shows.SetRowSpan(Me.gbFilterSpecific_Shows, 2)
-        Me.gbFilterSpecific_Shows.Size = New System.Drawing.Size(339, 163)
+        Me.gbFilterSpecific_Shows.Size = New System.Drawing.Size(415, 163)
         Me.gbFilterSpecific_Shows.TabIndex = 6
         Me.gbFilterSpecific_Shows.TabStop = false
         Me.gbFilterSpecific_Shows.Text = "Specific"
@@ -5825,7 +5855,7 @@ Partial Class frmMain
         Me.tblFilterSpecific_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterSpecific_Shows.Size = New System.Drawing.Size(333, 142)
+        Me.tblFilterSpecific_Shows.Size = New System.Drawing.Size(409, 142)
         Me.tblFilterSpecific_Shows.TabIndex = 8
         '
         'chkFilterNewEpisodes_Shows
@@ -6004,7 +6034,7 @@ Partial Class frmMain
         Me.btnClearFilters_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.btnClearFilters_Shows.Image = CType(resources.GetObject("btnClearFilters_Shows.Image"),System.Drawing.Image)
         Me.btnClearFilters_Shows.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters_Shows.Location = New System.Drawing.Point(14, 139)
+        Me.btnClearFilters_Shows.Location = New System.Drawing.Point(14, 193)
         Me.btnClearFilters_Shows.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnClearFilters_Shows.Name = "btnClearFilters_Shows"
         Me.btnClearFilters_Shows.Size = New System.Drawing.Size(92, 20)
@@ -6211,7 +6241,7 @@ Partial Class frmMain
         Me.pnlInfoPanel.Controls.Add(Me.btnUp)
         Me.pnlInfoPanel.Controls.Add(Me.lblInfoPanelHeader)
         Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 345)
+        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 557)
         Me.pnlInfoPanel.Name = "pnlInfoPanel"
         Me.pnlInfoPanel.Size = New System.Drawing.Size(773, 342)
         Me.pnlInfoPanel.TabIndex = 10
@@ -12099,27 +12129,91 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
-        'tblListTop
+        'gbFilterLists_MovieSets
         '
-        Me.tblListTop.AutoSize = true
-        Me.tblListTop.ColumnCount = 2
-        Me.tblListTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
-        Me.tblListTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblListTop.Controls.Add(Me.tcMain, 0, 0)
-        Me.tblListTop.Controls.Add(Me.btnMarkAll, 1, 0)
-        Me.tblListTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.tblListTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblListTop.Name = "tblListTop"
-        Me.tblListTop.RowCount = 1
-        Me.tblListTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.tblListTop.Size = New System.Drawing.Size(567, 20)
-        Me.tblListTop.TabIndex = 0
+        Me.gbFilterLists_MovieSets.AutoSize = true
+        Me.tblFilter_MovieSets.SetColumnSpan(Me.gbFilterLists_MovieSets, 2)
+        Me.gbFilterLists_MovieSets.Controls.Add(Me.tblFilterLists_MovieSets)
+        Me.gbFilterLists_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbFilterLists_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbFilterLists_MovieSets.Location = New System.Drawing.Point(3, 3)
+        Me.gbFilterLists_MovieSets.Name = "gbFilterLists_MovieSets"
+        Me.gbFilterLists_MovieSets.Size = New System.Drawing.Size(535, 48)
+        Me.gbFilterLists_MovieSets.TabIndex = 8
+        Me.gbFilterLists_MovieSets.TabStop = false
+        Me.gbFilterLists_MovieSets.Text = "Lists"
+        '
+        'tblFilterLists_MovieSets
+        '
+        Me.tblFilterLists_MovieSets.AutoSize = true
+        Me.tblFilterLists_MovieSets.ColumnCount = 1
+        Me.tblFilterLists_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterLists_MovieSets.Controls.Add(Me.cbFilterLists_MovieSets, 0, 0)
+        Me.tblFilterLists_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterLists_MovieSets.Location = New System.Drawing.Point(3, 18)
+        Me.tblFilterLists_MovieSets.Name = "tblFilterLists_MovieSets"
+        Me.tblFilterLists_MovieSets.RowCount = 1
+        Me.tblFilterLists_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterLists_MovieSets.Size = New System.Drawing.Size(529, 27)
+        Me.tblFilterLists_MovieSets.TabIndex = 0
+        '
+        'cbFilterLists_MovieSets
+        '
+        Me.cbFilterLists_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbFilterLists_MovieSets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterLists_MovieSets.Enabled = false
+        Me.cbFilterLists_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbFilterLists_MovieSets.FormattingEnabled = true
+        Me.cbFilterLists_MovieSets.Location = New System.Drawing.Point(3, 3)
+        Me.cbFilterLists_MovieSets.Name = "cbFilterLists_MovieSets"
+        Me.cbFilterLists_MovieSets.Size = New System.Drawing.Size(523, 21)
+        Me.cbFilterLists_MovieSets.TabIndex = 43
+        '
+        'gbFilterLists_Shows
+        '
+        Me.gbFilterLists_Shows.AutoSize = true
+        Me.tblFilter_Shows.SetColumnSpan(Me.gbFilterLists_Shows, 2)
+        Me.gbFilterLists_Shows.Controls.Add(Me.tblFilterLists_Shows)
+        Me.gbFilterLists_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbFilterLists_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbFilterLists_Shows.Location = New System.Drawing.Point(3, 3)
+        Me.gbFilterLists_Shows.Name = "gbFilterLists_Shows"
+        Me.gbFilterLists_Shows.Size = New System.Drawing.Size(535, 48)
+        Me.gbFilterLists_Shows.TabIndex = 9
+        Me.gbFilterLists_Shows.TabStop = false
+        Me.gbFilterLists_Shows.Text = "Lists"
+        '
+        'tblFilterLists_Shows
+        '
+        Me.tblFilterLists_Shows.AutoSize = true
+        Me.tblFilterLists_Shows.ColumnCount = 1
+        Me.tblFilterLists_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilterLists_Shows.Controls.Add(Me.cbFilterLists_Shows, 0, 0)
+        Me.tblFilterLists_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblFilterLists_Shows.Location = New System.Drawing.Point(3, 18)
+        Me.tblFilterLists_Shows.Name = "tblFilterLists_Shows"
+        Me.tblFilterLists_Shows.RowCount = 1
+        Me.tblFilterLists_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblFilterLists_Shows.Size = New System.Drawing.Size(529, 27)
+        Me.tblFilterLists_Shows.TabIndex = 0
+        '
+        'cbFilterLists_Shows
+        '
+        Me.cbFilterLists_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbFilterLists_Shows.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterLists_Shows.Enabled = false
+        Me.cbFilterLists_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbFilterLists_Shows.FormattingEnabled = true
+        Me.cbFilterLists_Shows.Location = New System.Drawing.Point(3, 3)
+        Me.cbFilterLists_Shows.Name = "cbFilterLists_Shows"
+        Me.cbFilterLists_Shows.Size = New System.Drawing.Size(523, 21)
+        Me.cbFilterLists_Shows.TabIndex = 43
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(1354, 733)
+        Me.ClientSize = New System.Drawing.Size(1354, 945)
         Me.Controls.Add(Me.pnlLoadSettings)
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
@@ -12128,7 +12222,7 @@ Partial Class frmMain
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.MainMenuStrip = Me.mnuMain
-        Me.MinimumSize = New System.Drawing.Size(800, 600)
+        Me.MinimumSize = New System.Drawing.Size(800, 700)
         Me.Name = "frmMain"
         Me.Padding = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Text = "Ember Media Manager"
@@ -12234,6 +12328,9 @@ Partial Class frmMain
         Me.cmnuEpisode.ResumeLayout(false)
         Me.pnlListTop.ResumeLayout(false)
         Me.pnlListTop.PerformLayout
+        Me.tblListTop.ResumeLayout(false)
+        Me.tblListTop.PerformLayout
+        Me.tcMain.ResumeLayout(false)
         Me.pnlSearchMovies.ResumeLayout(false)
         Me.pnlSearchMovies.PerformLayout
         CType(Me.picSearchMovies,System.ComponentModel.ISupportInitialize).EndInit
@@ -12243,7 +12340,6 @@ Partial Class frmMain
         Me.pnlSearchTVShows.ResumeLayout(false)
         Me.pnlSearchTVShows.PerformLayout
         CType(Me.picSearchTVShows,System.ComponentModel.ISupportInitialize).EndInit
-        Me.tcMain.ResumeLayout(false)
         Me.pnlFilter_Movies.ResumeLayout(false)
         Me.pnlFilter_Movies.PerformLayout
         Me.tblFilter_Movies.ResumeLayout(false)
@@ -12501,8 +12597,12 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(false)
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlLoadSettings.ResumeLayout(false)
-        Me.tblListTop.ResumeLayout(false)
-        Me.tblListTop.PerformLayout
+        Me.gbFilterLists_MovieSets.ResumeLayout(false)
+        Me.gbFilterLists_MovieSets.PerformLayout
+        Me.tblFilterLists_MovieSets.ResumeLayout(false)
+        Me.gbFilterLists_Shows.ResumeLayout(false)
+        Me.gbFilterLists_Shows.PerformLayout
+        Me.tblFilterLists_Shows.ResumeLayout(false)
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -13664,4 +13764,10 @@ End Sub
     Friend WithEvents tblFilterLists_Movies As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents cbFilterLists_Movies As System.Windows.Forms.ComboBox
     Friend WithEvents tblListTop As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbFilterLists_MovieSets As System.Windows.Forms.GroupBox
+    Friend WithEvents tblFilterLists_MovieSets As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents cbFilterLists_MovieSets As System.Windows.Forms.ComboBox
+    Friend WithEvents gbFilterLists_Shows As System.Windows.Forms.GroupBox
+    Friend WithEvents tblFilterLists_Shows As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents cbFilterLists_Shows As System.Windows.Forms.ComboBox
 End Class

@@ -1264,6 +1264,27 @@ Public Class Database
         End If
     End Function
 
+    Public Function GetViewMediaCount(ByVal ViewName As String, Optional EpisodesByView As Boolean = False) As Integer
+        Dim mCount As Integer
+        If Not String.IsNullOrEmpty(ViewName) Then
+            If Not EpisodesByView Then
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}'", ViewName)
+                    mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                    Return mCount
+                End Using
+            Else
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM '{0}' INNER JOIN episode ON ('{0}'.idShow = episode.idShow) WHERE episode.Missing = 0", ViewName)
+                    mCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+                    Return mCount
+                End Using
+            End If
+        Else
+            Return mCount
+        End If
+    End Function
+
     Public Function GetViewList(ByVal Type As Enums.Content_Type) As List(Of String)
         Dim ViewList As New List(Of String)
         Dim ContentType As String = String.Empty
