@@ -30,14 +30,14 @@ Partial Class frmMediaListEditor
         Me.tblMediaListEditor = New System.Windows.Forms.TableLayoutPanel()
         Me.gpMediaListCurrent = New System.Windows.Forms.GroupBox()
         Me.tblMediaListCurrent = New System.Windows.Forms.TableLayoutPanel()
-        Me.cbMediaList = New System.Windows.Forms.ComboBox()
-        Me.lbl_FilterURL = New System.Windows.Forms.Label()
-        Me.lblHelp = New System.Windows.Forms.Label()
         Me.lbl_FilterType = New System.Windows.Forms.Label()
+        Me.cbMediaList = New System.Windows.Forms.ComboBox()
         Me.linklbl_FilterURL = New System.Windows.Forms.LinkLabel()
-        Me.btnRemoveView = New System.Windows.Forms.Button()
+        Me.btnViewRemove = New System.Windows.Forms.Button()
         Me.lblView_AS = New System.Windows.Forms.Label()
-        Me.btnAddView = New System.Windows.Forms.Button()
+        Me.lbl_FilterURL = New System.Windows.Forms.Label()
+        Me.btnViewAdd = New System.Windows.Forms.Button()
+        Me.lblHelp = New System.Windows.Forms.Label()
         Me.txtView_Prefix = New System.Windows.Forms.TextBox()
         Me.txtView_Query = New System.Windows.Forms.TextBox()
         Me.txtView_Name = New System.Windows.Forms.TextBox()
@@ -111,7 +111,9 @@ Partial Class frmMediaListEditor
         'tblMediaListCurrent
         '
         Me.tblMediaListCurrent.AutoSize = True
-        Me.tblMediaListCurrent.ColumnCount = 5
+        Me.tblMediaListCurrent.ColumnCount = 7
+        Me.tblMediaListCurrent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMediaListCurrent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMediaListCurrent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMediaListCurrent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMediaListCurrent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -120,14 +122,14 @@ Partial Class frmMediaListEditor
         Me.tblMediaListCurrent.Controls.Add(Me.lbl_FilterType, 0, 1)
         Me.tblMediaListCurrent.Controls.Add(Me.cbMediaList, 0, 0)
         Me.tblMediaListCurrent.Controls.Add(Me.linklbl_FilterURL, 0, 10)
-        Me.tblMediaListCurrent.Controls.Add(Me.btnRemoveView, 1, 6)
-        Me.tblMediaListCurrent.Controls.Add(Me.lblView_AS, 3, 4)
+        Me.tblMediaListCurrent.Controls.Add(Me.btnViewRemove, 5, 6)
+        Me.tblMediaListCurrent.Controls.Add(Me.lblView_AS, 6, 4)
         Me.tblMediaListCurrent.Controls.Add(Me.lbl_FilterURL, 0, 9)
-        Me.tblMediaListCurrent.Controls.Add(Me.btnAddView, 0, 6)
+        Me.tblMediaListCurrent.Controls.Add(Me.btnViewAdd, 4, 6)
         Me.tblMediaListCurrent.Controls.Add(Me.lblHelp, 0, 7)
         Me.tblMediaListCurrent.Controls.Add(Me.txtView_Prefix, 1, 4)
         Me.tblMediaListCurrent.Controls.Add(Me.txtView_Query, 0, 5)
-        Me.tblMediaListCurrent.Controls.Add(Me.txtView_Name, 2, 4)
+        Me.tblMediaListCurrent.Controls.Add(Me.txtView_Name, 3, 4)
         Me.tblMediaListCurrent.Controls.Add(Me.lblPrefix, 1, 3)
         Me.tblMediaListCurrent.Controls.Add(Me.cbMediaListType, 1, 1)
         Me.tblMediaListCurrent.Controls.Add(Me.lblViewCreate, 0, 4)
@@ -150,42 +152,6 @@ Partial Class frmMediaListEditor
         Me.tblMediaListCurrent.Size = New System.Drawing.Size(593, 363)
         Me.tblMediaListCurrent.TabIndex = 19
         '
-        'cbMediaList
-        '
-        Me.tblMediaListCurrent.SetColumnSpan(Me.cbMediaList, 4)
-        Me.cbMediaList.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.cbMediaList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMediaList.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbMediaList.FormattingEnabled = True
-        Me.cbMediaList.Location = New System.Drawing.Point(3, 3)
-        Me.cbMediaList.Name = "cbMediaList"
-        Me.cbMediaList.Size = New System.Drawing.Size(587, 21)
-        Me.cbMediaList.TabIndex = 1
-        '
-        'lbl_FilterURL
-        '
-        Me.lbl_FilterURL.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lbl_FilterURL.AutoSize = True
-        Me.tblMediaListCurrent.SetColumnSpan(Me.lbl_FilterURL, 4)
-        Me.lbl_FilterURL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_FilterURL.Location = New System.Drawing.Point(3, 326)
-        Me.lbl_FilterURL.Name = "lbl_FilterURL"
-        Me.lbl_FilterURL.Size = New System.Drawing.Size(197, 13)
-        Me.lbl_FilterURL.TabIndex = 13
-        Me.lbl_FilterURL.Text = "Complete overview of Ember datatables:"
-        '
-        'lblHelp
-        '
-        Me.lblHelp.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblHelp.AutoSize = True
-        Me.tblMediaListCurrent.SetColumnSpan(Me.lblHelp, 3)
-        Me.lblHelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHelp.Location = New System.Drawing.Point(3, 286)
-        Me.lblHelp.Name = "lblHelp"
-        Me.lblHelp.Size = New System.Drawing.Size(166, 13)
-        Me.lblHelp.TabIndex = 12
-        Me.lblHelp.Text = "Use CTRL + Return for new lines."
-        '
         'lbl_FilterType
         '
         Me.lbl_FilterType.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -197,10 +163,23 @@ Partial Class frmMediaListEditor
         Me.lbl_FilterType.TabIndex = 13
         Me.lbl_FilterType.Text = "Type"
         '
+        'cbMediaList
+        '
+        Me.tblMediaListCurrent.SetColumnSpan(Me.cbMediaList, 7)
+        Me.cbMediaList.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbMediaList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMediaList.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbMediaList.FormattingEnabled = True
+        Me.cbMediaList.Location = New System.Drawing.Point(3, 3)
+        Me.cbMediaList.Name = "cbMediaList"
+        Me.cbMediaList.Size = New System.Drawing.Size(587, 21)
+        Me.cbMediaList.TabIndex = 1
+        '
         'linklbl_FilterURL
         '
         Me.linklbl_FilterURL.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.linklbl_FilterURL.AutoSize = True
+        Me.tblMediaListCurrent.SetColumnSpan(Me.linklbl_FilterURL, 7)
         Me.linklbl_FilterURL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.linklbl_FilterURL.Location = New System.Drawing.Point(3, 346)
         Me.linklbl_FilterURL.Name = "linklbl_FilterURL"
@@ -209,22 +188,21 @@ Partial Class frmMediaListEditor
         Me.linklbl_FilterURL.TabStop = True
         Me.linklbl_FilterURL.Text = "Ember Database"
         '
-        'btnRemoveView
+        'btnViewRemove
         '
-        Me.btnRemoveView.AutoSize = True
-        Me.btnRemoveView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.btnRemoveView.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnRemoveView.Enabled = False
-        Me.btnRemoveView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveView.Image = CType(resources.GetObject("btnRemoveView.Image"), System.Drawing.Image)
-        Me.btnRemoveView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveView.Location = New System.Drawing.Point(95, 257)
-        Me.btnRemoveView.Name = "btnRemoveView"
-        Me.btnRemoveView.Size = New System.Drawing.Size(98, 23)
-        Me.btnRemoveView.TabIndex = 4
-        Me.btnRemoveView.Text = "Remove"
-        Me.btnRemoveView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemoveView.UseVisualStyleBackColor = True
+        Me.btnViewRemove.AutoSize = True
+        Me.tblMediaListCurrent.SetColumnSpan(Me.btnViewRemove, 2)
+        Me.btnViewRemove.Enabled = False
+        Me.btnViewRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnViewRemove.Image = CType(resources.GetObject("btnViewRemove.Image"), System.Drawing.Image)
+        Me.btnViewRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnViewRemove.Location = New System.Drawing.Point(500, 257)
+        Me.btnViewRemove.Name = "btnViewRemove"
+        Me.btnViewRemove.Size = New System.Drawing.Size(90, 23)
+        Me.btnViewRemove.TabIndex = 4
+        Me.btnViewRemove.Text = "Remove"
+        Me.btnViewRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnViewRemove.UseVisualStyleBackColor = True
         '
         'lblView_AS
         '
@@ -237,22 +215,44 @@ Partial Class frmMediaListEditor
         Me.lblView_AS.TabIndex = 16
         Me.lblView_AS.Text = "' AS"
         '
-        'btnAddView
+        'lbl_FilterURL
         '
-        Me.btnAddView.AutoSize = True
-        Me.btnAddView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.btnAddView.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnAddView.Enabled = False
-        Me.btnAddView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddView.Image = CType(resources.GetObject("btnAddView.Image"), System.Drawing.Image)
-        Me.btnAddView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddView.Location = New System.Drawing.Point(3, 257)
-        Me.btnAddView.Name = "btnAddView"
-        Me.btnAddView.Size = New System.Drawing.Size(86, 23)
-        Me.btnAddView.TabIndex = 3
-        Me.btnAddView.Text = "Add"
-        Me.btnAddView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAddView.UseVisualStyleBackColor = True
+        Me.lbl_FilterURL.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lbl_FilterURL.AutoSize = True
+        Me.tblMediaListCurrent.SetColumnSpan(Me.lbl_FilterURL, 7)
+        Me.lbl_FilterURL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbl_FilterURL.Location = New System.Drawing.Point(3, 326)
+        Me.lbl_FilterURL.Name = "lbl_FilterURL"
+        Me.lbl_FilterURL.Size = New System.Drawing.Size(197, 13)
+        Me.lbl_FilterURL.TabIndex = 13
+        Me.lbl_FilterURL.Text = "Complete overview of Ember datatables:"
+        '
+        'btnViewAdd
+        '
+        Me.btnViewAdd.AutoSize = True
+        Me.btnViewAdd.Enabled = False
+        Me.btnViewAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnViewAdd.Image = CType(resources.GetObject("btnViewAdd.Image"), System.Drawing.Image)
+        Me.btnViewAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnViewAdd.Location = New System.Drawing.Point(404, 257)
+        Me.btnViewAdd.Name = "btnViewAdd"
+        Me.btnViewAdd.Size = New System.Drawing.Size(90, 23)
+        Me.btnViewAdd.TabIndex = 3
+        Me.btnViewAdd.Text = "Add"
+        Me.btnViewAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnViewAdd.UseVisualStyleBackColor = True
+        '
+        'lblHelp
+        '
+        Me.lblHelp.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblHelp.AutoSize = True
+        Me.tblMediaListCurrent.SetColumnSpan(Me.lblHelp, 7)
+        Me.lblHelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHelp.Location = New System.Drawing.Point(3, 286)
+        Me.lblHelp.Name = "lblHelp"
+        Me.lblHelp.Size = New System.Drawing.Size(166, 13)
+        Me.lblHelp.TabIndex = 12
+        Me.lblHelp.Text = "Use CTRL + Return for new lines."
         '
         'txtView_Prefix
         '
@@ -265,7 +265,7 @@ Partial Class frmMediaListEditor
         '
         'txtView_Query
         '
-        Me.tblMediaListCurrent.SetColumnSpan(Me.txtView_Query, 4)
+        Me.tblMediaListCurrent.SetColumnSpan(Me.txtView_Query, 7)
         Me.txtView_Query.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtView_Query.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtView_Query.Location = New System.Drawing.Point(3, 123)
@@ -277,6 +277,7 @@ Partial Class frmMediaListEditor
         '
         'txtView_Name
         '
+        Me.tblMediaListCurrent.SetColumnSpan(Me.txtView_Name, 3)
         Me.txtView_Name.Enabled = False
         Me.txtView_Name.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtView_Name.Location = New System.Drawing.Point(199, 97)
@@ -326,7 +327,7 @@ Partial Class frmMediaListEditor
         Me.gbCustomTabs.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbCustomTabs.Location = New System.Drawing.Point(3, 411)
         Me.gbCustomTabs.Name = "gbCustomTabs"
-        Me.gbCustomTabs.Size = New System.Drawing.Size(599, 154)
+        Me.gbCustomTabs.Size = New System.Drawing.Size(599, 204)
         Me.gbCustomTabs.TabIndex = 15
         Me.gbCustomTabs.TabStop = False
         Me.gbCustomTabs.Text = "Custom Tabs"
@@ -349,7 +350,7 @@ Partial Class frmMediaListEditor
         Me.tblCustomTabs.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomTabs.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblCustomTabs.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblCustomTabs.Size = New System.Drawing.Size(593, 135)
+        Me.tblCustomTabs.Size = New System.Drawing.Size(593, 185)
         Me.tblCustomTabs.TabIndex = 0
         '
         'btnCustomTabsAdd
@@ -358,9 +359,9 @@ Partial Class frmMediaListEditor
         Me.btnCustomTabsAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCustomTabsAdd.Image = CType(resources.GetObject("btnCustomTabsAdd.Image"), System.Drawing.Image)
         Me.btnCustomTabsAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCustomTabsAdd.Location = New System.Drawing.Point(410, 109)
+        Me.btnCustomTabsAdd.Location = New System.Drawing.Point(404, 159)
         Me.btnCustomTabsAdd.Name = "btnCustomTabsAdd"
-        Me.btnCustomTabsAdd.Size = New System.Drawing.Size(87, 23)
+        Me.btnCustomTabsAdd.Size = New System.Drawing.Size(90, 23)
         Me.btnCustomTabsAdd.TabIndex = 13
         Me.btnCustomTabsAdd.Text = "Add"
         Me.btnCustomTabsAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -373,9 +374,9 @@ Partial Class frmMediaListEditor
         Me.btnCustomTabsRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCustomTabsRemove.Image = CType(resources.GetObject("btnCustomTabsRemove.Image"), System.Drawing.Image)
         Me.btnCustomTabsRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCustomTabsRemove.Location = New System.Drawing.Point(503, 109)
+        Me.btnCustomTabsRemove.Location = New System.Drawing.Point(500, 159)
         Me.btnCustomTabsRemove.Name = "btnCustomTabsRemove"
-        Me.btnCustomTabsRemove.Size = New System.Drawing.Size(87, 23)
+        Me.btnCustomTabsRemove.Size = New System.Drawing.Size(90, 23)
         Me.btnCustomTabsRemove.TabIndex = 12
         Me.btnCustomTabsRemove.Text = "Remove"
         Me.btnCustomTabsRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -417,7 +418,7 @@ Partial Class frmMediaListEditor
         Me.dgvCustomTabs.ShowCellErrors = False
         Me.dgvCustomTabs.ShowCellToolTips = False
         Me.dgvCustomTabs.ShowRowErrors = False
-        Me.dgvCustomTabs.Size = New System.Drawing.Size(587, 100)
+        Me.dgvCustomTabs.Size = New System.Drawing.Size(587, 150)
         Me.dgvCustomTabs.TabIndex = 11
         '
         'colCustomTabsName
@@ -435,6 +436,7 @@ Partial Class frmMediaListEditor
         Me.colCustomTabsList.Name = "colCustomTabsList"
         Me.colCustomTabsList.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.colCustomTabsList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.colCustomTabsList.Width = 360
         '
         'frmMediaListEditor
         '
@@ -468,8 +470,8 @@ Partial Class frmMediaListEditor
     End Sub
     Friend WithEvents pnlMediaListEditor As System.Windows.Forms.Panel
     Friend WithEvents cbMediaList As System.Windows.Forms.ComboBox
-    Friend WithEvents btnRemoveView As System.Windows.Forms.Button
-    Friend WithEvents btnAddView As System.Windows.Forms.Button
+    Friend WithEvents btnViewRemove As System.Windows.Forms.Button
+    Friend WithEvents btnViewAdd As System.Windows.Forms.Button
     Friend WithEvents txtView_Query As System.Windows.Forms.TextBox
     Friend WithEvents gpMediaListCurrent As System.Windows.Forms.GroupBox
     Friend WithEvents lbl_FilterType As System.Windows.Forms.Label

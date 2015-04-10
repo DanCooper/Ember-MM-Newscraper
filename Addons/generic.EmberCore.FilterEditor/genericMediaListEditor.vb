@@ -125,19 +125,21 @@ Public Class genericMediaListEditor
             Dim NewCustomTabs As New List(Of TabPage)
             tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
             For Each cTab In CustomTabs
-                Dim cTabType As Enums.Content_Type = Enums.Content_Type.None
-                If cTab.Value.StartsWith("movie-") Then
-                    cTabType = Enums.Content_Type.Movie
-                ElseIf cTab.Value.StartsWith("sets-") Then
-                    cTabType = Enums.Content_Type.MovieSet
-                ElseIf cTab.Value.StartsWith("tvshow-") Then
-                    cTabType = Enums.Content_Type.TV
-                End If
-                If Not cTabType = Enums.Content_Type.None AndAlso Not String.IsNullOrEmpty(cTab.Name) Then
-                    Dim NewTabPage As New TabPage
-                    NewTabPage.Text = cTab.Name
-                    NewTabPage.Tag = New Structures.MainTabType With {.ContentName = cTab.Name, .ContentType = cTabType, .DefaultList = cTab.Value}
-                    NewCustomTabs.Add(NewTabPage)
+                If Master.DB.ViewExists(cTab.Value) Then
+                    Dim cTabType As Enums.Content_Type = Enums.Content_Type.None
+                    If cTab.Value.StartsWith("movie-") Then
+                        cTabType = Enums.Content_Type.Movie
+                    ElseIf cTab.Value.StartsWith("sets-") Then
+                        cTabType = Enums.Content_Type.MovieSet
+                    ElseIf cTab.Value.StartsWith("tvshow-") Then
+                        cTabType = Enums.Content_Type.TV
+                    End If
+                    If Not cTabType = Enums.Content_Type.None AndAlso Not String.IsNullOrEmpty(cTab.Name) Then
+                        Dim NewTabPage As New TabPage
+                        NewTabPage.Text = cTab.Name
+                        NewTabPage.Tag = New Structures.MainTabType With {.ContentName = cTab.Name, .ContentType = cTabType, .DefaultList = cTab.Value}
+                        NewCustomTabs.Add(NewTabPage)
+                    End If
                 End If
             Next
             TabPageAdd(NewCustomTabs, tabc)

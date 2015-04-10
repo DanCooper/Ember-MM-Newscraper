@@ -1247,6 +1247,23 @@ Public Class Database
         Return ViewProperty
     End Function
 
+    Public Function ViewExists(ByVal ViewName As String) As Boolean
+        If Not String.IsNullOrEmpty(ViewName) Then
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Format("SELECT name FROM sqlite_master WHERE type ='view' AND name = '{0}';", ViewName)
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                End Using
+            End Using
+        Else
+            Return False
+        End If
+    End Function
+
     Public Function GetViewList(ByVal Type As Enums.Content_Type) As List(Of String)
         Dim ViewList As New List(Of String)
         Dim ContentType As String = String.Empty

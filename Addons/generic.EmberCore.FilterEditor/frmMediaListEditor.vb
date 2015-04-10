@@ -36,7 +36,7 @@ Public Class frmMediaListEditor
     End Sub
 
     Private Sub GetViews()
-        Me.btnRemoveView.Enabled = False
+        Me.btnViewRemove.Enabled = False
         Me.txtView_Name.Enabled = False
         Me.txtView_Name.Text = String.Empty
         Me.txtView_Query.Enabled = False
@@ -56,7 +56,7 @@ Public Class frmMediaListEditor
     Private Sub cbMediaList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMediaList.SelectedIndexChanged
         If Not cbMediaList.SelectedIndex = -1 Then
             Me.cbMediaListType.SelectedIndex = -1
-            Me.btnRemoveView.Enabled = True
+            Me.btnViewRemove.Enabled = True
             Me.txtView_Name.Text = String.Empty
             Me.txtView_Query.Text = String.Empty
             Dim SQL As Database.SQLViewProperty = Master.DB.GetViewDetails(cbMediaList.SelectedItem.ToString)
@@ -75,7 +75,7 @@ Public Class frmMediaListEditor
         End If
     End Sub
 
-    Private Sub btnAddFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddView.Click
+    Private Sub btnViewAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewAdd.Click
         If Not String.IsNullOrEmpty(txtView_Name.Text) OrElse String.IsNullOrEmpty(Me.txtView_Query.Text) Then
             Master.DB.DeleteView(String.Concat(Me.txtView_Prefix.Text, Me.txtView_Name.Text))
             If Master.DB.AddView(String.Concat("CREATE VIEW '", Me.txtView_Prefix.Text, txtView_Name.Text, "' AS ", txtView_Query.Text)) Then
@@ -87,9 +87,15 @@ Public Class frmMediaListEditor
         End If
     End Sub
 
-    Private Sub btnRemoveFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveView.Click
+    Private Sub btnViewRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewRemove.Click
         If Not String.IsNullOrEmpty(Me.txtView_Name.Text) Then
-            Master.DB.DeleteView(String.Concat(Me.txtView_Prefix.Text, Me.txtView_Name.Text))
+            Dim ViewName As String = String.Concat(Me.txtView_Prefix.Text, Me.txtView_Name.Text)
+            Master.DB.DeleteView(ViewName)
+            For Each dRow As DataGridViewRow In dgvCustomTabs.Rows
+                If dRow.Cells(1).Value.ToString = ViewName Then
+                    dgvCustomTabs.Rows.RemoveAt(dRow.Index)
+                End If
+            Next
             GetViews()
         End If
     End Sub
@@ -124,14 +130,14 @@ Public Class frmMediaListEditor
     Private Sub ValidateSQL()
         If Not String.IsNullOrEmpty(Me.txtView_Name.Text) AndAlso Not String.IsNullOrEmpty(Me.txtView_Prefix.Text) AndAlso Not String.IsNullOrEmpty(Me.txtView_Query.Text) AndAlso _
             Me.txtView_Query.Text.ToLower.StartsWith("select ") AndAlso Me.txtView_Query.Text.ToLower.Contains(String.Concat(Me.txtView_Prefix.Text.Replace("-", String.Empty), "list")) Then
-            Me.btnAddView.Enabled = True
-            Me.btnRemoveView.Enabled = True
+            Me.btnViewAdd.Enabled = True
+            Me.btnViewRemove.Enabled = True
         Else
-            Me.btnAddView.Enabled = False
-            Me.btnRemoveView.Enabled = False
+            Me.btnViewAdd.Enabled = False
+            Me.btnViewRemove.Enabled = False
         End If
         If Not String.IsNullOrEmpty(Me.txtView_Prefix.Text) AndAlso Not String.IsNullOrEmpty(Me.txtView_Name.Text) Then
-            Me.btnRemoveView.Enabled = True
+            Me.btnViewRemove.Enabled = True
         End If
     End Sub
 
@@ -162,7 +168,9 @@ Public Class frmMediaListEditor
         Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
         If CustomTabs IsNot Nothing Then
             For Each sett In CustomTabs
-                Dim i As Integer = dgvCustomTabs.Rows.Add(New Object() {sett.Name, sett.Value})
+                If colCustomTabsList.Items.Contains(sett.Value) Then
+                    dgvCustomTabs.Rows.Add(New Object() {sett.Name, sett.Value})
+                End If
             Next
         End If
         dgvCustomTabs.ClearSelection()
@@ -174,6 +182,25 @@ Public Class frmMediaListEditor
         dgvCustomTabs.CurrentCell = dgvCustomTabs.Rows(i).Cells(0)
         dgvCustomTabs.BeginEdit(True)
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnCustomTabsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCustomTabsRemove.Click
+        If dgvCustomTabs.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvCustomTabs.Rows(dgvCustomTabs.SelectedCells(0).RowIndex).Tag) Then
+            dgvCustomTabs.Rows.RemoveAt(dgvCustomTabs.SelectedCells(0).RowIndex)
+            RaiseEvent ModuleSettingsChanged()
+        End If
+    End Sub
+
+    Private Sub dgvCustomTabs_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvCustomTabs.CurrentCellDirtyStateChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub dgvCustomTabs_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvCustomTabs.SelectionChanged
+        If dgvCustomTabs.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvCustomTabs.Rows(dgvCustomTabs.SelectedCells(0).RowIndex).Tag) Then
+            btnCustomTabsRemove.Enabled = True
+        Else
+            btnCustomTabsRemove.Enabled = False
+        End If
     End Sub
 
 #Region "Nested Types"
