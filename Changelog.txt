@@ -1,3 +1,35 @@
+Changelog 1.4.4.0 (2015-04-12)
+
+[Main]
+fixed: dialogs are displayed outside of screen if Ember is minimized
+fixed: tv show image preview
+fixed: "Reset Movie Filters"
+fixed: "Reset Valid Video Ext"
+fixed: read IMDB ID from folder or file name
+fixed: Split-Episode support
+fixed: episode subtitles scanning
+fixed: Watched checmarks do not update in real time
+fixed: sort movie list by "Sort Title"
+fixed: Studio and Director labels does not display ampersand
+fixed: German Forum URL
+added: "Lock Audio / Video Language" for episodes
+improved: startup process
+improved: media list response
+improved: search box is no longer blocked while loading media infos
+removed: button "Get Online" tv show matching regex
+
+[Media List Editor]
+added: first release
+
+[IMDB]
+added: Short Titles option (thx to Avi Buerno)
+
+[Renamer]
+fixed: does not respect lock if use "Lock all"
+fixed: do not use custom lists
+fixed: Rating if decimal separator is comma
+
+
 Changelog 1.4.3.1 (2015-03-25)
 
 [Renamer]
