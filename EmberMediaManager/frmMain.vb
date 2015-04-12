@@ -11357,6 +11357,11 @@ doCancel:
 
                 Application.DoEvents()
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+
+                RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+                RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+                RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     If Master.DB.ConnectMyVideosDB() Then
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
@@ -11377,6 +11382,10 @@ doCancel:
                         Me.Visible = True
                     End If
                 End If
+
+                AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+                AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+                AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
 
                 Master.DB.LoadMovieSourcesFromDB()
                 Master.DB.LoadTVSourcesFromDB()

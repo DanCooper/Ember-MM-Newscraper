@@ -500,6 +500,7 @@ Public Class dlgSettings
                 ModuleCounter += 1
                 AddHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
                 AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
                 Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
             End If
         Next
@@ -554,6 +555,7 @@ Public Class dlgSettings
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
             RemoveHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
     End Sub
 

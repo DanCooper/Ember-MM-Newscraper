@@ -1474,9 +1474,14 @@
   <string id="1382">Result of query must contain either field idMovie (Movie-Filter), idSet(Set-Filter) or idShow(Show-Filter) or/and idMedia!</string>
   <string id="1383">Complete overview of Ember datatables:</string>
   <string id="1384">Ember Database</string>
-  <string id="1385">Name, query and type of filter needs to be set!</string>
+  <string id="1385">Media List Editor</string>
   <string id="1386">Invalid SQL!</string>
   <string id="1387">Use digit grouping symbol for Votes count</string>
   <string id="1388">Display watched progress for shows (Time consuming!)</string>
   <string id="1389">Short Titles ({0})</string>
+  <string id="1390">Custom Media Lists</string>
+  <string id="1391">Prefix</string>
+  <string id="1392">Use CTRL + Return for new lines.</string>
+  <string id="1393">Custom Tabs</string>
+  <string id="1394">List</string>
 </strings>

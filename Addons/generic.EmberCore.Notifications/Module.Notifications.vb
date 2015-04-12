@@ -42,6 +42,8 @@ Public Class NotificationsModule
 
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
 
+    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+
 #End Region 'Events
 
 #Region "Properties"

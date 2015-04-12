@@ -48,6 +48,8 @@ Public Class genericMediaListEditor
 
     Public Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements EmberAPI.Interfaces.GenericModule.ModuleSetupChanged
 
+    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+
 #End Region 'Events
 
 #Region "Properties"
@@ -90,8 +92,8 @@ Public Class genericMediaListEditor
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmMediaListEditor
-        SPanel.Name = Master.eLang.GetString(9999, "Media List Editor")
-        SPanel.Text = Master.eLang.GetString(9999, "Media List Editor")
+        SPanel.Name = Me._name
+        SPanel.Text = Master.eLang.GetString(1385, "Media List Editor")
         SPanel.Prefix = "MediaListEditor_"
         SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1
@@ -99,11 +101,16 @@ Public Class genericMediaListEditor
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlMediaListEditor
         AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Return SPanel
     End Function
 
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub Handle_SetupNeedsRestart()
+        RaiseEvent SetupNeedsRestart()
     End Sub
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
@@ -114,6 +121,7 @@ Public Class genericMediaListEditor
         If Not _setup Is Nothing Then _setup.SaveChanges()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler Me._setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
             _setup.Dispose()
         End If
     End Sub

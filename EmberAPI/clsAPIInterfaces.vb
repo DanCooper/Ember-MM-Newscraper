@@ -35,6 +35,8 @@ Public Class Interfaces
 
         Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
 
+        Event SetupNeedsRestart()
+
 #End Region 'Events
 
 #Region "Properties"
