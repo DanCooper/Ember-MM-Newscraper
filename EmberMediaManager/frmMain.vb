@@ -1168,11 +1168,11 @@ Public Class frmMain
             If Me.btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
                 Me.btnFilterSortTitle_Movies.Tag = "DSC"
                 Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns("SortTitle"), ComponentModel.ListSortDirection.Descending)
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns("SortedTitle"), ComponentModel.ListSortDirection.Descending)
             Else
                 Me.btnFilterSortTitle_Movies.Tag = "ASC"
                 Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
-                Me.dgvMovies.Sort(Me.dgvMovies.Columns("SortTitle"), ComponentModel.ListSortDirection.Ascending)
+                Me.dgvMovies.Sort(Me.dgvMovies.Columns("SortedTitle"), ComponentModel.ListSortDirection.Ascending)
             End If
 
             Me.SaveFilter_Movies()
@@ -7225,10 +7225,10 @@ doCancel:
             Me.btnFilterSortRating_Movies.Image = Nothing
         End If
 
-        If Me.dgvMovies.SortedColumn.HeaderCell.Value.ToString = "SortTitle" AndAlso Me.dgvMovies.SortOrder = 1 Then
+        If Me.dgvMovies.SortedColumn.HeaderCell.Value.ToString = "SortedTitle" AndAlso Me.dgvMovies.SortOrder = 1 Then
             Me.btnFilterSortTitle_Movies.Tag = "ASC"
             Me.btnFilterSortTitle_Movies.Image = My.Resources.asc
-        ElseIf Me.dgvMovies.SortedColumn.HeaderCell.Value.ToString = "SortTitle" AndAlso Me.dgvMovies.SortOrder = 2 Then
+        ElseIf Me.dgvMovies.SortedColumn.HeaderCell.Value.ToString = "SortedTitle" AndAlso Me.dgvMovies.SortOrder = 2 Then
             Me.btnFilterSortTitle_Movies.Tag = "DESC"
             Me.btnFilterSortTitle_Movies.Image = My.Resources.desc
         Else
