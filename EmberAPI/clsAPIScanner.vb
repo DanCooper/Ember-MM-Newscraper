@@ -1426,10 +1426,14 @@ Public Class Scanner
     Public Sub ScanForTVFiles(ByRef tShow As TVShowContainer, ByVal sPath As String)
         Dim di As New DirectoryInfo(sPath)
         Try
-            For Each lFile As FileInfo In di.GetFiles.Where(Function(f) Not TVPaths.Contains(f.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso _
-                    Not Regex.IsMatch(f.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso _
-                    (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.TVSkipLessThan * 1048576)).OrderBy(Function(s) s.Name)
-                tShow.Episodes.Add(New EpisodeContainer With {.Filename = lFile.FullName, .Source = tShow.Source})
+            For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
+                If Not TVPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso _
+                    Not Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso _
+                    (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
+                    tShow.Episodes.Add(New EpisodeContainer With {.Filename = lFile.FullName, .Source = tShow.Source})
+                ElseIf Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
+                    logger.Info(String.Format("VideoInfoScanner: file {0} has been ignored (trailer or sample file)", lFile.FullName))
+                End If
             Next
 
         Catch ex As Exception
