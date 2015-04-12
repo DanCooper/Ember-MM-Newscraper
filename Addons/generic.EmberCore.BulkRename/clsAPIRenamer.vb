@@ -1258,7 +1258,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "M", f.MPAA)
                         strCond = ApplyPattern(strCond, "N", f.Collection)
                         strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
-                        strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
+                        strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", Double.Parse(f.Rating, Globalization.CultureInfo.InvariantCulture)), String.Empty))
                         '                                Q   Episode
                         strCond = ApplyPattern(strCond, "R", f.Resolution)
                         strCond = ApplyPattern(strCond, "S", f.VideoSource)
@@ -1326,7 +1326,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "M", f.MPAA)
                 pattern = ApplyPattern(pattern, "N", f.Collection)
                 pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
-                pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
+                pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", Double.Parse(f.Rating, Globalization.CultureInfo.InvariantCulture)), String.Empty))
                 '                                Q   Episode
                 pattern = ApplyPattern(pattern, "R", f.Resolution)
                 pattern = ApplyPattern(pattern, "S", f.VideoSource)
