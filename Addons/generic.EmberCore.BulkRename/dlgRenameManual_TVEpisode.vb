@@ -65,7 +65,7 @@ Public Class dlgRenameManual_TVEpisode
             txtFile.Visible = False
             txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currShow.Filename).FullName).FullName).Name
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currShow.Filename))
+            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currShow.Filename)).Trim
             Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currShow.Filename).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
                 If Not stackMark = String.Empty AndAlso Master.currShow.TVEp.Title.ToLower.EndsWith(stackMark) Then
