@@ -129,11 +129,11 @@ Public Class Tag_Generic
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources._set)
-        MyMenu.Text = "Tag Manager"
+        MyMenu.Text = Master.eLang.GetString(868, "Tag Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources._set)
-        MyTrayMenu.Text = "Tag Manager"
+        MyTrayMenu.Text = Master.eLang.GetString(868, "Tag Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, MyTrayMenu)
     End Sub
@@ -162,8 +162,8 @@ Public Class Tag_Generic
         Me._setup = New frmSettingsHolder
         Me._setup.chkEnabled.Checked = Me._enabled
         SPanel.Name = Me._Name
-        SPanel.Text = "Tag Manager"
-        SPanel.Prefix = "Tag_"
+        SPanel.Text = Master.eLang.GetString(868, "Tag Manager")
+        SPanel.Prefix = "TagManager_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100

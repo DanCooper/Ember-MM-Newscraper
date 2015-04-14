@@ -31,6 +31,7 @@ Partial Class dlgMovieSource
         Me.txtSourcePath = New System.Windows.Forms.TextBox()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
+        Me.chkGetYear = New System.Windows.Forms.CheckBox()
         Me.chkExclude = New System.Windows.Forms.CheckBox()
         Me.chkSingle = New System.Windows.Forms.CheckBox()
         Me.chkUseFolderName = New System.Windows.Forms.CheckBox()
@@ -43,7 +44,6 @@ Partial Class dlgMovieSource
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.lblHint = New System.Windows.Forms.Label()
         Me.pnlMovieSource = New System.Windows.Forms.Panel()
-        Me.chkGetYear = New System.Windows.Forms.CheckBox()
         Me.gbSourceOptions.SuspendLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMovieSource.SuspendLayout()
@@ -129,6 +129,19 @@ Partial Class dlgMovieSource
         Me.gbSourceOptions.TabIndex = 5
         Me.gbSourceOptions.TabStop = False
         Me.gbSourceOptions.Text = "Source Options"
+        '
+        'chkGetYear
+        '
+        Me.chkGetYear.AutoSize = True
+        Me.chkGetYear.Checked = True
+        Me.chkGetYear.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkGetYear.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkGetYear.Location = New System.Drawing.Point(6, 82)
+        Me.chkGetYear.Name = "chkGetYear"
+        Me.chkGetYear.Size = New System.Drawing.Size(160, 17)
+        Me.chkGetYear.TabIndex = 4
+        Me.chkGetYear.Text = "Get year from folder name"
+        Me.chkGetYear.UseVisualStyleBackColor = True
         '
         'chkExclude
         '
@@ -235,19 +248,6 @@ Partial Class dlgMovieSource
         Me.pnlMovieSource.Size = New System.Drawing.Size(436, 182)
         Me.pnlMovieSource.TabIndex = 2
         '
-        'chkGetYear
-        '
-        Me.chkGetYear.AutoSize = True
-        Me.chkGetYear.Checked = True
-        Me.chkGetYear.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkGetYear.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkGetYear.Location = New System.Drawing.Point(6, 82)
-        Me.chkGetYear.Name = "chkGetYear"
-        Me.chkGetYear.Size = New System.Drawing.Size(160, 17)
-        Me.chkGetYear.TabIndex = 4
-        Me.chkGetYear.Text = "Get year from folder name"
-        Me.chkGetYear.UseVisualStyleBackColor = True
-        '
         'dlgMovieSource
         '
         Me.AcceptButton = Me.OK_Button
@@ -267,7 +267,6 @@ Partial Class dlgMovieSource
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "Movie Source"
-        Me.TopMost = True
         Me.gbSourceOptions.ResumeLayout(False)
         Me.gbSourceOptions.PerformLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()

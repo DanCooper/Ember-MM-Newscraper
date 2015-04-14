@@ -114,7 +114,7 @@ Public Class Apple_Trailer
         _setup.cbTrailerPrefQual.Text = _MySettings.TrailerPrefQual
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(1136, "Apple")
+        SPanel.Text = "Apple"
         SPanel.Prefix = "AppleTrailer_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieTrailer"

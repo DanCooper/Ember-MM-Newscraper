@@ -162,7 +162,7 @@ Public Class IMDB_Data
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(885, "IMDB")
+        SPanel.Text = "IMDB"
         SPanel.Prefix = "IMDBMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"

@@ -303,7 +303,7 @@ Public Class FanartTV_Image
         _setup_Movie.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "_Movie")
-        Spanel.Text = Master.eLang.GetString(788, "FanartTV")
+        Spanel.Text = "FanartTV"
         Spanel.Prefix = "FanartTVMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
@@ -346,7 +346,7 @@ Public Class FanartTV_Image
         _setup_MovieSet.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "_MovieSet")
-        Spanel.Text = Master.eLang.GetString(788, "FanartTV")
+        Spanel.Text = "FanartTV"
         Spanel.Prefix = "FanartTVMovieSetMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieSetMedia"
@@ -393,7 +393,7 @@ Public Class FanartTV_Image
         _setup_TV.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "_TV")
-        Spanel.Text = Master.eLang.GetString(788, "FanartTV")
+        Spanel.Text = "FanartTV"
         Spanel.Prefix = "FanartTVTVMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlTVMedia"

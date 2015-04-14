@@ -45,6 +45,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.chkScraperShowGenre = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowTitle = New System.Windows.Forms.CheckBox()
         Me.gbScraperFieldsEpisode = New System.Windows.Forms.GroupBox()
+        Me.chkScraperEpGuestStars = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpVotes = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpActors = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpCredits = New System.Windows.Forms.CheckBox()
@@ -68,7 +69,6 @@ Partial Class frmTVInfoSettingsHolder
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblModuleInfo = New System.Windows.Forms.Label()
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
-        Me.chkScraperEpGuestStars = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperFields.SuspendLayout()
@@ -329,6 +329,17 @@ Partial Class frmTVInfoSettingsHolder
         Me.gbScraperFieldsEpisode.TabStop = False
         Me.gbScraperFieldsEpisode.Text = "Episode"
         '
+        'chkScraperEpGuestStars
+        '
+        Me.chkScraperEpGuestStars.AutoSize = True
+        Me.chkScraperEpGuestStars.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScraperEpGuestStars.Location = New System.Drawing.Point(6, 94)
+        Me.chkScraperEpGuestStars.Name = "chkScraperEpGuestStars"
+        Me.chkScraperEpGuestStars.Size = New System.Drawing.Size(84, 17)
+        Me.chkScraperEpGuestStars.TabIndex = 10
+        Me.chkScraperEpGuestStars.Text = "Guest Stars"
+        Me.chkScraperEpGuestStars.UseVisualStyleBackColor = True
+        '
         'chkScraperEpVotes
         '
         Me.chkScraperEpVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -453,9 +464,9 @@ Partial Class frmTVInfoSettingsHolder
         Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblEMMAPI.Location = New System.Drawing.Point(139, 18)
         Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
+        Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
         Me.lblEMMAPI.TabIndex = 76
-        Me.lblEMMAPI.Text = "Ember Media Manager API key"
+        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
         'gbLanguage
         '
@@ -566,17 +577,6 @@ Partial Class frmTVInfoSettingsHolder
         Me.pbModuleLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbModuleLogo.TabIndex = 96
         Me.pbModuleLogo.TabStop = False
-        '
-        'chkScraperEpGuestStars
-        '
-        Me.chkScraperEpGuestStars.AutoSize = True
-        Me.chkScraperEpGuestStars.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScraperEpGuestStars.Location = New System.Drawing.Point(6, 94)
-        Me.chkScraperEpGuestStars.Name = "chkScraperEpGuestStars"
-        Me.chkScraperEpGuestStars.Size = New System.Drawing.Size(84, 17)
-        Me.chkScraperEpGuestStars.TabIndex = 10
-        Me.chkScraperEpGuestStars.Text = "Guest Stars"
-        Me.chkScraperEpGuestStars.UseVisualStyleBackColor = True
         '
         'frmTVInfoSettingsHolder
         '

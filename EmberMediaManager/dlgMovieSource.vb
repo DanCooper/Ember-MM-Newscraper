@@ -232,6 +232,7 @@ Public Class dlgMovieSource
         Me.Text = Master.eLang.GetString(198, "Movie Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.lblHint.Text = Master.eLang.GetString(114, "* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.")
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")

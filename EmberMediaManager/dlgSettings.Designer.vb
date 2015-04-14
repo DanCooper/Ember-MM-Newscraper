@@ -7879,9 +7879,9 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.AutoSize = true
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertVTSImagesOpts)
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Location = New System.Drawing.Point(286, 76)
+        Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Location = New System.Drawing.Point(286, 89)
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Name = "gbMovieSourcesFileNamingExpertVTSImagesOpts"
-        Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Size = New System.Drawing.Size(160, 95)
+        Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Size = New System.Drawing.Size(165, 95)
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.TabIndex = 11
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.TabStop = false
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Text = "Optional Images"
@@ -7905,7 +7905,7 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpertVTSImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertVTSImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertVTSImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingExpertVTSImagesOpts.Size = New System.Drawing.Size(154, 74)
+        Me.tblMovieSourcesFileNamingExpertVTSImagesOpts.Size = New System.Drawing.Size(159, 74)
         Me.tblMovieSourcesFileNamingExpertVTSImagesOpts.TabIndex = 9
         '
         'txtMovieActorThumbsExtExpertVTS
@@ -8177,7 +8177,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Location = New System.Drawing.Point(286, 3)
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Name = "gbMovieSourcesFileNamingExpertVTSOptionalOpts"
-        Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(160, 67)
+        Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(165, 80)
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.TabIndex = 10
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.TabStop = false
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = "Optional Settings"
@@ -8197,7 +8197,7 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(154, 46)
+        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(159, 59)
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.TabIndex = 9
         '
         'chkMovieRecognizeVTSExpertVTS
@@ -8207,9 +8207,9 @@ Partial Class dlgSettings
         Me.chkMovieRecognizeVTSExpertVTS.Enabled = false
         Me.chkMovieRecognizeVTSExpertVTS.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieRecognizeVTSExpertVTS.Name = "chkMovieRecognizeVTSExpertVTS"
-        Me.chkMovieRecognizeVTSExpertVTS.Size = New System.Drawing.Size(128, 17)
+        Me.chkMovieRecognizeVTSExpertVTS.Size = New System.Drawing.Size(153, 30)
         Me.chkMovieRecognizeVTSExpertVTS.TabIndex = 3
-        Me.chkMovieRecognizeVTSExpertVTS.Text = "Recognize Video_TS"
+        Me.chkMovieRecognizeVTSExpertVTS.Text = "Recognize VIDEO_TS"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"without VIDEO_TS folder"
         Me.chkMovieRecognizeVTSExpertVTS.UseVisualStyleBackColor = true
         '
         'chkMovieUseBaseDirectoryExpertVTS

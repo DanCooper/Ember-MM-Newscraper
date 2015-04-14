@@ -125,7 +125,7 @@ Public Class TMDB_Trailer
         _setup.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "Scraper")
-        Spanel.Text = Master.eLang.GetString(937, "TMDB")
+        Spanel.Text = "TMDB"
         Spanel.Prefix = "TMDBTrailer_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieTrailer"

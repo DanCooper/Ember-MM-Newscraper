@@ -123,7 +123,7 @@ Public Class MPDB_Image
         _setup.chkEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(883, "MPDB")
+        SPanel.Text = "MPDB"
         SPanel.Prefix = "MPDBMovieMedia_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieMedia"

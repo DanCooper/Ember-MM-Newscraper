@@ -123,7 +123,7 @@ Public Class IMDB_Image
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(885, "IMDB")
+        SPanel.Text = "IMDB"
         SPanel.Prefix = "IMDBMovieMedia_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieMedia"

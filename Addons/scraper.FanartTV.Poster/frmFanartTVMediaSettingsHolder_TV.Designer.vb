@@ -519,7 +519,7 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.lblEMMAPI.Name = "lblEMMAPI"
         Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
         Me.lblEMMAPI.TabIndex = 12
-        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API key"
+        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
         'chkGetBlankImages
         '

@@ -116,7 +116,7 @@ Public Class frmTVMediaSettingsHolder
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
         Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")

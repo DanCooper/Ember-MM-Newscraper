@@ -6059,11 +6059,14 @@ Public Class dlgSettings
 
         'Banner
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
+        Me.chkMovieSetBannerMSAA.Text = strBanner
         Me.gbMovieImagesBannerOpts.Text = strBanner
         Me.gbMovieSetImagesBannerOpts.Text = strBanner
         Me.gbTVImagesAllSeasonsBannerOpts.Text = strBanner
         Me.gbTVImagesSeasonBannerOpts.Text = strBanner
         Me.gbTVImagesShowBannerOpts.Text = strBanner
+        Me.lblMovieSetBannerExpertParent.Text = strBanner
+        Me.lblMovieSetBannerExpertSingle.Text = strBanner
         Me.lblMovieSourcesFileNamingExpertBDMVBanner.Text = strBanner
         Me.lblMovieSourcesFileNamingExpertMultiBanner.Text = strBanner
         Me.lblMovieSourcesFileNamingExpertSingleBanner.Text = strBanner
@@ -6089,9 +6092,12 @@ Public Class dlgSettings
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
+        Me.chkMovieSetClearArtMSAA.Text = strClearArt
         Me.gbMovieImagesClearArtOpts.Text = strClearArt
         Me.gbMovieSetImagesClearArtOpts.Text = strClearArt
         Me.gbTVImagesShowClearArtOpts.Text = strClearArt
+        Me.lblMovieSetClearArtExpertParent.Text = strClearArt
+        Me.lblMovieSetClearArtExpertSingle.Text = strClearArt
         Me.lblMovieClearArtExpertBDMV.Text = strClearArt
         Me.lblMovieClearArtExpertMulti.Text = strClearArt
         Me.lblMovieClearArtExpertSingle.Text = strClearArt
@@ -6100,9 +6106,12 @@ Public Class dlgSettings
 
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
+        Me.chkMovieSetClearLogoMSAA.Text = strClearLogo
         Me.gbMovieImagesClearLogoOpts.Text = strClearLogo
         Me.gbMovieSetImagesClearLogoOpts.Text = strClearLogo
         Me.gbTVImagesShowClearLogoOpts.Text = strClearLogo
+        Me.lblMovieSetClearLogoExpertParent.Text = strClearLogo
+        Me.lblMovieSetClearLogoExpertSingle.Text = strClearLogo
         Me.lblMovieClearLogoExpertBDMV.Text = strClearLogo
         Me.lblMovieClearLogoExpertMulti.Text = strClearLogo
         Me.lblMovieClearLogoExpertSingle.Text = strClearLogo
@@ -6152,6 +6161,8 @@ Public Class dlgSettings
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
         Me.gbMovieImagesDiscArtOpts.Text = strDiscArt
+        Me.lblMovieSetDiscArtExpertParent.Text = strDiscArt
+        Me.lblMovieSetDiscArtExpertSingle.Text = strDiscArt
         Me.lblMovieDiscArtExpertBDMV.Text = strDiscArt
         Me.lblMovieDiscArtExpertMulti.Text = strDiscArt
         Me.lblMovieDiscArtExpertSingle.Text = strDiscArt
@@ -6195,6 +6206,17 @@ Public Class dlgSettings
         Dim strEpisodes As String = Master.eLang.GetString(682, "Episodes")
         Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
 
+        'Expert
+        Dim strExpert As String = Master.eLang.GetString(439, "Expert")
+        Me.tpMovieSourcesFileNamingExpert.Text = strExpert
+        Me.tpMovieSetFileNamingExpert.Text = strExpert
+        Me.tpTVSourcesFileNamingExpert.Text = strExpert
+
+        'Expert Settings
+        Dim strExpertSettings As String = Master.eLang.GetString(1181, "Expert Settings")
+        Me.gbMovieSourcesFileNamingExpertOpts.Text = strExpertSettings
+        Me.gbMovieSetSourcesFileNamingExpertOpts.Text = strExpertSettings
+
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
         Me.chkMovieExtrafanartsExpertBDMV.Text = strExtrafanarts
@@ -6215,12 +6237,15 @@ Public Class dlgSettings
 
         'Fanart
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
+        Me.chkMovieSetFanartMSAA.Text = strFanart
         Me.gbMovieImagesFanartOpts.Text = strFanart
         Me.gbMovieSetImagesFanartOpts.Text = strFanart
         Me.gbTVImagesAllSeasonsFanartOpts.Text = strFanart
         Me.gbTVImagesEpisodeFanartOpts.Text = strFanart
         Me.gbTVImagesSeasonFanartOpts.Text = strFanart
         Me.gbTVImagesShowFanartOpts.Text = strFanart
+        Me.lblMovieSetFanartExpertParent.Text = strFanart
+        Me.lblMovieSetFanartExpertSingle.Text = strFanart
         Me.lblMovieSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
         Me.lblMovieSourcesFilenamingExpertBDMVFanart.Text = strFanart
         Me.lblMovieSourcesFilenamingExpertMultiFanart.Text = strFanart
@@ -6252,11 +6277,14 @@ Public Class dlgSettings
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
+        Me.chkMovieSetLandscapeMSAA.Text = strLandscape
         Me.gbMovieImagesLandscapeOpts.Text = strLandscape
         Me.gbMovieSetImagesLandscapeOpts.Text = strLandscape
         Me.gbTVImagesAllSeasonsLandscapeOpts.Text = strLandscape
         Me.gbTVImagesSeasonLandscapeOpts.Text = strLandscape
         Me.gbTVImagesShowLandscapeOpts.Text = strLandscape
+        Me.lblMovieSetLandscapeExpertParent.Text = strLandscape
+        Me.lblMovieSetLandscapeExpertSingle.Text = strLandscape
         Me.lblMovieSourcesFileNamingExpertBDMVLandscape.Text = strLandscape
         Me.lblMovieSourcesFileNamingExpertMultiLandscape.Text = strLandscape
         Me.lblMovieSourcesFileNamingExpertSingleLandscape.Text = strLandscape
@@ -6368,6 +6396,9 @@ Public Class dlgSettings
 
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
+        Me.chkMovieSetNFOMSAA.Text = strNFO
+        Me.lblMovieSetNFOExpertParent.Text = strNFO
+        Me.lblMovieSetNFOExpertSingle.Text = strNFO
         Me.lblMovieSourcesFileNamingBoxeeDefaultsNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingExpertBDMVNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingExpertMultiNFO.Text = strNFO
@@ -6450,6 +6481,10 @@ Public Class dlgSettings
         'Part of a MovieSet
         Dim strPartOfAMovieSet As String = Master.eLang.GetString(1295, "Part of a MovieSet")
 
+        'Path
+        Dim strPath As String = Master.eLang.GetString(410, "Path")
+        Me.lblMovieSetPathExpertSingle.Text = strPath
+
         'Plot
         Dim strPlot As String = Master.eLang.GetString(65, "Plot")
         Me.lblMovieScraperGlobalPlot.Text = strPlot
@@ -6462,12 +6497,15 @@ Public Class dlgSettings
 
         'Poster
         Dim strPoster As String = Master.eLang.GetString(148, "Poster")
+        Me.chkMovieSetPosterMSAA.Text = strPoster
         Me.gbMovieImagesPosterOpts.Text = strPoster
         Me.gbMovieSetImagesPosterOpts.Text = strPoster
         Me.gbTVImagesAllSeasonsPosterOpts.Text = strPoster
         Me.gbTVImagesEpisodePosterOpts.Text = strPoster
         Me.gbTVImagesSeasonPosterOpts.Text = strPoster
         Me.gbTVImagesShowPosterOpts.Text = strPoster
+        Me.lblMovieSetPosterExpertParent.Text = strPoster
+        Me.lblMovieSetPosterExpertSingle.Text = strPoster
         Me.lblMoviePosterExpertBDMV.Text = strPoster
         Me.lblMoviePosterExpertMulti.Text = strPoster
         Me.lblMoviePosterExpertSingle.Text = strPoster
@@ -6585,6 +6623,11 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingNMTDefaultsTrailer.Text = strTrailer
         Me.lblMovieSourcesFileNamingXBMCDefaultsTrailer.Text = strTrailer
 
+        'Use
+        Dim strUse As String = Master.eLang.GetString(872, "Use")
+        Me.chkMovieSetUseExpert.Text = strUse
+        Me.chkMovieSetUseMSAA.Text = strUse
+
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
 
@@ -6652,7 +6695,7 @@ Public Class dlgSettings
         Me.chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         Me.chkMovieNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
         Me.chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
-        Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Detect VIDEO_TS folders even if they are not named VIDEO_TS")
+        Me.chkMovieRecognizeVTSExpertVTS.Text = String.Format(Master.eLang.GetString(537, "Recognize VIDEO_TS{0}without VIDEO_TS folder"), Environment.NewLine)
         Me.chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         Me.chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
@@ -6710,6 +6753,7 @@ Public Class dlgSettings
         Me.gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
         Me.gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         Me.gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
+        Me.gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         Me.gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
         Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
         Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
@@ -6725,6 +6769,7 @@ Public Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
+        Me.gbMovieSourcesFileNamingXBMCADOpts.Text = Master.eLang.GetString(822, "ArtworkDownloader Addon")
         Me.gbMovieSourcesFileNamingXBMCTvTunesOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
@@ -6753,6 +6798,7 @@ Public Class dlgSettings
         Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
         Me.lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)
+        Me.lblMovieScraperMPAANotRated.Text = String.Concat(Master.eLang.GetString(832, "MPAA value if no rating is available"), ":")
         Me.lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         Me.lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
         Me.lblMovieTrailerDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
@@ -6786,6 +6832,8 @@ Public Class dlgSettings
         Me.lvTVSources.Columns(6).Text = "Sorting"
         Me.tpFileSystemCleanerExpert.Text = Master.eLang.GetString(439, "Expert")
         Me.tpFileSystemCleanerStandard.Text = Master.eLang.GetString(438, "Standard")
+        Me.tpMovieSetFileNamingExpertParent.Text = Master.eLang.GetString(880, "Parent Folder")
+        Me.tpMovieSetFileNamingExpertSingle.Text = Master.eLang.GetString(879, "Single Folder")
         Me.tpTVImagesAllSeasons.Text = Master.eLang.GetString(1202, "TV All Seasons")
         Me.tpTVImagesEpisode.Text = Master.eLang.GetString(701, "TV Episode")
         Me.tpTVImagesSeason.Text = Master.eLang.GetString(744, "TV Season")

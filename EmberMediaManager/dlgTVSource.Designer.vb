@@ -266,7 +266,6 @@ Partial Class dlgTVSource
         Me.Name = "dlgTVSource"
         Me.ShowInTaskbar = False
         Me.Text = "TV Source"
-        Me.TopMost = True
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTVSource.ResumeLayout(False)
         Me.pnlTVSource.PerformLayout()

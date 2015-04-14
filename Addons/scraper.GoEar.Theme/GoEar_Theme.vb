@@ -171,5 +171,4 @@ Public Class GoEar_Theme
 
 #End Region 'Nested Types
 
-
 End Class

@@ -117,7 +117,7 @@ Public Class IMPA_Image
         _setup.chkEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(876, "IMPA")
+        SPanel.Text = "IMPA"
         SPanel.Prefix = "IMPAMovieMedia_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieMedia"

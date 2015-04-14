@@ -114,7 +114,7 @@ Public Class IMDB_Trailer
         _setup.chkEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(885, "IMDB")
+        SPanel.Text = "IMDB"
         SPanel.Prefix = "IMDBTrailer_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieTrailer"

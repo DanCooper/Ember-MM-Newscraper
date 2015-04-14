@@ -217,7 +217,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(469, 182)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(475, 182)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -264,7 +264,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(463, 161)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(469, 161)
         Me.tblScraperFieldsOpts.TabIndex = 1
         '
         'gbScraperFieldsCredits
@@ -604,7 +604,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 191)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(469, 140)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(475, 140)
         Me.gbScraperOpts.TabIndex = 97
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -636,7 +636,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperOpts.Size = New System.Drawing.Size(463, 119)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(469, 119)
         Me.tblScraperOpts.TabIndex = 1
         '
         'chkCountryAbbreviation
@@ -645,7 +645,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkCountryAbbreviation.AutoSize = True
         Me.tblScraperOpts.SetColumnSpan(Me.chkCountryAbbreviation, 2)
         Me.chkCountryAbbreviation.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountryAbbreviation.Location = New System.Drawing.Point(104, 53)
+        Me.chkCountryAbbreviation.Location = New System.Drawing.Point(110, 53)
         Me.chkCountryAbbreviation.Name = "chkCountryAbbreviation"
         Me.chkCountryAbbreviation.Size = New System.Drawing.Size(356, 17)
         Me.chkCountryAbbreviation.TabIndex = 79
@@ -670,7 +670,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkFallBackworldwide.AutoSize = True
         Me.tblScraperOpts.SetColumnSpan(Me.chkFallBackworldwide, 2)
         Me.chkFallBackworldwide.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFallBackworldwide.Location = New System.Drawing.Point(104, 30)
+        Me.chkFallBackworldwide.Location = New System.Drawing.Point(110, 30)
         Me.chkFallBackworldwide.Name = "chkFallBackworldwide"
         Me.chkFallBackworldwide.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkFallBackworldwide.Size = New System.Drawing.Size(189, 17)
@@ -683,7 +683,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.lblForceTitleLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblForceTitleLanguage.AutoSize = True
         Me.lblForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblForceTitleLanguage.Location = New System.Drawing.Point(104, 7)
+        Me.lblForceTitleLanguage.Location = New System.Drawing.Point(110, 7)
         Me.lblForceTitleLanguage.Name = "lblForceTitleLanguage"
         Me.lblForceTitleLanguage.Size = New System.Drawing.Size(116, 13)
         Me.lblForceTitleLanguage.TabIndex = 4
@@ -696,7 +696,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.cbForceTitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbForceTitleLanguage.FormattingEnabled = True
         Me.cbForceTitleLanguage.Items.AddRange(New Object() {"", "Argentina", "Australia", "Azerbaijan", "Belgium", "Brazil", "Bulgaria (Bulgarian title)", "Canada (English title)", "Canada (French title)", "Chile", "China (Mandarin title)", "Colombia", "Croatia", "Czech Republic", "Denmark", "Estonia", "Finland", "Finland (Swedish title)", "France", "Georgia", "Germany", "Greece", "Hong Kong", "Hong Kong (Cantonese title)", "Hong Kong (Mandarin title)", "Hungary", "Iceland", "India (Hindi title)", "Ireland", "Israel (Hebrew title)", "Italy", "Japan", "Japan (English title)", "Latvia", "Lithuania", "Mexico", "Netherlands", "New Zealand", "Panama", "Peru", "Poland", "Portugal", "Romania", "Russia", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Korea", "Spain", "Sweden", "Switzerland", "Taiwan", "Turkey (Turkish title)", "UK", "Ukraine", "Uruguay", "USA", "Venezuela", "Vietnam"})
-        Me.cbForceTitleLanguage.Location = New System.Drawing.Point(226, 3)
+        Me.cbForceTitleLanguage.Location = New System.Drawing.Point(232, 3)
         Me.cbForceTitleLanguage.Name = "cbForceTitleLanguage"
         Me.cbForceTitleLanguage.Size = New System.Drawing.Size(131, 21)
         Me.cbForceTitleLanguage.Sorted = True
@@ -721,9 +721,9 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTvTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTvTitles.Location = New System.Drawing.Point(3, 53)
         Me.chkTvTitles.Name = "chkTvTitles"
-        Me.chkTvTitles.Size = New System.Drawing.Size(67, 17)
+        Me.chkTvTitles.Size = New System.Drawing.Size(101, 17)
         Me.chkTvTitles.TabIndex = 2
-        Me.chkTvTitles.Text = "TV Titles"
+        Me.chkTvTitles.Text = "TV Movie Titles"
         Me.chkTvTitles.UseVisualStyleBackColor = True
         '
         'chkVideoTitles

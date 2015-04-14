@@ -235,7 +235,7 @@ Public Class frmTVInfoSettingsHolder
         Me.gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
         Me.gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
         Me.gbTMDB.Text = Master.eLang.GetString(941, "TVDB")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
         Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScrapeOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")

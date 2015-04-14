@@ -272,6 +272,7 @@ Partial Class dlgWizard
         Me.colFolder = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnMovieRem = New System.Windows.Forms.Button()
         Me.btnMovieAddFolder = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -462,7 +463,6 @@ Partial Class dlgWizard
         Me.lblMovieSetBannerExpertParent = New System.Windows.Forms.Label()
         Me.chkMovieSetUseExpert = New System.Windows.Forms.CheckBox()
         Me.Label48 = New System.Windows.Forms.Label()
-        Me.colGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.tblMovieSettings.SuspendLayout()
@@ -3651,6 +3651,10 @@ Partial Class dlgWizard
         '
         Me.colExclude.Text = "Exclude"
         '
+        'colGetYear
+        '
+        Me.colGetYear.Text = "Get Year"
+        '
         'btnMovieRem
         '
         Me.btnMovieRem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -5956,10 +5960,6 @@ Partial Class dlgWizard
         Me.Label48.Text = resources.GetString("Label48.Text")
         Me.Label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'colGetYear
-        '
-        Me.colGetYear.Text = "Get Year"
-        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -5988,7 +5988,6 @@ Partial Class dlgWizard
         Me.Name = "dlgWizard"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Ember Startup Wizard"
-        Me.TopMost = True
         Me.pnlWelcome.ResumeLayout(False)
         Me.pnlWelcome.PerformLayout()
         Me.pnlMovieSettings.ResumeLayout(False)

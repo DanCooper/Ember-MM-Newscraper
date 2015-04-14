@@ -188,9 +188,9 @@ Partial Class frmTVMediaSettingsHolder
         Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblEMMAPI.Location = New System.Drawing.Point(142, 16)
         Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
+        Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
         Me.lblEMMAPI.TabIndex = 78
-        Me.lblEMMAPI.Text = "Ember Media Manager API key"
+        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
         'btnUnlockAPI
         '

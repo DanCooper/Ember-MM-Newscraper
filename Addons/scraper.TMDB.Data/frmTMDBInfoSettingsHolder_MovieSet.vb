@@ -170,7 +170,7 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
         Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")

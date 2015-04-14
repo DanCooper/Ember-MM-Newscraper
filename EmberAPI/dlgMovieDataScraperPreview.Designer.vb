@@ -2724,7 +2724,6 @@ Partial Class dlgMovieDataScraperPreview
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "ScraperPreview"
-        Me.TopMost = True
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()

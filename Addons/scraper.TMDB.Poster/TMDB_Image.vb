@@ -200,7 +200,7 @@ Public Class TMDB_Image
         _setup_Movie.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "_Movie")
-        Spanel.Text = Master.eLang.GetString(937, "TMDB")
+        Spanel.Text = "TMDB"
         Spanel.Prefix = "TMDBMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
@@ -238,7 +238,7 @@ Public Class TMDB_Image
         _setup_MovieSet.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "_MovieSet")
-        Spanel.Text = Master.eLang.GetString(937, "TMDB")
+        Spanel.Text = "TMDB"
         Spanel.Prefix = "TMDBMovieSetMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieSetMedia"

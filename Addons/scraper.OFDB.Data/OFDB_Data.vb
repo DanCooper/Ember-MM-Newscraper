@@ -114,7 +114,7 @@ Public Class OFDB_Data
         _setup.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(895, "OFDB")
+        SPanel.Text = "OFDB"
         SPanel.Prefix = "OFDBMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"

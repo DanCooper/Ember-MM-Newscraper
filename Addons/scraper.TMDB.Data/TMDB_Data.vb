@@ -190,7 +190,7 @@ Public Class TMDB_Data
         _setup_Movie.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "_Movie")
-        SPanel.Text = Master.eLang.GetString(937, "TMDB")
+        SPanel.Text = "TMDB"
         SPanel.Prefix = "TMDBMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
@@ -226,7 +226,7 @@ Public Class TMDB_Data
         _setup_MovieSet.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "_MovieSet")
-        SPanel.Text = Master.eLang.GetString(937, "TMDB")
+        SPanel.Text = "TMDB"
         SPanel.Prefix = "TMDBMovieSetInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieSetData"

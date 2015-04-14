@@ -93,7 +93,6 @@ Partial Class dlgCopyFiles
         Me.Name = "dlgCopyFiles"
         Me.ShowInTaskbar = False
         Me.Text = "dlgCopyFiles"
-        Me.TopMost = True
         Me.pnlStatus.ResumeLayout(False)
         Me.ResumeLayout(False)
 

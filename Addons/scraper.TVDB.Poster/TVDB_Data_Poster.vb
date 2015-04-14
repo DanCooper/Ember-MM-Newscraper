@@ -185,7 +185,7 @@ Public Class TVDB_Data_Poster
 
 
         SPanel.Name = String.Concat(Me._Name, "PostScraper")
-        SPanel.Text = Master.eLang.GetString(941, "TVDB")
+        SPanel.Text = "TVDB"
         SPanel.Prefix = "TVDBData_"
         SPanel.Type = Master.eLang.GetString(653, "TV Shows")
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
@@ -240,7 +240,7 @@ Public Class TVDB_Data_Poster
         End If
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(941, "TVDB")
+        SPanel.Text = "TVDB"
         SPanel.Prefix = "TVDBMedia_"
         SPanel.Type = Master.eLang.GetString(653, "TV Shows")
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
