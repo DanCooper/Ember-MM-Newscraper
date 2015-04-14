@@ -101,6 +101,22 @@
       <icon>de/de_18.png</icon>
       <country>germany</country>
     </name>
+    <name searchstring="Denmark:A">
+      <icon>dk/dk_a.png</icon>
+      <country>denmark</country>
+    </name>
+    <name searchstring="Denmark:7">
+      <icon>dk/dk_7.png</icon>
+      <country>denmark</country>
+    </name>
+    <name searchstring="Denmark:11">
+      <icon>dk/dk_11.png</icon>
+      <country>denmark</country>
+    </name>
+    <name searchstring="Denmark:15">
+      <icon>dk/dk_15.png</icon>
+      <country>denmark</country>
+    </name>
   </movies>
   <tv>
     <name searchstring="TV-Y7-FV">
@@ -186,6 +202,22 @@
     <name searchstring="Germany:18">
       <icon>de/de_18.png</icon>
       <country>germany</country>
+    </name>
+    <name searchstring="Denmark:A">
+      <icon>dk/dk_a.png</icon>
+      <country>denmark</country>
+    </name>
+    <name searchstring="Denmark:7">
+      <icon>dk/dk_7.png</icon>
+      <country>denmark</country>
+    </name>
+    <name searchstring="Denmark:11">
+      <icon>dk/dk_11.png</icon>
+      <country>denmark</country>
+    </name>
+    <name searchstring="Denmark:15">
+      <icon>dk/dk_15.png</icon>
+      <country>denmark</country>
     </name>
   </tv>
 </ratings>
