@@ -27,15 +27,15 @@ Public Class BulkRenamerModule
 
     Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
-    Public Delegate Sub Delegate_DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
+    Public Delegate Sub Delegate_AddToolsStripItem(tsi As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripMenuItem)
 
 #End Region 'Delegates
 
 #Region "Fields"
 
     Private WithEvents mnuMainToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
-    Private MySettings As New _MySettings
     Private WithEvents cmnuTrayToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
+    Private MySettings As New _MySettings
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _Name As String = "Renamer"
@@ -277,13 +277,13 @@ Public Class BulkRenamerModule
         Dim tsi As New ToolStripMenuItem
         mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
-        DropDownItemsAdd(mnuMainToolsRenamer, tsi)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsRenamer)
         cmnuTrayToolsRenamer.Image = New Bitmap(My.Resources.icon)
         cmnuTrayToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(cmnuTrayToolsRenamer)
+        AddToolsStripItem(tsi, cmnuTrayToolsRenamer)
 
         'cmnuMovies
         cmnuRenamer_Movies.Image = New Bitmap(My.Resources.icon)
@@ -322,12 +322,12 @@ Public Class BulkRenamerModule
         SetToolsStripItem_Shows(cmnuRenamer_Shows)
     End Sub
 
-    Public Sub DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
-        If (tsi.Owner.InvokeRequired) Then
-            tsi.Owner.Invoke(New Delegate_DropDownItemsAdd(AddressOf DropDownItemsAdd), New Object() {value, tsi})
+    Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+        If (control.Owner.InvokeRequired) Then
+            control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
             Exit Sub
         End If
-        tsi.DropDownItems.Add(mnuMainToolsRenamer)
+        control.DropDownItems.Add(value)
     End Sub
 
     Public Sub SetToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
