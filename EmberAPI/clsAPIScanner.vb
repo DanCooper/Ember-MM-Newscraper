@@ -654,8 +654,28 @@ Public Class Scanner
                                 logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
                                 remainder = reg.Match(remainder).Groups(3).Value
                             ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
+                                Dim endPattern As String = String.Empty
                                 eItem = New EpisodeItem With {.Season = eItem.Season}
                                 eItem.Episode = CInt(reg2.Match(remainder).Groups(1).Value)
+                                Dim Episode As Match = Regex.Match(reg2.Match(remainder).Groups(1).Value, "(\d*)(.*)")
+                                eItem.Episode = CInt(Episode.Groups(1).Value)
+                                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
+
+                                If Not String.IsNullOrEmpty(endPattern) Then
+                                    If Regex.IsMatch(endPattern.ToLower, "[a-i]", RegexOptions.IgnoreCase) Then
+                                        Dim count As Integer = 1
+                                        For Each c As Char In "abcdefghi".ToCharArray()
+                                            If c = endPattern.ToLower Then
+                                                eItem.SubEpisode = count
+                                                Exit For
+                                            End If
+                                            count += 1
+                                        Next
+                                    ElseIf endPattern.StartsWith(".") Then
+                                        eItem.SubEpisode = CInt(endPattern.Substring(1))
+                                    End If
+                                End If
+
                                 retEpisodeItemsList.Add(eItem)
                                 logger.Info(String.Format("VideoInfoScanner: Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
                                 remainder = remainder.Substring(reg2.Match(remainder).Length)
