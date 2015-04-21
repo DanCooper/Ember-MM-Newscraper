@@ -1402,10 +1402,10 @@ Public Class NFO
                 'YAMJ support
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
                     If movieToSave.Movie.TMDBIDSpecified Then
-                        movieToSave.Movie.TMDBID = Nothing
+                        movieToSave.Movie.TMDBID = String.Empty
                     End If
                     If movieToSave.Movie.IDMovieDBSpecified Then
-                        movieToSave.Movie.IDMovieDB = Nothing
+                        movieToSave.Movie.IDMovieDB = String.Empty
                     End If
                 End If
 
