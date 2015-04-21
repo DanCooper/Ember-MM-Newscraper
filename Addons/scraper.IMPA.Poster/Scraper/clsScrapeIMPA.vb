@@ -64,18 +64,16 @@ Namespace IMPA
 
                     Dim mcPoster As MatchCollection = Regex.Matches(HTML, "(thumbs/imp_([^>]*ver[^>]*.jpg))|(thumbs/imp_([^>]*.jpg))")
 
-                    Dim PosterURL As String
+                    Dim ThumbURL As String
 
                     For Each mPoster As Match In mcPoster
 
-                        PosterURL = String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString())
+                        ThumbURL = String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString())
                         ParentID = mPoster.Value
                         If Not ParentID = oV Then
-                            alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = PosterURL, .Height = "100", .Width = "68", .ParentID = ParentID})
 
-                            PosterURL = String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters").Replace("imp_", String.Empty)
-
-                            alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
+                            Dim PosterURL = String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters").Replace("imp_", String.Empty)
+                            alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = PosterURL, .ThumbURL = ThumbURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
 
                             'Most posters are not available as extra large. Therefore, for now disabled.
                             'PosterURL = PosterURL.Insert(PosterURL.LastIndexOf("."), "_xlg")

@@ -2519,6 +2519,7 @@ Namespace MediaContainers
         Public Property isChecked As Boolean
         Public Property URL As String ' path to image (local or url)
         Public Property WebImage As Images
+        Public Property WebThumb As Images
         Public Property ParentID As String 'All images of the same size must have this identical, is used to group the images.
         Public Property TVSeasonPosterType As Enums.TVSeasonPosterType
         Public Property TVSeasonBannerType As Enums.TVSeasonBannerType
@@ -2559,6 +2560,7 @@ Namespace MediaContainers
             Me._VoteAverage = String.Empty
             Me._VoteCount = 0
             Me._WebImage = New Images
+            Me._WebThumb = New Images
             Me._ThumbURL = String.Empty
         End Sub
 

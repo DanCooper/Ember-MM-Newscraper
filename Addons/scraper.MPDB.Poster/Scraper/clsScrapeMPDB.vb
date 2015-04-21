@@ -52,6 +52,7 @@ Namespace MPDB
                     Dim mcPoster As MatchCollection = Regex.Matches(HTML, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
 
                     Dim PosterURL As String = String.Empty
+                    Dim ThumbURL As String = String.Empty
                     Dim ParentID As String = String.Empty
                     For Each mPoster As Match In mcPoster
                         ParentID = mPoster.Value.Substring(mPoster.Value.LastIndexOf("/") + 3, mPoster.Value.LastIndexOf(".jpg") - (mPoster.Value.LastIndexOf("/") + 3))
@@ -60,15 +61,13 @@ Namespace MPDB
                         If x.Count > 0 Then
                             logger.Trace("Duplicate {0} ", PosterURL)
                         Else
+                            ThumbURL = mPoster.Value
                             PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
                             PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "l")
                             ' url are like> http://www.movieposterdb.com/posters/10_08/2009/499549/l_499549_43475538.jpg
                             'the parent id is the part AFTER the l_
                             ' all poster have the same size
-                            alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Width = "n/a", .Height = "n/a", .ParentID = ParentID})
-                            PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
-                            PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "t")
-                            alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = PosterURL, .Width = "100", .Height = "148", .ParentID = ParentID})
+                            alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .ThumbURL = ThumbURL, .Width = "n/a", .Height = "n/a", .ParentID = ParentID})
                         End If
                     Next
                 End If

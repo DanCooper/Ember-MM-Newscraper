@@ -70,8 +70,6 @@ Public Class dlgImgSelect
     Private _efList As New List(Of String)
     Private _etList As New List(Of String)
 
-    Private aDes As String = String.Empty
-
 #End Region 'Fields
 
 #Region "Properties"
@@ -132,10 +130,6 @@ Public Class dlgImgSelect
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType_Movie, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
-        '//
-        ' Overload to pass data
-        '\\
-
         Me.tMovie = DBMovie
         Me.tIsMovie = True
         Me._ImageList = ImageList
@@ -143,32 +137,12 @@ Public Class dlgImgSelect
         Me._etList = etList
         Me.DLType = Type
         Me.isEdit = _isEdit
-        Select Case DLType
-            Case Enums.ImageType_Movie.Banner
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.ClearArt
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.ClearLogo
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.DiscArt
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.Fanart
-                aDes = Master.eSize.backdrop_names(0).description
-            Case Enums.ImageType_Movie.Landscape
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.Poster
-                aDes = Master.eSize.poster_names(0).description
-        End Select
 
         Me.SetUp()
         Return MyBase.ShowDialog()
     End Function
 
     Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ImageType_Movie, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
-        '//
-        ' Overload to pass data
-        '\\
-
         Me.tMovieSet = DBMovieSet
         Me.tIsMovie = False
         Me._ImageList = ImageList
@@ -176,22 +150,6 @@ Public Class dlgImgSelect
         Me._etList = etList
         Me.DLType = Type
         Me.isEdit = _isEdit
-        Select Case DLType
-            Case Enums.ImageType_Movie.Banner
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.ClearArt
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.ClearLogo
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.DiscArt
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.Fanart
-                aDes = Master.eSize.backdrop_names(0).description
-            Case Enums.ImageType_Movie.Landscape
-                aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType_Movie.Poster
-                aDes = Master.eSize.poster_names(0).description
-        End Select
 
         Me.SetUp()
         Return MyBase.ShowDialog()
@@ -202,13 +160,10 @@ Public Class dlgImgSelect
             Application.DoEvents()
             Me.pnlDLStatus.Visible = True
             Me.pnlBG.Visible = True
-            Me.lblSize.Visible = False
-            Me.cbFilterSize.Visible = False
 
             Application.DoEvents()
 
-            Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.Description = aDes)
-            Me.pbDL1.Maximum = x.Count
+            Me.pbDL1.Maximum = _ImageList.Count
 
             Me.bwImgDownload.WorkerSupportsCancellation = True
             Me.bwImgDownload.WorkerReportsProgress = True
@@ -221,23 +176,10 @@ Public Class dlgImgSelect
     End Sub
 
     Public Overloads Function ShowDialog() As DialogResult
-        'Me.isShown = True
         Return MyBase.ShowDialog()
     End Function
 
     Private Sub AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
-        'AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
-        'Try
-        '    Dim ResImg As Image
-        '    ResImg = CType(poster.WebImage.Image.Clone(), Image)
-        '    ImageUtils.ResizeImage(ResImg, 250, 250, True, Color.White.ToArgb())
-        '    Me.LargeImageList.Images.Add(ResImg)
-
-        '    Me.lvImages.Items.Add(text, Me.LargeImageList.Images.Count - 1)
-        '    Me.lvImages.Items(Me.lvImages.Items.Count - 1).Tag = poster
-        'Catch ex As Exception
-        '    logger.Error(New StackFrame().GetMethod().Name, ex)
-        'End Try
         Try
             ReDim Preserve Me.pnlImage(iIndex)
             ReDim Preserve Me.pbImage(iIndex)
@@ -252,7 +194,7 @@ Public Class dlgImgSelect
             Me.pbImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
             Me.pnlImage(iIndex).Tag = poster
             Me.pbImage(iIndex).Tag = poster
-            Me.pbImage(iIndex).Image = CType(poster.WebImage.Image.Clone(), Image) ' ResImg
+            Me.pbImage(iIndex).Image = If(poster.WebThumb.Image IsNot Nothing, CType(poster.WebThumb.Image.Clone(), Image), CType(poster.WebImage.Image.Clone(), Image))
             Me.pnlImage(iIndex).Left = iLeft
             Me.pbImage(iIndex).Left = 2
             Me.pnlImage(iIndex).Top = iTop
@@ -360,7 +302,7 @@ Public Class dlgImgSelect
         End If
     End Sub
 
-    Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
+    Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         PreviewImage()
     End Sub
 
@@ -369,26 +311,14 @@ Public Class dlgImgSelect
             Dim tImage As New Images
             Dim tImg As MediaContainers.Image = Nothing
             Me.pnlDLStatus.Visible = False
-            Me.lblSize.Visible = True
-            Me.cbFilterSize.Visible = True
 
             Application.DoEvents()
 
-            Select Case True
-                Case rbXLarge.Checked
-                    tImg = CType(Me.rbXLarge.Tag, MediaContainers.Image)
-                Case rbLarge.Checked
-                    tImg = CType(Me.rbLarge.Tag, MediaContainers.Image)
-                Case rbMedium.Checked
-                    tImg = CType(Me.rbMedium.Tag, MediaContainers.Image)
-                Case rbSmall.Checked
-                    tImg = CType(Me.rbSmall.Tag, MediaContainers.Image)
-            End Select
-
-            If tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image Is Nothing Then
-                tImg.WebImage.FromWeb(tImg.URL)
+            If tmpImage.WebImage IsNot Nothing AndAlso tmpImage.WebImage.Image Is Nothing Then
+                tmpImage.WebImage.FromWeb(tmpImage.URL)
             End If
-            tImage = tImg.WebImage
+            tImage = tmpImage.WebImage
+
 
             ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.Image)
 
@@ -401,22 +331,26 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub bwImgDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwImgDownload.DoWork
-        '//
-        ' Thread to download images from the internet (multi-threaded because sometimes
-        ' the web server is slow to respond or not reachable, hanging the GUI)
-        '\\
         Dim i As Integer = 0
 
         ' Only thumbs are downloaded to be shown - green internet optimization :)
-        For Each aImg In _ImageList.Where(Function(f) f.Description = aDes)
+        For Each aImg In _ImageList
             Try
-                aImg.WebImage.FromWeb(aImg.URL)
-                If Me.bwImgDownload.CancellationPending Then
-                    e.Cancel = True
-                    Return
+                If Not String.IsNullOrEmpty(aImg.ThumbURL) Then
+                    aImg.WebThumb.FromWeb(aImg.ThumbURL)
+                    If Me.bwImgDownload.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+                Else
+                    aImg.WebImage.FromWeb(aImg.URL)
+                    If Me.bwImgDownload.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
                 End If
                 Me.bwImgDownload.ReportProgress(i + 1, aImg.URL)
-                i = i + 1
+                i += 1
                 Application.DoEvents()
             Catch
             End Try
@@ -424,9 +358,6 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub bwImgDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwImgDownload.ProgressChanged
-        '//
-        ' Update the status bar with the name of the current media name and increase progress bar
-        '\\
         Try
             Dim sStatus As String = e.UserState.ToString
             Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(886, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
@@ -439,26 +370,19 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub bwImgDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwImgDownload.RunWorkerCompleted
-        '//
-        ' Thread finished: process the pics
-        '\\
-
         If Not e.Cancelled Then
             isWorkerDone = True
-            FillListView(aDes)
+            FillListView()
         End If
     End Sub
 
-    Private Sub FillListView(aDes As String)
+    Private Sub FillListView()
         Try
             Application.DoEvents()
             Me.pnlDLStatus.Visible = True
             Me.pnlBG.Visible = False
-            Me.lblSize.Visible = False
-            Me.cbFilterSize.Visible = False
 
-            Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.Description = aDes)
-            Me.pbDL1.Maximum = x.Count
+            Me.pbDL1.Maximum = _ImageList.Count
 
             Me.bwImgLoading.WorkerSupportsCancellation = True
             Me.bwImgLoading.WorkerReportsProgress = True
@@ -484,19 +408,14 @@ Public Class dlgImgSelect
         Me.SuspendLayout()
         Me.pnlBG.AutoScroll = False
 
-        For Each aImg In _ImageList.Where(Function(f) f.Description = aDes AndAlso f.WebImage.Image IsNot Nothing)
+        For Each aImg In _ImageList.Where(Function(f) f.WebThumb.Image IsNot Nothing OrElse f.WebImage.Image IsNot Nothing)
             Try
-                aParentID = aImg.ParentID
-                Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = aParentID)
-                If x.Count > 1 Then
-
-                    text = If(String.IsNullOrEmpty(aImg.LongLang), Master.eLang.GetString(896, "Multiple"), Master.eLang.GetString(896, "Multiple") & Environment.NewLine & aImg.LongLang)
-                    Dim y = From MI As MediaContainers.Image In _ImageList Where ((MI.ParentID = aParentID) And (MI.Description = aDes))
-                    tImg = y(0)
+                If Not aImg.Height = "n/a" AndAlso Not aImg.Width = "n/a" Then
+                    text = String.Concat(String.Format("{0}x{1}", aImg.Width.ToString, aImg.Height.ToString), Environment.NewLine, aImg.LongLang)
                 Else
-                    text = String.Format("{0}x{1} ({2})", x(0).Width.ToString, x(0).Height.ToString, x(0).Description)
-                    tImg = aImg
+                    text = String.Concat("n/a", Environment.NewLine, aImg.LongLang)
                 End If
+                tImg = aImg
                 Me.Invoke(New LoadImage(AddressOf AddImage), tImg.Description, i, tImg.isChecked, tImg, text)
                 If Me.bwImgLoading.CancellationPending Then
                     e.Cancel = True
@@ -512,9 +431,6 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub bwImgLoading_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwImgLoading.ProgressChanged
-        '//
-        ' Update the status bar 
-        '\\
         Try
             Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(321, "Preparing preview. Please wait..."))
             Me.pbDL1.Value = e.ProgressPercentage
@@ -525,9 +441,6 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub bwImgLoading_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwImgLoading.RunWorkerCompleted
-        '//
-        ' Thread finished: process the pics
-        '\\
         MeActivate()
     End Sub
 
@@ -538,24 +451,10 @@ Public Class dlgImgSelect
         End If
         Me.pnlBG.Visible = True
         Me.pnlDLStatus.Visible = False
-        Me.lblSize.Visible = True
-        Me.cbFilterSize.Visible = True
         Application.DoEvents()
         Me.ResumeLayout(True)
         Me.pnlBG.AutoScroll = True
         Me.Activate()
-    End Sub
-    Private Sub cbFilterSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFilterSize.SelectedIndexChanged
-        If Me.cbFilterSize.SelectedIndex = 0 Then
-            FillListView(aDes)
-        Else
-            Select Case DLType
-                Case Enums.ImageType_Movie.Poster
-                    FillListView(Master.eSize.poster_names(Me.cbFilterSize.SelectedIndex - 1).description)
-                Case Enums.ImageType_Movie.Fanart
-                    FillListView(Master.eSize.backdrop_names(Me.cbFilterSize.SelectedIndex - 1).description)
-            End Select
-        End If
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -578,50 +477,21 @@ Public Class dlgImgSelect
             'remove all the current genres
             For i As Integer = 0 To Me.pnlImage.Count - 1
                 Me.pnlImage(i).BackColor = Color.White
-
-                If DLType = Enums.ImageType_Movie.Fanart Then
-                    Me.lblImage(i).BackColor = Color.White
-                    Me.lblImage(i).ForeColor = Color.Black
-                Else
-                    Me.lblImage(i).BackColor = Color.White
-                    Me.lblImage(i).ForeColor = Color.Black
-                End If
+                Me.lblImage(i).BackColor = Color.White
+                Me.lblImage(i).ForeColor = Color.Black
             Next
 
             'set selected pnl color to blue
             Me.pnlImage(iIndex).BackColor = Color.Blue
 
-            If DLType = Enums.ImageType_Movie.Fanart Then
-                Me.lblImage(iIndex).BackColor = Color.Blue
-                Me.lblImage(iIndex).ForeColor = Color.White
-            Else
-                Me.lblImage(iIndex).BackColor = Color.Blue
-                Me.lblImage(iIndex).ForeColor = Color.White
-            End If
+            Me.lblImage(iIndex).BackColor = Color.Blue
+            Me.lblImage(iIndex).ForeColor = Color.White
 
             Me.selIndex = iIndex
             Me.tmpImage = poster
 
-            Me.pnlSize.Visible = False
-
-            Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = poster.ParentID)
-            If x.Count > 1 Then
-                Me.SetupSizes(poster.ParentID)
-                If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
-                    Me.OK_Button.Enabled = False
-                Else
-                    Me.OK_Button.Focus()
-                End If
-                'Me.tmpImage.Clear()
-            Else
-                Me.rbXLarge.Checked = False
-                Me.rbLarge.Checked = False
-                Me.rbMedium.Checked = False
-                Me.rbSmall.Checked = False
-                Me.OK_Button.Enabled = True
-                Me.OK_Button.Focus()
-                Me.tmpImage = poster 'CType(Me.pbImage(iIndex).Tag, MediaContainers.Image)
-            End If
+            Me.OK_Button.Enabled = True
+            Me.OK_Button.Focus()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -630,66 +500,34 @@ Public Class dlgImgSelect
 
     Private Function GetEThumbsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String
         Dim eURL As String = String.Empty
-        Dim ParentID As String = poster.ParentID
-        Dim prefETSize As String = String.Empty
 
         Select Case Master.eSettings.MovieEThumbsPrefSize
             Case Enums.FanartSize.Xlrg
-                prefETSize = "original"
+                eURL = ":" & _ImageList.Item(iIndex).URL
             Case Enums.FanartSize.Lrg
-                prefETSize = "w1280"
+                eURL = ":" & _ImageList.Item(iIndex).URL
             Case Enums.FanartSize.Mid
-                prefETSize = "poster"
+                eURL = ":" & _ImageList.Item(iIndex).URL
             Case Enums.FanartSize.Small
-                prefETSize = "thumb"
+                eURL = ":" & _ImageList.Item(iIndex).ThumbURL
         End Select
-
-        For Each Fanart As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
-            If Not (Fanart.Width = "n/a") AndAlso Not (Fanart.Height = "n/a") Then
-                Select Case prefETSize
-                    Case Fanart.Description
-                        eURL = ":" & Fanart.URL
-                End Select
-            Else
-                Select Case prefETSize
-                    Case Fanart.Description
-                        eURL = ":" & Fanart.URL
-                End Select
-            End If
-        Next
 
         Return eURL
     End Function
 
     Private Function GetEFanartsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String
         Dim eURL As String = String.Empty
-        Dim ParentID As String = poster.ParentID
-        Dim prefEFSize As String = String.Empty
 
         Select Case Master.eSettings.MovieEFanartsPrefSize
             Case Enums.FanartSize.Xlrg
-                prefEFSize = "original"
+                eURL = ":" & _ImageList.Item(iIndex).URL
             Case Enums.FanartSize.Lrg
-                prefEFSize = "w1280"
+                eURL = ":" & _ImageList.Item(iIndex).URL
             Case Enums.FanartSize.Mid
-                prefEFSize = "poster"
+                eURL = ":" & _ImageList.Item(iIndex).URL
             Case Enums.FanartSize.Small
-                prefEFSize = "thumb"
+                eURL = ":" & _ImageList.Item(iIndex).ThumbURL
         End Select
-
-        For Each Fanart As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
-            If Not (Fanart.Width = "n/a") AndAlso Not (Fanart.Height = "n/a") Then
-                Select Case prefEFSize
-                    Case Fanart.Description
-                        eURL = ":" & Fanart.URL
-                End Select
-            Else
-                Select Case prefEFSize
-                    Case Fanart.Description
-                        eURL = ":" & Fanart.URL
-                End Select
-            End If
-        Next
 
         Return eURL
     End Function
@@ -710,20 +548,12 @@ Public Class dlgImgSelect
 
                 Me.Refresh()
                 Application.DoEvents()
-                Select Case True
-                    Case Me.rbXLarge.Checked
-                        Results = CType(Me.rbXLarge.Tag, MediaContainers.Image)
-                        Results.WebImage.IsEdit = Me.isEdit
-                    Case Me.rbLarge.Checked
-                        Results = CType(Me.rbLarge.Tag, MediaContainers.Image)
-                        Results.WebImage.IsEdit = Me.isEdit
-                    Case Me.rbMedium.Checked
-                        Results = CType(Me.rbMedium.Tag, MediaContainers.Image)
-                        Results.WebImage.IsEdit = Me.isEdit
-                    Case Me.rbSmall.Checked
-                        Results = CType(Me.rbSmall.Tag, MediaContainers.Image)
-                        Results.WebImage.IsEdit = Me.isEdit
-                End Select
+                Results = Me.tmpImage
+                Results.WebImage.IsEdit = Me.isEdit
+            Else
+                Me.tmpImage.WebImage.FromWeb(Me.tmpImage.URL)
+                Results = Me.tmpImage
+                Results.WebImage.IsEdit = Me.isEdit
             End If
 
             If Me.DLType = Enums.ImageType_Movie.Fanart Then
@@ -731,24 +561,18 @@ Public Class dlgImgSelect
                 Dim iVal As Integer = 1
                 Dim etPath As String = String.Empty
                 Dim efPath As String = String.Empty
-                Dim isChecked As Boolean = False
 
-                For i As Integer = 0 To Me.chkImageET.Count - 1
-                    If Me.chkImageET(i).Checked OrElse Me.chkImageEF(i).Checked Then
-                        isChecked = True
-                        Exit For
-                    End If
-                Next
-
-                If isChecked Then
-                    For i As Integer = 0 To Me.chkImageET.Count - 1
-                        If Me.chkImageET(i).Checked Then
-                            etList.Add(GetEThumbsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
-                        End If
-                    Next
+                If Me.chkImageEF.Where(Function(f) f.Checked).Count > 0 Then
                     For i As Integer = 0 To Me.chkImageEF.Count - 1
                         If Me.chkImageEF(i).Checked Then
                             efList.Add(GetEFanartsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
+                        End If
+                    Next
+                End If
+                If Me.chkImageET.Where(Function(f) f.Checked).Count > 0 Then
+                    For i As Integer = 0 To Me.chkImageET.Count - 1
+                        If Me.chkImageET(i).Checked Then
+                            etList.Add(GetEThumbsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
                         End If
                     Next
                 End If
@@ -778,26 +602,6 @@ Public Class dlgImgSelect
         Me.DoSelect(Convert.ToInt32(DirectCast(sender, Label).Name), DirectCast(DirectCast(sender, Label).Tag, MediaContainers.Image))
     End Sub
 
-    Private Sub rbLarge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbLarge.CheckedChanged
-        Me.OK_Button.Enabled = True
-        Me.btnPreview.Enabled = True
-    End Sub
-
-    Private Sub rbMedium_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMedium.CheckedChanged
-        Me.OK_Button.Enabled = True
-        Me.btnPreview.Enabled = True
-    End Sub
-
-    Private Sub rbSmall_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbSmall.CheckedChanged
-        Me.OK_Button.Enabled = True
-        Me.btnPreview.Enabled = True
-    End Sub
-
-    Private Sub rbXLarge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbXLarge.CheckedChanged
-        Me.OK_Button.Enabled = True
-        Me.btnPreview.Enabled = True
-    End Sub
-
     Private Sub SetUp()
         Try
             AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
@@ -816,208 +620,31 @@ Public Class dlgImgSelect
             If Me.DLType = Enums.ImageType_Movie.Poster Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.ImageType_Movie.Banner Then
                 Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.ImageType_Movie.Landscape Then
                 Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.ImageType_Movie.Fanart Then
                 Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
             ElseIf Me.DLType = Enums.ImageType_Movie.ClearArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.ImageType_Movie.ClearLogo Then
                 Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.ImageType_Movie.DiscArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             End If
 
-            Me.cbFilterSize.SelectedIndex = 0
-            lblSize.Text = Master.eLang.GetString(957, "Show the ones with size:")
-
-            'CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Enums.MovieImageType.Posters, "posters", "fanart"))
+            Me.pnlDwld.Visible = True
 
             Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
             Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-            Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
             Me.lblDL1.Text = Master.eLang.GetString(894, "Performing Preliminary Tasks...")
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Function GetServerURL(ByVal sURL As String) As String
-        If sURL.StartsWith("http://") Then
-            Dim s As Integer = sURL.IndexOf("/", 7)
-            If s >= 0 Then Return sURL.Substring(0, sURL.IndexOf("/", 7))
-        End If
-        Return sURL
-    End Function
-
-    Private Function RemoveServerURL(ByVal sURL As String) As String
-        If sURL.StartsWith("http://") Then
-            Dim s As Integer = sURL.IndexOf("/", 7)
-            If s >= 0 Then Return sURL.Substring(sURL.IndexOf("/", 7))
-        End If
-        Return sURL
-    End Function
-
-    Private Sub SetupSizes(ByVal ParentID As String)
-        Try
-            Me.rbXLarge.Checked = False
-            Me.rbXLarge.Enabled = False
-            Me.rbLarge.Checked = False
-            Me.rbLarge.Enabled = False
-            Me.rbMedium.Checked = False
-            Me.rbMedium.Enabled = False
-            Me.rbSmall.Checked = False
-            Me.rbSmall.Enabled = False
-            'If Me.DLType = Enums.MovieImageType.Fanart Then
-            '    rbLarge.Text = Master.eSize.backdrop_names(2).description
-            '    rbMedium.Text = Master.eSize.backdrop_names(1).description
-            '    rbSmall.Text = Master.eSize.backdrop_names(0).description
-            'Else
-            Me.rbXLarge.Text = Master.eLang.GetString(897, "Original")
-            Me.rbLarge.Text = Master.eLang.GetString(898, "Cover")
-            Me.rbMedium.Text = Master.eLang.GetString(324, "Medium")
-            Me.rbSmall.Text = Master.eLang.GetString(325, "Small")
-            'End If
-
-            For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
-                If Not (TMDBPoster.Width = "n/a") AndAlso Not (TMDBPoster.Height = "n/a") Then
-                    If Me.DLType = Enums.ImageType_Movie.Poster Then
-                        Select Case TMDBPoster.Description
-                            Case Master.eSize.poster_names(5).description
-                                ' xlarge
-                                Me.rbXLarge.Enabled = True
-                                Me.rbXLarge.Tag = TMDBPoster
-                                Me.rbXLarge.Text = String.Format(Master.eLang.GetString(901, "Original ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                            Case Master.eSize.poster_names(4).description
-                                ' large
-                                Me.rbLarge.Enabled = True
-                                Me.rbLarge.Tag = TMDBPoster
-                                Me.rbLarge.Text = String.Format(Master.eLang.GetString(902, "Cover ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                            Case Master.eSize.poster_names(2).description
-                                Me.rbMedium.Enabled = True
-                                Me.rbMedium.Tag = TMDBPoster
-                                Me.rbMedium.Text = String.Format(Master.eLang.GetString(903, "Medium ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                            Case Master.eSize.poster_names(0).description
-                                ' small                        
-                                Me.rbSmall.Enabled = True
-                                Me.rbSmall.Tag = TMDBPoster
-                                Me.rbSmall.Text = String.Format(Master.eLang.GetString(904, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                        End Select
-                    Else
-                        Select Case TMDBPoster.Description
-                            Case Master.eSize.backdrop_names(3).description
-                                ' xlarge
-                                Me.rbXLarge.Enabled = True
-                                Me.rbXLarge.Tag = TMDBPoster
-                                Me.rbXLarge.Text = String.Format(Master.eLang.GetString(901, "Original ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                            Case Master.eSize.backdrop_names(2).description
-                                ' large
-                                Me.rbLarge.Enabled = True
-                                Me.rbLarge.Tag = TMDBPoster
-                                Me.rbLarge.Text = String.Format(Master.eLang.GetString(905, "Large ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                            Case Master.eSize.backdrop_names(1).description
-                                ' small                        
-                                Me.rbMedium.Enabled = True
-                                Me.rbMedium.Tag = TMDBPoster
-                                Me.rbMedium.Text = String.Format(Master.eLang.GetString(903, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                            Case Master.eSize.backdrop_names(0).description
-                                ' thumb
-                                Me.rbSmall.Enabled = True
-                                Me.rbSmall.Tag = TMDBPoster
-                                Me.rbSmall.Text = String.Format(Master.eLang.GetString(904, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
-                        End Select
-                    End If
-                Else
-                    If Me.DLType = Enums.ImageType_Movie.Poster Then
-                        Select Case TMDBPoster.Description
-                            Case Master.eSize.poster_names(5).description
-                                ' xlarge
-                                Me.rbXLarge.Enabled = True
-                                Me.rbXLarge.Tag = TMDBPoster
-                            Case Master.eSize.poster_names(4).description
-                                ' large
-                                Me.rbLarge.Enabled = True
-                                Me.rbLarge.Tag = TMDBPoster
-                            Case Master.eSize.poster_names(2).description
-                                Me.rbMedium.Enabled = True
-                                Me.rbMedium.Tag = TMDBPoster
-                            Case Master.eSize.poster_names(0).description
-                                ' small                        
-                                Me.rbSmall.Enabled = True
-                                Me.rbSmall.Tag = TMDBPoster
-                        End Select
-                    Else
-                        Select Case TMDBPoster.Description
-                            Case Master.eSize.backdrop_names(3).description
-                                ' xlarge
-                                Me.rbXLarge.Enabled = True
-                                Me.rbXLarge.Tag = TMDBPoster
-                            Case Master.eSize.backdrop_names(2).description
-                                ' large
-                                Me.rbLarge.Enabled = True
-                                Me.rbLarge.Tag = TMDBPoster
-                            Case Master.eSize.backdrop_names(1).description
-                                ' small                        
-                                Me.rbMedium.Enabled = True
-                                Me.rbMedium.Tag = TMDBPoster
-                            Case Master.eSize.backdrop_names(0).description
-                                ' thumb
-                                Me.rbSmall.Enabled = True
-                                Me.rbSmall.Tag = TMDBPoster
-                        End Select
-                    End If
-                End If
-            Next
-
-            If Me.DLType = Enums.ImageType_Movie.Fanart Then
-                Select Case Master.eSettings.MovieFanartPrefSize
-                    Case Enums.FanartSize.Small
-                        Me.rbSmall.Checked = rbSmall.Enabled
-                    Case Enums.FanartSize.Mid
-                        Me.rbMedium.Checked = rbMedium.Enabled
-                    Case Enums.FanartSize.Lrg
-                        Me.rbLarge.Checked = rbLarge.Enabled
-                    Case Enums.FanartSize.Xlrg
-                        Me.rbXLarge.Checked = rbXLarge.Enabled
-                End Select
-            Else
-                Select Case Master.eSettings.MoviePosterPrefSize
-                    Case Enums.PosterSize.Small
-                        Me.rbSmall.Checked = rbSmall.Enabled
-                    Case Enums.PosterSize.Mid
-                        Me.rbMedium.Checked = rbMedium.Enabled
-                    Case Enums.PosterSize.Lrg
-                        Me.rbLarge.Checked = rbLarge.Enabled
-                    Case Enums.PosterSize.Xlrg
-                        Me.rbXLarge.Checked = rbXLarge.Enabled
-                End Select
-            End If
-
-            Me.pnlSize.Visible = True
-
-            Invalidate()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
