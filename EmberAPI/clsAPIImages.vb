@@ -2827,6 +2827,79 @@ Public Class Images
         End If
         Return imgList
     End Function
+    ''' <summary>
+    ''' Select the single most preferred Banner image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredTVSeasonBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.Find(Function(f) f.TVSeasonBannerType = Master.eSettings.TVSeasonBannerPrefType)
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Banner image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredTVShowBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.Find(Function(f) f.TVShowBannerType = Master.eSettings.TVShowBannerPrefType)
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Fanart image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredTVShowFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVShowFanartPrefSize)
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Poster image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredTVShowPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVShowPosterPrefSize)
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
 #End Region 'Methods
 
 #Region "IDisposable Support"

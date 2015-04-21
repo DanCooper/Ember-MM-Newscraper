@@ -174,7 +174,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(854, 486)
+        Me.ClientSize = New System.Drawing.Size(868, 523)
         Me.ControlBox = False
         Me.Controls.Add(Me.lblCurrentImage)
         Me.Controls.Add(Me.pbUndo)

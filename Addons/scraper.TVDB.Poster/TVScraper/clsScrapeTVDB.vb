@@ -149,18 +149,18 @@ Public Class Scraper
 
 #Region "Fields"
 
-        Dim AllSeasonsBanner As TVDBShowBanner
-        Dim AllSeasonsFanart As TVDBFanart
-        Dim AllSeasonsLandscape As TVDBShowLandscape
-        Dim AllSeasonsPoster As TVDBPoster
+        Dim AllSeasonsBanner As MediaContainers.Image
+        Dim AllSeasonsFanart As MediaContainers.Image
+        Dim AllSeasonsLandscape As MediaContainers.Image
+        Dim AllSeasonsPoster As MediaContainers.Image
         Dim SeasonImageList As List(Of TVDBSeasonImage)
-        Dim ShowBanner As TVDBShowBanner
-        Dim ShowCharacterArt As TVDBShowCharacterArt
-        Dim ShowClearArt As TVDBShowClearArt
-        Dim ShowClearLogo As TVDBShowClearLogo
-        Dim ShowFanart As TVDBFanart
-        Dim ShowLandscape As TVDBShowLandscape
-        Dim ShowPoster As TVDBPoster
+        Dim ShowBanner As MediaContainers.Image
+        Dim ShowCharacterArt As MediaContainers.Image
+        Dim ShowClearArt As MediaContainers.Image
+        Dim ShowClearLogo As MediaContainers.Image
+        Dim ShowFanart As MediaContainers.Image
+        Dim ShowLandscape As MediaContainers.Image
+        Dim ShowPoster As MediaContainers.Image
 
 #End Region 'Fields
 
@@ -877,57 +877,57 @@ Public Class Scraper
                             If Not cSea(0).AlreadySaved Then
                                 If Master.eSettings.TVSeasonBannerAnyEnabled Then
                                     If Not String.IsNullOrEmpty(cSea(0).Banner.LocalFile) AndAlso File.Exists(cSea(0).Banner.LocalFile) Then
-                                        cSea(0).Banner.Image.FromFile(cSea(0).Banner.LocalFile)
-                                        Episode.SeasonBannerPath = cSea(0).Banner.Image.SaveAsTVSeasonBanner(Episode)
+                                        cSea(0).Banner.WebImage.FromFile(cSea(0).Banner.LocalFile)
+                                        Episode.SeasonBannerPath = cSea(0).Banner.WebImage.SaveAsTVSeasonBanner(Episode)
                                     ElseIf Not String.IsNullOrEmpty(cSea(0).Banner.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Banner.LocalFile) Then
-                                        cSea(0).Banner.Image.Clear()
-                                        cSea(0).Banner.Image.FromWeb(cSea(0).Banner.URL)
-                                        If cSea(0).Banner.Image.Image IsNot Nothing Then
+                                        cSea(0).Banner.WebImage.Clear()
+                                        cSea(0).Banner.WebImage.FromWeb(cSea(0).Banner.URL)
+                                        If cSea(0).Banner.WebImage.Image IsNot Nothing Then
                                             Directory.CreateDirectory(Directory.GetParent(cSea(0).Banner.LocalFile).FullName)
-                                            cSea(0).Banner.Image.Save(cSea(0).Banner.LocalFile)
-                                            Episode.SeasonBannerPath = cSea(0).Banner.Image.SaveAsTVSeasonBanner(Episode)
+                                            cSea(0).Banner.WebImage.Save(cSea(0).Banner.LocalFile)
+                                            Episode.SeasonBannerPath = cSea(0).Banner.WebImage.SaveAsTVSeasonBanner(Episode)
                                         End If
                                     End If
                                 End If
                                 If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                     If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
-                                        cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
-                                        Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                        cSea(0).Fanart.WebImage.FromFile(cSea(0).Fanart.LocalFile)
+                                        Episode.SeasonFanartPath = cSea(0).Fanart.WebImage.SaveAsTVSeasonFanart(Episode)
                                     ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
-                                        cSea(0).Fanart.Image.Clear()
-                                        cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
-                                        If cSea(0).Fanart.Image.Image IsNot Nothing Then
+                                        cSea(0).Fanart.WebImage.Clear()
+                                        cSea(0).Fanart.WebImage.FromWeb(cSea(0).Fanart.URL)
+                                        If cSea(0).Fanart.WebImage.Image IsNot Nothing Then
                                             Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
-                                            cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
-                                            Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
+                                            cSea(0).Fanart.WebImage.Save(cSea(0).Fanart.LocalFile)
+                                            Episode.SeasonFanartPath = cSea(0).Fanart.WebImage.SaveAsTVSeasonFanart(Episode)
                                         End If
                                     End If
                                 End If
                                 If Master.eSettings.TVSeasonLandscapeAnyEnabled Then
                                     If Not String.IsNullOrEmpty(cSea(0).Landscape.LocalFile) AndAlso File.Exists(cSea(0).Landscape.LocalFile) Then
-                                        cSea(0).Landscape.Image.FromFile(cSea(0).Landscape.LocalFile)
-                                        Episode.SeasonLandscapePath = cSea(0).Landscape.Image.SaveAsTVSeasonLandscape(Episode)
+                                        cSea(0).Landscape.WebImage.FromFile(cSea(0).Landscape.LocalFile)
+                                        Episode.SeasonLandscapePath = cSea(0).Landscape.WebImage.SaveAsTVSeasonLandscape(Episode)
                                     ElseIf Not String.IsNullOrEmpty(cSea(0).Landscape.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Landscape.LocalFile) Then
-                                        cSea(0).Landscape.Image.Clear()
-                                        cSea(0).Landscape.Image.FromWeb(cSea(0).Landscape.URL)
-                                        If cSea(0).Landscape.Image.Image IsNot Nothing Then
+                                        cSea(0).Landscape.WebImage.Clear()
+                                        cSea(0).Landscape.WebImage.FromWeb(cSea(0).Landscape.URL)
+                                        If cSea(0).Landscape.WebImage.Image IsNot Nothing Then
                                             Directory.CreateDirectory(Directory.GetParent(cSea(0).Landscape.LocalFile).FullName)
-                                            cSea(0).Landscape.Image.Save(cSea(0).Landscape.LocalFile)
-                                            Episode.SeasonLandscapePath = cSea(0).Landscape.Image.SaveAsTVSeasonLandscape(Episode)
+                                            cSea(0).Landscape.WebImage.Save(cSea(0).Landscape.LocalFile)
+                                            Episode.SeasonLandscapePath = cSea(0).Landscape.WebImage.SaveAsTVSeasonLandscape(Episode)
                                         End If
                                     End If
                                 End If
                                 If Master.eSettings.TVSeasonPosterAnyEnabled Then
                                     If Not String.IsNullOrEmpty(cSea(0).Poster.LocalFile) AndAlso File.Exists(cSea(0).Poster.LocalFile) Then
-                                        cSea(0).Poster.Image.FromFile(cSea(0).Poster.LocalFile)
-                                        Episode.SeasonPosterPath = cSea(0).Poster.Image.SaveAsTVSeasonPoster(Episode)
+                                        cSea(0).Poster.WebImage.FromFile(cSea(0).Poster.LocalFile)
+                                        Episode.SeasonPosterPath = cSea(0).Poster.WebImage.SaveAsTVSeasonPoster(Episode)
                                     ElseIf Not String.IsNullOrEmpty(cSea(0).Poster.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Poster.LocalFile) Then
-                                        cSea(0).Poster.Image.Clear()
-                                        cSea(0).Poster.Image.FromWeb(cSea(0).Poster.URL)
-                                        If cSea(0).Poster.Image.Image IsNot Nothing Then
+                                        cSea(0).Poster.WebImage.Clear()
+                                        cSea(0).Poster.WebImage.FromWeb(cSea(0).Poster.URL)
+                                        If cSea(0).Poster.WebImage.Image IsNot Nothing Then
                                             Directory.CreateDirectory(Directory.GetParent(cSea(0).Poster.LocalFile).FullName)
-                                            cSea(0).Poster.Image.Save(cSea(0).Poster.LocalFile)
-                                            Episode.SeasonPosterPath = cSea(0).Poster.Image.SaveAsTVSeasonPoster(Episode)
+                                            cSea(0).Poster.WebImage.Save(cSea(0).Poster.LocalFile)
+                                            Episode.SeasonPosterPath = cSea(0).Poster.WebImage.SaveAsTVSeasonPoster(Episode)
                                         End If
                                     End If
                                 End If
@@ -1288,41 +1288,58 @@ Public Class Scraper
                                ((tImage.Element("Language") Is Nothing OrElse tImage.Element("Language").Value = "en") AndAlso CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))))) Then
                                 Select Case tImage.Element("BannerType").Value
                                     Case "fanart"
-                                        tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
+                                        tmpTVDBShow.Fanarts.Add(New MediaContainers.Image With { _
                                                              .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                              .ThumbURL = If(tImage.Element("ThumbnailPath") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
-                                                             .Size = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                             .Height = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Height.ToString, _
+                                                             .Width = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Width.ToString, _
+                                                             .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
+                                                             .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                             .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                             .ShortLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value), _
+                                                             .LongLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, Localization.ISOGetLangByCode2(tImage.Element("Language").Value))})
                                     Case "poster"
-                                        tmpTVDBShow.Posters.Add(New TVDBPoster With { _
+                                        tmpTVDBShow.Posters.Add(New MediaContainers.Image With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Size = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                              .Height = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Height.ToString, _
+                                                              .Width = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Width.ToString, _
+                                                              .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
+                                                              .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                              .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                              .ShortLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value), _
+                                                              .LongLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, Localization.ISOGetLangByCode2(tImage.Element("Language").Value))})
                                     Case "season"
                                         If tImage.Element("BannerType2").Value.ToLower = "season" Then
-                                            tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
+                                            tmpTVDBShow.SeasonPosters.Add(New MediaContainers.Image With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                    .Type = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .TVSeasonPosterType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
+                                                                    .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                                    .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                                    .ShortLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value), _
+                                                                    .LongLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, Localization.ISOGetLangByCode2(tImage.Element("Language").Value))})
                                         Else
-                                            tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
+                                            tmpTVDBShow.SeasonBanners.Add(New MediaContainers.Image With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                    .Type = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .TVSeasonPosterType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
+                                                                    .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                                    .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                                    .ShortLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value), _
+                                                                    .LongLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, Localization.ISOGetLangByCode2(tImage.Element("Language").Value))})
                                         End If
                                     Case "series"
-                                        tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
+                                        tmpTVDBShow.ShowBanners.Add(New MediaContainers.Image With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .Type = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                              .TVShowBannerType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                              .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
+                                                              .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                              .Language = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                                              .ShortLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value), _
+                                                              .LongLang = If(tImage.Element("Language") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, Localization.ISOGetLangByCode2(tImage.Element("Language").Value))})
                                 End Select
                             End If
                         Next
@@ -1339,13 +1356,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowBanner, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.ShowBanners.Add(img)
                             Next
                         End If
                     End If
@@ -1355,14 +1368,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonBanner, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Season = img.Season, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.SeasonBanners.Add(img)
                             Next
                         End If
                     End If
@@ -1372,13 +1380,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowCharacterArt, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowCharacterArts.Add(New TVDBShowCharacterArt With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.ShowCharacterArts.Add(img)
                             Next
                         End If
                     End If
@@ -1388,13 +1392,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearArt, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowClearArts.Add(New TVDBShowClearArt With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.ShowClearArts.Add(img)
                             Next
                         End If
                     End If
@@ -1404,13 +1404,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearLogo, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowClearLogos.Add(New TVDBShowClearLogo With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.ShowClearLogos.Add(img)
                             Next
                         End If
                     End If
@@ -1420,13 +1416,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowFanart, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.Fanarts.Add(img)
                             Next
                         End If
                     End If
@@ -1436,13 +1428,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowLandscape, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.ShowLandscapes.Add(New TVDBShowLandscape With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.ShowLandscapes.Add(img)
                             Next
                         End If
                     End If
@@ -1452,14 +1440,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonLandscape, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.SeasonLandscapes.Add(New TVDBSeasonLandscape With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Season = img.Season, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.SeasonLandscapes.Add(img)
                             Next
                         End If
                     End If
@@ -1469,13 +1452,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowPoster, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.Posters.Add(New TVDBPoster With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.Posters.Add(img)
                             Next
                         End If
                     End If
@@ -1485,14 +1464,9 @@ Public Class Scraper
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonPoster, aList) Then
                         If aList.Count > 0 Then
                             For Each img In aList.Where(Function(f) f.Description = "original")
-                                tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
-                                                              .URL = img.URL, _
-                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL))), _
-                                                              .Language = img.ShortLang, _
-                                                              .Season = img.Season, _
-                                                              .Size = If(img.Width Is Nothing OrElse String.IsNullOrEmpty(img.Width) OrElse img.Height Is Nothing OrElse String.IsNullOrEmpty(img.Height), New Size With {.Width = 0, .Height = 0}, New Size With {.Width = CInt(img.Width), .Height = CInt(img.Height)}), _
-                                                              .ThumbURL = img.ThumbURL})
+                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                                tmpTVDBShow.SeasonPosters.Add(img)
                             Next
                         End If
                     End If
@@ -1571,227 +1545,15 @@ Public Class Scraper
     End Class
 
     <Serializable()> _
-    Public Class TVDBFanart
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._url = String.Empty
-            Me._thumburl = String.Empty
-            Me._size = New Size
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._image = New Images
-            Me._language = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBPoster
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
     Public Class TVDBSeasonImage
 
 #Region "Fields"
 
         Private _alreadysaved As Boolean
-        Private _banner As TVDBSeasonBanner
-        Private _fanart As TVDBFanart
-        Private _landscape As TVDBSeasonLandscape
-        Private _poster As TVDBSeasonPoster
+        Private _banner As MediaContainers.Image
+        Private _fanart As MediaContainers.Image
+        Private _landscape As MediaContainers.Image
+        Private _poster As MediaContainers.Image
         Private _season As Integer
 
 #End Region 'Fields
@@ -1815,38 +1577,38 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Banner() As TVDBSeasonBanner
+        Public Property Banner() As MediaContainers.Image
             Get
                 Return Me._banner
             End Get
-            Set(ByVal value As TVDBSeasonBanner)
+            Set(ByVal value As MediaContainers.Image)
                 Me._banner = value
             End Set
         End Property
 
-        Public Property Fanart() As TVDBFanart
+        Public Property Fanart() As MediaContainers.Image
             Get
                 Return Me._fanart
             End Get
-            Set(ByVal value As TVDBFanart)
+            Set(ByVal value As MediaContainers.Image)
                 Me._fanart = value
             End Set
         End Property
 
-        Public Property Landscape() As TVDBSeasonLandscape
+        Public Property Landscape() As MediaContainers.Image
             Get
                 Return Me._landscape
             End Get
-            Set(ByVal value As TVDBSeasonLandscape)
+            Set(ByVal value As MediaContainers.Image)
                 Me._landscape = value
             End Set
         End Property
 
-        Public Property Poster() As TVDBSeasonPoster
+        Public Property Poster() As MediaContainers.Image
             Get
                 Return Me._poster
             End Get
-            Set(ByVal value As TVDBSeasonPoster)
+            Set(ByVal value As MediaContainers.Image)
                 Me._poster = value
             End Set
         End Property
@@ -1866,382 +1628,11 @@ Public Class Scraper
 
         Public Sub Clear()
             Me._alreadysaved = False
-            Me._banner = New TVDBSeasonBanner
-            Me._fanart = New TVDBFanart
-            Me._landscape = New TVDBSeasonLandscape
-            Me._poster = New TVDBSeasonPoster
+            Me._banner = New MediaContainers.Image
+            Me._fanart = New MediaContainers.Image
+            Me._landscape = New MediaContainers.Image
+            Me._poster = New MediaContainers.Image
             Me._season = -1
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    Public Class TVDBSeasonPoster
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _season As Integer
-        Private _size As Size
-        Private _thumburl As String
-        Private _type As Enums.TVSeasonPosterType
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property Type() As Enums.TVSeasonPosterType
-            Get
-                Return Me._type
-            End Get
-            Set(ByVal value As Enums.TVSeasonPosterType)
-                Me._type = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._season = 0
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._type = Enums.TVSeasonPosterType.None
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    Public Class TVDBSeasonBanner
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _season As Integer
-        Private _size As Size
-        Private _thumburl As String
-        Private _type As Enums.TVSeasonPosterType
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property Type() As Enums.TVSeasonPosterType
-            Get
-                Return Me._type
-            End Get
-            Set(ByVal value As Enums.TVSeasonPosterType)
-                Me._type = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._season = 0
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._type = Enums.TVSeasonPosterType.None
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBSeasonLandscape
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _season As Integer
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._season = -1
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._url = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -2254,17 +1645,17 @@ Public Class Scraper
 
         Private _allseason As Structures.DBTV
         Private _episodes As New List(Of Structures.DBTV)
-        Private _fanarts As New List(Of TVDBFanart)
-        Private _posters As New List(Of TVDBPoster)
-        Private _seasonposters As New List(Of TVDBSeasonPoster)
-        Private _seasonbanners As New List(Of TVDBSeasonBanner)
-        Private _seasonlandscapes As New List(Of TVDBSeasonLandscape)
+        Private _fanarts As New List(Of MediaContainers.Image)
+        Private _posters As New List(Of MediaContainers.Image)
+        Private _seasonposters As New List(Of MediaContainers.Image)
+        Private _seasonbanners As New List(Of MediaContainers.Image)
+        Private _seasonlandscapes As New List(Of MediaContainers.Image)
         Private _show As Structures.DBTV
-        Private _showbanners As New List(Of TVDBShowBanner)
-        Private _showcharacterarts As New List(Of TVDBShowCharacterArt)
-        Private _showcleararts As New List(Of TVDBShowClearArt)
-        Private _showclearlogos As New List(Of TVDBShowClearLogo)
-        Private _showlandscapes As New List(Of TVDBShowLandscape)
+        Private _showbanners As New List(Of MediaContainers.Image)
+        Private _showcharacterarts As New List(Of MediaContainers.Image)
+        Private _showcleararts As New List(Of MediaContainers.Image)
+        Private _showclearlogos As New List(Of MediaContainers.Image)
+        Private _showlandscapes As New List(Of MediaContainers.Image)
 
 #End Region 'Fields
 
@@ -2296,47 +1687,47 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Fanarts() As List(Of TVDBFanart)
+        Public Property Fanarts() As List(Of MediaContainers.Image)
             Get
                 Return Me._fanarts
             End Get
-            Set(ByVal value As List(Of TVDBFanart))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._fanarts = value
             End Set
         End Property
 
-        Public Property Posters() As List(Of TVDBPoster)
+        Public Property Posters() As List(Of MediaContainers.Image)
             Get
                 Return Me._posters
             End Get
-            Set(ByVal value As List(Of TVDBPoster))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._posters = value
             End Set
         End Property
 
-        Public Property SeasonPosters() As List(Of TVDBSeasonPoster)
+        Public Property SeasonPosters() As List(Of MediaContainers.Image)
             Get
                 Return Me._seasonposters
             End Get
-            Set(ByVal value As List(Of TVDBSeasonPoster))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._seasonposters = value
             End Set
         End Property
 
-        Public Property SeasonBanners() As List(Of TVDBSeasonBanner)
+        Public Property SeasonBanners() As List(Of MediaContainers.Image)
             Get
                 Return Me._seasonbanners
             End Get
-            Set(ByVal value As List(Of TVDBSeasonBanner))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._seasonbanners = value
             End Set
         End Property
 
-        Public Property SeasonLandscapes() As List(Of TVDBSeasonLandscape)
+        Public Property SeasonLandscapes() As List(Of MediaContainers.Image)
             Get
                 Return Me._seasonlandscapes
             End Get
-            Set(ByVal value As List(Of TVDBSeasonLandscape))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._seasonlandscapes = value
             End Set
         End Property
@@ -2350,47 +1741,47 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property ShowBanners() As List(Of TVDBShowBanner)
+        Public Property ShowBanners() As List(Of MediaContainers.Image)
             Get
                 Return Me._showbanners
             End Get
-            Set(ByVal value As List(Of TVDBShowBanner))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._showbanners = value
             End Set
         End Property
 
-        Public Property ShowCharacterArts() As List(Of TVDBShowCharacterArt)
+        Public Property ShowCharacterArts() As List(Of MediaContainers.Image)
             Get
                 Return Me._showcharacterarts
             End Get
-            Set(ByVal value As List(Of TVDBShowCharacterArt))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._showcharacterarts = value
             End Set
         End Property
 
-        Public Property ShowClearArts() As List(Of TVDBShowClearArt)
+        Public Property ShowClearArts() As List(Of MediaContainers.Image)
             Get
                 Return Me._showcleararts
             End Get
-            Set(ByVal value As List(Of TVDBShowClearArt))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._showcleararts = value
             End Set
         End Property
 
-        Public Property ShowClearLogos() As List(Of TVDBShowClearLogo)
+        Public Property ShowClearLogos() As List(Of MediaContainers.Image)
             Get
                 Return Me._showclearlogos
             End Get
-            Set(ByVal value As List(Of TVDBShowClearLogo))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._showclearlogos = value
             End Set
         End Property
 
-        Public Property ShowLandscapes() As List(Of TVDBShowLandscape)
+        Public Property ShowLandscapes() As List(Of MediaContainers.Image)
             Get
                 Return Me._showlandscapes
             End Get
-            Set(ByVal value As List(Of TVDBShowLandscape))
+            Set(ByVal value As List(Of MediaContainers.Image))
                 Me._showlandscapes = value
             End Set
         End Property
@@ -2403,557 +1794,16 @@ Public Class Scraper
             Me._show = New Structures.DBTV
             Me._allseason = New Structures.DBTV
             Me._episodes = New List(Of Structures.DBTV)
-            Me._fanarts = New List(Of TVDBFanart)
-            Me._showbanners = New List(Of TVDBShowBanner)
-            Me._showcharacterarts = New List(Of TVDBShowCharacterArt)
-            Me._showcleararts = New List(Of TVDBShowClearArt)
-            Me._showclearlogos = New List(Of TVDBShowClearLogo)
-            Me._showlandscapes = New List(Of TVDBShowLandscape)
-            Me._seasonposters = New List(Of TVDBSeasonPoster)
-            Me._seasonbanners = New List(Of TVDBSeasonBanner)
-            Me._seasonlandscapes = New List(Of TVDBSeasonLandscape)
-            Me._posters = New List(Of TVDBPoster)
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBShowBanner
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As New Size
-        Private _thumburl As String
-        Private _type As Enums.TVShowBannerType
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property Type() As Enums.TVShowBannerType
-            Get
-                Return Me._type
-            End Get
-            Set(ByVal value As Enums.TVShowBannerType)
-                Me._type = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._type = Enums.TVShowBannerType.None
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBShowCharacterArt
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBShowClearArt
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBShowClearLogo
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._url = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()> _
-    Public Class TVDBShowLandscape
-
-#Region "Fields"
-
-        Private _image As Images
-        Private _language As String
-        Private _localfile As String
-        Private _localthumb As String
-        Private _size As Size
-        Private _thumburl As String
-        Private _url As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Image() As Images
-            Get
-                Return Me._image
-            End Get
-            Set(ByVal value As Images)
-                Me._image = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        Public Property LocalThumb() As String
-            Get
-                Return Me._localthumb
-            End Get
-            Set(ByVal value As String)
-                Me._localthumb = value
-            End Set
-        End Property
-
-        Public Property Size() As Size
-            Get
-                Return Me._size
-            End Get
-            Set(ByVal value As Size)
-                Me._size = value
-            End Set
-        End Property
-
-        Public Property ThumbURL() As String
-            Get
-                Return Me._thumburl
-            End Get
-            Set(ByVal value As String)
-                Me._thumburl = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return Me._url
-            End Get
-            Set(ByVal value As String)
-                Me._url = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._image = New Images
-            Me._language = String.Empty
-            Me._localfile = String.Empty
-            Me._localthumb = String.Empty
-            Me._size = New Size
-            Me._thumburl = String.Empty
-            Me._url = String.Empty
+            Me._fanarts = New List(Of MediaContainers.Image)
+            Me._showbanners = New List(Of MediaContainers.Image)
+            Me._showcharacterarts = New List(Of MediaContainers.Image)
+            Me._showcleararts = New List(Of MediaContainers.Image)
+            Me._showclearlogos = New List(Of MediaContainers.Image)
+            Me._showlandscapes = New List(Of MediaContainers.Image)
+            Me._seasonposters = New List(Of MediaContainers.Image)
+            Me._seasonbanners = New List(Of MediaContainers.Image)
+            Me._seasonlandscapes = New List(Of MediaContainers.Image)
+            Me._posters = New List(Of MediaContainers.Image)
         End Sub
 
 #End Region 'Methods
