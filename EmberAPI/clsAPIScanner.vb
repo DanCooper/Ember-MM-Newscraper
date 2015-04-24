@@ -656,7 +656,6 @@ Public Class Scanner
                             ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
                                 Dim endPattern As String = String.Empty
                                 eItem = New EpisodeItem With {.Season = eItem.Season}
-                                eItem.Episode = CInt(reg2.Match(remainder).Groups(1).Value)
                                 Dim Episode As Match = Regex.Match(reg2.Match(remainder).Groups(1).Value, "(\d*)(.*)")
                                 eItem.Episode = CInt(Episode.Groups(1).Value)
                                 If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
