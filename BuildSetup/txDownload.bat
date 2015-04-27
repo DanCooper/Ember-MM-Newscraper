@@ -27,7 +27,7 @@ CLS
 ECHO *******************************************
 ECHO *          Rename files for Ember         *
 ECHO *******************************************
-BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(da):Danish_(da) /EXECUTE /QUIET
+BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(da):Danish_(da_DK) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(de):German_(de) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(el):Greek_(el) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(es):Spanish_(es) /EXECUTE /QUIET
