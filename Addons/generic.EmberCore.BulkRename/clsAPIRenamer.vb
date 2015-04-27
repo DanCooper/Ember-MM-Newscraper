@@ -853,7 +853,7 @@ Public Class FileFolderRenamer
 
                         'Audio Channels
                         If tAud.ChannelsSpecified Then
-                            EpisodeFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
+                            EpisodeFile.AudioChannels = tAud.Channels
                         End If
 
                         'AudioCodec
@@ -866,6 +866,13 @@ Public Class FileFolderRenamer
                     If _tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
                         If Not String.IsNullOrEmpty(_tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                             EpisodeFile.MultiViewCount = "3D"
+                        End If
+                    End If
+
+                    'Video Codec
+                    If _tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+                        If _tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
+                            EpisodeFile.VideoCodec = _tmpTVEpisode.TVEp.FileInfo.StreamDetails.Video.Item(0).Codec
                         End If
                     End If
                 Catch ex As Exception
@@ -1020,6 +1027,7 @@ Public Class FileFolderRenamer
 
             If _tmpMovie.Movie.FileInfo IsNot Nothing Then
                 Try
+                    'Resolution
                     If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
                         Dim tRes As String = NFO.GetResFromDimensions(tVid)
@@ -1029,21 +1037,25 @@ Public Class FileFolderRenamer
                     If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                         Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
 
+                        'Audio Channels
                         If tAud.ChannelsSpecified Then
                             MovieFile.AudioChannels = tAud.Channels
                         End If
 
+                        'Audio Codec
                         If tAud.CodecSpecified Then
                             MovieFile.AudioCodec = tAud.Codec
                         End If
                     End If
 
+                    'MultiViewCount
                     If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                             MovieFile.MultiViewCount = "3D"
                         End If
                     End If
 
+                    'Video Codec
                     If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
                             MovieFile.VideoCodec = _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).Codec
