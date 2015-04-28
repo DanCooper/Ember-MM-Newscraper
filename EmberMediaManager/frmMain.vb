@@ -3932,147 +3932,120 @@ doCancel:
     End Sub
 
     Private Sub chkFilterEmpty_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterEmpty_MovieSets.Click
-        Try
-            If Me.chkFilterEmpty_MovieSets.Checked Then
-                Me.FilterArray_MovieSets.Add("Count = 0")
-            Else
-                Me.FilterArray_MovieSets.Remove("Count = 0")
-            End If
-            Me.RunFilter_MovieSets()
-        Catch
-        End Try
+        If Me.chkFilterEmpty_MovieSets.Checked Then
+            Me.FilterArray_MovieSets.Add("Count = 0")
+        Else
+            Me.FilterArray_MovieSets.Remove("Count = 0")
+        End If
+        Me.RunFilter_MovieSets()
+    End Sub
+
+    Private Sub chkFilterMultiple_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMultiple_MovieSets.Click
+        If Me.chkFilterMultiple_MovieSets.Checked Then
+            Me.FilterArray_MovieSets.Add("Count > 1")
+        Else
+            Me.FilterArray_MovieSets.Remove("Count > 1")
+        End If
+        Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub chkFilterOne_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterOne_MovieSets.Click
-        Try
-            If Me.chkFilterOne_MovieSets.Checked Then
-                Me.FilterArray_MovieSets.Add("Count = 1")
-            Else
-                Me.FilterArray_MovieSets.Remove("Count = 1")
-            End If
-            Me.RunFilter_MovieSets()
-        Catch
-        End Try
+        If Me.chkFilterOne_MovieSets.Checked Then
+            Me.FilterArray_MovieSets.Add("Count = 1")
+        Else
+            Me.FilterArray_MovieSets.Remove("Count = 1")
+        End If
+        Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub chkFilterLock_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_Movies.Click
-        Try
-            If Me.chkFilterLock_Movies.Checked Then
-                Me.FilterArray_Movies.Add("Lock = 1")
-            Else
-                Me.FilterArray_Movies.Remove("Lock = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterLock_Movies.Checked Then
+            Me.FilterArray_Movies.Add("Lock = 1")
+        Else
+            Me.FilterArray_Movies.Remove("Lock = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterLock_MovieSets_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_MovieSets.Click
-        Try
-            If Me.chkFilterLock_MovieSets.Checked Then
-                Me.FilterArray_MovieSets.Add("Lock = 1")
-            Else
-                Me.FilterArray_MovieSets.Remove("Lock = 1")
-            End If
-            Me.RunFilter_MovieSets()
-        Catch
-        End Try
+        If Me.chkFilterLock_MovieSets.Checked Then
+            Me.FilterArray_MovieSets.Add("Lock = 1")
+        Else
+            Me.FilterArray_MovieSets.Remove("Lock = 1")
+        End If
+        Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub chkFilterLock_Shows_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_Shows.Click
-        Try
-            If Me.chkFilterLock_Shows.Checked Then
-                Me.FilterArray_Shows.Add("Lock = 1")
-            Else
-                Me.FilterArray_Shows.Remove("Lock = 1")
-            End If
-            Me.RunFilter_Shows()
-        Catch
-        End Try
+        If Me.chkFilterLock_Shows.Checked Then
+            Me.FilterArray_Shows.Add("Lock = 1")
+        Else
+            Me.FilterArray_Shows.Remove("Lock = 1")
+        End If
+        Me.RunFilter_Shows()
     End Sub
 
     Private Sub chkFilterMark_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark_Movies.Click
-        Try
-            If Me.chkFilterMark_Movies.Checked Then
-                Me.FilterArray_Movies.Add("mark = 1")
-            Else
-                Me.FilterArray_Movies.Remove("mark = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterMark_Movies.Checked Then
+            Me.FilterArray_Movies.Add("mark = 1")
+        Else
+            Me.FilterArray_Movies.Remove("mark = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterMark_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark_MovieSets.Click
-        Try
-            If Me.chkFilterMark_MovieSets.Checked Then
-                Me.FilterArray_MovieSets.Add("mark = 1")
-            Else
-                Me.FilterArray_MovieSets.Remove("mark = 1")
-            End If
-            Me.RunFilter_MovieSets()
-        Catch
-        End Try
+        If Me.chkFilterMark_MovieSets.Checked Then
+            Me.FilterArray_MovieSets.Add("mark = 1")
+        Else
+            Me.FilterArray_MovieSets.Remove("mark = 1")
+        End If
+        Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub chkFilterMark_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark_Shows.Click
-        Try
-            If Me.chkFilterMark_Shows.Checked Then
-                Me.FilterArray_Shows.Add("mark = 1")
-            Else
-                Me.FilterArray_Shows.Remove("mark = 1")
-            End If
-            Me.RunFilter_Shows()
-        Catch
-        End Try
+        If Me.chkFilterMark_Shows.Checked Then
+            Me.FilterArray_Shows.Add("mark = 1")
+        Else
+            Me.FilterArray_Shows.Remove("mark = 1")
+        End If
+        Me.RunFilter_Shows()
     End Sub
 
     Private Sub chkFilterMarkCustom1_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom1_Movies.Click
-        Try
-            If Me.chkFilterMarkCustom1_Movies.Checked Then
-                Me.FilterArray_Movies.Add("markcustom1 = 1")
-            Else
-                Me.FilterArray_Movies.Remove("markcustom1 = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterMarkCustom1_Movies.Checked Then
+            Me.FilterArray_Movies.Add("markcustom1 = 1")
+        Else
+            Me.FilterArray_Movies.Remove("markcustom1 = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterMarkCustom2_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom2_Movies.Click
-        Try
-            If Me.chkFilterMarkCustom2_Movies.Checked Then
-                Me.FilterArray_Movies.Add("markcustom2 = 1")
-            Else
-                Me.FilterArray_Movies.Remove("markcustom2 = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterMarkCustom2_Movies.Checked Then
+            Me.FilterArray_Movies.Add("markcustom2 = 1")
+        Else
+            Me.FilterArray_Movies.Remove("markcustom2 = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterMarkCustom3_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom3_Movies.Click
-        Try
-            If Me.chkFilterMarkCustom3_Movies.Checked Then
-                Me.FilterArray_Movies.Add("markcustom3 = 1")
-            Else
-                Me.FilterArray_Movies.Remove("markcustom3 = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterMarkCustom3_Movies.Checked Then
+            Me.FilterArray_Movies.Add("markcustom3 = 1")
+        Else
+            Me.FilterArray_Movies.Remove("markcustom3 = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterMarkCustom4_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMarkCustom4_Movies.Click
-        Try
-            If Me.chkFilterMarkCustom4_Movies.Checked Then
-                Me.FilterArray_Movies.Add("markcustom4 = 1")
-            Else
-                Me.FilterArray_Movies.Remove("markcustom4 = 1")
-            End If
-            Me.RunFilter_Movies()
-        Catch
-        End Try
+        If Me.chkFilterMarkCustom4_Movies.Checked Then
+            Me.FilterArray_Movies.Add("markcustom4 = 1")
+        Else
+            Me.FilterArray_Movies.Remove("markcustom4 = 1")
+        End If
+        Me.RunFilter_Movies()
     End Sub
 
     Private Sub chkFilterMissing_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMissing_Movies.Click
@@ -4802,6 +4775,7 @@ doCancel:
             'Me.chkFilterMarkCustom2.Checked = False
             'Me.chkFilterMarkCustom3.Checked = False
             'Me.chkFilterMarkCustom4.Checked = False
+            Me.chkFilterMultiple_MovieSets.Checked = False
             Me.chkFilterNew_MovieSets.Checked = False
             Me.chkFilterLock_MovieSets.Checked = False
             Me.chkFilterOne_MovieSets.Checked = False
@@ -9000,6 +8974,7 @@ doCancel:
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
         Me.chkFilterMissing_MovieSets.Enabled = If(Master.eSettings.MovieSetMissingItemsAnyEnabled, isEnabled, False)
+        Me.chkFilterMultiple_MovieSets.Enabled = isEnabled
         Me.chkFilterNew_MovieSets.Enabled = isEnabled
         Me.chkFilterOne_MovieSets.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
@@ -14975,7 +14950,7 @@ doCancel:
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
         If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
-            Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
+            Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterMultiple_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub rbFilterAnd_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_Shows.Click
@@ -15107,7 +15082,7 @@ doCancel:
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
         If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
-            Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
+            Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterMultiple_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
     End Sub
 
     Private Sub rbFilterOr_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_Shows.Click
@@ -18746,6 +18721,7 @@ doCancel:
                 .chkFilterMarkCustom2_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
                 .chkFilterMarkCustom3_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
                 .chkFilterMarkCustom4_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
+                .chkFilterMultiple_MovieSets.Text = Master.eLang.GetString(876, "Multiple Movies")
                 .chkFilterNew_Movies.Text = Master.eLang.GetString(47, "New")
                 .chkFilterNew_MovieSets.Text = .chkFilterNew_Movies.Text
                 .chkFilterNewEpisodes_Shows.Text = Master.eLang.GetString(1361, "New Episode(s)")
