@@ -424,6 +424,7 @@ Partial Class frmMain
         Me.chkFilterMissing_MovieSets = New System.Windows.Forms.CheckBox()
         Me.chkFilterOne_MovieSets = New System.Windows.Forms.CheckBox()
         Me.chkFilterEmpty_MovieSets = New System.Windows.Forms.CheckBox()
+        Me.chkFilterMultiple_MovieSets = New System.Windows.Forms.CheckBox()
         Me.gbFilterSpecific_MovieSets = New System.Windows.Forms.GroupBox()
         Me.tblFilterSpecific_MovieSets = New System.Windows.Forms.TableLayoutPanel()
         Me.gbFilterModifier_MovieSets = New System.Windows.Forms.GroupBox()
@@ -441,6 +442,9 @@ Partial Class frmMain
         Me.btnFilterDown_MovieSets = New System.Windows.Forms.Button()
         Me.pnlFilter_Shows = New System.Windows.Forms.Panel()
         Me.tblFilter_Shows = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbFilterSorting_Shows = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnFilterSortTitle_Shows = New System.Windows.Forms.Button()
         Me.gbFilterLists_Shows = New System.Windows.Forms.GroupBox()
         Me.tblFilterLists_Shows = New System.Windows.Forms.TableLayoutPanel()
         Me.cbFilterLists_Shows = New System.Windows.Forms.ComboBox()
@@ -1191,7 +1195,6 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
-        Me.chkFilterMultiple_MovieSets = New System.Windows.Forms.CheckBox()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1295,6 +1298,8 @@ Partial Class frmMain
         Me.tblFilterTop_MovieSets.SuspendLayout
         Me.pnlFilter_Shows.SuspendLayout
         Me.tblFilter_Shows.SuspendLayout
+        Me.gbFilterSorting_Shows.SuspendLayout
+        Me.TableLayoutPanel1.SuspendLayout
         Me.gbFilterLists_Shows.SuspendLayout
         Me.tblFilterLists_Shows.SuspendLayout
         Me.gbFilterGeneral_Shows.SuspendLayout
@@ -5555,6 +5560,18 @@ Partial Class frmMain
         Me.chkFilterEmpty_MovieSets.Text = "Empty"
         Me.chkFilterEmpty_MovieSets.UseVisualStyleBackColor = true
         '
+        'chkFilterMultiple_MovieSets
+        '
+        Me.chkFilterMultiple_MovieSets.AutoSize = true
+        Me.tblFilterGeneral_MovieSets.SetColumnSpan(Me.chkFilterMultiple_MovieSets, 2)
+        Me.chkFilterMultiple_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkFilterMultiple_MovieSets.Location = New System.Drawing.Point(3, 72)
+        Me.chkFilterMultiple_MovieSets.Name = "chkFilterMultiple_MovieSets"
+        Me.chkFilterMultiple_MovieSets.Size = New System.Drawing.Size(108, 17)
+        Me.chkFilterMultiple_MovieSets.TabIndex = 3
+        Me.chkFilterMultiple_MovieSets.Text = "Multiple Movies"
+        Me.chkFilterMultiple_MovieSets.UseVisualStyleBackColor = true
+        '
         'gbFilterSpecific_MovieSets
         '
         Me.gbFilterSpecific_MovieSets.AutoSize = true
@@ -5788,20 +5805,71 @@ Partial Class frmMain
         Me.tblFilter_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilter_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilter_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblFilter_Shows.Controls.Add(Me.gbFilterSorting_Shows, 0, 2)
         Me.tblFilter_Shows.Controls.Add(Me.gbFilterLists_Shows, 0, 0)
         Me.tblFilter_Shows.Controls.Add(Me.gbFilterGeneral_Shows, 0, 1)
         Me.tblFilter_Shows.Controls.Add(Me.gbFilterSpecific_Shows, 1, 1)
-        Me.tblFilter_Shows.Controls.Add(Me.btnClearFilters_Shows, 0, 2)
+        Me.tblFilter_Shows.Controls.Add(Me.btnClearFilters_Shows, 0, 3)
         Me.tblFilter_Shows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFilter_Shows.Location = New System.Drawing.Point(0, 22)
         Me.tblFilter_Shows.Name = "tblFilter_Shows"
-        Me.tblFilter_Shows.RowCount = 4
+        Me.tblFilter_Shows.RowCount = 5
+        Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilter_Shows.Size = New System.Drawing.Size(565, 223)
         Me.tblFilter_Shows.TabIndex = 8
+        '
+        'gbFilterSorting_Shows
+        '
+        Me.gbFilterSorting_Shows.AutoSize = true
+        Me.gbFilterSorting_Shows.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbFilterSorting_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbFilterSorting_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbFilterSorting_Shows.Location = New System.Drawing.Point(3, 107)
+        Me.gbFilterSorting_Shows.Name = "gbFilterSorting_Shows"
+        Me.gbFilterSorting_Shows.Size = New System.Drawing.Size(114, 44)
+        Me.gbFilterSorting_Shows.TabIndex = 10
+        Me.gbFilterSorting_Shows.TabStop = false
+        Me.gbFilterSorting_Shows.Text = "Extra Sorting"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.AutoSize = true
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.Controls.Add(Me.btnFilterSortTitle_Shows, 0, 2)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 6
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(108, 23)
+        Me.TableLayoutPanel1.TabIndex = 8
+        '
+        'btnFilterSortTitle_Shows
+        '
+        Me.btnFilterSortTitle_Shows.AutoSize = true
+        Me.btnFilterSortTitle_Shows.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.btnFilterSortTitle_Shows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnFilterSortTitle_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnFilterSortTitle_Shows.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnFilterSortTitle_Shows.Location = New System.Drawing.Point(0, 0)
+        Me.btnFilterSortTitle_Shows.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnFilterSortTitle_Shows.Name = "btnFilterSortTitle_Shows"
+        Me.btnFilterSortTitle_Shows.Size = New System.Drawing.Size(108, 23)
+        Me.btnFilterSortTitle_Shows.TabIndex = 1
+        Me.btnFilterSortTitle_Shows.Text = "Sort Title"
+        Me.btnFilterSortTitle_Shows.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnFilterSortTitle_Shows.UseVisualStyleBackColor = true
         '
         'gbFilterLists_Shows
         '
@@ -5908,7 +5976,7 @@ Partial Class frmMain
         Me.gbFilterSpecific_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbFilterSpecific_Shows.Location = New System.Drawing.Point(123, 57)
         Me.gbFilterSpecific_Shows.Name = "gbFilterSpecific_Shows"
-        Me.tblFilter_Shows.SetRowSpan(Me.gbFilterSpecific_Shows, 2)
+        Me.tblFilter_Shows.SetRowSpan(Me.gbFilterSpecific_Shows, 3)
         Me.gbFilterSpecific_Shows.Size = New System.Drawing.Size(415, 163)
         Me.gbFilterSpecific_Shows.TabIndex = 6
         Me.gbFilterSpecific_Shows.TabStop = false
@@ -12211,18 +12279,6 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
-        'chkFilterMultiple_MovieSets
-        '
-        Me.chkFilterMultiple_MovieSets.AutoSize = true
-        Me.tblFilterGeneral_MovieSets.SetColumnSpan(Me.chkFilterMultiple_MovieSets, 2)
-        Me.chkFilterMultiple_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.chkFilterMultiple_MovieSets.Location = New System.Drawing.Point(3, 72)
-        Me.chkFilterMultiple_MovieSets.Name = "chkFilterMultiple_MovieSets"
-        Me.chkFilterMultiple_MovieSets.Size = New System.Drawing.Size(108, 17)
-        Me.chkFilterMultiple_MovieSets.TabIndex = 3
-        Me.chkFilterMultiple_MovieSets.Text = "Multiple Movies"
-        Me.chkFilterMultiple_MovieSets.UseVisualStyleBackColor = true
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -12414,6 +12470,10 @@ Partial Class frmMain
         Me.pnlFilter_Shows.PerformLayout
         Me.tblFilter_Shows.ResumeLayout(false)
         Me.tblFilter_Shows.PerformLayout
+        Me.gbFilterSorting_Shows.ResumeLayout(false)
+        Me.gbFilterSorting_Shows.PerformLayout
+        Me.TableLayoutPanel1.ResumeLayout(false)
+        Me.TableLayoutPanel1.PerformLayout
         Me.gbFilterLists_Shows.ResumeLayout(false)
         Me.gbFilterLists_Shows.PerformLayout
         Me.tblFilterLists_Shows.ResumeLayout(false)
@@ -13785,4 +13845,7 @@ End Sub
     Friend WithEvents tblFilterLists_Shows As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents cbFilterLists_Shows As System.Windows.Forms.ComboBox
     Friend WithEvents chkFilterMultiple_MovieSets As System.Windows.Forms.CheckBox
+    Friend WithEvents gbFilterSorting_Shows As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents btnFilterSortTitle_Shows As System.Windows.Forms.Button
 End Class

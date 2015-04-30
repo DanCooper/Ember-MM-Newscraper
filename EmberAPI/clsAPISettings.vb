@@ -3547,12 +3547,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralMainFilterSortColumn_Shows() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortColumn_Shows
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortColumn_Shows = value
+        End Set
+    End Property
+
     Public Property GeneralMainFilterSortOrder_Movies() As Integer
         Get
             Return Settings._XMLSettings.GeneralMainFilterSortOrder_Movies
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.GeneralMainFilterSortOrder_Movies = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortOrder_Shows() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralMainFilterSortOrder_Shows
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralMainFilterSortOrder_Shows = value
         End Set
     End Property
 
@@ -5793,7 +5811,9 @@ Public Class Settings
         Me.GeneralFilterPanelStateMovieSet = False
         Me.GeneralFilterPanelStateShow = False
         Me.GeneralMainFilterSortColumn_Movies = 3
+        Me.GeneralMainFilterSortColumn_Shows = 1
         Me.GeneralMainFilterSortOrder_Movies = 0
+        Me.GeneralMainFilterSortOrder_Shows = 0
         Me.GeneralHideBanner = False
         Me.GeneralHideCharacterArt = False
         Me.GeneralHideClearArt = False

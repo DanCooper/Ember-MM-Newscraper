@@ -1097,7 +1097,7 @@ Public Class frmMain
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks>this filter is inverted (DESC first) to get the newest title on the top of the list</remarks>
-    Private Sub btnFilterSortDateAdded_Movies_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDateAdded_Movies.Click
+    Private Sub btnFilterSortDateAdded_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDateAdded_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
             Me.btnFilterSortRating_Movies.Tag = String.Empty
             Me.btnFilterSortRating_Movies.Image = Nothing
@@ -1126,7 +1126,7 @@ Public Class frmMain
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks>this filter is inverted (DESC first) to get the latest modified title on the top of the list</remarks>
-    Private Sub btnFilterSortDateModified_Movies_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDateModified_Movies.Click
+    Private Sub btnFilterSortDateModified_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortDateModified_Movies.Click
         If Me.dgvMovies.RowCount > 0 Then
             Me.btnFilterSortDateAdded_Movies.Tag = String.Empty
             Me.btnFilterSortDateAdded_Movies.Image = Nothing
@@ -1176,6 +1176,35 @@ Public Class frmMain
             End If
 
             Me.SaveFilter_Movies()
+        End If
+    End Sub
+    ''' <summary>
+    ''' sorts the tvshowlist by sort title
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnFilterSortTitle_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterSortTitle_Shows.Click
+        If Me.dgvTVShows.RowCount > 0 Then
+            'Me.btnFilterSortDateAdded_Shows.Tag = String.Empty
+            'Me.btnFilterSortDateAdded_Shows.Image = Nothing
+            'Me.btnFilterSortDateModified_Shows.Tag = String.Empty
+            'Me.btnFilterSortDateModified_Shows.Image = Nothing
+            'Me.btnFilterSortRating_Shows.Tag = String.Empty
+            'Me.btnFilterSortRating_Shows.Image = Nothing
+            'Me.btnFilterSortYear_Shows.Tag = String.Empty
+            'Me.btnFilterSortYear_Shows.Image = Nothing
+            If Me.btnFilterSortTitle_Shows.Tag.ToString = "ASC" Then
+                Me.btnFilterSortTitle_Shows.Tag = "DSC"
+                Me.btnFilterSortTitle_Shows.Image = My.Resources.desc
+                Me.dgvTVShows.Sort(Me.dgvTVShows.Columns("SortedTitle"), ComponentModel.ListSortDirection.Descending)
+            Else
+                Me.btnFilterSortTitle_Shows.Tag = "ASC"
+                Me.btnFilterSortTitle_Shows.Image = My.Resources.asc
+                Me.dgvTVShows.Sort(Me.dgvTVShows.Columns("SortedTitle"), ComponentModel.ListSortDirection.Ascending)
+            End If
+
+            Me.SaveFilter_Shows()
         End If
     End Sub
     ''' <summary>
@@ -8859,6 +8888,63 @@ doCancel:
             Me.dgvTVShows.Rows(0).Selected = True
             Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(0).Cells("ListTitle")
         End If
+
+        'If Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "Year" AndAlso Me.dgvTVShows.SortOrder = 1 Then
+        '    Me.btnFilterSortYear_Shows.Tag = "ASC"
+        '    Me.btnFilterSortYear_Shows.Image = My.Resources.asc
+        'ElseIf Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "Year" AndAlso Me.dgvTVShows.SortOrder = 2 Then
+        '    Me.btnFilterSortYear_Shows.Tag = "DESC"
+        '    Me.btnFilterSortYear_Shows.Image = My.Resources.desc
+        'Else
+        '    Me.btnFilterSortYear_Shows.Tag = String.Empty
+        '    Me.btnFilterSortYear_Shows.Image = Nothing
+        'End If
+
+        'If Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "Rating" AndAlso Me.dgvTVShows.SortOrder = 1 Then
+        '    Me.btnFilterSortRating_Shows.Tag = "ASC"
+        '    Me.btnFilterSortRating_Shows.Image = My.Resources.asc
+        'ElseIf Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "Rating" AndAlso Me.dgvTVShows.SortOrder = 2 Then
+        '    Me.btnFilterSortRating_Shows.Tag = "DESC"
+        '    Me.btnFilterSortRating_Shows.Image = My.Resources.desc
+        'Else
+        '    Me.btnFilterSortRating_Shows.Tag = String.Empty
+        '    Me.btnFilterSortRating_Shows.Image = Nothing
+        'End If
+
+        If Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "SortedTitle" AndAlso Me.dgvTVShows.SortOrder = 1 Then
+            Me.btnFilterSortTitle_Shows.Tag = "ASC"
+            Me.btnFilterSortTitle_Shows.Image = My.Resources.asc
+        ElseIf Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "SortedTitle" AndAlso Me.dgvTVShows.SortOrder = 2 Then
+            Me.btnFilterSortTitle_Shows.Tag = "DESC"
+            Me.btnFilterSortTitle_Shows.Image = My.Resources.desc
+        Else
+            Me.btnFilterSortTitle_Shows.Tag = String.Empty
+            Me.btnFilterSortTitle_Shows.Image = Nothing
+        End If
+
+        'If Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "DateAdded" AndAlso Me.dgvTVShows.SortOrder = 1 Then
+        '    Me.btnFilterSortDateAdded_Shows.Tag = "ASC"
+        '    Me.btnFilterSortDateAdded_Shows.Image = My.Resources.asc
+        'ElseIf Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "DateAdded" AndAlso Me.dgvTVShows.SortOrder = 2 Then
+        '    Me.btnFilterSortDateAdded_Shows.Tag = "DESC"
+        '    Me.btnFilterSortDateAdded_Shows.Image = My.Resources.desc
+        'Else
+        '    Me.btnFilterSortDateAdded_Shows.Tag = String.Empty
+        '    Me.btnFilterSortDateAdded_Shows.Image = Nothing
+        'End If
+
+        'If Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "DateModified" AndAlso Me.dgvTVShows.SortOrder = 1 Then
+        '    Me.btnFilterSortDateModified_Shows.Tag = "ASC"
+        '    Me.btnFilterSortDateModified_Shows.Image = My.Resources.asc
+        'ElseIf Me.dgvTVShows.SortedColumn.HeaderCell.Value.ToString = "DateModified" AndAlso Me.dgvTVShows.SortOrder = 2 Then
+        '    Me.btnFilterSortDateModified_Shows.Tag = "DESC"
+        '    Me.btnFilterSortDateModified_Shows.Image = My.Resources.desc
+        'Else
+        '    Me.btnFilterSortDateModified_Shows.Tag = String.Empty
+        '    Me.btnFilterSortDateModified_Shows.Image = Nothing
+        'End If
+
+        Me.SaveFilter_Shows()
     End Sub
 
     Private Sub DonateToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonate.Click
@@ -8991,7 +9077,7 @@ doCancel:
         Me.btnFilterMissing_Shows.Enabled = isEnabled
         'Me.btnSortDate.Enabled = isEnabled
         'Me.btnIMDBRating.Enabled = isEnabled
-        'Me.btnSortTitle.Enabled = isEnabled
+        Me.btnFilterSortTitle_Shows.Enabled = isEnabled
         'Me.cbFilterFileSource.Enabled = isEnabled
         'Me.cbFilterYear.Enabled = isEnabled
         'Me.cbFilterYearMod.Enabled = isEnabled
@@ -9652,6 +9738,9 @@ doCancel:
             Me.EnableFilters_Shows(True)
             If doMovies Then
                 Me.RestoreFilter_Movies()
+            End If
+            If doTVShows Then
+                Me.RestoreFilter_Shows()
             End If
             If doMovies AndAlso doMovieSets AndAlso doTVShows Then
                 Me.UpdateMainTabCounts()
@@ -16240,19 +16329,28 @@ doCancel:
         End If
     End Sub
 
-    ''' <summary>
-    ''' Restore Sort Filters of Movie List
-    ''' </summary>
-    ''' <remarks>Cocotus 2014/09/06 Sort filters in main view are now saved and reloaded after database refreshes</remarks>
     Private Sub RestoreFilter_Movies()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
-                .GeneralMainFilterSortColumn_Movies = 1         'ListTitle
+                .GeneralMainFilterSortColumn_Movies = 3         'ListTitle in movielist
                 .GeneralMainFilterSortOrder_Movies = 0          'ASC
             End If
 
             If Me.dgvMovies.DataSource IsNot Nothing Then
                 Me.dgvMovies.Sort(Me.dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+            End If
+        End With
+    End Sub
+
+    Private Sub RestoreFilter_Shows()
+        With Master.eSettings
+            If .GeneralMainFilterSortColumn_Shows = 0 AndAlso .GeneralMainFilterSortOrder_Shows = 0 Then
+                .GeneralMainFilterSortColumn_Shows = 1         'ListTitle in tvshowlist
+                .GeneralMainFilterSortOrder_Shows = 0          'ASC
+            End If
+
+            If Me.dgvTVShows.DataSource IsNot Nothing Then
+                Me.dgvTVShows.Sort(Me.dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -16265,6 +16363,16 @@ doCancel:
 
         Master.eSettings.GeneralMainFilterSortColumn_Movies = Me.dgvMovies.SortedColumn.Index
         Master.eSettings.GeneralMainFilterSortOrder_Movies = Order
+    End Sub
+
+    Private Sub SaveFilter_Shows()
+        Dim Order As Integer
+        If Me.dgvTVShows.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
+        If Me.dgvTVShows.SortOrder = SortOrder.Ascending Then Order = 0
+        If Me.dgvTVShows.SortOrder = SortOrder.Descending Then Order = 1
+
+        Master.eSettings.GeneralMainFilterSortColumn_Shows = Me.dgvTVShows.SortedColumn.Index
+        Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
     End Sub
 
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
@@ -18715,6 +18823,8 @@ doCancel:
                 .btnFilterSortRating_Movies.Text = Master.eLang.GetString(400, "Rating")
                 .btnFilterSortTitle_Movies.Tag = String.Empty
                 .btnFilterSortTitle_Movies.Text = Master.eLang.GetString(642, "Sort Title")
+                .btnFilterSortTitle_Shows.Tag = String.Empty
+                .btnFilterSortTitle_Shows.Text = Master.eLang.GetString(642, "Sort Title")
                 .btnFilterSortYear_Movies.Tag = String.Empty
                 .btnFilterSortYear_Movies.Text = Master.eLang.GetString(278, "Year")
                 .chkFilterDuplicates_Movies.Text = Master.eLang.GetString(41, "Duplicates")

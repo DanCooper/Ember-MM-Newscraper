@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v20_to_v21">
+    <command type="DB">
+      <description>add SortTitle to tvshow</description>
+      <execute>
+        ALTER TABLE tvshow
+        ADD COLUMN SortTitle text;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit view tvshowlist</description>
+      <execute>
+        DROP VIEW tvshowlist;
+
+        CREATE VIEW tvshowlist
+        AS
+        SELECT
+        tvshow.*,
+        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.ListTitle END AS SortedTitle,
+        banner.url AS BannerPath,
+        characterart.url AS CharacterArtPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
+        COUNT(episodelist.Playcount) AS Playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(episodelist.Playcount) THEN 1 ELSE 0 END AS HasWatched,
+        SUM(episodelist.New) AS NewEpisodes
+        FROM
+        tvshow
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
+        AND (banner.media_type = 'tvshow')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
+        AND (characterart.media_type = 'tvshow')
+        AND (characterart.type = 'characterart')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
+        AND (clearart.media_type = 'tvshow')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
+        AND (clearlogo.media_type = 'tvshow')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
+        AND (fanart.media_type = 'tvshow')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
+        AND (landscape.media_type = 'tvshow')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
+        AND (poster.media_type = 'tvshow')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        tvshow.idShow;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

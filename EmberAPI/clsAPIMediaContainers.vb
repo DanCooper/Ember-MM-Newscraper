@@ -2085,6 +2085,7 @@ Namespace MediaContainers
         Private _runtime As String
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
+        Private _sorttitle As String
         Private _status As String
         Private _tags As New List(Of String)
         Private _votes As String
@@ -2116,6 +2117,23 @@ Namespace MediaContainers
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("sorttitle")> _
+        Public Property SortTitle() As String
+            Get
+                Return Me._sorttitle
+            End Get
+            Set(ByVal value As String)
+                Me._sorttitle = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SortTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._sorttitle) AndAlso Not Me._sorttitle = StringUtils.SortTokens_TV(Me._title)
             End Get
         End Property
 
@@ -2463,6 +2481,7 @@ Namespace MediaContainers
             _mpaa = String.Empty
             _genres.Clear()
             _premiered = String.Empty
+            _sorttitle = String.Empty
             _status = String.Empty
             _studio = String.Empty
             _votes = String.Empty
