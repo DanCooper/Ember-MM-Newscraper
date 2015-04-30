@@ -1729,18 +1729,11 @@ Public Class Database
                     _TVDB.EpNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
                     _TVDB.TVEp = New MediaContainers.EpisodeDetails
                     With _TVDB.TVEp
-                        ' add display season and episode - mh
-                        If Not DBNull.Value.Equals(SQLreader("DisplaySeason")) Then
-                            .DisplaySeason = Convert.ToInt32(SQLreader("Season"))
-                            .displaySEset = True
-                        End If
-                        If Not DBNull.Value.Equals(SQLreader("DisplayEpisode")) Then
-                            .DisplayEpisode = Convert.ToInt32(SQLreader("Episode"))
-                            .displaySEset = True
-                        End If
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                         If Not DBNull.Value.Equals(SQLreader("Season")) Then .Season = Convert.ToInt32(SQLreader("Season"))
                         If Not DBNull.Value.Equals(SQLreader("Episode")) Then .Episode = Convert.ToInt32(SQLreader("Episode"))
+                        If Not DBNull.Value.Equals(SQLreader("DisplaySeason")) Then .DisplaySeason = Convert.ToInt32(SQLreader("DisplaySeason"))
+                        If Not DBNull.Value.Equals(SQLreader("DisplayEpisode")) Then .DisplayEpisode = Convert.ToInt32(SQLreader("DisplayEpisode"))
                         If Not DBNull.Value.Equals(SQLreader("Aired")) Then .Aired = SQLreader("Aired").ToString
                         If Not DBNull.Value.Equals(SQLreader("Rating")) Then .Rating = SQLreader("Rating").ToString
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
@@ -3473,6 +3466,8 @@ Public Class Database
                 parTitle.Value = .Title
                 parSeason.Value = .Season
                 parEpisode.Value = .Episode
+                parDisplaySeason.Value = .DisplaySeason
+                parDisplayEpisode.Value = .DisplayEpisode
                 parRating.Value = .Rating
                 parPlot.Value = .Plot
                 parAired.Value = .Aired
@@ -3483,10 +3478,6 @@ Public Class Database
                 parVotes.Value = NumUtils.CleanVotes(.Votes)
                 If .SubEpisodeSpecified Then
                     parSubEpisode.Value = .SubEpisode
-                End If
-                If .displaySEset Then
-                    parDisplaySeason.Value = .DisplaySeason
-                    parDisplayEpisode.Value = .DisplayEpisode
                 End If
             End With
 

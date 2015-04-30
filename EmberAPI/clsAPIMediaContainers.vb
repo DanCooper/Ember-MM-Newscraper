@@ -50,10 +50,6 @@ Namespace MediaContainers
         Private _videosource As String
         Private _votes As String
 
-        <XmlIgnore()> _
-        Public displaySEset As Boolean = False
-
-
 #End Region 'Fields
 
 #Region "Constructors"
@@ -232,7 +228,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property DisplaySeasonSpecified() As Boolean
             Get
-                Return displaySEset
+                Return Not String.IsNullOrEmpty(Me._displayseason.ToString) AndAlso Me._displayseason > -1
             End Get
         End Property
 
@@ -249,7 +245,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property DisplayEpisodeSpecified() As Boolean
             Get
-                Return displaySEset
+                Return Not String.IsNullOrEmpty(Me._displayepisode.ToString) AndAlso Me._displayepisode > -1
             End Get
         End Property
 
@@ -460,8 +456,8 @@ Namespace MediaContainers
             Me._credits.Clear()
             Me._dateadded = String.Empty
             Me._directors.Clear()
-            Me._displayepisode = -999
-            Me._displayseason = -999
+            Me._displayepisode = -1
+            Me._displayseason = -1
             Me._episode = -999
             Me._fanart = New Images
             Me._fileInfo = New MediaInfo.Fileinfo
