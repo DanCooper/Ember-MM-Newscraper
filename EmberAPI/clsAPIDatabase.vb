@@ -2185,6 +2185,16 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
 
+            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 21
+                        PrepareSortTitle("tvshow", True)
+                        PrepareDisplayEpisodeSeason(True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
@@ -2489,6 +2499,36 @@ Public Class Database
 
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Format("UPDATE {0} SET Playcount = NULL WHERE Playcount = 0 OR Playcount = """";", table)
+            SQLcommand.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareSortTitle(ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing SortTitles...")
+
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("UPDATE {0} SET SortTitle = '' WHERE SortTitle IS NULL OR SortTitle = """";", table)
+            SQLcommand.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareDisplayEpisodeSeason(ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing DisplayEpisode and DisplaySeason...")
+
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "UPDATE episode SET DisplayEpisode = -1 WHERE DisplayEpisode IS NULL;"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE episode SET DisplaySeason = -1 WHERE DisplaySeason IS NULL;"
             SQLcommand.ExecuteNonQuery()
         End Using
 
