@@ -2544,10 +2544,16 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
 
         Me.txtMovieScraperOutlineLimit.Enabled = Me.chkMovieScraperPlotForOutline.Checked
+        Me.chkMovieScraperPlotForOutlineIfEmpty.Enabled = Me.chkMovieScraperPlotForOutline.Checked
         If Not Me.chkMovieScraperPlotForOutline.Checked Then
             Me.txtMovieScraperOutlineLimit.Enabled = False
-            'Me.txtOutlineLimit.Text = "0"
+            Me.chkMovieScraperPlotForOutlineIfEmpty.Checked = False
+            Me.chkMovieScraperPlotForOutlineIfEmpty.Enabled = False
         End If
+    End Sub
+
+    Private Sub chkMovieScraperPlotForOutlineIfEmpty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlot.CheckedChanged
@@ -3699,6 +3705,7 @@ Public Class dlgSettings
             Me.chkMovieScraperOutline.Checked = .MovieScraperOutline
             Me.chkMovieScraperPlot.Checked = .MovieScraperPlot
             Me.chkMovieScraperPlotForOutline.Checked = .MovieScraperPlotForOutline
+            Me.chkMovieScraperPlotForOutlineIfEmpty.Checked = .MovieScraperPlotForOutlineIfEmpty
             Me.chkMovieScraperRating.Checked = .MovieScraperRating
             Me.chkMovieScraperRelease.Checked = .MovieScraperRelease
             Me.chkMovieScraperReleaseFormat.Checked = .MovieScraperReleaseFormat
@@ -5399,6 +5406,7 @@ Public Class dlgSettings
             End If
             .MovieScraperPlot = Me.chkMovieScraperPlot.Checked
             .MovieScraperPlotForOutline = Me.chkMovieScraperPlotForOutline.Checked
+            .MovieScraperPlotForOutlineIfEmpty = Me.chkMovieScraperPlotForOutlineIfEmpty.Checked
             .MovieScraperRating = Me.chkMovieScraperRating.Checked
             .MovieScraperRelease = Me.chkMovieScraperRelease.Checked
             .MovieScraperReleaseFormat = Me.chkMovieScraperReleaseFormat.Checked
@@ -6710,7 +6718,8 @@ Public Class dlgSettings
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         Me.chkMovieScraperCertOnlyValue.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
-        Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
+        Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
+        Me.chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
         Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")

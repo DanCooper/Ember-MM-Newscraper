@@ -357,11 +357,6 @@ Public Class NFO
                 DBMovie.Movie.Studios.Clear()
             End If
 
-            'OldCredits: Writers/Producers/MusicBy/OtherCrew - its all in this field
-            'If (String.IsNullOrEmpty(DBMovie.Movie.OldCredits) OrElse Not Master.eSettings.MovieLockWriters) AndAlso Not String.IsNullOrEmpty(scrapedmovie.OldCredits) AndAlso Master.eSettings.MovieScraperCrew Then
-            '    DBMovie.Movie.OldCredits = scrapedmovie.OldCredits
-            'End If
-
             'Credits
             If (DBMovie.Movie.Credits.Count < 1 OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
                 scrapedmovie.Credits.Count > 0 AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
@@ -399,15 +394,9 @@ Public Class NFO
         Next
 
         'Plot for Outline
-        '2015/02/12 Cooctus Fixed 
-        'Before: If there was no outline scraped at all, plot won't be used for outline ever! Also outline was overwritten regardless if it was empty or not before! (Option in Ember is described: Use Plot for Outline if Outline is Empty)
-        'Now: - Instead of checking only the outline we check if new plot or/and outline was set - if one of those was updated, copy plot to outline!
-        '     - Overwrite outline only if outline was empty!
-        If (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso _
-            Master.eSettings.MovieScraperPlotForOutline AndAlso Options.bOutline AndAlso (new_Plot OrElse new_Outline) Then
-            If Not String.IsNullOrEmpty(DBMovie.Movie.Plot) AndAlso String.IsNullOrEmpty(DBMovie.Movie.Outline) Then
-                DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
-            End If
+        If ((String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Not Master.eSettings.MovieScraperPlotForOutlineIfEmpty) OrElse _
+            (String.IsNullOrEmpty(DBMovie.Movie.Outline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Master.eSettings.MovieScraperPlotForOutlineIfEmpty) Then
+            DBMovie.Movie.Outline = StringUtils.ShortenOutline(DBMovie.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
         End If
 
         'Certification for MPAA

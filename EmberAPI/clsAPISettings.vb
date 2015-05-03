@@ -2413,12 +2413,22 @@ Public Class Settings
             Settings._XMLSettings.MovieThemeOverwrite = value
         End Set
     End Property
+
     Public Property MovieScraperPlotForOutline() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperPlotForOutline
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieScraperPlotForOutline = value
+        End Set
+    End Property
+
+    Public Property MovieScraperPlotForOutlineIfEmpty() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperPlotForOutlineIfEmpty
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperPlotForOutlineIfEmpty = value
         End Set
     End Property
 
@@ -5974,6 +5984,7 @@ Public Class Settings
         Me.MovieScraperOutlineLimit = 350
         Me.MovieScraperPlot = True
         Me.MovieScraperPlotForOutline = False
+        Me.MovieScraperPlotForOutlineIfEmpty = False
         Me.MovieScraperRating = True
         Me.MovieScraperRelease = True
         Me.MovieScraperRuntime = True

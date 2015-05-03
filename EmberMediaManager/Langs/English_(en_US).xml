@@ -956,14 +956,14 @@
   <string id="955">Setting Defaults...</string>
   <string id="956">Show Poster</string>
   <string id="957">Show the ones with size:</string>
-  <string id="958"></string>
+  <string id="958">Only if Plot Outline is empty</string>
   <string id="959"></string>
   <string id="960"></string>
   <string id="961">Season {0} Posters</string>
   <string id="962">Season {0} Fanart</string>
   <string id="963">TV Image Selection</string>
   <string id="964">Current Image:</string>
-  <string id="965">Use Plot for Outline if Outline is Empty</string>
+  <string id="965">Use Plot for Plot Outline</string>
   <string id="966">Enable Images Glass Overlay</string>
   <string id="967">Do Not Display Small Fanart</string>
   <string id="968">

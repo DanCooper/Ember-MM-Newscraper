@@ -205,6 +205,7 @@ Partial Public Class clsXMLSettings
     Private _moviescraperoutlinelimit As Integer
     Private _moviescraperplot As Boolean
     Private _moviescraperplotforoutline As Boolean
+    Private _moviescraperplotforoutlineifempty As Boolean
     Private _moviescraperrating As Boolean
     Private _moviescraperrelease As Boolean
     Private _moviescraperruntime As Boolean
@@ -3211,12 +3212,22 @@ Partial Public Class clsXMLSettings
             Me._moviethemeoverwrite = value
         End Set
     End Property
+
     Public Property MovieScraperPlotForOutline() As Boolean
         Get
             Return Me._moviescraperplotforoutline
         End Get
         Set(ByVal value As Boolean)
             Me._moviescraperplotforoutline = value
+        End Set
+    End Property
+
+    Public Property MovieScraperPlotForOutlineIfEmpty() As Boolean
+        Get
+            Return Me._moviescraperplotforoutlineifempty
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescraperplotforoutlineifempty = value
         End Set
     End Property
 
