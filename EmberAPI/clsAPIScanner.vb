@@ -461,10 +461,6 @@ Public Class Scanner
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            If String.IsNullOrEmpty(SeasonFirstEpisodePath) Then
-                SeasonFirstEpisodePath = TVDB.Filename
-            End If
-
             'season banner
             If String.IsNullOrEmpty(TVDB.SeasonBannerPath) Then
                 'all-seasons

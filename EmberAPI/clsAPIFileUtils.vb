@@ -1727,7 +1727,10 @@ Namespace FileUtils
             Dim FilenameList As New List(Of String)
             Dim bInside As Boolean = False
 
-            Dim fEpsiodePath As String = Path.Combine(Directory.GetParent(FirstEpisode).FullName, Path.GetFileNameWithoutExtension(FirstEpisode))
+            Dim fEpisodePath As String = String.Empty
+            If Not String.IsNullOrEmpty(FirstEpisode) Then
+                fEpisodePath = Path.Combine(Directory.GetParent(FirstEpisode).FullName, Path.GetFileNameWithoutExtension(FirstEpisode))
+            End If
             Dim fSeasonPath As String = SeasonPath
             Dim fShowPath As String = ShowPath
             Dim sSeason As String = mSeason.ToString.PadLeft(2, Convert.ToChar("0"))
@@ -1744,15 +1747,11 @@ Namespace FileUtils
                         If mSeason = 0 Then 'season specials
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-banner.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
-                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside Then
-                                FilenameList.Add(String.Concat(fEpsiodePath, ".banner.jpg"))
-                            End If
+                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
                         Else
                             If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-banner.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
-                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside Then
-                                FilenameList.Add(String.Concat(fEpsiodePath, ".banner.jpg"))
-                            End If
+                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
                         End If
                     End With
 
@@ -1761,15 +1760,11 @@ Namespace FileUtils
                         If mSeason = 0 Then 'season specials
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-fanart.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
-                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside Then
-                                FilenameList.Add(String.Concat(fEpsiodePath, ".fanart.jpg"))
-                            End If
+                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
                         Else
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-fanart.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
-                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside Then
-                                FilenameList.Add(String.Concat(fEpsiodePath, ".fanart.jpg"))
-                            End If
+                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
                         End If
                     End With
 
@@ -1788,16 +1783,12 @@ Namespace FileUtils
                             If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-poster.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
-                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside Then
-                                FilenameList.Add(String.Concat(fEpsiodePath, ".jpg"))
-                            End If
+                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
                         Else
                             If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
-                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside Then
-                                FilenameList.Add(String.Concat(fEpsiodePath, ".jpg"))
-                            End If
+                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
                         End If
                     End With
             End Select

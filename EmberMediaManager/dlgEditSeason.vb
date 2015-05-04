@@ -451,7 +451,7 @@ Public Class dlgEditSeason
             If Master.currShow.TVEp.Season = 999 Then
                 If .SeasonBanner.Image IsNot Nothing Then
                     'AllSeasons Banner
-                    Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow, "")
+                    Master.currShow.SeasonBannerPath = .SeasonBanner.SaveAsTVASBanner(Master.currShow)
                 Else
                     .SeasonBanner.DeleteTVASBanner(Master.currShow)
                     Master.currShow.SeasonBannerPath = String.Empty
@@ -470,7 +470,7 @@ Public Class dlgEditSeason
             If Master.currShow.TVEp.Season = 999 Then
                 If .SeasonFanart.Image IsNot Nothing Then
                     'AllSeasons Fanart
-                    Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow, "")
+                    Master.currShow.SeasonFanartPath = .SeasonFanart.SaveAsTVASFanart(Master.currShow)
                 Else
                     .SeasonFanart.DeleteTVASFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = String.Empty
@@ -489,7 +489,7 @@ Public Class dlgEditSeason
             If Master.currShow.TVEp.Season = 999 Then
                 If .SeasonLandscape.Image IsNot Nothing Then
                     'AllSeasons Landscape
-                    Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow, "")
+                    Master.currShow.SeasonLandscapePath = .SeasonLandscape.SaveAsTVASLandscape(Master.currShow)
                 Else
                     .SeasonLandscape.DeleteTVASLandscape(Master.currShow)
                     Master.currShow.SeasonLandscapePath = String.Empty
@@ -508,7 +508,7 @@ Public Class dlgEditSeason
             If Master.currShow.TVEp.Season = 999 Then
                 If .SeasonPoster.Image IsNot Nothing Then
                     'AllSeasons Poster
-                    Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow, "")
+                    Master.currShow.SeasonPosterPath = .SeasonPoster.SaveAsTVASPoster(Master.currShow)
                 Else
                     .SeasonPoster.DeleteTVASPoster(Master.currShow)
                     Master.currShow.SeasonPosterPath = String.Empty
