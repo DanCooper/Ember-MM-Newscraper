@@ -7530,19 +7530,19 @@ Public Class dlgSettings
         Me.txtMovieTrailerExpertVTS.Enabled = Me.chkMovieUseExpert.Checked
     End Sub
 
-    Private Sub chkMovieActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertSingle.CheckedChanged
+    Private Sub chkMovieActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertSingle.CheckedChanged, chkTVActorThumbsExpertShow.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieActorThumbsExtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertSingle.TextChanged
+    Private Sub txtMovieActorThumbsExtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertSingle.TextChanged, txtTVActorThumbsExtExpertShow.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertSingle.TextChanged
+    Private Sub txtMovieBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertSingle.TextChanged, txtTVBannerExpertShow.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertSingle.TextChanged
+    Private Sub txtMovieClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertSingle.TextChanged, txtTVCharacterArtExpertShow.TextChanged, txtTVPosterExpertShow.TextChanged, txtTVNFOExpertShow.TextChanged, txtTVLandscapeExpertShow.TextChanged, txtTVFanartExpertShow.TextChanged, txtTVClearLogoExpertShow.TextChanged, txtTVClearArtExpertShow.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7554,7 +7554,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieExtrafanartsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertSingle.CheckedChanged
+    Private Sub chkMovieExtrafanartsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertSingle.CheckedChanged, chkTVExtrafanartsExpertShow.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -8060,6 +8060,31 @@ Public Class dlgSettings
             Me.chkTVShowFanartYAMJ.Checked = True
             Me.chkTVShowPosterYAMJ.Checked = True
         End If
+    End Sub
+
+    Private Sub chkTVUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseExpert.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkTVActorThumbsExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
+        Me.chkTVActorThumbsExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.chkTVExtrafanartsExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVActorThumbsExtExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVActorThumbsExtExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVBannerExpertSeason.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVBannerExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVCharacterArtExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVClearArtExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVClearLogoExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVFanartExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVFanartExpertSeason.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVFanartExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVLandscapeExpertSeason.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVLandscapeExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVNFOExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVNFOExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVPosterExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVPosterExpertSeason.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVPosterExpertShow.Enabled = Me.chkTVUseExpert.Checked
     End Sub
 
     Private Sub chkTVEpisodePosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterYAMJ.CheckedChanged
