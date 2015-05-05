@@ -4204,8 +4204,41 @@ Public Class dlgSettings
             Me.chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
             Me.chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
             Me.chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
+            
+            '***************** Expert settings ******************
+            Me.chkTVUseExpert.Checked = .TVUseExpert
 
-            '***************** Expert settings *****************
+            '***************** Expert AllSeasons ****************
+            Me.txtTVAllSeasonsBannerExpert.Text = .TVAllSeasonsBannerExpert
+            Me.txtTVAllSeasonsFanartExpert.Text = .TVAllSeasonsFanartExpert
+            Me.txtTVAllSeasonsLandscapeExpert.Text = .TVAllSeasonsLandscapeExpert
+            Me.txtTVAllSeasonsPosterExpert.Text = .TVAllSeasonsPosterExpert
+
+            '***************** Expert Episode *******************
+            Me.chkTVEpisodeActorThumbsExpert.Checked = .TVEpisodeActorThumbsExpert
+            Me.txtTVEpisodeActorThumbsExtExpert.Text = .TVEpisodeActorThumbsExtExpert
+            Me.txtTVEpisodeFanartExpert.Text = .TVEpisodeFanartExpert
+            Me.txtTVEpisodeNFOExpert.Text = .TVEpisodeNFOExpert
+            Me.txtTVEpisodePosterExpert.Text = .TVEpisodePosterExpert
+
+            '***************** Expert Season *******************
+            Me.txtTVSeasonBannerExpert.Text = .TVSeasonBannerExpert
+            Me.txtTVSeasonFanartExpert.Text = .TVSeasonFanartExpert
+            Me.txtTVSeasonLandscapeExpert.Text = .TVSeasonLandscapeExpert
+            Me.txtTVSeasonPosterExpert.Text = .TVSeasonPosterExpert
+
+            '***************** Expert Show *********************
+            Me.chkTVShowActorThumbsExpert.Checked = .TVShowActorThumbsExpert
+            Me.txtTVShowActorThumbsExtExpert.Text = .TVShowActorThumbsExtExpert
+            Me.txtTVShowBannerExpert.Text = .TVShowBannerExpert
+            Me.txtTVShowCharacterArtExpert.Text = .TVShowCharacterArtExpert
+            Me.txtTVShowClearArtExpert.Text = .TVShowClearArtExpert
+            Me.txtTVShowClearLogoExpert.Text = .TVShowClearLogoExpert
+            Me.chkTVShowExtrafanartsExpert.Checked = .TVShowExtrafanartsExpert
+            Me.txtTVShowFanartExpert.Text = .TVShowFanartExpert
+            Me.txtTVShowLandscapeExpert.Text = .TVShowLandscapeExpert
+            Me.txtTVShowNFOExpert.Text = .TVShowNFOExpert
+            Me.txtTVShowPosterExpert.Text = .TVShowPosterExpert
 
         End With
     End Sub
@@ -5909,7 +5942,40 @@ Public Class dlgSettings
             .TVShowFanartBoxee = Me.chkTVShowFanartBoxee.Checked
             .TVShowPosterBoxee = Me.chkTVShowPosterBoxee.Checked
 
-            '***************** Expert settings *****************
+            '***************** Expert settings ******************
+            .TVUseExpert = Me.chkTVUseExpert.Checked
+
+            '***************** Expert AllSeasons ****************
+            .TVAllSeasonsBannerExpert = Me.txtTVAllSeasonsBannerExpert.Text
+            .TVAllSeasonsFanartExpert = Me.txtTVAllSeasonsFanartExpert.Text
+            .TVAllSeasonsLandscapeExpert = Me.txtTVAllSeasonsLandscapeExpert.Text
+            .TVAllSeasonsPosterExpert = Me.txtTVAllSeasonsPosterExpert.Text
+            
+            '***************** Expert Episode *******************
+            .TVEpisodeActorThumbsExpert = Me.chkTVEpisodeActorThumbsExpert.Checked
+            .TVEpisodeActorThumbsExtExpert = Me.txtTVEpisodeActorThumbsExtExpert.Text
+            .TVEpisodeFanartExpert = Me.txtTVEpisodeFanartExpert.Text
+            .TVEpisodeNFOExpert = Me.txtTVEpisodeNFOExpert.Text
+            .TVEpisodePosterExpert = Me.txtTVEpisodePosterExpert.Text
+
+            '***************** Expert Season ********************
+            .TVSeasonBannerExpert = Me.txtTVSeasonBannerExpert.Text
+            .TVSeasonFanartExpert = Me.txtTVSeasonFanartExpert.Text
+            .TVSeasonLandscapeExpert = Me.txtTVSeasonLandscapeExpert.Text
+            .TVSeasonPosterExpert = Me.txtTVSeasonPosterExpert.Text
+
+            '***************** Expert Show **********************
+            .TVShowActorThumbsExpert = Me.chkTVShowActorThumbsExpert.Checked
+            .TVShowActorThumbsExtExpert = Me.txtTVShowActorThumbsExtExpert.Text
+            .TVShowBannerExpert = Me.txtTVShowBannerExpert.Text
+            .TVShowCharacterArtExpert = Me.txtTVShowCharacterArtExpert.Text
+            .TVShowClearArtExpert = Me.txtTVShowClearArtExpert.Text
+            .TVShowClearLogoExpert = Me.txtTVShowClearLogoExpert.Text
+            .TVShowExtrafanartsExpert = Me.chkTVShowExtrafanartsExpert.Checked
+            .TVShowFanartExpert = Me.txtTVShowFanartExpert.Text
+            .TVShowLandscapeExpert = Me.txtTVShowLandscapeExpert.Text
+            .TVShowNFOExpert = Me.txtTVShowNFOExpert.Text
+            .TVShowPosterExpert = Me.txtTVShowPosterExpert.Text
 
 
             'Default to Frodo for movies
@@ -6033,6 +6099,8 @@ Public Class dlgSettings
         Me.chkMovieActorThumbsExpertMulti.Text = strActorThumbs
         Me.chkMovieActorThumbsExpertSingle.Text = strActorThumbs
         Me.chkMovieActorThumbsExpertVTS.Text = strActorThumbs
+        Me.chkTVEpisodeActorThumbsExpert.Text = strActorThumbs
+        Me.chkTVShowActorThumbsExpert.Text = strActorThumbs
         Me.gbMovieImagesActorThumbsOpts.Text = strActorThumbs
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
@@ -6081,6 +6149,9 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingExpertVTSBanner.Text = strBanner
         Me.lblMovieSourcesFileNamingNMTDefaultsBanner.Text = strBanner
         Me.lblMovieSourcesFileNamingXBMCADBanner.Text = strBanner
+        Me.lblTVAllSeasonsBannerExpert.Text = strBanner
+        Me.lblTVSeasonBannerExpert.Text = strBanner
+        Me.lblTVShowBannerExpert.Text = strBanner
         Me.lblTVSourcesFileNamingBoxeeDefaultsBanner.Text = strBanner
         Me.lblTVSourcesFileNamingNMTDefaultsBanner.Text = strBanner
         Me.lblTVSourcesFileNamingXBMCDefaultsBanner.Text = strBanner
@@ -6097,6 +6168,7 @@ Public Class dlgSettings
         'CharacterArt
         Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
         Me.gbTVImagesShowCharacterArtOpts.Text = strCharacterArt
+        Me.lblTVShowClearArtExpert.Text = strCharacterArt
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
@@ -6111,6 +6183,7 @@ Public Class dlgSettings
         Me.lblMovieClearArtExpertSingle.Text = strClearArt
         Me.lblMovieClearArtExpertVTS.Text = strClearArt
         Me.lblMovieSourcesFileNamingXBMCADClearArt.Text = strClearArt
+        Me.lblTVShowClearArtExpert.Text = strClearArt
 
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
@@ -6125,6 +6198,7 @@ Public Class dlgSettings
         Me.lblMovieClearLogoExpertSingle.Text = strClearLogo
         Me.lblMovieClearLogoExpertVTS.Text = strClearLogo
         Me.lblMovieSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
+        Me.lblTVShowClearLogoExpert.Text = strClearLogo
 
         'Collection ID
         Dim strCollectionID As String = Master.eLang.GetString(1135, "Collection ID")
@@ -6224,12 +6298,14 @@ Public Class dlgSettings
         Dim strExpertSettings As String = Master.eLang.GetString(1181, "Expert Settings")
         Me.gbMovieSourcesFileNamingExpertOpts.Text = strExpertSettings
         Me.gbMovieSetSourcesFileNamingExpertOpts.Text = strExpertSettings
+        Me.gbTVSourcesFileNamingExpertOpts.Text = strExpertSettings
 
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
         Me.chkMovieExtrafanartsExpertBDMV.Text = strExtrafanarts
         Me.chkMovieExtrafanartsExpertSingle.Text = strExtrafanarts
         Me.chkMovieExtrafanartsExpertVTS.Text = strExtrafanarts
+        Me.chkTVShowExtrafanartsExpert.Text = strExtrafanarts
         Me.gbMovieImagesEFanartsOpts.Text = strExtrafanarts
         Me.gbTVImagesShowEFanartsOpts.Text = strExtrafanarts
         Me.lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts.Text = strExtrafanarts
@@ -6261,6 +6337,10 @@ Public Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertVTSFanart.Text = strFanart
         Me.lblMovieSourcesFileNamingNMTDefaultsFanart.Text = strFanart
         Me.lblMovieSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
+        Me.lblTVAllSeasonsFanartExpert.Text = strFanart
+        Me.lblTVEpisodeFanartExpert.Text = strFanart
+        Me.lblTVSeasonFanartExpert.Text = strFanart
+        Me.lblTVShowFanartExpert.Text = strFanart
         Me.lblTVSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
         Me.lblTVSourcesFileNamingNMTDefaultsFanart.Text = strFanart
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
@@ -6298,6 +6378,9 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingExpertSingleLandscape.Text = strLandscape
         Me.lblMovieSourcesFileNamingExpertVTSLandscape.Text = strLandscape
         Me.lblMovieSourcesFileNamingXBMCADLandscape.Text = strLandscape
+        Me.lblTVAllSeasonsLandscapeExpert.Text = strLandscape
+        Me.lblTVSeasonLandscapeExpert.Text = strLandscape
+        Me.lblTVShowLandscapeExpert.Text = strLandscape
 
         'Language (Audio)
         Dim strLanguageAudio As String = Master.eLang.GetString(431, "Language (Audio)")
@@ -6414,6 +6497,8 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingExpertVTSNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingNMTDefaultsNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingXBMCDefaultsNFO.Text = strNFO
+        Me.lblTVEpisodeNFOExpert.Text = strNFO
+        Me.lblTVShowNFOExpert.Text = strNFO
 
         'Only
         Dim strOnly As String = Master.eLang.GetString(145, "Only")
@@ -6433,6 +6518,8 @@ Public Class dlgSettings
         Me.gbMovieSourcesFileNamingExpertMultiImagesOpts.Text = strOptionalImages
         Me.gbMovieSourcesFileNamingExpertSingleImagesOpts.Text = strOptionalImages
         Me.gbMovieSourcesFileNamingExpertVTSImagesOpts.Text = strOptionalImages
+        Me.gbTVSourcesFileNamingExpertEpisodeImagesOpts.Text = strOptionalImages
+        Me.gbTVSourcesFileNamingExpertShowImagesOpts.Text = strOptionalImages
 
         'Optional Settings
         Dim strOptionalSettings As String = Master.eLang.GetString(1175, "Optional Settings")
@@ -6524,6 +6611,10 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingBoxeeDefaultsPoster.Text = strPoster
         Me.lblMovieSourcesFileNamingNMTDefaultsPoster.Text = strPoster
         Me.lblMovieSourcesFileNamingXBMCDefaultsPoster.Text = strPoster
+        Me.lblTVAllSeasonsPosterExpert.Text = strPoster
+        Me.lblTVEpisodePosterExpert.Text = strPoster
+        Me.lblTVSeasonPosterExpert.Text = strPoster
+        Me.lblTVShowPosterExpert.Text = strPoster
 
         'Preferred Size:
         Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
@@ -7530,19 +7621,19 @@ Public Class dlgSettings
         Me.txtMovieTrailerExpertVTS.Enabled = Me.chkMovieUseExpert.Checked
     End Sub
 
-    Private Sub chkMovieActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertSingle.CheckedChanged, chkTVActorThumbsExpertShow.CheckedChanged
+    Private Sub chkMovieActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertSingle.CheckedChanged, chkTVShowActorThumbsExpert.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieActorThumbsExtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertSingle.TextChanged, txtTVActorThumbsExtExpertShow.TextChanged
+    Private Sub txtMovieActorThumbsExtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertSingle.TextChanged, txtTVShowActorThumbsExtExpert.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertSingle.TextChanged, txtTVBannerExpertShow.TextChanged
+    Private Sub txtMovieBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertSingle.TextChanged, txtTVShowBannerExpert.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertSingle.TextChanged, txtTVCharacterArtExpertShow.TextChanged, txtTVPosterExpertShow.TextChanged, txtTVNFOExpertShow.TextChanged, txtTVLandscapeExpertShow.TextChanged, txtTVFanartExpertShow.TextChanged, txtTVClearLogoExpertShow.TextChanged, txtTVClearArtExpertShow.TextChanged
+    Private Sub txtMovieClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertSingle.TextChanged, txtTVShowCharacterArtExpert.TextChanged, txtTVShowPosterExpert.TextChanged, txtTVShowNFOExpert.TextChanged, txtTVShowLandscapeExpert.TextChanged, txtTVShowFanartExpert.TextChanged, txtTVShowClearLogoExpert.TextChanged, txtTVShowClearArtExpert.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -7554,7 +7645,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieExtrafanartsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertSingle.CheckedChanged, chkTVExtrafanartsExpertShow.CheckedChanged
+    Private Sub chkMovieExtrafanartsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertSingle.CheckedChanged, chkTVShowExtrafanartsExpert.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -8065,26 +8156,30 @@ Public Class dlgSettings
     Private Sub chkTVUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseExpert.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkTVActorThumbsExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
-        Me.chkTVActorThumbsExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.chkTVExtrafanartsExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVActorThumbsExtExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVActorThumbsExtExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVBannerExpertSeason.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVBannerExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVCharacterArtExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVClearArtExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVClearLogoExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVFanartExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVFanartExpertSeason.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVFanartExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVLandscapeExpertSeason.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVLandscapeExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVNFOExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVNFOExpertShow.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVPosterExpertEpisode.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVPosterExpertSeason.Enabled = Me.chkTVUseExpert.Checked
-        Me.txtTVPosterExpertShow.Enabled = Me.chkTVUseExpert.Checked
+        Me.chkTVEpisodeActorThumbsExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.chkTVShowActorThumbsExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.chkTVShowExtrafanartsExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVAllSeasonsBannerExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVAllSeasonsFanartExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVAllSeasonsLandscapeExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVAllSeasonsPosterExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVEpisodeActorThumbsExtExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVEpisodeFanartExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVEpisodeNFOExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVEpisodePosterExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVSeasonBannerExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVSeasonFanartExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVSeasonLandscapeExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVSeasonPosterExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowActorThumbsExtExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowBannerExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowCharacterArtExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowClearArtExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowClearLogoExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowFanartExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowLandscapeExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowNFOExpert.Enabled = Me.chkTVUseExpert.Checked
+        Me.txtTVShowPosterExpert.Enabled = Me.chkTVUseExpert.Checked
     End Sub
 
     Private Sub chkTVEpisodePosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterYAMJ.CheckedChanged

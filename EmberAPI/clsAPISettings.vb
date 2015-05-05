@@ -5204,6 +5204,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVUseExpert() As Boolean
+        Get
+            Return Settings._XMLSettings.TVUseExpert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVUseExpert = value
+        End Set
+    End Property
+
     Public Property TVUseFrodo() As Boolean
         Get
             Return Settings._XMLSettings.TVUseFrodo
@@ -5222,12 +5231,48 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowActorThumbsExpert() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowActorThumbsExpert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowActorThumbsExpert = value
+        End Set
+    End Property
+
+    Public Property TVShowActorThumbsExtExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowActorThumbsExtExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowActorThumbsExtExpert = value
+        End Set
+    End Property
+
+    Public Property TVShowActorThumbsFrodo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowActorThumbsFrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowActorThumbsFrodo = value
+        End Set
+    End Property
+
     Public Property TVShowBannerBoxee() As Boolean
         Get
             Return Settings._XMLSettings.TVShowBannerBoxee
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowBannerBoxee = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowBannerExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowBannerExpert = value
         End Set
     End Property
 
@@ -5249,6 +5294,42 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowCharacterArtExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowCharacterArtExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowCharacterArtExpert = value
+        End Set
+    End Property
+
+    Public Property TVShowClearArtExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowClearArtExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowClearArtExpert = value
+        End Set
+    End Property
+
+    Public Property TVShowClearLogoExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowClearLogoExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowClearLogoExpert = value
+        End Set
+    End Property
+
+    Public Property TVShowExtrafanartsExpert() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowExtrafanartsExpert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowExtrafanartsExpert = value
+        End Set
+    End Property
+
     Public Property TVShowExtrafanartsFrodo() As Boolean
         Get
             Return Settings._XMLSettings.TVShowExtrafanartsFrodo
@@ -5264,6 +5345,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowFanartBoxee = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowFanartExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowFanartExpert = value
         End Set
     End Property
 
@@ -5285,12 +5375,39 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowLandscapeExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowLandscapeExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowLandscapeExpert = value
+        End Set
+    End Property
+
+    Public Property TVShowNFOExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowNFOExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowNFOExpert = value
+        End Set
+    End Property
+
     Public Property TVShowPosterBoxee() As Boolean
         Get
             Return Settings._XMLSettings.TVShowPosterBoxee
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowPosterBoxee = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterExpert() As String
+        Get
+            Return Settings._XMLSettings.TVShowPosterExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVShowPosterExpert = value
         End Set
     End Property
 
@@ -5321,57 +5438,48 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowActorThumbsFrodo() As Boolean
+    Public Property TVAllSeasonsBannerExpert() As String
         Get
-            Return Settings._XMLSettings.TVShowActorThumbsFrodo
+            Return Settings._XMLSettings.TVAllSeasonsBannerExpert
         End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowActorThumbsFrodo = value
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVAllSeasonsBannerExpert = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterBoxee() As Boolean
+    Public Property TVAllSeasonsFanartExpert() As String
         Get
-            Return Settings._XMLSettings.TVSeasonPosterBoxee
+            Return Settings._XMLSettings.TVAllSeasonsFanartExpert
         End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonPosterBoxee = value
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVAllSeasonsFanartExpert = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterFrodo() As Boolean
+    Public Property TVAllSeasonsLandscapeExpert() As String
         Get
-            Return Settings._XMLSettings.TVSeasonPosterFrodo
+            Return Settings._XMLSettings.TVAllSeasonsLandscapeExpert
         End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonPosterFrodo = value
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVAllSeasonsLandscapeExpert = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterYAMJ() As Boolean
+    Public Property TVAllSeasonsPosterExpert() As String
         Get
-            Return Settings._XMLSettings.TVSeasonPosterYAMJ
+            Return Settings._XMLSettings.TVAllSeasonsPosterExpert
         End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonPosterYAMJ = value
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVAllSeasonsPosterExpert = value
         End Set
     End Property
 
-    Public Property TVSeasonFanartFrodo() As Boolean
+    Public Property TVSeasonBannerExpert() As String
         Get
-            Return Settings._XMLSettings.TVSeasonFanartFrodo
+            Return Settings._XMLSettings.TVSeasonBannerExpert
         End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonFanartFrodo = value
-        End Set
-    End Property
-
-    Public Property TVSeasonFanartYAMJ() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonFanartYAMJ
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonFanartYAMJ = value
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVSeasonBannerExpert = value
         End Set
     End Property
 
@@ -5393,12 +5501,138 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSeasonFanartExpert() As String
+        Get
+            Return Settings._XMLSettings.TVSeasonFanartExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVSeasonFanartExpert = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartFrodo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonFanartFrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonFanartFrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartYAMJ() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonFanartYAMJ
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonFanartYAMJ = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapeExpert() As String
+        Get
+            Return Settings._XMLSettings.TVSeasonLandscapeExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVSeasonLandscapeExpert = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterBoxee() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonPosterBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonPosterBoxee = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterExpert() As String
+        Get
+            Return Settings._XMLSettings.TVSeasonPosterExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVSeasonPosterExpert = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterFrodo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonPosterFrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonPosterFrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterYAMJ() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonPosterYAMJ
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonPosterYAMJ = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsExpert() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeActorThumbsExpert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeActorThumbsExpert = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsExtExpert() As String
+        Get
+            Return Settings._XMLSettings.TVEpisodeActorThumbsExtExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVEpisodeActorThumbsExtExpert = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsFrodo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeActorThumbsFrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeActorThumbsFrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeFanartExpert() As String
+        Get
+            Return Settings._XMLSettings.TVEpisodeFanartExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVEpisodeFanartExpert = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeNFOExpert() As String
+        Get
+            Return Settings._XMLSettings.TVEpisodeNFOExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVEpisodeNFOExpert = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterBoxee() As Boolean
         Get
             Return Settings._XMLSettings.TVEpisodePosterBoxee
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVEpisodePosterBoxee = value
+        End Set
+    End Property
+
+    Public Property TVEpisodePosterExpert() As String
+        Get
+            Return Settings._XMLSettings.TVEpisodePosterExpert
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVEpisodePosterExpert = value
         End Set
     End Property
 
@@ -5417,15 +5651,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVEpisodePosterYAMJ = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeActorThumbsFrodo() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodeActorThumbsFrodo
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeActorThumbsFrodo = value
         End Set
     End Property
 
@@ -5706,7 +5931,7 @@ Public Class Settings
         End If
 
         ' Fix added to avoid to have no tv show NFO saved
-        If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
+        If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseEden OrElse Master.eSettings.TVUseExpert OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
             Master.eSettings.TVUseFrodo = True
             Master.eSettings.TVEpisodeActorThumbsFrodo = True
             Master.eSettings.TVEpisodePosterFrodo = True
@@ -6577,79 +6802,97 @@ Public Class Settings
     End Function
 
     Public Function TVASBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo
+        Return TVSeasonBannerFrodo OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsBannerExpert))
     End Function
 
     Public Function TVASFanartAnyEnabled() As Boolean
-        Return TVSeasonFanartFrodo
+        Return TVSeasonFanartFrodo OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsFanartExpert))
     End Function
 
     Public Function TVASLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD
+        Return TVSeasonLandscapeAD OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
     End Function
 
     Public Function TVASPosterAnyEnabled() As Boolean
-        Return TVSeasonPosterFrodo
+        Return TVSeasonPosterFrodo OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsPosterExpert))
     End Function
 
     Public Function TVEpisodeActorThumbsAnyEnabled() As Boolean
-        Return TVEpisodeActorThumbsFrodo
+        Return TVEpisodeActorThumbsFrodo OrElse _
+            (TVUseExpert AndAlso TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeActorThumbsExtExpert))
     End Function
 
     Public Function TVEpisodePosterAnyEnabled() As Boolean
-        Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ
+        Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodePosterExpert))
     End Function
 
     Public Function TVEpisodeFanartAnyEnabled() As Boolean
-        Return False
+        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeFanartExpert))
     End Function
 
     Public Function TVSeasonBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
+        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonBannerExpert))
     End Function
 
     Public Function TVSeasonFanartAnyEnabled() As Boolean
-        Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ
+        Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonFanartExpert))
     End Function
 
     Public Function TVSeasonLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD
+        Return TVSeasonLandscapeAD OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonLandscapeExpert))
     End Function
 
     Public Function TVSeasonPosterAnyEnabled() As Boolean
-        Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ
+        Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonPosterExpert))
     End Function
 
     Public Function TVShowActorThumbsAnyEnabled() As Boolean
-        Return TVShowActorThumbsFrodo
+        Return TVShowActorThumbsFrodo OrElse _
+            (TVUseExpert AndAlso TVShowActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVShowActorThumbsExtExpert))
     End Function
 
     Public Function TVShowBannerAnyEnabled() As Boolean
-        Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ
+        Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowBannerExpert))
     End Function
 
     Public Function TVShowCharacterArtAnyEnabled() As Boolean
-        Return TVShowCharacterArtAD
+        Return TVShowCharacterArtAD OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowCharacterArtExpert))
     End Function
 
     Public Function TVShowClearArtAnyEnabled() As Boolean
-        Return TVShowClearArtAD
+        Return TVShowClearArtAD OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearArtExpert))
     End Function
 
     Public Function TVShowClearLogoAnyEnabled() As Boolean
-        Return TVShowClearLogoAD
+        Return TVShowClearLogoAD OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
     End Function
 
     Public Function TVShowEFanartsAnyEnabled() As Boolean
-        Return TVShowExtrafanartsFrodo
+        Return TVShowExtrafanartsFrodo OrElse _
+            (TVUseExpert AndAlso TVShowExtrafanartsExpert)
     End Function
 
     Public Function TVShowFanartAnyEnabled() As Boolean
-        Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ
+        Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowFanartExpert))
     End Function
 
     Public Function TVShowLandscapeAnyEnabled() As Boolean
-        Return TVShowLandscapeAD
+        Return TVShowLandscapeAD OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowLandscapeExpert))
     End Function
 
     Public Function TVShowMissingItemsAnyEnabled() As Boolean
@@ -6659,7 +6902,8 @@ Public Class Settings
     End Function
 
     Public Function TVShowPosterAnyEnabled() As Boolean
-        Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ
+        Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowPosterExpert))
     End Function
 
     Public Function TVShowTVThemeAnyEnabled() As Boolean

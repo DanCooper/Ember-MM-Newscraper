@@ -853,7 +853,7 @@ Namespace FileUtils
                             End If
                         Else
                             'If .MovieUseFrodo AndAlso .MovieBannerAD Then FilenameList.Add(String.Concat(filePathStack, "-banner.jpg"))
-                            'If .MovieUseEden AndAlso .MovieFanartEden Then FilenameList.Add(String.Concat(filePath, "-banner.jpg")) 'TODO: Check
+                            'If .MovieUseEden AndAlso .MovieBannerEden Then FilenameList.Add(String.Concat(filePath, "-banner.jpg")) 'TODO: Check
                             If .MovieUseNMJ AndAlso .MovieBannerNMJ Then FilenameList.Add(String.Concat(filePathStack, ".banner.jpg"))
                             If .MovieUseYAMJ AndAlso .MovieBannerYAMJ Then FilenameList.Add(String.Concat(filePath, ".banner.jpg"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieBannerExpertMulti) Then
@@ -1689,6 +1689,7 @@ Namespace FileUtils
         Public Shared Function TVEpisode(ByVal EpisodePath As String, ByVal mType As Enums.ModType_TV, Optional ByVal mSeason As Integer = -1) As List(Of String)
             Dim FilenameList As New List(Of String)
 
+            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(EpisodePath)
             Dim fEpisodePath As String = FileUtils.Common.RemoveExtFromPath(EpisodePath)
             Dim fEpisodeParentPath As String = Directory.GetParent(EpisodePath).FullName
             Dim sSeason As String = mSeason.ToString.PadLeft(2, Convert.ToChar("0"))
@@ -1697,10 +1698,18 @@ Namespace FileUtils
                 Case Enums.ModType_TV.ActorThumbs
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVEpisodeActorThumbsFrodo Then FilenameList.Add(String.Concat(fEpisodeParentPath, "\.actors", "\<placeholder>.jpg"))
+                        If .TVUseExpert AndAlso .TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeActorThumbsExtExpert) Then
+                            FilenameList.Add(String.Concat(fEpisodeParentPath, "\.actors", "\<placeholder>", .TVEpisodeActorThumbsExtExpert))
+                        End If
                     End With
 
                 Case Enums.ModType_TV.EpisodeFanart
                     With Master.eSettings
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeFanartExpert) Then
+                            For Each a In .TVEpisodeFanartExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.EpisodeNfo
@@ -1709,6 +1718,11 @@ Namespace FileUtils
                         If .TVUseEden Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeNFOExpert) Then
+                            For Each a In .TVEpisodeNFOExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.EpisodePoster
@@ -1716,6 +1730,11 @@ Namespace FileUtils
                         If .TVUseBoxee AndAlso .TVEpisodePosterBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".tbn"))
                         If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(fEpisodePath, "-thumb.jpg"))
                         If .TVUseYAMJ AndAlso .TVEpisodePosterYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".videoimage.jpg"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodePosterExpert) Then
+                            For Each a In .TVEpisodePosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
+                            Next
+                        End If
                     End With
             End Select
 
@@ -1752,6 +1771,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-banner.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonBannerExpert) Then
+                                For Each a In .TVSeasonBannerExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, mSeason, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         End If
                     End With
 
@@ -1765,6 +1793,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-fanart.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonFanartExpert) Then
+                                For Each a In .TVSeasonFanartExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, mSeason, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         End If
                     End With
 
@@ -1774,6 +1811,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                         Else
                             If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
+                                For Each a In .TVSeasonLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, mSeason, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         End If
                     End With
 
@@ -1789,6 +1835,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(FirstEpisode) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonPosterExpert) Then
+                                For Each a In .TVSeasonPosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, mSeason, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         End If
                     End With
             End Select
@@ -1807,26 +1862,49 @@ Namespace FileUtils
                 Case Enums.ModType_TV.ActorThumbs
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowActorThumbsFrodo Then FilenameList.Add(String.Concat(fShowPath, "\.actors", "\<placeholder>.jpg"))
+                        If .TVUseExpert AndAlso .TVShowActorThumbsExpert AndAlso Not String.IsNullOrEmpty(.TVShowActorThumbsExtExpert) Then
+                            FilenameList.Add(String.Concat(fShowPath, "\.actors", "\<placeholder>", .TVShowActorThumbsExtExpert))
+                        End If
                     End With
 
                 Case Enums.ModType_TV.AllSeasonsBanner
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsBannerExpert) Then
+                            For Each a In .TVAllSeasonsBannerExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.AllSeasonsFanart
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-fanart.jpg"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsFanartExpert) Then
+                            For Each a In .TVAllSeasonsFanartExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.AllSeasonsLandscape
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsLandscapeExpert) Then
+                            For Each a In .TVAllSeasonsLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.AllSeasonsPoster
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-poster.jpg"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsPosterExpert) Then
+                            For Each a In .TVAllSeasonsPosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowBanner
@@ -1834,26 +1912,47 @@ Namespace FileUtils
                         If .TVUseBoxee AndAlso .TVShowBannerBoxee Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))
                         If .TVUseFrodo AndAlso .TVShowBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))
                         If .TVUseYAMJ AndAlso .TVShowBannerYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.banner.jpg")))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowBannerExpert) Then
+                            For Each a In .TVShowBannerExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowCharacterArt
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowCharacterArtAD Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowCharacterArtExpert) Then
+                            For Each a In .TVShowCharacterArtExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowClearArt
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowClearArtAD Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearArtExpert) Then
+                            For Each a In .TVShowClearArtExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowClearLogo
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowClearLogoAD Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearLogoExpert) Then
+                            For Each a In .TVShowClearLogoExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowEFanarts
                     With Master.eSettings
                         If .TVUseEden AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
+                        If .TVUseExpert AndAlso .TVShowExtrafanartsExpert Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                         If .TVUseFrodo AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                     End With
 
@@ -1862,16 +1961,31 @@ Namespace FileUtils
                         If .TVUseBoxee AndAlso .TVShowFanartBoxee Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))
                         If .TVUseFrodo AndAlso .TVShowFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))
                         If .TVUseYAMJ AndAlso .TVShowFanartYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.fanart.jpg")))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowFanartExpert) Then
+                            For Each a In .TVShowFanartExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowLandscape
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowLandscapeAD Then FilenameList.Add(Path.Combine(ShowPath, "landscape.jpg"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowLandscapeExpert) Then
+                            For Each a In .TVShowLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowNfo
                     With Master.eSettings
                         FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowNFOExpert) Then
+                            For Each a In .TVShowNFOExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
 
                 Case Enums.ModType_TV.ShowPoster
@@ -1879,6 +1993,11 @@ Namespace FileUtils
                         If .TVUseBoxee AndAlso .TVShowPosterBoxee Then FilenameList.Add(Path.Combine(fShowPath, "folder.jpg"))
                         If .TVUseFrodo AndAlso .TVShowPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "poster.jpg"))
                         If .TVUseYAMJ AndAlso .TVShowPosterYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.jpg")))
+                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowPosterExpert) Then
+                            For Each a In .TVShowPosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(fShowPath, a))
+                            Next
+                        End If
                     End With
             End Select
 

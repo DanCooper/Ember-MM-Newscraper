@@ -710,6 +710,40 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterboxee As Boolean
 
     '***************** Expert settings *****************
+    Private _tvuseexpert As Boolean
+
+    '***************** Expert AllSeasons ***************
+    Private _tvallseasonsbannerexpert As String
+    Private _tvallseasonsfanartexpert As String
+    Private _tvallseasonslandscapeexpert As String
+    Private _tvallseasonsposterexpert As String
+
+    '***************** Expert Episode ******************
+    Private _tvepisodeactorthumbsexpert As Boolean
+    Private _tvepisodeactorthumbsextexpert As String
+    Private _tvepisodefanartexpert As String
+    Private _tvepisodenfoexpert As String
+    Private _tvepisodeposterexpert As String
+
+    '***************** Expert Season *******************
+    Private _tvseasonbannerexpert As String
+    Private _tvseasonfanartexpert As String
+    Private _tvseasonlandscapeexpert As String
+    Private _tvseasonposterexpert As String
+
+    '***************** Expert Show *********************
+    Private _tvshowactorthumbsexpert As Boolean
+    Private _tvshowactorthumbsextexpert As String
+    Private _tvshowbannerexpert As String
+    Private _tvshowcharacterartexpert As String
+    Private _tvshowclearartexpert As String
+    Private _tvshowclearlogoexpert As String
+    Private _tvshowextrafanartsexpert As Boolean
+    Private _tvshowfanartexpert As String
+    Private _tvshowlandscapeexpert As String
+    Private _tvshownfoexpert As String
+    Private _tvshowposterexpert As String
+
 #End Region
 
 #Region "Properties"
@@ -6013,6 +6047,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVUseExpert() As Boolean
+        Get
+            Return Me._tvuseexpert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvuseexpert = value
+        End Set
+    End Property
+
     Public Property TVUseFrodo() As Boolean
         Get
             Return Me._tvusefrodo
@@ -6031,12 +6074,48 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowActorThumbsExpert() As Boolean
+        Get
+            Return Me._tvshowactorthumbsexpert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowactorthumbsexpert = value
+        End Set
+    End Property
+
+    Public Property TVShowActorThumbsExtExpert() As String
+        Get
+            Return Me._tvshowactorthumbsextexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowactorthumbsextexpert = value
+        End Set
+    End Property
+
+    Public Property TVShowActorThumbsFrodo() As Boolean
+        Get
+            Return Me._tvshowactorthumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowactorthumbsfrodo = value
+        End Set
+    End Property
+
     Public Property TVShowBannerBoxee() As Boolean
         Get
             Return Me._tvshowbannerboxee
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowbannerboxee = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerExpert() As String
+        Get
+            Return Me._tvshowbannerexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowbannerexpert = value
         End Set
     End Property
 
@@ -6058,6 +6137,42 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowCharacterArtExpert() As String
+        Get
+            Return Me._tvshowcharacterartexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowcharacterartexpert = value
+        End Set
+    End Property
+
+    Public Property TVShowClearArtExpert() As String
+        Get
+            Return Me._tvshowclearartexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowclearartexpert = value
+        End Set
+    End Property
+
+    Public Property TVShowClearLogoExpert() As String
+        Get
+            Return Me._tvshowclearlogoexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowclearlogoexpert = value
+        End Set
+    End Property
+
+    Public Property TVShowExtrafanartsExpert() As Boolean
+        Get
+            Return Me._tvshowextrafanartsexpert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowextrafanartsexpert = value
+        End Set
+    End Property
+
     Public Property TVShowExtrafanartsFrodo() As Boolean
         Get
             Return Me._tvshowextrafanartsfrodo
@@ -6073,6 +6188,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowfanartboxee = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartExpert() As String
+        Get
+            Return Me._tvshowfanartexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowfanartexpert = value
         End Set
     End Property
 
@@ -6094,12 +6218,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowLandscapeExpert() As String
+        Get
+            Return Me._tvshowlandscapeexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowlandscapeexpert = value
+        End Set
+    End Property
+
+    Public Property TVShowNFOExpert() As String
+        Get
+            Return Me._tvshownfoexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshownfoexpert = value
+        End Set
+    End Property
+
     Public Property TVShowPosterBoxee() As Boolean
         Get
             Return Me._tvshowposterboxee
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowposterboxee = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterExpert() As String
+        Get
+            Return Me._tvshowposterexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowposterexpert = value
         End Set
     End Property
 
@@ -6121,57 +6272,48 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowActorThumbsFrodo() As Boolean
+    Public Property TVAllSeasonsBannerExpert() As String
         Get
-            Return Me._tvshowactorthumbsfrodo
+            Return Me._tvallseasonsbannerexpert
         End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowactorthumbsfrodo = value
+        Set(ByVal value As String)
+            Me._tvallseasonsbannerexpert = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterBoxee() As Boolean
+    Public Property TVAllSeasonsFanartExpert() As String
         Get
-            Return Me._tvseasonposterboxee
+            Return Me._tvallseasonsfanartexpert
         End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonposterboxee = value
+        Set(ByVal value As String)
+            Me._tvallseasonsfanartexpert = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterFrodo() As Boolean
+    Public Property TVAllSeasonsLandscapeExpert() As String
         Get
-            Return Me._tvseasonposterfrodo
+            Return Me._tvallseasonslandscapeexpert
         End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonposterfrodo = value
+        Set(ByVal value As String)
+            Me._tvallseasonslandscapeexpert = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterYAMJ() As Boolean
+    Public Property TVAllSeasonsPosterExpert() As String
         Get
-            Return Me._tvseasonposteryamj
+            Return Me._tvallseasonsposterexpert
         End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonposteryamj = value
+        Set(ByVal value As String)
+            Me._tvallseasonsposterexpert = value
         End Set
     End Property
 
-    Public Property TVSeasonFanartFrodo() As Boolean
+    Public Property TVSeasonBannerExpert() As String
         Get
-            Return Me._tvseasonfanartfrodo
+            Return Me._tvseasonbannerexpert
         End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonfanartfrodo = value
-        End Set
-    End Property
-
-    Public Property TVSeasonFanartYAMJ() As Boolean
-        Get
-            Return Me._tvseasonfanartyamj
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvseasonfanartyamj = value
+        Set(ByVal value As String)
+            Me._tvseasonbannerexpert = value
         End Set
     End Property
 
@@ -6193,12 +6335,138 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVSeasonFanartExpert() As String
+        Get
+            Return Me._tvseasonfanartexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvseasonfanartexpert = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartFrodo() As Boolean
+        Get
+            Return Me._tvseasonfanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartYAMJ() As Boolean
+        Get
+            Return Me._tvseasonfanartyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartyamj = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapeExpert() As String
+        Get
+            Return Me._tvseasonlandscapeexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvseasonlandscapeexpert = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterBoxee() As Boolean
+        Get
+            Return Me._tvseasonposterboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposterboxee = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterExpert() As String
+        Get
+            Return Me._tvseasonposterexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvseasonposterexpert = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterFrodo() As Boolean
+        Get
+            Return Me._tvseasonposterfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterYAMJ() As Boolean
+        Get
+            Return Me._tvseasonposteryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposteryamj = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsExpert() As Boolean
+        Get
+            Return Me._tvepisodeactorthumbsexpert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeactorthumbsexpert = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsExtExpert() As String
+        Get
+            Return Me._tvepisodeactorthumbsextexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvepisodeactorthumbsextexpert = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsFrodo() As Boolean
+        Get
+            Return Me._tvepisodeactorthumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeactorthumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeFanartExpert() As String
+        Get
+            Return Me._tvepisodefanartexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvepisodefanartexpert = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeNFOExpert() As String
+        Get
+            Return Me._tvepisodenfoexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvepisodenfoexpert = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterBoxee() As Boolean
         Get
             Return Me._tvepisodeposterboxee
         End Get
         Set(ByVal value As Boolean)
             Me._tvepisodeposterboxee = value
+        End Set
+    End Property
+
+    Public Property TVEpisodePosterExpert() As String
+        Get
+            Return Me._tvepisodeposterexpert
+        End Get
+        Set(ByVal value As String)
+            Me._tvepisodeposterexpert = value
         End Set
     End Property
 
@@ -6217,15 +6485,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvepisodeposteryamj = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeActorThumbsFrodo() As Boolean
-        Get
-            Return Me._tvepisodeactorthumbsfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvepisodeactorthumbsfrodo = value
         End Set
     End Property
 
