@@ -3742,6 +3742,8 @@ Public Class Database
             End Using
         End If
 
+        _TVSeasonDB.SeasonID = ID
+
         'Images
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.SeasonID, " AND media_type = 'season';")
