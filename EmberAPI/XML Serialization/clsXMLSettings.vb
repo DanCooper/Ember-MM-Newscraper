@@ -295,18 +295,22 @@ Partial Public Class clsXMLSettings
     Private _traktusername As String
     Private _tvasbannerheight As Integer
     Private _tvasbanneroverwrite As Boolean
-    Private _tvasbannerpreftype As Enums.TVShowBannerType
+    Private _tvasbannerprefsize As Enums.TVBannerSize
+    Private _tvasbannerprefsizeonly As Boolean
+    Private _tvasbannerpreftype As Enums.TVBannerType
     Private _tvasbannerresize As Boolean
     Private _tvasbannerwidth As Integer
     Private _tvasfanartheight As Integer
     Private _tvasfanartoverwrite As Boolean
     Private _tvasfanartprefsize As Enums.TVFanartSize
+    Private _tvasfanartprefsizeonly As Boolean
     Private _tvasfanartresize As Boolean
     Private _tvasfanartwidth As Integer
     Private _tvaslandscapeoverwrite As Boolean
     Private _tvasposterheight As Integer
     Private _tvasposteroverwrite As Boolean
     Private _tvasposterprefsize As Enums.TVPosterSize
+    Private _tvasposterprefsizeonly As Boolean
     Private _tvasposterresize As Boolean
     Private _tvasposterwidth As Integer
     Private _tvcleandb As Boolean
@@ -318,6 +322,7 @@ Partial Public Class clsXMLSettings
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartoverwrite As Boolean
     Private _tvepisodefanartprefsize As Enums.TVFanartSize
+    Private _tvepisodefanartprefsizeonly As Boolean
     Private _tvepisodefanartresize As Boolean
     Private _tvepisodefanartwidth As Integer
     Private _tvepisodefiltercustom As List(Of String)
@@ -328,6 +333,8 @@ Partial Public Class clsXMLSettings
     Private _tvepisodenofilter As Boolean
     Private _tvepisodeposterheight As Integer
     Private _tvepisodeposteroverwrite As Boolean
+    Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
+    Private _tvepisodeposterprefsizeonly As Boolean
     Private _tvepisodeposterresize As Boolean
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
@@ -392,7 +399,9 @@ Partial Public Class clsXMLSettings
     Private _tvscraperusesruntimeforep As Boolean
     Private _tvseasonbannerheight As Integer
     Private _tvseasonbanneroverwrite As Boolean
-    Private _tvseasonbannerpreftype As Enums.TVSeasonBannerType
+    Private _tvseasonbannerprefsize As Enums.TVBannerSize
+    Private _tvseasonbannerprefsizeonly As Boolean
+    Private _tvseasonbannerpreftype As Enums.TVBannerType
     Private _tvseasonbannerresize As Boolean
     Private _tvseasonbannerwidth As Integer
     Private _tvseasonclickscrape As Boolean
@@ -400,6 +409,7 @@ Partial Public Class clsXMLSettings
     Private _tvseasonfanartheight As Integer
     Private _tvseasonfanartoverwrite As Boolean
     Private _tvseasonfanartprefsize As Enums.TVFanartSize
+    Private _tvseasonfanartprefsizeonly As Boolean
     Private _tvseasonfanartresize As Boolean
     Private _tvseasonfanartwidth As Integer
     Private _tvseasonlandscapeoverwrite As Boolean
@@ -410,13 +420,15 @@ Partial Public Class clsXMLSettings
     Private _tvseasonposterheight As Integer
     Private _tvseasonposteroverwrite As Boolean
     Private _tvseasonposterprefsize As Enums.TVPosterSize
-    Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
+    Private _tvseasonposterprefsizeonly As Boolean
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
     Private _tvshowactorthumbsoverwrite As Boolean
     Private _tvshowbannerheight As Integer
     Private _tvshowbanneroverwrite As Boolean
-    Private _tvshowbannerpreftype As Enums.TVShowBannerType
+    Private _tvshowbannerprefsize As Enums.TVBannerSize
+    Private _tvshowbannerprefsizeonly As Boolean
+    Private _tvshowbannerpreftype As Enums.TVBannerType
     Private _tvshowbannerresize As Boolean
     Private _tvshowbannerwidth As Integer
     Private _tvshowcharacterartoverwrite As Boolean
@@ -428,12 +440,14 @@ Partial Public Class clsXMLSettings
     Private _tvshowefanartsoverwrite As Boolean
     Private _tvshowefanartsprefonly As Boolean
     Private _tvshowefanartsprefsize As Enums.TVFanartSize
+    Private _tvshowefanartsprefsizeonly As Boolean
     Private _tvshowefanartsresize As Boolean
     Private _tvshowefanartsheight As Integer
     Private _tvshowefanartswidth As Integer
     Private _tvshowfanartheight As Integer
     Private _tvshowfanartoverwrite As Boolean
     Private _tvshowfanartprefsize As Enums.TVFanartSize
+    Private _tvshowfanartprefsizeonly As Boolean
     Private _tvshowfanartresize As Boolean
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
@@ -453,6 +467,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterheight As Integer
     Private _tvshowposteroverwrite As Boolean
     Private _tvshowposterprefsize As Enums.TVPosterSize
+    Private _tvshowposterprefsizeonly As Boolean
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
@@ -3418,6 +3433,105 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVASBannerPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvasbannerprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvasbannerprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVASFanartPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvasfanartprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvasfanartprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVASPosterPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvasposterprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvasposterprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeFanartPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvepisodefanartprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodefanartprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvseasonbannerprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonbannerprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvseasonfanartprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvseasonposterprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposterprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvshowbannerprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowbannerprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvshowefanartsprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowefanartsprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvshowfanartprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowfanartprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvshowposterprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowposterprefsizeonly = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterPrefSize() As Enums.TVEpisodePosterSize
 
         Get
@@ -3437,11 +3551,20 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowBannerPrefType() As Enums.TVShowBannerType
+    Public Property TVShowBannerPrefSize() As Enums.TVBannerSize
+        Get
+            Return Me._tvshowbannerprefsize
+        End Get
+        Set(ByVal value As Enums.TVBannerSize)
+            Me._tvshowbannerprefsize = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerPrefType() As Enums.TVBannerType
         Get
             Return Me._tvshowbannerpreftype
         End Get
-        Set(ByVal value As Enums.TVShowBannerType)
+        Set(ByVal value As Enums.TVBannerType)
             Me._tvshowbannerpreftype = value
         End Set
     End Property
@@ -3464,20 +3587,38 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASBannerPrefType() As Enums.TVShowBannerType
+    Public Property TVASBannerPrefSize() As Enums.TVBannerSize
+        Get
+            Return Me._tvasbannerprefsize
+        End Get
+        Set(ByVal value As Enums.TVBannerSize)
+            Me._tvasbannerprefsize = value
+        End Set
+    End Property
+
+    Public Property TVASBannerPrefType() As Enums.TVBannerType
         Get
             Return Me._tvasbannerpreftype
         End Get
-        Set(ByVal value As Enums.TVShowBannerType)
+        Set(ByVal value As Enums.TVBannerType)
             Me._tvasbannerpreftype = value
         End Set
     End Property
 
-    Public Property TVSeasonBannerPrefType() As Enums.TVSeasonBannerType
+    Public Property TVSeasonBannerPrefSize() As Enums.TVBannerSize
+        Get
+            Return Me._tvseasonbannerprefsize
+        End Get
+        Set(ByVal value As Enums.TVBannerSize)
+            Me._tvseasonbannerprefsize = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerPrefType() As Enums.TVBannerType
         Get
             Return Me._tvseasonbannerpreftype
         End Get
-        Set(ByVal value As Enums.TVSeasonBannerType)
+        Set(ByVal value As Enums.TVBannerType)
             Me._tvseasonbannerpreftype = value
         End Set
     End Property

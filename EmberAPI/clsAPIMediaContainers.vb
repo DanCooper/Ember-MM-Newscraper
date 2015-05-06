@@ -2536,9 +2536,9 @@ Namespace MediaContainers
         Public Property WebImage As Images
         Public Property WebThumb As Images
         Public Property ParentID As String 'All images of the same size must have this identical, is used to group the images.
-        Public Property TVSeasonPosterType As Enums.TVSeasonPosterType
-        Public Property TVSeasonBannerType As Enums.TVSeasonBannerType
-        Public Property TVShowBannerType As Enums.TVShowBannerType
+        Public Property TVBannerSize As Enums.TVBannerSize
+        Public Property TVBannerType As Enums.TVBannerType
+        Public Property TVSeasonPosterSize As Enums.TVSeasonPosterSize
         Public Property TVPosterSize As Enums.TVPosterSize
         Public Property TVFanartSize As Enums.TVFanartSize
         Public Property Season As Integer
@@ -2558,25 +2558,24 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
-            Me._TVSeasonPosterType = Enums.TVSeasonPosterType.None
-            Me._TVSeasonBannerType = Enums.TVSeasonBannerType.Blank
-            Me._TVShowBannerType = Enums.TVShowBannerType.None
-            Me._TVPosterSize = Enums.TVPosterSize.HD1426
-            Me._TVFanartSize = Enums.TVFanartSize.HD1080
             Me._Description = String.Empty
             Me._Disc = 0
             Me._DiscType = String.Empty
-            Me._isChecked = False
             Me._Likes = 0
             Me._LocalFile = String.Empty
             Me._LocalThumb = String.Empty
             Me._Season = -1
+            Me._TVBannerSize = Enums.TVBannerSize.HD185
+            Me._TVBannerType = Enums.TVBannerType.Any
+            Me._TVFanartSize = Enums.TVFanartSize.HD1080
+            Me._TVPosterSize = Enums.TVPosterSize.HD1426
+            Me._ThumbURL = String.Empty
             Me._URL = String.Empty
             Me._VoteAverage = String.Empty
             Me._VoteCount = 0
             Me._WebImage = New Images
             Me._WebThumb = New Images
-            Me._ThumbURL = String.Empty
+            Me._isChecked = False
         End Sub
 
 #End Region 'Methods

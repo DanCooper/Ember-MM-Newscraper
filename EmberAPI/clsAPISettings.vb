@@ -2585,6 +2585,105 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVASBannerPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVASBannerPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVASBannerPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVASFanartPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVASFanartPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVASFanartPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVASPosterPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVASPosterPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVASPosterPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeFanartPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeFanartPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeFanartPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonBannerPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonBannerPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonFanartPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonFanartPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonPosterPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonPosterPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowBannerPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowBannerPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowEFanartsPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowEFanartsPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowEFanartsPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowFanartPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowFanartPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowPosterPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowPosterPrefSizeOnly = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterPrefSize() As Enums.TVEpisodePosterSize
         Get
             Return Settings._XMLSettings.TVEpisodePosterPrefSize
@@ -2603,11 +2702,20 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowBannerPrefType() As Enums.TVShowBannerType
+    Public Property TVShowBannerPrefSize() As Enums.TVBannerSize
+        Get
+            Return Settings._XMLSettings.TVShowBannerPrefSize
+        End Get
+        Set(ByVal value As Enums.TVBannerSize)
+            Settings._XMLSettings.TVShowBannerPrefSize = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerPrefType() As Enums.TVBannerType
         Get
             Return Settings._XMLSettings.TVShowBannerPrefType
         End Get
-        Set(ByVal value As Enums.TVShowBannerType)
+        Set(ByVal value As Enums.TVBannerType)
             Settings._XMLSettings.TVShowBannerPrefType = value
         End Set
     End Property
@@ -2630,20 +2738,38 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASBannerPrefType() As Enums.TVShowBannerType
+    Public Property TVASBannerPrefSize() As Enums.TVBannerSize
+        Get
+            Return Settings._XMLSettings.TVASBannerPrefSize
+        End Get
+        Set(ByVal value As Enums.TVBannerSize)
+            Settings._XMLSettings.TVASBannerPrefSize = value
+        End Set
+    End Property
+
+    Public Property TVASBannerPrefType() As Enums.TVBannerType
         Get
             Return Settings._XMLSettings.TVASBannerPrefType
         End Get
-        Set(ByVal value As Enums.TVShowBannerType)
+        Set(ByVal value As Enums.TVBannerType)
             Settings._XMLSettings.TVASBannerPrefType = value
         End Set
     End Property
 
-    Public Property TVSeasonBannerPrefType() As Enums.TVSeasonBannerType
+    Public Property TVSeasonBannerPrefSize() As Enums.TVBannerSize
+        Get
+            Return Settings._XMLSettings.TVSeasonBannerPrefSize
+        End Get
+        Set(ByVal value As Enums.TVBannerSize)
+            Settings._XMLSettings.TVSeasonBannerPrefSize = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerPrefType() As Enums.TVBannerType
         Get
             Return Settings._XMLSettings.TVSeasonBannerPrefType
         End Get
-        Set(ByVal value As Enums.TVSeasonBannerType)
+        Set(ByVal value As Enums.TVBannerType)
             Settings._XMLSettings.TVSeasonBannerPrefType = value
         End Set
     End Property
@@ -6299,18 +6425,22 @@ Public Class Settings
         Me.TraktUsername = String.Empty
         Me.TVASBannerHeight = 0
         Me.TVASBannerOverwrite = True
-        Me.TVASBannerPrefType = Enums.TVShowBannerType.Text
+        Me.TVASBannerPrefSize = Enums.TVBannerSize.Any
+        Me.TVASBannerPrefSizeOnly = False
+        Me.TVASBannerPrefType = Enums.TVBannerType.Any
         Me.TVASBannerResize = False
         Me.TVASBannerWidth = 0
         Me.TVASFanartHeight = 0
         Me.TVASFanartOverwrite = True
         Me.TVASFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVASFanartPrefSizeOnly = False
         Me.TVASFanartResize = False
         Me.TVASFanartWidth = 0
         Me.TVASLandscapeOverwrite = True
         Me.TVASPosterHeight = 0
         Me.TVASPosterOverwrite = True
         Me.TVASPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVASPosterPrefSizeOnly = False
         Me.TVASPosterResize = False
         Me.TVASPosterWidth = 0
         Me.TVCleanDB = False
@@ -6322,6 +6452,7 @@ Public Class Settings
         Me.TVEpisodeFanartHeight = 0
         Me.TVEpisodeFanartOverwrite = True
         Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVEpisodeFanartPrefSizeOnly = False
         Me.TVEpisodeFanartResize = False
         Me.TVEpisodeFanartWidth = 0
         Me.TVEpisodeFilterCustom = New List(Of String)
@@ -6332,6 +6463,7 @@ Public Class Settings
         Me.TVEpisodeNoFilter = True
         Me.TVEpisodePosterHeight = 0
         Me.TVEpisodePosterOverwrite = True
+        Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.SD225
         Me.TVEpisodePosterResize = False
         Me.TVEpisodePosterWidth = 0
         Me.TVEpisodeProperCase = True
@@ -6396,7 +6528,9 @@ Public Class Settings
         Me.TVScraperUseSRuntimeForEp = True
         Me.TVSeasonBannerHeight = 0
         Me.TVSeasonBannerOverwrite = True
-        Me.TVSeasonBannerPrefType = Enums.TVSeasonBannerType.Text
+        Me.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any
+        Me.TVSeasonBannerPrefSizeOnly = False
+        Me.TVSeasonBannerPrefType = Enums.TVBannerType.Any
         Me.TVSeasonBannerResize = False
         Me.TVSeasonBannerWidth = 0
         Me.TVSeasonClickScrape = False
@@ -6404,6 +6538,8 @@ Public Class Settings
         Me.TVSeasonFanartHeight = 0
         Me.TVSeasonFanartOverwrite = True
         Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVSeasonFanartPrefSizeOnly = False
+        Me.TVSeasonFanartPrefSizeOnly = False
         Me.TVSeasonFanartResize = False
         Me.TVSeasonFanartWidth = 0
         Me.TVSeasonLandscapeOverwrite = True
@@ -6414,13 +6550,16 @@ Public Class Settings
         Me.TVSeasonPosterHeight = 0
         Me.TVSeasonPosterOverwrite = True
         Me.TVSeasonPosterPrefSize = Enums.TVPosterSize.HD1000
-        Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.SD225
+        Me.TVSeasonPosterPrefSizeOnly = False
+        Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterResize = False
         Me.TVSeasonPosterWidth = 0
         Me.TVShowActorThumbsOverwrite = True
         Me.TVShowBannerHeight = 0
         Me.TVShowBannerOverwrite = True
-        Me.TVShowBannerPrefType = Enums.TVShowBannerType.Text
+        Me.TVShowBannerPrefSize = Enums.TVBannerSize.Any
+        Me.TVShowBannerPrefSizeOnly = False
+        Me.TVShowBannerPrefType = Enums.TVBannerType.Any
         Me.TVShowBannerResize = False
         Me.TVShowBannerWidth = 0
         Me.TVShowCharacterArtOverwrite = True
@@ -6432,12 +6571,14 @@ Public Class Settings
         Me.TVShowEFanartsOverwrite = True
         Me.TVShowEFanartsPrefOnly = False
         Me.TVShowEFanartsPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVShowEFanartsPrefSizeOnly = False
         Me.TVShowEFanartsResize = False
         Me.TVShowEFanartsHeight = 0
         Me.TVShowEFanartsWidth = 0
         Me.TVShowFanartHeight = 0
         Me.TVShowFanartOverwrite = True
         Me.TVShowFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVShowFanartPrefSizeOnly = False
         Me.TVShowFanartResize = False
         Me.TVShowFanartWidth = 0
         Me.TVShowFilterCustom = New List(Of String)
@@ -6457,6 +6598,7 @@ Public Class Settings
         Me.TVShowPosterHeight = 0
         Me.TVShowPosterOverwrite = True
         Me.TVShowPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVShowPosterPrefSizeOnly = False
         Me.TVShowPosterResize = False
         Me.TVShowPosterWidth = 0
         Me.TVShowProperCase = True

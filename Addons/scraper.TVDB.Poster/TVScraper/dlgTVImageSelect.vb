@@ -82,15 +82,8 @@ Public Class dlgTVImageSelect
 
         'AllSeason Banner
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner) AndAlso Master.eSettings.TVASBannerAnyEnabled AndAlso Scraper.TVDBImages.AllSeasonsBanner.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = ShowBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.TVShowBannerType = Master.eSettings.TVASBannerPrefType AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
-                If defImg Is Nothing Then defImg = ShowBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-            End If
-
-            If defImg Is Nothing Then defImg = ShowBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.TVShowBannerType = Master.eSettings.TVASBannerPrefType)
-            'no preferred size, just get any one of them
-            If defImg Is Nothing Then defImg = ShowBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVASBanner(SeasonBannerList, ShowBannerList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.AllSeasonsBanner.WebImage = defImg.WebImage
@@ -311,9 +304,9 @@ Public Class dlgTVImageSelect
 
                     'Season Banner
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonBanner) AndAlso Master.eSettings.TVSeasonBannerAnyEnabled AndAlso cSeason.Banner.WebImage.Image Is Nothing Then
-                         Dim defImg As MediaContainers.Image = Nothing
-                        If Not Images.GetPreferredTVSeasonBanner(SeasonBannerList, defImg) Then
-                            defImg = SeasonBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+                        Dim defImg As MediaContainers.Image = Nothing
+                        If Not Images.GetPreferredTVSeasonBanner(SeasonBannerList, defImg, iSeason) Then
+                            defImg = SeasonBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
                         End If
 
                         If defImg IsNot Nothing Then
@@ -346,8 +339,6 @@ Public Class dlgTVImageSelect
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonLandscape) AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso cSeason.Landscape.WebImage.Image Is Nothing Then
                         Dim defImg As MediaContainers.Image = SeasonLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
                         If defImg Is Nothing Then defImg = SeasonLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
-                        If defImg Is Nothing Then defImg = ShowLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-                        If defImg Is Nothing Then defImg = ShowLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
 
                         If defImg IsNot Nothing Then
                             cSeason.Landscape.WebImage = defImg.WebImage
@@ -360,10 +351,9 @@ Public Class dlgTVImageSelect
 
                     'Season Poster
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonPoster) AndAlso Master.eSettings.TVSeasonPosterAnyEnabled AndAlso cSeason.Poster.WebImage.Image Is Nothing Then
-                        Dim defImg As MediaContainers.Image = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason AndAlso p.TVSeasonPosterType = Master.eSettings.TVSeasonPosterPrefSize AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+                        Dim defImg As MediaContainers.Image = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
+                        If defImg Is Nothing Then defImg = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
 
-                        If defImg Is Nothing Then defImg = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason AndAlso p.TVSeasonPosterType = Master.eSettings.TVSeasonPosterPrefSize)
-                        'no preferred size, just get any one of them
                         If defImg Is Nothing Then defImg = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
 
                         If defImg IsNot Nothing Then
@@ -1775,13 +1765,13 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub GenerateList()
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = "Show Banner", .Tag = "showb", .ImageIndex = 0, .SelectedImageIndex = 0})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "Show CharacterArt"), .Tag = "showch", .ImageIndex = 1, .SelectedImageIndex = 1})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "Show ClearArt"), .Tag = "showca", .ImageIndex = 2, .SelectedImageIndex = 2})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "Show ClearLogo"), .Tag = "showcl", .ImageIndex = 3, .SelectedImageIndex = 3})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart) AndAlso (Master.eSettings.TVShowFanartAnyEnabled OrElse Master.eSettings.TVEpisodeFanartAnyEnabled) Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.ImageType_TV.EpisodeFanart, Master.eLang.GetString(688, "Episode Fanart"), Master.eLang.GetString(684, "Show Fanart")), .Tag = "showf", .ImageIndex = 4, .SelectedImageIndex = 4})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1010, "Show Landscape"), .Tag = "showl", .ImageIndex = 5, .SelectedImageIndex = 5})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(956, "Show Poster"), .Tag = "showp", .ImageIndex = 6, .SelectedImageIndex = 6})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(658, "TV Show Banner"), .Tag = "showb", .ImageIndex = 0, .SelectedImageIndex = 0})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "TV Show CharacterArt"), .Tag = "showch", .ImageIndex = 1, .SelectedImageIndex = 1})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "TV Show ClearArt"), .Tag = "showca", .ImageIndex = 2, .SelectedImageIndex = 2})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "TV Show ClearLogo"), .Tag = "showcl", .ImageIndex = 3, .SelectedImageIndex = 3})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart) AndAlso (Master.eSettings.TVShowFanartAnyEnabled OrElse Master.eSettings.TVEpisodeFanartAnyEnabled) Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.ImageType_TV.EpisodeFanart, Master.eLang.GetString(688, "Episode Fanart"), Master.eLang.GetString(684, "TV Show Fanart")), .Tag = "showf", .ImageIndex = 4, .SelectedImageIndex = 4})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1010, "TV Show Landscape"), .Tag = "showl", .ImageIndex = 5, .SelectedImageIndex = 5})
+        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(956, "TV Show Poster"), .Tag = "showp", .ImageIndex = 6, .SelectedImageIndex = 6})
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner) AndAlso Master.eSettings.TVASBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1014, "All Seasons Banner"), .Tag = "allb", .ImageIndex = 0, .SelectedImageIndex = 0})
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart) AndAlso Master.eSettings.TVASFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1015, "All Seasons Fanart"), .Tag = "allf", .ImageIndex = 4, .SelectedImageIndex = 4})
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape) AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1016, "All Seasons Landscape"), .Tag = "alll", .ImageIndex = 5, .SelectedImageIndex = 5})
@@ -2090,13 +2080,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In ShowBannerList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2113,13 +2103,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In ShowCharacterArtList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2136,13 +2126,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In ShowClearArtList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2159,13 +2149,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In ShowClearLogoList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2182,13 +2172,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In GenericFanartList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2205,13 +2195,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In ShowLandscapeList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2228,13 +2218,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In GenericPosterList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2251,25 +2241,25 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In SeasonBannerList.Where(Function(f) f.Season = 999)
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
                 For Each tvImage As MediaContainers.Image In ShowBannerList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2286,13 +2276,13 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In GenericFanartList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2309,25 +2299,25 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In SeasonLandscapeList.Where(Function(f) f.Season = 999)
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
                 For Each tvImage As MediaContainers.Image In ShowLandscapeList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2344,25 +2334,25 @@ Public Class dlgTVImageSelect
                 iCount = 0
                 For Each tvImage As MediaContainers.Image In SeasonPosterList.Where(Function(f) f.Season = 999)
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
                 For Each tvImage As MediaContainers.Image In GenericPosterList
                     If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                        Dim imgSize As String = String.Empty
+                        Dim imgText As String = String.Empty
                         If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                            imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                         Else
-                            imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                            imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                     End If
                     iCount += 1
                 Next
@@ -2383,13 +2373,13 @@ Public Class dlgTVImageSelect
                         iCount = 0
                         For Each tvImage As MediaContainers.Image In SeasonBannerList.Where(Function(s) s.Season = Convert.ToInt32(tMatch.Groups("num").Value))
                             If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                                Dim imgSize As String = String.Empty
+                                Dim imgText As String = String.Empty
                                 If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                                    imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                                 Else
-                                    imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                             End If
                             iCount += 1
                         Next
@@ -2407,13 +2397,13 @@ Public Class dlgTVImageSelect
                         iCount = 0
                         For Each tvImage As MediaContainers.Image In GenericFanartList
                             If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                                Dim imgSize As String = String.Empty
+                                Dim imgText As String = String.Empty
                                 If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                                    imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                                 Else
-                                    imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                             End If
                             iCount += 1
                         Next
@@ -2431,13 +2421,13 @@ Public Class dlgTVImageSelect
                         iCount = 0
                         For Each tvImage As MediaContainers.Image In SeasonLandscapeList.Where(Function(s) s.Season = Convert.ToInt32(tMatch.Groups("num").Value))
                             If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                                Dim imgSize As String = String.Empty
+                                Dim imgText As String = String.Empty
                                 If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                                    imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                                 Else
-                                    imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                             End If
                             iCount += 1
                         Next
@@ -2455,13 +2445,13 @@ Public Class dlgTVImageSelect
                         iCount = 0
                         For Each tvImage As MediaContainers.Image In SeasonPosterList.Where(Function(s) s.Season = Convert.ToInt32(tMatch.Groups("num").Value))
                             If tvImage IsNot Nothing AndAlso tvImage.WebImage IsNot Nothing AndAlso tvImage.WebImage.Image IsNot Nothing Then
-                                Dim imgSize As String = String.Empty
+                                Dim imgText As String = String.Empty
                                 If CDbl(tvImage.Width) = 0 OrElse CDbl(tvImage.Height) = 0 Then
-                                    imgSize = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.WebImage.Image.Size.Width, tvImage.WebImage.Image.Size.Height & Environment.NewLine & tvImage.LongLang)
                                 Else
-                                    imgSize = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
+                                    imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgSize, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .isFanart = False, .ImageObj = tvImage.WebImage})
                             End If
                             iCount += 1
                         Next

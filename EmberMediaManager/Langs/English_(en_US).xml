@@ -656,7 +656,7 @@
   <string id="655">Season Specials</string>
   <string id="656">Edit Episode</string>
   <string id="657">Edit the details for the selected episode.</string>
-  <string id="658"></string>
+  <string id="658">TV Show Banner</string>
   <string id="659">Season #</string>
   <string id="660">Episode #</string>
   <string id="661">This will remove the Language from all Genres. Are you sure?</string>
@@ -743,7 +743,7 @@
   <string id="742">Fetch Available Languages</string>
   <string id="743">Show</string>
   <string id="744"></string>
-  <string id="745">None</string>
+  <string id="745">Any</string>
   <string id="746">Blank</string>
   <string id="747">Graphical</string>
   <string id="748">Text</string>
@@ -954,7 +954,7 @@
   <string id="953">Loading Current Images...</string>
   <string id="954">(Down)Loading New Images...</string>
   <string id="955">Setting Defaults...</string>
-  <string id="956">Show Poster</string>
+  <string id="956">TV Show Poster</string>
   <string id="957">Show the ones with size:</string>
   <string id="958">Only if Plot Outline is empty</string>
   <string id="959"></string>

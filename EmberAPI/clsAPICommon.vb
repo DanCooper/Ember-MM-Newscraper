@@ -982,6 +982,19 @@ Public Class Enums
         None = 99
     End Enum
 
+    Public Enum TVBannerSize As Integer
+        Any = 0
+        HD185 = 1       'Fanart.tv only 1000x185 (season and tv show banner)
+        HD140 = 2       'TVDB has only 758x140 (season and tv show banner)
+    End Enum
+
+    Public Enum TVBannerType As Integer
+        Any = 0
+        Blank = 1       'will leave the title and show logo off the banner
+        Graphical = 2   'will show the series name in the show's official font or will display the actual logo for the show
+        Text = 3        'will show the series name as plain text in an Arial font
+    End Enum
+
     Public Enum TVFanartSize As Integer
         HD1080 = 0      'Fanart.tv has only 1920x1080
         HD720 = 1       'TVDB has 1280x720 and 1920x1080
@@ -996,27 +1009,14 @@ Public Class Enums
         SD225 = 0      'TVDB has only 400 x 300 (400x225 for 16:9 images)
     End Enum
 
-    Public Enum TVSeasonPosterType As Integer
-        None = 0
-        Poster = 1
-        Wide = 2
+    Public Enum TVSeasonPosterSize As Integer
+        HD1426 = 0
+        HD578 = 1
     End Enum
 
     Public Enum MovieBannerSize As Integer
-        HD185 = 0       'Fanart.tv has only 1000x185
-    End Enum
-
-    Public Enum TVSeasonBannerType As Integer
-        Blank = 0       'will leave the title and show logo off the banner
-        Graphical = 1   'will show the series name in the show's official font or will display the actual logo for the show
-        Text = 2        'will show the series name as plain text in an Arial font
-    End Enum
-
-    Public Enum TVShowBannerType As Integer
-        None = 0
-        Blank = 1       'will leave the title and show logo off the banner
-        Graphical = 2   'will show the series name in the show's official font or will display the actual logo for the show
-        Text = 3        'will show the series name as plain text in an Arial font
+        Any = 0
+        HD185 = 1       'Fanart.tv has only 1000x185
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options

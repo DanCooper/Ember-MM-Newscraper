@@ -1308,7 +1308,6 @@ Public Class Scraper
                                             tmpTVDBShow.SeasonPosters.Add(New MediaContainers.Image With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                    .TVSeasonPosterType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                                     .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                                     .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1318,7 +1317,6 @@ Public Class Scraper
                                             tmpTVDBShow.SeasonBanners.Add(New MediaContainers.Image With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                    .TVSeasonPosterType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVSeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                                     .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                                     .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                                     .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1328,7 +1326,7 @@ Public Class Scraper
                                     Case "series"
                                         tmpTVDBShow.ShowBanners.Add(New MediaContainers.Image With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                              .TVShowBannerType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                              .TVBannerType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVBannerType.Any, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                               .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1492,27 +1490,16 @@ Public Class Scraper
             Return gActors
         End Function
 
-        Private Function StringToSeasonPosterType(ByVal sType As String) As Enums.TVSeasonPosterType
-            Select Case sType.ToLower
-                Case "season"
-                    Return Enums.TVSeasonPosterType.Poster
-                Case "seasonwide"
-                    Return Enums.TVSeasonPosterType.Wide
-                Case Else
-                    Return Enums.TVSeasonPosterType.None
-            End Select
-        End Function
-
-        Private Function StringToShowPosterType(ByVal sType As String) As Enums.TVShowBannerType
+        Private Function StringToShowPosterType(ByVal sType As String) As Enums.TVBannerType
             Select Case sType.ToLower
                 Case "blank"
-                    Return Enums.TVShowBannerType.Blank
+                    Return Enums.TVBannerType.Blank
                 Case "graphical"
-                    Return Enums.TVShowBannerType.Graphical
+                    Return Enums.TVBannerType.Graphical
                 Case "text"
-                    Return Enums.TVShowBannerType.Text
+                    Return Enums.TVBannerType.Text
                 Case Else
-                    Return Enums.TVShowBannerType.None
+                    Return Enums.TVBannerType.Any
             End Select
         End Function
 

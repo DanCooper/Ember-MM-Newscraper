@@ -2827,6 +2827,21 @@ Public Class Images
         End If
         Return imgList
     End Function
+
+    Public Shared Function GetPreferredTVASBanner(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
+
+        imgResult = SeasonImageList.Find(Function(f) f.TVBannerType = Master.eSettings.TVASBannerPrefType AndAlso f.Season = 999)
+        If imgResult Is Nothing AndAlso True Then
+            imgResult = ShowImageList.Find(Function(f) f.TVBannerType = Master.eSettings.TVASBannerPrefType)
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     ''' <summary>
     ''' Select the single most preferred Banner image
     ''' </summary>
@@ -2834,10 +2849,10 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVSeasonBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredTVSeasonBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.Find(Function(f) f.TVSeasonBannerType = Master.eSettings.TVSeasonBannerPrefType)
+        imgResult = ImageList.Find(Function(f) f.TVBannerType = Master.eSettings.TVSeasonBannerPrefType AndAlso f.Season = iSeason)
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2855,7 +2870,7 @@ Public Class Images
     Public Shared Function GetPreferredTVShowBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.Find(Function(f) f.TVShowBannerType = Master.eSettings.TVShowBannerPrefType)
+        imgResult = ImageList.Find(Function(f) f.TVBannerType = Master.eSettings.TVShowBannerPrefType)
 
         If imgResult IsNot Nothing Then
             Return True
