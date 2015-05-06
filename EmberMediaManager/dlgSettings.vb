@@ -4628,6 +4628,7 @@ Public Class dlgSettings
 
     Private Sub LoadTVFanartSizes()
         Dim items As New Dictionary(Of String, Enums.TVFanartSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVFanartSize.Any)
         items.Add("1920x1080", Enums.TVFanartSize.HD1080)
         items.Add("1280x720", Enums.TVFanartSize.HD720)
         Me.cbTVASFanartPrefSize.DataSource = items.ToList
@@ -4649,6 +4650,7 @@ Public Class dlgSettings
 
     Private Sub LoadTVPosterSizes()
         Dim items As New Dictionary(Of String, Enums.TVPosterSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVPosterSize.Any)
         items.Add("1000x1426", Enums.TVPosterSize.HD1426)
         items.Add("680x1000", Enums.TVPosterSize.HD1000)
         Me.cbTVASPosterPrefSize.DataSource = items.ToList

@@ -2565,10 +2565,10 @@ Namespace MediaContainers
             Me._LocalFile = String.Empty
             Me._LocalThumb = String.Empty
             Me._Season = -1
-            Me._TVBannerSize = Enums.TVBannerSize.HD185
+            Me._TVBannerSize = Enums.TVBannerSize.Any
             Me._TVBannerType = Enums.TVBannerType.Any
-            Me._TVFanartSize = Enums.TVFanartSize.HD1080
-            Me._TVPosterSize = Enums.TVPosterSize.HD1426
+            Me._TVFanartSize = Enums.TVFanartSize.Any
+            Me._TVPosterSize = Enums.TVPosterSize.Any
             Me._ThumbURL = String.Empty
             Me._URL = String.Empty
             Me._VoteAverage = String.Empty

@@ -1287,6 +1287,7 @@ Public Class Scraper
                                                              .ThumbURL = If(tImage.Element("ThumbnailPath") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
                                                              .Height = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Height.ToString, _
                                                              .Width = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Width.ToString, _
+                                                             .TVFanartSize = Images.HeightToTVFanartSize(StringUtils.StringToSize(tImage.Element("BannerType2").Value).Height.ToString), _
                                                              .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                              .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1298,6 +1299,7 @@ Public Class Scraper
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                               .Height = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Height.ToString, _
                                                               .Width = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Width.ToString, _
+                                                              .TVPosterSize = Images.HeightToTVPosterSize(StringUtils.StringToSize(tImage.Element("BannerType2").Value).Height.ToString), _
                                                               .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                               .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1307,6 +1309,9 @@ Public Class Scraper
                                         If tImage.Element("BannerType2").Value.ToLower = "season" Then
                                             tmpTVDBShow.SeasonPosters.Add(New MediaContainers.Image With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                    .Height = "578", _
+                                                                    .Width = "400", _
+                                                                    .TVSeasonPosterSize = Images.HeightToTVSeasonPosterSize("578"), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
                                                                     .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                                     .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
@@ -1316,6 +1321,9 @@ Public Class Scraper
                                         Else
                                             tmpTVDBShow.SeasonBanners.Add(New MediaContainers.Image With { _
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                    .Height = "140", _
+                                                                    .Width = "758", _
+                                                                    .TVBannerSize = Images.HeightToTVBannerSize("140"), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
                                                                     .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                                     .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
@@ -1326,6 +1334,9 @@ Public Class Scraper
                                     Case "series"
                                         tmpTVDBShow.ShowBanners.Add(New MediaContainers.Image With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                              .Height = "140", _
+                                                              .Width = "758", _
+                                                              .TVBannerSize = Images.HeightToTVBannerSize("140"), _
                                                               .TVBannerType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVBannerType.Any, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                               .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _

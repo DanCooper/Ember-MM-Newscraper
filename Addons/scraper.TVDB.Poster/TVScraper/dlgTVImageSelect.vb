@@ -100,11 +100,8 @@ Public Class dlgTVImageSelect
 
         'AllSeason Fanart
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart) AndAlso Master.eSettings.TVASFanartAnyEnabled AndAlso Scraper.TVDBImages.AllSeasonsFanart.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = GenericFanartList.FirstOrDefault(Function(f) f.WebImage.Image IsNot Nothing AndAlso Me.GetFanartDims(f.Width, f.Height) = Master.eSettings.TVASFanartPrefSize AndAlso f.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If defImg Is Nothing Then defImg = GenericFanartList.FirstOrDefault(Function(f) f.WebImage.Image IsNot Nothing AndAlso Me.GetFanartDims(f.Width, f.Height) = Master.eSettings.TVASFanartPrefSize)
-            'no fanart of the preferred size, just get the first available
-            If defImg Is Nothing Then defImg = GenericFanartList.FirstOrDefault(Function(f) f.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVASFanart(GenericFanartList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.AllSeasonsFanart.WebImage = defImg.WebImage
@@ -121,10 +118,8 @@ Public Class dlgTVImageSelect
 
         'AllSeason Landscape
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape) AndAlso Master.eSettings.TVASLandscapeAnyEnabled AndAlso Scraper.TVDBImages.AllSeasonsLandscape.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = SeasonLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = 999 AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-            If defImg Is Nothing Then defImg = SeasonLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = 999)
-            If defImg Is Nothing Then defImg = ShowLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-            If defImg Is Nothing Then defImg = ShowLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVASLandscape(SeasonLandscapeList, ShowLandscapeList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.AllSeasonsLandscape.WebImage = defImg.WebImage
@@ -141,11 +136,8 @@ Public Class dlgTVImageSelect
 
         'AllSeason Poster
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsPoster) AndAlso Master.eSettings.TVASPosterAnyEnabled AndAlso Scraper.TVDBImages.AllSeasonsPoster.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = GenericPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso Me.GetPosterDims(p.Width, p.Height) = Master.eSettings.TVASPosterPrefSize AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If defImg Is Nothing Then defImg = GenericPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso Me.GetPosterDims(p.Width, p.Height) = Master.eSettings.TVASPosterPrefSize)
-            'no preferred size, just get any one of them
-            If defImg Is Nothing Then defImg = GenericPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVASPoster(SeasonPosterList, GenericPosterList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.AllSeasonsPoster.WebImage = defImg.WebImage
@@ -163,9 +155,7 @@ Public Class dlgTVImageSelect
         'Show Banner
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled AndAlso Scraper.TVDBImages.ShowBanner.WebImage.Image Is Nothing Then
             Dim defImg As MediaContainers.Image = Nothing
-            If Not Images.GetPreferredTVShowBanner(ShowBannerList, defImg) Then
-                defImg = ShowBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
-            End If
+            Images.GetPreferredTVShowBanner(ShowBannerList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowBanner.WebImage = defImg.WebImage
@@ -182,9 +172,8 @@ Public Class dlgTVImageSelect
 
         'Show CharacterArt
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso Scraper.TVDBImages.ShowCharacterArt.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = ShowCharacterArtList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If defImg Is Nothing Then defImg = ShowCharacterArtList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVShowCharacterArt(ShowCharacterArtList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowCharacterArt.WebImage = defImg.WebImage
@@ -201,9 +190,8 @@ Public Class dlgTVImageSelect
 
         'Show ClearArt
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled AndAlso Scraper.TVDBImages.ShowClearArt.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = ShowClearArtList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If defImg Is Nothing Then defImg = ShowClearArtList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVShowClearArt(ShowClearArtList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowClearArt.WebImage = defImg.WebImage
@@ -220,9 +208,8 @@ Public Class dlgTVImageSelect
 
         'Show ClearLogo
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled AndAlso Scraper.TVDBImages.ShowClearLogo.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = ShowClearLogoList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If defImg Is Nothing Then defImg = ShowClearLogoList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVShowClearLogo(ShowClearLogoList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowClearLogo.WebImage = defImg.WebImage
@@ -240,9 +227,7 @@ Public Class dlgTVImageSelect
         'Show Fanart
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart) AndAlso Scraper.TVDBImages.ShowFanart.WebImage.Image Is Nothing Then 'TODO: add *FanartEnabled check
             Dim defImg As MediaContainers.Image = Nothing
-            If Not Images.GetPreferredTVShowFanart(GenericFanartList, defImg) Then
-                defImg = GenericFanartList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
-            End If
+            Images.GetPreferredTVShowFanart(GenericFanartList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowFanart.WebImage = defImg.WebImage
@@ -259,9 +244,8 @@ Public Class dlgTVImageSelect
 
         'Show Landscape
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled AndAlso Scraper.TVDBImages.ShowLandscape.WebImage.Image Is Nothing Then
-            Dim defImg As MediaContainers.Image = ShowLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-            If defImg Is Nothing Then defImg = ShowLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
+            Dim defImg As MediaContainers.Image = Nothing
+            Images.GetPreferredTVShowLandscape(ShowLandscapeList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowLandscape.WebImage = defImg.WebImage
@@ -279,9 +263,7 @@ Public Class dlgTVImageSelect
         'Show Poster
         If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled AndAlso Scraper.TVDBImages.ShowPoster.WebImage.Image Is Nothing Then
             Dim defImg As MediaContainers.Image = Nothing
-            If Not Images.GetPreferredTVShowPoster(GenericPosterList, defImg) Then
-                defImg = GenericPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing)
-            End If
+            Images.GetPreferredTVShowPoster(GenericPosterList, defImg)
 
             If defImg IsNot Nothing Then
                 Scraper.TVDBImages.ShowPoster.WebImage = defImg.WebImage
@@ -305,9 +287,7 @@ Public Class dlgTVImageSelect
                     'Season Banner
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonBanner) AndAlso Master.eSettings.TVSeasonBannerAnyEnabled AndAlso cSeason.Banner.WebImage.Image Is Nothing Then
                         Dim defImg As MediaContainers.Image = Nothing
-                        If Not Images.GetPreferredTVSeasonBanner(SeasonBannerList, defImg, iSeason) Then
-                            defImg = SeasonBannerList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
-                        End If
+                        Images.GetPreferredTVSeasonBanner(SeasonBannerList, defImg, iSeason)
 
                         If defImg IsNot Nothing Then
                             cSeason.Banner.WebImage = defImg.WebImage
@@ -320,11 +300,8 @@ Public Class dlgTVImageSelect
 
                     'Season Fanart
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonFanart) AndAlso Master.eSettings.TVSeasonFanartAnyEnabled AndAlso cSeason.Fanart.WebImage.Image Is Nothing Then
-                        Dim defImg As MediaContainers.Image = GenericFanartList.FirstOrDefault(Function(f) f.WebImage.Image IsNot Nothing AndAlso Me.GetFanartDims(f.Width, f.Height) = Master.eSettings.TVSeasonFanartPrefSize AndAlso f.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-
-                        If defImg Is Nothing Then defImg = GenericFanartList.FirstOrDefault(Function(f) f.WebImage.Image IsNot Nothing AndAlso Me.GetFanartDims(f.Width, f.Height) = Master.eSettings.TVSeasonFanartPrefSize)
-                        'no preferred size, just get any one of them
-                        If defImg Is Nothing Then defImg = GenericFanartList.FirstOrDefault(Function(f) f.WebImage.Image IsNot Nothing)
+                        Dim defImg As MediaContainers.Image = Nothing
+                        Images.GetPreferredTVSeasonFanart(GenericFanartList, defImg, iSeason)
 
                         If defImg IsNot Nothing Then
                             cSeason.Fanart.WebImage = defImg.WebImage
@@ -337,8 +314,8 @@ Public Class dlgTVImageSelect
 
                     'Season Landscape
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonLandscape) AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso cSeason.Landscape.WebImage.Image Is Nothing Then
-                        Dim defImg As MediaContainers.Image = SeasonLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-                        If defImg Is Nothing Then defImg = SeasonLandscapeList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
+                        Dim defImg As MediaContainers.Image = Nothing
+                        Images.GetPreferredTVSeasonLandscape(SeasonLandscapeList, defImg, iSeason)
 
                         If defImg IsNot Nothing Then
                             cSeason.Landscape.WebImage = defImg.WebImage
@@ -351,10 +328,8 @@ Public Class dlgTVImageSelect
 
                     'Season Poster
                     If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonPoster) AndAlso Master.eSettings.TVSeasonPosterAnyEnabled AndAlso cSeason.Poster.WebImage.Image Is Nothing Then
-                        Dim defImg As MediaContainers.Image = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason AndAlso p.ShortLang = clsAdvancedSettings.GetSetting("TVDBLang", "en"))
-                        If defImg Is Nothing Then defImg = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
-
-                        If defImg Is Nothing Then defImg = SeasonPosterList.FirstOrDefault(Function(p) p.WebImage.Image IsNot Nothing AndAlso p.Season = iSeason)
+                        Dim defImg As MediaContainers.Image = Nothing
+                        Images.GetPreferredTVSeasonPoster(SeasonPosterList, defImg, iSeason)
 
                         If defImg IsNot Nothing Then
                             cSeason.Poster.WebImage = defImg.WebImage
