@@ -250,7 +250,7 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblPrefLanguage.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 

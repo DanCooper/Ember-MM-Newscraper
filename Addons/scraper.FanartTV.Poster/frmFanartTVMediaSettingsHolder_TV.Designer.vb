@@ -28,13 +28,13 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperImagesOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.gbScraperImagesSeason = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScrapeSeasonBanner = New System.Windows.Forms.CheckBox()
         Me.chkScrapeSeasonFanart = New System.Windows.Forms.CheckBox()
         Me.chkScrapeSeasonLandscape = New System.Windows.Forms.CheckBox()
         Me.chkScrapeSeasonPoster = New System.Windows.Forms.CheckBox()
-        Me.gbScraperImagesShow = New System.Windows.Forms.GroupBox()
+        Me.gbScraperImagesTVShow = New System.Windows.Forms.GroupBox()
         Me.tblScraperImagesShow = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScrapeShowLandscape = New System.Windows.Forms.CheckBox()
         Me.chkScrapeShowClearLogoOnlyHD = New System.Windows.Forms.CheckBox()
@@ -73,9 +73,9 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblSettingsMain.SuspendLayout()
         Me.gbScraperImagesOpts.SuspendLayout()
         Me.tblScraperImagesOpts.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.gbScraperImagesSeason.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.gbScraperImagesShow.SuspendLayout()
+        Me.gbScraperImagesTVShow.SuspendLayout()
         Me.tblScraperImagesShow.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
@@ -147,8 +147,8 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblScraperImagesOpts.ColumnCount = 2
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperImagesOpts.Controls.Add(Me.GroupBox1, 1, 0)
-        Me.tblScraperImagesOpts.Controls.Add(Me.gbScraperImagesShow, 0, 0)
+        Me.tblScraperImagesOpts.Controls.Add(Me.gbScraperImagesSeason, 1, 0)
+        Me.tblScraperImagesOpts.Controls.Add(Me.gbScraperImagesTVShow, 0, 0)
         Me.tblScraperImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperImagesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperImagesOpts.Name = "tblScraperImagesOpts"
@@ -158,17 +158,17 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 142)
         Me.tblScraperImagesOpts.TabIndex = 11
         '
-        'GroupBox1
+        'gbScraperImagesSeason
         '
-        Me.GroupBox1.AutoSize = True
-        Me.GroupBox1.Controls.Add(Me.TableLayoutPanel1)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Location = New System.Drawing.Point(237, 3)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(186, 136)
-        Me.GroupBox1.TabIndex = 11
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Season"
+        Me.gbScraperImagesSeason.AutoSize = True
+        Me.gbScraperImagesSeason.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbScraperImagesSeason.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbScraperImagesSeason.Location = New System.Drawing.Point(237, 3)
+        Me.gbScraperImagesSeason.Name = "gbScraperImagesSeason"
+        Me.gbScraperImagesSeason.Size = New System.Drawing.Size(186, 136)
+        Me.gbScraperImagesSeason.TabIndex = 11
+        Me.gbScraperImagesSeason.TabStop = False
+        Me.gbScraperImagesSeason.Text = "Season"
         '
         'TableLayoutPanel1
         '
@@ -247,17 +247,17 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.chkScrapeSeasonPoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeSeasonPoster.UseVisualStyleBackColor = True
         '
-        'gbScraperImagesShow
+        'gbScraperImagesTVShow
         '
-        Me.gbScraperImagesShow.AutoSize = True
-        Me.gbScraperImagesShow.Controls.Add(Me.tblScraperImagesShow)
-        Me.gbScraperImagesShow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperImagesShow.Location = New System.Drawing.Point(3, 3)
-        Me.gbScraperImagesShow.Name = "gbScraperImagesShow"
-        Me.gbScraperImagesShow.Size = New System.Drawing.Size(228, 136)
-        Me.gbScraperImagesShow.TabIndex = 10
-        Me.gbScraperImagesShow.TabStop = False
-        Me.gbScraperImagesShow.Text = "Show"
+        Me.gbScraperImagesTVShow.AutoSize = True
+        Me.gbScraperImagesTVShow.Controls.Add(Me.tblScraperImagesShow)
+        Me.gbScraperImagesTVShow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbScraperImagesTVShow.Location = New System.Drawing.Point(3, 3)
+        Me.gbScraperImagesTVShow.Name = "gbScraperImagesTVShow"
+        Me.gbScraperImagesTVShow.Size = New System.Drawing.Size(228, 136)
+        Me.gbScraperImagesTVShow.TabIndex = 10
+        Me.gbScraperImagesTVShow.TabStop = False
+        Me.gbScraperImagesTVShow.Text = "TV Show"
         '
         'tblScraperImagesShow
         '
@@ -742,12 +742,12 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
         Me.gbScraperImagesOpts.PerformLayout()
         Me.tblScraperImagesOpts.ResumeLayout(False)
         Me.tblScraperImagesOpts.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.gbScraperImagesSeason.ResumeLayout(False)
+        Me.gbScraperImagesSeason.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
-        Me.gbScraperImagesShow.ResumeLayout(False)
-        Me.gbScraperImagesShow.PerformLayout()
+        Me.gbScraperImagesTVShow.ResumeLayout(False)
+        Me.gbScraperImagesTVShow.PerformLayout()
         Me.tblScraperImagesShow.ResumeLayout(False)
         Me.tblScraperImagesShow.PerformLayout()
         Me.gbScraperOpts.ResumeLayout(False)
@@ -806,8 +806,8 @@ Partial Class frmFanartTVMediaSettingsHolder_TV
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblScraperImagesOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbScraperImagesShow As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbScraperImagesTVShow As System.Windows.Forms.GroupBox
+    Friend WithEvents gbScraperImagesSeason As System.Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkScrapeSeasonLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeSeasonFanart As System.Windows.Forms.CheckBox

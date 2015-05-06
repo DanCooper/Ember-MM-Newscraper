@@ -312,7 +312,7 @@ Public Class dlgTVDBSearchResults
     Private Sub SetUp()
         Me.Label1.Text = Master.eLang.GetString(948, "TV Search Results")
         Me.Label2.Text = Master.eLang.GetString(951, "View details of each result to find the proper TV show.")
-        Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:")
+        Me.lblAiredHeader.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
         Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:")
 
         Me.lvSearchResults.Columns(0).Text = Master.eLang.GetString(21, "Title")

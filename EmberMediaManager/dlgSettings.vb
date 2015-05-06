@@ -6105,6 +6105,15 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
 
+        'Aired
+        Dim strAired As String = Master.eLang.GetString(728, "Aired")
+        Me.lblTVScraperGlobalAired.Text = strAired
+
+        'All Seasons
+        Dim strAllSeasons As String = Master.eLang.GetString(1202, "All Seasons")
+        Me.tpTVImagesAllSeasons.Text = strAllSeasons
+        Me.tpTVSourcesFileNamingExpertAllSeasons.Text = strAllSeasons
+
         'Ask On Click Scrape
         Dim strAskOnClickScrape As String = Master.eLang.GetString(852, "Ask On Click Scrape")
         Me.chkMovieClickScrapeAsk.Text = strAskOnClickScrape
@@ -6168,7 +6177,8 @@ Public Class dlgSettings
         'CharacterArt
         Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
         Me.gbTVImagesShowCharacterArtOpts.Text = strCharacterArt
-        Me.lblTVShowClearArtExpert.Text = strCharacterArt
+        Me.lblTVShowCharacterArtExpert.Text = strCharacterArt
+        Me.lblTVSourcesFileNamingXBMCADCharacterArt.Text = strCharacterArt
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
@@ -6184,6 +6194,7 @@ Public Class dlgSettings
         Me.lblMovieClearArtExpertVTS.Text = strClearArt
         Me.lblMovieSourcesFileNamingXBMCADClearArt.Text = strClearArt
         Me.lblTVShowClearArtExpert.Text = strClearArt
+        Me.lblTVSourcesFileNamingXBMCADClearArt.Text = strClearArt
 
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
@@ -6199,6 +6210,7 @@ Public Class dlgSettings
         Me.lblMovieClearLogoExpertVTS.Text = strClearLogo
         Me.lblMovieSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
         Me.lblTVShowClearLogoExpert.Text = strClearLogo
+        Me.lblTVSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
 
         'Collection ID
         Dim strCollectionID As String = Master.eLang.GetString(1135, "Collection ID")
@@ -6219,6 +6231,14 @@ Public Class dlgSettings
         'Country
         Dim strCountry As String = Master.eLang.GetString(301, "Country")
         Me.lblMovieScraperGlobalCountry.Text = strCountry
+
+        'Default Episode Ordering
+        Dim strDefaultEpisodeOrdering As String = Master.eLang.GetString(797, "Default Episode Ordering")
+        Me.lblTVSourcesDefaultsOrdering.Text = String.Concat(strDefaultEpisodeOrdering, ":")
+
+        'Default Language
+        Dim strDefaultLanguage As String = Master.eLang.GetString(1166, "Default Language")
+        Me.lblTVSourcesDefaultsLanguage.Text = String.Concat(strDefaultLanguage, ":")
 
         'Defaults
         Dim strDefaults As String = Master.eLang.GetString(713, "Defaults")
@@ -6270,11 +6290,21 @@ Public Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
         Me.chkMovieUseExpert.Text = strEnabled
+        Me.chkTVUseExpert.Text = strEnabled
 
         'Enabled Click Scrape
         Dim strEnabledClickScrape As String = Master.eLang.GetString(849, "Enable Click Scrape")
         Me.chkMovieClickScrape.Text = strEnabledClickScrape
         Me.chkMovieSetClickScrape.Text = strEnabledClickScrape
+
+        'Episode
+        Dim strEpisode As String = Master.eLang.GetString(727, "Episode")
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeEpisode.Text = strEpisode
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode.Text = strEpisode
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode.Text = strEpisode
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode.Text = strEpisode
+        Me.tpTVImagesEpisode.Text = strEpisode
+        Me.tpTVSourcesFileNamingExpertEpisode.Text = strEpisode
 
         'Episode #
         Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
@@ -6344,6 +6374,12 @@ Public Class dlgSettings
         Me.lblTVSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
         Me.lblTVSourcesFileNamingNMTDefaultsFanart.Text = strFanart
         Me.lblTVSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
+
+        'File Naming
+        Dim strFileNaming As String = Master.eLang.GetString(471, "File Naming")
+        Me.gbMovieSourcesFileNamingOpts.Text = strFileNaming
+        Me.gbMovieSetSourcesFileNamingOpts.Text = strFileNaming
+        Me.gbTVSourcesFileNamingOpts.Text = strFileNaming
 
         'File Type
         Dim strFileType As String = String.Concat(Master.eLang.GetString(626, "File Type"), ":")
@@ -6476,6 +6512,11 @@ Public Class dlgSettings
         'MPAA
         Dim strMPAA As String = Master.eLang.GetString(401, "MPAA")
         Me.lblMovieScraperGlobalMPAA.Text = strMPAA
+        Me.lblTVScraperGlobalMPAA.Text = strMPAA
+
+        'MPAA value if no rating is available
+        Dim strMPAANotRated As String = Master.eLang.GetString(832, "MPAA value if no rating is available")
+        Me.lblTVScraperShowMPAANotRated.Text = strMPAANotRated
 
         'Movie List Sorting
         Dim strMovieListSorting As String = Master.eLang.GetString(490, "Movie List Sorting")
@@ -6646,6 +6687,10 @@ Public Class dlgSettings
         Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
         Me.lblMovieScraperGlobalReleaseDate.Text = strReleaseDate
 
+        'Premiered
+        Dim strPremiered As String = Master.eLang.GetString(724, "Premiered")
+        Me.lblTVScraperGlobalPremiered.Text = strPremiered
+
         'Rating
         Dim strRating As String = Master.eLang.GetString(400, "Rating")
         Me.lblMovieScraperGlobalRating.Text = strRating
@@ -6662,20 +6707,33 @@ Public Class dlgSettings
         Me.gbMovieSetScraperGlobalOpts.Text = strScraperGlobal
         Me.gbTVScraperGlobalOpts.Text = strScraperGlobal
 
+        'Season
+        Dim strSeason As String = Master.eLang.GetString(650, "Season")
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeSeason.Text = strSeason
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason.Text = strSeason
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason.Text = strSeason
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason.Text = strSeason
+        Me.tpTVImagesSeason.Text = strSeason
+        Me.tpTVSourcesFileNamingExpertSeason.Text = strSeason
+
         'Season #
         Dim strSeasonNR As String = Master.eLang.GetString(659, "Season #")
         Me.lblTVScraperGlobalSeason.Text = strSeasonNR
 
+        'Season Landscape
+        Dim strSeasonLandscape As String = Master.eLang.GetString(1018, "Season Landscape")
+        Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.Text = strSeasonLandscape
+
         'Season List Sorting
         Dim strSeasonListSorting As String = Master.eLang.GetString(493, "Season List Sorting")
-        Me.gbTVGeneralSeasonListSorting.Text = strSeasonListSorting
+        Me.gbTVGeneralSeasonListSortingOpts.Text = strSeasonListSorting
 
         'Seasons
         Dim strSeasons As String = Master.eLang.GetString(681, "Seasons")
 
         'Show List Sorting
         Dim strShowListSorting As String = Master.eLang.GetString(492, "Show List Sorting")
-        Me.gbTVGeneralShowListSorting.Text = strShowListSorting
+        Me.gbTVGeneralShowListSortingOpts.Text = strShowListSorting
 
         'Shows
         Dim strShows As String = Master.eLang.GetString(680, "Shows")
@@ -6686,6 +6744,10 @@ Public Class dlgSettings
         Me.gbMovieGeneralMediaListSortTokensOpts.Text = strSortTokens
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Text = strSortTokens
         Me.gbTVGeneralMediaListSortTokensOpts.Text = strSortTokens
+
+        'Status
+        Dim strStatus As String = Master.eLang.GetString(215, "Status")
+        Me.lblTVScraperGlobalStatus.Text = strStatus
 
         'Studio
         Dim strStudio As String = Master.eLang.GetString(395, "Studio")
@@ -6721,6 +6783,19 @@ Public Class dlgSettings
         Me.lblMovieTrailerExpertVTS.Text = strTrailer
         Me.lblMovieSourcesFileNamingNMTDefaultsTrailer.Text = strTrailer
         Me.lblMovieSourcesFileNamingXBMCDefaultsTrailer.Text = strTrailer
+
+        'TV Show
+        Dim strTVShow As String = Master.eLang.GetString(700, "TV Show")
+        Me.lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeTVShow.Text = strTVShow
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJTVShow.Text = strTVShow
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJTVShow.Text = strTVShow
+        Me.lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixTVShow.Text = strTVShow
+        Me.tpTVImagesTVShow.Text = strTVShow
+        Me.tpTVSourcesFileNamingExpertTVShow.Text = strTVShow
+
+        'TV Show Landscape
+        Dim strTVShowLandscape As String = Master.eLang.GetString(1010, "TV Show Landscape")
+        Me.lblTVSourcesFileNamingXBMCADTVShowLandscape.Text = strTVShowLandscape
 
         'Use
         Dim strUse As String = Master.eLang.GetString(872, "Use")
@@ -6860,7 +6935,6 @@ Public Class dlgSettings
         Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         Me.gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
-        Me.gbMovieSourcesFileNaming.Text = Master.eLang.GetString(471, "File Naming")
         Me.gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.gbMovieGeneralGenreFilterOpts.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
@@ -6869,7 +6943,6 @@ Public Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
-        Me.gbMovieSourcesFileNamingXBMCADOpts.Text = Master.eLang.GetString(822, "ArtworkDownloader Addon")
         Me.gbMovieSourcesFileNamingXBMCTvTunesOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
@@ -6910,7 +6983,6 @@ Public Class dlgSettings
         Me.lblProxyURI.Text = Master.eLang.GetString(674, "Proxy URL:")
         Me.lblProxyUsername.Text = Master.eLang.GetString(425, "Username:")
         Me.lblSettingsTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
-        Me.lblTVSourcesDefaultsOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.lblTVScraperGlobalGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
         Me.lblTVScraperRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
         Me.lblTVScraperUpdateTime.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
@@ -6934,10 +7006,6 @@ Public Class dlgSettings
         Me.tpFileSystemCleanerStandard.Text = Master.eLang.GetString(438, "Standard")
         Me.tpMovieSetFileNamingExpertParent.Text = Master.eLang.GetString(880, "Parent Folder")
         Me.tpMovieSetFileNamingExpertSingle.Text = Master.eLang.GetString(879, "Single Folder")
-        Me.tpTVImagesAllSeasons.Text = Master.eLang.GetString(1202, "TV All Seasons")
-        Me.tpTVImagesEpisode.Text = Master.eLang.GetString(701, "TV Episode")
-        Me.tpTVImagesSeason.Text = Master.eLang.GetString(744, "TV Season")
-        Me.tpTVImagesShow.Text = Master.eLang.GetString(700, "TV Show")
         Me.tpTVSourcesGeneral.Text = Master.eLang.GetString(38, "General")
         Me.tpTVSourcesRegex.Text = Master.eLang.GetString(699, "Regex")
 
@@ -6953,7 +7021,6 @@ Public Class dlgSettings
         Me.chkTVScanOrderModify.Text = Me.chkMovieScanOrderModify.Text
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
-        Me.gbMovieSetFileNamingOpts.Text = Me.gbMovieSourcesFileNaming.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text

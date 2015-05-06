@@ -1072,7 +1072,7 @@ Public Class dlgEditEpisode
         Me.colRole.Text = Master.eLang.GetString(233, "Role")
         Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
         Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
-        Me.lblAired.Text = Master.eLang.GetString(658, "Aired:")
+        Me.lblAired.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
         Me.lblEpisode.Text = String.Concat(Master.eLang.GetString(727, "Episode"), ":")

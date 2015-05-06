@@ -240,7 +240,7 @@ Public Class frmTVInfoSettingsHolder
         Me.lblScrapeOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblTVLanguagePreferred.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click

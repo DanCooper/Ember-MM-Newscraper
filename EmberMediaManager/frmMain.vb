@@ -19076,6 +19076,7 @@ doCancel:
                 .gbFilterSpecific_MovieSets.Text = .gbFilterSpecific_Movies.Text
                 .gbFilterSpecific_Shows.Text = .gbFilterSpecific_Movies.Text
                 .gbFilterSorting_Movies.Text = Master.eLang.GetString(600, "Extra Sorting")
+                .gbFilterSorting_Shows.Text = .gbFilterSorting_Movies.Text
                 .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")

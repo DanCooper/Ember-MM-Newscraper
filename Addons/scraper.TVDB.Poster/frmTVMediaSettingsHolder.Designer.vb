@@ -30,7 +30,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
-        Me.gbScraperFields = New System.Windows.Forms.GroupBox()
+        Me.gbScraperOptions = New System.Windows.Forms.GroupBox()
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox()
         Me.gbTVDB = New System.Windows.Forms.GroupBox()
@@ -48,7 +48,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
-        Me.gbScraperFields.SuspendLayout()
+        Me.gbScraperOptions.SuspendLayout()
         Me.gbTVDB.SuspendLayout()
         Me.gbLanguage.SuspendLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -119,7 +119,7 @@ Partial Class frmTVMediaSettingsHolder
         '
         'pnlSettings
         '
-        Me.pnlSettings.Controls.Add(Me.gbScraperFields)
+        Me.pnlSettings.Controls.Add(Me.gbScraperOptions)
         Me.pnlSettings.Controls.Add(Me.gbTVDB)
         Me.pnlSettings.Controls.Add(Me.lblModuleInfo)
         Me.pnlSettings.Controls.Add(Me.pbModuleLogo)
@@ -129,17 +129,17 @@ Partial Class frmTVMediaSettingsHolder
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
         '
-        'gbScraperFields
+        'gbScraperOptions
         '
-        Me.gbScraperFields.Controls.Add(Me.chkGetEnglishImages)
-        Me.gbScraperFields.Controls.Add(Me.chkOnlyTVImagesLanguage)
-        Me.gbScraperFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperFields.Location = New System.Drawing.Point(10, 156)
-        Me.gbScraperFields.Name = "gbScraperFields"
-        Me.gbScraperFields.Size = New System.Drawing.Size(403, 114)
-        Me.gbScraperFields.TabIndex = 77
-        Me.gbScraperFields.TabStop = False
-        Me.gbScraperFields.Text = "Scraper Fields"
+        Me.gbScraperOptions.Controls.Add(Me.chkGetEnglishImages)
+        Me.gbScraperOptions.Controls.Add(Me.chkOnlyTVImagesLanguage)
+        Me.gbScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbScraperOptions.Location = New System.Drawing.Point(10, 156)
+        Me.gbScraperOptions.Name = "gbScraperOptions"
+        Me.gbScraperOptions.Size = New System.Drawing.Size(403, 114)
+        Me.gbScraperOptions.TabIndex = 77
+        Me.gbScraperOptions.TabStop = False
+        Me.gbScraperOptions.Text = "Scraper Options"
         '
         'chkGetEnglishImages
         '
@@ -321,8 +321,8 @@ Partial Class frmTVMediaSettingsHolder
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
-        Me.gbScraperFields.ResumeLayout(False)
-        Me.gbScraperFields.PerformLayout()
+        Me.gbScraperOptions.ResumeLayout(False)
+        Me.gbScraperOptions.PerformLayout()
         Me.gbTVDB.ResumeLayout(False)
         Me.gbTVDB.PerformLayout()
         Me.gbLanguage.ResumeLayout(False)
@@ -352,7 +352,7 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents cbTVScraperLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
-    Friend WithEvents gbScraperFields As System.Windows.Forms.GroupBox
+    Friend WithEvents gbScraperOptions As System.Windows.Forms.GroupBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
 

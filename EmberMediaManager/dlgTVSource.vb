@@ -231,9 +231,9 @@ Public Class dlgTVSource
         Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
         Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
         Me.lblSourceEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
-        Me.lblSourceLanguage.Text = Master.eLang.GetString(1166, "Default Language:")
+        Me.lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
-        Me.lblSourceOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
+        Me.lblSourceOrdering.Text = String.Concat(Master.eLang.GetString(797, "Default Episode Ordering"), ":")
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
 

@@ -108,7 +108,7 @@ Public Class frmTMDBTrailerSettingsHolder
 
     Sub SetUp()
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblPrefLanguage.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
