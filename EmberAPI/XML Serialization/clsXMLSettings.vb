@@ -96,14 +96,14 @@ Partial Public Class clsXMLSettings
     Private _movieefanartsheight As Integer
     Private _movieefanartslimit As Integer
     Private _movieefanartsoverwrite As Boolean
-    Private _movieefanartsprefonly As Boolean
+    Private _movieefanartsprefsizeonly As Boolean
     Private _movieefanartsprefsize As Enums.MovieFanartSize
     Private _movieefanartsresize As Boolean
     Private _movieefanartswidth As Integer
     Private _movieethumbsheight As Integer
     Private _movieethumbslimit As Integer
     Private _movieethumbsoverwrite As Boolean
-    Private _movieethumbsprefonly As Boolean
+    Private _movieethumbsprefsizeonly As Boolean
     Private _movieethumbsprefsize As Enums.MovieFanartSize
     Private _movieethumbsresize As Boolean
     Private _movieethumbswidth As Integer
@@ -1539,21 +1539,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefOnly() As Boolean
+    Public Property MovieEFanartsPrefSizeOnly() As Boolean
         Get
-            Return Me._movieefanartsprefonly
+            Return Me._movieefanartsprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._movieefanartsprefonly = value
+            Me._movieefanartsprefsizeonly = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefOnly() As Boolean
+    Public Property MovieEThumbsPrefSizeOnly() As Boolean
         Get
-            Return Me._movieethumbsprefonly
+            Return Me._movieethumbsprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._movieethumbsprefonly = value
+            Me._movieethumbsprefsizeonly = value
         End Set
     End Property
 

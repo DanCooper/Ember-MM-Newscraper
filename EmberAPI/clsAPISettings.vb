@@ -688,21 +688,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefOnly() As Boolean
+    Public Property MovieEFanartsPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEFanartsPrefOnly
+            Return Settings._XMLSettings.MovieEFanartsPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEFanartsPrefOnly = value
+            Settings._XMLSettings.MovieEFanartsPrefSizeOnly = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefOnly() As Boolean
+    Public Property MovieEThumbsPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEThumbsPrefOnly
+            Return Settings._XMLSettings.MovieEThumbsPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEThumbsPrefOnly = value
+            Settings._XMLSettings.MovieEThumbsPrefSizeOnly = value
         End Set
     End Property
 
@@ -6246,14 +6246,14 @@ Public Class Settings
         Me.MovieEFanartsHeight = 0
         Me.MovieEFanartsLimit = 4
         Me.MovieEFanartsOverwrite = True
-        Me.MovieEFanartsPrefOnly = False
+        Me.MovieEFanartsPrefSizeOnly = False
         Me.MovieEFanartsPrefSize = Enums.MovieFanartSize.Any
         Me.MovieEFanartsResize = False
         Me.MovieEFanartsWidth = 0
         Me.MovieEThumbsHeight = 0
         Me.MovieEThumbsLimit = 4
         Me.MovieEThumbsOverwrite = True
-        Me.MovieEThumbsPrefOnly = False
+        Me.MovieEThumbsPrefSizeOnly = False
         Me.MovieEThumbsPrefSize = 0
         Me.MovieEThumbsResize = False
         Me.MovieEThumbsWidth = 0

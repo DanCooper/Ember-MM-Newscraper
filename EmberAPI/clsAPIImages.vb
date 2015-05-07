@@ -2847,17 +2847,27 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieEThumbs(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
         Dim imgList As New List(Of String)
-        'If ImageList.Count = 0 Then Return imgList
+        If ImageList.Count = 0 Then Return imgList
 
-        'Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieEThumbsPrefSize)
-        'If aDesc.Count = 0 Then Return imgList
+        If Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Any Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL))
+                imgList.Add(img.URL)
+            Next
+        ElseIf Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Thumb Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.ThumbURL))
+                imgList.Add(img.ThumbURL)
+            Next
+        Else
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
+                imgList.Add(img.URL)
+            Next
+            If Not Master.eSettings.MovieEThumbsPrefSizeOnly Then
+                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
+                    imgList.Add(img.URL)
+                Next
+            End If
+        End If
 
-        'Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        'If x.Count > 0 Then
-        '    For Each Image As MediaContainers.Image In x.ToArray
-        '        imgList.Add(Image.URL)
-        '    Next
-        'End If
         Return imgList
     End Function
     ''' <summary>
@@ -2868,17 +2878,27 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieEFanarts(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
         Dim imgList As New List(Of String)
-        'If ImageList.Count = 0 Then Return imgList
+        If ImageList.Count = 0 Then Return imgList
 
-        'Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieEFanartsPrefSize)
-        'If aDesc.Count = 0 Then Return imgList
+        If Master.eSettings.MovieEFanartsPrefSize = Enums.MovieFanartSize.Any Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL))
+                imgList.Add(img.URL)
+            Next
+        ElseIf Master.eSettings.MovieEFanartsPrefSize = Enums.MovieFanartSize.Thumb Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.ThumbURL))
+                imgList.Add(img.ThumbURL)
+            Next
+        Else
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso f.MovieFanartSize = Master.eSettings.MovieEFanartsPrefSize)
+                imgList.Add(img.URL)
+            Next
+            If Not Master.eSettings.MovieEFanartsPrefSizeOnly Then
+                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEFanartsPrefSize)
+                    imgList.Add(img.URL)
+                Next
+            End If
+        End If
 
-        'Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        'If x.Count > 0 Then
-        '    For Each Image As MediaContainers.Image In x.ToArray
-        '        imgList.Add(Image.URL)
-        '    Next
-        'End If
         Return imgList
     End Function
 

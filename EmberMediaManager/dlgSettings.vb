@@ -3594,14 +3594,14 @@ Public Class dlgSettings
             Me.chkMovieDisplayImageSelect.Checked = .MovieDisplayImageSelect
             Me.chkMovieDisplayYear.Checked = .MovieDisplayYear
             Me.chkMovieEFanartsOverwrite.Checked = .MovieEFanartsOverwrite
-            Me.chkMovieEFanartsPrefOnly.Checked = .MovieEFanartsPrefOnly
+            Me.chkMovieEFanartsPrefOnly.Checked = .MovieEFanartsPrefSizeOnly
             Me.chkMovieEFanartsResize.Checked = .MovieEFanartsResize
             If .MovieEFanartsResize Then
                 Me.txtMovieEFanartsHeight.Text = .MovieEFanartsHeight.ToString
                 Me.txtMovieEFanartsWidth.Text = .MovieEFanartsWidth.ToString
             End If
             Me.chkMovieEThumbsOverwrite.Checked = .MovieEThumbsOverwrite
-            Me.chkMovieEThumbsPrefOnly.Checked = .MovieEThumbsPrefOnly
+            Me.chkMovieEThumbsPrefOnly.Checked = .MovieEThumbsPrefSizeOnly
             Me.chkMovieEThumbsResize.Checked = .MovieEThumbsResize
             If .MovieEThumbsResize Then
                 Me.txtMovieEThumbsHeight.Text = .MovieEThumbsHeight.ToString
@@ -5310,14 +5310,14 @@ Public Class dlgSettings
             .MovieEFanartsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsHeight.Text), Convert.ToInt32(Me.txtMovieEFanartsHeight.Text), 0)
             .MovieEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsLimit.Text), Convert.ToInt32(Me.txtMovieEFanartsLimit.Text), 0)
             .MovieEFanartsOverwrite = Me.chkMovieEFanartsOverwrite.Checked
-            .MovieEFanartsPrefOnly = Me.chkMovieEFanartsPrefOnly.Checked
+            .MovieEFanartsPrefSizeOnly = Me.chkMovieEFanartsPrefOnly.Checked
             .MovieEFanartsPrefSize = CType(Me.cbMovieEFanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieEFanartsResize = Me.chkMovieEFanartsResize.Checked
             .MovieEFanartsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsWidth.Text), Convert.ToInt32(Me.txtMovieEFanartsWidth.Text), 0)
             .MovieEThumbsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsHeight.Text), Convert.ToInt32(Me.txtMovieEThumbsHeight.Text), 0)
             .MovieEThumbsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsLimit.Text), Convert.ToInt32(Me.txtMovieEThumbsLimit.Text), 0)
             .MovieEThumbsOverwrite = Me.chkMovieEThumbsOverwrite.Checked
-            .MovieEThumbsPrefOnly = Me.chkMovieEThumbsPrefOnly.Checked
+            .MovieEThumbsPrefSizeOnly = Me.chkMovieEThumbsPrefOnly.Checked
             .MovieEThumbsPrefSize = CType(Me.cbMovieEThumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieEThumbsResize = Me.chkMovieEThumbsResize.Checked
             .MovieEThumbsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsWidth.Text), Convert.ToInt32(Me.txtMovieEThumbsWidth.Text), 0)
