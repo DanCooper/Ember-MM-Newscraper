@@ -1779,35 +1779,6 @@ Public Class dlgTVImageSelect
         Me.tvList.ExpandAll()
     End Sub
 
-    Private Function GetFanartDims(ByVal fWidth As String, ByVal fHeight As String) As Enums.FanartSize
-        If Integer.TryParse(fWidth, 0) AndAlso Integer.TryParse(fHeight, 0) Then
-            If (CInt(Width) > 1000 AndAlso CInt(Height) > 750) OrElse (CInt(Height) > 1000 AndAlso CInt(Width) > 750) Then
-                Return Enums.FanartSize.Lrg
-            ElseIf (CInt(Width) > 700 AndAlso CInt(Height) > 400) OrElse (CInt(Height) > 700 AndAlso CInt(Width) > 400) Then
-                Return Enums.FanartSize.Mid
-            Else
-                Return Enums.FanartSize.Small
-            End If
-        End If
-    End Function
-
-    Private Function GetPosterDims(ByVal fWidth As String, ByVal fHeight As String) As Enums.PosterSize
-        If Integer.TryParse(fWidth, 0) AndAlso Integer.TryParse(fHeight, 0) Then
-            If (CInt(Width) > CInt(Height)) AndAlso (CInt(Width) > (CInt(Height) * 2)) AndAlso (CInt(Width) > 300) Then
-                'at least twice as wide than tall... consider it wide (also make sure it's big enough)
-                Return Enums.PosterSize.Wide
-            ElseIf (CInt(Height) > 1000 AndAlso CInt(Width) > 750) OrElse (CInt(Width) > 1000 AndAlso CInt(Height) > 750) Then
-                Return Enums.PosterSize.Xlrg
-            ElseIf (CInt(Height) > 700 AndAlso CInt(Width) > 500) OrElse (CInt(Width) > 700 AndAlso CInt(Height) > 500) Then
-                Return Enums.PosterSize.Lrg
-            ElseIf (CInt(Height) > 250 AndAlso CInt(Width) > 150) OrElse (CInt(Width) > 250 AndAlso CInt(Height) > 150) Then
-                Return Enums.PosterSize.Mid
-            Else
-                Return Enums.PosterSize.Small
-            End If
-        End If
-    End Function
-
     Private Sub lblImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim iindex As Integer = Convert.ToInt32(DirectCast(sender, Label).Name)
         Me.DoSelect(iindex, DirectCast(DirectCast(sender, Label).Tag, ImageTag))

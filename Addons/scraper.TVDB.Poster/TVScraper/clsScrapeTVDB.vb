@@ -1287,7 +1287,6 @@ Public Class Scraper
                                                              .ThumbURL = If(tImage.Element("ThumbnailPath") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
                                                              .Height = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Height.ToString, _
                                                              .Width = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Width.ToString, _
-                                                             .TVFanartSize = Images.HeightToTVFanartSize(StringUtils.StringToSize(tImage.Element("BannerType2").Value).Height.ToString), _
                                                              .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                              .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1299,7 +1298,6 @@ Public Class Scraper
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                               .Height = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Height.ToString, _
                                                               .Width = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)).Width.ToString, _
-                                                              .TVPosterSize = Images.HeightToTVPosterSize(StringUtils.StringToSize(tImage.Element("BannerType2").Value).Height.ToString), _
                                                               .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                               .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1311,7 +1309,6 @@ Public Class Scraper
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                     .Height = "578", _
                                                                     .Width = "400", _
-                                                                    .TVSeasonPosterSize = Images.HeightToTVSeasonPosterSize("578"), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
                                                                     .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                                     .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
@@ -1323,7 +1320,6 @@ Public Class Scraper
                                                                     .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                     .Height = "140", _
                                                                     .Width = "758", _
-                                                                    .TVBannerSize = Images.HeightToTVBannerSize("140"), _
                                                                     .Season = If(tImage.Element("Season") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
                                                                     .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                                     .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
@@ -1336,7 +1332,6 @@ Public Class Scraper
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                               .Height = "140", _
                                                               .Width = "758", _
-                                                              .TVBannerSize = Images.HeightToTVBannerSize("140"), _
                                                               .TVBannerType = If(tImage.Element("BannerType2") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.TVBannerType.Any, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .VoteAverage = If(tImage.Element("Rating") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("Rating").Value), "0", tImage.Element("Rating").Value), _
                                                               .VoteCount = If(tImage.Element("RatingCount") Is Nothing OrElse String.IsNullOrEmpty(tImage.Element("RatingCount").Value), 0, CInt(tImage.Element("RatingCount").Value)), _
@@ -1358,7 +1353,7 @@ Public Class Scraper
                     Dim aList As New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowBanner, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.ShowBanners.Add(img)
@@ -1370,7 +1365,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonBanner, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.SeasonBanners.Add(img)
@@ -1382,7 +1377,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowCharacterArt, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.ShowCharacterArts.Add(img)
@@ -1394,7 +1389,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearArt, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.ShowClearArts.Add(img)
@@ -1406,7 +1401,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearLogo, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.ShowClearLogos.Add(img)
@@ -1418,7 +1413,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowFanart, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.Fanarts.Add(img)
@@ -1430,7 +1425,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowLandscape, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.ShowLandscapes.Add(img)
@@ -1442,7 +1437,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonLandscape, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.SeasonLandscapes.Add(img)
@@ -1454,7 +1449,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowPoster, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.Posters.Add(img)
@@ -1466,7 +1461,7 @@ Public Class Scraper
                     aList = New List(Of MediaContainers.Image)
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonPoster, aList) Then
                         If aList.Count > 0 Then
-                            For Each img In aList.Where(Function(f) f.Description = "original")
+                            For Each img In aList
                                 img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
                                 tmpTVDBShow.SeasonPosters.Add(img)

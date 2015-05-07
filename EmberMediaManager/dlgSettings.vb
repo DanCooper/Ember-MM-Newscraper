@@ -3579,7 +3579,7 @@ Public Class dlgSettings
             Me.chkMovieActorThumbsOverwrite.Checked = .MovieActorThumbsOverwrite
             Me.chkMovieSourcesBackdropsAuto.Checked = .MovieBackdropsAuto
             Me.chkMovieBannerOverwrite.Checked = .MovieBannerOverwrite
-            Me.chkMovieBannerPrefOnly.Checked = .MovieBannerPrefOnly
+            Me.chkMovieBannerPrefOnly.Checked = .MovieBannerPrefSizeOnly
             Me.chkMovieBannerResize.Checked = .MovieBannerResize
             If .MovieBannerResize Then
                 Me.txtMovieBannerHeight.Text = .MovieBannerHeight.ToString
@@ -3608,7 +3608,7 @@ Public Class dlgSettings
                 Me.txtMovieEThumbsWidth.Text = .MovieEThumbsWidth.ToString
             End If
             Me.chkMovieFanartOverwrite.Checked = .MovieFanartOverwrite
-            Me.chkMovieFanartPrefOnly.Checked = .MovieFanartPrefOnly
+            Me.chkMovieFanartPrefOnly.Checked = .MovieFanartPrefSizeOnly
             Me.chkMovieFanartResize.Checked = .MovieFanartResize
             If .MovieFanartResize Then
                 Me.txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
@@ -3644,7 +3644,7 @@ Public Class dlgSettings
             Me.chkMovieLockYear.Checked = .MovieLockYear
             Me.chkMovieNoSaveImagesToNfo.Checked = .MovieNoSaveImagesToNfo
             Me.chkMoviePosterOverwrite.Checked = .MoviePosterOverwrite
-            Me.chkMoviePosterPrefOnly.Checked = .MoviePosterPrefOnly
+            Me.chkMoviePosterPrefOnly.Checked = .MoviePosterPrefSizeOnly
             Me.chkMoviePosterResize.Checked = .MoviePosterResize
             If .MoviePosterResize Then
                 Me.txtMoviePosterHeight.Text = .MoviePosterHeight.ToString
@@ -3652,7 +3652,7 @@ Public Class dlgSettings
             End If
             Me.chkMovieProperCase.Checked = .MovieProperCase
             Me.chkMovieSetBannerOverwrite.Checked = .MovieSetBannerOverwrite
-            Me.chkMovieSetBannerPrefOnly.Checked = .MovieSetBannerPrefOnly
+            Me.chkMovieSetBannerPrefOnly.Checked = .MovieSetBannerPrefSizeOnly
             Me.chkMovieSetBannerResize.Checked = .MovieSetBannerResize
             If .MovieSetBannerResize Then
                 Me.txtMovieSetBannerHeight.Text = .MovieSetBannerHeight.ToString
@@ -3665,7 +3665,7 @@ Public Class dlgSettings
             Me.chkMovieSetClickScrape.Checked = .MovieSetClickScrape
             Me.chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
             Me.chkMovieSetFanartOverwrite.Checked = .MovieSetFanartOverwrite
-            Me.chkMovieSetFanartPrefOnly.Checked = .MovieSetFanartPrefOnly
+            Me.chkMovieSetFanartPrefOnly.Checked = .MovieSetFanartPrefSizeOnly
             Me.chkMovieSetFanartResize.Checked = .MovieSetFanartResize
             If .MovieSetFanartResize Then
                 Me.txtMovieSetFanartHeight.Text = .MovieSetFanartHeight.ToString
@@ -3676,7 +3676,7 @@ Public Class dlgSettings
             Me.chkMovieSetLockPlot.Checked = .MovieSetLockPlot
             Me.chkMovieSetLockTitle.Checked = .MovieSetLockTitle
             Me.chkMovieSetPosterOverwrite.Checked = .MovieSetPosterOverwrite
-            Me.chkMovieSetPosterPrefOnly.Checked = .MovieSetPosterPrefOnly
+            Me.chkMovieSetPosterPrefOnly.Checked = .MovieSetPosterPrefSizeOnly
             Me.chkMovieSetPosterResize.Checked = .MovieSetPosterResize
             If .MovieSetPosterResize Then
                 Me.txtMovieSetPosterHeight.Text = .MovieSetPosterHeight.ToString
@@ -4558,12 +4558,24 @@ Public Class dlgSettings
         Me.cbGeneralDateTime.ValueMember = "Value"
     End Sub
 
-    Private Sub LoadGenericFanartSizes()
-        Dim items As New Dictionary(Of String, Enums.FanartSize)
-        items.Add(Master.eLang.GetString(322, "X-Large"), Enums.FanartSize.Xlrg)
-        items.Add(Master.eLang.GetString(323, "Large"), Enums.FanartSize.Lrg)
-        items.Add(Master.eLang.GetString(324, "Medium"), Enums.FanartSize.Mid)
-        items.Add(Master.eLang.GetString(325, "Small"), Enums.FanartSize.Small)
+    Private Sub LoadMovieBannerSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
+        items.Add("1000x185", Enums.MovieBannerSize.HD185)
+        Me.cbMovieBannerPrefSize.DataSource = items.ToList
+        Me.cbMovieBannerPrefSize.DisplayMember = "Key"
+        Me.cbMovieBannerPrefSize.ValueMember = "Value"
+        Me.cbMovieSetBannerPrefSize.DataSource = items.ToList
+        Me.cbMovieSetBannerPrefSize.DisplayMember = "Key"
+        Me.cbMovieSetBannerPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieFanartSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
+        items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
+        items.Add("1280x720", Enums.MovieFanartSize.HD720)
+        items.Add("Thumb", Enums.MovieFanartSize.Thumb)
         Me.cbMovieEFanartsPrefSize.DataSource = items.ToList
         Me.cbMovieEFanartsPrefSize.DisplayMember = "Key"
         Me.cbMovieEFanartsPrefSize.ValueMember = "Value"
@@ -4578,12 +4590,11 @@ Public Class dlgSettings
         Me.cbMovieSetFanartPrefSize.ValueMember = "Value"
     End Sub
 
-    Private Sub LoadGenericPosterSizes()
-        Dim items As New Dictionary(Of String, Enums.PosterSize)
-        items.Add(Master.eLang.GetString(322, "X-Large"), Enums.PosterSize.Xlrg)
-        items.Add(Master.eLang.GetString(323, "Large"), Enums.PosterSize.Lrg)
-        items.Add(Master.eLang.GetString(324, "Medium"), Enums.PosterSize.Mid)
-        items.Add(Master.eLang.GetString(325, "Small"), Enums.PosterSize.Small)
+    Private Sub LoadMoviePosterSizes()
+        Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
+        items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
+        items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
         Me.cbMoviePosterPrefSize.DataSource = items.ToList
         Me.cbMoviePosterPrefSize.DisplayMember = "Key"
         Me.cbMoviePosterPrefSize.ValueMember = "Value"
@@ -4592,21 +4603,9 @@ Public Class dlgSettings
         Me.cbMovieSetPosterPrefSize.ValueMember = "Value"
     End Sub
 
-    Private Sub LoadMovieBannerSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
-        items.Add("1000x185", Enums.MovieBannerSize.HD185)
-        Me.cbMovieBannerPrefSize.DataSource = items.ToList
-        Me.cbMovieBannerPrefSize.DisplayMember = "Key"
-        Me.cbMovieBannerPrefSize.ValueMember = "Value"
-        Me.cbMovieSetBannerPrefSize.DataSource = items.ToList
-        Me.cbMovieSetBannerPrefSize.DisplayMember = "Key"
-        Me.cbMovieSetBannerPrefSize.ValueMember = "Value"
-    End Sub
-
     Private Sub LoadMovieTrailerQualities()
         Dim items As New Dictionary(Of String, Enums.TrailerVideoQuality)
-        items.Add(Master.eLang.GetString(569, "All"), Enums.TrailerVideoQuality.All)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TrailerVideoQuality.Any)
         items.Add("2160p", Enums.TrailerVideoQuality.HD2160p)
         items.Add("2160p 60fps", Enums.TrailerVideoQuality.HD2160p60fps)
         items.Add("1440p", Enums.TrailerVideoQuality.HD1440p)
@@ -5296,7 +5295,7 @@ Public Class dlgSettings
             End If
             .MovieBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieBannerHeight.Text), Convert.ToInt32(Me.txtMovieBannerHeight.Text), 0)
             .MovieBannerOverwrite = Me.chkMovieBannerOverwrite.Checked
-            .MovieBannerPrefOnly = Me.chkMovieBannerPrefOnly.Checked
+            .MovieBannerPrefSizeOnly = Me.chkMovieBannerPrefOnly.Checked
             .MovieBannerPrefSize = CType(Me.cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
             .MovieBannerResize = Me.chkMovieBannerResize.Checked
             .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
@@ -5312,20 +5311,20 @@ Public Class dlgSettings
             .MovieEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsLimit.Text), Convert.ToInt32(Me.txtMovieEFanartsLimit.Text), 0)
             .MovieEFanartsOverwrite = Me.chkMovieEFanartsOverwrite.Checked
             .MovieEFanartsPrefOnly = Me.chkMovieEFanartsPrefOnly.Checked
-            .MovieEFanartsPrefSize = CType(Me.cbMovieEFanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
+            .MovieEFanartsPrefSize = CType(Me.cbMovieEFanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieEFanartsResize = Me.chkMovieEFanartsResize.Checked
             .MovieEFanartsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsWidth.Text), Convert.ToInt32(Me.txtMovieEFanartsWidth.Text), 0)
             .MovieEThumbsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsHeight.Text), Convert.ToInt32(Me.txtMovieEThumbsHeight.Text), 0)
             .MovieEThumbsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsLimit.Text), Convert.ToInt32(Me.txtMovieEThumbsLimit.Text), 0)
             .MovieEThumbsOverwrite = Me.chkMovieEThumbsOverwrite.Checked
             .MovieEThumbsPrefOnly = Me.chkMovieEThumbsPrefOnly.Checked
-            .MovieEThumbsPrefSize = CType(Me.cbMovieEThumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
+            .MovieEThumbsPrefSize = CType(Me.cbMovieEThumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieEThumbsResize = Me.chkMovieEThumbsResize.Checked
             .MovieEThumbsWidth = If(Not String.IsNullOrEmpty(Me.txtMovieEThumbsWidth.Text), Convert.ToInt32(Me.txtMovieEThumbsWidth.Text), 0)
             .MovieFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieFanartHeight.Text), Convert.ToInt32(Me.txtMovieFanartHeight.Text), 0)
             .MovieFanartOverwrite = Me.chkMovieFanartOverwrite.Checked
-            .MovieFanartPrefOnly = Me.chkMovieFanartPrefOnly.Checked
-            .MovieFanartPrefSize = CType(Me.cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
+            .MovieFanartPrefSizeOnly = Me.chkMovieFanartPrefOnly.Checked
+            .MovieFanartPrefSize = CType(Me.cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieFanartResize = Me.chkMovieFanartResize.Checked
             .MovieFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieFanartWidth.Text), Convert.ToInt32(Me.txtMovieFanartWidth.Text), 0)
             .MovieFilterCustom.Clear()
@@ -5381,14 +5380,14 @@ Public Class dlgSettings
             .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
             .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
             .MoviePosterOverwrite = Me.chkMoviePosterOverwrite.Checked
-            .MoviePosterPrefOnly = Me.chkMoviePosterPrefOnly.Checked
-            .MoviePosterPrefSize = CType(Me.cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.PosterSize)).Value
+            .MoviePosterPrefSizeOnly = Me.chkMoviePosterPrefOnly.Checked
+            .MoviePosterPrefSize = CType(Me.cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
             .MoviePosterResize = Me.chkMoviePosterResize.Checked
             .MoviePosterWidth = If(Not String.IsNullOrEmpty(Me.txtMoviePosterWidth.Text), Convert.ToInt32(Me.txtMoviePosterWidth.Text), 0)
             .MovieProperCase = Me.chkMovieProperCase.Checked
             .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerHeight.Text), Convert.ToInt32(Me.txtMovieSetBannerHeight.Text), 0)
             .MovieSetBannerOverwrite = Me.chkMovieSetBannerOverwrite.Checked
-            .MovieSetBannerPrefOnly = Me.chkMovieSetBannerPrefOnly.Checked
+            .MovieSetBannerPrefSizeOnly = Me.chkMovieSetBannerPrefOnly.Checked
             .MovieSetBannerPrefSize = CType(Me.cbMovieSetBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
             .MovieSetBannerResize = Me.chkMovieSetBannerResize.Checked
             .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerWidth.Text), Convert.ToInt32(Me.txtMovieSetBannerWidth.Text), 0)
@@ -5400,8 +5399,8 @@ Public Class dlgSettings
             .MovieSetClickScrapeAsk = Me.chkMovieSetClickScrapeAsk.Checked
             .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartHeight.Text), Convert.ToInt32(Me.txtMovieSetFanartHeight.Text), 0)
             .MovieSetFanartOverwrite = Me.chkMovieSetFanartOverwrite.Checked
-            .MovieSetFanartPrefOnly = Me.chkMovieSetFanartPrefOnly.Checked
-            .MovieSetFanartPrefSize = CType(Me.cbMovieSetFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
+            .MovieSetFanartPrefSizeOnly = Me.chkMovieSetFanartPrefOnly.Checked
+            .MovieSetFanartPrefSize = CType(Me.cbMovieSetFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieSetFanartResize = Me.chkMovieSetFanartResize.Checked
             .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartWidth.Text), Convert.ToInt32(Me.txtMovieSetFanartWidth.Text), 0)
             .MovieSetGeneralMarkNew = Me.chkMovieSetGeneralMarkNew.Checked
@@ -5412,8 +5411,8 @@ Public Class dlgSettings
             .MovieSetLockTitle = Me.chkMovieSetLockTitle.Checked
             .MovieSetPosterHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterHeight.Text), Convert.ToInt32(Me.txtMovieSetPosterHeight.Text), 0)
             .MovieSetPosterOverwrite = Me.chkMovieSetPosterOverwrite.Checked
-            .MovieSetPosterPrefOnly = Me.chkMovieSetPosterPrefOnly.Checked
-            .MovieSetPosterPrefSize = CType(Me.cbMovieSetPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.PosterSize)).Value
+            .MovieSetPosterPrefSizeOnly = Me.chkMovieSetPosterPrefOnly.Checked
+            .MovieSetPosterPrefSize = CType(Me.cbMovieSetPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
             .MovieSetPosterResize = Me.chkMovieSetPosterResize.Checked
             .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterWidth.Text), Convert.ToInt32(Me.txtMovieSetPosterWidth.Text), 0)
             .MovieSetScraperPlot = Me.chkMovieSetScraperPlot.Checked
@@ -7082,9 +7081,9 @@ Public Class dlgSettings
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
 
         Me.LoadGeneralDateTime()
-        Me.LoadGenericFanartSizes()
-        Me.LoadGenericPosterSizes()
         Me.LoadMovieBannerSizes()
+        Me.LoadMovieFanartSizes()
+        Me.LoadMoviePosterSizes()
         Me.LoadMovieTrailerQualities()
         Me.LoadTVBannerSizes()
         Me.LoadTVBannerTypes()

@@ -2506,6 +2506,36 @@ Namespace MediaContainers
 
     Public Class [Image]
 
+#Region "Fields"
+
+        Private _disc As Integer
+        Private _disctype As String
+        Private _height As String
+        Private _ischecked As Boolean
+        Private _likes As Integer
+        Private _localfile As String
+        Private _localthumb As String
+        Private _longlang As String
+        Private _moviebannersize As Enums.MovieBannerSize
+        Private _moviefanartsize As Enums.MovieFanartSize
+        Private _moviepostersize As Enums.MoviePosterSize
+        Private _season As Integer
+        Private _shortlang As String
+        Private _thumburl As String
+        Private _tvbannersize As Enums.TVBannerSize
+        Private _tvbannertype As Enums.TVBannerType
+        Private _tvfanartsize As Enums.TVFanartSize
+        Private _tvpostersize As Enums.TVPosterSize
+        Private _tvseasonpostersize As Enums.TVSeasonPosterSize
+        Private _url As String          ' path to image (local or url)
+        Private _voteaverage As String
+        Private _votecount As Integer
+        Private _webimage As Images
+        Private _webthumb As Images
+        Private _width As String
+
+#End Region 'Fields
+
 #Region "Constructors"
 
         Public Sub New()
@@ -2515,90 +2545,280 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
-        Public Property Width As String
-        Public Property Height As String
-        Public Property Description As String 'Is the size of the image. Acceptable values are:
-        ' POSTER
-        ' "thumb" - smallest, the one downloaded to show in the dlgImgSelect. If no thumb format image will NOT be shown
-        ' "w154" - Small
-        ' "cover"- "w185" intermediate
-        ' "w342" - Intermediate
-        ' "mid" - w500 - Medium
-        ' "original" - full size
-        '
-        ' FANART
-        ' "thumb" - smallest, the one downloaded to show in the dlgImgSelect. If no thumb format image will NOT be shown
-        ' "poster" - w780 - Medium
-        ' "w1280" - Large
-        ' "original" - full size
-        Public Property isChecked As Boolean
-        Public Property URL As String ' path to image (local or url)
-        Public Property WebImage As Images
-        Public Property WebThumb As Images
-        Public Property ParentID As String 'All images of the same size must have this identical, is used to group the images.
-        Public Property TVBannerSize As Enums.TVBannerSize
-        Public Property TVBannerType As Enums.TVBannerType
-        Public Property TVSeasonPosterSize As Enums.TVSeasonPosterSize
-        Public Property TVPosterSize As Enums.TVPosterSize
-        Public Property TVFanartSize As Enums.TVFanartSize
-        Public Property Season As Integer
-        Public Property ShortLang As String
-        Public Property LocalFile As String
-        Public Property LocalThumb As String
-        Public Property LongLang As String
-        Public Property Likes As Integer
-        Public Property VoteAverage As String
-        Public Property VoteCount As Integer
-        Public Property Disc As Integer
-        Public Property DiscType As String
-        Public Property ThumbURL As String
+
+        Public Property Disc() As Integer
+            Get
+                Return Me._Disc
+            End Get
+            Set(ByVal value As Integer)
+                Me._Disc = value
+            End Set
+        End Property
+
+        Public Property DiscType() As String
+            Get
+                Return Me._disctype
+            End Get
+            Set(ByVal value As String)
+                Me._disctype = value
+            End Set
+        End Property
+
+        Public Property Height() As String
+            Get
+                Return Me._height
+            End Get
+            Set(ByVal value As String)
+                Me._height = value
+                DetectImageSize(value)
+            End Set
+        End Property
+
+        Public Property IsChecked() As Boolean
+            Get
+                Return Me._ischecked
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ischecked = value
+            End Set
+        End Property
+
+        Public Property Likes() As Integer
+            Get
+                Return Me._likes
+            End Get
+            Set(ByVal value As Integer)
+                Me._likes = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
+        Public Property LongLang() As String
+            Get
+                Return Me._longlang
+            End Get
+            Set(ByVal value As String)
+                Me._longlang = value
+            End Set
+        End Property
+
+        Public ReadOnly Property MovieBannerSize() As Enums.MovieBannerSize
+            Get
+                Return Me._moviebannersize
+            End Get
+        End Property
+
+        Public ReadOnly Property MovieFanartSize() As Enums.MovieFanartSize
+            Get
+                Return Me._moviefanartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property MoviePosterSize() As Enums.MoviePosterSize
+            Get
+                Return Me._moviepostersize
+            End Get
+        End Property
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        Public Property ShortLang() As String
+            Get
+                Return Me._shortlang
+            End Get
+            Set(ByVal value As String)
+                Me._shortlang = value
+            End Set
+        End Property
+
+        Public Property ThumbURL() As String
+            Get
+                Return Me._thumburl
+            End Get
+            Set(ByVal value As String)
+                Me._thumburl = value
+            End Set
+        End Property
+
+        Public ReadOnly Property TVBannerSize() As Enums.TVBannerSize
+            Get
+                Return Me._tvbannersize
+            End Get
+        End Property
+
+        Public Property TVBannerType() As Enums.TVBannerType
+            Get
+                Return Me._tvbannertype
+            End Get
+            Set(ByVal value As Enums.TVBannerType)
+                Me._tvbannertype = value
+            End Set
+        End Property
+
+        Public ReadOnly Property TVFanartSize() As Enums.TVFanartSize
+            Get
+                Return Me._tvfanartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property TVPosterSize() As Enums.TVPosterSize
+            Get
+                Return Me._tvpostersize
+            End Get
+        End Property
+
+        Public ReadOnly Property TVSeasonPosterSize() As Enums.TVSeasonPosterSize
+            Get
+                Return Me._tvseasonpostersize
+            End Get
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property VoteAverage() As String
+            Get
+                Return Me._voteaverage
+            End Get
+            Set(ByVal value As String)
+                Me._voteaverage = value
+            End Set
+        End Property
+
+        Public Property VoteCount() As Integer
+            Get
+                Return Me._votecount
+            End Get
+            Set(ByVal value As Integer)
+                Me._votecount = value
+            End Set
+        End Property
+
+        Public Property WebImage() As Images
+            Get
+                Return Me._webimage
+            End Get
+            Set(ByVal value As Images)
+                Me._webimage = value
+            End Set
+        End Property
+
+        Public Property WebThumb() As Images
+            Get
+                Return Me._webthumb
+            End Get
+            Set(ByVal value As Images)
+                Me._webthumb = value
+            End Set
+        End Property
+
+        Public Property Width() As String
+            Get
+                Return Me._width
+            End Get
+            Set(ByVal value As String)
+                Me._width = value
+            End Set
+        End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._Description = String.Empty
-            Me._Disc = 0
-            Me._DiscType = String.Empty
-            Me._Likes = 0
-            Me._LocalFile = String.Empty
-            Me._LocalThumb = String.Empty
-            Me._Season = -1
-            Me._TVBannerSize = Enums.TVBannerSize.Any
-            Me._TVBannerType = Enums.TVBannerType.Any
-            Me._TVFanartSize = Enums.TVFanartSize.Any
-            Me._TVPosterSize = Enums.TVPosterSize.Any
-            Me._ThumbURL = String.Empty
-            Me._URL = String.Empty
-            Me._VoteAverage = String.Empty
-            Me._VoteCount = 0
-            Me._WebImage = New Images
-            Me._WebThumb = New Images
-            Me._isChecked = False
+            Me._disc = 0
+            Me._disctype = String.Empty
+            Me._height = String.Empty
+            Me._ischecked = False
+            Me._likes = 0
+            Me._localfile = String.Empty
+            Me._localthumb = String.Empty
+            Me._longlang = String.Empty
+            Me._moviebannersize = Enums.MovieBannerSize.Any
+            Me._moviefanartsize = Enums.MovieFanartSize.Any
+            Me._moviepostersize = Enums.MoviePosterSize.Any
+            Me._season = -1
+            Me._shortlang = String.Empty
+            Me._thumburl = String.Empty
+            Me._tvbannersize = Enums.TVBannerSize.Any
+            Me._tvbannertype = Enums.TVBannerType.Any
+            Me._tvfanartsize = Enums.TVFanartSize.Any
+            Me._tvpostersize = Enums.TVPosterSize.Any
+            Me._tvseasonpostersize = Enums.TVSeasonPosterSize.Any
+            Me._url = String.Empty
+            Me._voteaverage = String.Empty
+            Me._votecount = 0
+            Me._webimage = New Images
+            Me._webthumb = New Images
+            Me._width = String.Empty
+        End Sub
+
+        Private Sub DetectImageSize(ByRef strHeigth As String)
+            Select Case strHeigth
+                Case "1500"
+                    Me._moviepostersize = Enums.MoviePosterSize.HD1500
+                Case "1426"
+                    Me._moviepostersize = Enums.MoviePosterSize.HD1426
+                    Me._tvpostersize = Enums.TVPosterSize.HD1426
+                    Me._tvseasonpostersize = Enums.TVSeasonPosterSize.HD1426
+                Case "1000"
+                    Me._tvpostersize = Enums.TVPosterSize.HD1000
+                Case "1080"
+                    Me._moviefanartsize = Enums.MovieFanartSize.HD1080
+                    Me._tvfanartsize = Enums.TVFanartSize.HD1080
+                Case "720"
+                    Me._moviefanartsize = Enums.MovieFanartSize.HD720
+                    Me._tvfanartsize = Enums.TVFanartSize.HD720
+                Case "578"
+                    Me._tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
+                Case "185"
+                    Me._moviebannersize = Enums.MovieBannerSize.HD185
+                    Me._tvbannersize = Enums.TVBannerSize.HD185
+                Case "140"
+                    Me._tvbannersize = Enums.TVBannerSize.HD140
+                Case Else
+                    Me._moviebannersize = Enums.MovieBannerSize.Any
+                    Me._moviefanartsize = Enums.MovieFanartSize.Any
+                    Me._moviepostersize = Enums.MoviePosterSize.Any
+                    Me._tvbannersize = Enums.TVBannerSize.Any
+                    Me._tvfanartsize = Enums.TVFanartSize.Any
+                    Me._tvpostersize = Enums.TVPosterSize.Any
+                    Me._tvseasonpostersize = Enums.TVSeasonPosterSize.Any
+            End Select
         End Sub
 
 #End Region 'Methods
 
-    End Class
-
-    Public Class GroupImg
-#Region "Fields"
-        Public pictures(4) As Image
-        ' POSTER
-        ' "thumb" - smallest, the one downloaded to show in the dlgImgSelect. If no thumb format image will NOT be shown
-        ' "w154" - Small
-        ' "cover"- "w185" intermediate
-        ' "w342" - Intermediate
-        ' "mid" - w500 - Medium
-        ' "original" - full size
-        '
-        ' FANART
-        ' "thumb" - smallest, the one downloaded to show in the dlgImgSelect. If no thumb format image will NOT be shown
-        ' "poster" - w780 - Medium
-        ' "w1280" - Large
-        ' "original" - full size
-#End Region
     End Class
 
     <Serializable()> _

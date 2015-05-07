@@ -33,7 +33,7 @@ Public Class dlgImgSelect
     Friend WithEvents bwImgDownload As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwImgLoading As New System.ComponentModel.BackgroundWorker
 
-    Public Delegate Sub LoadImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
+    Public Delegate Sub LoadImage(ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
     Public Delegate Sub Delegate_MeActivate()
 
     'Private CachePath As String = String.Empty
@@ -179,7 +179,7 @@ Public Class dlgImgSelect
         Return MyBase.ShowDialog()
     End Function
 
-    Private Sub AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
+    Private Sub AddImage(ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
         Try
             ReDim Preserve Me.pnlImage(iIndex)
             ReDim Preserve Me.pbImage(iIndex)
@@ -416,7 +416,7 @@ Public Class dlgImgSelect
                     text = String.Concat("n/a", Environment.NewLine, aImg.LongLang)
                 End If
                 tImg = aImg
-                Me.Invoke(New LoadImage(AddressOf AddImage), tImg.Description, i, tImg.isChecked, tImg, text)
+                Me.Invoke(New LoadImage(AddressOf AddImage), i, tImg.IsChecked, tImg, text)
                 If Me.bwImgLoading.CancellationPending Then
                     e.Cancel = True
                     Return
@@ -498,34 +498,34 @@ Public Class dlgImgSelect
         End Try
     End Sub
 
-    Private Function GetEThumbsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String
+    Private Function GetEThumbsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String 'TODO: fix
         Dim eURL As String = String.Empty
 
         Select Case Master.eSettings.MovieEThumbsPrefSize
-            Case Enums.FanartSize.Xlrg
+            Case Enums.MovieFanartSize.Any
                 eURL = ":" & _ImageList.Item(iIndex).URL
-            Case Enums.FanartSize.Lrg
+            Case Enums.MovieFanartSize.HD1080
                 eURL = ":" & _ImageList.Item(iIndex).URL
-            Case Enums.FanartSize.Mid
+            Case Enums.MovieFanartSize.HD720
                 eURL = ":" & _ImageList.Item(iIndex).URL
-            Case Enums.FanartSize.Small
+            Case Enums.MovieFanartSize.Thumb
                 eURL = ":" & _ImageList.Item(iIndex).ThumbURL
         End Select
 
         Return eURL
     End Function
 
-    Private Function GetEFanartsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String
+    Private Function GetEFanartsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String 'TODO: fix
         Dim eURL As String = String.Empty
 
         Select Case Master.eSettings.MovieEFanartsPrefSize
-            Case Enums.FanartSize.Xlrg
+            Case Enums.MovieFanartSize.Any
                 eURL = ":" & _ImageList.Item(iIndex).URL
-            Case Enums.FanartSize.Lrg
+            Case Enums.MovieFanartSize.HD1080
                 eURL = ":" & _ImageList.Item(iIndex).URL
-            Case Enums.FanartSize.Mid
+            Case Enums.MovieFanartSize.HD720
                 eURL = ":" & _ImageList.Item(iIndex).URL
-            Case Enums.FanartSize.Small
+            Case Enums.MovieFanartSize.Thumb
                 eURL = ":" & _ImageList.Item(iIndex).ThumbURL
         End Select
 

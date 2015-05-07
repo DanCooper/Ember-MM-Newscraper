@@ -2674,16 +2674,25 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MovieBannerPrefSize)
-        If aDesc.Count = 0 Then Return False
-
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            imgResult = x(0)
-            Return True
+        If Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
+            imgResult = ImageList.First
         End If
-        Return False
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieBannerSize = Master.eSettings.MovieBannerPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieBannerPrefSizeOnly AndAlso Not Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
     ''' <summary>
     ''' Select the single most preferred Banner image
@@ -2694,16 +2703,25 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieSetBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MovieSetBannerPrefSize)
-        If aDesc.Count = 0 Then Return False
-
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            imgResult = x(0)
-            Return True
+        If Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
+            imgResult = ImageList.First
         End If
-        Return False
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieBannerSize = Master.eSettings.MovieSetBannerPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetBannerPrefSizeOnly AndAlso Not Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
     ''' <summary>
     ''' Select the single most preferred Poster image
@@ -2714,16 +2732,25 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMoviePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MoviePosterPrefSize)
-        If aDesc.Count = 0 Then Return False
-
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            imgResult = x(0)
-            Return True
+        If Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
         End If
-        Return False
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MoviePosterSize = Master.eSettings.MoviePosterPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MoviePosterPrefSizeOnly AndAlso Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
     ''' <summary>
     ''' Select the single most preferred Poster image
@@ -2734,16 +2761,25 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieSetPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MovieSetPosterPrefSize)
-        If aDesc.Count = 0 Then Return False
-
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            imgResult = x(0)
-            Return True
+        If Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
         End If
-        Return False
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MoviePosterSize = Master.eSettings.MovieSetPosterPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetPosterPrefSizeOnly AndAlso Not Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
     ''' <summary>
     ''' Select the single most preferred Fanart image
@@ -2754,16 +2790,25 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieFanartPrefSize)
-        If aDesc.Count = 0 Then Return False
-
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            imgResult = x(0)
-            Return True
+        If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+            imgResult = ImageList.First
         End If
-        Return False
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieFanartSize = Master.eSettings.MovieFanartPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
     ''' <summary>
     ''' Select the single most preferred Fanart image
@@ -2774,16 +2819,25 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieSetFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieSetFanartPrefSize)
-        If aDesc.Count = 0 Then Return False
-
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            imgResult = x(0)
-            Return True
+        If Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
+            imgResult = ImageList.First
         End If
-        Return False
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieFanartSize = Master.eSettings.MovieSetFanartPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
     ''' <summary>
     ''' Fetch a list of preferred extrathumbs
@@ -2793,17 +2847,17 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieEThumbs(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
         Dim imgList As New List(Of String)
-        If ImageList.Count = 0 Then Return imgList
+        'If ImageList.Count = 0 Then Return imgList
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieEThumbsPrefSize)
-        If aDesc.Count = 0 Then Return imgList
+        'Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieEThumbsPrefSize)
+        'If aDesc.Count = 0 Then Return imgList
 
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            For Each Image As MediaContainers.Image In x.ToArray
-                imgList.Add(Image.URL)
-            Next
-        End If
+        'Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
+        'If x.Count > 0 Then
+        '    For Each Image As MediaContainers.Image In x.ToArray
+        '        imgList.Add(Image.URL)
+        '    Next
+        'End If
         Return imgList
     End Function
     ''' <summary>
@@ -2814,17 +2868,17 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function GetPreferredMovieEFanarts(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
         Dim imgList As New List(Of String)
-        If ImageList.Count = 0 Then Return imgList
+        'If ImageList.Count = 0 Then Return imgList
 
-        Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieEFanartsPrefSize)
-        If aDesc.Count = 0 Then Return imgList
+        'Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieEFanartsPrefSize)
+        'If aDesc.Count = 0 Then Return imgList
 
-        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
-        If x.Count > 0 Then
-            For Each Image As MediaContainers.Image In x.ToArray
-                imgList.Add(Image.URL)
-            Next
-        End If
+        'Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
+        'If x.Count > 0 Then
+        '    For Each Image As MediaContainers.Image In x.ToArray
+        '        imgList.Add(Image.URL)
+        '    Next
+        'End If
         Return imgList
     End Function
 
@@ -3148,79 +3202,6 @@ Public Class Images
         Else
             Return False
         End If
-    End Function
-
-    Public Shared Function HeightToMovieBannerSize(ByRef strHeight As String) As Enums.MovieBannerSize
-        Select Case strHeight
-            Case "185"
-                Return Enums.MovieBannerSize.HD185
-            Case Else
-                Return Enums.MovieBannerSize.Any
-        End Select
-    End Function
-
-    Public Shared Function HeightToMovieFanartSize(ByRef strHeight As String) As Enums.MovieFanartSize
-        Select Case strHeight
-            Case "1080"
-                Return Enums.MovieFanartSize.HD1080
-            Case "720"
-                Return Enums.MovieFanartSize.HD720
-            Case Else
-                Return Enums.MovieFanartSize.Any
-        End Select
-    End Function
-
-    Public Shared Function HeightToMoviePosterSize(ByRef strHeight As String) As Enums.MoviePosterSize
-        Select Case strHeight
-            Case "1500"
-                Return Enums.MoviePosterSize.HD1500
-            Case Else
-                Return Enums.MoviePosterSize.Any
-        End Select
-    End Function
-
-    Public Shared Function HeightToTVBannerSize(ByRef strHeight As String) As Enums.TVBannerSize
-        Select Case strHeight
-            Case "185"
-                Return Enums.TVBannerSize.HD185
-            Case "140"
-                Return Enums.TVBannerSize.HD140
-            Case Else
-                Return Enums.TVBannerSize.Any
-        End Select
-    End Function
-
-    Public Shared Function HeightToTVFanartSize(ByRef strHeight As String) As Enums.TVFanartSize
-        Select Case strHeight
-            Case "1080"
-                Return Enums.TVFanartSize.HD1080
-            Case "720"
-                Return Enums.TVFanartSize.HD720
-            Case Else
-                Return Enums.TVFanartSize.Any
-        End Select
-    End Function
-
-    Public Shared Function HeightToTVPosterSize(ByRef strHeight As String) As Enums.TVPosterSize
-        Select Case strHeight
-            Case "1426"
-                Return Enums.TVPosterSize.HD1426
-            Case "1000"
-                Return Enums.TVPosterSize.HD1000
-            Case Else
-                Return Enums.TVPosterSize.Any
-        End Select
-    End Function
-
-    Public Shared Function HeightToTVSeasonPosterSize(ByRef strHeight As String) As Enums.TVSeasonPosterSize
-        Select Case strHeight
-            Case "1426"
-                Return Enums.TVSeasonPosterSize.HD1426
-            Case "578"
-                Return Enums.TVSeasonPosterSize.HD578
-            Case Else
-                Return Enums.TVSeasonPosterSize.Any
-        End Select
     End Function
 
 #End Region 'Methods

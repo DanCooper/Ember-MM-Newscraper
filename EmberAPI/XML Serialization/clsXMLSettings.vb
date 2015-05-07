@@ -81,7 +81,7 @@ Partial Public Class clsXMLSettings
     Private _moviebackdropspath As String
     Private _moviebannerheight As Integer
     Private _moviebanneroverwrite As Boolean
-    Private _moviebannerprefonly As Boolean
+    Private _moviebannerprefsizeonly As Boolean
     Private _moviebannerprefsize As Enums.MovieBannerSize
     Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
@@ -97,20 +97,20 @@ Partial Public Class clsXMLSettings
     Private _movieefanartslimit As Integer
     Private _movieefanartsoverwrite As Boolean
     Private _movieefanartsprefonly As Boolean
-    Private _movieefanartsprefsize As Enums.FanartSize
+    Private _movieefanartsprefsize As Enums.MovieFanartSize
     Private _movieefanartsresize As Boolean
     Private _movieefanartswidth As Integer
     Private _movieethumbsheight As Integer
     Private _movieethumbslimit As Integer
     Private _movieethumbsoverwrite As Boolean
     Private _movieethumbsprefonly As Boolean
-    Private _movieethumbsprefsize As Enums.FanartSize
+    Private _movieethumbsprefsize As Enums.MovieFanartSize
     Private _movieethumbsresize As Boolean
     Private _movieethumbswidth As Integer
     Private _moviefanartheight As Integer
     Private _moviefanartoverwrite As Boolean
-    Private _moviefanartprefonly As Boolean
-    Private _moviefanartprefsize As Enums.FanartSize
+    Private _moviefanartprefsizeonly As Boolean
+    Private _moviefanartprefsize As Enums.MovieFanartSize
     Private _moviefanartresize As Boolean
     Private _moviefanartwidth As Integer
     Private _moviefiltercustom As List(Of String)
@@ -172,8 +172,8 @@ Partial Public Class clsXMLSettings
     Private _movienosaveimagestonfo As Boolean
     Private _movieposterheight As Integer
     Private _movieposteroverwrite As Boolean
-    Private _movieposterprefonly As Boolean
-    Private _movieposterprefsize As Enums.PosterSize
+    Private _movieposterprefsizeonly As Boolean
+    Private _movieposterprefsize As Enums.MoviePosterSize
     Private _movieposterresize As Boolean
     Private _movieposterwidth As Integer
     Private _moviepropercase As Boolean
@@ -225,7 +225,7 @@ Partial Public Class clsXMLSettings
     Private _moviescraperyear As Boolean
     Private _moviesetbannerheight As Integer
     Private _moviesetbanneroverwrite As Boolean
-    Private _moviesetbannerprefonly As Boolean
+    Private _moviesetbannerprefsizeonly As Boolean
     Private _moviesetbannerprefsize As Enums.MovieBannerSize
     Private _moviesetbannerresize As Boolean
     Private _moviesetbannerwidth As Integer
@@ -238,8 +238,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetdiscartoverwrite As Boolean
     Private _moviesetfanartheight As Integer
     Private _moviesetfanartoverwrite As Boolean
-    Private _moviesetfanartprefonly As Boolean
-    Private _moviesetfanartprefsize As Enums.FanartSize
+    Private _moviesetfanartprefsizeonly As Boolean
+    Private _moviesetfanartprefsize As Enums.MovieFanartSize
     Private _moviesetfanartresize As Boolean
     Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralmarknew As Boolean
@@ -257,8 +257,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetmissingposter As Boolean
     Private _moviesetposterheight As Integer
     Private _moviesetposteroverwrite As Boolean
-    Private _moviesetposterprefonly As Boolean
-    Private _moviesetposterprefsize As Enums.PosterSize
+    Private _moviesetposterprefsizeonly As Boolean
+    Private _moviesetposterprefsize As Enums.MoviePosterSize
     Private _moviesetposterresize As Boolean
     Private _moviesetposterwidth As Integer
     Private _moviesets As New List(Of String)
@@ -1557,12 +1557,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieFanartPrefOnly() As Boolean
+    Public Property MovieFanartPrefSizeOnly() As Boolean
         Get
-            Return Me._moviefanartprefonly
+            Return Me._moviefanartprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviefanartprefonly = value
+            Me._moviefanartprefsizeonly = value
         End Set
     End Property
 
@@ -2443,12 +2443,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetBannerPrefOnly() As Boolean
+    Public Property MovieSetBannerPrefSizeOnly() As Boolean
         Get
-            Return Me._moviesetbannerprefonly
+            Return Me._moviesetbannerprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetbannerprefonly = value
+            Me._moviesetbannerprefsizeonly = value
         End Set
     End Property
 
@@ -2461,12 +2461,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetFanartPrefOnly() As Boolean
+    Public Property MovieSetFanartPrefSizeOnly() As Boolean
         Get
-            Return Me._moviesetfanartprefonly
+            Return Me._moviesetfanartprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetfanartprefonly = value
+            Me._moviesetfanartprefsizeonly = value
         End Set
     End Property
 
@@ -2479,12 +2479,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetPosterPrefOnly() As Boolean
+    Public Property MovieSetPosterPrefSizeOnly() As Boolean
         Get
-            Return Me._moviesetposterprefonly
+            Return Me._moviesetposterprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetposterprefonly = value
+            Me._moviesetposterprefsizeonly = value
         End Set
     End Property
 
@@ -3226,12 +3226,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieBannerPrefOnly() As Boolean
+    Public Property MovieBannerPrefSizeOnly() As Boolean
         Get
-            Return Me._moviebannerprefonly
+            Return Me._moviebannerprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviebannerprefonly = value
+            Me._moviebannerprefsizeonly = value
         End Set
     End Property
 
@@ -3316,12 +3316,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MoviePosterPrefOnly() As Boolean
+    Public Property MoviePosterPrefSizeOnly() As Boolean
         Get
-            Return Me._movieposterprefonly
+            Return Me._movieposterprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._movieposterprefonly = value
+            Me._movieposterprefsizeonly = value
         End Set
     End Property
 
@@ -3361,56 +3361,56 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieFanartPrefSize() As Enums.FanartSize
+    Public Property MovieFanartPrefSize() As Enums.MovieFanartSize
         Get
             Return Me._moviefanartprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Me._moviefanartprefsize = value
         End Set
     End Property
 
-    Public Property MovieSetFanartPrefSize() As Enums.FanartSize
+    Public Property MovieSetFanartPrefSize() As Enums.MovieFanartSize
         Get
             Return Me._moviesetfanartprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Me._moviesetfanartprefsize = value
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefSize() As Enums.FanartSize
+    Public Property MovieEFanartsPrefSize() As Enums.MovieFanartSize
         Get
             Return Me._movieefanartsprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Me._movieefanartsprefsize = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefSize() As Enums.FanartSize
+    Public Property MovieEThumbsPrefSize() As Enums.MovieFanartSize
         Get
             Return Me._movieethumbsprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Me._movieethumbsprefsize = value
         End Set
     End Property
 
-    Public Property MoviePosterPrefSize() As Enums.PosterSize
+    Public Property MoviePosterPrefSize() As Enums.MoviePosterSize
         Get
             Return Me._movieposterprefsize
         End Get
-        Set(ByVal value As Enums.PosterSize)
+        Set(ByVal value As Enums.MoviePosterSize)
             Me._movieposterprefsize = value
         End Set
     End Property
 
-    Public Property MovieSetPosterPrefSize() As Enums.PosterSize
+    Public Property MovieSetPosterPrefSize() As Enums.MoviePosterSize
         Get
             Return Me._moviesetposterprefsize
         End Get
-        Set(ByVal value As Enums.PosterSize)
+        Set(ByVal value As Enums.MoviePosterSize)
             Me._moviesetposterprefsize = value
         End Set
     End Property

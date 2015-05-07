@@ -706,12 +706,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieFanartPrefOnly() As Boolean
+    Public Property MovieFanartPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieFanartPrefOnly
+            Return Settings._XMLSettings.MovieFanartPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieFanartPrefOnly = value
+            Settings._XMLSettings.MovieFanartPrefSizeOnly = value
         End Set
     End Property
 
@@ -1595,12 +1595,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetBannerPrefOnly() As Boolean
+    Public Property MovieSetBannerPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetBannerPrefOnly
+            Return Settings._XMLSettings.MovieSetBannerPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetBannerPrefOnly = value
+            Settings._XMLSettings.MovieSetBannerPrefSizeOnly = value
         End Set
     End Property
 
@@ -1631,12 +1631,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetFanartPrefOnly() As Boolean
+    Public Property MovieSetFanartPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetFanartPrefOnly
+            Return Settings._XMLSettings.MovieSetFanartPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetFanartPrefOnly = value
+            Settings._XMLSettings.MovieSetFanartPrefSizeOnly = value
         End Set
     End Property
 
@@ -1667,12 +1667,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetPosterPrefOnly() As Boolean
+    Public Property MovieSetPosterPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetPosterPrefOnly
+            Return Settings._XMLSettings.MovieSetPosterPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetPosterPrefOnly = value
+            Settings._XMLSettings.MovieSetPosterPrefSizeOnly = value
         End Set
     End Property
 
@@ -2378,12 +2378,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerPrefOnly() As Boolean
+    Public Property MovieBannerPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieBannerPrefOnly
+            Return Settings._XMLSettings.MovieBannerPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieBannerPrefOnly = value
+            Settings._XMLSettings.MovieBannerPrefSizeOnly = value
         End Set
     End Property
 
@@ -2468,12 +2468,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MoviePosterPrefOnly() As Boolean
+    Public Property MoviePosterPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MoviePosterPrefOnly
+            Return Settings._XMLSettings.MoviePosterPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MoviePosterPrefOnly = value
+            Settings._XMLSettings.MoviePosterPrefSizeOnly = value
         End Set
     End Property
 
@@ -2513,56 +2513,56 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieFanartPrefSize() As Enums.FanartSize
+    Public Property MovieFanartPrefSize() As Enums.MovieFanartSize
         Get
             Return Settings._XMLSettings.MovieFanartPrefSize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Settings._XMLSettings.MovieFanartPrefSize = value
         End Set
     End Property
 
-    Public Property MovieSetFanartPrefSize() As Enums.FanartSize
+    Public Property MovieSetFanartPrefSize() As Enums.MovieFanartSize
         Get
             Return Settings._XMLSettings.MovieSetFanartPrefSize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Settings._XMLSettings.MovieSetFanartPrefSize = value
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefSize() As Enums.FanartSize
+    Public Property MovieEFanartsPrefSize() As Enums.MovieFanartSize
         Get
             Return Settings._XMLSettings.MovieEFanartsPrefSize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Settings._XMLSettings.MovieEFanartsPrefSize = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefSize() As Enums.FanartSize
+    Public Property MovieEThumbsPrefSize() As Enums.MovieFanartSize
         Get
             Return Settings._XMLSettings.MovieEThumbsPrefSize
         End Get
-        Set(ByVal value As Enums.FanartSize)
+        Set(ByVal value As Enums.MovieFanartSize)
             Settings._XMLSettings.MovieEThumbsPrefSize = value
         End Set
     End Property
 
-    Public Property MoviePosterPrefSize() As Enums.PosterSize
+    Public Property MoviePosterPrefSize() As Enums.MoviePosterSize
         Get
             Return Settings._XMLSettings.MoviePosterPrefSize
         End Get
-        Set(ByVal value As Enums.PosterSize)
+        Set(ByVal value As Enums.MoviePosterSize)
             Settings._XMLSettings.MoviePosterPrefSize = value
         End Set
     End Property
 
-    Public Property MovieSetPosterPrefSize() As Enums.PosterSize
+    Public Property MovieSetPosterPrefSize() As Enums.MoviePosterSize
         Get
             Return Settings._XMLSettings.MovieSetPosterPrefSize
         End Get
-        Set(ByVal value As Enums.PosterSize)
+        Set(ByVal value As Enums.MoviePosterSize)
             Settings._XMLSettings.MovieSetPosterPrefSize = value
         End Set
     End Property
@@ -6010,13 +6010,11 @@ Public Class Settings
 #Region "Methods"
 
     Public Sub Load()
-        Try
-            'Cocotus, Load from central "Settings" folder if it exists!
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
+        'Cocotus, Load from central "Settings" folder if it exists!
+        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
 
+        Try
             If File.Exists(configpath) Then
-                'old
-                '  Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))
                 Dim objStreamReader As New StreamReader(configpath)
                 Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
 
@@ -6025,9 +6023,31 @@ Public Class Settings
                 'Now we deserialize just the data in a local, shared, variable. So we can reference to us
                 Master.eSettings = Me
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Master.eSettings = New Settings
+        Catch
+            Try
+                Using srSettings As New StreamReader(configpath)
+                    Dim sSettings As String = srSettings.ReadToEnd
+                    'old Fanart/Poster sizes
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Xlrg<", "PrefSize>Any<")
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Lrg<", "PrefSize>Any<")
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Mid<", "PrefSize>Any<")
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Small<", "PrefSize>Any<")
+                    'old Trailer Audio/Video quality
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
+                    'old allseasons/season/tvshow banner type
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
+
+                    Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
+                    Using reader As TextReader = New StringReader(sSettings)
+                        _XMLSettings = CType(xXMLSettings.Deserialize(reader), clsXMLSettings)
+                    End Using
+                    'Now we deserialize just the data in a local, shared, variable. So we can reference to us
+                    Master.eSettings = Me
+                End Using
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Master.eSettings = New Settings
+            End Try
         End Try
 
         SetDefaultsForLists(Enums.DefaultType.All, False)
@@ -6211,7 +6231,7 @@ Public Class Settings
         Me.MovieBackdropsPath = String.Empty
         Me.MovieBannerHeight = 0
         Me.MovieBannerOverwrite = True
-        Me.MovieBannerPrefOnly = False
+        Me.MovieBannerPrefSizeOnly = False
         Me.MovieBannerPrefSize = Enums.MovieBannerSize.HD185
         Me.MovieBannerResize = False
         Me.MovieBannerWidth = 0
@@ -6227,7 +6247,7 @@ Public Class Settings
         Me.MovieEFanartsLimit = 4
         Me.MovieEFanartsOverwrite = True
         Me.MovieEFanartsPrefOnly = False
-        Me.MovieEFanartsPrefSize = Enums.FanartSize.Xlrg
+        Me.MovieEFanartsPrefSize = Enums.MovieFanartSize.Any
         Me.MovieEFanartsResize = False
         Me.MovieEFanartsWidth = 0
         Me.MovieEThumbsHeight = 0
@@ -6239,8 +6259,8 @@ Public Class Settings
         Me.MovieEThumbsWidth = 0
         Me.MovieFanartHeight = 0
         Me.MovieFanartOverwrite = True
-        Me.MovieFanartPrefOnly = False
-        Me.MovieFanartPrefSize = Enums.FanartSize.Xlrg
+        Me.MovieFanartPrefSizeOnly = False
+        Me.MovieFanartPrefSize = Enums.MovieFanartSize.Any
         Me.MovieFanartResize = False
         Me.MovieFanartWidth = 0
         Me.MovieFilterCustom = New List(Of String)
@@ -6302,8 +6322,8 @@ Public Class Settings
         Me.MovieNoSaveImagesToNfo = False
         Me.MoviePosterHeight = 0
         Me.MoviePosterOverwrite = True
-        Me.MoviePosterPrefOnly = False
-        Me.MoviePosterPrefSize = Enums.PosterSize.Xlrg
+        Me.MoviePosterPrefSizeOnly = False
+        Me.MoviePosterPrefSize = Enums.MoviePosterSize.Any
         Me.MoviePosterResize = False
         Me.MoviePosterWidth = 0
         Me.MovieProperCase = True
@@ -6355,7 +6375,7 @@ Public Class Settings
         Me.MovieScraperYear = True
         Me.MovieSetBannerHeight = 0
         Me.MovieSetBannerOverwrite = True
-        Me.MovieSetBannerPrefOnly = False
+        Me.MovieSetBannerPrefSizeOnly = False
         Me.MovieSetBannerPrefSize = Enums.MovieBannerSize.HD185
         Me.MovieSetBannerResize = False
         Me.MovieSetBannerWidth = 0
@@ -6368,8 +6388,8 @@ Public Class Settings
         Me.MovieSetDiscArtOverwrite = True
         Me.MovieSetFanartHeight = 0
         Me.MovieSetFanartOverwrite = True
-        Me.MovieSetFanartPrefOnly = False
-        Me.MovieSetFanartPrefSize = Enums.FanartSize.Xlrg
+        Me.MovieSetFanartPrefSizeOnly = False
+        Me.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any
         Me.MovieSetFanartResize = False
         Me.MovieSetFanartWidth = 0
         Me.MovieSetGeneralMarkNew = False
@@ -6387,8 +6407,8 @@ Public Class Settings
         Me.MovieSetMissingPoster = False
         Me.MovieSetPosterHeight = 0
         Me.MovieSetPosterOverwrite = True
-        Me.MovieSetPosterPrefOnly = False
-        Me.MovieSetPosterPrefSize = Enums.PosterSize.Xlrg
+        Me.MovieSetPosterPrefSizeOnly = False
+        Me.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
         Me.MovieSetPosterResize = False
         Me.MovieSetPosterWidth = 0
         Me.MovieSets = New List(Of String)
@@ -6407,8 +6427,8 @@ Public Class Settings
         Me.MovieTrailerDeleteExisting = True
         Me.MovieTrailerEnable = True
         Me.MovieTrailerOverwrite = True
-        Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.All
-        Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.All
+        Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.Any
+        Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any
         Me.OMMDummyFormat = 0
         Me.OMMDummyTagline = String.Empty
         Me.OMMDummyTop = String.Empty

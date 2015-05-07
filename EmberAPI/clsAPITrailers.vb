@@ -529,7 +529,7 @@ Public Class Trailers
 
                     If Trailer Is Nothing Then
                         Select Case Master.eSettings.MovieTrailerMinVideoQual
-                            Case Enums.TrailerVideoQuality.All
+                            Case Enums.TrailerVideoQuality.Any
                                 If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
                                     Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
                                 ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
@@ -652,7 +652,7 @@ Public Class Trailers
                         aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual
                     Else
                         Select Case Master.eSettings.MovieTrailerMinVideoQual
-                            Case Enums.TrailerVideoQuality.All
+                            Case Enums.TrailerVideoQuality.Any
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
                                     aUrl.VideoURL = tLink
@@ -870,7 +870,7 @@ Public Class Trailers
                     tLink = aUrl.VideoURL
                 Else
                     Select Case Master.eSettings.MovieTrailerMinVideoQual
-                        Case Enums.TrailerVideoQuality.All
+                        Case Enums.TrailerVideoQuality.Any
                             tLink = aUrl.VideoURL
                         Case Enums.TrailerVideoQuality.HD1080p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then

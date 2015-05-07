@@ -57,7 +57,7 @@ Namespace MPDB
                     For Each mPoster As Match In mcPoster
                         ParentID = mPoster.Value.Substring(mPoster.Value.LastIndexOf("/") + 3, mPoster.Value.LastIndexOf(".jpg") - (mPoster.Value.LastIndexOf("/") + 3))
                         ' there are a lot of duplicates in the page.
-                        Dim x = From MI As MediaContainers.Image In alPosters Where (MI.ParentID = ParentID)
+                        Dim x = From MI As MediaContainers.Image In alPosters
                         If x.Count > 0 Then
                             logger.Trace("Duplicate {0} ", PosterURL)
                         Else
@@ -67,7 +67,7 @@ Namespace MPDB
                             ' url are like> http://www.movieposterdb.com/posters/10_08/2009/499549/l_499549_43475538.jpg
                             'the parent id is the part AFTER the l_
                             ' all poster have the same size
-                            alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .ThumbURL = ThumbURL, .Width = "n/a", .Height = "n/a", .ParentID = ParentID})
+                            alPosters.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Width = "n/a", .Height = "n/a"})
                         End If
                     Next
                 End If

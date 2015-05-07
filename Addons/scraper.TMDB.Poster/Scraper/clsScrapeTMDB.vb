@@ -129,7 +129,6 @@ Namespace TMDB
                                 .Height = tmdbI.height.ToString, _
                                 .Likes = 0, _
                                 .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), _
-                                .ParentID = tmdbI.file_path, _
                                 .ShortLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), String.Empty, tmdbI.iso_639_1), _
                                 .ThumbURL = _TMDBConf.images.base_url & "w185" & tmdbI.file_path, _
                                 .URL = _TMDBConf.images.base_url & "original" & tmdbI.file_path, _
@@ -173,7 +172,6 @@ Namespace TMDB
                                 .Height = tmdbI.height.ToString, _
                                 .Likes = 0, _
                                 .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), _
-                                .ParentID = tmdbI.file_path, _
                                 .ShortLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), String.Empty, tmdbI.iso_639_1), _
                                 .ThumbURL = _TMDBConf.images.base_url & "w300" & tmdbI.file_path, _
                                 .URL = _TMDBConf.images.base_url & "original" & tmdbI.file_path, _

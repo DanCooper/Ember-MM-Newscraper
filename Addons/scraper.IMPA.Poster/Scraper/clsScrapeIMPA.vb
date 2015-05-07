@@ -73,12 +73,7 @@ Namespace IMPA
                         If Not ParentID = oV Then
 
                             Dim PosterURL = String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters").Replace("imp_", String.Empty)
-                            alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = PosterURL, .ThumbURL = ThumbURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
-
-                            'Most posters are not available as extra large. Therefore, for now disabled.
-                            'PosterURL = PosterURL.Insert(PosterURL.LastIndexOf("."), "_xlg")
-                            'alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
-
+                            alPoster.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Height = "n/a", .Width = "n/a"})
                             oV = ParentID
                         End If
                     Next

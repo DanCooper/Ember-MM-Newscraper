@@ -555,64 +555,6 @@ Public Class Containers
 
 End Class 'Containers
 
-Public Class Globals
-
-#Region "Fields"
-
-    Public backdrop_names(3) As Structures.v3Size
-    Public poster_names(5) As Structures.v3Size
-
-#End Region 'Fields
-
-#Region "Methods"
-
-    Public Sub New()
-        poster_names(0).description = "thumb"
-        poster_names(0).index = Enums.PosterSize.Small
-        poster_names(0).size = "w92"
-        poster_names(0).width = 92
-        poster_names(1).description = "w154"
-        poster_names(1).index = -1 'not used in combo box
-        poster_names(1).size = "w154"
-        poster_names(1).width = 154
-        poster_names(2).description = "cover"
-        poster_names(2).index = Enums.PosterSize.Mid
-        poster_names(2).size = "w185"
-        poster_names(2).width = 185
-        poster_names(3).description = "w342"
-        poster_names(3).index = -1 'not used in combo box
-        poster_names(3).size = "w342"
-        poster_names(3).width = 342
-        poster_names(4).description = "mid"
-        poster_names(4).index = Enums.PosterSize.Lrg
-        poster_names(4).size = "w500"
-        poster_names(4).width = 500
-        poster_names(5).description = "original"
-        poster_names(5).index = Enums.PosterSize.Xlrg
-        poster_names(5).size = "original"
-        poster_names(5).width = 0
-
-        backdrop_names(0).description = "thumb"
-        backdrop_names(0).index = Enums.PosterSize.Small
-        backdrop_names(0).size = "w300"
-        backdrop_names(0).width = 300
-        backdrop_names(1).description = "poster"
-        backdrop_names(1).index = Enums.PosterSize.Mid
-        backdrop_names(1).size = "w780"
-        backdrop_names(1).width = 780
-        backdrop_names(2).description = "w1280"
-        backdrop_names(2).index = Enums.PosterSize.Lrg
-        backdrop_names(2).size = "w1280"
-        backdrop_names(2).width = 1280
-        backdrop_names(3).description = "original"
-        backdrop_names(3).index = Enums.PosterSize.Xlrg
-        backdrop_names(3).size = "original"
-        backdrop_names(3).width = 0
-    End Sub
-#End Region 'Methods
-
-End Class 'Globals
-
 Public Class Enums
 
 #Region "Enumerations"
@@ -653,13 +595,6 @@ Public Class Enums
         Shows = 1
         Seasons = 2
         Episodes = 3
-    End Enum
-
-    Public Enum FanartSize As Integer
-        Xlrg = 0
-        Lrg = 1
-        Mid = 2
-        Small = 3
     End Enum
 
     Public Enum Content_Type As Integer
@@ -943,17 +878,6 @@ Public Class Enums
         Aired = 1
     End Enum
     ''' <summary>
-    ''' Enum represeting valid poster sizes
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum PosterSize As Integer
-        Xlrg = 0
-        Lrg = 1
-        Mid = 2
-        Small = 3
-        Wide = 4
-    End Enum
-    ''' <summary>
     ''' Enum representing which Movies/TVShows should be scraped,
     ''' and whether results should be automatically chosen or asked of the user.
     ''' </summary>
@@ -991,11 +915,13 @@ Public Class Enums
         Any = 0
         HD1080 = 1
         HD720 = 2
+        Thumb = 3
     End Enum
 
     Public Enum MoviePosterSize As Integer
         Any = 0
         HD1500 = 1
+        HD1426 = 2
     End Enum
 
     Public Enum TVBannerSize As Integer
@@ -1047,7 +973,7 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerAudioQuality As Integer
-        All = 0
+        Any = 0
         AAC256kbps = 1
         AAC128kbps = 2
         AAC48kbps = 3
@@ -1071,7 +997,7 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerVideoQuality As Integer
-        All = 0
+        Any = 0
         HD2160p = 1
         HD2160p60fps = 1
         HD1440p = 3
@@ -1912,16 +1838,6 @@ End Class 'Functions
 Public Class Structures
 
 #Region "Nested Types"
-    ''' <summary>
-    ''' Structure representing poster/image metadata
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure v3Size
-        Dim size As String
-        Dim description As String
-        Dim index As Integer
-        Dim width As Integer
-    End Structure
 
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
