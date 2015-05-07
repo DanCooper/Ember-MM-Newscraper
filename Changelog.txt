@@ -1,3 +1,28 @@
+Changelog 1.4.5.0 (2015-05-07)
+
+[Main]
+added: TV Show Expert settings
+added: Denmark ratings
+added: MovieSet filter "Multiple Movies"
+added: SortTitle for TV Shows
+fixed: CommandLine scraping
+fixed: error with split-episodes (the "value is not integer" bug)
+fixed: YAMJ MovieSet NFO node
+fixed: DisplaySeason/DisplayEpisode is removed after edit episode
+fixed: many language and label issues
+fixed: save/load season images for seasons without local episode files
+fixed: season images are not recognized at first import
+fixed: Movie Studio scraping and splitting after edit
+improved: "Plot for Plot Outline" function
+improved: image class handling, image settings and image select dialogs
+
+[Renamer]
+fixed: works only after main tab has changed one time
+fixed: file name is not trimmed in Manual Renamer
+fixed: ToolStrip handling
+fixed: missing episode VCodec and wrong AChannel pattern
+
+
 Changelog 1.4.4.0 (2015-04-12)
 
 [Main]
