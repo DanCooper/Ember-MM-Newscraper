@@ -390,6 +390,28 @@ Public Class TMDB_Data
     End Sub
 
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+        If (DBMovie.Movie Is Nothing OrElse (String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(DBMovie.Movie.TMDBID))) Then
+            logger.Error("Attempting to get studio for undefined movie")
+            Return New Interfaces.ModuleResult
+        End If
+
+        LoadSettings_Movie()
+        Dim Settings As TMDB.Scraper.sMySettings_ForScraper
+        Settings.ApiKey = _MySettings_Movie.APIKey
+        Settings.FallBackEng = _MySettings_Movie.FallBackEng
+        Settings.GetAdultItems = _MySettings_Movie.GetAdultItems
+        Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
+
+        Dim _scraper As New TMDB.Scraper(Settings)
+        If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
+            'IMDB-ID is available
+            sStudio.AddRange(_scraper.GetMovieStudios(DBMovie.Movie.ID))
+        ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+            'TMDB-ID is available
+            sStudio.AddRange(_scraper.GetMovieStudios(DBMovie.Movie.TMDBID))
+        End If
+
+        logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

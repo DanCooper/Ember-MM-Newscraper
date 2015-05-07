@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports System.Xml.Serialization
+Imports System.Text.RegularExpressions
 
 Namespace MediaContainers
 
@@ -1529,8 +1530,8 @@ Namespace MediaContainers
         Public Sub AddCertification(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
                 For Each certification As String In values
                     certification = certification.Trim
                     If Not _certifications.Contains(certification) Then
@@ -1547,8 +1548,8 @@ Namespace MediaContainers
         Public Sub AddGenre(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
                 For Each genre As String In values
                     genre = genre.Trim
                     If Not _genres.Contains(genre) Then
@@ -1565,8 +1566,8 @@ Namespace MediaContainers
         Public Sub AddStudio(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
                 For Each studio As String In values
                     studio = studio.Trim
                     If Not _studios.Contains(studio) Then
@@ -1583,8 +1584,8 @@ Namespace MediaContainers
         Public Sub AddDirector(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
                 For Each director As String In values
                     director = director.Trim
                     If Not _directors.Contains(director) And Not value = "See more" Then
@@ -1602,8 +1603,8 @@ Namespace MediaContainers
         Public Sub AddCredit(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
                 For Each credit As String In values
                     credit = credit.Trim
                     If Not _credits.Contains(credit) And Not value = "See more" Then
@@ -1621,8 +1622,8 @@ Namespace MediaContainers
         Public Sub AddCountry(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
 
-            If value.Contains("/") Then
-                Dim values As String() = value.Split(New [Char]() {"/"c})
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
                 For Each country As String In values
                     country = country.Trim
                     If Not _countries.Contains(country) Then
@@ -2548,10 +2549,10 @@ Namespace MediaContainers
 
         Public Property Disc() As Integer
             Get
-                Return Me._Disc
+                Return Me._disc
             End Get
             Set(ByVal value As Integer)
-                Me._Disc = value
+                Me._disc = value
             End Set
         End Property
 

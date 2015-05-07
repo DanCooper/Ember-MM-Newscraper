@@ -244,7 +244,6 @@ Namespace TMDB
             Try
                 Dim Movie As WatTmdb.V3.TmdbMovie
                 Dim MovieE As WatTmdb.V3.TmdbMovie
-                Dim tStr As String
                 Dim scrapedresult As String = ""
 
                 'clear nMovie from search results
@@ -613,9 +612,8 @@ Namespace TMDB
                 'Studios
                 If Options.bStudio Then
                     'Get Production Studio
-                    tStr = ""
                     Dim tPC As System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany)
-                    If Movie IsNot Nothing AndAlso Movie.genres IsNot Nothing Then
+                    If Movie IsNot Nothing AndAlso Movie.production_companies IsNot Nothing AndAlso Movie.production_companies.Count > 0 Then
                         tPC = CType(If(Movie.production_companies.Count = 0 AndAlso _MySettings.FallBackEng, MovieE.production_companies, Movie.production_companies), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
                     Else
                         tPC = CType(If(_MySettings.FallBackEng, MovieE.production_companies, Nothing), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
@@ -626,16 +624,8 @@ Namespace TMDB
                             If Not String.IsNullOrEmpty(aPro.name) Then
                                 nMovie.Studios.Add(aPro.name)
                             End If
-                            tStr = tStr & " / " & aPro.name
                         Next
                     End If
-                    'If Len(tStr) > 3 Then
-                    '    tStr = Trim(Right(tStr, Len(tStr) - 3))
-                    'End If
-                    ''only update nMovie if scraped result is not empty/nothing!
-                    'If Not String.IsNullOrEmpty(tStr) Then
-                    '    nMovie.Studio = tStr
-                    'End If
                 End If
 
                 If bwTMDB.CancellationPending Then Return Nothing
@@ -740,13 +730,30 @@ Namespace TMDB
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
             Dim alStudio As New List(Of String)
             Dim Movie As WatTmdb.V3.TmdbMovie
-            Movie = _TMDBApi.GetMovieByIMDB(strID, _MySettings.PrefLanguage)
-            If Movie.production_companies.Count = 0 And _MySettings.FallBackEng Then
-                Movie = _TMDBApi.GetMovieByIMDB(strID, "en")
+            Dim MovieE As WatTmdb.V3.TmdbMovie
+
+            If strID.Substring(0, 2).ToLower = "tt" Then
+                Movie = _TMDBApi.GetMovieByIMDB(strID)
+                MovieE = _TMDBApiE.GetMovieByIMDB(strID)
+            Else
+                Movie = _TMDBApi.GetMovieInfo(CInt(strID))
+                MovieE = _TMDBApiE.GetMovieInfo(CInt(strID))
             End If
-            For Each aComp In Movie.production_companies
-                alStudio.Add(aComp.name)
-            Next
+
+            Dim tPC As System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany)
+            If Movie IsNot Nothing AndAlso Movie.production_companies IsNot Nothing AndAlso Movie.production_companies.Count > 0 Then
+                tPC = CType(If(Movie.production_companies.Count = 0 AndAlso _MySettings.FallBackEng, MovieE.production_companies, Movie.production_companies), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
+            Else
+                tPC = CType(If(_MySettings.FallBackEng, MovieE.production_companies, Nothing), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
+            End If
+
+            If tPC IsNot Nothing Then
+                For Each aPro As WatTmdb.V3.ProductionCompany In tPC
+                    If Not String.IsNullOrEmpty(aPro.name) Then
+                        alStudio.Add(aPro.name)
+                    End If
+                Next
+            End If
 
             Return alStudio
 

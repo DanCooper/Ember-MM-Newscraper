@@ -1712,6 +1712,7 @@ Public Class ModulesManager
             End Try
             If ret.breakChain Then Exit For
         Next
+        sStudio = sStudio.Distinct().ToList() 'remove double entries
         Return sStudio
     End Function
 

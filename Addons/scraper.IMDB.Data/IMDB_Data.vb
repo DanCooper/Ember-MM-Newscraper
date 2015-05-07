@@ -92,9 +92,9 @@ Public Class IMDB_Data
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.IMDBID)) Then
             logger.Error("Attempting to get studio for undefined movie")
-            Return New Interfaces.ModuleResult With {.Cancelled = True}    'DEKKER500 VERIFY PLEASE
+            Return New Interfaces.ModuleResult
         End If
-        studio = _scraper.GetMovieStudios(DBMovie.Movie.IMDBID)
+        studio.AddRange(_scraper.GetMovieStudios(DBMovie.Movie.IMDBID))
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
