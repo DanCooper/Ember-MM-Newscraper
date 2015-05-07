@@ -412,6 +412,9 @@ Public Class dlgImgSelect
             Try
                 If Not aImg.Height = "n/a" AndAlso Not aImg.Width = "n/a" Then
                     text = String.Concat(String.Format("{0}x{1}", aImg.Width.ToString, aImg.Height.ToString), Environment.NewLine, aImg.LongLang)
+                ElseIf aImg.WebThumb.Image Is Nothing AndAlso aImg.WebImage.Image IsNot Nothing Then
+                    'If no WebThumb is present, the image is loaded in full resolution and sizes can be used from WebThumb.
+                    text = String.Concat(String.Format("{0}x{1}", aImg.WebImage.Image.Width.ToString, aImg.WebImage.Image.Height.ToString), Environment.NewLine, aImg.LongLang)
                 Else
                     text = String.Concat("n/a", Environment.NewLine, aImg.LongLang)
                 End If
