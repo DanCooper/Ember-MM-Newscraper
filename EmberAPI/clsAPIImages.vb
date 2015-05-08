@@ -2905,28 +2905,32 @@ Public Class Images
     Public Shared Function GetPreferredTVASBanner(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not SeasonImageList.Count = 0 Then
+            If Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = SeasonImageList.Find(Function(f) f.TVBannerSize = Master.eSettings.TVASBannerPrefSize AndAlso f.Season = 999)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVASBannerPrefSizeOnly AndAlso Not Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
         End If
 
-        If imgResult Is Nothing Then
-            imgResult = SeasonImageList.Find(Function(f) f.TVBannerSize = Master.eSettings.TVASBannerPrefSize AndAlso f.Season = 999)
-        End If
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
+                imgResult = ShowImageList.First
+            End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVASBannerPrefSizeOnly AndAlso Not Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
-        End If
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.Find(Function(f) f.TVBannerSize = Master.eSettings.TVASBannerPrefSize)
+            End If
 
-        If imgResult Is Nothing AndAlso Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = ShowImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ShowImageList.Find(Function(f) f.TVBannerSize = Master.eSettings.TVASBannerPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVASBannerPrefSizeOnly AndAlso Not Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVASBannerPrefSizeOnly AndAlso Not Master.eSettings.TVASBannerPrefSize = Enums.TVBannerSize.Any Then
+                imgResult = ShowImageList.First
+            End If
         End If
 
         If imgResult IsNot Nothing Then
@@ -2977,28 +2981,32 @@ Public Class Images
     Public Shared Function GetPreferredTVASPoster(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
-            imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not SeasonImageList.Count = 0 Then
+            If Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = SeasonImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVASPosterPrefSize AndAlso f.Season = 999)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVASPosterPrefSizeOnly AndAlso Not Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
         End If
 
-        If imgResult Is Nothing Then
-            imgResult = SeasonImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVASPosterPrefSize AndAlso f.Season = 999)
-        End If
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
+                imgResult = ShowImageList.First
+            End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVASPosterPrefSizeOnly AndAlso Not Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
-            imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
-        End If
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVASPosterPrefSize)
+            End If
 
-        If imgResult Is Nothing AndAlso Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
-            imgResult = ShowImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ShowImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVASPosterPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVASPosterPrefSizeOnly AndAlso Not Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
-            imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVASPosterPrefSizeOnly AndAlso Not Master.eSettings.TVASPosterPrefSize = Enums.TVPosterSize.Any Then
+                imgResult = ShowImageList.First
+            End If
         End If
 
         If imgResult IsNot Nothing Then
