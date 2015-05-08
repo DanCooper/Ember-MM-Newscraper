@@ -107,7 +107,7 @@ Public Class frmTVDBMediaSettingsHolder
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetBlankImages.CheckedChanged
+    Private Sub chkGetBlankImages_CheckedChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -118,11 +118,9 @@ Public Class frmTVDBMediaSettingsHolder
     Private Sub chkPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
 
-        Me.chkGetBlankImages.Enabled = Me.chkPrefLanguageOnly.Checked
         Me.chkGetEnglishImages.Enabled = Me.chkPrefLanguageOnly.Checked
 
         If Not Me.chkPrefLanguageOnly.Checked Then
-            Me.chkGetBlankImages.Checked = False
             Me.chkGetEnglishImages.Checked = False
         End If
     End Sub
@@ -164,8 +162,8 @@ Public Class frmTVDBMediaSettingsHolder
 
     Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.cbPrefLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkScrapeSeasonBanner.Text = Master.eLang.GetString(1051, "Get Banner")

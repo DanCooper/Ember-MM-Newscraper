@@ -132,7 +132,6 @@ Public Class TVDB_Image
         _setup = New frmTVDBMediaSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.chkGetBlankImages.Checked = _MySettings.GetBlankImages
         _setup.chkGetEnglishImages.Checked = _MySettings.GetEnglishImages
         _setup.chkPrefLanguageOnly.Checked = _MySettings.PrefLanguageOnly
         _setup.chkScrapeSeasonBanner.Checked = ConfigScrapeModifier.SeasonBanner
@@ -142,7 +141,9 @@ Public Class TVDB_Image
         _setup.chkScrapeShowFanart.Checked = ConfigScrapeModifier.ShowFanart
         _setup.chkScrapeShowPoster.Checked = ConfigScrapeModifier.ShowPoster
         _setup.txtApiKey.Text = _MySettings.ApiKey
-        _setup.cbPrefLanguage.Text = _MySettings.PrefLanguage
+        If _setup.cbPrefLanguage.Items.Count > 0 Then
+            _setup.cbPrefLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _MySettings.PrefLanguage).name
+        End If
 
         If Not String.IsNullOrEmpty(_MySettings.ApiKey) Then
             _setup.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -211,9 +212,8 @@ Public Class TVDB_Image
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_TV.SaveSetupScraper
-        _MySettings.PrefLanguage = _setup.cbPrefLanguage.Text
+        _MySettings.PrefLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setup.cbPrefLanguage.Text).abbreviation
         _MySettings.PrefLanguageOnly = _setup.chkPrefLanguageOnly.Checked
-        _MySettings.GetBlankImages = _setup.chkGetBlankImages.Checked
         _MySettings.GetEnglishImages = _setup.chkGetEnglishImages.Checked
         ConfigScrapeModifier.SeasonBanner = _setup.chkScrapeSeasonBanner.Checked
         ConfigScrapeModifier.SeasonFanart = _setup.chkScrapeSeasonFanart.Checked
