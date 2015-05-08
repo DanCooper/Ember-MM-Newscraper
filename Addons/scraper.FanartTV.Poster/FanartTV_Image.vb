@@ -45,7 +45,7 @@ Public Class FanartTV_Image
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_MovieSet As New sMySettings
     Private _MySettings_TV As New sMySettings
-    Private _Name As String = "FanartTV_Poster"
+    Private _Name As String = "FanartTV_Image"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
     Private _ScraperEnabled_TV As Boolean = False
