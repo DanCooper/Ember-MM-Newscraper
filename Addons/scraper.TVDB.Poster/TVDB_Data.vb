@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 
 
-Public Class TVDB_Data_Poster
+Public Class TVDB_Data
     Implements Interfaces.ScraperModule_TV
 
 #Region "Fields"
@@ -34,10 +34,8 @@ Public Class TVDB_Data_Poster
 
     Private strPrivateAPIKey As String = String.Empty
     Private _Name As String = "TVDB Data Poster"
-    Private _PostScraperEnabled As Boolean = False
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmTVInfoSettingsHolder
-    Private _setupPost As frmTVMediaSettingsHolder
     Private _TVDBMirror As String
     Private _APIKey As String
     Private _Lang As String
@@ -48,8 +46,6 @@ Public Class TVDB_Data_Poster
 #Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_TV.ModuleSettingsChanged
-
-    Public Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_TV.SetupPostScraperChanged
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_TV.SetupScraperChanged
 
@@ -67,18 +63,6 @@ Public Class TVDB_Data_Poster
         End Get
     End Property
 
-    Public ReadOnly Property IsPostScraper() As Boolean Implements Interfaces.ScraperModule_TV.IsPostScraper
-        Get
-            Return True
-        End Get
-    End Property
-
-    Public ReadOnly Property IsScraper() As Boolean Implements Interfaces.ScraperModule_TV.IsScraper
-        Get
-            Return True
-        End Get
-    End Property
-
     Public ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_TV.ModuleName
         Get
             Return _Name
@@ -89,15 +73,6 @@ Public Class TVDB_Data_Poster
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
-    End Property
-
-    Public Property PostScraperEnabled() As Boolean Implements Interfaces.ScraperModule_TV.PosterScraperEnabled
-        Get
-            Return _PostScraperEnabled
-        End Get
-        Set(ByVal value As Boolean)
-            _PostScraperEnabled = value
-        End Set
     End Property
 
     Public Property ScraperEnabled() As Boolean Implements Interfaces.ScraperModule_TV.ScraperEnabled
@@ -163,40 +138,6 @@ Public Class TVDB_Data_Poster
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
     End Sub
 
-    Public Function InjectSetupPostScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_TV.InjectSetupPostScraper
-        Dim SPanel As New Containers.SettingsPanel
-        _setupPost = New frmTVMediaSettingsHolder
-        _setupPost.txtApiKey.Text = strPrivateAPIKey
-        _setupPost.chkEnabled.Checked = _PostScraperEnabled
-
-        _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
-        _setupPost.chkGetEnglishImages.Checked = CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
-        If _setupPost.cbTVScraperLanguage.Items.Count > 0 Then
-            _setupPost.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _Lang).name
-        End If
-
-        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
-            _setupPost.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
-            _setupPost.lblEMMAPI.Visible = False
-            _setupPost.txtApiKey.Enabled = True
-        End If
-
-        _setupPost.txtTVDBMirror.Text = _TVDBMirror
-
-
-        SPanel.Name = String.Concat(Me._Name, "PostScraper")
-        SPanel.Text = "TVDB"
-        SPanel.Prefix = "TVDBData_"
-        SPanel.Type = Master.eLang.GetString(653, "TV Shows")
-        SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
-        SPanel.Order = 100
-        SPanel.Panel = Me._setupPost.pnlSettings
-        SPanel.Parent = "pnlTVMedia"
-        AddHandler _setupPost.SetupPostScraperChanged, AddressOf Handle_SetupPostScraperChanged
-        AddHandler _setupPost.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
-        Return SPanel
-    End Function
-
     Public Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_TV.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTVInfoSettingsHolder
@@ -257,31 +198,7 @@ Public Class TVDB_Data_Poster
         strPrivateAPIKey = _setup.txtApiKey.Text
         _TVDBMirror = _setup.txtTVDBMirror.Text
         _Lang = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setup.cbTVScraperLanguage.Text).abbreviation
-        _setupPost.btnUnlockAPI.Text = _setup.btnUnlockAPI.Text
-        _setupPost.txtApiKey.Text = _setup.txtApiKey.Text
-        _setupPost.txtApiKey.Enabled = _setup.txtApiKey.Enabled
-        _setupPost.lblEMMAPI.Visible = _setup.lblEMMAPI.Visible
-        _setupPost.txtTVDBMirror = _setup.txtTVDBMirror
-        _setupPost.cbTVScraperLanguage.Text = _setup.cbTVScraperLanguage.Text
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub Handle_PostModuleSettingsChanged()
-        strPrivateAPIKey = _setupPost.txtApiKey.Text
-        _Lang = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setupPost.cbTVScraperLanguage.Text).abbreviation
-        _TVDBMirror = _setupPost.txtTVDBMirror.Text
-        _setup.btnUnlockAPI.Text = _setupPost.btnUnlockAPI.Text
-        _setup.txtApiKey.Text = _setupPost.txtApiKey.Text
-        _setup.txtApiKey.Enabled = _setupPost.txtApiKey.Enabled
-        _setup.lblEMMAPI.Visible = _setupPost.lblEMMAPI.Visible
-        _setup.txtTVDBMirror = _setupPost.txtTVDBMirror
-        _setup.cbTVScraperLanguage.Text = _setupPost.cbTVScraperLanguage.Text
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub Handle_SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        PostScraperEnabled = state
-        RaiseEvent SetupPostScraperChanged(String.Concat(Me._Name, "PostScraper"), state, difforder)
     End Sub
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
@@ -314,41 +231,11 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
         ConfigOptions.bShowVotes = clsAdvancedSettings.GetBooleanSetting("ScraperShowVotes", True)
     End Sub
-    Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.PosterScraper
-    End Function
 
     Public Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.SaveImages
         TVScraper.SaveImages()
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-
-    Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_TV.SaveSetupPosterScraper
-        Using settings = New clsAdvancedSettings()
-            settings.SetSetting("TVDBAPIKey", strPrivateAPIKey)
-            settings.SetSetting("OnlyGetTVImagesForSelectedLanguage", CStr(_setupPost.chkOnlyTVImagesLanguage.Checked))
-            settings.SetSetting("AlwaysGetEnglishTVImages", CStr(_setupPost.chkGetEnglishImages.Checked))
-
-
-            If Not String.IsNullOrEmpty(_Lang) Then
-                settings.SetSetting("TVDBLanguage", _Lang)
-            Else
-                settings.SetSetting("TVDBLanguage", "en")
-            End If
-
-            If Not String.IsNullOrEmpty(_TVDBMirror) Then
-                settings.SetSetting("TVDBMirror", _TVDBMirror.Replace("http://", String.Empty))
-            Else
-                settings.SetSetting("TVDBMirror", "thetvdb.com")
-            End If
-
-        End Using
-
-        If DoDispose Then
-            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            _setup.Dispose()
-        End If
-    End Sub
 
     Public Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_TV.SaveSetupScraper
         Using settings = New clsAdvancedSettings()

@@ -184,9 +184,9 @@
       <Project>{0beba16b-9a83-4bd5-a476-b366451f0907}</Project>
       <Name>scraper.Trailer.TMDB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Addons\scraper.TVDB.Poster\scraper.TVDB.Data.Poster.vbproj">
+    <ProjectReference Include="..\Addons\scraper.TVDB.Poster\scraper.TVDB.Data.vbproj">
       <Project>{3faf50aa-ad5f-455a-8711-6d791c457f0f}</Project>
-      <Name>scraper.TVDB.Data.Poster</Name>
+      <Name>scraper.TVDB.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>

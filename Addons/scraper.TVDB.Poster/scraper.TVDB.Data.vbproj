@@ -144,19 +144,13 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmTVMediaSettingsHolder.Designer.vb">
-      <DependentUpon>frmTVMediaSettingsHolder.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmTVMediaSettingsHolder.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmTVInfoSettingsHolder.Designer.vb">
       <DependentUpon>frmTVInfoSettingsHolder.vb</DependentUpon>
     </Compile>
     <Compile Include="frmTVInfoSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TVDB_Data_Poster.vb" />
+    <Compile Include="TVDB_Data.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -199,10 +193,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmTVMediaSettingsHolder.resx">
-      <DependentUpon>frmTVMediaSettingsHolder.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmTVInfoSettingsHolder.resx">
       <DependentUpon>frmTVInfoSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>

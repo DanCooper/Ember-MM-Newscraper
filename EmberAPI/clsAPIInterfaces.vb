@@ -448,8 +448,6 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event SetupPostScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
         Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
         Event TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
@@ -462,15 +460,9 @@ Public Class Interfaces
 
         ReadOnly Property IsBusy() As Boolean
 
-        ReadOnly Property IsPostScraper() As Boolean
-
-        ReadOnly Property IsScraper() As Boolean
-
         ReadOnly Property ModuleName() As String
 
         ReadOnly Property ModuleVersion() As String
-
-        Property PosterScraperEnabled() As Boolean
 
         Property ScraperEnabled() As Boolean
 
@@ -492,15 +484,9 @@ Public Class Interfaces
 
         Sub Init(ByVal sAssemblyName As String)
 
-        Function InjectSetupPostScraper() As Containers.SettingsPanel
-
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function PosterScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
-
         Function SaveImages() As ModuleResult
-
-        Sub SaveSetupPosterScraper(ByVal DoDispose As Boolean)
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 

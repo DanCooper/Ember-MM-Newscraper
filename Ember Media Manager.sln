@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -70,7 +70,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TMDB", "Addons
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.TMDB", "Addons\scraper.TMDB.Poster\scraper.Image.TMDB.vbproj", "{2B684C20-7E1A-4DA0-8C26-96DA1407B2C3}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TVDB.Data.Poster", "Addons\scraper.TVDB.Poster\scraper.TVDB.Data.Poster.vbproj", "{3FAF50AA-AD5F-455A-8711-6D791C457F0F}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TVDB.Data", "Addons\scraper.TVDB.Poster\scraper.TVDB.Data.vbproj", "{3FAF50AA-AD5F-455A-8711-6D791C457F0F}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMDB", "Addons\scraper.IMDB.Poster\scraper.Image.IMDB.vbproj", "{33F99994-12CA-4FAB-B62D-741F7AE35F4B}"
 EndProject

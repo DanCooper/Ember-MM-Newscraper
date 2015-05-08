@@ -61,20 +61,20 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder
-        If order < ModulesManager.Instance.externalScrapersModules_TV.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1 Then
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder
+        If order < ModulesManager.Instance.externalScrapersModules_TV.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder = order + 1
+            ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder = order + 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder = order - 1
+            ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder = order - 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
         End If
@@ -181,9 +181,9 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_TV.Count > 0 Then
-            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_TV.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1)
+            btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_TV.Count - 1)
             btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
