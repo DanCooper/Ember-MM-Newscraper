@@ -31,10 +31,12 @@ Public Class FileManagerExternalModule
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
+
     Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_SetToolsStripItemVisibility(control As System.Windows.Forms.ToolStripItem, value As Boolean)
-#End Region 'Fields
+
+#End Region 'Delegates
 
 #Region "Fields"
 
@@ -45,15 +47,19 @@ Public Class FileManagerExternalModule
     Private _AssemblyName As String = String.Empty
     Private _MySettings As New MySettings
     Private eSettings As New Settings
-    Private FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
-    Private MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private MyMenuSep As New System.Windows.Forms.ToolStripSeparator
-    Private WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = Master.eLang.GetString(311, "Media File Manager")
     Private _setup As frmSettingsHolder
     Private withErrors As Boolean
+    Private cmnuMediaCustomList As New List(Of System.Windows.Forms.ToolStripMenuItem)
+    Private cmnuMedia_Movies As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuMedia_Shows As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuSep_Movies As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Shows As New System.Windows.Forms.ToolStripSeparator
+    Private WithEvents cmnuMediaCopy_Movies As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuMediaCopy_Shows As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuMediaMove_Movies As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuMediaMove_Shows As New System.Windows.Forms.ToolStripMenuItem
 
 #End Region 'Fields
 
@@ -130,11 +136,18 @@ Public Class FileManagerExternalModule
 
     Public Sub LoadSettings()
         eSettings.ModuleSettings.Clear()
-        Dim Names As String() = clsAdvancedSettings.GetSetting("Names", String.Empty).Split(Convert.ToChar("|"))
-        Dim Paths As String() = clsAdvancedSettings.GetSetting("Paths", String.Empty).Split(Convert.ToChar("|"))
-        For n = 0 To Names.Count - 1
-            If Not String.IsNullOrEmpty(Names(n)) AndAlso Not String.IsNullOrEmpty(Paths(n)) Then eSettings.ModuleSettings.Add(New SettingItem With {.Name = Names(n), .FolderPath = Paths(n)})
-        Next
+        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MoviePaths")
+        If eMovies IsNot Nothing Then
+            For Each sett In eMovies
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.Content_Type.Movie})
+            Next
+        End If
+        Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("ShowPaths")
+        If eShows IsNot Nothing Then
+            For Each sett In eShows
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.Content_Type.Show})
+            Next
+        End If
         _MySettings.TeraCopy = clsAdvancedSettings.GetBooleanSetting("TeraCopy", False)
         _MySettings.TeraCopyPath = clsAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
     End Sub
@@ -144,17 +157,25 @@ Public Class FileManagerExternalModule
     End Function
 
     Public Sub SaveSettings()
-        Dim Names As String = String.Empty
-        Dim Paths As String = String.Empty
-        For Each i As SettingItem In eSettings.ModuleSettings
-            Names += String.Concat(If(String.IsNullOrEmpty(Names), String.Empty, "|"), i.Name)
-            Paths += String.Concat(If(String.IsNullOrEmpty(Paths), String.Empty, "|"), i.FolderPath)
-        Next
         Using settings = New clsAdvancedSettings()
-            settings.SetSetting("Names", Names)
-            settings.SetSetting("Paths", Paths)
-            settings.SetSetting("TeraCopyPath", _MySettings.TeraCopyPath)
             settings.SetBooleanSetting("TeraCopy", _MySettings.TeraCopy)
+            settings.SetSetting("TeraCopyPath", _MySettings.TeraCopyPath)
+
+            Dim eMovies As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.Content_Type.Movie)
+                eMovies.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
+            Next
+            If eMovies IsNot Nothing Then
+                settings.SetComplexSetting("MoviePaths", eMovies)
+            End If
+
+            Dim eShows As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.Content_Type.Show)
+                eShows.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
+            Next
+            If eShows IsNot Nothing Then
+                settings.SetComplexSetting("ShowPaths", eShows)
+            End If
         End Using
     End Sub
 
@@ -198,35 +219,63 @@ Public Class FileManagerExternalModule
     End Sub
 
     Sub Disable()
-        RemoveToolsStripItem(MyMenuSep)
-        RemoveToolsStripItem(MyMenu)
+        RemoveToolsStripItem_Movies(cmnuMedia_Movies)
+        RemoveToolsStripItem_Movies(cmnuSep_Movies)
+        RemoveToolsStripItem_Shows(cmnuMedia_Shows)
+        RemoveToolsStripItem_Shows(cmnuSep_Shows)
     End Sub
 
-    Public Sub RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Sub RemoveToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
         If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {value})
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Movies), New Object() {value})
             Exit Sub
         End If
         ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Remove(value)
     End Sub
 
-    Sub Enable()
-        MyMenu.Text = Master.eLang.GetString(311, "Media File Manager")
-
-        MySubMenu1.Text = Master.eLang.GetString(312, "Move To")
-        MySubMenu1.Tag = "MOVE"
-        MySubMenu2.Text = Master.eLang.GetString(313, "Copy To")
-        MySubMenu2.Tag = "COPY"
-        MyMenu.DropDownItems.Add(MySubMenu1)
-        MyMenu.DropDownItems.Add(MySubMenu2)
-
-        SetToolsStripItem(MyMenuSep)
-        SetToolsStripItem(MyMenu)
-        PopulateFolders(MySubMenu1)
-        PopulateFolders(MySubMenu2)
-        SetToolsStripItemVisibility(MyMenuSep, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(MyMenu, True) '(eSettings.ModuleSettings.Count > 0))
+    Public Sub RemoveToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Remove(value)
     End Sub
+
+    Sub Enable()
+        'cmnuMovies
+        cmnuMedia_Movies.Text = Master.eLang.GetString(311, "Media File Manager")
+        cmnuMediaMove_Movies.Text = Master.eLang.GetString(312, "Move To")
+        cmnuMediaMove_Movies.Tag = "MOVE"
+        cmnuMediaCopy_Movies.Text = Master.eLang.GetString(313, "Copy To")
+        cmnuMediaCopy_Movies.Tag = "COPY"
+        cmnuMedia_Movies.DropDownItems.Add(cmnuMediaMove_Movies)
+        cmnuMedia_Movies.DropDownItems.Add(cmnuMediaCopy_Movies)
+
+        SetToolsStripItem_Movies(cmnuSep_Movies)
+        SetToolsStripItem_Movies(cmnuMedia_Movies)
+
+        'cmnuShows
+        cmnuMedia_Shows.Text = Master.eLang.GetString(311, "Media File Manager")
+        cmnuMediaMove_Shows.Text = Master.eLang.GetString(312, "Move To")
+        cmnuMediaMove_Shows.Tag = "MOVE"
+        cmnuMediaCopy_Shows.Text = Master.eLang.GetString(313, "Copy To")
+        cmnuMediaCopy_Shows.Tag = "COPY"
+        cmnuMedia_Shows.DropDownItems.Add(cmnuMediaMove_Shows)
+        cmnuMedia_Shows.DropDownItems.Add(cmnuMediaCopy_Shows)
+
+        SetToolsStripItem_Shows(cmnuSep_Shows)
+        SetToolsStripItem_Shows(cmnuMedia_Shows)
+
+        PopulateFolders(cmnuMediaMove_Movies, Enums.Content_Type.Movie)
+        PopulateFolders(cmnuMediaMove_Shows, Enums.Content_Type.Show)
+        PopulateFolders(cmnuMediaCopy_Movies, Enums.Content_Type.Movie)
+        PopulateFolders(cmnuMediaCopy_Shows, Enums.Content_Type.Show)
+        SetToolsStripItemVisibility(cmnuMedia_Movies, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuMedia_Shows, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuSep_Movies, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuSep_Shows, True) '(eSettings.ModuleSettings.Count > 0))
+    End Sub
+
     Public Sub SetToolsStripItemVisibility(control As System.Windows.Forms.ToolStripItem, value As Boolean)
         If (control.Owner.InvokeRequired) Then
             control.Owner.Invoke(New Delegate_SetToolsStripItemVisibility(AddressOf SetToolsStripItemVisibility), New Object() {control, value})
@@ -235,30 +284,39 @@ Public Class FileManagerExternalModule
         control.Visible = value
     End Sub
 
-    Public Sub SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Sub SetToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
         If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem), New Object() {value})
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
             Exit Sub
         End If
         ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
     End Sub
 
+    Public Sub SetToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
+    End Sub
+
     Private Sub FolderSubMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             Dim ItemsToWork As New List(Of IO.FileSystemInfo)
-            Dim MoviesToWork As New List(Of Long)
-            Dim MovieId As Int64 = -1
+            Dim MediaToWork As New List(Of Long)
+            Dim ID As Int64 = -1
             Dim tMItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim doMove As Boolean = False
             Dim dstPath As String = String.Empty
             Dim useTeraCopy As Boolean = False
+            Dim ContentType As Enums.Content_Type = DirectCast(tMItem.Tag, SettingItem).Type
 
-            If tMItem.Tag.ToString = "CUSTOM" Then
+            If DirectCast(tMItem.Tag, SettingItem).FolderPath = "CUSTOM" Then
                 Dim fl As New FolderBrowserDialog
                 fl.ShowDialog()
                 dstPath = fl.SelectedPath
             Else
-                dstPath = tMItem.Tag.ToString
+                dstPath = DirectCast(tMItem.Tag, SettingItem).FolderPath
             End If
 
             Select Case tMItem.OwnerItem.Tag.ToString
@@ -274,35 +332,76 @@ Public Class FileManagerExternalModule
             Dim mTeraCopy As New TeraCopy.Filelist(_MySettings.TeraCopyPath, dstPath, doMove)
 
             If Not String.IsNullOrEmpty(dstPath) Then
-                For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
-                    MovieId = Convert.ToInt64(sRow.Cells(0).Value)
-                    If Not MoviesToWork.Contains(MovieId) Then
-                        MoviesToWork.Add(MovieId)
+                If ContentType = Enums.Content_Type.Movie Then
+                    For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
+                        ID = Convert.ToInt64(sRow.Cells("idMovie").Value)
+                        If Not MediaToWork.Contains(ID) Then
+                            MediaToWork.Add(ID)
+                        End If
+                    Next
+                ElseIf ContentType = Enums.Content_Type.Show Then
+                    For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows
+                        ID = Convert.ToInt64(sRow.Cells("idShow").Value)
+                        If Not MediaToWork.Contains(ID) Then
+                            MediaToWork.Add(ID)
+                        End If
+                    Next
+                End If
+                If MediaToWork.Count > 0 Then
+                    Dim strMove As String = String.Empty
+                    Dim strCopy As String = String.Empty
+                    If ContentType = Enums.Content_Type.Movie Then
+                        strMove = Master.eLang.GetString(314, "Move {0} Movie(s) To {1}")
+                        strCopy = Master.eLang.GetString(315, "Copy {0} Movie(s) To {1}")
+                    ElseIf ContentType = Enums.Content_Type.Show Then
+                        strMove = Master.eLang.GetString(888, "Move {0} TV Show(s) To {1}")
+                        strCopy = Master.eLang.GetString(889, "Copy {0} TV Show(s) To {1}")
                     End If
-                Next
-                If MoviesToWork.Count > 0 Then
-                    If MessageBox.Show(String.Format(If(doMove, Master.eLang.GetString(314, "Move {0} Movie(s) To {1}"), Master.eLang.GetString(315, "Copy {0} Movie(s) To {1}")), _
-                                            MoviesToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        Dim mMovie As New Structures.DBMovie
-                        Dim FileDelete As New FileUtils.Delete
-                        For Each Id As Long In MoviesToWork
-                            mMovie = Master.DB.LoadMovieFromDB(Id)
-                            ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
-                            If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
-                                If _MySettings.TeraCopy Then
-                                    mTeraCopy.Sources.Add(ItemsToWork(0).ToString)
-                                Else
-                                    Select Case tMItem.OwnerItem.Tag.ToString
-                                        Case "MOVE"
-                                            DirectoryMove(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                            Master.DB.DeleteMovieFromDB(MovieId)
-                                        Case "COPY"
-                                            DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
-                                    End Select
+
+                    If MessageBox.Show(String.Format(If(doMove, strMove, strCopy), _
+                                            MediaToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                        If ContentType = Enums.Content_Type.Movie Then
+                            Dim mMovie As New Structures.DBMovie
+                            Dim FileDelete As New FileUtils.Delete
+                            For Each movieID As Long In MediaToWork
+                                mMovie = Master.DB.LoadMovieFromDB(movieID)
+                                ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
+                                If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
+                                    If _MySettings.TeraCopy Then
+                                        mTeraCopy.Sources.Add(ItemsToWork(0).ToString)
+                                    Else
+                                        Select Case tMItem.OwnerItem.Tag.ToString
+                                            Case "MOVE"
+                                                DirectoryMove(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
+                                                Master.DB.DeleteMovieFromDB(movieID)
+                                            Case "COPY"
+                                                DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
+                                        End Select
+                                    End If
                                 End If
-                            End If
-                        Next
-                        If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                            Next
+                            If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
+                        ElseIf ContentType = Enums.Content_Type.Show Then
+                            Dim mShow As New Structures.DBTV
+                            Dim FileDelete As New FileUtils.Delete
+                            For Each tShowID As Long In MediaToWork
+                                mShow = Master.DB.LoadTVShowFromDB(tShowID)
+                                If Directory.Exists(mShow.ShowPath) Then
+                                    If _MySettings.TeraCopy Then
+                                        mTeraCopy.Sources.Add(mShow.ShowPath)
+                                    Else
+                                        Select Case tMItem.OwnerItem.Tag.ToString
+                                            Case "MOVE"
+                                                DirectoryMove(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(899, "Moving TV Show"))
+                                                Master.DB.DeleteTVShowFromDB(tShowID)
+                                            Case "COPY"
+                                                DirectoryCopy(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(900, "Copying TV Show"))
+                                        End Select
+                                    End If
+                                End If
+                            Next
+                            If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.TV = True}, String.Empty)
+                        End If
                         If _MySettings.TeraCopy Then mTeraCopy.RunTeraCopy()
                     End If
                 End If
@@ -330,16 +429,17 @@ Public Class FileManagerExternalModule
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmSettingsHolder
         Me._setup.chkEnabled.Checked = Me._enabled
-        Me._setup.lvPaths.Items.Clear()
-        Dim li As ListViewItem
-        For Each e As SettingItem In Me.eSettings.ModuleSettings
-            li = New ListViewItem
-            li.Text = e.Name
-            li.SubItems.Add(e.FolderPath)
-            _setup.lvPaths.Items.Add(li)
-        Next
         Me._setup.chkTeraCopyEnable.Checked = _MySettings.TeraCopy
         Me._setup.txtTeraCopyPath.Text = _MySettings.TeraCopyPath
+        Me._setup.lvPaths.Items.Clear()
+        Dim lvItem As ListViewItem
+        For Each e As SettingItem In Me.eSettings.ModuleSettings
+            lvItem = New ListViewItem
+            lvItem.Text = e.Name
+            lvItem.SubItems.Add(e.FolderPath)
+            lvItem.SubItems.Add(e.Type.ToString)
+            _setup.lvPaths.Items.Add(lvItem)
+        Next
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(311, "Media File Manager")
         SPanel.Prefix = "FileManager_"
@@ -352,41 +452,59 @@ Public Class FileManagerExternalModule
         Return SPanel
     End Function
 
-    Sub PopulateFolders(ByVal mnu As System.Windows.Forms.ToolStripMenuItem)
-        FolderSubMenus.RemoveAll(Function(b) True)
-        For Each e In eSettings.ModuleSettings
-            Dim FolderSubMenuItem As New System.Windows.Forms.ToolStripMenuItem
-            FolderSubMenuItem.Text = e.Name
-            FolderSubMenuItem.Tag = e.FolderPath
-            FolderSubMenus.Add(FolderSubMenuItem)
-            AddHandler FolderSubMenuItem.Click, AddressOf Me.FolderSubMenuItem_Click
-        Next
+    Sub PopulateFolders(ByVal mnu As System.Windows.Forms.ToolStripMenuItem, ByVal ContentType As Enums.Content_Type)
+        mnu.DropDownItems.Clear()
+        cmnuMediaCustomList.RemoveAll(Function(b) True)
 
         Dim FolderSubMenuItemCustom As New System.Windows.Forms.ToolStripMenuItem
         FolderSubMenuItemCustom.Text = String.Concat(Master.eLang.GetString(338, "Select path"), "...")
-        FolderSubMenuItemCustom.Tag = "CUSTOM"
-        FolderSubMenus.Add(FolderSubMenuItemCustom)
+        FolderSubMenuItemCustom.Tag = New SettingItem With {.Name = "CUSTOM", .FolderPath = "CUSTOM", .Type = ContentType}
+        mnu.DropDownItems.Add(FolderSubMenuItemCustom)
         AddHandler FolderSubMenuItemCustom.Click, AddressOf Me.FolderSubMenuItem_Click
 
-        mnu.DropDownItems.Clear()
-        For Each i In FolderSubMenus
+        If eSettings.ModuleSettings.Where(Function(f) f.Type = ContentType).Count > 0 Then
+            Dim SubMenuSep As New System.Windows.Forms.ToolStripSeparator
+            mnu.DropDownItems.Add(SubMenuSep)
+        End If
+
+        For Each e In eSettings.ModuleSettings.Where(Function(f) f.Type = ContentType)
+            Dim FolderSubMenuItem As New System.Windows.Forms.ToolStripMenuItem
+            FolderSubMenuItem.Text = e.Name
+            FolderSubMenuItem.Tag = New SettingItem With {.Name = e.Name, .FolderPath = e.FolderPath, .Type = ContentType}
+            cmnuMediaCustomList.Add(FolderSubMenuItem)
+            AddHandler FolderSubMenuItem.Click, AddressOf Me.FolderSubMenuItem_Click
+        Next
+
+        For Each i In cmnuMediaCustomList
             mnu.DropDownItems.Add(i)
         Next
-        SetToolsStripItemVisibility(MyMenuSep, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(MyMenu, True) '(eSettings.ModuleSettings.Count > 0))
+
+        SetToolsStripItemVisibility(cmnuSep_Movies, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuSep_Shows, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuMedia_Movies, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuMedia_Shows, True) '(eSettings.ModuleSettings.Count > 0))
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
-        eSettings.ModuleSettings.Clear()
-        For Each i As ListViewItem In _setup.lvPaths.Items
-            eSettings.ModuleSettings.Add(New SettingItem With {.Name = i.SubItems(0).Text, .FolderPath = i.SubItems(1).Text})
-        Next
         _MySettings.TeraCopy = Me._setup.chkTeraCopyEnable.Checked
         _MySettings.TeraCopyPath = Me._setup.txtTeraCopyPath.Text
+        eSettings.ModuleSettings.Clear()
+        For Each e As ListViewItem In _setup.lvPaths.Items
+            If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "Movie" Then
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.Content_Type.Movie})
+            End If
+        Next
+        For Each e As ListViewItem In _setup.lvPaths.Items
+            If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "Show" Then
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.Content_Type.Show})
+            End If
+        Next
         SaveSettings()
-        PopulateFolders(MySubMenu1)
-        PopulateFolders(MySubMenu2)
+        PopulateFolders(cmnuMediaMove_Movies, Enums.Content_Type.Movie)
+        PopulateFolders(cmnuMediaMove_Shows, Enums.Content_Type.Show)
+        PopulateFolders(cmnuMediaCopy_Movies, Enums.Content_Type.Movie)
+        PopulateFolders(cmnuMediaCopy_Shows, Enums.Content_Type.Show)
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -406,11 +524,20 @@ Public Class FileManagerExternalModule
         End If
         ' Get the file contents of the directory to copy.
         Dim Files As New List(Of FileInfo)
+        Dim Directories As New List(Of DirectoryInfo)
 
-        Try
-            Files.AddRange(dir.GetFiles())
-        Catch
-        End Try
+        Files.AddRange(dir.GetFiles)
+        Directories.AddRange(dir.GetDirectories)
+
+        For Each sDirectory As DirectoryInfo In Directories
+            If doMove Then
+                Try
+                    _DirectoryCopy(sDirectory.FullName, Path.Combine(destDirName, sDirectory.Name), doMove)
+                Catch ex As Exception
+                    withErrors = True
+                End Try
+            End If
+        Next
 
         For Each sFile As FileInfo In Files
             If doMove Then
@@ -469,6 +596,7 @@ Public Class FileManagerExternalModule
 
         Public FolderPath As String
         Public Name As String
+        Public Type As Enums.Content_Type
 
 #End Region 'Fields
 

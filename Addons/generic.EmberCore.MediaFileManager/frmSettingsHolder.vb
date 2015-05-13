@@ -50,8 +50,10 @@ Public Class frmSettingsHolder
     Private Sub btnPathEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPathEdit.Click
         lvPaths.SelectedItems(0).SubItems(0).Text = txtName.Text
         lvPaths.SelectedItems(0).SubItems(1).Text = txtPath.Text
+        lvPaths.SelectedItems(0).SubItems(2).Text = CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.Content_Type)).Value.ToString
         txtName.Text = ""
         txtPath.Text = ""
+        cbType.SelectedIndex = -1
         isSelected = False
         CheckButtons()
     End Sub
@@ -60,9 +62,11 @@ Public Class frmSettingsHolder
         Dim li As New ListViewItem
         li.Text = txtName.Text
         li.SubItems.Add(txtPath.Text)
+        li.SubItems.Add(CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.Content_Type)).Value.ToString)
         lvPaths.Items.Add(li)
         txtName.Text = ""
         txtPath.Text = ""
+        cbType.SelectedIndex = -1
         CheckButtons()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -71,6 +75,7 @@ Public Class frmSettingsHolder
         lvPaths.Items.RemoveAt(lvPaths.SelectedItems(0).Index)
         txtName.Text = ""
         txtPath.Text = ""
+        cbType.SelectedIndex = -1
         isSelected = False
         CheckButtons()
         RaiseEvent ModuleSettingsChanged()
@@ -93,7 +98,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Sub CheckButtons()
-        If Not String.IsNullOrEmpty(txtName.Text) AndAlso Not String.IsNullOrEmpty(txtPath.Text) AndAlso Not isSelected Then
+        If Not String.IsNullOrEmpty(txtName.Text) AndAlso Not String.IsNullOrEmpty(txtPath.Text) AndAlso Not cbType.SelectedIndex = -1 AndAlso Not isSelected Then
             btnPathNew.Enabled = True
         Else
             btnPathNew.Enabled = False
@@ -129,6 +134,13 @@ Public Class frmSettingsHolder
             btnPathEdit.Enabled = True
             txtName.Text = lvPaths.SelectedItems(0).SubItems(0).Text
             txtPath.Text = lvPaths.SelectedItems(0).SubItems(1).Text
+
+            Select Case lvPaths.SelectedItems(0).SubItems(2).Text
+                Case "Movie"
+                    Me.cbType.SelectedIndex = 0
+                Case "Show"
+                    Me.cbType.SelectedIndex = 1
+            End Select
         Else
             isSelected = False
             btnPathRemove.Enabled = False
@@ -140,16 +152,34 @@ Public Class frmSettingsHolder
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
+        Me.LoadContentTypes()
     End Sub
 
     Private Sub SetUp()
         Me.ColumnHeader1.Text = Master.eLang.GetString(232, "Name")
         Me.ColumnHeader2.Text = Master.eLang.GetString(410, "Path")
+        Me.ColumnHeader3.Text = Master.eLang.GetString(1288, "Type")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkTeraCopyEnable.Text = Master.eLang.GetString(332, "Use TeraCopy to copy/move files")
         Me.lblName.Text = Master.eLang.GetString(232, "Name")
         Me.lblPath.Text = Master.eLang.GetString(410, "Path")
         Me.lblTeraCopyPath.Text = Master.eLang.GetString(333, "Path to TeraCopy:")
+        Me.lblType.Text = Master.eLang.GetString(1288, "Type")
+    End Sub
+
+    Private Sub LoadContentTypes()
+        Dim items As New Dictionary(Of String, Enums.Content_Type)
+        items.Add(Master.eLang.GetString(1379, "Movie"), Enums.Content_Type.Movie)
+        items.Add(Master.eLang.GetString(700, "TV Show"), Enums.Content_Type.Show)
+        Me.cbType.DataSource = items.ToList
+        Me.cbType.DisplayMember = "Key"
+        Me.cbType.ValueMember = "Value"
+
+        Me.cbType.SelectedIndex = -1
+    End Sub
+
+    Private Sub cbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbType.SelectedIndexChanged
+        CheckButtons()
     End Sub
 
     Private Sub txtName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtName.TextChanged
