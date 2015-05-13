@@ -460,10 +460,10 @@ Public Class FileFolderRenamer
                         'first step: get a list of all seasons
                         Dim aSeasonsList As New List(Of Integer)
                         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLNewcommand.CommandText = String.Concat("SELECT Season FROM TVSeason WHERE TVShowID = ", _tv.ShowID, ";")
+                            SQLNewcommand.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", _tv.ShowID, ";")
                             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                                 While SQLReader.Read
-                                    If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
+                                    If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("idSeason"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("idSeason")))
                                 End While
                             End Using
                             aSeasonsList.Sort()
@@ -471,7 +471,7 @@ Public Class FileFolderRenamer
 
                         For Each aSeason In aSeasonsList
                             Dim tmpTV As New Structures.DBTV
-                            tmpTV = Master.DB.LoadTVSeasonFromDB(_tv.ShowID, aSeason, False)
+                            tmpTV = Master.DB.LoadTVSeasonFromDB(aSeason, False)
                             UpdatePaths_Show(tmpTV, srcDir, destDir)
                             Master.DB.SaveTVSeasonToDB(tmpTV, BatchMode)
                         Next

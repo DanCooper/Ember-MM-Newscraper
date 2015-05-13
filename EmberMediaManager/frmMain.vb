@@ -11570,6 +11570,15 @@ doCancel:
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
+            Case Enums.ModuleEventType.AfterEdit_TVShow
+                Try
+                    If Me.ReloadShow(Convert.ToInt16(_params(0)), False, False, False, False, False) Then
+                        Me.FillList(False, False, True)
+                    End If
+                    Me.SetStatus(Master.currShow.ShowPath)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", mType)
         End Select
