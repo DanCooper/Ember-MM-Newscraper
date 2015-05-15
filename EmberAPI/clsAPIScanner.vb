@@ -638,7 +638,7 @@ Public Class Scanner
                     Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
 
                     ' check the remainder of the string for any further episodes.
-                    If Not rShow.byDate AndAlso reg2.IsMatch(remainder) Then
+                    If Not rShow.byDate Then
                         ' we want "long circuit" OR below so that both offsets are evaluated
                         While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
                             regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
