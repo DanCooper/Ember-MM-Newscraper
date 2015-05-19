@@ -270,7 +270,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnFilePatternEpisodesReset_Click(sender As Object, e As EventArgs) Handles btnFilePatternEpisodesReset.Click
-        Me.txtFilePatternEpisodes.Text = "$Z - $W2S?2E?{ - $T}"
+        Me.txtFilePatternEpisodes.Text = "$Z - $W2_S?2E?{ - $T}"
     End Sub
 
     Private Sub btnFilePatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFilePatternMoviesReset.Click
@@ -282,7 +282,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnFolderPatternSeasonsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternSeasonsReset.Click
-        Me.txtFolderPatternSeasons.Text = "Season $K2?"
+        Me.txtFolderPatternSeasons.Text = "Season $K2_?"
     End Sub
 
     Private Sub btnFolderPatternShowsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternShowsReset.Click
