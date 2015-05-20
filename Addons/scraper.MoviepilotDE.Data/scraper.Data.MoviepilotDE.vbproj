@@ -126,10 +126,10 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmMoviepilotDEInfoSettingsHolder.Designer.vb">
-      <DependentUpon>frmMoviepilotDEInfoSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder.Designer.vb">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmMoviepilotDEInfoSettingsHolder.vb">
+    <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MoviepilotDE_Data.vb" />
@@ -151,8 +151,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmMoviepilotDEInfoSettingsHolder.resx">
-      <DependentUpon>frmMoviepilotDEInfoSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsHolder.resx">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

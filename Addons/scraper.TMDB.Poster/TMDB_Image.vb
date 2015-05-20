@@ -49,8 +49,8 @@ Public Class TMDB_Image
     Private _Name As String = "TMDB_Image"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
-    Private _setup_Movie As frmTMDBMediaSettingsHolder_Movie
-    Private _setup_MovieSet As frmTMDBMediaSettingsHolder_MovieSet
+    Private _setup_Movie As frmSettingsHolder_Movie
+    Private _setup_MovieSet As frmSettingsHolder_MovieSet
 
 #End Region 'Fields
 
@@ -178,7 +178,7 @@ Public Class TMDB_Image
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
-        _setup_Movie = New frmTMDBMediaSettingsHolder_Movie
+        _setup_Movie = New frmSettingsHolder_Movie
         LoadSettings_Movie()
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
@@ -216,7 +216,7 @@ Public Class TMDB_Image
 
     Function InjectSetupScraper_MovieSet() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_MovieSet.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
-        _setup_MovieSet = New frmTMDBMediaSettingsHolder_MovieSet
+        _setup_MovieSet = New frmSettingsHolder_MovieSet
         LoadSettings_MovieSet()
         _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
         _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster

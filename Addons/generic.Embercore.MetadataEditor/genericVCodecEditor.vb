@@ -5,7 +5,7 @@ Public Class genericMetadataEditor
 
 #Region "Fields"
 
-    Private _setup As frmAVCodecEditor
+    Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -61,7 +61,7 @@ Public Class genericMetadataEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmAVCodecEditor
+        Me._setup = New frmSettingsHolder
         SPanel.Name = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Text = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Prefix = "AVCodecEditor_"

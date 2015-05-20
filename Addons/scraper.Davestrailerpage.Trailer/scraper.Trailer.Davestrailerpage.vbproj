@@ -101,10 +101,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmDavestrailerpageTrailerSettingsHolder.Designer.vb">
-      <DependentUpon>frmDavestrailerpageTrailerSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder.Designer.vb">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmDavestrailerpageTrailerSettingsHolder.vb">
+    <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Davestrailerpage_Trailer.vb" />
@@ -126,8 +126,8 @@
     <Compile Include="Scraper\clsScrapeTrailerDavestrailerpage.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmDavestrailerpageTrailerSettingsHolder.resx">
-      <DependentUpon>frmDavestrailerpageTrailerSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsHolder.resx">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

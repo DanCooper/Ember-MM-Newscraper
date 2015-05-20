@@ -142,17 +142,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmGoEarInfoSettingsHolder.Designer.vb">
-      <DependentUpon>frmGoEarInfoSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder.Designer.vb">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmGoEarInfoSettingsHolder.vb">
+    <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GoEar_Theme.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmGoEarInfoSettingsHolder.resx">
-      <DependentUpon>frmGoEarInfoSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsHolder.resx">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

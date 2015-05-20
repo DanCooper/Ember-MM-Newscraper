@@ -37,7 +37,7 @@ Public Class MPDB_Image
     Private MPDB As MPDB.Scraper
     Private _Name As String = "MPDB_Poster"
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmMPDBMediaSettingsHolder
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -117,7 +117,7 @@ Public Class MPDB_Image
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmMPDBMediaSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled

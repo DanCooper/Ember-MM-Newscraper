@@ -35,7 +35,7 @@ Public Class TVDB_Image
     Private _MySettings As New sMySettings
     Private _Name As String = "TVDB_Image"
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmTVDBMediaSettingsHolder
+    Private _setup As frmSettingsHolder
     Private _scraper As New Scraper
 
 #End Region 'Fields
@@ -129,7 +129,7 @@ Public Class TVDB_Image
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_TV.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
-        _setup = New frmTVDBMediaSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.chkGetEnglishImages.Checked = _MySettings.GetEnglishImages

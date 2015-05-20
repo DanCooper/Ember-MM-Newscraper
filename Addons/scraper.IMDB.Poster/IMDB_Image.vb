@@ -38,7 +38,7 @@ Public Class IMDB_Image
 
     Private _Name As String = "IMDB_Poster"
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmIMDBMediaSettingsHolder
+    Private _setup As frmSettingsHolder
     Private IMDB As IMDB.Scraper
 
 #End Region 'Fields
@@ -118,7 +118,7 @@ Public Class IMDB_Image
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmIMDBMediaSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.orderChanged()

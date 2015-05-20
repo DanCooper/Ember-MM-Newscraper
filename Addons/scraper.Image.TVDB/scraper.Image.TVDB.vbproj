@@ -123,10 +123,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmTVDBMediaSettingsHolder.Designer.vb">
-      <DependentUpon>frmTVDBMediaSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder.Designer.vb">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTVDBMediaSettingsHolder.vb">
+    <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -148,8 +148,8 @@
     <Compile Include="TVDB_Image.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmTVDBMediaSettingsHolder.resx">
-      <DependentUpon>frmTVDBMediaSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsHolder.resx">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

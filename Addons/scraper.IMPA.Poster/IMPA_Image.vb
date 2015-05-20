@@ -32,7 +32,7 @@ Public Class IMPA_Image
     Private IMPA As New IMPA.Scraper
     Private _Name As String = "IMPA_Poster"
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmIMPAMediaSettingsHolder
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -112,7 +112,7 @@ Public Class IMPA_Image
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmIMPAMediaSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
 

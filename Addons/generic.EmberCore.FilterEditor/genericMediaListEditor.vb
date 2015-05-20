@@ -36,7 +36,7 @@ Public Class genericMediaListEditor
 
     Private _AssemblyName As String = String.Empty
     Private _name As String = "Media List Editor"
-    Private _setup As frmMediaListEditor
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -91,7 +91,7 @@ Public Class genericMediaListEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmMediaListEditor
+        Me._setup = New frmSettingsHolder
         SPanel.Name = Me._name
         SPanel.Text = Master.eLang.GetString(1385, "Media List Editor")
         SPanel.Prefix = "MediaListEditor_"

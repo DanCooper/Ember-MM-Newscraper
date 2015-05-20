@@ -40,7 +40,7 @@ Public Class GoEar_Theme
     Private _MySettings As New sMySettings
     Private _Name As String = "GoEar_Theme"
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmGoEarInfoSettingsHolder
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -103,7 +103,7 @@ Public Class GoEar_Theme
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmGoEarInfoSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
 

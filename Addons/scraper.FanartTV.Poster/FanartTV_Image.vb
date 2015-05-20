@@ -49,9 +49,9 @@ Public Class FanartTV_Image
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
     Private _ScraperEnabled_TV As Boolean = False
-    Private _setup_Movie As frmFanartTVMediaSettingsHolder_Movie
-    Private _setup_MovieSet As frmFanartTVMediaSettingsHolder_MovieSet
-    Private _setup_TV As frmFanartTVMediaSettingsHolder_TV
+    Private _setup_Movie As frmSettingsHolder_Movie
+    Private _setup_MovieSet As frmSettingsHolder_MovieSet
+    Private _setup_TV As frmSettingsHolder_TV
     Private _scraper As New Scraper
 
 #End Region 'Fields
@@ -276,7 +276,7 @@ Public Class FanartTV_Image
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
-        _setup_Movie = New frmFanartTVMediaSettingsHolder_Movie
+        _setup_Movie = New frmSettingsHolder_Movie
         LoadSettings_Movie()
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.chkGetBlankImages.Checked = _MySettings_Movie.GetBlankImages
@@ -319,7 +319,7 @@ Public Class FanartTV_Image
 
     Function InjectSetupScraper_MovieSet() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_MovieSet.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
-        _setup_MovieSet = New frmFanartTVMediaSettingsHolder_MovieSet
+        _setup_MovieSet = New frmSettingsHolder_MovieSet
         LoadSettings_MovieSet()
         _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
         _setup_MovieSet.chkGetBlankImages.Checked = _MySettings_MovieSet.GetBlankImages
@@ -362,7 +362,7 @@ Public Class FanartTV_Image
 
     Function InjectSetupScraper_TV() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_TV.InjectSetupScraper
         Dim Spanel As New Containers.SettingsPanel
-        _setup_TV = New frmFanartTVMediaSettingsHolder_TV
+        _setup_TV = New frmSettingsHolder_TV
         LoadSettings_TV()
         _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
         _setup_TV.chkGetBlankImages.Checked = _MySettings_TV.GetBlankImages

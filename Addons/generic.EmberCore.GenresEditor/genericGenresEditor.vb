@@ -25,7 +25,7 @@ Public Class genericGenresEditor
 
 #Region "Fields"
 
-    Private _setup As frmGenresEditor
+    Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -81,7 +81,7 @@ Public Class genericGenresEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmGenresEditor
+        Me._setup = New frmSettingsHolder
         SPanel.Name = Master.eLang.GetString(782, "Genres Editor")
         SPanel.Text = Master.eLang.GetString(782, "Genres Editor")
         SPanel.Prefix = "GenresEditor_"

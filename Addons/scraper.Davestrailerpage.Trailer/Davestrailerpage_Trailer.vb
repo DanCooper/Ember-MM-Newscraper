@@ -39,7 +39,7 @@ Public Class Davestrailerpage_Trailer
     Private _Name As String = "Davestrailerpage_Trailer"
     Private _MySettings As New sMySettings
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmDavestrailerpageTrailerSettingsHolder
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -108,7 +108,7 @@ Public Class Davestrailerpage_Trailer
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Trailer_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmDavestrailerpageTrailerSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         SPanel.Text = "Davestrailerpage"

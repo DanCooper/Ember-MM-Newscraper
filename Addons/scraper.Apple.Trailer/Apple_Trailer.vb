@@ -39,7 +39,7 @@ Public Class Apple_Trailer
     Private _Name As String = "Apple_Trailer"
     Private _MySettings As New sMySettings
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmAppleTrailerSettingsHolder
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -108,7 +108,7 @@ Public Class Apple_Trailer
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Trailer_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmAppleTrailerSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.cbTrailerPrefQual.Text = _MySettings.TrailerPrefQual

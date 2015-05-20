@@ -43,8 +43,8 @@ Public Class TelevisionTunes_Theme
     Private _Name As String = "TelevisionTunes_Theme"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_TV As Boolean = False
-    Private _setup_Movie As frmTelevisionTunesInfoSettingsHolder_Movie
-    Private _setup_TV As frmTelevisionTunesInfoSettingsHolder_TV
+    Private _setup_Movie As frmSettingsHolder_Movie
+    Private _setup_TV As frmSettingsHolder_TV
 
 #End Region 'Fields
 
@@ -135,7 +135,7 @@ Public Class TelevisionTunes_Theme
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup_Movie = New frmTelevisionTunesInfoSettingsHolder_Movie
+        _setup_Movie = New frmSettingsHolder_Movie
         LoadSettings_Movie()
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
 
@@ -156,7 +156,7 @@ Public Class TelevisionTunes_Theme
 
     Function InjectSetupScraper_TV() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_TV.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup_TV = New frmTelevisionTunesInfoSettingsHolder_TV
+        _setup_TV = New frmSettingsHolder_TV
         LoadSettings_TV()
         _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
 

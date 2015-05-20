@@ -53,8 +53,8 @@ Public Class TMDB_Data
     Private _Name As String = "TMDB_Data"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
-    Private _setup_Movie As frmTMDBInfoSettingsHolder_Movie
-    Private _setup_MovieSet As frmTMDBInfoSettingsHolder_MovieSet
+    Private _setup_Movie As frmSettingsHolder_Movie
+    Private _setup_MovieSet As frmSettingsHolder_MovieSet
 
 #End Region 'Fields
 
@@ -153,7 +153,7 @@ Public Class TMDB_Data
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup_Movie = New frmTMDBInfoSettingsHolder_Movie
+        _setup_Movie = New frmSettingsHolder_Movie
         LoadSettings_Movie()
         _setup_Movie.API = _setup_Movie.txtApiKey.Text
         _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
@@ -206,7 +206,7 @@ Public Class TMDB_Data
 
     Function InjectSetupScraper_MovieSet() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_MovieSet.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup_MovieSet = New frmTMDBInfoSettingsHolder_MovieSet
+        _setup_MovieSet = New frmSettingsHolder_MovieSet
         LoadSettings_MovieSet()
         _setup_MovieSet.API = _setup_MovieSet.txtApiKey.Text
         _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text

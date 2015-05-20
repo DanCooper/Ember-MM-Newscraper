@@ -36,7 +36,7 @@ Public Class OFDB_Data
     Private _Name As String = "OFDB_Data"
     Private _scraper As New OFDB.Scraper
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmOFDBInfoSettingsHolder
+    Private _setup As frmSettingsHolder
 
 #End Region 'Fields
 
@@ -102,7 +102,7 @@ Public Class OFDB_Data
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmOFDBInfoSettingsHolder
+        _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.chkTitle.Checked = ConfigOptions.bTitle

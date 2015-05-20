@@ -107,11 +107,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apple_Trailer.vb" />
-    <Compile Include="frmAppleTrailerSettingsHolder.vb">
+    <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAppleTrailerSettingsHolder.Designer.vb">
-      <DependentUpon>frmAppleTrailerSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder.Designer.vb">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -132,8 +132,8 @@
     <Compile Include="Scraper\clsScrapeTrailerApple.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAppleTrailerSettingsHolder.resx">
-      <DependentUpon>frmAppleTrailerSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsHolder.resx">
+      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
