@@ -7423,8 +7423,7 @@ doCancel:
                     Me.cmnuMovieSetMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     Me.cmnuMovieSetLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
 
-                    Me.cmnuMovieSetSortMethodMethods.Items.Insert(0, String.Concat(Master.eLang.GetString(701, "Select Sort Method"), "..."))
-                    Me.cmnuMovieSetSortMethodMethods.SelectedItem = String.Concat(Master.eLang.GetString(701, "Select Sort Method"), "...")
+                    Me.cmnuMovieSetSortMethodMethods.SelectedIndex = -1
                     Me.cmnuMovieSetSortMethodSet.Enabled = False
 
                 Else
@@ -11610,10 +11609,6 @@ doCancel:
 
     Private Sub cmnuShowLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.SelectedIndexChanged
         Me.cmnuShowLanguageSet.Enabled = True
-    End Sub
-
-    Private Sub cmnuMovieSetSortMethodMethods_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodMethods.DropDown
-        Me.cmnuMovieSetSortMethodMethods.Items.Remove(String.Concat(Master.eLang.GetString(701, "Select Sort Method"), "..."))
     End Sub
 
     Private Sub cmnuMovieSetSortMethodMethods_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodMethods.SelectedIndexChanged
@@ -17326,6 +17321,31 @@ doCancel:
 
         Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item("idShow", Me.dgvTVShows.CurrentCell.RowIndex).Value))
     End Sub
+
+    Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodSet.Click
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim parSortMethod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortMethod", DbType.Int32, 0, "SortMethod")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idSet")
+                SQLcommand.CommandText = "UPDATE sets SET SortMethod = (?) WHERE idSet = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                    parSortMethod.Value = Me.cmnuMovieSetSortMethodMethods.ComboBox.SelectedValue
+                    parID.Value = sRow.Cells("idSet").Value
+                    SQLcommand.ExecuteNonQuery()
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                Me.ReloadMovieSet(Convert.ToInt32(sRow.Cells("idSet").Value), True, False, True)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        Me.LoadMovieSetInfo(Convert.ToInt32(Me.dgvMovieSets.Item("idSet", Me.dgvMovieSets.CurrentCell.RowIndex).Value), True)
+    End Sub
     ''' <summary>
     ''' Enable or disable the various menu and context-menu actions based on the currently-defined settings
     ''' </summary>
@@ -17853,15 +17873,13 @@ doCancel:
             Me.cmnuShowLanguageLanguages.Items.Clear()
             Me.cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
-            'Me.cmnuMovieSetSortMethodMethods.Items.Clear()
-            'Me.cmnuMovieSetSortMethodMethods.Items.AddRange((Enums.SortMethod_MovieSet).Year.ToArray)
-
-            'Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
-            'SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
-            'SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Year)
-            'Me.cmnuMovieSetSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
-            'Me.cmnuMovieSetSortMethodMethods.ComboBox.DisplayMember = "Key"
-            'Me.cmnuMovieSetSortMethodMethods.ComboBox.ValueMember = "Value"
+            Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
+            SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
+            SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Title)
+            Me.cmnuMovieSetSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
+            Me.cmnuMovieSetSortMethodMethods.ComboBox.DisplayMember = "Key"
+            Me.cmnuMovieSetSortMethodMethods.ComboBox.ValueMember = "Value"
+            Me.cmnuMovieSetSortMethodMethods.ComboBox.BindingContext = Me.BindingContext
 
             Me.listViews_Movies.Clear()
             Me.listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")

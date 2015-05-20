@@ -745,7 +745,7 @@ Public Class dlgEditMovieSet
                                                            "WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY movie.Year;")
                 ElseIf Master.currMovieSet.SortMethod = Enums.SortMethod_MovieSet.Title Then
                     SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
-                                                           "WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY movielist.SortedTitle;")
+                                                           "WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
                 End If
             Else
                 SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets ", _

@@ -1614,7 +1614,7 @@ Public Class Database
                                                                "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movie.Year;")
                     ElseIf _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Title Then
                         SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
-                                                               "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movielist.SortedTitle;")
+                                                               "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
                     End If
                 Else
                     SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets ", _
