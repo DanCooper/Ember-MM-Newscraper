@@ -106,11 +106,16 @@ Namespace My
         ''' Check if Ember is already running, but only for GUI instances
         ''' </summary>
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
-            Dim Args() As String = Environment.GetCommandLineArgs
-            If Args.Count = 1 Then
-                logger.Error("Ember Media Manager is already running.")
-                MessageBox.Show("Ember Media Manager is already running.", "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End
+            If e.CommandLine.Count = 0 Then
+                e.BringToForeground = True
+                'logger.Error("Ember Media Manager is already running.")
+                'MessageBox.Show("Ember Media Manager is already running.", "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ElseIf e.CommandLine.Count > 0 Then
+                Dim args As New List(Of String)
+                Dim niCommandLine As New CommandLine
+
+                args.AddRange(e.CommandLine)
+                niCommandLine.RunCommandLine(args)
             End If
         End Sub
 
