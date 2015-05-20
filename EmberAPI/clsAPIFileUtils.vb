@@ -36,41 +36,90 @@ Namespace FileUtils
 #Region "Methods"
 
         Public Shared Sub DirectoryCopy( _
-        ByVal sourceDirName As String, _
-        ByVal destDirName As String, _
-        ByVal copySubDirs As Boolean, _
-        ByVal overwriteFiles As Boolean)
+                                       ByVal strSourceDir As String, _
+                                       ByVal strDestinationDir As String, _
+                                       ByVal withSubDirs As Boolean, _
+                                       ByVal overwriteFiles As Boolean)
+
+            If Not Directory.Exists(strSourceDir) Then
+                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+                Exit Sub
+            End If
 
             ' Get the subdirectories for the specified directory.
-            Dim dir As DirectoryInfo = New DirectoryInfo(sourceDirName)
-            Dim dirs As DirectoryInfo() = dir.GetDirectories()
-
-            If Not dir.Exists Then
-                Throw New DirectoryNotFoundException( _
-                    "Source directory does not exist or could not be found: " _
-                    + sourceDirName)
-            End If
+            Dim dir As DirectoryInfo = New DirectoryInfo(strSourceDir)
+            Dim subdirs As DirectoryInfo() = dir.GetDirectories()
 
             ' If the destination directory doesn't exist, create it.
-            If Not Directory.Exists(destDirName) Then
-                Directory.CreateDirectory(destDirName)
+            If Not Directory.Exists(strDestinationDir) Then
+                Directory.CreateDirectory(strDestinationDir)
             End If
+
             ' Get the files in the directory and copy them to the new location.
             Dim files As FileInfo() = dir.GetFiles()
             For Each cFile In files
-                Dim temppath As String = Path.Combine(destDirName, cFile.Name)
+                Dim temppath As String = Path.Combine(strDestinationDir, cFile.Name)
                 If Not File.Exists(temppath) OrElse overwriteFiles Then
                     cFile.CopyTo(temppath, overwriteFiles)
                 End If
             Next cFile
 
             ' If copying subdirectories, copy them and their contents to new location.
-            If copySubDirs Then
-                For Each subdir In dirs
-                    Dim temppath As String = Path.Combine(destDirName, subdir.Name)
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs, overwriteFiles)
+            If withSubDirs Then
+                For Each subdir In subdirs
+                    Dim temppath As String = Path.Combine(strDestinationDir, subdir.Name)
+                    DirectoryCopy(subdir.FullName, temppath, withSubDirs, overwriteFiles)
                 Next subdir
             End If
+        End Sub
+
+        Public Shared Sub DirectoryMove( _
+                                       ByVal strSourceDir As String, _
+                                       ByVal strDestinationDir As String, _
+                                       ByVal withSubDirs As Boolean, _
+                                       ByVal overwriteFiles As Boolean)
+
+            If Not Directory.Exists(strSourceDir) Then
+                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+                Exit Sub
+            End If
+
+            If Path.GetPathRoot(strSourceDir).ToLower = Path.GetPathRoot(strDestinationDir).ToLower AndAlso withSubDirs Then
+                If Not Directory.Exists(Directory.GetParent(strDestinationDir).FullName) Then Directory.CreateDirectory(Directory.GetParent(strDestinationDir).FullName)
+                Directory.Move(strSourceDir, strDestinationDir)
+            Else
+                ' Get the subdirectories for the specified directory.
+                Dim dir As DirectoryInfo = New DirectoryInfo(strSourceDir)
+                Dim subdirs As DirectoryInfo() = dir.GetDirectories()
+
+                ' If the destination directory doesn't exist, create it.
+                If Not Directory.Exists(strDestinationDir) Then
+                    Directory.CreateDirectory(strDestinationDir)
+                End If
+
+                ' Get the files in the directory and move them to the new location.
+                Dim files As FileInfo() = dir.GetFiles()
+                For Each cFile In files
+                    Dim temppath As String = Path.Combine(strDestinationDir, cFile.Name)
+                    If Not File.Exists(temppath) OrElse overwriteFiles Then
+                        If File.Exists(temppath) Then File.Delete(temppath)
+                        cFile.MoveTo(temppath)
+                    End If
+                Next
+
+                ' If copying subdirectories, copy them and their contents to new location.
+                If withSubDirs Then
+                    For Each subdir In subdirs
+                        Dim temppath As String = Path.Combine(strDestinationDir, subdir.Name)
+                        DirectoryMove(subdir.FullName, temppath, withSubDirs, overwriteFiles)
+                    Next subdir
+                End If
+
+                If dir.GetFiles.Count = 0 AndAlso dir.GetDirectories.Count = 0 Then
+                    Directory.Delete(dir.FullName)
+                End If
+            End If
+
         End Sub
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
