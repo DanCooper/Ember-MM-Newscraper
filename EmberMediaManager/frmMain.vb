@@ -1815,9 +1815,9 @@ Public Class frmMain
                         If Poster.Image IsNot Nothing Then
                             ResImg = CType(Poster.Image.Clone(), Image)
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
-                            Posters.Add(New MovieInSetPoster With {.MovieTitle = Movie.Movie.Title, .MoviePoster = ResImg})
+                            Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
                         Else
-                            Posters.Add(New MovieInSetPoster With {.MovieTitle = Movie.Movie.Title, .MoviePoster = My.Resources.noposter})
+                            Posters.Add(New MovieInSetPoster With {.MoviePoster = My.Resources.noposter, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
                         End If
                     Next
                 Catch ex As Exception
@@ -1851,7 +1851,7 @@ Public Class frmMain
                     For Each tPoster As MovieInSetPoster In Res.MovieInSetPosters
                         If tPoster IsNot Nothing Then
                             Me.ilMoviesInSet.Images.Add(tPoster.MoviePoster)
-                            Me.lvMoviesInSet.Items.Add(tPoster.MovieTitle, Me.ilMoviesInSet.Images.Count - 1)
+                            Me.lvMoviesInSet.Items.Add(String.Concat(tPoster.MovieTitle, Environment.NewLine, "(", tPoster.MovieYear, ")"), Me.ilMoviesInSet.Images.Count - 1)
                         End If
                     Next
                     Me.lvMoviesInSet.EndUpdate()
@@ -7423,6 +7423,10 @@ doCancel:
                     Me.cmnuMovieSetMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     Me.cmnuMovieSetLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
 
+                    Me.cmnuMovieSetSortMethodMethods.Items.Insert(0, String.Concat(Master.eLang.GetString(701, "Select Sort Method"), "..."))
+                    Me.cmnuMovieSetSortMethodMethods.SelectedItem = String.Concat(Master.eLang.GetString(701, "Select Sort Method"), "...")
+                    Me.cmnuMovieSetSortMethodSet.Enabled = False
+
                 Else
                     Me.cmnuMovieSetReload.Visible = True
                     Me.cmnuMovieSetMark.Visible = True
@@ -7449,6 +7453,9 @@ doCancel:
                     Me.cmnuMovieSetMark.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item("Mark", e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     Me.cmnuMovieSetLock.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
+                    Dim SortMethod As Integer = CInt(Me.dgvMovieSets.Item("SortMethod", e.RowIndex).Value)
+                    Me.cmnuMovieSetSortMethodMethods.Text = DirectCast(CInt(Me.dgvMovieSets.Item("SortMethod", e.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
+                    Me.cmnuMovieSetSortMethodSet.Enabled = False
                 End If
             Else
                 Me.cmnuMovieSet.Enabled = True
@@ -8857,8 +8864,6 @@ doCancel:
 
                     Dim Lang As String = CStr(Me.dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
                     Me.cmnuShowLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
-                    'Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
-                    'Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
                     Me.cmnuShowLanguageSet.Enabled = False
                 End If
             Else
@@ -11605,6 +11610,14 @@ doCancel:
 
     Private Sub cmnuShowLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.SelectedIndexChanged
         Me.cmnuShowLanguageSet.Enabled = True
+    End Sub
+
+    Private Sub cmnuMovieSetSortMethodMethods_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodMethods.DropDown
+        Me.cmnuMovieSetSortMethodMethods.Items.Remove(String.Concat(Master.eLang.GetString(701, "Select Sort Method"), "..."))
+    End Sub
+
+    Private Sub cmnuMovieSetSortMethodMethods_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodMethods.SelectedIndexChanged
+        Me.cmnuMovieSetSortMethodSet.Enabled = True
     End Sub
 
     Private Sub lblFilterGenreClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterGenresClose_Movies.Click
@@ -17840,6 +17853,16 @@ doCancel:
             Me.cmnuShowLanguageLanguages.Items.Clear()
             Me.cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
+            'Me.cmnuMovieSetSortMethodMethods.Items.Clear()
+            'Me.cmnuMovieSetSortMethodMethods.Items.AddRange((Enums.SortMethod_MovieSet).Year.ToArray)
+
+            'Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
+            'SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
+            'SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Year)
+            'Me.cmnuMovieSetSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
+            'Me.cmnuMovieSetSortMethodMethods.ComboBox.DisplayMember = "Key"
+            'Me.cmnuMovieSetSortMethodMethods.ComboBox.ValueMember = "Value"
+
             Me.listViews_Movies.Clear()
             Me.listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
             For Each cList As String In Master.DB.GetViewList(Enums.Content_Type.Movie)
@@ -20312,21 +20335,13 @@ doCancel:
 
 #Region "Fields"
 
-        Private _movietitle As String
         Private _movieposter As Image
+        Private _movietitle As String
+        Private _movieyear As String
 
 #End Region 'Fields
 
 #Region "Properties"
-
-        Public Property MovieTitle() As String
-            Get
-                Return Me._movietitle
-            End Get
-            Set(ByVal value As String)
-                Me._movietitle = value
-            End Set
-        End Property
 
         Public Property MoviePoster() As Image
             Get
@@ -20337,18 +20352,36 @@ doCancel:
             End Set
         End Property
 
+        Public Property MovieTitle() As String
+            Get
+                Return Me._movietitle
+            End Get
+            Set(ByVal value As String)
+                Me._movietitle = value
+            End Set
+        End Property
+
+        Public Property MovieYear() As String
+            Get
+                Return Me._movieyear
+            End Get
+            Set(ByVal value As String)
+                Me._movieyear = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub New()
-            _movietitle = String.Empty
-            _movieposter = Nothing
+            Me.Clear()
         End Sub
 
         Public Sub Clear()
-            _movietitle = String.Empty
             _movieposter = Nothing
+            _movietitle = String.Empty
+            _movieyear = String.Empty
         End Sub
 
 #End Region 'Methods

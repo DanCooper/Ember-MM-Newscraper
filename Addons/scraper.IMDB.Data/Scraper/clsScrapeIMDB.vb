@@ -31,6 +31,7 @@ Namespace IMDB
     Public Class MovieSearchResults
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _ExactMatches As New List(Of MediaContainers.Movie)
         Private _PartialMatches As New List(Of MediaContainers.Movie)
@@ -104,6 +105,7 @@ Namespace IMDB
     Public Class Scraper
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
 
@@ -167,7 +169,6 @@ Namespace IMDB
                 Threading.Thread.Sleep(50)
             End While
         End Sub
-
         ''' <summary>
         '''  Scrape MovieDetails from IMDB
         ''' </summary>

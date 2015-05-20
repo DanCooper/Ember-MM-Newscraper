@@ -739,7 +739,18 @@ Public Class dlgEditMovieSet
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             Dim tmpMovie As New Structures.DBMovie
             Dim iProg As Integer = 0
-            SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY SetOrder ASC;")
+            If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
+                If Master.currMovieSet.SortMethod = Enums.SortMethod_MovieSet.Year Then
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ", _
+                                                           "WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY movie.Year;")
+                ElseIf Master.currMovieSet.SortMethod = Enums.SortMethod_MovieSet.Title Then
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
+                                                           "WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY movielist.SortedTitle;")
+                End If
+            Else
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets ", _
+                                                       "WHERE SetID = ", Master.currMovieSet.ID, " ORDER BY SetOrder;")
+            End If
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
@@ -747,7 +758,7 @@ Public Class dlgEditMovieSet
                         tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                             Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
-                            MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(StringUtils.SortTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
+                            MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
                         End If
                         Me.bwLoadMoviesInSet.ReportProgress(iProg, tmpMovie.Movie.Title)
                         iProg += 1
@@ -812,7 +823,9 @@ Public Class dlgEditMovieSet
         Me.lvMoviesInSet.SuspendLayout()
 
         Me.lvMoviesInSet.Items.Clear()
-        Me.MoviesInSet.Sort()
+        If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets Then
+            Me.MoviesInSet.Sort()
+        End If
 
         Dim lvItem As ListViewItem
         Me.lvMoviesInSet.Items.Clear()
@@ -912,6 +925,12 @@ Public Class dlgEditMovieSet
         Me.pbMovieLandscape.AllowDrop = True
         Me.pbMoviePoster.AllowDrop = True
 
+        If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets Then
+            Me.btnMovieDown.Visible = True
+            Me.btnMovieUp.Visible = True
+            Me.colID.Width = 25
+        End If
+
         Me.SetUp()
 
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -945,6 +964,8 @@ Public Class dlgEditMovieSet
 
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         With Me
+
+            Me.cbMovieSorting.SelectedIndex = Master.currMovieSet.SortMethod
 
             Me.chkMark.Checked = Master.currMovieSet.IsMark
 
@@ -1340,6 +1361,7 @@ Public Class dlgEditMovieSet
             End If
 
             Master.currMovieSet.IsMark = Me.chkMark.Checked
+            Master.currMovieSet.SortMethod = DirectCast(Me.cbMovieSorting.SelectedIndex, Enums.SortMethod_MovieSet)
 
             If Not String.IsNullOrEmpty(.txtTitle.Text) Then
                 Master.currMovieSet.ListTitle = StringUtils.SortTokens_MovieSet(.txtTitle.Text.Trim)
@@ -1445,6 +1467,7 @@ Public Class dlgEditMovieSet
         Me.btnSetMoviePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
         Me.lblCollectionID.Text = Master.eLang.GetString(1206, "Collection ID:")
+        Me.lblMovieSorting.Text = String.Concat(Master.eLang.GetString(665, "Movies sorted by"), ":")
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")
         Me.lblTopTitle.Text = Master.eLang.GetString(1131, "Edit Movieset")
@@ -1457,6 +1480,9 @@ Public Class dlgEditMovieSet
         Me.tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         Me.tpMovies.Text = Master.eLang.GetString(36, "Movies")
         Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
+
+        Me.cbMovieSorting.Items.Clear()
+        Me.cbMovieSorting.Items.AddRange(New String() {Master.eLang.GetString(278, "Year"), Master.eLang.GetString(21, "Title")})
     End Sub
 
     Private Sub txtTitle_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged

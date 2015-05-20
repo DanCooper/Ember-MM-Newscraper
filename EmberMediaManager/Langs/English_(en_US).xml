@@ -663,7 +663,7 @@
   <string id="662">Remove Language</string>
   <string id="663">Edit Show</string>
   <string id="664">Edit the details for the selected show.</string>
-  <string id="665"></string>
+  <string id="665">Movies sorted by</string>
   <string id="666">TV Show Theme</string>
   <string id="667">Episode Theme</string>
   <string id="668">Clean database after updating library</string>
@@ -699,7 +699,7 @@
   <string id="698">by Date</string>
   <string id="699">Regex</string>
   <string id="700">TV Show</string>
-  <string id="701"></string>
+  <string id="701">Select Sort Method</string>
   <string id="702">Change</string>
   <string id="703">Whould you like to remove it from the library?</string>
   <string id="704">Genres Filter</string>

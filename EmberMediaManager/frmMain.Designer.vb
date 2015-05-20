@@ -266,6 +266,9 @@ Partial Class frmMain
         Me.cmnuMovieSetReload = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetMark = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetLock = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetSortMethod = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetSortMethodMethods = New System.Windows.Forms.ToolStripComboBox()
+        Me.cmnuMovieSetSortMethodSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieSetNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetEdit = New System.Windows.Forms.ToolStripMenuItem()
@@ -3730,9 +3733,9 @@ Partial Class frmMain
         '
         'cmnuMovieSet
         '
-        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload, Me.cmnuMovieSetMark, Me.cmnuMovieSetLock, Me.cmnuMovieSetSep2, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetRemove, Me.cmnuMovieSetSep3, Me.cmnuMovieSetRescrape})
+        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload, Me.cmnuMovieSetMark, Me.cmnuMovieSetLock, Me.cmnuMovieSetSortMethod, Me.cmnuMovieSetSep2, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetRemove, Me.cmnuMovieSetSep3, Me.cmnuMovieSetRescrape})
         Me.cmnuMovieSet.Name = "cmnuMovieSets"
-        Me.cmnuMovieSet.Size = New System.Drawing.Size(222, 198)
+        Me.cmnuMovieSet.Size = New System.Drawing.Size(222, 242)
         '
         'cmnuMovieSetTitle
         '
@@ -3770,6 +3773,26 @@ Partial Class frmMain
         Me.cmnuMovieSetLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L),System.Windows.Forms.Keys)
         Me.cmnuMovieSetLock.Size = New System.Drawing.Size(221, 22)
         Me.cmnuMovieSetLock.Text = "Lock"
+        '
+        'cmnuMovieSetSortMethod
+        '
+        Me.cmnuMovieSetSortMethod.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetSortMethodMethods, Me.cmnuMovieSetSortMethodSet})
+        Me.cmnuMovieSetSortMethod.Name = "cmnuMovieSetSortMethod"
+        Me.cmnuMovieSetSortMethod.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuMovieSetSortMethod.Text = "Change Movie Sorting"
+        '
+        'cmnuMovieSetSortMethodMethods
+        '
+        Me.cmnuMovieSetSortMethodMethods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmnuMovieSetSortMethodMethods.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+        Me.cmnuMovieSetSortMethodMethods.Name = "cmnuMovieSetSortMethodMethods"
+        Me.cmnuMovieSetSortMethodMethods.Size = New System.Drawing.Size(121, 23)
+        '
+        'cmnuMovieSetSortMethodSet
+        '
+        Me.cmnuMovieSetSortMethodSet.Name = "cmnuMovieSetSortMethodSet"
+        Me.cmnuMovieSetSortMethodSet.Size = New System.Drawing.Size(181, 22)
+        Me.cmnuMovieSetSortMethodSet.Text = "Set"
         '
         'cmnuMovieSetSep2
         '
@@ -13848,4 +13871,7 @@ End Sub
     Friend WithEvents gbFilterSorting_Shows As System.Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnFilterSortTitle_Shows As System.Windows.Forms.Button
+    Friend WithEvents cmnuMovieSetSortMethod As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieSetSortMethodMethods As System.Windows.Forms.ToolStripComboBox
+    Friend WithEvents cmnuMovieSetSortMethodSet As System.Windows.Forms.ToolStripMenuItem
 End Class

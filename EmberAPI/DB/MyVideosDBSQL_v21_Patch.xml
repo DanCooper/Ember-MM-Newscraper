@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v21_to_v22">
+    <command type="DB">
+      <description>add SortMethod to sets</description>
+      <execute>
+        ALTER TABLE sets
+        ADD COLUMN SortMethod integer NOT NULL DEFAULT 0;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

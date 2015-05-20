@@ -119,6 +119,8 @@ Partial Class dlgEditMovieSet
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Movies = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Movies = New System.Windows.Forms.Timer(Me.components)
+        Me.lblMovieSorting = New System.Windows.Forms.Label()
+        Me.cbMovieSorting = New System.Windows.Forms.ComboBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
@@ -214,7 +216,7 @@ Partial Class dlgEditMovieSet
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(310, 592)
+        Me.btnRescrape.Location = New System.Drawing.Point(390, 592)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 7
@@ -999,20 +1001,22 @@ Partial Class dlgEditMovieSet
         '
         Me.btnMovieDown.Enabled = False
         Me.btnMovieDown.Image = CType(resources.GetObject("btnMovieDown.Image"), System.Drawing.Image)
-        Me.btnMovieDown.Location = New System.Drawing.Point(148, 268)
+        Me.btnMovieDown.Location = New System.Drawing.Point(136, 268)
         Me.btnMovieDown.Name = "btnMovieDown"
         Me.btnMovieDown.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieDown.TabIndex = 34
         Me.btnMovieDown.UseVisualStyleBackColor = True
+        Me.btnMovieDown.Visible = False
         '
         'btnMovieUp
         '
         Me.btnMovieUp.Image = CType(resources.GetObject("btnMovieUp.Image"), System.Drawing.Image)
-        Me.btnMovieUp.Location = New System.Drawing.Point(115, 268)
+        Me.btnMovieUp.Location = New System.Drawing.Point(107, 268)
         Me.btnMovieUp.Name = "btnMovieUp"
         Me.btnMovieUp.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieUp.TabIndex = 33
         Me.btnMovieUp.UseVisualStyleBackColor = True
+        Me.btnMovieUp.Visible = False
         '
         'btnMovieRemove
         '
@@ -1049,12 +1053,12 @@ Partial Class dlgEditMovieSet
         'colID
         '
         Me.colID.Text = "ID"
-        Me.colID.Width = 25
+        Me.colID.Width = 0
         '
         'colOrdering
         '
         Me.colOrdering.Text = "Ordering"
-        Me.colOrdering.Width = 25
+        Me.colOrdering.Width = 0
         '
         'colMovie
         '
@@ -1218,12 +1222,34 @@ Partial Class dlgEditMovieSet
         '
         Me.tmrSearchWait_Movies.Interval = 250
         '
+        'lblMovieSorting
+        '
+        Me.lblMovieSorting.AutoSize = True
+        Me.lblMovieSorting.Location = New System.Drawing.Point(139, 599)
+        Me.lblMovieSorting.Name = "lblMovieSorting"
+        Me.lblMovieSorting.Size = New System.Drawing.Size(97, 13)
+        Me.lblMovieSorting.TabIndex = 9
+        Me.lblMovieSorting.Text = "Movies sorted by:"
+        Me.lblMovieSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'cbMovieSorting
+        '
+        Me.cbMovieSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieSorting.FormattingEnabled = True
+        Me.cbMovieSorting.Location = New System.Drawing.Point(249, 594)
+        Me.cbMovieSorting.Name = "cbMovieSorting"
+        Me.cbMovieSorting.Size = New System.Drawing.Size(92, 21)
+        Me.cbMovieSorting.TabIndex = 10
+        '
         'dlgEditMovieSet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 621)
+        Me.Controls.Add(Me.lblMovieSorting)
+        Me.Controls.Add(Me.cbMovieSorting)
         Me.Controls.Add(Me.chkMark)
         Me.Controls.Add(Me.pnlSaving)
         Me.Controls.Add(Me.btnRescrape)
@@ -1361,5 +1387,7 @@ Partial Class dlgEditMovieSet
     Friend WithEvents tmrKeyBuffer As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch_Movies As System.Windows.Forms.Timer
     Friend WithEvents tmrSearchWait_Movies As System.Windows.Forms.Timer
+    Friend WithEvents lblMovieSorting As System.Windows.Forms.Label
+    Friend WithEvents cbMovieSorting As System.Windows.Forms.ComboBox
 
 End Class

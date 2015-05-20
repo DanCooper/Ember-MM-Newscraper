@@ -558,6 +558,11 @@ End Class 'Containers
 Public Class Enums
 
 #Region "Enumerations"
+
+    Public Enum SortMethod_MovieSet As Integer
+        Year = 0    'default in Kodi
+        Title = 1
+    End Enum
     ''' <summary>
     ''' 0 results in using the current datetime when adding a video
     ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
@@ -1965,6 +1970,7 @@ Public Class Structures
         Dim PosterPath As String
         Dim MovieSet As MediaContainers.MovieSet
         Dim Movies As List(Of Structures.DBMovie)
+        Dim SortMethod As Enums.SortMethod_MovieSet
     End Structure
 
     ''' <summary>

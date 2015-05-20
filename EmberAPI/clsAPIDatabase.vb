@@ -685,7 +685,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 21
+        Dim MyVideosDBVersion As Integer = 22
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1578,7 +1578,7 @@ Public Class Database
             _moviesetDB.ID = MovieSetID
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT idSet, ListTitle, NfoPath, ", _
-                                                       "TMDBColID, Plot, SetName, New, Mark, Lock FROM sets WHERE idSet = ", MovieSetID, ";")
+                                                       "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod FROM sets WHERE idSet = ", MovieSetID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1595,6 +1595,7 @@ Public Class Database
 
                         _moviesetDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                         _moviesetDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
+                        _moviesetDB.SortMethod = DirectCast(Convert.ToInt32(SQLreader("SortMethod")), Enums.SortMethod_MovieSet)
                         _moviesetDB.MovieSet = New MediaContainers.MovieSet
                         With _moviesetDB.MovieSet
                             If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .ID = SQLreader("TMDBColID").ToString
@@ -1607,8 +1608,18 @@ Public Class Database
 
             _moviesetDB.Movies = New List(Of Structures.DBMovie)
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID , SetOrder FROM MoviesSets ", _
-                            "WHERE SetID = ", _moviesetDB.ID, " ORDER BY SetOrder;")
+                If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
+                    If _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Year Then
+                        SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ", _
+                                                               "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movie.Year;")
+                    ElseIf _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Title Then
+                        SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
+                                                               "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movielist.SortedTitle;")
+                    End If
+                Else
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets ", _
+                                                           "WHERE SetID = ", _moviesetDB.ID, " ORDER BY SetOrder;")
+                End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim movie As Structures.DBMovie
                     While SQLreader.Read
@@ -3138,13 +3149,13 @@ Public Class Database
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
                      "ListTitle, NfoPath, ", _
-                     "TMDBColID, Plot, SetName, New, Mark, Lock", _
-                     ") VALUES (?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
                      "idSet, ListTitle, NfoPath, ", _
-                     "TMDBColID, Plot, SetName, New, Mark, Lock", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                     Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "idSet")
                     parMovieSetID.Value = _moviesetDB.ID
                 End If
@@ -3156,6 +3167,7 @@ Public Class Database
                 Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
                 Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
+                Dim parSortMethod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortMethod", DbType.Int16, 0, "SortMethod")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
@@ -3167,6 +3179,7 @@ Public Class Database
                 parNew.Value = IsNew
                 parMark.Value = _moviesetDB.IsMark
                 parLock.Value = _moviesetDB.IsLock
+                parSortMethod.Value = _moviesetDB.SortMethod
 
                 parListTitle.Value = _moviesetDB.ListTitle
                 parSetName.Value = _moviesetDB.MovieSet.Title
