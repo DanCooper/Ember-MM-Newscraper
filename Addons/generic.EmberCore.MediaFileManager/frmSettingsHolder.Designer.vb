@@ -48,6 +48,9 @@ Partial Class frmSettingsHolder
         Me.btnTeraCopyPathBrowse = New System.Windows.Forms.Button()
         Me.lblTeraCopyLink = New System.Windows.Forms.LinkLabel()
         Me.ofdBrowse = New System.Windows.Forms.OpenFileDialog()
+        Me.lblType = New System.Windows.Forms.Label()
+        Me.cbType = New System.Windows.Forms.ComboBox()
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -59,7 +62,7 @@ Partial Class frmSettingsHolder
         '
         'lvPaths
         '
-        Me.lvPaths.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.lvPaths.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
         Me.tblSettingsMain.SetColumnSpan(Me.lvPaths, 4)
         Me.lvPaths.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvPaths.FullRowSelect = True
@@ -78,7 +81,7 @@ Partial Class frmSettingsHolder
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Path"
-        Me.ColumnHeader2.Width = 329
+        Me.ColumnHeader2.Width = 270
         '
         'lblName
         '
@@ -95,7 +98,7 @@ Partial Class frmSettingsHolder
         '
         Me.lblPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblPath.AutoSize = True
-        Me.lblPath.Location = New System.Drawing.Point(3, 286)
+        Me.lblPath.Location = New System.Drawing.Point(3, 313)
         Me.lblPath.Name = "lblPath"
         Me.lblPath.Size = New System.Drawing.Size(30, 13)
         Me.lblPath.TabIndex = 7
@@ -108,14 +111,14 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.SetColumnSpan(Me.txtName, 2)
         Me.txtName.Location = New System.Drawing.Point(45, 254)
         Me.txtName.Name = "txtName"
-        Me.txtName.Size = New System.Drawing.Size(100, 22)
+        Me.txtName.Size = New System.Drawing.Size(121, 22)
         Me.txtName.TabIndex = 6
         '
         'txtPath
         '
         Me.txtPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.tblSettingsMain.SetColumnSpan(Me.txtPath, 2)
-        Me.txtPath.Location = New System.Drawing.Point(45, 282)
+        Me.txtPath.Location = New System.Drawing.Point(45, 309)
         Me.txtPath.Name = "txtPath"
         Me.txtPath.Size = New System.Drawing.Size(300, 22)
         Me.txtPath.TabIndex = 8
@@ -123,7 +126,7 @@ Partial Class frmSettingsHolder
         'btnPathBrowse
         '
         Me.btnPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnPathBrowse.Location = New System.Drawing.Point(348, 283)
+        Me.btnPathBrowse.Location = New System.Drawing.Point(348, 310)
         Me.btnPathBrowse.Margin = New System.Windows.Forms.Padding(0)
         Me.btnPathBrowse.Name = "btnPathBrowse"
         Me.btnPathBrowse.Size = New System.Drawing.Size(24, 20)
@@ -239,19 +242,22 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.Controls.Add(Me.lvPaths, 0, 0)
-        Me.tblSettingsMain.Controls.Add(Me.lblPath, 0, 3)
-        Me.tblSettingsMain.Controls.Add(Me.txtPath, 1, 3)
+        Me.tblSettingsMain.Controls.Add(Me.lblPath, 0, 4)
+        Me.tblSettingsMain.Controls.Add(Me.txtPath, 1, 4)
         Me.tblSettingsMain.Controls.Add(Me.lblName, 0, 2)
         Me.tblSettingsMain.Controls.Add(Me.txtName, 1, 2)
         Me.tblSettingsMain.Controls.Add(Me.btnPathRemove, 3, 1)
         Me.tblSettingsMain.Controls.Add(Me.btnPathEdit, 2, 1)
         Me.tblSettingsMain.Controls.Add(Me.btnPathNew, 1, 1)
-        Me.tblSettingsMain.Controls.Add(Me.btnPathBrowse, 3, 3)
-        Me.tblSettingsMain.Controls.Add(Me.gbTeraCopy, 0, 4)
+        Me.tblSettingsMain.Controls.Add(Me.btnPathBrowse, 3, 4)
+        Me.tblSettingsMain.Controls.Add(Me.gbTeraCopy, 0, 5)
+        Me.tblSettingsMain.Controls.Add(Me.lblType, 0, 3)
+        Me.tblSettingsMain.Controls.Add(Me.cbType, 1, 3)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 6
+        Me.tblSettingsMain.RowCount = 7
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -267,7 +273,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.SetColumnSpan(Me.gbTeraCopy, 4)
         Me.gbTeraCopy.Controls.Add(Me.TableLayoutPanel1)
         Me.gbTeraCopy.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTeraCopy.Location = New System.Drawing.Point(3, 310)
+        Me.gbTeraCopy.Location = New System.Drawing.Point(3, 337)
         Me.gbTeraCopy.Name = "gbTeraCopy"
         Me.gbTeraCopy.Size = New System.Drawing.Size(499, 92)
         Me.gbTeraCopy.TabIndex = 10
@@ -360,6 +366,31 @@ Partial Class frmSettingsHolder
         Me.lblTeraCopyLink.UseCompatibleTextRendering = True
         Me.lblTeraCopyLink.VisitedLinkColor = System.Drawing.Color.Blue
         '
+        'lblType
+        '
+        Me.lblType.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblType.AutoSize = True
+        Me.lblType.Location = New System.Drawing.Point(3, 286)
+        Me.lblType.Name = "lblType"
+        Me.lblType.Size = New System.Drawing.Size(30, 13)
+        Me.lblType.TabIndex = 5
+        Me.lblType.Text = "Type"
+        Me.lblType.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'cbType
+        '
+        Me.tblSettingsMain.SetColumnSpan(Me.cbType, 2)
+        Me.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbType.FormattingEnabled = True
+        Me.cbType.Location = New System.Drawing.Point(45, 282)
+        Me.cbType.Name = "cbType"
+        Me.cbType.Size = New System.Drawing.Size(121, 21)
+        Me.cbType.TabIndex = 11
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Type"
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -419,5 +450,8 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnTeraCopyPathBrowse As System.Windows.Forms.Button
     Friend WithEvents lblTeraCopyLink As System.Windows.Forms.LinkLabel
     Friend WithEvents ofdBrowse As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lblType As System.Windows.Forms.Label
+    Friend WithEvents cbType As System.Windows.Forms.ComboBox
 
 End Class

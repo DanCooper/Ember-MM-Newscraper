@@ -886,8 +886,8 @@
   <string id="885"></string>
   <string id="886">Downloading {0}</string>
   <string id="887">Preparing images...</string>
-  <string id="888"></string>
-  <string id="889"></string>
+  <string id="888">Move {0} TV Show(s) To {1}</string>
+  <string id="889">Copy {0} TV Show(s) To {1}</string>
   <string id="890">Check All Thumb</string>
   <string id="891">Check All Mid</string>
   <string id="892">Check All Original</string>
@@ -897,8 +897,8 @@
   <string id="896">Multiple</string>
   <string id="897">Original</string>
   <string id="898">Cover</string>
-  <string id="899"></string>
-  <string id="900"></string>
+  <string id="899">Moving TV Show</string>
+  <string id="900">Copying TV Show</string>
   <string id="901">Original ({0}x{1})</string>
   <string id="902">Cover ({0}x{1})</string>
   <string id="903">Medium ({0}x{1})</string>
