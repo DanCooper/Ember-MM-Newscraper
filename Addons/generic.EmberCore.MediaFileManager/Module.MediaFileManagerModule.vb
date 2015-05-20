@@ -114,25 +114,25 @@ Public Class FileManagerExternalModule
 
 #Region "Methods"
 
-    Public Shared Function MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String) As Boolean
-        Try
-            Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-                Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                    Dim StreamBuffer(4096) As Byte
-                    Dim nbytes As Integer
-                    Do
-                        nbytes = SourceStream.Read(StreamBuffer, 0, 4096)
-                        DestinationStream.Write(StreamBuffer, 0, nbytes)
-                    Loop While nbytes > 0
-                    StreamBuffer = Nothing
-                End Using
-            End Using
-        Catch ex As Exception
-            Return False
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-        Return True
-    End Function
+    'Public Shared Function MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String) As Boolean
+    '    Try
+    '        Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
+    '            Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
+    '                Dim StreamBuffer(4096) As Byte
+    '                Dim nbytes As Integer
+    '                Do
+    '                    nbytes = SourceStream.Read(StreamBuffer, 0, 4096)
+    '                    DestinationStream.Write(StreamBuffer, 0, nbytes)
+    '                Loop While nbytes > 0
+    '                StreamBuffer = Nothing
+    '            End Using
+    '        End Using
+    '    Catch ex As Exception
+    '        Return False
+    '        logger.Error(New StackFrame().GetMethod().Name, ex)
+    '    End Try
+    '    Return True
+    'End Function
 
     Public Sub LoadSettings()
         eSettings.ModuleSettings.Clear()
@@ -181,8 +181,10 @@ Public Class FileManagerExternalModule
 
     Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        withErrors = False
-        _DirectoryCopy(Args.src, Args.dst, Args.doMove)
+        If Not Args.src = Args.dst Then
+            withErrors = False
+            DirectoryCopyMove(Args.src, Args.dst, Args.doMove)
+        End If
     End Sub
 
     Sub DirectoryCopy(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
@@ -214,7 +216,6 @@ Public Class FileManagerExternalModule
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
-            If Not withErrors Then Directory.Delete(src, True)
         End Using
     End Sub
 
@@ -270,10 +271,10 @@ Public Class FileManagerExternalModule
         PopulateFolders(cmnuMediaMove_Shows, Enums.Content_Type.Show)
         PopulateFolders(cmnuMediaCopy_Movies, Enums.Content_Type.Movie)
         PopulateFolders(cmnuMediaCopy_Shows, Enums.Content_Type.Show)
-        SetToolsStripItemVisibility(cmnuMedia_Movies, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(cmnuMedia_Shows, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(cmnuSep_Movies, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(cmnuSep_Shows, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuMedia_Movies, True)
+        SetToolsStripItemVisibility(cmnuMedia_Shows, True)
+        SetToolsStripItemVisibility(cmnuSep_Movies, True)
+        SetToolsStripItemVisibility(cmnuSep_Shows, True)
     End Sub
 
     Public Sub SetToolsStripItemVisibility(control As System.Windows.Forms.ToolStripItem, value As Boolean)
@@ -479,10 +480,10 @@ Public Class FileManagerExternalModule
             mnu.DropDownItems.Add(i)
         Next
 
-        SetToolsStripItemVisibility(cmnuSep_Movies, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(cmnuSep_Shows, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(cmnuMedia_Movies, True) '(eSettings.ModuleSettings.Count > 0))
-        SetToolsStripItemVisibility(cmnuMedia_Shows, True) '(eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(cmnuSep_Movies, True)
+        SetToolsStripItemVisibility(cmnuSep_Shows, True)
+        SetToolsStripItemVisibility(cmnuMedia_Movies, True)
+        SetToolsStripItemVisibility(cmnuMedia_Shows, True)
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
@@ -512,55 +513,12 @@ Public Class FileManagerExternalModule
         End If
     End Sub
 
-    Private Sub _DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String, ByVal doMove As Boolean)
-        Dim dir As New DirectoryInfo(sourceDirName)
-        ' If the source directory does not exist, throw an exception.
-        If Not dir.Exists Then
-            'Throw New DirectoryNotFoundException(Master.eLang.GetString(364, "Source directory does not exist or could not be found: ") + sourceDirName)
+    Private Sub DirectoryCopyMove(ByVal sourceDirName As String, ByVal destDirName As String, ByVal doMove As Boolean)
+        If Not doMove Then
+            FileUtils.Common.DirectoryCopy(sourceDirName, destDirName, True, True)
+        Else
+            FileUtils.Common.DirectoryMove(sourceDirName, destDirName, True, True)
         End If
-        ' If the destination directory does not exist, create it.
-        If Not Directory.Exists(destDirName) Then
-            Directory.CreateDirectory(destDirName)
-        End If
-        ' Get the file contents of the directory to copy.
-        Dim Files As New List(Of FileInfo)
-        Dim Directories As New List(Of DirectoryInfo)
-
-        Files.AddRange(dir.GetFiles)
-        Directories.AddRange(dir.GetDirectories)
-
-        For Each sDirectory As DirectoryInfo In Directories
-            If doMove Then
-                Try
-                    _DirectoryCopy(sDirectory.FullName, Path.Combine(destDirName, sDirectory.Name), doMove)
-                Catch ex As Exception
-                    withErrors = True
-                End Try
-            End If
-        Next
-
-        For Each sFile As FileInfo In Files
-            If doMove Then
-                Try
-                    File.Move(sFile.FullName, Path.Combine(destDirName, sFile.Name))
-                Catch ex As Exception
-                    If Not MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name)) Then
-                        withErrors = True
-                    End If
-                End Try
-            Else
-                Try
-                    File.Copy(sFile.FullName, Path.Combine(destDirName, sFile.Name))
-                Catch ex As Exception
-                    If Not MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name)) Then
-                        withErrors = True
-                    End If
-                End Try
-            End If
-        Next
-
-        Files = Nothing
-        dir = Nothing
     End Sub
 
 #End Region 'Methods
