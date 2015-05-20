@@ -1702,8 +1702,6 @@ Public Class Functions
 
         End With
     End Sub
-
-
     ''' <summary>
     ''' This method launches the user's default web browser to the supplied destination
     ''' </summary>
@@ -1729,10 +1727,20 @@ Public Class Functions
                     logger.Error("Destination is a file, which is not permitted for security reasons <{0}>", Destination)
                     Return False
                 Else
-                    Dim localFileName = uriDestination.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped)
-                    If (Not File.Exists(localFileName)) Then
+                    If (Not File.Exists(uriDestination.LocalPath)) Then
                         logger.Error("Destination is a file, but it does not exist <{0}>", Destination)
                         Return False
+                    Else
+                        If Master.isWindows Then
+                            Process.Start(uriDestination.LocalPath)
+                        Else
+                            Using Explorer As New Process
+                                Explorer.StartInfo.FileName = "xdg-open"
+                                Explorer.StartInfo.Arguments = uriDestination.LocalPath
+                                Explorer.Start()
+                            End Using
+                        End If
+                        Return True
                     End If
                 End If
             End If
