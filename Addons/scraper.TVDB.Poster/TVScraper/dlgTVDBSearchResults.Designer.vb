@@ -37,28 +37,33 @@
         Me.colLev = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSLang = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.pnlLoading = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTopInfo = New System.Windows.Forms.Label()
+        Me.lblTopTitle = New System.Windows.Forms.Label()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.btnVerify = New System.Windows.Forms.Button()
         Me.chkManual = New System.Windows.Forms.CheckBox()
         Me.txtTVDBID = New System.Windows.Forms.TextBox()
+        Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlMain = New System.Windows.Forms.Panel()
+        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
+        Me.lblSearching = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ProgressBar = New System.Windows.Forms.ToolStripProgressBar()
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlLoading.SuspendLayout()
         Me.pnlTop.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tblMain.SuspendLayout()
+        Me.pnlMain.SuspendLayout()
+        Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
+        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(485, 335)
+        Me.OK_Button.Location = New System.Drawing.Point(512, 274)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -66,8 +71,9 @@
         '
         'Cancel_Button
         '
+        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(558, 335)
+        Me.Cancel_Button.Location = New System.Drawing.Point(585, 274)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -75,8 +81,12 @@
         '
         'pbBanner
         '
-        Me.pbBanner.Location = New System.Drawing.Point(325, 69)
+        Me.tblMain.SetColumnSpan(Me.pbBanner, 4)
+        Me.pbBanner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pbBanner.Location = New System.Drawing.Point(352, 3)
+        Me.pbBanner.MinimumSize = New System.Drawing.Size(300, 55)
         Me.pbBanner.Name = "pbBanner"
+        Me.tblMain.SetRowSpan(Me.pbBanner, 2)
         Me.pbBanner.Size = New System.Drawing.Size(300, 55)
         Me.pbBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbBanner.TabIndex = 3
@@ -84,65 +94,74 @@
         '
         'lblTitle
         '
+        Me.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTitle.AutoSize = True
+        Me.tblMain.SetColumnSpan(Me.lblTitle, 4)
         Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTitle.Location = New System.Drawing.Point(325, 132)
+        Me.lblTitle.Location = New System.Drawing.Point(352, 68)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(300, 19)
+        Me.lblTitle.Size = New System.Drawing.Size(39, 16)
         Me.lblTitle.TabIndex = 9
-        Me.lblTitle.Visible = False
+        Me.lblTitle.Text = "Title"
         '
         'lblAiredHeader
         '
+        Me.lblAiredHeader.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblAiredHeader.AutoSize = True
         Me.lblAiredHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAiredHeader.Location = New System.Drawing.Point(325, 161)
+        Me.lblAiredHeader.Location = New System.Drawing.Point(352, 94)
         Me.lblAiredHeader.Name = "lblAiredHeader"
         Me.lblAiredHeader.Size = New System.Drawing.Size(38, 13)
         Me.lblAiredHeader.TabIndex = 10
         Me.lblAiredHeader.Text = "Aired:"
-        Me.lblAiredHeader.Visible = False
         '
         'lblAired
         '
+        Me.lblAired.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblAired.AutoSize = True
-        Me.lblAired.Location = New System.Drawing.Point(387, 161)
+        Me.tblMain.SetColumnSpan(Me.lblAired, 2)
+        Me.lblAired.Location = New System.Drawing.Point(441, 94)
         Me.lblAired.Name = "lblAired"
         Me.lblAired.Size = New System.Drawing.Size(63, 13)
         Me.lblAired.TabIndex = 12
         Me.lblAired.Text = "00/00/0000"
-        Me.lblAired.Visible = False
         '
         'lblPlotHeader
         '
+        Me.lblPlotHeader.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblPlotHeader.AutoSize = True
         Me.lblPlotHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPlotHeader.Location = New System.Drawing.Point(325, 189)
+        Me.lblPlotHeader.Location = New System.Drawing.Point(352, 114)
         Me.lblPlotHeader.Name = "lblPlotHeader"
         Me.lblPlotHeader.Size = New System.Drawing.Size(83, 13)
         Me.lblPlotHeader.TabIndex = 13
         Me.lblPlotHeader.Text = "Plot Summary:"
-        Me.lblPlotHeader.Visible = False
         '
         'txtOutline
         '
         Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtOutline.Location = New System.Drawing.Point(325, 205)
+        Me.tblMain.SetColumnSpan(Me.txtOutline, 4)
+        Me.txtOutline.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtOutline.Location = New System.Drawing.Point(352, 134)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
-        Me.txtOutline.Size = New System.Drawing.Size(300, 127)
+        Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtOutline.Size = New System.Drawing.Size(300, 134)
         Me.txtOutline.TabIndex = 14
         Me.txtOutline.TabStop = False
-        Me.txtOutline.Visible = False
         '
         'lvSearchResults
         '
         Me.lvSearchResults.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colLang, Me.colLev, Me.colID, Me.colSLang})
+        Me.tblMain.SetColumnSpan(Me.lvSearchResults, 5)
+        Me.lvSearchResults.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvSearchResults.FullRowSelect = True
         Me.lvSearchResults.HideSelection = False
-        Me.lvSearchResults.Location = New System.Drawing.Point(3, 96)
+        Me.lvSearchResults.Location = New System.Drawing.Point(3, 32)
         Me.lvSearchResults.MultiSelect = False
         Me.lvSearchResults.Name = "lvSearchResults"
-        Me.lvSearchResults.Size = New System.Drawing.Size(316, 236)
+        Me.tblMain.SetRowSpan(Me.lvSearchResults, 5)
+        Me.lvSearchResults.Size = New System.Drawing.Size(343, 236)
         Me.lvSearchResults.TabIndex = 5
         Me.lvSearchResults.UseCompatibleStateImageBehavior = False
         Me.lvSearchResults.View = System.Windows.Forms.View.Details
@@ -169,88 +188,57 @@
         '
         Me.colSLang.Width = 0
         '
-        'pnlLoading
-        '
-        Me.pnlLoading.BackColor = System.Drawing.Color.White
-        Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlLoading.Controls.Add(Me.Label3)
-        Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(380, 154)
-        Me.pnlLoading.Name = "pnlLoading"
-        Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
-        Me.pnlLoading.TabIndex = 11
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(3, 10)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(98, 13)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Searching TVDB..."
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 1
-        '
         'pnlTop
         '
         Me.pnlTop.BackColor = System.Drawing.Color.LightSteelBlue
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.Label2)
-        Me.pnlTop.Controls.Add(Me.Label1)
-        Me.pnlTop.Controls.Add(Me.PictureBox1)
+        Me.pnlTop.Controls.Add(Me.lblTopInfo)
+        Me.pnlTop.Controls.Add(Me.lblTopTitle)
+        Me.pnlTop.Controls.Add(Me.pbTopLogo)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(643, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(667, 64)
         Me.pnlTop.TabIndex = 2
         '
-        'Label2
+        'lblTopInfo
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(61, 38)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(287, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "View details of each result to find the proper TV show."
+        Me.lblTopInfo.AutoSize = True
+        Me.lblTopInfo.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopInfo.ForeColor = System.Drawing.Color.White
+        Me.lblTopInfo.Location = New System.Drawing.Point(61, 38)
+        Me.lblTopInfo.Name = "lblTopInfo"
+        Me.lblTopInfo.Size = New System.Drawing.Size(287, 13)
+        Me.lblTopInfo.TabIndex = 1
+        Me.lblTopInfo.Text = "View details of each result to find the proper TV show."
         '
-        'Label1
+        'lblTopTitle
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(58, 3)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(216, 32)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "TV Search Results"
+        Me.lblTopTitle.AutoSize = True
+        Me.lblTopTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopTitle.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTopTitle.ForeColor = System.Drawing.Color.White
+        Me.lblTopTitle.Location = New System.Drawing.Point(58, 3)
+        Me.lblTopTitle.Name = "lblTopTitle"
+        Me.lblTopTitle.Size = New System.Drawing.Size(216, 32)
+        Me.lblTopTitle.TabIndex = 0
+        Me.lblTopTitle.Text = "TV Search Results"
         '
-        'PictureBox1
+        'pbTopLogo
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(7, 8)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = CType(resources.GetObject("pbTopLogo.Image"), System.Drawing.Image)
+        Me.pbTopLogo.Location = New System.Drawing.Point(7, 8)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
         '
         'btnSearch
         '
         Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
-        Me.btnSearch.Location = New System.Drawing.Point(296, 67)
+        Me.btnSearch.Location = New System.Drawing.Point(323, 3)
         Me.btnSearch.Name = "btnSearch"
         Me.btnSearch.Size = New System.Drawing.Size(23, 23)
         Me.btnSearch.TabIndex = 4
@@ -258,16 +246,19 @@
         '
         'txtSearch
         '
-        Me.txtSearch.Location = New System.Drawing.Point(3, 68)
+        Me.tblMain.SetColumnSpan(Me.txtSearch, 4)
+        Me.txtSearch.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtSearch.Location = New System.Drawing.Point(3, 3)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(287, 22)
+        Me.txtSearch.Size = New System.Drawing.Size(314, 22)
         Me.txtSearch.TabIndex = 3
         '
         'btnVerify
         '
+        Me.tblMain.SetColumnSpan(Me.btnVerify, 2)
         Me.btnVerify.Enabled = False
         Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnVerify.Location = New System.Drawing.Point(244, 337)
+        Me.btnVerify.Location = New System.Drawing.Point(271, 274)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
         Me.btnVerify.TabIndex = 8
@@ -276,10 +267,11 @@
         '
         'chkManual
         '
+        Me.chkManual.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkManual.AutoSize = True
         Me.chkManual.Enabled = False
         Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkManual.Location = New System.Drawing.Point(3, 341)
+        Me.chkManual.Location = New System.Drawing.Point(3, 277)
         Me.chkManual.Name = "chkManual"
         Me.chkManual.Size = New System.Drawing.Size(127, 17)
         Me.chkManual.TabIndex = 6
@@ -288,37 +280,106 @@
         '
         'txtTVDBID
         '
+        Me.txtTVDBID.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtTVDBID.Enabled = False
         Me.txtTVDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVDBID.Location = New System.Drawing.Point(138, 337)
+        Me.txtTVDBID.Location = New System.Drawing.Point(136, 274)
         Me.txtTVDBID.Name = "txtTVDBID"
         Me.txtTVDBID.Size = New System.Drawing.Size(100, 22)
         Me.txtTVDBID.TabIndex = 7
+        '
+        'tblMain
+        '
+        Me.tblMain.AutoSize = True
+        Me.tblMain.ColumnCount = 10
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.Controls.Add(Me.txtSearch, 0, 0)
+        Me.tblMain.Controls.Add(Me.lvSearchResults, 0, 1)
+        Me.tblMain.Controls.Add(Me.txtTVDBID, 1, 6)
+        Me.tblMain.Controls.Add(Me.lblTitle, 5, 2)
+        Me.tblMain.Controls.Add(Me.chkManual, 0, 6)
+        Me.tblMain.Controls.Add(Me.lblAiredHeader, 5, 3)
+        Me.tblMain.Controls.Add(Me.pbBanner, 5, 0)
+        Me.tblMain.Controls.Add(Me.txtOutline, 5, 5)
+        Me.tblMain.Controls.Add(Me.lblPlotHeader, 5, 4)
+        Me.tblMain.Controls.Add(Me.btnSearch, 4, 0)
+        Me.tblMain.Controls.Add(Me.lblAired, 6, 3)
+        Me.tblMain.Controls.Add(Me.Cancel_Button, 8, 6)
+        Me.tblMain.Controls.Add(Me.OK_Button, 7, 6)
+        Me.tblMain.Controls.Add(Me.btnVerify, 3, 6)
+        Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblMain.Name = "tblMain"
+        Me.tblMain.RowCount = 8
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.Size = New System.Drawing.Size(667, 314)
+        Me.tblMain.TabIndex = 15
+        '
+        'pnlMain
+        '
+        Me.pnlMain.AutoSize = True
+        Me.pnlMain.Controls.Add(Me.tblMain)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMain.Location = New System.Drawing.Point(0, 64)
+        Me.pnlMain.Name = "pnlMain"
+        Me.pnlMain.Size = New System.Drawing.Size(667, 314)
+        Me.pnlMain.TabIndex = 16
+        '
+        'StatusStrip
+        '
+        Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblSearching, Me.ProgressBar})
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 378)
+        Me.StatusStrip.Name = "StatusStrip"
+        Me.StatusStrip.Size = New System.Drawing.Size(667, 22)
+        Me.StatusStrip.TabIndex = 17
+        Me.StatusStrip.Text = "StatusStrip1"
+        '
+        'lblSearching
+        '
+        Me.lblSearching.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSearching.Name = "lblSearching"
+        Me.lblSearching.Size = New System.Drawing.Size(146, 17)
+        Me.lblSearching.Text = "Downloading show info..."
+        Me.lblSearching.Visible = False
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(100, 16)
+        Me.ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar.Visible = False
         '
         'dlgTVDBSearchResults
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(643, 400)
+        Me.ClientSize = New System.Drawing.Size(667, 400)
         Me.ControlBox = False
-        Me.Controls.Add(Me.btnVerify)
-        Me.Controls.Add(Me.chkManual)
-        Me.Controls.Add(Me.txtTVDBID)
-        Me.Controls.Add(Me.btnSearch)
-        Me.Controls.Add(Me.txtSearch)
+        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.pnlTop)
-        Me.Controls.Add(Me.pnlLoading)
-        Me.Controls.Add(Me.lvSearchResults)
-        Me.Controls.Add(Me.lblPlotHeader)
-        Me.Controls.Add(Me.txtOutline)
-        Me.Controls.Add(Me.lblAiredHeader)
-        Me.Controls.Add(Me.lblAired)
-        Me.Controls.Add(Me.lblTitle)
-        Me.Controls.Add(Me.pbBanner)
-        Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.OK_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -328,11 +389,15 @@
         Me.ShowInTaskbar = False
         Me.Text = "TV Search Results"
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlLoading.ResumeLayout(False)
-        Me.pnlLoading.PerformLayout()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblMain.ResumeLayout(False)
+        Me.tblMain.PerformLayout()
+        Me.pnlMain.ResumeLayout(False)
+        Me.pnlMain.PerformLayout()
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -348,13 +413,10 @@
     Friend WithEvents lvSearchResults As System.Windows.Forms.ListView
     Friend WithEvents colName As System.Windows.Forms.ColumnHeader
     Friend WithEvents colLang As System.Windows.Forms.ColumnHeader
-    Friend WithEvents pnlLoading As System.Windows.Forms.Panel
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblTopInfo As System.Windows.Forms.Label
+    Friend WithEvents lblTopTitle As System.Windows.Forms.Label
+    Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents colLev As System.Windows.Forms.ColumnHeader
@@ -363,5 +425,10 @@
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents chkManual As System.Windows.Forms.CheckBox
     Friend WithEvents txtTVDBID As System.Windows.Forms.TextBox
+    Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlMain As System.Windows.Forms.Panel
+    Friend WithEvents StatusStrip As System.Windows.Forms.StatusStrip
+    Friend WithEvents lblSearching As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents ProgressBar As System.Windows.Forms.ToolStripProgressBar
 
 End Class
