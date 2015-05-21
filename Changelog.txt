@@ -1,3 +1,26 @@
+Changelog 1.4.6.0 (2015-05-21)
+
+[Main]
+added: MoviesSet Sorting (sort movie by year or by name)
+fixed: GetPrefered AllSeasons banner/poster
+fixed: season/episode recognizing (with files like "simpsons_s01e01_s01e02.mkv")
+fixed: Danish language file name
+fixed: does not play movies wich are stored in folders with umlauts
+changed: TVDB and Fanart.tv tv show image scraper has the same functions like movie image scrapers (sorting, enable/disable)
+
+[TVDB]
+added: new image scraper
+fixed: overlapping OK button in search results dialog
+
+[Renamer]
+fixed: some issues with tv show renaming
+changed: better default pattern for season and episode
+
+[Media File Manager]
+added: tv show compatibility
+fixed: some issues
+
+
 Changelog 1.4.5.0 (2015-05-07)
 
 [Main]
