@@ -31,7 +31,6 @@ Imports NLog
 Imports System.Xml.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 
-
 Public Class frmMain
 
 #Region "Fields"
@@ -55,6 +54,8 @@ Public Class frmMain
     Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRewriteMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
+
+    Public fCommandLine As New CommandLine
 
     Private alActors As New List(Of String)
     Private FilterRaise_Movies As Boolean = False
@@ -10961,6 +10962,7 @@ doCancel:
             AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
             AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
+            AddHandler fCommandLine.GenericEvent, AddressOf Me.GenericRunCallBack
 
             Functions.DGVDoubleBuffer(Me.dgvMovies)
             Functions.DGVDoubleBuffer(Me.dgvMovieSets)
@@ -11537,6 +11539,12 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         Select Case mType
+            Case Enums.ModuleEventType.CommandLine
+                Select Case _params(0).ToString
+                    Case "loadmedia"
+                        Me.LoadMedia(CType(_params(1), Structures.Scans), CStr(_params(2)))
+                End Select
+
             Case Enums.ModuleEventType.Generic
                 Select Case _params(0).ToString
                     Case "controlsenabled"

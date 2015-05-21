@@ -20,14 +20,38 @@
 
 Public Class CommandLine
 
+#Region "Events"
+
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+
+    'Singleton Instace for CommandLine manager .. allways use this one
+    Private Shared Singleton As CommandLine = Nothing
+
+#End Region 'Events
+
+#Region "Properties"
+
+    Public Shared ReadOnly Property Instance() As CommandLine
+        Get
+            If (Singleton Is Nothing) Then
+                Singleton = New CommandLine()
+            End If
+            Return Singleton
+        End Get
+    End Property
+
+#End Region 'Properties
+
+#Region "Methods"
     Public Sub RunCommandLine(ByVal appArgs As List(Of String))
         If appArgs.Count = 0 Then Return
         LoadMedia(New Structures.Scans With {.TV = True})
     End Sub
 
     Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "")
-        Dim fScanner As New Scanner
-        fScanner.Start(Scan, SourceName)
+        RaiseEvent GenericEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"loadmedia", Scan, SourceName}))
     End Sub
+
+#End Region 'Methods
 
 End Class

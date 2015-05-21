@@ -115,7 +115,7 @@ Namespace My
                 Dim niCommandLine As New CommandLine
 
                 args.AddRange(e.CommandLine)
-                niCommandLine.RunCommandLine(args)
+                frmMain.fCommandLine.RunCommandLine(args)
             End If
         End Sub
 
