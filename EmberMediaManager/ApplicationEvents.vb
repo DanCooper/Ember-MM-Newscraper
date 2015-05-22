@@ -27,9 +27,11 @@ Namespace My
     Partial Friend Class MyApplication
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private frmEmber As frmMain
-#End Region
+
+#End Region 'Fields
 
 #Region "Methods"
 
@@ -108,13 +110,8 @@ Namespace My
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
             If e.CommandLine.Count = 0 Then
                 e.BringToForeground = True
-                'logger.Error("Ember Media Manager is already running.")
-                'MessageBox.Show("Ember Media Manager is already running.", "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Information)
             ElseIf e.CommandLine.Count > 0 Then
-                Dim args As New List(Of String)
-                Dim niCommandLine As New CommandLine
-
-                args.AddRange(e.CommandLine)
+                Dim Args() As String = e.CommandLine.ToArray
                 frmMain.fCommandLine.RunCommandLine(args)
             End If
         End Sub

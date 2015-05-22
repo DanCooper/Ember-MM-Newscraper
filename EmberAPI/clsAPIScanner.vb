@@ -1604,11 +1604,11 @@ Public Class Scanner
         End If
     End Sub
 
-    Public Sub Start(ByVal Scan As Structures.Scans, ByVal SourceName As String)
+    Public Sub Start(ByVal Scan As Structures.Scans, ByVal SourceName As String, ByVal Folder As String)
         Me.bwPrelim = New System.ComponentModel.BackgroundWorker
         Me.bwPrelim.WorkerReportsProgress = True
         Me.bwPrelim.WorkerSupportsCancellation = True
-        Me.bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceName = SourceName})
+        Me.bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceName = SourceName, .Folder = Folder})
     End Sub
 
     ''' <summary>
@@ -1639,14 +1639,29 @@ Public Class Scanner
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Master.DB.ClearNew()
 
+        If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
+            For Each eSource In Master.MovieSources
+                If Args.Folder.ToLower.StartsWith(eSource.Path.ToLower) Then
+                    Me.MoviePaths = Master.DB.GetMoviePaths
+                    Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            ScanMovieSourceDir(eSource.Name, Args.Folder, eSource.Recursive, eSource.UseFolderName, eSource.IsSingle, eSource.GetYear, True)
+                        End Using
+                        SQLTrans.Commit()
+                    End Using
+                    Exit For
+                End If
+            Next
+        End If
+
         If Args.Scan.Movies Then
             Me.MoviePaths = Master.DB.GetMoviePaths
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Not String.IsNullOrEmpty(Args.SourceName) Then
-                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
+                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, GetYear FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
                     Else
-                        SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources WHERE Exclude = 0;"
+                        SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, GetYear FROM Sources WHERE Exclude = 0;"
                     End If
 
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1798,6 +1813,7 @@ Public Class Scanner
 
 #Region "Fields"
 
+        Dim Folder As String
         Dim Scan As Structures.Scans
         Dim SourceName As String
 

@@ -611,7 +611,7 @@ Public Class frmMain
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
-    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "")
+    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal Folder As String = "")
         Try
             Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
@@ -654,7 +654,7 @@ Public Class frmMain
                 Me.dgvTVEpisodes.DataSource = Nothing
             End If
 
-            Me.fScanner.Start(Scan, SourceName)
+            Me.fScanner.Start(Scan, SourceName, Folder)
 
         Catch ex As Exception
             Me.LoadingDone = True
@@ -11542,7 +11542,7 @@ doCancel:
             Case Enums.ModuleEventType.CommandLine
                 Select Case _params(0).ToString
                     Case "loadmedia"
-                        Me.LoadMedia(CType(_params(1), Structures.Scans), CStr(_params(2)))
+                        Me.LoadMedia(CType(_params(1), Structures.Scans), CStr(_params(2)), CStr(_params(3)))
                 End Select
 
             Case Enums.ModuleEventType.Generic

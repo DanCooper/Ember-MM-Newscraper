@@ -2033,6 +2033,7 @@ Public Class Structures
     Public Structure Scans
         Dim Movies As Boolean
         Dim MovieSets As Boolean
+        Dim SpecificFolder As Boolean
         Dim TV As Boolean
     End Structure
 
