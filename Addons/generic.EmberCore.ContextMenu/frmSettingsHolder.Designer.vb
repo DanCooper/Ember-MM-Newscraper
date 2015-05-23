@@ -43,7 +43,7 @@ Partial Class frmSettingsHolder
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(301, 161)
+        Me.pnlMain.Size = New System.Drawing.Size(297, 153)
         Me.pnlMain.TabIndex = 0
         '
         'tblMain
@@ -65,7 +65,7 @@ Partial Class frmSettingsHolder
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(301, 161)
+        Me.tblMain.Size = New System.Drawing.Size(297, 153)
         Me.tblMain.TabIndex = 0
         '
         'chkEnable
@@ -108,9 +108,9 @@ Partial Class frmSettingsHolder
         Me.tblItems.ColumnCount = 2
         Me.tblItems.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblItems.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblItems.Controls.Add(Me.chkScanFolder, 0, 0)
-        Me.tblItems.Controls.Add(Me.chkAddMovieSource, 0, 1)
-        Me.tblItems.Controls.Add(Me.chkAddTVShowSource, 0, 2)
+        Me.tblItems.Controls.Add(Me.chkScanFolder, 0, 2)
+        Me.tblItems.Controls.Add(Me.chkAddMovieSource, 0, 0)
+        Me.tblItems.Controls.Add(Me.chkAddTVShowSource, 0, 1)
         Me.tblItems.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblItems.Location = New System.Drawing.Point(3, 16)
         Me.tblItems.Name = "tblItems"
@@ -126,28 +126,28 @@ Partial Class frmSettingsHolder
         'chkScanFolder
         '
         Me.chkScanFolder.AutoSize = True
-        Me.chkScanFolder.Location = New System.Drawing.Point(3, 3)
+        Me.chkScanFolder.Location = New System.Drawing.Point(3, 49)
         Me.chkScanFolder.Name = "chkScanFolder"
         Me.chkScanFolder.Size = New System.Drawing.Size(157, 17)
         Me.chkScanFolder.TabIndex = 0
         Me.chkScanFolder.Text = "Scan folder for new content"
         Me.chkScanFolder.UseVisualStyleBackColor = True
         '
-        'chkSourceMovie
+        'chkAddMovieSource
         '
         Me.chkAddMovieSource.AutoSize = True
-        Me.chkAddMovieSource.Location = New System.Drawing.Point(3, 26)
-        Me.chkAddMovieSource.Name = "chkSourceMovie"
+        Me.chkAddMovieSource.Location = New System.Drawing.Point(3, 3)
+        Me.chkAddMovieSource.Name = "chkAddMovieSource"
         Me.chkAddMovieSource.Size = New System.Drawing.Size(172, 17)
         Me.chkAddMovieSource.TabIndex = 1
         Me.chkAddMovieSource.Text = "Add folder as a movie source..."
         Me.chkAddMovieSource.UseVisualStyleBackColor = True
         '
-        'chkSourceTVShow
+        'chkAddTVShowSource
         '
         Me.chkAddTVShowSource.AutoSize = True
-        Me.chkAddTVShowSource.Location = New System.Drawing.Point(3, 49)
-        Me.chkAddTVShowSource.Name = "chkSourceTVShow"
+        Me.chkAddTVShowSource.Location = New System.Drawing.Point(3, 26)
+        Me.chkAddTVShowSource.Name = "chkAddTVShowSource"
         Me.chkAddTVShowSource.Size = New System.Drawing.Size(181, 17)
         Me.chkAddTVShowSource.TabIndex = 2
         Me.chkAddTVShowSource.Text = "Add folder as a tv show source..."
@@ -158,7 +158,7 @@ Partial Class frmSettingsHolder
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(301, 161)
+        Me.ClientSize = New System.Drawing.Size(297, 153)
         Me.Controls.Add(Me.pnlMain)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False

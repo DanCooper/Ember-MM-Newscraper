@@ -61,6 +61,7 @@ Public Class CommandLine
         Dim MoviePath As String = String.Empty
         Dim isSingle As Boolean = False
         Dim hasSpec As Boolean = False
+        Dim scanFolder As Boolean = False
         Dim clScrapeType As Enums.ScrapeType = Enums.ScrapeType.None
         Dim clExport As Boolean = False
         Dim clExportResizePoster As Integer = 0
@@ -70,11 +71,13 @@ Public Class CommandLine
         Dim RunModule As Boolean = False
         Dim ModuleName As String = String.Empty
         Dim UpdateTVShows As Boolean = False
-        Dim specFolder As String = String.Empty
+        Dim scanFolderPath As String = String.Empty
 
         For i As Integer = 0 To Args.Count - 1
 
             Select Case Args(i).ToLower
+                Case "-addmoviesource"
+                Case "-addtvshowsource"
                 Case "-fullask"
                     clScrapeType = Enums.ScrapeType.FullAsk
                     clAsk = True
@@ -135,11 +138,11 @@ Public Class CommandLine
                     Else
                         Exit For
                     End If
-                Case "-folderscan"
+                Case "-scanfolder"
                     If Args.Count - 1 > i Then
-                        hasSpec = True
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            specFolder = Args(i + 1).Replace("""", String.Empty)
+                            scanFolder = True
+                            scanFolderPath = Args(i + 1).Replace("""", String.Empty)
                             i += 1
                         End If
                     Else
@@ -210,20 +213,14 @@ Public Class CommandLine
             End Select
         Next
 
-        If hasSpec Then
-            If Not String.IsNullOrEmpty(specFolder) Then
-                LoadMedia((New Structures.Scans With {.SpecificFolder = True}), String.Empty, specFolder)
-            End If
+        If scanFolder AndAlso Not String.IsNullOrEmpty(scanFolderPath) Then
+            LoadMedia((New Structures.Scans With {.SpecificFolder = True}), String.Empty, scanFolderPath)
         End If
 
     End Sub
 
     Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal Folder As String = "")
         RaiseEvent GenericEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"loadmedia", Scan, SourceName, Folder}))
-    End Sub
-
-    Public Sub DirectoryScan()
-
     End Sub
 
 #End Region 'Methods
