@@ -1198,6 +1198,7 @@ Partial Class frmMain
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1592,29 +1593,29 @@ Partial Class frmMain
         'tsSpring
         '
         Me.tsSpring.Name = "tsSpring"
-        Me.tsSpring.Size = New System.Drawing.Size(722, 17)
-        Me.tsSpring.Spring = True
+        Me.tsSpring.Size = New System.Drawing.Size(1329, 17)
+        Me.tsSpring.Spring = true
         Me.tsSpring.Text = "  "
         '
         'tslLoading
         '
-        Me.tslLoading.AutoSize = False
-        Me.tslLoading.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tslLoading.AutoSize = false
+        Me.tslLoading.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.tslLoading.Name = "tslLoading"
         Me.tslLoading.Size = New System.Drawing.Size(424, 17)
         Me.tslLoading.Text = "Loading Media:"
         Me.tslLoading.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.tslLoading.Visible = False
+        Me.tslLoading.Visible = false
         '
         'tspbLoading
         '
         Me.tspbLoading.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tspbLoading.AutoSize = False
+        Me.tspbLoading.AutoSize = false
         Me.tspbLoading.MarqueeAnimationSpeed = 25
         Me.tspbLoading.Name = "tspbLoading"
         Me.tspbLoading.Size = New System.Drawing.Size(150, 16)
         Me.tspbLoading.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.tspbLoading.Visible = False
+        Me.tspbLoading.Visible = false
         '
         'tmrAni
         '
@@ -1633,35 +1634,35 @@ Partial Class frmMain
         'mnuMainTools
         '
         Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.mnuMainToolsSeparator0, Me.mnuMainToolsOfflineHolder, Me.mnuMainToolsSeparator1, Me.mnuMainToolsClearCache, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsReloadMovieSets, Me.mnuMainToolsRewriteMovieContent, Me.mnuMainToolsCleanDB, Me.mnuMainToolsSeparator2, Me.mnuMainToolsExport})
-        Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuMainTools.Name = "mnuMainTools"
         Me.mnuMainTools.Size = New System.Drawing.Size(46, 20)
         Me.mnuMainTools.Text = "&Tools"
         '
         'mnuMainToolsCleanFiles
         '
-        Me.mnuMainToolsCleanFiles.Image = CType(resources.GetObject("mnuMainToolsCleanFiles.Image"), System.Drawing.Image)
+        Me.mnuMainToolsCleanFiles.Image = CType(resources.GetObject("mnuMainToolsCleanFiles.Image"),System.Drawing.Image)
         Me.mnuMainToolsCleanFiles.Name = "mnuMainToolsCleanFiles"
-        Me.mnuMainToolsCleanFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.mnuMainToolsCleanFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.C),System.Windows.Forms.Keys)
         Me.mnuMainToolsCleanFiles.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsCleanFiles.Text = "&Clean Files"
         '
         'mnuMainToolsSortFiles
         '
-        Me.mnuMainToolsSortFiles.Image = CType(resources.GetObject("mnuMainToolsSortFiles.Image"), System.Drawing.Image)
+        Me.mnuMainToolsSortFiles.Image = CType(resources.GetObject("mnuMainToolsSortFiles.Image"),System.Drawing.Image)
         Me.mnuMainToolsSortFiles.Name = "mnuMainToolsSortFiles"
-        Me.mnuMainToolsSortFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
+        Me.mnuMainToolsSortFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.S),System.Windows.Forms.Keys)
         Me.mnuMainToolsSortFiles.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsSortFiles.Text = "&Sort Files Into Folders"
         '
         'mnuMainToolsBackdrops
         '
-        Me.mnuMainToolsBackdrops.Image = CType(resources.GetObject("mnuMainToolsBackdrops.Image"), System.Drawing.Image)
+        Me.mnuMainToolsBackdrops.Image = CType(resources.GetObject("mnuMainToolsBackdrops.Image"),System.Drawing.Image)
         Me.mnuMainToolsBackdrops.Name = "mnuMainToolsBackdrops"
-        Me.mnuMainToolsBackdrops.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
+        Me.mnuMainToolsBackdrops.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.B),System.Windows.Forms.Keys)
         Me.mnuMainToolsBackdrops.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsBackdrops.Text = "Copy Existing Fanart To &Backdrops Folder"
         '
@@ -1672,11 +1673,11 @@ Partial Class frmMain
         '
         'mnuMainToolsOfflineHolder
         '
-        Me.mnuMainToolsOfflineHolder.Image = CType(resources.GetObject("mnuMainToolsOfflineHolder.Image"), System.Drawing.Image)
+        Me.mnuMainToolsOfflineHolder.Image = CType(resources.GetObject("mnuMainToolsOfflineHolder.Image"),System.Drawing.Image)
         Me.mnuMainToolsOfflineHolder.Name = "mnuMainToolsOfflineHolder"
         Me.mnuMainToolsOfflineHolder.ShortcutKeyDisplayString = ""
-        Me.mnuMainToolsOfflineHolder.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.mnuMainToolsOfflineHolder.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.O),System.Windows.Forms.Keys)
         Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsOfflineHolder.Text = "&Offline Media Manager"
         '
@@ -1687,43 +1688,43 @@ Partial Class frmMain
         '
         'mnuMainToolsClearCache
         '
-        Me.mnuMainToolsClearCache.Image = CType(resources.GetObject("mnuMainToolsClearCache.Image"), System.Drawing.Image)
+        Me.mnuMainToolsClearCache.Image = CType(resources.GetObject("mnuMainToolsClearCache.Image"),System.Drawing.Image)
         Me.mnuMainToolsClearCache.Name = "mnuMainToolsClearCache"
-        Me.mnuMainToolsClearCache.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
+        Me.mnuMainToolsClearCache.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.A),System.Windows.Forms.Keys)
         Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsClearCache.Text = "Clear &All Caches"
         '
         'mnuMainToolsReloadMovies
         '
-        Me.mnuMainToolsReloadMovies.Image = CType(resources.GetObject("mnuMainToolsReloadMovies.Image"), System.Drawing.Image)
+        Me.mnuMainToolsReloadMovies.Image = CType(resources.GetObject("mnuMainToolsReloadMovies.Image"),System.Drawing.Image)
         Me.mnuMainToolsReloadMovies.Name = "mnuMainToolsReloadMovies"
-        Me.mnuMainToolsReloadMovies.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.mnuMainToolsReloadMovies.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.L),System.Windows.Forms.Keys)
         Me.mnuMainToolsReloadMovies.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsReloadMovies.Tag = ""
         Me.mnuMainToolsReloadMovies.Text = "Re&load All Movies"
         '
         'mnuMainToolsReloadMovieSets
         '
-        Me.mnuMainToolsReloadMovieSets.Image = CType(resources.GetObject("mnuMainToolsReloadMovieSets.Image"), System.Drawing.Image)
+        Me.mnuMainToolsReloadMovieSets.Image = CType(resources.GetObject("mnuMainToolsReloadMovieSets.Image"),System.Drawing.Image)
         Me.mnuMainToolsReloadMovieSets.Name = "mnuMainToolsReloadMovieSets"
         Me.mnuMainToolsReloadMovieSets.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsReloadMovieSets.Text = "Reload All MovieSets"
         '
         'mnuMainToolsRewriteMovieContent
         '
-        Me.mnuMainToolsRewriteMovieContent.Image = CType(resources.GetObject("mnuMainToolsRewriteMovieContent.Image"), System.Drawing.Image)
+        Me.mnuMainToolsRewriteMovieContent.Image = CType(resources.GetObject("mnuMainToolsRewriteMovieContent.Image"),System.Drawing.Image)
         Me.mnuMainToolsRewriteMovieContent.Name = "mnuMainToolsRewriteMovieContent"
         Me.mnuMainToolsRewriteMovieContent.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsRewriteMovieContent.Text = "Rewrite All Movie Content"
         '
         'mnuMainToolsCleanDB
         '
-        Me.mnuMainToolsCleanDB.Image = CType(resources.GetObject("mnuMainToolsCleanDB.Image"), System.Drawing.Image)
+        Me.mnuMainToolsCleanDB.Image = CType(resources.GetObject("mnuMainToolsCleanDB.Image"),System.Drawing.Image)
         Me.mnuMainToolsCleanDB.Name = "mnuMainToolsCleanDB"
-        Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-            Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
+        Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.D),System.Windows.Forms.Keys)
         Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsCleanDB.Text = "Clean &Database"
         '
@@ -1754,8 +1755,8 @@ Partial Class frmMain
         '
         'mnuMainDonate
         '
-        Me.mnuMainDonate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.mnuMainDonate.Image = CType(resources.GetObject("mnuMainDonate.Image"), System.Drawing.Image)
+        Me.mnuMainDonate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.mnuMainDonate.Image = CType(resources.GetObject("mnuMainDonate.Image"),System.Drawing.Image)
         Me.mnuMainDonate.Name = "mnuMainDonate"
         Me.mnuMainDonate.Size = New System.Drawing.Size(73, 20)
         Me.mnuMainDonate.Text = "Donate"
@@ -1764,11 +1765,11 @@ Partial Class frmMain
         '
         Me.mnuMainError.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.mnuMainError.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.mnuMainError.Image = CType(resources.GetObject("mnuMainError.Image"), System.Drawing.Image)
+        Me.mnuMainError.Image = CType(resources.GetObject("mnuMainError.Image"),System.Drawing.Image)
         Me.mnuMainError.Name = "mnuMainError"
         Me.mnuMainError.Size = New System.Drawing.Size(28, 20)
         Me.mnuMainError.ToolTipText = "An Error Has Occurred"
-        Me.mnuMainError.Visible = False
+        Me.mnuMainError.Visible = false
         '
         'mnuVersion
         '
@@ -1840,7 +1841,7 @@ Partial Class frmMain
         Me.scMain.Size = New System.Drawing.Size(1344, 899)
         Me.scMain.SplitterDistance = 567
         Me.scMain.TabIndex = 7
-        Me.scMain.TabStop = False
+        Me.scMain.TabStop = false
         '
         'pnlFilterCountries_Movies
         '
@@ -1850,11 +1851,11 @@ Partial Class frmMain
         Me.pnlFilterCountries_Movies.Name = "pnlFilterCountries_Movies"
         Me.pnlFilterCountries_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterCountries_Movies.TabIndex = 25
-        Me.pnlFilterCountries_Movies.Visible = False
+        Me.pnlFilterCountries_Movies.Visible = false
         '
         'pnlFilterCountriesMain_Movies
         '
-        Me.pnlFilterCountriesMain_Movies.AutoSize = True
+        Me.pnlFilterCountriesMain_Movies.AutoSize = true
         Me.pnlFilterCountriesMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterCountriesMain_Movies.Controls.Add(Me.clbFilterCountries_Movies)
         Me.pnlFilterCountriesMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
@@ -1867,20 +1868,20 @@ Partial Class frmMain
         'clbFilterCountries_Movies
         '
         Me.clbFilterCountries_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.clbFilterCountries_Movies.CheckOnClick = True
+        Me.clbFilterCountries_Movies.CheckOnClick = true
         Me.clbFilterCountries_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbFilterCountries_Movies.FormattingEnabled = True
+        Me.clbFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.clbFilterCountries_Movies.FormattingEnabled = true
         Me.clbFilterCountries_Movies.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterCountries_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterCountries_Movies.Name = "clbFilterCountries_Movies"
         Me.clbFilterCountries_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterCountries_Movies.TabIndex = 8
-        Me.clbFilterCountries_Movies.TabStop = False
+        Me.clbFilterCountries_Movies.TabStop = false
         '
         'pnlFilterCountriesTop_Movies
         '
-        Me.pnlFilterCountriesTop_Movies.AutoSize = True
+        Me.pnlFilterCountriesTop_Movies.AutoSize = true
         Me.pnlFilterCountriesTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterCountriesTop_Movies.Controls.Add(Me.tblFilterCountriesTop_Movies)
         Me.pnlFilterCountriesTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
@@ -1891,10 +1892,10 @@ Partial Class frmMain
         '
         'tblFilterCountriesTop_Movies
         '
-        Me.tblFilterCountriesTop_Movies.AutoSize = True
+        Me.tblFilterCountriesTop_Movies.AutoSize = true
         Me.tblFilterCountriesTop_Movies.ColumnCount = 3
         Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterCountriesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterCountriesTop_Movies.Controls.Add(Me.lblFilterCountries_Movies, 0, 0)
         Me.tblFilterCountriesTop_Movies.Controls.Add(Me.lblFilterCountriesClose_Movies, 2, 0)
@@ -1902,7 +1903,7 @@ Partial Class frmMain
         Me.tblFilterCountriesTop_Movies.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterCountriesTop_Movies.Name = "tblFilterCountriesTop_Movies"
         Me.tblFilterCountriesTop_Movies.RowCount = 2
-        Me.tblFilterCountriesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterCountriesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterCountriesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterCountriesTop_Movies.Size = New System.Drawing.Size(189, 20)
         Me.tblFilterCountriesTop_Movies.TabIndex = 0
@@ -1910,9 +1911,9 @@ Partial Class frmMain
         'lblFilterCountries_Movies
         '
         Me.lblFilterCountries_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterCountries_Movies.AutoSize = True
+        Me.lblFilterCountries_Movies.AutoSize = true
         Me.lblFilterCountries_Movies.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterCountries_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterCountries_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterCountries_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterCountries_Movies.Name = "lblFilterCountries_Movies"
@@ -1924,10 +1925,10 @@ Partial Class frmMain
         'lblFilterCountriesClose_Movies
         '
         Me.lblFilterCountriesClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterCountriesClose_Movies.AutoSize = True
+        Me.lblFilterCountriesClose_Movies.AutoSize = true
         Me.lblFilterCountriesClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterCountriesClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterCountriesClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterCountriesClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterCountriesClose_Movies.ForeColor = System.Drawing.Color.White
         Me.lblFilterCountriesClose_Movies.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterCountriesClose_Movies.Name = "lblFilterCountriesClose_Movies"
@@ -1944,11 +1945,11 @@ Partial Class frmMain
         Me.pnlFilterGenres_Movies.Name = "pnlFilterGenres_Movies"
         Me.pnlFilterGenres_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterGenres_Movies.TabIndex = 15
-        Me.pnlFilterGenres_Movies.Visible = False
+        Me.pnlFilterGenres_Movies.Visible = false
         '
         'pnlFilterGenresMain_Movies
         '
-        Me.pnlFilterGenresMain_Movies.AutoSize = True
+        Me.pnlFilterGenresMain_Movies.AutoSize = true
         Me.pnlFilterGenresMain_Movies.BackColor = System.Drawing.Color.Transparent
         Me.pnlFilterGenresMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterGenresMain_Movies.Controls.Add(Me.clbFilterGenres_Movies)
@@ -1962,20 +1963,20 @@ Partial Class frmMain
         'clbFilterGenres_Movies
         '
         Me.clbFilterGenres_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.clbFilterGenres_Movies.CheckOnClick = True
+        Me.clbFilterGenres_Movies.CheckOnClick = true
         Me.clbFilterGenres_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbFilterGenres_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbFilterGenres_Movies.FormattingEnabled = True
+        Me.clbFilterGenres_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.clbFilterGenres_Movies.FormattingEnabled = true
         Me.clbFilterGenres_Movies.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterGenres_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterGenres_Movies.Name = "clbFilterGenres_Movies"
         Me.clbFilterGenres_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterGenres_Movies.TabIndex = 8
-        Me.clbFilterGenres_Movies.TabStop = False
+        Me.clbFilterGenres_Movies.TabStop = false
         '
         'pnlFilterGenresTop_Movies
         '
-        Me.pnlFilterGenresTop_Movies.AutoSize = True
+        Me.pnlFilterGenresTop_Movies.AutoSize = true
         Me.pnlFilterGenresTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterGenresTop_Movies.Controls.Add(Me.tblFilterGenresTop_Movies)
         Me.pnlFilterGenresTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
@@ -1986,10 +1987,10 @@ Partial Class frmMain
         '
         'tblFilterGenresTop_Movies
         '
-        Me.tblFilterGenresTop_Movies.AutoSize = True
+        Me.tblFilterGenresTop_Movies.AutoSize = true
         Me.tblFilterGenresTop_Movies.ColumnCount = 3
         Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterGenresTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterGenresTop_Movies.Controls.Add(Me.lblFilterGenresClose_Movies, 2, 0)
         Me.tblFilterGenresTop_Movies.Controls.Add(Me.lblFilterGenres_Movies, 0, 0)
@@ -1997,7 +1998,7 @@ Partial Class frmMain
         Me.tblFilterGenresTop_Movies.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterGenresTop_Movies.Name = "tblFilterGenresTop_Movies"
         Me.tblFilterGenresTop_Movies.RowCount = 2
-        Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterGenresTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterGenresTop_Movies.Size = New System.Drawing.Size(189, 20)
         Me.tblFilterGenresTop_Movies.TabIndex = 0
@@ -2005,10 +2006,10 @@ Partial Class frmMain
         'lblFilterGenresClose_Movies
         '
         Me.lblFilterGenresClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterGenresClose_Movies.AutoSize = True
+        Me.lblFilterGenresClose_Movies.AutoSize = true
         Me.lblFilterGenresClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterGenresClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterGenresClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenresClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenresClose_Movies.ForeColor = System.Drawing.Color.White
         Me.lblFilterGenresClose_Movies.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterGenresClose_Movies.Name = "lblFilterGenresClose_Movies"
@@ -2019,10 +2020,10 @@ Partial Class frmMain
         'lblFilterGenres_Movies
         '
         Me.lblFilterGenres_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterGenres_Movies.AutoSize = True
+        Me.lblFilterGenres_Movies.AutoSize = true
         Me.lblFilterGenres_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterGenres_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilterGenres_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenres_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenres_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterGenres_Movies.Location = New System.Drawing.Point(3, 2)
         Me.lblFilterGenres_Movies.Name = "lblFilterGenres_Movies"
@@ -2040,11 +2041,11 @@ Partial Class frmMain
         Me.pnlFilterGenres_Shows.Name = "pnlFilterGenres_Shows"
         Me.pnlFilterGenres_Shows.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterGenres_Shows.TabIndex = 16
-        Me.pnlFilterGenres_Shows.Visible = False
+        Me.pnlFilterGenres_Shows.Visible = false
         '
         'pnlFilterGenresMain_Shows
         '
-        Me.pnlFilterGenresMain_Shows.AutoSize = True
+        Me.pnlFilterGenresMain_Shows.AutoSize = true
         Me.pnlFilterGenresMain_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterGenresMain_Shows.Controls.Add(Me.clbFilterGenres_Shows)
         Me.pnlFilterGenresMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
@@ -2057,20 +2058,20 @@ Partial Class frmMain
         'clbFilterGenres_Shows
         '
         Me.clbFilterGenres_Shows.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.clbFilterGenres_Shows.CheckOnClick = True
+        Me.clbFilterGenres_Shows.CheckOnClick = true
         Me.clbFilterGenres_Shows.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbFilterGenres_Shows.FormattingEnabled = True
+        Me.clbFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.clbFilterGenres_Shows.FormattingEnabled = true
         Me.clbFilterGenres_Shows.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterGenres_Shows.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterGenres_Shows.Name = "clbFilterGenres_Shows"
         Me.clbFilterGenres_Shows.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterGenres_Shows.TabIndex = 8
-        Me.clbFilterGenres_Shows.TabStop = False
+        Me.clbFilterGenres_Shows.TabStop = false
         '
         'pnlFilterGenresTop_Shows
         '
-        Me.pnlFilterGenresTop_Shows.AutoSize = True
+        Me.pnlFilterGenresTop_Shows.AutoSize = true
         Me.pnlFilterGenresTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterGenresTop_Shows.Controls.Add(Me.tblFilterGenresTop_Shows)
         Me.pnlFilterGenresTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
@@ -2081,10 +2082,10 @@ Partial Class frmMain
         '
         'tblFilterGenresTop_Shows
         '
-        Me.tblFilterGenresTop_Shows.AutoSize = True
+        Me.tblFilterGenresTop_Shows.AutoSize = true
         Me.tblFilterGenresTop_Shows.ColumnCount = 3
         Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterGenresTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterGenresTop_Shows.Controls.Add(Me.lblFilterGenres_Shows, 0, 0)
         Me.tblFilterGenresTop_Shows.Controls.Add(Me.lblFilterGenresClose_Shows, 2, 0)
@@ -2092,7 +2093,7 @@ Partial Class frmMain
         Me.tblFilterGenresTop_Shows.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterGenresTop_Shows.Name = "tblFilterGenresTop_Shows"
         Me.tblFilterGenresTop_Shows.RowCount = 2
-        Me.tblFilterGenresTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterGenresTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterGenresTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterGenresTop_Shows.Size = New System.Drawing.Size(189, 20)
         Me.tblFilterGenresTop_Shows.TabIndex = 0
@@ -2100,9 +2101,9 @@ Partial Class frmMain
         'lblFilterGenres_Shows
         '
         Me.lblFilterGenres_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterGenres_Shows.AutoSize = True
+        Me.lblFilterGenres_Shows.AutoSize = true
         Me.lblFilterGenres_Shows.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenres_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenres_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterGenres_Shows.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterGenres_Shows.Name = "lblFilterGenres_Shows"
@@ -2114,10 +2115,10 @@ Partial Class frmMain
         'lblFilterGenresClose_Shows
         '
         Me.lblFilterGenresClose_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterGenresClose_Shows.AutoSize = True
+        Me.lblFilterGenresClose_Shows.AutoSize = true
         Me.lblFilterGenresClose_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterGenresClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterGenresClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterGenresClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterGenresClose_Shows.ForeColor = System.Drawing.Color.White
         Me.lblFilterGenresClose_Shows.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterGenresClose_Shows.Name = "lblFilterGenresClose_Shows"
@@ -2134,11 +2135,11 @@ Partial Class frmMain
         Me.pnlFilterDataFields_Movies.Name = "pnlFilterDataFields_Movies"
         Me.pnlFilterDataFields_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterDataFields_Movies.TabIndex = 26
-        Me.pnlFilterDataFields_Movies.Visible = False
+        Me.pnlFilterDataFields_Movies.Visible = false
         '
         'pnlFilterDataFieldsMain_Movies
         '
-        Me.pnlFilterDataFieldsMain_Movies.AutoSize = True
+        Me.pnlFilterDataFieldsMain_Movies.AutoSize = true
         Me.pnlFilterDataFieldsMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterDataFieldsMain_Movies.Controls.Add(Me.clbFilterDataFields_Movies)
         Me.pnlFilterDataFieldsMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
@@ -2151,20 +2152,20 @@ Partial Class frmMain
         'clbFilterDataFields_Movies
         '
         Me.clbFilterDataFields_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.clbFilterDataFields_Movies.CheckOnClick = True
+        Me.clbFilterDataFields_Movies.CheckOnClick = true
         Me.clbFilterDataFields_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbFilterDataFields_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbFilterDataFields_Movies.FormattingEnabled = True
+        Me.clbFilterDataFields_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.clbFilterDataFields_Movies.FormattingEnabled = true
         Me.clbFilterDataFields_Movies.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterDataFields_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterDataFields_Movies.Name = "clbFilterDataFields_Movies"
         Me.clbFilterDataFields_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterDataFields_Movies.TabIndex = 8
-        Me.clbFilterDataFields_Movies.TabStop = False
+        Me.clbFilterDataFields_Movies.TabStop = false
         '
         'pnlFilterDataFieldsTop_Movies
         '
-        Me.pnlFilterDataFieldsTop_Movies.AutoSize = True
+        Me.pnlFilterDataFieldsTop_Movies.AutoSize = true
         Me.pnlFilterDataFieldsTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterDataFieldsTop_Movies.Controls.Add(Me.tblFilterDataFieldsTop_Movies)
         Me.pnlFilterDataFieldsTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
@@ -2175,10 +2176,10 @@ Partial Class frmMain
         '
         'tblFilterDataFieldsTop_Movies
         '
-        Me.tblFilterDataFieldsTop_Movies.AutoSize = True
+        Me.tblFilterDataFieldsTop_Movies.AutoSize = true
         Me.tblFilterDataFieldsTop_Movies.ColumnCount = 3
         Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterDataFieldsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterDataFieldsTop_Movies.Controls.Add(Me.lblFilterDataFields_Movies, 0, 0)
         Me.tblFilterDataFieldsTop_Movies.Controls.Add(Me.lblFilterDataFieldsClose_Movies, 2, 0)
@@ -2186,7 +2187,7 @@ Partial Class frmMain
         Me.tblFilterDataFieldsTop_Movies.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterDataFieldsTop_Movies.Name = "tblFilterDataFieldsTop_Movies"
         Me.tblFilterDataFieldsTop_Movies.RowCount = 2
-        Me.tblFilterDataFieldsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterDataFieldsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterDataFieldsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterDataFieldsTop_Movies.Size = New System.Drawing.Size(189, 20)
         Me.tblFilterDataFieldsTop_Movies.TabIndex = 26
@@ -2194,9 +2195,9 @@ Partial Class frmMain
         'lblFilterDataFields_Movies
         '
         Me.lblFilterDataFields_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterDataFields_Movies.AutoSize = True
+        Me.lblFilterDataFields_Movies.AutoSize = true
         Me.lblFilterDataFields_Movies.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterDataFields_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterDataFields_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterDataFields_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterDataFields_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterDataFields_Movies.Name = "lblFilterDataFields_Movies"
@@ -2208,10 +2209,10 @@ Partial Class frmMain
         'lblFilterDataFieldsClose_Movies
         '
         Me.lblFilterDataFieldsClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterDataFieldsClose_Movies.AutoSize = True
+        Me.lblFilterDataFieldsClose_Movies.AutoSize = true
         Me.lblFilterDataFieldsClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterDataFieldsClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterDataFieldsClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterDataFieldsClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterDataFieldsClose_Movies.ForeColor = System.Drawing.Color.White
         Me.lblFilterDataFieldsClose_Movies.Location = New System.Drawing.Point(151, 3)
         Me.lblFilterDataFieldsClose_Movies.Name = "lblFilterDataFieldsClose_Movies"
@@ -2221,18 +2222,18 @@ Partial Class frmMain
         '
         'pnlFilterMissingItems_Movies
         '
-        Me.pnlFilterMissingItems_Movies.AutoSize = True
+        Me.pnlFilterMissingItems_Movies.AutoSize = true
         Me.pnlFilterMissingItems_Movies.Controls.Add(Me.pnlFilterMissingItemsMain_Movies)
         Me.pnlFilterMissingItems_Movies.Controls.Add(Me.pnlFilterMissingItemsTop_Movies)
         Me.pnlFilterMissingItems_Movies.Location = New System.Drawing.Point(0, 900)
         Me.pnlFilterMissingItems_Movies.Name = "pnlFilterMissingItems_Movies"
         Me.pnlFilterMissingItems_Movies.Size = New System.Drawing.Size(170, 321)
         Me.pnlFilterMissingItems_Movies.TabIndex = 27
-        Me.pnlFilterMissingItems_Movies.Visible = False
+        Me.pnlFilterMissingItems_Movies.Visible = false
         '
         'pnlFilterMissingItemsMain_Movies
         '
-        Me.pnlFilterMissingItemsMain_Movies.AutoSize = True
+        Me.pnlFilterMissingItemsMain_Movies.AutoSize = true
         Me.pnlFilterMissingItemsMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterMissingItemsMain_Movies.Controls.Add(Me.tblFilterMissingItemsMain_Movies)
         Me.pnlFilterMissingItemsMain_Movies.Dock = System.Windows.Forms.DockStyle.Fill
@@ -2244,7 +2245,7 @@ Partial Class frmMain
         '
         'tblFilterMissingItemsMain_Movies
         '
-        Me.tblFilterMissingItemsMain_Movies.AutoSize = True
+        Me.tblFilterMissingItemsMain_Movies.AutoSize = true
         Me.tblFilterMissingItemsMain_Movies.ColumnCount = 2
         Me.tblFilterMissingItemsMain_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterMissingItemsMain_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -2284,137 +2285,137 @@ Partial Class frmMain
         '
         'chkMovieMissingBanner
         '
-        Me.chkMovieMissingBanner.AutoSize = True
+        Me.chkMovieMissingBanner.AutoSize = true
         Me.chkMovieMissingBanner.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieMissingBanner.Name = "chkMovieMissingBanner"
         Me.chkMovieMissingBanner.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieMissingBanner.TabIndex = 0
         Me.chkMovieMissingBanner.Text = "Banner"
-        Me.chkMovieMissingBanner.UseVisualStyleBackColor = True
+        Me.chkMovieMissingBanner.UseVisualStyleBackColor = true
         '
         'chkMovieMissingClearArt
         '
-        Me.chkMovieMissingClearArt.AutoSize = True
+        Me.chkMovieMissingClearArt.AutoSize = true
         Me.chkMovieMissingClearArt.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieMissingClearArt.Name = "chkMovieMissingClearArt"
         Me.chkMovieMissingClearArt.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieMissingClearArt.TabIndex = 0
         Me.chkMovieMissingClearArt.Text = "ClearArt"
-        Me.chkMovieMissingClearArt.UseVisualStyleBackColor = True
+        Me.chkMovieMissingClearArt.UseVisualStyleBackColor = true
         '
         'chkMovieMissingClearLogo
         '
-        Me.chkMovieMissingClearLogo.AutoSize = True
+        Me.chkMovieMissingClearLogo.AutoSize = true
         Me.chkMovieMissingClearLogo.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieMissingClearLogo.Name = "chkMovieMissingClearLogo"
         Me.chkMovieMissingClearLogo.Size = New System.Drawing.Size(78, 17)
         Me.chkMovieMissingClearLogo.TabIndex = 0
         Me.chkMovieMissingClearLogo.Text = "ClearLogo"
-        Me.chkMovieMissingClearLogo.UseVisualStyleBackColor = True
+        Me.chkMovieMissingClearLogo.UseVisualStyleBackColor = true
         '
         'chkMovieMissingDiscArt
         '
-        Me.chkMovieMissingDiscArt.AutoSize = True
+        Me.chkMovieMissingDiscArt.AutoSize = true
         Me.chkMovieMissingDiscArt.Location = New System.Drawing.Point(3, 72)
         Me.chkMovieMissingDiscArt.Name = "chkMovieMissingDiscArt"
         Me.chkMovieMissingDiscArt.Size = New System.Drawing.Size(62, 17)
         Me.chkMovieMissingDiscArt.TabIndex = 0
         Me.chkMovieMissingDiscArt.Text = "DiscArt"
-        Me.chkMovieMissingDiscArt.UseVisualStyleBackColor = True
+        Me.chkMovieMissingDiscArt.UseVisualStyleBackColor = true
         '
         'chkMovieMissingEFanarts
         '
-        Me.chkMovieMissingEFanarts.AutoSize = True
+        Me.chkMovieMissingEFanarts.AutoSize = true
         Me.chkMovieMissingEFanarts.Location = New System.Drawing.Point(3, 95)
         Me.chkMovieMissingEFanarts.Name = "chkMovieMissingEFanarts"
         Me.chkMovieMissingEFanarts.Size = New System.Drawing.Size(87, 17)
         Me.chkMovieMissingEFanarts.TabIndex = 0
         Me.chkMovieMissingEFanarts.Text = "Extrafanarts"
-        Me.chkMovieMissingEFanarts.UseVisualStyleBackColor = True
+        Me.chkMovieMissingEFanarts.UseVisualStyleBackColor = true
         '
         'chkMovieMissingEThumbs
         '
-        Me.chkMovieMissingEThumbs.AutoSize = True
+        Me.chkMovieMissingEThumbs.AutoSize = true
         Me.chkMovieMissingEThumbs.Location = New System.Drawing.Point(3, 118)
         Me.chkMovieMissingEThumbs.Name = "chkMovieMissingEThumbs"
         Me.chkMovieMissingEThumbs.Size = New System.Drawing.Size(90, 17)
         Me.chkMovieMissingEThumbs.TabIndex = 0
         Me.chkMovieMissingEThumbs.Text = "Extrathumbs"
-        Me.chkMovieMissingEThumbs.UseVisualStyleBackColor = True
+        Me.chkMovieMissingEThumbs.UseVisualStyleBackColor = true
         '
         'chkMovieMissingFanart
         '
-        Me.chkMovieMissingFanart.AutoSize = True
+        Me.chkMovieMissingFanart.AutoSize = true
         Me.chkMovieMissingFanart.Location = New System.Drawing.Point(3, 141)
         Me.chkMovieMissingFanart.Name = "chkMovieMissingFanart"
         Me.chkMovieMissingFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieMissingFanart.TabIndex = 0
         Me.chkMovieMissingFanart.Text = "Fanart"
-        Me.chkMovieMissingFanart.UseVisualStyleBackColor = True
+        Me.chkMovieMissingFanart.UseVisualStyleBackColor = true
         '
         'chkMovieMissingLandscape
         '
-        Me.chkMovieMissingLandscape.AutoSize = True
+        Me.chkMovieMissingLandscape.AutoSize = true
         Me.chkMovieMissingLandscape.Location = New System.Drawing.Point(3, 164)
         Me.chkMovieMissingLandscape.Name = "chkMovieMissingLandscape"
         Me.chkMovieMissingLandscape.Size = New System.Drawing.Size(80, 17)
         Me.chkMovieMissingLandscape.TabIndex = 0
         Me.chkMovieMissingLandscape.Text = "Landscape"
-        Me.chkMovieMissingLandscape.UseVisualStyleBackColor = True
+        Me.chkMovieMissingLandscape.UseVisualStyleBackColor = true
         '
         'chkMovieMissingTrailer
         '
-        Me.chkMovieMissingTrailer.AutoSize = True
+        Me.chkMovieMissingTrailer.AutoSize = true
         Me.chkMovieMissingTrailer.Location = New System.Drawing.Point(3, 279)
         Me.chkMovieMissingTrailer.Name = "chkMovieMissingTrailer"
         Me.chkMovieMissingTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkMovieMissingTrailer.TabIndex = 0
         Me.chkMovieMissingTrailer.Text = "Trailer"
-        Me.chkMovieMissingTrailer.UseVisualStyleBackColor = True
+        Me.chkMovieMissingTrailer.UseVisualStyleBackColor = true
         '
         'chkMovieMissingTheme
         '
-        Me.chkMovieMissingTheme.AutoSize = True
+        Me.chkMovieMissingTheme.AutoSize = true
         Me.chkMovieMissingTheme.Location = New System.Drawing.Point(3, 256)
         Me.chkMovieMissingTheme.Name = "chkMovieMissingTheme"
         Me.chkMovieMissingTheme.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieMissingTheme.TabIndex = 0
         Me.chkMovieMissingTheme.Text = "Theme"
-        Me.chkMovieMissingTheme.UseVisualStyleBackColor = True
+        Me.chkMovieMissingTheme.UseVisualStyleBackColor = true
         '
         'chkMovieMissingSubtitles
         '
-        Me.chkMovieMissingSubtitles.AutoSize = True
+        Me.chkMovieMissingSubtitles.AutoSize = true
         Me.chkMovieMissingSubtitles.Location = New System.Drawing.Point(3, 233)
         Me.chkMovieMissingSubtitles.Name = "chkMovieMissingSubtitles"
         Me.chkMovieMissingSubtitles.Size = New System.Drawing.Size(66, 17)
         Me.chkMovieMissingSubtitles.TabIndex = 0
         Me.chkMovieMissingSubtitles.Text = "Subtitle"
-        Me.chkMovieMissingSubtitles.UseVisualStyleBackColor = True
+        Me.chkMovieMissingSubtitles.UseVisualStyleBackColor = true
         '
         'chkMovieMissingPoster
         '
-        Me.chkMovieMissingPoster.AutoSize = True
+        Me.chkMovieMissingPoster.AutoSize = true
         Me.chkMovieMissingPoster.Location = New System.Drawing.Point(3, 210)
         Me.chkMovieMissingPoster.Name = "chkMovieMissingPoster"
         Me.chkMovieMissingPoster.Size = New System.Drawing.Size(58, 17)
         Me.chkMovieMissingPoster.TabIndex = 0
         Me.chkMovieMissingPoster.Text = "Poster"
-        Me.chkMovieMissingPoster.UseVisualStyleBackColor = True
+        Me.chkMovieMissingPoster.UseVisualStyleBackColor = true
         '
         'chkMovieMissingNFO
         '
-        Me.chkMovieMissingNFO.AutoSize = True
+        Me.chkMovieMissingNFO.AutoSize = true
         Me.chkMovieMissingNFO.Location = New System.Drawing.Point(3, 187)
         Me.chkMovieMissingNFO.Name = "chkMovieMissingNFO"
         Me.chkMovieMissingNFO.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieMissingNFO.TabIndex = 0
         Me.chkMovieMissingNFO.Text = "NFO"
-        Me.chkMovieMissingNFO.UseVisualStyleBackColor = True
+        Me.chkMovieMissingNFO.UseVisualStyleBackColor = true
         '
         'pnlFilterMissingItemsTop_Movies
         '
-        Me.pnlFilterMissingItemsTop_Movies.AutoSize = True
+        Me.pnlFilterMissingItemsTop_Movies.AutoSize = true
         Me.pnlFilterMissingItemsTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterMissingItemsTop_Movies.Controls.Add(Me.tblFilterMissingItemsTop_Movies)
         Me.pnlFilterMissingItemsTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
@@ -2425,10 +2426,10 @@ Partial Class frmMain
         '
         'tblFilterMissingItemsTop_Movies
         '
-        Me.tblFilterMissingItemsTop_Movies.AutoSize = True
+        Me.tblFilterMissingItemsTop_Movies.AutoSize = true
         Me.tblFilterMissingItemsTop_Movies.ColumnCount = 3
         Me.tblFilterMissingItemsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterMissingItemsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterMissingItemsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterMissingItemsTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterMissingItemsTop_Movies.Controls.Add(Me.lblFilterMissingItems_Movies, 0, 0)
         Me.tblFilterMissingItemsTop_Movies.Controls.Add(Me.lblFilterMissingItemsClose_Movies, 2, 0)
@@ -2436,7 +2437,7 @@ Partial Class frmMain
         Me.tblFilterMissingItemsTop_Movies.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterMissingItemsTop_Movies.Name = "tblFilterMissingItemsTop_Movies"
         Me.tblFilterMissingItemsTop_Movies.RowCount = 2
-        Me.tblFilterMissingItemsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterMissingItemsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterMissingItemsTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsTop_Movies.Size = New System.Drawing.Size(170, 20)
         Me.tblFilterMissingItemsTop_Movies.TabIndex = 0
@@ -2444,9 +2445,9 @@ Partial Class frmMain
         'lblFilterMissingItems_Movies
         '
         Me.lblFilterMissingItems_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterMissingItems_Movies.AutoSize = True
+        Me.lblFilterMissingItems_Movies.AutoSize = true
         Me.lblFilterMissingItems_Movies.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterMissingItems_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterMissingItems_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItems_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterMissingItems_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterMissingItems_Movies.Name = "lblFilterMissingItems_Movies"
@@ -2458,10 +2459,10 @@ Partial Class frmMain
         'lblFilterMissingItemsClose_Movies
         '
         Me.lblFilterMissingItemsClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterMissingItemsClose_Movies.AutoSize = True
+        Me.lblFilterMissingItemsClose_Movies.AutoSize = true
         Me.lblFilterMissingItemsClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterMissingItemsClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterMissingItemsClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterMissingItemsClose_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItemsClose_Movies.ForeColor = System.Drawing.Color.White
         Me.lblFilterMissingItemsClose_Movies.Location = New System.Drawing.Point(132, 3)
         Me.lblFilterMissingItemsClose_Movies.Name = "lblFilterMissingItemsClose_Movies"
@@ -2471,18 +2472,18 @@ Partial Class frmMain
         '
         'pnlFilterMissingItems_MovieSets
         '
-        Me.pnlFilterMissingItems_MovieSets.AutoSize = True
+        Me.pnlFilterMissingItems_MovieSets.AutoSize = true
         Me.pnlFilterMissingItems_MovieSets.Controls.Add(Me.pnlFilterMissingItemsMain_MovieSets)
         Me.pnlFilterMissingItems_MovieSets.Controls.Add(Me.pnlFilterMissingItemsTop_MovieSets)
         Me.pnlFilterMissingItems_MovieSets.Location = New System.Drawing.Point(0, 900)
         Me.pnlFilterMissingItems_MovieSets.Name = "pnlFilterMissingItems_MovieSets"
         Me.pnlFilterMissingItems_MovieSets.Size = New System.Drawing.Size(170, 206)
         Me.pnlFilterMissingItems_MovieSets.TabIndex = 28
-        Me.pnlFilterMissingItems_MovieSets.Visible = False
+        Me.pnlFilterMissingItems_MovieSets.Visible = false
         '
         'pnlFilterMissingItemsMain_MovieSets
         '
-        Me.pnlFilterMissingItemsMain_MovieSets.AutoSize = True
+        Me.pnlFilterMissingItemsMain_MovieSets.AutoSize = true
         Me.pnlFilterMissingItemsMain_MovieSets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterMissingItemsMain_MovieSets.Controls.Add(Me.tlbFilterMissingItemsMain_MovieSets)
         Me.pnlFilterMissingItemsMain_MovieSets.Dock = System.Windows.Forms.DockStyle.Fill
@@ -2494,7 +2495,7 @@ Partial Class frmMain
         '
         'tlbFilterMissingItemsMain_MovieSets
         '
-        Me.tlbFilterMissingItemsMain_MovieSets.AutoSize = True
+        Me.tlbFilterMissingItemsMain_MovieSets.AutoSize = true
         Me.tlbFilterMissingItemsMain_MovieSets.ColumnCount = 2
         Me.tlbFilterMissingItemsMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tlbFilterMissingItemsMain_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -2519,97 +2520,97 @@ Partial Class frmMain
         Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tlbFilterMissingItemsMain_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tlbFilterMissingItemsMain_MovieSets.Size = New System.Drawing.Size(168, 184)
         Me.tlbFilterMissingItemsMain_MovieSets.TabIndex = 0
         '
         'chkMovieSetMissingBanner
         '
-        Me.chkMovieSetMissingBanner.AutoSize = True
+        Me.chkMovieSetMissingBanner.AutoSize = true
         Me.chkMovieSetMissingBanner.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieSetMissingBanner.Name = "chkMovieSetMissingBanner"
         Me.chkMovieSetMissingBanner.Size = New System.Drawing.Size(63, 17)
         Me.chkMovieSetMissingBanner.TabIndex = 0
         Me.chkMovieSetMissingBanner.Text = "Banner"
-        Me.chkMovieSetMissingBanner.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingBanner.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingClearArt
         '
-        Me.chkMovieSetMissingClearArt.AutoSize = True
+        Me.chkMovieSetMissingClearArt.AutoSize = true
         Me.chkMovieSetMissingClearArt.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieSetMissingClearArt.Name = "chkMovieSetMissingClearArt"
         Me.chkMovieSetMissingClearArt.Size = New System.Drawing.Size(67, 17)
         Me.chkMovieSetMissingClearArt.TabIndex = 0
         Me.chkMovieSetMissingClearArt.Text = "ClearArt"
-        Me.chkMovieSetMissingClearArt.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingClearArt.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingClearLogo
         '
-        Me.chkMovieSetMissingClearLogo.AutoSize = True
+        Me.chkMovieSetMissingClearLogo.AutoSize = true
         Me.chkMovieSetMissingClearLogo.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieSetMissingClearLogo.Name = "chkMovieSetMissingClearLogo"
         Me.chkMovieSetMissingClearLogo.Size = New System.Drawing.Size(78, 17)
         Me.chkMovieSetMissingClearLogo.TabIndex = 0
         Me.chkMovieSetMissingClearLogo.Text = "ClearLogo"
-        Me.chkMovieSetMissingClearLogo.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingClearLogo.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingDiscArt
         '
-        Me.chkMovieSetMissingDiscArt.AutoSize = True
+        Me.chkMovieSetMissingDiscArt.AutoSize = true
         Me.chkMovieSetMissingDiscArt.Location = New System.Drawing.Point(3, 72)
         Me.chkMovieSetMissingDiscArt.Name = "chkMovieSetMissingDiscArt"
         Me.chkMovieSetMissingDiscArt.Size = New System.Drawing.Size(62, 17)
         Me.chkMovieSetMissingDiscArt.TabIndex = 0
         Me.chkMovieSetMissingDiscArt.Text = "DiscArt"
-        Me.chkMovieSetMissingDiscArt.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingDiscArt.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingFanart
         '
-        Me.chkMovieSetMissingFanart.AutoSize = True
+        Me.chkMovieSetMissingFanart.AutoSize = true
         Me.chkMovieSetMissingFanart.Location = New System.Drawing.Point(3, 95)
         Me.chkMovieSetMissingFanart.Name = "chkMovieSetMissingFanart"
         Me.chkMovieSetMissingFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkMovieSetMissingFanart.TabIndex = 0
         Me.chkMovieSetMissingFanart.Text = "Fanart"
-        Me.chkMovieSetMissingFanart.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingFanart.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingLandscape
         '
-        Me.chkMovieSetMissingLandscape.AutoSize = True
+        Me.chkMovieSetMissingLandscape.AutoSize = true
         Me.chkMovieSetMissingLandscape.Location = New System.Drawing.Point(3, 118)
         Me.chkMovieSetMissingLandscape.Name = "chkMovieSetMissingLandscape"
         Me.chkMovieSetMissingLandscape.Size = New System.Drawing.Size(80, 17)
         Me.chkMovieSetMissingLandscape.TabIndex = 0
         Me.chkMovieSetMissingLandscape.Text = "Landscape"
-        Me.chkMovieSetMissingLandscape.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingLandscape.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingPoster
         '
-        Me.chkMovieSetMissingPoster.AutoSize = True
+        Me.chkMovieSetMissingPoster.AutoSize = true
         Me.chkMovieSetMissingPoster.Location = New System.Drawing.Point(3, 164)
         Me.chkMovieSetMissingPoster.Name = "chkMovieSetMissingPoster"
         Me.chkMovieSetMissingPoster.Size = New System.Drawing.Size(58, 17)
         Me.chkMovieSetMissingPoster.TabIndex = 0
         Me.chkMovieSetMissingPoster.Text = "Poster"
-        Me.chkMovieSetMissingPoster.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingPoster.UseVisualStyleBackColor = true
         '
         'chkMovieSetMissingNFO
         '
-        Me.chkMovieSetMissingNFO.AutoSize = True
+        Me.chkMovieSetMissingNFO.AutoSize = true
         Me.chkMovieSetMissingNFO.Location = New System.Drawing.Point(3, 141)
         Me.chkMovieSetMissingNFO.Name = "chkMovieSetMissingNFO"
         Me.chkMovieSetMissingNFO.Size = New System.Drawing.Size(49, 17)
         Me.chkMovieSetMissingNFO.TabIndex = 0
         Me.chkMovieSetMissingNFO.Text = "NFO"
-        Me.chkMovieSetMissingNFO.UseVisualStyleBackColor = True
+        Me.chkMovieSetMissingNFO.UseVisualStyleBackColor = true
         '
         'pnlFilterMissingItemsTop_MovieSets
         '
-        Me.pnlFilterMissingItemsTop_MovieSets.AutoSize = True
+        Me.pnlFilterMissingItemsTop_MovieSets.AutoSize = true
         Me.pnlFilterMissingItemsTop_MovieSets.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterMissingItemsTop_MovieSets.Controls.Add(Me.tblFilterMissingItemsTop_MovieSets)
         Me.pnlFilterMissingItemsTop_MovieSets.Dock = System.Windows.Forms.DockStyle.Top
@@ -2620,10 +2621,10 @@ Partial Class frmMain
         '
         'tblFilterMissingItemsTop_MovieSets
         '
-        Me.tblFilterMissingItemsTop_MovieSets.AutoSize = True
+        Me.tblFilterMissingItemsTop_MovieSets.AutoSize = true
         Me.tblFilterMissingItemsTop_MovieSets.ColumnCount = 3
         Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterMissingItemsTop_MovieSets.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterMissingItemsTop_MovieSets.Controls.Add(Me.lblFilterMissingItems_MovieSets, 0, 0)
         Me.tblFilterMissingItemsTop_MovieSets.Controls.Add(Me.lblFilterMissingItemsClose_MovieSets, 2, 0)
@@ -2631,7 +2632,7 @@ Partial Class frmMain
         Me.tblFilterMissingItemsTop_MovieSets.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterMissingItemsTop_MovieSets.Name = "tblFilterMissingItemsTop_MovieSets"
         Me.tblFilterMissingItemsTop_MovieSets.RowCount = 2
-        Me.tblFilterMissingItemsTop_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterMissingItemsTop_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterMissingItemsTop_MovieSets.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsTop_MovieSets.Size = New System.Drawing.Size(170, 20)
         Me.tblFilterMissingItemsTop_MovieSets.TabIndex = 0
@@ -2639,9 +2640,9 @@ Partial Class frmMain
         'lblFilterMissingItems_MovieSets
         '
         Me.lblFilterMissingItems_MovieSets.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterMissingItems_MovieSets.AutoSize = True
+        Me.lblFilterMissingItems_MovieSets.AutoSize = true
         Me.lblFilterMissingItems_MovieSets.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterMissingItems_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterMissingItems_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItems_MovieSets.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterMissingItems_MovieSets.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterMissingItems_MovieSets.Name = "lblFilterMissingItems_MovieSets"
@@ -2653,10 +2654,10 @@ Partial Class frmMain
         'lblFilterMissingItemsClose_MovieSets
         '
         Me.lblFilterMissingItemsClose_MovieSets.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterMissingItemsClose_MovieSets.AutoSize = True
+        Me.lblFilterMissingItemsClose_MovieSets.AutoSize = true
         Me.lblFilterMissingItemsClose_MovieSets.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterMissingItemsClose_MovieSets.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterMissingItemsClose_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterMissingItemsClose_MovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItemsClose_MovieSets.ForeColor = System.Drawing.Color.White
         Me.lblFilterMissingItemsClose_MovieSets.Location = New System.Drawing.Point(132, 3)
         Me.lblFilterMissingItemsClose_MovieSets.Name = "lblFilterMissingItemsClose_MovieSets"
@@ -2666,18 +2667,18 @@ Partial Class frmMain
         '
         'pnlFilterMissingItems_Shows
         '
-        Me.pnlFilterMissingItems_Shows.AutoSize = True
+        Me.pnlFilterMissingItems_Shows.AutoSize = true
         Me.pnlFilterMissingItems_Shows.Controls.Add(Me.pnlFilterMissingItemsMain_Shows)
         Me.pnlFilterMissingItems_Shows.Controls.Add(Me.pnlFilterMissingItemsTop_Shows)
         Me.pnlFilterMissingItems_Shows.Location = New System.Drawing.Point(0, 900)
         Me.pnlFilterMissingItems_Shows.Name = "pnlFilterMissingItems_Shows"
         Me.pnlFilterMissingItems_Shows.Size = New System.Drawing.Size(170, 252)
         Me.pnlFilterMissingItems_Shows.TabIndex = 29
-        Me.pnlFilterMissingItems_Shows.Visible = False
+        Me.pnlFilterMissingItems_Shows.Visible = false
         '
         'pnlFilterMissingItemsMain_Shows
         '
-        Me.pnlFilterMissingItemsMain_Shows.AutoSize = True
+        Me.pnlFilterMissingItemsMain_Shows.AutoSize = true
         Me.pnlFilterMissingItemsMain_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterMissingItemsMain_Shows.Controls.Add(Me.tblFilterMissingItemsMain_Shows)
         Me.pnlFilterMissingItemsMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
@@ -2689,7 +2690,7 @@ Partial Class frmMain
         '
         'tblFilterMissingItemsMain_Shows
         '
-        Me.tblFilterMissingItemsMain_Shows.AutoSize = True
+        Me.tblFilterMissingItemsMain_Shows.AutoSize = true
         Me.tblFilterMissingItemsMain_Shows.ColumnCount = 2
         Me.tblFilterMissingItemsMain_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterMissingItemsMain_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -2718,116 +2719,116 @@ Partial Class frmMain
         Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblFilterMissingItemsMain_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterMissingItemsMain_Shows.Size = New System.Drawing.Size(168, 230)
         Me.tblFilterMissingItemsMain_Shows.TabIndex = 0
         '
         'chkShowMissingBanner
         '
-        Me.chkShowMissingBanner.AutoSize = True
+        Me.chkShowMissingBanner.AutoSize = true
         Me.chkShowMissingBanner.Location = New System.Drawing.Point(3, 3)
         Me.chkShowMissingBanner.Name = "chkShowMissingBanner"
         Me.chkShowMissingBanner.Size = New System.Drawing.Size(63, 17)
         Me.chkShowMissingBanner.TabIndex = 0
         Me.chkShowMissingBanner.Text = "Banner"
-        Me.chkShowMissingBanner.UseVisualStyleBackColor = True
+        Me.chkShowMissingBanner.UseVisualStyleBackColor = true
         '
         'chkShowMissingClearArt
         '
-        Me.chkShowMissingClearArt.AutoSize = True
+        Me.chkShowMissingClearArt.AutoSize = true
         Me.chkShowMissingClearArt.Location = New System.Drawing.Point(3, 49)
         Me.chkShowMissingClearArt.Name = "chkShowMissingClearArt"
         Me.chkShowMissingClearArt.Size = New System.Drawing.Size(67, 17)
         Me.chkShowMissingClearArt.TabIndex = 0
         Me.chkShowMissingClearArt.Text = "ClearArt"
-        Me.chkShowMissingClearArt.UseVisualStyleBackColor = True
+        Me.chkShowMissingClearArt.UseVisualStyleBackColor = true
         '
         'chkShowMissingClearLogo
         '
-        Me.chkShowMissingClearLogo.AutoSize = True
+        Me.chkShowMissingClearLogo.AutoSize = true
         Me.chkShowMissingClearLogo.Location = New System.Drawing.Point(3, 72)
         Me.chkShowMissingClearLogo.Name = "chkShowMissingClearLogo"
         Me.chkShowMissingClearLogo.Size = New System.Drawing.Size(78, 17)
         Me.chkShowMissingClearLogo.TabIndex = 0
         Me.chkShowMissingClearLogo.Text = "ClearLogo"
-        Me.chkShowMissingClearLogo.UseVisualStyleBackColor = True
+        Me.chkShowMissingClearLogo.UseVisualStyleBackColor = true
         '
         'chkShowMissingEFanarts
         '
-        Me.chkShowMissingEFanarts.AutoSize = True
+        Me.chkShowMissingEFanarts.AutoSize = true
         Me.chkShowMissingEFanarts.Location = New System.Drawing.Point(3, 95)
         Me.chkShowMissingEFanarts.Name = "chkShowMissingEFanarts"
         Me.chkShowMissingEFanarts.Size = New System.Drawing.Size(87, 17)
         Me.chkShowMissingEFanarts.TabIndex = 0
         Me.chkShowMissingEFanarts.Text = "Extrafanarts"
-        Me.chkShowMissingEFanarts.UseVisualStyleBackColor = True
+        Me.chkShowMissingEFanarts.UseVisualStyleBackColor = true
         '
         'chkShowMissingFanart
         '
-        Me.chkShowMissingFanart.AutoSize = True
+        Me.chkShowMissingFanart.AutoSize = true
         Me.chkShowMissingFanart.Location = New System.Drawing.Point(3, 118)
         Me.chkShowMissingFanart.Name = "chkShowMissingFanart"
         Me.chkShowMissingFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkShowMissingFanart.TabIndex = 0
         Me.chkShowMissingFanart.Text = "Fanart"
-        Me.chkShowMissingFanart.UseVisualStyleBackColor = True
+        Me.chkShowMissingFanart.UseVisualStyleBackColor = true
         '
         'chkShowMissingLandscape
         '
-        Me.chkShowMissingLandscape.AutoSize = True
+        Me.chkShowMissingLandscape.AutoSize = true
         Me.chkShowMissingLandscape.Location = New System.Drawing.Point(3, 141)
         Me.chkShowMissingLandscape.Name = "chkShowMissingLandscape"
         Me.chkShowMissingLandscape.Size = New System.Drawing.Size(80, 17)
         Me.chkShowMissingLandscape.TabIndex = 0
         Me.chkShowMissingLandscape.Text = "Landscape"
-        Me.chkShowMissingLandscape.UseVisualStyleBackColor = True
+        Me.chkShowMissingLandscape.UseVisualStyleBackColor = true
         '
         'chkShowMissingPoster
         '
-        Me.chkShowMissingPoster.AutoSize = True
+        Me.chkShowMissingPoster.AutoSize = true
         Me.chkShowMissingPoster.Location = New System.Drawing.Point(3, 187)
         Me.chkShowMissingPoster.Name = "chkShowMissingPoster"
         Me.chkShowMissingPoster.Size = New System.Drawing.Size(58, 17)
         Me.chkShowMissingPoster.TabIndex = 0
         Me.chkShowMissingPoster.Text = "Poster"
-        Me.chkShowMissingPoster.UseVisualStyleBackColor = True
+        Me.chkShowMissingPoster.UseVisualStyleBackColor = true
         '
         'chkShowMissingNFO
         '
-        Me.chkShowMissingNFO.AutoSize = True
+        Me.chkShowMissingNFO.AutoSize = true
         Me.chkShowMissingNFO.Location = New System.Drawing.Point(3, 164)
         Me.chkShowMissingNFO.Name = "chkShowMissingNFO"
         Me.chkShowMissingNFO.Size = New System.Drawing.Size(49, 17)
         Me.chkShowMissingNFO.TabIndex = 0
         Me.chkShowMissingNFO.Text = "NFO"
-        Me.chkShowMissingNFO.UseVisualStyleBackColor = True
+        Me.chkShowMissingNFO.UseVisualStyleBackColor = true
         '
         'chkShowMissingCharacterArt
         '
-        Me.chkShowMissingCharacterArt.AutoSize = True
+        Me.chkShowMissingCharacterArt.AutoSize = true
         Me.chkShowMissingCharacterArt.Location = New System.Drawing.Point(3, 26)
         Me.chkShowMissingCharacterArt.Name = "chkShowMissingCharacterArt"
         Me.chkShowMissingCharacterArt.Size = New System.Drawing.Size(90, 17)
         Me.chkShowMissingCharacterArt.TabIndex = 0
         Me.chkShowMissingCharacterArt.Text = "CharacterArt"
-        Me.chkShowMissingCharacterArt.UseVisualStyleBackColor = True
+        Me.chkShowMissingCharacterArt.UseVisualStyleBackColor = true
         '
         'chkShowMissingTheme
         '
-        Me.chkShowMissingTheme.AutoSize = True
+        Me.chkShowMissingTheme.AutoSize = true
         Me.chkShowMissingTheme.Location = New System.Drawing.Point(3, 210)
         Me.chkShowMissingTheme.Name = "chkShowMissingTheme"
         Me.chkShowMissingTheme.Size = New System.Drawing.Size(59, 17)
         Me.chkShowMissingTheme.TabIndex = 0
         Me.chkShowMissingTheme.Text = "Theme"
-        Me.chkShowMissingTheme.UseVisualStyleBackColor = True
+        Me.chkShowMissingTheme.UseVisualStyleBackColor = true
         '
         'pnlFilterMissingItemsTop_Shows
         '
-        Me.pnlFilterMissingItemsTop_Shows.AutoSize = True
+        Me.pnlFilterMissingItemsTop_Shows.AutoSize = true
         Me.pnlFilterMissingItemsTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterMissingItemsTop_Shows.Controls.Add(Me.tblFilterMissingItemsTop_Shows)
         Me.pnlFilterMissingItemsTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
@@ -2838,10 +2839,10 @@ Partial Class frmMain
         '
         'tblFilterMissingItemsTop_Shows
         '
-        Me.tblFilterMissingItemsTop_Shows.AutoSize = True
+        Me.tblFilterMissingItemsTop_Shows.AutoSize = true
         Me.tblFilterMissingItemsTop_Shows.ColumnCount = 3
         Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterMissingItemsTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterMissingItemsTop_Shows.Controls.Add(Me.lblFilterMissingItems_Shows, 0, 0)
         Me.tblFilterMissingItemsTop_Shows.Controls.Add(Me.lblFilterMissingItemsClose_Shows, 2, 0)
@@ -2849,7 +2850,7 @@ Partial Class frmMain
         Me.tblFilterMissingItemsTop_Shows.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterMissingItemsTop_Shows.Name = "tblFilterMissingItemsTop_Shows"
         Me.tblFilterMissingItemsTop_Shows.RowCount = 2
-        Me.tblFilterMissingItemsTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterMissingItemsTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterMissingItemsTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterMissingItemsTop_Shows.Size = New System.Drawing.Size(170, 20)
         Me.tblFilterMissingItemsTop_Shows.TabIndex = 0
@@ -2857,9 +2858,9 @@ Partial Class frmMain
         'lblFilterMissingItems_Shows
         '
         Me.lblFilterMissingItems_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterMissingItems_Shows.AutoSize = True
+        Me.lblFilterMissingItems_Shows.AutoSize = true
         Me.lblFilterMissingItems_Shows.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterMissingItems_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterMissingItems_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItems_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterMissingItems_Shows.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterMissingItems_Shows.Name = "lblFilterMissingItems_Shows"
@@ -2871,10 +2872,10 @@ Partial Class frmMain
         'lblFilterMissingItemsClose_Shows
         '
         Me.lblFilterMissingItemsClose_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterMissingItemsClose_Shows.AutoSize = True
+        Me.lblFilterMissingItemsClose_Shows.AutoSize = true
         Me.lblFilterMissingItemsClose_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterMissingItemsClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterMissingItemsClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterMissingItemsClose_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblFilterMissingItemsClose_Shows.ForeColor = System.Drawing.Color.White
         Me.lblFilterMissingItemsClose_Shows.Location = New System.Drawing.Point(132, 3)
         Me.lblFilterMissingItemsClose_Shows.Name = "lblFilterMissingItemsClose_Shows"
@@ -2890,11 +2891,11 @@ Partial Class frmMain
         Me.pnlFilterSources_Movies.Name = "pnlFilterSources_Movies"
         Me.pnlFilterSources_Movies.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterSources_Movies.TabIndex = 16
-        Me.pnlFilterSources_Movies.Visible = False
+        Me.pnlFilterSources_Movies.Visible = false
         '
         'pnlFilterSourcesMain_Movies
         '
-        Me.pnlFilterSourcesMain_Movies.AutoSize = True
+        Me.pnlFilterSourcesMain_Movies.AutoSize = true
         Me.pnlFilterSourcesMain_Movies.BackColor = System.Drawing.Color.Transparent
         Me.pnlFilterSourcesMain_Movies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterSourcesMain_Movies.Controls.Add(Me.clbFilterSources_Movies)
@@ -2907,19 +2908,19 @@ Partial Class frmMain
         'clbFilterSources_Movies
         '
         Me.clbFilterSources_Movies.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.clbFilterSources_Movies.CheckOnClick = True
+        Me.clbFilterSources_Movies.CheckOnClick = true
         Me.clbFilterSources_Movies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbFilterSources_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbFilterSources_Movies.FormattingEnabled = True
+        Me.clbFilterSources_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.clbFilterSources_Movies.FormattingEnabled = true
         Me.clbFilterSources_Movies.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterSources_Movies.Name = "clbFilterSources_Movies"
         Me.clbFilterSources_Movies.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterSources_Movies.TabIndex = 8
-        Me.clbFilterSources_Movies.TabStop = False
+        Me.clbFilterSources_Movies.TabStop = false
         '
         'pnlFilterSourcesTop_Movies
         '
-        Me.pnlFilterSourcesTop_Movies.AutoSize = True
+        Me.pnlFilterSourcesTop_Movies.AutoSize = true
         Me.pnlFilterSourcesTop_Movies.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterSourcesTop_Movies.Controls.Add(Me.tblFilterSourcesTop_Movies)
         Me.pnlFilterSourcesTop_Movies.Dock = System.Windows.Forms.DockStyle.Top
@@ -2930,10 +2931,10 @@ Partial Class frmMain
         '
         'tblFilterSourcesTop_Movies
         '
-        Me.tblFilterSourcesTop_Movies.AutoSize = True
+        Me.tblFilterSourcesTop_Movies.AutoSize = true
         Me.tblFilterSourcesTop_Movies.ColumnCount = 3
         Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterSourcesTop_Movies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterSourcesTop_Movies.Controls.Add(Me.lblFilterSources_Movies, 0, 0)
         Me.tblFilterSourcesTop_Movies.Controls.Add(Me.lblFilterSourcesClose_Movies, 2, 0)
@@ -2941,7 +2942,7 @@ Partial Class frmMain
         Me.tblFilterSourcesTop_Movies.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterSourcesTop_Movies.Name = "tblFilterSourcesTop_Movies"
         Me.tblFilterSourcesTop_Movies.RowCount = 2
-        Me.tblFilterSourcesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterSourcesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterSourcesTop_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSourcesTop_Movies.Size = New System.Drawing.Size(189, 20)
         Me.tblFilterSourcesTop_Movies.TabIndex = 0
@@ -2949,9 +2950,9 @@ Partial Class frmMain
         'lblFilterSources_Movies
         '
         Me.lblFilterSources_Movies.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterSources_Movies.AutoSize = True
+        Me.lblFilterSources_Movies.AutoSize = true
         Me.lblFilterSources_Movies.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterSources_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSources_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSources_Movies.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterSources_Movies.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterSources_Movies.Name = "lblFilterSources_Movies"
@@ -2963,10 +2964,10 @@ Partial Class frmMain
         'lblFilterSourcesClose_Movies
         '
         Me.lblFilterSourcesClose_Movies.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterSourcesClose_Movies.AutoSize = True
+        Me.lblFilterSourcesClose_Movies.AutoSize = true
         Me.lblFilterSourcesClose_Movies.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterSourcesClose_Movies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterSourcesClose_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSourcesClose_Movies.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSourcesClose_Movies.ForeColor = System.Drawing.Color.White
         Me.lblFilterSourcesClose_Movies.Location = New System.Drawing.Point(153, 3)
         Me.lblFilterSourcesClose_Movies.Name = "lblFilterSourcesClose_Movies"
@@ -2983,11 +2984,11 @@ Partial Class frmMain
         Me.pnlFilterSources_Shows.Name = "pnlFilterSources_Shows"
         Me.pnlFilterSources_Shows.Size = New System.Drawing.Size(189, 192)
         Me.pnlFilterSources_Shows.TabIndex = 34
-        Me.pnlFilterSources_Shows.Visible = False
+        Me.pnlFilterSources_Shows.Visible = false
         '
         'pnlFilterSourcesMain_Shows
         '
-        Me.pnlFilterSourcesMain_Shows.AutoSize = True
+        Me.pnlFilterSourcesMain_Shows.AutoSize = true
         Me.pnlFilterSourcesMain_Shows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFilterSourcesMain_Shows.Controls.Add(Me.clbFilterSource_Shows)
         Me.pnlFilterSourcesMain_Shows.Dock = System.Windows.Forms.DockStyle.Fill
@@ -3000,20 +3001,20 @@ Partial Class frmMain
         'clbFilterSource_Shows
         '
         Me.clbFilterSource_Shows.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.clbFilterSource_Shows.CheckOnClick = True
+        Me.clbFilterSource_Shows.CheckOnClick = true
         Me.clbFilterSource_Shows.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbFilterSource_Shows.FormattingEnabled = True
+        Me.clbFilterSource_Shows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.clbFilterSource_Shows.FormattingEnabled = true
         Me.clbFilterSource_Shows.Location = New System.Drawing.Point(0, 0)
         Me.clbFilterSource_Shows.Margin = New System.Windows.Forms.Padding(0)
         Me.clbFilterSource_Shows.Name = "clbFilterSource_Shows"
         Me.clbFilterSource_Shows.Size = New System.Drawing.Size(187, 170)
         Me.clbFilterSource_Shows.TabIndex = 8
-        Me.clbFilterSource_Shows.TabStop = False
+        Me.clbFilterSource_Shows.TabStop = false
         '
         'pnlFilterSourcesTop_Shows
         '
-        Me.pnlFilterSourcesTop_Shows.AutoSize = True
+        Me.pnlFilterSourcesTop_Shows.AutoSize = true
         Me.pnlFilterSourcesTop_Shows.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.pnlFilterSourcesTop_Shows.Controls.Add(Me.tblFilterSourcesTop_Shows)
         Me.pnlFilterSourcesTop_Shows.Dock = System.Windows.Forms.DockStyle.Top
@@ -3024,10 +3025,10 @@ Partial Class frmMain
         '
         'tblFilterSourcesTop_Shows
         '
-        Me.tblFilterSourcesTop_Shows.AutoSize = True
+        Me.tblFilterSourcesTop_Shows.AutoSize = true
         Me.tblFilterSourcesTop_Shows.ColumnCount = 3
         Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblFilterSourcesTop_Shows.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblFilterSourcesTop_Shows.Controls.Add(Me.lblFilterSources_Shows, 0, 0)
         Me.tblFilterSourcesTop_Shows.Controls.Add(Me.lblFilterSourcesClose_Shows, 2, 0)
@@ -3035,7 +3036,7 @@ Partial Class frmMain
         Me.tblFilterSourcesTop_Shows.Location = New System.Drawing.Point(0, 0)
         Me.tblFilterSourcesTop_Shows.Name = "tblFilterSourcesTop_Shows"
         Me.tblFilterSourcesTop_Shows.RowCount = 2
-        Me.tblFilterSourcesTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblFilterSourcesTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblFilterSourcesTop_Shows.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSourcesTop_Shows.Size = New System.Drawing.Size(189, 20)
         Me.tblFilterSourcesTop_Shows.TabIndex = 0
@@ -3043,9 +3044,9 @@ Partial Class frmMain
         'lblFilterSources_Shows
         '
         Me.lblFilterSources_Shows.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilterSources_Shows.AutoSize = True
+        Me.lblFilterSources_Shows.AutoSize = true
         Me.lblFilterSources_Shows.BackColor = System.Drawing.Color.Transparent
-        Me.lblFilterSources_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSources_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSources_Shows.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilterSources_Shows.Location = New System.Drawing.Point(3, 3)
         Me.lblFilterSources_Shows.Name = "lblFilterSources_Shows"
@@ -3057,10 +3058,10 @@ Partial Class frmMain
         'lblFilterSourcesClose_Shows
         '
         Me.lblFilterSourcesClose_Shows.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblFilterSourcesClose_Shows.AutoSize = True
+        Me.lblFilterSourcesClose_Shows.AutoSize = true
         Me.lblFilterSourcesClose_Shows.BackColor = System.Drawing.Color.Transparent
         Me.lblFilterSourcesClose_Shows.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblFilterSourcesClose_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilterSourcesClose_Shows.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblFilterSourcesClose_Shows.ForeColor = System.Drawing.Color.White
         Me.lblFilterSourcesClose_Shows.Location = New System.Drawing.Point(153, 3)
         Me.lblFilterSourcesClose_Shows.Name = "lblFilterSourcesClose_Shows"
@@ -3070,10 +3071,10 @@ Partial Class frmMain
         '
         'dgvMovies
         '
-        Me.dgvMovies.AllowUserToAddRows = False
-        Me.dgvMovies.AllowUserToDeleteRows = False
-        Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AllowUserToAddRows = false
+        Me.dgvMovies.AllowUserToDeleteRows = false
+        Me.dgvMovies.AllowUserToResizeRows = false
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
         Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -3082,16 +3083,16 @@ Partial Class frmMain
         Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMovies.ContextMenuStrip = Me.cmnuMovie
         Me.dgvMovies.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240,Byte),Integer), CType(CType(240,Byte),Integer), CType(CType(240,Byte),Integer))
         Me.dgvMovies.Location = New System.Drawing.Point(0, 56)
         Me.dgvMovies.Name = "dgvMovies"
-        Me.dgvMovies.ReadOnly = True
-        Me.dgvMovies.RowHeadersVisible = False
+        Me.dgvMovies.ReadOnly = true
+        Me.dgvMovies.RowHeadersVisible = false
         Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvMovies.ShowCellErrors = False
-        Me.dgvMovies.ShowRowErrors = False
+        Me.dgvMovies.ShowCellErrors = false
+        Me.dgvMovies.ShowRowErrors = false
         Me.dgvMovies.Size = New System.Drawing.Size(567, 17)
-        Me.dgvMovies.StandardTab = True
+        Me.dgvMovies.StandardTab = true
         Me.dgvMovies.TabIndex = 0
         '
         'cmnuMovie
@@ -3102,8 +3103,8 @@ Partial Class frmMain
         '
         'cmnuMovieTitle
         '
-        Me.cmnuMovieTitle.Enabled = False
-        Me.cmnuMovieTitle.Image = CType(resources.GetObject("cmnuMovieTitle.Image"), System.Drawing.Image)
+        Me.cmnuMovieTitle.Enabled = false
+        Me.cmnuMovieTitle.Image = CType(resources.GetObject("cmnuMovieTitle.Image"),System.Drawing.Image)
         Me.cmnuMovieTitle.Name = "cmnuMovieTitle"
         Me.cmnuMovieTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieTitle.Text = "Title"
@@ -3115,7 +3116,7 @@ Partial Class frmMain
         '
         'cmnuMovieReload
         '
-        Me.cmnuMovieReload.Image = CType(resources.GetObject("cmnuMovieReload.Image"), System.Drawing.Image)
+        Me.cmnuMovieReload.Image = CType(resources.GetObject("cmnuMovieReload.Image"),System.Drawing.Image)
         Me.cmnuMovieReload.Name = "cmnuMovieReload"
         Me.cmnuMovieReload.ShortcutKeys = System.Windows.Forms.Keys.F5
         Me.cmnuMovieReload.Size = New System.Drawing.Size(246, 22)
@@ -3123,9 +3124,9 @@ Partial Class frmMain
         '
         'cmnuMovieMark
         '
-        Me.cmnuMovieMark.Image = CType(resources.GetObject("cmnuMovieMark.Image"), System.Drawing.Image)
+        Me.cmnuMovieMark.Image = CType(resources.GetObject("cmnuMovieMark.Image"),System.Drawing.Image)
         Me.cmnuMovieMark.Name = "cmnuMovieMark"
-        Me.cmnuMovieMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
+        Me.cmnuMovieMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M),System.Windows.Forms.Keys)
         Me.cmnuMovieMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieMark.Text = "Mark"
         '
@@ -3140,36 +3141,36 @@ Partial Class frmMain
         'cmnuMovieMarkAsCustom1
         '
         Me.cmnuMovieMarkAsCustom1.Name = "cmnuMovieMarkAsCustom1"
-        Me.cmnuMovieMarkAsCustom1.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom1.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D1),System.Windows.Forms.Keys)
         Me.cmnuMovieMarkAsCustom1.Size = New System.Drawing.Size(174, 22)
         Me.cmnuMovieMarkAsCustom1.Text = "Custom #1"
         '
         'cmnuMovieMarkAsCustom2
         '
         Me.cmnuMovieMarkAsCustom2.Name = "cmnuMovieMarkAsCustom2"
-        Me.cmnuMovieMarkAsCustom2.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D2), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom2.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D2),System.Windows.Forms.Keys)
         Me.cmnuMovieMarkAsCustom2.Size = New System.Drawing.Size(174, 22)
         Me.cmnuMovieMarkAsCustom2.Text = "Custom #2"
         '
         'cmnuMovieMarkAsCustom3
         '
         Me.cmnuMovieMarkAsCustom3.Name = "cmnuMovieMarkAsCustom3"
-        Me.cmnuMovieMarkAsCustom3.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D3), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom3.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D3),System.Windows.Forms.Keys)
         Me.cmnuMovieMarkAsCustom3.Size = New System.Drawing.Size(174, 22)
         Me.cmnuMovieMarkAsCustom3.Text = "Custom #3"
         '
         'cmnuMovieMarkAsCustom4
         '
         Me.cmnuMovieMarkAsCustom4.Name = "cmnuMovieMarkAsCustom4"
-        Me.cmnuMovieMarkAsCustom4.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D4), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom4.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D4),System.Windows.Forms.Keys)
         Me.cmnuMovieMarkAsCustom4.Size = New System.Drawing.Size(174, 22)
         Me.cmnuMovieMarkAsCustom4.Text = "Custom #4"
         '
         'cmnuMovieLock
         '
-        Me.cmnuMovieLock.Image = CType(resources.GetObject("cmnuMovieLock.Image"), System.Drawing.Image)
+        Me.cmnuMovieLock.Image = CType(resources.GetObject("cmnuMovieLock.Image"),System.Drawing.Image)
         Me.cmnuMovieLock.Name = "cmnuMovieLock"
-        Me.cmnuMovieLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.cmnuMovieLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L),System.Windows.Forms.Keys)
         Me.cmnuMovieLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieLock.Text = "Lock"
         '
@@ -3177,7 +3178,7 @@ Partial Class frmMain
         '
         Me.cmnuMovieWatched.Image = Global.Ember_Media_Manager.My.Resources.Resources.haswatched
         Me.cmnuMovieWatched.Name = "cmnuMovieWatched"
-        Me.cmnuMovieWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
+        Me.cmnuMovieWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W),System.Windows.Forms.Keys)
         Me.cmnuMovieWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieWatched.Text = "Watched"
         '
@@ -3188,31 +3189,31 @@ Partial Class frmMain
         '
         'cmnuMovieEdit
         '
-        Me.cmnuMovieEdit.Image = CType(resources.GetObject("cmnuMovieEdit.Image"), System.Drawing.Image)
+        Me.cmnuMovieEdit.Image = CType(resources.GetObject("cmnuMovieEdit.Image"),System.Drawing.Image)
         Me.cmnuMovieEdit.Name = "cmnuMovieEdit"
-        Me.cmnuMovieEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
+        Me.cmnuMovieEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E),System.Windows.Forms.Keys)
         Me.cmnuMovieEdit.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieEdit.Text = "Edit Movie"
         '
         'cmnuMovieEditMetaData
         '
-        Me.cmnuMovieEditMetaData.Image = CType(resources.GetObject("cmnuMovieEditMetaData.Image"), System.Drawing.Image)
+        Me.cmnuMovieEditMetaData.Image = CType(resources.GetObject("cmnuMovieEditMetaData.Image"),System.Drawing.Image)
         Me.cmnuMovieEditMetaData.Name = "cmnuMovieEditMetaData"
-        Me.cmnuMovieEditMetaData.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
+        Me.cmnuMovieEditMetaData.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D),System.Windows.Forms.Keys)
         Me.cmnuMovieEditMetaData.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieEditMetaData.Text = "Edit Meta Data"
         '
         'cmnuMovieGenres
         '
         Me.cmnuMovieGenres.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieGenresTitle, Me.cmnuMovieGenresGenre, Me.cmnuMovieGenresAdd, Me.cmnuMovieGenresSet, Me.cmnuMovieGenresRemove})
-        Me.cmnuMovieGenres.Image = CType(resources.GetObject("cmnuMovieGenres.Image"), System.Drawing.Image)
+        Me.cmnuMovieGenres.Image = CType(resources.GetObject("cmnuMovieGenres.Image"),System.Drawing.Image)
         Me.cmnuMovieGenres.Name = "cmnuMovieGenres"
         Me.cmnuMovieGenres.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieGenres.Text = "Genres"
         '
         'cmnuMovieGenresTitle
         '
-        Me.cmnuMovieGenresTitle.Enabled = False
+        Me.cmnuMovieGenresTitle.Enabled = false
         Me.cmnuMovieGenresTitle.Name = "cmnuMovieGenresTitle"
         Me.cmnuMovieGenresTitle.Size = New System.Drawing.Size(195, 22)
         Me.cmnuMovieGenresTitle.Text = ">> Select Genre <<"
@@ -3223,7 +3224,7 @@ Partial Class frmMain
         Me.cmnuMovieGenresGenre.FlatStyle = System.Windows.Forms.FlatStyle.Standard
         Me.cmnuMovieGenresGenre.Name = "cmnuMovieGenresGenre"
         Me.cmnuMovieGenresGenre.Size = New System.Drawing.Size(135, 23)
-        Me.cmnuMovieGenresGenre.Sorted = True
+        Me.cmnuMovieGenresGenre.Sorted = true
         '
         'cmnuMovieGenresAdd
         '
@@ -3250,16 +3251,16 @@ Partial Class frmMain
         '
         'cmnuMovieRescrape
         '
-        Me.cmnuMovieRescrape.Image = CType(resources.GetObject("cmnuMovieRescrape.Image"), System.Drawing.Image)
+        Me.cmnuMovieRescrape.Image = CType(resources.GetObject("cmnuMovieRescrape.Image"),System.Drawing.Image)
         Me.cmnuMovieRescrape.Name = "cmnuMovieRescrape"
-        Me.cmnuMovieRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
+        Me.cmnuMovieRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I),System.Windows.Forms.Keys)
         Me.cmnuMovieRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieRescrape.Text = "(Re)Scrape Movie"
         '
         'cmnuMovieReSel
         '
         Me.cmnuMovieReSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAuto, Me.cmnuMovieReSelAsk, Me.cmnuMovieReSelSkip})
-        Me.cmnuMovieReSel.Image = CType(resources.GetObject("cmnuMovieReSel.Image"), System.Drawing.Image)
+        Me.cmnuMovieReSel.Image = CType(resources.GetObject("cmnuMovieReSel.Image"),System.Drawing.Image)
         Me.cmnuMovieReSel.Name = "cmnuMovieReSel"
         Me.cmnuMovieReSel.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieReSel.Text = "(Re)Scrape Selected Movies"
@@ -3634,15 +3635,15 @@ Partial Class frmMain
         '
         'cmnuMovieChange
         '
-        Me.cmnuMovieChange.Image = CType(resources.GetObject("cmnuMovieChange.Image"), System.Drawing.Image)
+        Me.cmnuMovieChange.Image = CType(resources.GetObject("cmnuMovieChange.Image"),System.Drawing.Image)
         Me.cmnuMovieChange.Name = "cmnuMovieChange"
-        Me.cmnuMovieChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.cmnuMovieChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C),System.Windows.Forms.Keys)
         Me.cmnuMovieChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieChange.Text = "Change Movie"
         '
         'cmnuMovieChangeAuto
         '
-        Me.cmnuMovieChangeAuto.Image = CType(resources.GetObject("cmnuMovieChangeAuto.Image"), System.Drawing.Image)
+        Me.cmnuMovieChangeAuto.Image = CType(resources.GetObject("cmnuMovieChangeAuto.Image"),System.Drawing.Image)
         Me.cmnuMovieChangeAuto.Name = "cmnuMovieChangeAuto"
         Me.cmnuMovieChangeAuto.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieChangeAuto.Text = "Change Movie (Auto)"
@@ -3656,7 +3657,7 @@ Partial Class frmMain
         '
         Me.cmnuMovieBrowseIMDB.Image = Global.Ember_Media_Manager.My.Resources.Resources.imdb
         Me.cmnuMovieBrowseIMDB.Name = "cmnuMovieBrowseIMDB"
-        Me.cmnuMovieBrowseIMDB.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
+        Me.cmnuMovieBrowseIMDB.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.B),System.Windows.Forms.Keys)
         Me.cmnuMovieBrowseIMDB.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieBrowseIMDB.Text = "Open IMDB-Page"
         '
@@ -3664,15 +3665,15 @@ Partial Class frmMain
         '
         Me.cmnuMovieBrowseTMDB.Image = Global.Ember_Media_Manager.My.Resources.Resources.tmdb
         Me.cmnuMovieBrowseTMDB.Name = "cmnuMovieBrowseTMDB"
-        Me.cmnuMovieBrowseTMDB.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
+        Me.cmnuMovieBrowseTMDB.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N),System.Windows.Forms.Keys)
         Me.cmnuMovieBrowseTMDB.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieBrowseTMDB.Text = "Open TMDB-Page"
         '
         'cmnuMovieOpenFolder
         '
-        Me.cmnuMovieOpenFolder.Image = CType(resources.GetObject("cmnuMovieOpenFolder.Image"), System.Drawing.Image)
+        Me.cmnuMovieOpenFolder.Image = CType(resources.GetObject("cmnuMovieOpenFolder.Image"),System.Drawing.Image)
         Me.cmnuMovieOpenFolder.Name = "cmnuMovieOpenFolder"
-        Me.cmnuMovieOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.cmnuMovieOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O),System.Windows.Forms.Keys)
         Me.cmnuMovieOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieOpenFolder.Text = "Open Containing Folder"
         '
@@ -3684,14 +3685,14 @@ Partial Class frmMain
         'cmnuMovieRemove
         '
         Me.cmnuMovieRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieRemoveFromDB, Me.cmnuMovieRemoveFromDisk})
-        Me.cmnuMovieRemove.Image = CType(resources.GetObject("cmnuMovieRemove.Image"), System.Drawing.Image)
+        Me.cmnuMovieRemove.Image = CType(resources.GetObject("cmnuMovieRemove.Image"),System.Drawing.Image)
         Me.cmnuMovieRemove.Name = "cmnuMovieRemove"
         Me.cmnuMovieRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieRemove.Text = "Remove"
         '
         'cmnuMovieRemoveFromDB
         '
-        Me.cmnuMovieRemoveFromDB.Image = CType(resources.GetObject("cmnuMovieRemoveFromDB.Image"), System.Drawing.Image)
+        Me.cmnuMovieRemoveFromDB.Image = CType(resources.GetObject("cmnuMovieRemoveFromDB.Image"),System.Drawing.Image)
         Me.cmnuMovieRemoveFromDB.Name = "cmnuMovieRemoveFromDB"
         Me.cmnuMovieRemoveFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
         Me.cmnuMovieRemoveFromDB.Size = New System.Drawing.Size(225, 22)
@@ -3699,18 +3700,18 @@ Partial Class frmMain
         '
         'cmnuMovieRemoveFromDisk
         '
-        Me.cmnuMovieRemoveFromDisk.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisk.Image"), System.Drawing.Image)
+        Me.cmnuMovieRemoveFromDisk.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisk.Image"),System.Drawing.Image)
         Me.cmnuMovieRemoveFromDisk.Name = "cmnuMovieRemoveFromDisk"
-        Me.cmnuMovieRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
+        Me.cmnuMovieRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete),System.Windows.Forms.Keys)
         Me.cmnuMovieRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDisk.Text = "Delete Movie"
         '
         'dgvMovieSets
         '
-        Me.dgvMovieSets.AllowUserToAddRows = False
-        Me.dgvMovieSets.AllowUserToDeleteRows = False
-        Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AllowUserToAddRows = false
+        Me.dgvMovieSets.AllowUserToDeleteRows = false
+        Me.dgvMovieSets.AllowUserToResizeRows = false
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer), CType(CType(230,Byte),Integer))
         Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -3719,16 +3720,16 @@ Partial Class frmMain
         Me.dgvMovieSets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMovieSets.ContextMenuStrip = Me.cmnuMovieSet
         Me.dgvMovieSets.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvMovieSets.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvMovieSets.GridColor = System.Drawing.Color.FromArgb(CType(CType(240,Byte),Integer), CType(CType(240,Byte),Integer), CType(CType(240,Byte),Integer))
         Me.dgvMovieSets.Location = New System.Drawing.Point(0, 56)
         Me.dgvMovieSets.Name = "dgvMovieSets"
-        Me.dgvMovieSets.ReadOnly = True
-        Me.dgvMovieSets.RowHeadersVisible = False
+        Me.dgvMovieSets.ReadOnly = true
+        Me.dgvMovieSets.RowHeadersVisible = false
         Me.dgvMovieSets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvMovieSets.ShowCellErrors = False
-        Me.dgvMovieSets.ShowRowErrors = False
+        Me.dgvMovieSets.ShowCellErrors = false
+        Me.dgvMovieSets.ShowRowErrors = false
         Me.dgvMovieSets.Size = New System.Drawing.Size(567, 17)
-        Me.dgvMovieSets.StandardTab = True
+        Me.dgvMovieSets.StandardTab = true
         Me.dgvMovieSets.TabIndex = 17
         '
         'cmnuMovieSet
@@ -12302,6 +12303,9 @@ Partial Class frmMain
         '
         Me.tmrSearch_Shows.Interval = 250
         '
+        'tmrRunTasks
+        '
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
@@ -13874,4 +13878,5 @@ End Sub
     Friend WithEvents cmnuMovieSetSortMethod As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetSortMethodMethods As System.Windows.Forms.ToolStripComboBox
     Friend WithEvents cmnuMovieSetSortMethodSet As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tmrRunTasks As System.Windows.Forms.Timer
 End Class

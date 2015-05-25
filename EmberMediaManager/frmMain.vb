@@ -56,7 +56,8 @@ Public Class frmMain
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Public fCommandLine As New CommandLine
-    Public fTasks As New Tasks
+
+    Private TaskList As New List(Of Task)
 
     Private alActors As New List(Of String)
     Private FilterRaise_Movies As Boolean = False
@@ -2134,8 +2135,6 @@ Public Class frmMain
         Dim etList As New List(Of String)
         Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
-        Dim configpath As String = ""
-        Dim formatter As New BinaryFormatter()
 
         logger.Trace("Starting MOVIE scrape")
 
@@ -10968,7 +10967,6 @@ doCancel:
             AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
             AddHandler fCommandLine.TaskEvent, AddressOf Me.TaskRunCallBack
-            AddHandler fTasks.GenericEvent, AddressOf Me.GenericRunCallBack
 
             Functions.DGVDoubleBuffer(Me.dgvMovies)
             Functions.DGVDoubleBuffer(Me.dgvMovieSets)
@@ -11538,7 +11536,8 @@ doCancel:
         End If
     End Sub
     Private Sub TaskRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        fTasks.AddTask(mType, _params)
+        TaskList.Add(New Task With {.mType = mType, .Params = _params})
+        Me.tmrRunTasks.Start()
     End Sub
     ''' <summary>
     ''' This is a generic callback function.
@@ -11548,20 +11547,21 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         Select Case mType
+
             Case Enums.ModuleEventType.CommandLine
                 Select Case _params(0).ToString
                     Case "addmoviesource"
                         Using dSource As New dlgMovieSource
                             If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
                                 Master.DB.LoadMovieSourcesFromDB()
-                                Me.SetMenus(False)
+                                Me.SetMenus(True)
                             End If
                         End Using
                     Case "addtvshowsource"
                         Using dSource As New dlgTVSource
                             If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
                                 Master.DB.LoadTVSourcesFromDB()
-                                Me.SetMenus(False)
+                                Me.SetMenus(True)
                             End If
                         End Using
                     Case "loadmedia"
@@ -11582,6 +11582,7 @@ doCancel:
                     Case Else
                         Me.Activate()
                 End Select
+
             Case Enums.ModuleEventType.AfterEdit_Movie
                 Try
                     Me.SetMovieListItemAfterEdit(Convert.ToInt16(_params(0)), Convert.ToInt16(_params(1)))
@@ -11592,6 +11593,7 @@ doCancel:
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
+
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 Try
                     If Me.ReloadEpisode(Convert.ToInt16(_params(0))) Then
@@ -11601,6 +11603,7 @@ doCancel:
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
+
             Case Enums.ModuleEventType.AfterEdit_TVShow
                 Try
                     If Me.ReloadShow(Convert.ToInt16(_params(0)), False, False, False, False, False) Then
@@ -19688,6 +19691,14 @@ doCancel:
         End If
     End Sub
 
+    Private Sub tmrRunTasks_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrRunTasks.Tick
+        Me.tmrRunTasks.Enabled = False
+        While Me.TaskList.Count > 0
+            GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params)
+            Me.TaskList.RemoveAt(0)
+        End While
+    End Sub
+
     Private Sub tmrSearchWait_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Movies.Tick
         Me.tmrSearch_Movies.Enabled = False
         If Me.prevTextSearch_Movies = Me.currTextSearch_Movies Then
@@ -20433,7 +20444,17 @@ doCancel:
 
     End Class
 
-#End Region 'Nested Types
+    Structure Task
 
+#Region "Fields"
+
+        Dim mType As Enums.ModuleEventType
+        Dim Params As List(Of Object)
+
+#End Region 'Fields
+
+    End Structure
+
+#End Region 'Nested Types
 
 End Class

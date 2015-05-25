@@ -465,7 +465,7 @@
     <value>True</value>
   </metadata>
   <metadata name="cmnuMovie.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>512, 56</value>
+    <value>383, 56</value>
   </metadata>
   <data name="cmnuMovieTitle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -766,7 +766,7 @@
 </value>
   </data>
   <metadata name="cmnuMovieSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1050, 95</value>
+    <value>914, 95</value>
   </metadata>
   <data name="cmnuMovieSetTitle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -904,7 +904,7 @@
 </value>
   </data>
   <metadata name="cmnuShow.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>373, 95</value>
+    <value>237, 95</value>
   </metadata>
   <data name="cmnuShowTitle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1105,7 +1105,7 @@
 </value>
   </data>
   <metadata name="cmnuSeason.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>485, 95</value>
+    <value>349, 95</value>
   </metadata>
   <data name="cmnuSeasonTitle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1273,7 +1273,7 @@
 </value>
   </data>
   <metadata name="cmnuEpisode.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>606, 95</value>
+    <value>470, 95</value>
   </metadata>
   <data name="cmnuEpisodeTitle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1714,7 +1714,7 @@
 </value>
   </data>
   <metadata name="ilMoviesInSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>725, 56</value>
+    <value>596, 56</value>
   </metadata>
   <data name="pbMILoading.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -4603,7 +4603,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADw
-        NwAAAk1TRnQBSQFMAgEBEgEAAYwBFQGMARUBEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        NwAAAk1TRnQBSQFMAgEBEgEAAbwBFQG8ARUBEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABUAMAAQEBAAEgBgABUP8A/wAUAAM+AWoDXgHQA1sBxANeAdADWwHIA14B0ANbAcgDXAHMA1wBzANb
         AcgDXgHQA1sByANeAdADWwHEA14B0AM+AWrAAAOVBf8DlQX/AbUBtAG3Bf8BtQG0AbcB/wHZAdgB2QH/
         AdkB2AHZAf8BtQG0AbcF/wG1AbQBtwX/A5UF/wOVAf8UAAMWAR8DRQF8A1EBoANRAaADRQF8AxYBH5QA
@@ -4650,11 +4650,11 @@
         Af8CnQGeAf8DAAH/AwAB/wMAAf8CyQHKAf8DZQH0FAADKgFAA5AB/wNAAXAMAANOAZQDYAHWA14B2ANi
         Ae8DXwHgDAADXgHQA/QB/wP0Af8D9AH/A/QB/wP0Af8D9AH/A/QB/wP0Af8D9AH/A/QB/wNeAdAIAANR
         AZ8CyQHKAf8CyQHKAf8DtQH/AskBygH/A7UB/wLJAcoB/wLJAcoB/wKlAaYB/wKGAYcB/wO6Af8DugH/
-        AyIB/wLJAcoB/wLJAcoB/wNZAb8CsgGzAf8CyQHKAf8BhgGHAYgB/wMAAf8CyQHKAf8CyQHKAf8DAAH/
+        AxwB/wLJAcoB/wLJAcoB/wNZAb8CsgGzAf8CyQHKAf8BhgGHAYgB/wMAAf8CyQHKAf8CyQHKAf8DAAH/
         AwAB/wLAAcEB/wLJAcoB/wMAAf8BjQGOAY8B/wLJAcoB/wLJAcoB/wLJAcoB/wNAAXAQAAMqAUAClAGV
         Af8DQAFwGAADWgHAA18B4AwAA14B0AP7Af8D+wH/A/sB/wP7Af8D+wH/A/sB/wP7Af8D+wH/A/sB/wP7
         Af8DXgHQCAADUQGfAskBygH/AskBygH/A7UB/wLJAcoB/wO1Af8CyQHKAf8CyQHKAf8CpQGmAf8ChgGH
-        Af8DugH/A7oB/wMiAf8CyQHKAf8CyQHKAf8DWQG/ArIBswH/AskBygH/Ap0BngH/AwAB/wLJAcoB/wLJ
+        Af8DugH/A7oB/wMcAf8CyQHKAf8CyQHKAf8DWQG/ArIBswH/AskBygH/Ap0BngH/AwAB/wLJAcoB/wLJ
         AcoB/wGNAY4BjwH/AwAB/wLAAcEB/wLJAcoB/wGGAYcBiAH/AwAB/wLJAcoB/wLJAcoB/wLJAcoB/wNA
         AXAQAAMqAUADmAH/A0ABcBgAA1oBwANfAeAMAANeAdAo/wNeAdAIAANAAXACyQHKAf8CyQHKAf8DtQH/
         AskBygH/AsQBxQH/A7oB/wLJAcoB/wLEAcUB/wOBAf8ChgGHAf8DgQH/AqUBpgH/AskBygH/AskBygH/
@@ -4845,10 +4845,10 @@
 </value>
   </data>
   <metadata name="tmrWaitMovie.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
+    <value>1224, 17</value>
   </metadata>
   <metadata name="tmrLoadMovie.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>146, 56</value>
+    <value>17, 56</value>
   </metadata>
   <metadata name="tmrSearchWait_Movies.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>529, 17</value>
@@ -4857,28 +4857,28 @@
     <value>378, 17</value>
   </metadata>
   <metadata name="ToolTips.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>628, 56</value>
+    <value>499, 56</value>
   </metadata>
   <metadata name="tmrWaitShow.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>849, 56</value>
+    <value>720, 56</value>
   </metadata>
   <metadata name="tmrLoadShow.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>974, 56</value>
+    <value>845, 56</value>
   </metadata>
   <metadata name="tmrWaitSeason.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1206, 56</value>
+    <value>1077, 56</value>
   </metadata>
   <metadata name="tmrLoadSeason.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 95</value>
+    <value>1211, 56</value>
   </metadata>
   <metadata name="tmrWaitEp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>153, 95</value>
+    <value>17, 95</value>
   </metadata>
   <metadata name="tmrLoadEp.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>262, 95</value>
+    <value>126, 95</value>
   </metadata>
   <metadata name="cmnuTray.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1101, 56</value>
+    <value>972, 56</value>
   </metadata>
   <data name="cmnuTrayTitle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -5211,16 +5211,16 @@
 </value>
   </data>
   <metadata name="tmrAppExit.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>400, 56</value>
+    <value>271, 56</value>
   </metadata>
   <metadata name="tmrKeyBuffer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>277, 56</value>
+    <value>148, 56</value>
   </metadata>
   <metadata name="tmrLoadMovieSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1183, 95</value>
+    <value>1047, 95</value>
   </metadata>
   <metadata name="tmrWaitMovieSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 134</value>
+    <value>1195, 95</value>
   </metadata>
   <metadata name="tmrSearchWait_MovieSets.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>185, 17</value>
@@ -5229,10 +5229,13 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="tmrSearchWait_Shows.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>731, 95</value>
+    <value>595, 95</value>
   </metadata>
   <metadata name="tmrSearch_Shows.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>903, 95</value>
+    <value>767, 95</value>
+  </metadata>
+  <metadata name="tmrRunTasks.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 134</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>159</value>

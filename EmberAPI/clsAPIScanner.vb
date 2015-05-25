@@ -1641,7 +1641,7 @@ Public Class Scanner
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
             For Each eSource In Master.MovieSources
-                If Args.Folder.ToLower.StartsWith(eSource.Path.ToLower) Then
+                If String.Concat(Args.Folder.ToLower, Path.DirectorySeparatorChar).StartsWith(String.Concat(eSource.Path.ToLower, Path.DirectorySeparatorChar)) Then
                     Me.MoviePaths = Master.DB.GetMoviePaths
                     Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1654,7 +1654,7 @@ Public Class Scanner
             Next
 
             For Each eSource In Master.TVSources
-                If Args.Folder.ToLower.StartsWith(eSource.Path.ToLower) Then
+                If String.Concat(Args.Folder.ToLower, Path.DirectorySeparatorChar).StartsWith(String.Concat(eSource.Path.ToLower, Path.DirectorySeparatorChar)) Then
                     bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
                     TVShowPaths.Clear()
@@ -1692,7 +1692,7 @@ Public Class Scanner
                         'Args.Folder is a tv show folder or a tv show subfolder -> get the tv show main path
                         Dim ShowPath As String = String.Empty
                         For Each hKey In Me.TVShowPaths.Keys
-                            If Args.Folder.ToLower.StartsWith(hKey.ToString.ToLower) Then
+                            If String.Concat(Args.Folder.ToLower, Path.DirectorySeparatorChar).StartsWith(String.Concat(hKey.ToString.ToLower, Path.DirectorySeparatorChar)) Then
                                 ShowPath = hKey.ToString
                                 Exit For
                             End If
@@ -1725,7 +1725,7 @@ Public Class Scanner
             Next
         End If
 
-        If Args.Scan.Movies Then
+        If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
             Me.MoviePaths = Master.DB.GetMoviePaths
             Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1772,7 +1772,7 @@ Public Class Scanner
             End Using
         End If
 
-        If Args.Scan.TV Then
+        If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
             bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
             TVShowPaths.Clear()
