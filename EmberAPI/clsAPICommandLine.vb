@@ -20,6 +20,7 @@
 
 Imports System.IO
 Imports NLog
+Imports EmberAPI.Tasks
 
 
 Public Class CommandLine
@@ -32,7 +33,7 @@ Public Class CommandLine
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Public Event TaskEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 
     'Singleton Instace for CommandLine manager .. allways use this one
     Private Shared Singleton As CommandLine = Nothing
@@ -77,7 +78,23 @@ Public Class CommandLine
 
             Select Case Args(i).ToLower
                 Case "-addmoviesource"
+                    If Args.Count - 1 > i Then
+                        If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addmoviesource", Args(i + 1).Replace("""", String.Empty)}))
+                            i += 1
+                        End If
+                    Else
+                        Exit For
+                    End If
                 Case "-addtvshowsource"
+                    If Args.Count - 1 > i Then
+                        If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addtvshowsource", Args(i + 1).Replace("""", String.Empty)}))
+                            i += 1
+                        End If
+                    Else
+                        Exit For
+                    End If
                 Case "-fullask"
                     clScrapeType = Enums.ScrapeType.FullAsk
                     clAsk = True
@@ -141,8 +158,8 @@ Public Class CommandLine
                 Case "-scanfolder"
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            scanFolder = True
-                            scanFolderPath = Args(i + 1).Replace("""", String.Empty)
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.SpecificFolder = True}, String.Empty, Args(i + 1).Replace("""", String.Empty)}))
                             i += 1
                         End If
                     Else
@@ -212,15 +229,18 @@ Public Class CommandLine
                     'End If
             End Select
         Next
-
-        If scanFolder AndAlso Not String.IsNullOrEmpty(scanFolderPath) Then
-            LoadMedia((New Structures.Scans With {.SpecificFolder = True}), String.Empty, scanFolderPath)
-        End If
-
     End Sub
 
-    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal Folder As String = "")
-        RaiseEvent GenericEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"loadmedia", Scan, SourceName, Folder}))
+    Public Sub AddMovieSource(ByVal FolderPath As String)
+        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addmoviesource", FolderPath}))
+    End Sub
+
+    Public Sub AddTVShowSource(ByVal FolderPath As String)
+        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addtvshowsource", FolderPath}))
+    End Sub
+
+    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal FolderPath As String = "")
+        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"loadmedia", Scan, SourceName, FolderPath}))
     End Sub
 
 #End Region 'Methods

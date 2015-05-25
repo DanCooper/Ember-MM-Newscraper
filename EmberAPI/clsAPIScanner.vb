@@ -28,11 +28,11 @@ Public Class Scanner
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public htTVShows As New Hashtable
+    Public TVShowPaths As New Hashtable
     Public MoviePaths As New List(Of String)
     Public ShowPath As String = String.Empty
     Public SourceLastScan As New DateTime
-    Public TVPaths As New List(Of String)
+    Public TVEpPaths As New List(Of String)
 
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
 
@@ -363,7 +363,7 @@ Public Class Scanner
     Public Sub GetTVEpisodeFolderContents(ByRef Episode As EpisodeContainer)
         Dim tmpName As String = String.Empty
         Dim fName As String = String.Empty
-        Dim fList As New List(Of String) 
+        Dim fList As New List(Of String)
         Dim EpisodePath As String = Episode.Filename
 
         Try
@@ -1032,7 +1032,7 @@ Public Class Scanner
         Dim tEp As Integer = -1
 
         If TVContainer.Episodes.Count > 0 Then
-            If Not htTVShows.ContainsKey(TVContainer.ShowPath.ToLower) Then
+            If Not TVShowPaths.ContainsKey(TVContainer.ShowPath.ToLower) Then
                 GetTVShowFolderContents(TVContainer)
 
                 If Not String.IsNullOrEmpty(TVContainer.ShowNfo) Then
@@ -1089,7 +1089,7 @@ Public Class Scanner
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
                 End If
             Else
-                tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(htTVShows.Item(TVContainer.ShowPath.ToLower)))
+                tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(TVShowPaths.Item(TVContainer.ShowPath.ToLower)))
             End If
 
             If tmpTVDB.ShowID > -1 Then
@@ -1442,7 +1442,7 @@ Public Class Scanner
         Dim di As New DirectoryInfo(sPath)
         Try
             For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
-                If Not TVPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso _
+                If Not TVEpPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                     Not Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso _
                     (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
                     tShow.Episodes.Add(New EpisodeContainer With {.Filename = lFile.FullName, .Source = tShow.Source})
@@ -1652,6 +1652,77 @@ Public Class Scanner
                     Exit For
                 End If
             Next
+
+            For Each eSource In Master.TVSources
+                If Args.Folder.ToLower.StartsWith(eSource.Path.ToLower) Then
+                    bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
+
+                    TVShowPaths.Clear()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLreader.Read
+                                TVShowPaths.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
+                                If Me.bwPrelim.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+                            End While
+                        End Using
+                    End Using
+
+                    TVEpPaths.Clear()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLreader.Read
+                                TVEpPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                                If Me.bwPrelim.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+                            End While
+                        End Using
+                    End Using
+
+                    If Args.Folder.ToLower = eSource.Path.ToLower Then
+                        'Args.Folder is a tv show source folder -> scan the whole source
+                        ScanTVSourceDir(eSource.Name, eSource.Path, eSource.Language, eSource.Ordering, eSource.EpisodeSorting)
+                    Else
+                        'Args.Folder is a tv show folder or a tv show subfolder -> get the tv show main path
+                        Dim ShowPath As String = String.Empty
+                        For Each hKey In Me.TVShowPaths.Keys
+                            If Args.Folder.ToLower.StartsWith(hKey.ToString.ToLower) Then
+                                ShowPath = hKey.ToString
+                                Exit For
+                            End If
+                        Next
+
+                        If Not String.IsNullOrEmpty(ShowPath) AndAlso Directory.Exists(ShowPath) Then
+                            Dim currShowContainer As TVShowContainer = New TVShowContainer
+                            currShowContainer.EpisodeSorting = eSource.EpisodeSorting
+                            currShowContainer.Language = eSource.Language
+                            currShowContainer.Ordering = eSource.Ordering
+                            currShowContainer.ShowPath = ShowPath
+                            currShowContainer.Source = eSource.Name
+
+                            Dim inInfo As DirectoryInfo = New DirectoryInfo(ShowPath)
+                            Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
+                            Try
+                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
+                            Catch
+                            End Try
+
+                            For Each sDirs As DirectoryInfo In inList
+                                Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
+                            Next
+
+                            LoadTVShow(currShowContainer)
+                        End If
+                    End If
+                    Exit For
+                End If
+            Next
         End If
 
         If Args.Scan.Movies Then
@@ -1704,12 +1775,12 @@ Public Class Scanner
         If Args.Scan.TV Then
             bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
-            htTVShows.Clear()
+            TVShowPaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        htTVShows.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
+                        TVShowPaths.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
                         If Me.bwPrelim.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -1718,12 +1789,12 @@ Public Class Scanner
                 End Using
             End Using
 
-            TVPaths.Clear()
+            TVEpPaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        TVPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                        TVEpPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
                         If Me.bwPrelim.CancellationPending Then
                             e.Cancel = True
                             Return

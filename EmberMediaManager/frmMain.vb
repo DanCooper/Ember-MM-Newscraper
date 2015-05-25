@@ -56,6 +56,7 @@ Public Class frmMain
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Public fCommandLine As New CommandLine
+    Public fTasks As New Tasks
 
     Private alActors As New List(Of String)
     Private FilterRaise_Movies As Boolean = False
@@ -10962,7 +10963,8 @@ doCancel:
             AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
             AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
-            AddHandler fCommandLine.GenericEvent, AddressOf Me.GenericRunCallBack
+            AddHandler fCommandLine.TaskEvent, AddressOf Me.TaskRunCallBack
+            AddHandler fTasks.GenericEvent, AddressOf Me.GenericRunCallBack
 
             Functions.DGVDoubleBuffer(Me.dgvMovies)
             Functions.DGVDoubleBuffer(Me.dgvMovieSets)
@@ -11531,6 +11533,9 @@ doCancel:
             If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
+    Private Sub TaskRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        fTasks.AddTask(mType, _params)
+    End Sub
     ''' <summary>
     ''' This is a generic callback function.
     ''' </summary>
@@ -11541,6 +11546,20 @@ doCancel:
         Select Case mType
             Case Enums.ModuleEventType.CommandLine
                 Select Case _params(0).ToString
+                    Case "addmoviesource"
+                        Using dSource As New dlgMovieSource
+                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
+                                Master.DB.LoadMovieSourcesFromDB()
+                                Me.SetMenus(False)
+                            End If
+                        End Using
+                    Case "addtvshowsource"
+                        Using dSource As New dlgTVSource
+                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
+                                Master.DB.LoadTVSourcesFromDB()
+                                Me.SetMenus(False)
+                            End If
+                        End Using
                     Case "loadmedia"
                         Me.LoadMedia(CType(_params(1), Structures.Scans), CStr(_params(2)), CStr(_params(3)))
                 End Select

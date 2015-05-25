@@ -61,8 +61,14 @@ Public Class dlgMovieSource
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal path As String) As Windows.Forms.DialogResult
-        Me.tmppath = path
+    Public Overloads Function ShowDialog(ByVal SearchPath As String) As Windows.Forms.DialogResult
+        Me.tmppath = SearchPath
+        Return MyBase.ShowDialog()
+    End Function
+
+    Public Overloads Function ShowDialog(ByVal SearchPath As String, ByVal FolderPath As String) As Windows.Forms.DialogResult
+        Me.tmppath = SearchPath
+        Me.txtSourcePath.Text = FolderPath
         Return MyBase.ShowDialog()
     End Function
 
