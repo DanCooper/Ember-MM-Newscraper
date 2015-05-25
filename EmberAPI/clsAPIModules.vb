@@ -25,6 +25,7 @@ Imports System.Xml.Serialization
 Imports System.Windows.Forms
 Imports System.Drawing
 Imports NLog
+
 Public Class ModulesManager
 
 #Region "Fields"

@@ -27,9 +27,11 @@ Namespace My
     Partial Friend Class MyApplication
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private frmEmber As frmMain
-#End Region
+
+#End Region 'Fields
 
 #Region "Methods"
 
@@ -106,11 +108,11 @@ Namespace My
         ''' Check if Ember is already running, but only for GUI instances
         ''' </summary>
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
-            Dim Args() As String = Environment.GetCommandLineArgs
-            If Args.Count = 1 Then
-                logger.Error("Ember Media Manager is already running.")
-                MessageBox.Show("Ember Media Manager is already running.", "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End
+            If e.CommandLine.Count = 0 Then
+                e.BringToForeground = True
+            ElseIf e.CommandLine.Count > 0 Then
+                Dim Args() As String = e.CommandLine.ToArray
+                frmMain.fCommandLine.RunCommandLine(args)
             End If
         End Sub
 

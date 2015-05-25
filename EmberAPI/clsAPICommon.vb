@@ -806,7 +806,8 @@ Public Class Enums
         ShowTVShow = 43
         SyncModuleSettings = 44
         Sync_Movie = 45
-        TVImageNaming = 46
+        Task = 46
+        TVImageNaming = 47
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer
@@ -2039,6 +2040,7 @@ Public Class Structures
     Public Structure Scans
         Dim Movies As Boolean
         Dim MovieSets As Boolean
+        Dim SpecificFolder As Boolean
         Dim TV As Boolean
     End Structure
 

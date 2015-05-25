@@ -1483,5 +1483,12 @@
   <string id="1391">Prefix</string>
   <string id="1392">Use CTRL + Return for new lines.</string>
   <string id="1393">Custom Tabs</string>
-  <string id="1394">List</string>
+  <string id="1394">List</string>>
+  <string id="1395">Context Menu</string>
+  <string id="1396">Integrate Ember Media Manager to shell context menu</string>
+  <string id="1397">Cascade context menu</string>
+  <string id="1398">Context menu items</string>
+  <string id="1399">Scan folder for new content</string>
+  <string id="1400">Add folder as a new movie source</string>
+  <string id="1401">Add folder as a new tv show source</string>
 </strings>

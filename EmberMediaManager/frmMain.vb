@@ -31,7 +31,6 @@ Imports NLog
 Imports System.Xml.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 
-
 Public Class frmMain
 
 #Region "Fields"
@@ -55,6 +54,9 @@ Public Class frmMain
     Friend WithEvents bwRefreshShows As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRewriteMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
+
+    Public fCommandLine As New CommandLine
+    Public fTasks As New Tasks
 
     Private alActors As New List(Of String)
     Private FilterRaise_Movies As Boolean = False
@@ -610,7 +612,7 @@ Public Class frmMain
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
-    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "")
+    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal Folder As String = "")
         Try
             Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
@@ -653,7 +655,7 @@ Public Class frmMain
                 Me.dgvTVEpisodes.DataSource = Nothing
             End If
 
-            Me.fScanner.Start(Scan, SourceName)
+            Me.fScanner.Start(Scan, SourceName, Folder)
 
         Catch ex As Exception
             Me.LoadingDone = True
@@ -10965,6 +10967,8 @@ doCancel:
             AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
             AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
+            AddHandler fCommandLine.TaskEvent, AddressOf Me.TaskRunCallBack
+            AddHandler fTasks.GenericEvent, AddressOf Me.GenericRunCallBack
 
             Functions.DGVDoubleBuffer(Me.dgvMovies)
             Functions.DGVDoubleBuffer(Me.dgvMovieSets)
@@ -11533,6 +11537,9 @@ doCancel:
             If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
+    Private Sub TaskRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+        fTasks.AddTask(mType, _params)
+    End Sub
     ''' <summary>
     ''' This is a generic callback function.
     ''' </summary>
@@ -11541,6 +11548,26 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         Select Case mType
+            Case Enums.ModuleEventType.CommandLine
+                Select Case _params(0).ToString
+                    Case "addmoviesource"
+                        Using dSource As New dlgMovieSource
+                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
+                                Master.DB.LoadMovieSourcesFromDB()
+                                Me.SetMenus(False)
+                            End If
+                        End Using
+                    Case "addtvshowsource"
+                        Using dSource As New dlgTVSource
+                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
+                                Master.DB.LoadTVSourcesFromDB()
+                                Me.SetMenus(False)
+                            End If
+                        End Using
+                    Case "loadmedia"
+                        Me.LoadMedia(CType(_params(1), Structures.Scans), CStr(_params(2)), CStr(_params(3)))
+                End Select
+
             Case Enums.ModuleEventType.Generic
                 Select Case _params(0).ToString
                     Case "controlsenabled"

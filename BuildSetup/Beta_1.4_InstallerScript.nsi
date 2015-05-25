@@ -360,7 +360,10 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\$StartMenuFolder\Visit ${emm_appname} Online.url"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${emm_appname}"
-
+  DeleteRegKey HKCU "Software\Classes\Directory\shell\EmberMediaManager"
+  DeleteRegKey HKCU "Software\Classes\Directory\shell\EmberMediaManager.AddMovieSource"
+  DeleteRegKey HKCU "Software\Classes\Directory\shell\EmberMediaManager.AddTVShowSource"
+  DeleteRegKey HKCU "Software\Classes\Directory\shell\EmberMediaManager.ScanFolder"
 SectionEnd
 
 ;--------------------------------
