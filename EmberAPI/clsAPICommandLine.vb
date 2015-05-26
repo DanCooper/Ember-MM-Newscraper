@@ -20,7 +20,6 @@
 
 Imports System.IO
 Imports NLog
-Imports EmberAPI.Tasks
 
 
 Public Class CommandLine
