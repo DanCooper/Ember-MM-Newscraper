@@ -57,6 +57,16 @@ Public Class frmVideoPlayer
 
     End Sub
 
+    Public Sub New(ByVal URL As String)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.SetUp()
+        PlaylistAdd(URL)
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
+
     Public Sub PlayerPlay()
         Me.AxVLCPlayer.playlist.play()
     End Sub

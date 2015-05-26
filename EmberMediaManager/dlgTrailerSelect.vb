@@ -592,18 +592,19 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub TrailerAddToPlayer(ByVal Trailer As String)
-        'Me.axVLCTrailer.playlist.stop()
-        'Me.axVLCTrailer.playlist.items.clear()
+        If _withPlayer Then
+            If pnlTrailerPreview.Controls.Item(1).Tag.ToString = "vPlayer" Then
+                pnlTrailerPreview.Controls.RemoveAt(1)
+            End If
+            Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel, Trailer})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
+            pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
+            If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
+                pnlTrailerPreviewNoPlayer.Visible = False
+            End If
+        Else
 
-        'If Not String.IsNullOrEmpty(Trailer) Then
-        '    If Regex.IsMatch(Trailer, "https?:\/\/.*?") Then
-        '        Me.axVLCTrailer.playlist.add(Trailer)
-        '        Me.TrailerStart()
-        '    Else
-        '        Me.axVLCTrailer.playlist.add(String.Concat("file:///", Trailer))
-        '        Me.TrailerStart()
-        '    End If
-        'End If
+        End If
     End Sub
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLocalTrailer.TextChanged

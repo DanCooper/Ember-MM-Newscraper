@@ -39,14 +39,15 @@ Partial Class frmVideoPlayer
         Me.AxVLCPlayer.Size = New System.Drawing.Size(837, 471)
         Me.AxVLCPlayer.TabIndex = 0
         '
-        'pnlVLC
+        'pnlPlayer
         '
         Me.pnlPlayer.Controls.Add(Me.AxVLCPlayer)
         Me.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlPlayer.Location = New System.Drawing.Point(0, 0)
-        Me.pnlPlayer.Name = "pnlVLC"
+        Me.pnlPlayer.Name = "pnlPlayer"
         Me.pnlPlayer.Size = New System.Drawing.Size(837, 471)
         Me.pnlPlayer.TabIndex = 1
+        Me.pnlPlayer.Tag = "vPlayer"
         '
         'frmVideoPlayer
         '

@@ -47,6 +47,7 @@ Partial Class frmAudioPlayer
         Me.pnlPlayer.Name = "pnlPlayer"
         Me.pnlPlayer.Size = New System.Drawing.Size(837, 471)
         Me.pnlPlayer.TabIndex = 1
+        Me.pnlPlayer.Tag = "aPlayer"
         '
         'frmAudioPlayer
         '

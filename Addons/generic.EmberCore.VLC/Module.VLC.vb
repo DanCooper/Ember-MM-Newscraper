@@ -127,7 +127,11 @@ Public Class VLCPlayer
                     End If
                 Case Enums.ModuleEventType.MediaPlayer_Video
                     If _MySettings.UseAsVideoPlayer Then
-                        frmVideoPlayer = New frmVideoPlayer
+                        If _params.Count > 1 AndAlso _params(1) IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(_params(1))) Then
+                            frmVideoPlayer = New frmVideoPlayer(CStr(_params(1)))
+                        Else
+                            frmVideoPlayer = New frmVideoPlayer
+                        End If
                         _params(0) = frmVideoPlayer.pnlPlayer
                     End If
                 Case Enums.ModuleEventType.MediaPlayerPlay_Video
