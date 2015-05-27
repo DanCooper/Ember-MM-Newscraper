@@ -160,9 +160,9 @@ Partial Class dlgTMDBSearchResults_Movie
         'lblGenre
         '
         Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGenre.Location = New System.Drawing.Point(470, 240)
+        Me.lblGenre.Location = New System.Drawing.Point(476, 240)
         Me.lblGenre.Name = "lblGenre"
-        Me.lblGenre.Size = New System.Drawing.Size(165, 52)
+        Me.lblGenre.Size = New System.Drawing.Size(165, 37)
         Me.lblGenre.TabIndex = 17
         Me.lblGenre.Text = "Genre"
         Me.lblGenre.Visible = False
@@ -283,7 +283,7 @@ Partial Class dlgTMDBSearchResults_Movie
         '
         Me.lblGenreHeader.AutoSize = True
         Me.lblGenreHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenreHeader.Location = New System.Drawing.Point(408, 240)
+        Me.lblGenreHeader.Location = New System.Drawing.Point(416, 240)
         Me.lblGenreHeader.Name = "lblGenreHeader"
         Me.lblGenreHeader.Size = New System.Drawing.Size(54, 13)
         Me.lblGenreHeader.TabIndex = 16

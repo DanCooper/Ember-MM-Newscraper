@@ -238,8 +238,6 @@ Namespace TMDB
         ''' <param name="Options">Module settings<param>
         ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
-        ''' <remarks>Cocotus/Dan 2014/08/30 - Reworked structure: Scraper module should NOT use global scraper settings/locks in Ember, just scraper options of module
-        ''' Instead of directly saving scraped results into DBMovie we use empty nMovie movie container to store retrieved information of scraper</remarks>
         Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean) As Boolean
             Try
                 Dim Movie As WatTmdb.V3.TmdbMovie
@@ -262,6 +260,7 @@ Namespace TMDB
                 If (Not Movie.id > 0 AndAlso Not _MySettings.FallBackEng) OrElse (Not Movie.id > 0 AndAlso Not MovieE.id > 0) Then
                     Return False
                 End If
+
                 nMovie.Scrapersource = "TMDB"
                 nMovie.ID = CStr(If(String.IsNullOrEmpty(Movie.imdb_id) AndAlso _MySettings.FallBackEng, MovieE.imdb_id, Movie.imdb_id))
                 nMovie.TMDBID = CStr(If(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
@@ -289,14 +288,12 @@ Namespace TMDB
 
                 'Title
                 If Options.bTitle Then
-                    If String.IsNullOrEmpty(Movie.title) Then
-                        If _MySettings.FallBackEng Then
-                            If Not String.IsNullOrEmpty(MovieE.title) Then
-                                nMovie.Title = MovieE.title
-                            End If
+                    If Movie.title Is Nothing OrElse (Movie.title IsNot Nothing And String.IsNullOrEmpty(Movie.title)) Then
+                        If _MySettings.FallBackEng AndAlso MovieE.title IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.title) Then
+                            nMovie.Title = CStr(MovieE.title)
                         End If
                     Else
-                        nMovie.Title = Movie.title
+                        nMovie.Title = CStr(Movie.title)
                     End If
                 End If
 
@@ -304,14 +301,12 @@ Namespace TMDB
 
                 'OriginalTitle
                 If Options.bOriginalTitle Then
-                    If String.IsNullOrEmpty(Movie.original_title) Then
-                        If _MySettings.FallBackEng Then
-                            If Not String.IsNullOrEmpty(MovieE.original_title) Then
-                                nMovie.OriginalTitle = MovieE.original_title
-                            End If
+                    If Movie.original_title Is Nothing OrElse (Movie.original_title IsNot Nothing And String.IsNullOrEmpty(Movie.original_title)) Then
+                        If _MySettings.FallBackEng AndAlso MovieE.original_title IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.original_title) Then
+                            nMovie.OriginalTitle = CStr(MovieE.original_title)
                         End If
                     Else
-                        nMovie.OriginalTitle = Movie.original_title
+                        nMovie.OriginalTitle = CStr(Movie.original_title)
                     End If
                 End If
 
@@ -337,7 +332,6 @@ Namespace TMDB
 
                 'Posters (only for SearchResult dialog)
                 If GetPoster Then
-                    ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
                     Dim Images As WatTmdb.V3.TmdbMovieImages
                     Images = _TMDBApi.GetMovieImages(Movie.id)
                     If Images IsNot Nothing AndAlso Images.posters IsNot Nothing Then
@@ -360,10 +354,12 @@ Namespace TMDB
 
                 'Year
                 If Options.bYear Then
-                    scrapedresult = CStr(If(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date)).Substring(0, 4)
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Not String.IsNullOrEmpty(scrapedresult) Then
-                        nMovie.Year = scrapedresult
+                    If Movie.release_date Is Nothing OrElse (Movie.release_date IsNot Nothing And String.IsNullOrEmpty(Movie.release_date)) Then
+                        If _MySettings.FallBackEng AndAlso MovieE.release_date IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.release_date) Then
+                            nMovie.Year = CStr(MovieE.release_date).Substring(0, 4)
+                        End If
+                    Else
+                        nMovie.Year = CStr(Movie.release_date).Substring(0, 4)
                     End If
                 End If
 
@@ -406,14 +402,17 @@ Namespace TMDB
 
                 'ReleaseDate
                 If Options.bRelease Then
-                    scrapedresult = CStr(If(String.IsNullOrEmpty(Movie.release_date) AndAlso _MySettings.FallBackEng, MovieE.release_date, Movie.release_date))
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                    Dim ScrapedDate As String = String.Empty
+                    If Movie.release_date Is Nothing OrElse (Movie.release_date IsNot Nothing And String.IsNullOrEmpty(Movie.release_date)) Then
+                        If _MySettings.FallBackEng AndAlso MovieE.release_date IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.release_date) Then
+                            ScrapedDate = CStr(MovieE.release_date)
+                        End If
+                    Else
+                        ScrapedDate = CStr(Movie.release_date)
+                    End If
+                    If Not String.IsNullOrEmpty(ScrapedDate) Then
                         Dim RelDate As Date
-                        If Date.TryParse(scrapedresult, RelDate) Then
-                            'nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
-                            'FormatDateTime interprets date according to the CurrentCulture of user -> different results depending on user country!
-                            '  nMovie.ReleaseDate = Strings.FormatDateTime(RelDate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
+                        If Date.TryParse(ScrapedDate, RelDate) Then
                             'always save date in same date format not depending on users language setting!
                             nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
                         Else
@@ -935,63 +934,52 @@ Namespace TMDB
         Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-            Try
-                Select Case Args.Search
-                    Case SearchType.Movies
-                        Dim r As SearchResults_Movie = SearchMovie(Args.Parameter, Args.Year)
-                        e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
-                    Case SearchType.SearchDetails
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True)
-                        e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
+            Select Case Args.Search
+                Case SearchType.Movies
+                    Dim r As SearchResults_Movie = SearchMovie(Args.Parameter, Args.Year)
+                    e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
-                    Case SearchType.MovieSets
-                        Dim r As SearchResults_MovieSet = SearchMovieSet(Args.Parameter)
-                        e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
+                Case SearchType.SearchDetails
+                    Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True)
+                    e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
 
-                    Case SearchType.SearchDetails_MovieSet
-                        Dim s As Boolean = GetMovieSetInfo(Args.Parameter, Args.MovieSet, True, Args.Options_MovieSet, True)
-                        e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Success = s}
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+                Case SearchType.MovieSets
+                    Dim r As SearchResults_MovieSet = SearchMovieSet(Args.Parameter)
+                    e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
+
+                Case SearchType.SearchDetails_MovieSet
+                    Dim s As Boolean = GetMovieSetInfo(Args.Parameter, Args.MovieSet, True, Args.Options_MovieSet, True)
+                    e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Success = s}
+            End Select
         End Sub
 
         Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
             Dim Res As Results = DirectCast(e.Result, Results)
 
-            Try
-                Select Case Res.ResultType
-                    Case SearchType.Movies
-                        RaiseEvent SearchResultsDownloaded_Movie(DirectCast(Res.Result, SearchResults_Movie))
+            Select Case Res.ResultType
+                Case SearchType.Movies
+                    RaiseEvent SearchResultsDownloaded_Movie(DirectCast(Res.Result, SearchResults_Movie))
 
-                    Case SearchType.SearchDetails
-                        Dim movieInfo As SearchResults_Movie = DirectCast(Res.Result, SearchResults_Movie)
-                        RaiseEvent SearchInfoDownloaded_Movie(_sPoster, Res.Success)
+                Case SearchType.SearchDetails
+                    Dim movieInfo As SearchResults_Movie = DirectCast(Res.Result, SearchResults_Movie)
+                    RaiseEvent SearchInfoDownloaded_Movie(_sPoster, Res.Success)
 
-                    Case SearchType.MovieSets
-                        RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, SearchResults_MovieSet))
+                Case SearchType.MovieSets
+                    RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, SearchResults_MovieSet))
 
-                    Case SearchType.SearchDetails_MovieSet
-                        Dim moviesetInfo As SearchResults_MovieSet = DirectCast(Res.Result, SearchResults_MovieSet)
-                        RaiseEvent SearchInfoDownloaded_MovieSet(_sPoster, Res.Success)
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+                Case SearchType.SearchDetails_MovieSet
+                    Dim moviesetInfo As SearchResults_MovieSet = DirectCast(Res.Result, SearchResults_MovieSet)
+                    RaiseEvent SearchInfoDownloaded_MovieSet(_sPoster, Res.Success)
+            End Select
         End Sub
 
         Private Function CleanTitle(ByVal sString As String) As String
             Dim CleanString As String = sString
 
-            Try
-                If sString.StartsWith("""") Then CleanString = sString.Remove(0, 1)
+            If sString.StartsWith("""") Then CleanString = sString.Remove(0, 1)
+            If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
 
-                If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
             Return CleanString
         End Function
 
@@ -1020,134 +1008,112 @@ Namespace TMDB
         'End Function
 
         Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer = 0) As SearchResults_Movie
-            Try
-                Dim R As New SearchResults_Movie
-                Dim Page As Integer = 1
-                Dim Movies As WatTmdb.V3.TmdbMovieSearch
-                Dim TotP As Integer
-                Dim aE As Boolean
-                'If sYear Is Nothing Then
-                'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
-                'Else
-                Movies = _TMDBApi.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
-                'End If
-                If Movies.total_results = 0 And _MySettings.FallBackEng Then
-                    'If sYear Is Nothing Then
-                    ' Movies = _TMDBApiE.SearchMovie(sMovie, Page)
-                    'Else
-                    Movies = _TMDBApiE.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
-                    'End If
-                    aE = True
-                End If
-                If Movies.total_results > 0 Then
-                    Dim t1 As String
-                    Dim t2 As String
-                    Dim t3 As String
-                    TotP = Movies.total_pages
-                    While Page <= TotP And Page <= 3
+            Dim R As New SearchResults_Movie
+            Dim Page As Integer = 1
+            Dim Movies As WatTmdb.V3.TmdbMovieSearch
+            Dim TotP As Integer
+            Dim aE As Boolean
+
+            Movies = _TMDBApi.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
+
+            If Movies.total_results = 0 And _MySettings.FallBackEng Then
+                Movies = _TMDBApiE.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
+                aE = True
+            End If
+
+            If Movies.total_results > 0 Then
+                Dim t1 As String = String.Empty
+                Dim t2 As String = String.Empty
+                Dim t3 As String = String.Empty
+                TotP = Movies.total_pages
+                While Page <= TotP And Page <= 3
+                    If Movies.results IsNot Nothing Then
                         For Each aMovie In Movies.results
                             Dim aMI As WatTmdb.V3.TmdbMovie
                             aMI = _TMDBApi.GetMovieInfo(aMovie.id)
                             If aMI Is Nothing Then
                                 aMI = _TMDBApiE.GetMovieInfo(aMovie.id)
                             End If
-                            If aMI.imdb_id Is Nothing Then
-                                t1 = ""
-                            Else
-                                t1 = aMI.imdb_id.ToString
+                            If aMI.imdb_id IsNot Nothing Then
+                                t1 = CStr(aMI.imdb_id)
                             End If
-                            t2 = CStr(If(String.IsNullOrEmpty(aMovie.title), "", aMovie.title))
-                            t3 = CStr(If(String.IsNullOrEmpty(aMovie.release_date), "", aMovie.release_date.Substring(0, 4)))
+                            If aMovie.title Is Nothing OrElse (aMovie.title IsNot Nothing And String.IsNullOrEmpty(CStr(aMovie.title))) Then
+                                If aMovie.original_title IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMovie.original_title)) Then
+                                    t2 = CStr(aMovie.original_title)
+                                End If
+                            Else
+                                t2 = CStr(aMovie.title)
+                            End If
+                            If aMovie.release_date IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMovie.release_date)) Then
+                                t3 = CStr(aMovie.release_date).Substring(0, 4)
+                            End If
                             Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie(t1, t2, t3, 0)
                             lNewMovie.TMDBID = aMI.id.ToString
                             R.Matches.Add(lNewMovie)
                         Next
-                        Page = Page + 1
-                        If aE Then
-                            'If sYear Is Nothing Then
-                            'Movies = _TMDBApiE.SearchMovie(sMovie, Page)
-                            'Else
-                            Movies = _TMDBApiE.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
-                            'End If
-                        Else
-                            'If sYear Is Nothing Then
-                            'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
-                            'Else
-                            Movies = _TMDBApi.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
-                            'End If
-                        End If
+                    End If
+                    Page = Page + 1
+                    If aE Then
+                        Movies = _TMDBApiE.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
+                    Else
+                        Movies = _TMDBApi.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
+                    End If
 
-                    End While
-                End If
+                End While
+            End If
 
-                Return R
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return Nothing
-            End Try
+            Return R
         End Function
 
         Private Function SearchMovieSet(ByVal sMovieSet As String, Optional ByVal sYear As Integer = 0) As SearchResults_MovieSet
-            Try
-                Dim R As New SearchResults_MovieSet
-                Dim Page As Integer = 1
-                Dim MovieSets As WatTmdb.V3.TmdbCollectionSearch
-                Dim TotP As Integer
-                Dim aE As Boolean
-                'If sYear Is Nothing Then
-                'Movies = _TMDBApi_MovieSet.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
-                'Else
-                MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page)
-                'End If
-                If MovieSets.total_results = 0 And _MySettings.FallBackEng Then
-                    'If sYear Is Nothing Then
-                    ' Movies = _TMDBApiE_MovieSet.SearchMovie(sMovie, Page)
-                    'Else
-                    MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
-                    'End If
-                    aE = True
-                End If
-                If MovieSets.total_results > 0 Then
-                    Dim t1 As String = String.Empty
-                    Dim t2 As String = String.Empty
-                    Dim t3 As String = String.Empty
-                    TotP = MovieSets.total_pages
-                    While Page <= TotP And Page <= 3
+            Dim R As New SearchResults_MovieSet
+            Dim Page As Integer = 1
+            Dim MovieSets As WatTmdb.V3.TmdbCollectionSearch
+            Dim TotP As Integer
+            Dim aE As Boolean
+
+            MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page)
+
+            If MovieSets.total_results = 0 And _MySettings.FallBackEng Then
+                MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
+                aE = True
+            End If
+
+            If MovieSets.total_results > 0 Then
+                Dim t1 As String = String.Empty
+                Dim t2 As String = String.Empty
+                Dim t3 As String = String.Empty
+                TotP = MovieSets.total_pages
+                While Page <= TotP And Page <= 3
+                    If MovieSets.results IsNot Nothing Then
                         For Each aMovieSet In MovieSets.results
                             Dim aMI As WatTmdb.V3.TmdbCollection
                             aMI = _TMDBApi.GetCollectionInfo(aMovieSet.id)
                             If aMI Is Nothing Then
                                 aMI = _TMDBApiE.GetCollectionInfo(aMovieSet.id)
                             End If
-                            t1 = aMI.id.ToString
-                            t2 = CStr(If(String.IsNullOrEmpty(aMI.name), "", aMI.name))
-                            t3 = CStr(If(String.IsNullOrEmpty(aMI.overview), "", aMI.overview))
+                            t1 = CStr(aMI.id)
+                            If aMI.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMI.name)) Then
+                                t2 = CStr(aMI.name)
+                            End If
+                            If aMI.overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMI.overview)) Then
+                                t3 = CStr(aMI.overview)
+                            End If
                             Dim lNewMovieSet As MediaContainers.MovieSet = New MediaContainers.MovieSet(t1, t2, t3)
                             lNewMovieSet.ID = aMI.id.ToString
                             R.Matches.Add(lNewMovieSet)
                         Next
-                        Page = Page + 1
-                        If aE Then
-                            'If sYear Is Nothing Then
-                            'Movies = _TMDBApiE_MovieSet.SearchMovie(sMovie, Page)
-                            'Else
-                            MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
-                            'End If
-                        Else
-                            'If sYear Is Nothing Then
-                            'Movies = _TMDBApi_MovieSet.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
-                            'Else
-                            MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page)
-                            'End If
-                        End If
-                    End While
-                End If
+                    End If
+                    Page = Page + 1
+                    If aE Then
+                        MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
+                    Else
+                        MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page)
+                    End If
+                End While
+            End If
 
-                Return R
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return Nothing
-            End Try
+            Return R
         End Function
 
 #End Region 'Methods
