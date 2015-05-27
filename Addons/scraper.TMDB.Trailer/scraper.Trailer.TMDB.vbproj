@@ -198,10 +198,6 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\WatTmdb\WatTmdb.csproj">
-      <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
-      <Name>WatTmdb</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

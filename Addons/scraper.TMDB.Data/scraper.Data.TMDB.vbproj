@@ -121,6 +121,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TMDbLib">
+      <HintPath>..\..\packages\TMDbLib.0.8.1-alpha\lib\net45\TMDbLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
@@ -234,10 +237,6 @@
       <Project>{208AA35E-C6AE-4D2D-A9DD-B6EFD19A4279}</Project>
       <Name>EmberAPI</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WatTmdb\WatTmdb.csproj">
-      <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
-      <Name>WatTmdb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

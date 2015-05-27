@@ -153,6 +153,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TMDbLib">
+      <HintPath>..\packages\TMDbLib.0.8.1-alpha\lib\net45\TMDbLib.dll</HintPath>
+    </Reference>
     <Reference Include="TVDB, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TheTVDBApi.1.1.0.0\lib\TVDB.dll</HintPath>
@@ -5409,10 +5412,6 @@
     <ProjectReference Include="..\Trakttv\Trakttv.csproj">
       <Project>{857e14f3-060a-467e-9195-6165996d7ba3}</Project>
       <Name>Trakttv</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WatTmdb\WatTmdb.csproj">
-      <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
-      <Name>WatTmdb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,6 @@
 Imports System.Text.RegularExpressions
 Imports System.IO
 Imports EmberAPI
-Imports WatTmdb
 Imports NLog
 Imports System.Diagnostics
 

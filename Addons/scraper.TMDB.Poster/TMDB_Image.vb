@@ -297,9 +297,9 @@ Public Class TMDB_Image
             Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
-            Dim _scraper As New TMDB.Scraper(Settings)
+            Dim _scraper As New TMDB.Scraper
 
-            ImageList = _scraper.GetTMDBImages(DBMovie.Movie.TMDBID, Type, Settings)
+            ImageList = _scraper.GetImages(DBMovie.Movie.TMDBID, Type, Settings, Enums.Content_Type.Movie)
         End If
 
         logger.Trace("Finished TMDB Scraper")
@@ -325,9 +325,9 @@ Public Class TMDB_Image
             Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
-            Dim _scraper As New TMDB.Scraper(Settings)
+            Dim _scraper As New TMDB.Scraper
 
-            ImageList = _scraper.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
+            ImageList = _scraper.GetImages(DBMovieSet.MovieSet.ID, Type, Settings, Enums.Content_Type.MovieSet)
         End If
 
         logger.Trace("Finished TMDB Scraper")
