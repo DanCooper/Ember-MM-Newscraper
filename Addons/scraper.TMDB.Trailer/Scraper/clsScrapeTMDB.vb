@@ -45,7 +45,7 @@ Namespace TMDB
 
                 _TMDBApi = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
                 _TMDBApi.GetConfig()
-                _TMDBApi.DefaultLanguage = Settings.PrefLanguage
+                _TMDBApi.DefaultLanguage = _MySettings.PrefLanguage
 
                 If _MySettings.FallBackEng Then
                     _TMDBApiE = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
