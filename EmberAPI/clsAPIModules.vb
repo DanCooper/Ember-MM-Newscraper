@@ -803,19 +803,15 @@ Public Class ModulesManager
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
                     logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                    Try
-                        Dim nMovie As New MediaContainers.Movie
-                        ret = _externalScraperModule.ProcessorModule.Scraper(oMovie, nMovie, ScrapeType, Options)
 
-                        If ret.Cancelled Then Return ret.Cancelled
+                    Dim nMovie As New MediaContainers.Movie
+                    ret = _externalScraperModule.ProcessorModule.Scraper(oMovie, nMovie, ScrapeType, Options)
 
-                        If nMovie IsNot Nothing Then
-                            ScrapedList.Add(nMovie)
-                        End If
+                    If ret.Cancelled Then Return ret.Cancelled
 
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                    End Try
+                    If nMovie IsNot Nothing Then
+                        ScrapedList.Add(nMovie)
+                    End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                     If ret.breakChain Then Exit For
                 Next

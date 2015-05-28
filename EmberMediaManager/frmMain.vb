@@ -2141,40 +2141,39 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf MovieScraperEvent
 
         For Each dRow As DataRow In ScrapeList
-            Try
-                Cancelled = False
+            Cancelled = False
 
-                If bwMovieScraper.CancellationPending Then Exit For
-                OldListTitle = dRow.Item("ListTitle").ToString
-                bwMovieScraper.ReportProgress(1, OldListTitle)
+            If bwMovieScraper.CancellationPending Then Exit For
+            OldListTitle = dRow.Item("ListTitle").ToString
+            bwMovieScraper.ReportProgress(1, OldListTitle)
 
-                dScrapeRow = dRow
+            dScrapeRow = dRow
 
-                logger.Trace(String.Concat("Start scraping: ", OldListTitle))
+            logger.Trace(String.Concat("Start scraping: ", OldListTitle))
 
-                DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item("idMovie")))
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
+            DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item("idMovie")))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-                If Master.GlobalScrapeMod.NFO Then
-                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie, ScrapeList.Count = 1) Then
-                        Cancelled = True
-                        Exit Try
-                    End If
-                Else
-                    ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.ActorThumbs Or Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
-                                                                             Master.GlobalScrapeMod.ClearLogo Or Master.GlobalScrapeMod.DiscArt Or Master.GlobalScrapeMod.EFanarts Or _
-                                                                             Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
-                                                                             Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
-                        Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-                        If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt, ScrapeList.Count = 1) Then
-                            Exit For
-                        End If
+            If Master.GlobalScrapeMod.NFO Then
+                If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, Args.Options_Movie, ScrapeList.Count = 1) Then
+                    Cancelled = True
+                End If
+            Else
+                ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+                If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.ActorThumbs Or Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
+                                                                         Master.GlobalScrapeMod.ClearLogo Or Master.GlobalScrapeMod.DiscArt Or Master.GlobalScrapeMod.EFanarts Or _
+                                                                         Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
+                                                                         Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
+                    Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
+                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.scrapeType, tOpt, ScrapeList.Count = 1) Then
+                        Exit For
                     End If
                 End If
+            End If
 
-                If bwMovieScraper.CancellationPending Then Exit For
+            If bwMovieScraper.CancellationPending Then Exit For
 
+            If Not Cancelled Then
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso Master.GlobalScrapeMod.Meta Then
                     MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
@@ -2833,10 +2832,7 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item("idMovie").ToString)
                 End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            End If
         Next
         If Args.scrapeType = Enums.ScrapeType.SingleScrape Then
             Master.currMovie = DBScrapeMovie

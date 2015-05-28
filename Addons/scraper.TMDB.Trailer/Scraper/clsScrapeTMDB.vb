@@ -18,9 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text.RegularExpressions
 Imports EmberAPI
-Imports WatTmdb
 Imports NLog
 
 Namespace TMDB
@@ -30,16 +28,12 @@ Namespace TMDB
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-        Private _TMDBConf As V3.TmdbConfiguration
-        Private _TMDBConfE As V3.TmdbConfiguration
-        Private _TMDBConfA As V3.TmdbConfiguration
-        Private _TMDBApi As V3.Tmdb 'preferred language
-        Private _TMDBApiE As V3.Tmdb 'english language
-        Private _TMDBApiA As V3.Tmdb 'all languages
+        Private _TMDBApi As TMDbLib.Client.TMDbClient  'preferred language
+        Private _TMDBApiE As TMDbLib.Client.TMDbClient 'english language
         Private _MySettings As sMySettings_ForScraper
         Private strPrivateAPIKey As String = String.Empty
 
-        'Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
+        Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
 #End Region 'Fields
 
@@ -47,34 +41,32 @@ Namespace TMDB
 
         Public Sub New(ByVal Settings As sMySettings_ForScraper)
             Try
-                _TMDBApi = New WatTmdb.V3.Tmdb(Settings.ApiKey, Settings.PrefLanguage)
-                If _TMDBApi Is Nothing Then
-                    logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
-                Else
-                    If _TMDBApi.Error IsNot Nothing AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                        logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
-                    End If
-                End If
-                _TMDBConf = _TMDBApi.GetConfiguration()
-                _TMDBApiE = New WatTmdb.V3.Tmdb(Settings.ApiKey)
-                _TMDBConfE = _TMDBApiE.GetConfiguration()
-                _TMDBApiA = New WatTmdb.V3.Tmdb(Settings.ApiKey, String.Empty)
-                _TMDBConfA = _TMDBApiA.GetConfiguration()
-
                 _MySettings = Settings
+
+                _TMDBApi = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
+                _TMDBApi.GetConfig()
+                _TMDBApi.DefaultLanguage = Settings.PrefLanguage
+
+                If _MySettings.FallBackEng Then
+                    _TMDBApiE = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
+                    _TMDBApiE.GetConfig()
+                    _TMDBApiE.DefaultLanguage = "en"
+                Else
+                    _TMDBApiE = _TMDBApi
+                End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
-        'Public Sub Cancel()
-        '	If bwTMDB.IsBusy Then bwTMDB.CancelAsync()
+        Public Sub CancelAsync()
+            If bwTMDB.IsBusy Then bwTMDB.CancelAsync()
 
-        '	While bwTMDB.IsBusy
-        '		Application.DoEvents()
-        '		Threading.Thread.Sleep(50)
-        '	End While
-        'End Sub
+            While bwTMDB.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+        End Sub
 
         'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.ScraperCapabilities)
         '    Try
@@ -88,31 +80,30 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetTMDBTrailers(ByVal TMDBID As String) As List(Of Trailers)
+        Public Function GetTrailers(ByVal tmdbID As String) As List(Of Trailers)
             Dim alTrailers As New List(Of Trailers)
-            Dim trailers As V3.TmdbMovieTrailers
+            Dim trailers As TMDbLib.Objects.Movies.Trailers
             Dim tLink As String
             Dim tName As String
+            Dim tQualitiy As String
 
-            Try
-                If Not String.IsNullOrEmpty(TMDBID) Then
-                    trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID))
-                    If trailers.youtube Is Nothing OrElse trailers.youtube.Count = 0 AndAlso _MySettings.FallBackEng Then
-                        trailers = _TMDBApiE.GetMovieTrailers(CInt(TMDBID))
-                        If trailers.youtube Is Nothing OrElse trailers.youtube.Count = 0 Then
-                            Return alTrailers
-                        End If
-                    End If
-                    For Each YTb As V3.Youtube In trailers.youtube
-                        tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.source)
-                        tName = GetYouTubeTitle(tLink)
-                        alTrailers.Add(New Trailers With {.VideoURL = tLink, .WebURL = tLink, .Description = tName, .Source = "TMDB"})
-                    Next
+            If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
+
+            trailers = _TMDBApi.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Trailers).Trailers
+            If trailers.Youtube Is Nothing OrElse trailers.Youtube.Count = 0 AndAlso _MySettings.FallBackEng Then
+                trailers = _TMDBApiE.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Trailers).Trailers
+                If trailers.Youtube Is Nothing OrElse trailers.Youtube.Count = 0 Then
+                    Return alTrailers
                 End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            End If
+            If trailers IsNot Nothing AndAlso trailers.Youtube IsNot Nothing Then
+                For Each YTb As TMDbLib.Objects.Movies.Youtube In trailers.Youtube
+                    tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.Source)
+                    tName = GetYouTubeTitle(tLink)
+                    tQualitiy = YTb.Size
+                    alTrailers.Add(New Trailers With {.VideoURL = tLink, .WebURL = tLink, .Description = tName, .Source = "TMDB"})
+                Next
+            End If
 
             Return alTrailers
         End Function
@@ -124,8 +115,7 @@ Namespace TMDB
             Dim HTML As String = sHTTP.DownloadData(String.Concat(sURL))
             sHTTP = Nothing
 
-            oTitle = Regex.Match(HTML, "<meta property=""og:title"" content=""(.*?)"">", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-            oTitle = HttpUtility.HtmlDecode(oTitle)
+            oTitle = YouTube.Scraper.GetVideoTitle(HTML)
 
             Return oTitle
         End Function

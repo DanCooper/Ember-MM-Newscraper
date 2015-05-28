@@ -18,10 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ###############################################################################
 
-Imports System.IO
 Imports EmberAPI
-Imports WatTmdb
-Imports ScraperModule.TMDB
 Imports NLog
 
 Public Class TMDB_Trailer
@@ -33,9 +30,6 @@ Public Class TMDB_Trailer
 
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared _AssemblyName As String
-
-    Private TMDBId As String
-    Private _TMDBt As TMDB.Scraper
 
     ''' <summary>
     ''' Scraping Here
@@ -52,11 +46,8 @@ Public Class TMDB_Trailer
 #Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Trailer_Movie.ModuleSettingsChanged
-
     Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Trailer_Movie.ScraperEvent
-
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Trailer_Movie.ScraperSetupChanged
-
     Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Trailer_Movie.SetupNeedsRestart
 
 #End Region 'Events
@@ -153,6 +144,7 @@ Public Class TMDB_Trailer
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         LoadSettings()
+
         If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
             DBMovie.Movie.TMDBID = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.ID)
         End If
@@ -165,7 +157,7 @@ Public Class TMDB_Trailer
 
             Dim _scraper As New TMDB.Scraper(Settings)
 
-            URLList = _scraper.GetTMDBTrailers(DBMovie.Movie.TMDBID)
+            URLList = _scraper.GetTrailers(DBMovie.Movie.TMDBID)
         End If
 
         logger.Trace("Finished scrape", New StackTrace().ToString())

@@ -303,6 +303,7 @@ Partial Class dlgTMDBSearchResults_MovieSet
         Me.btnOpenFolder.TabIndex = 25
         Me.btnOpenFolder.Text = "..."
         Me.btnOpenFolder.UseVisualStyleBackColor = True
+        Me.btnOpenFolder.Visible = False
         '
         'txtFileName
         '
@@ -311,6 +312,7 @@ Partial Class dlgTMDBSearchResults_MovieSet
         Me.txtFileName.Name = "txtFileName"
         Me.txtFileName.Size = New System.Drawing.Size(598, 22)
         Me.txtFileName.TabIndex = 24
+        Me.txtFileName.Visible = False
         '
         'dlgTMDBSearchResults_MovieSet
         '

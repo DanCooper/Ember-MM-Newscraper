@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text.RegularExpressions
 Imports EmberAPI
-Imports System.Runtime.CompilerServices
 Imports NLog
+Imports System.Runtime.CompilerServices
+Imports System.Text.RegularExpressions
 Imports System.Web
 
 'The InternalsVisibleTo is required for unit testing the friend methods
@@ -83,8 +83,8 @@ Namespace YouTube
         ''' <returns><c>String</c> representing the title of the video, as extracted from the YouTube page.</returns>
         ''' <remarks>This method looks in the page's metadata, looking for the meta name="title" tag, and 
         ''' fetching the content attribute.</remarks>
-        Private Function GetVideoTitle(ByVal HTML As String) As String
-            Dim result As String = ""
+        Public Shared Function GetVideoTitle(ByRef HTML As String) As String
+            Dim result As String = String.Empty
             'Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
             Dim KeyPattern As String = "meta name=\""title\"" content=\s*\""([^']*?)\"""
             'meta name="title" content=
