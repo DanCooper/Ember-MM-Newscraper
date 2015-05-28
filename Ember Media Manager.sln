@@ -54,8 +54,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Compatibility.NMT",
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Notifications", "Addons\generic.EmberCore.Notifications\generic.EmberCore.Notifications.vbproj", "{2A08A524-88DA-432F-92E6-8DC63C5376DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RottenTomatoesAPI", "RottenTomatoesAPI\RottenTomatoesAPI.csproj", "{8DAFAF56-AD78-4B47-866F-E8179511AF5B}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.FanartTV", "Addons\scraper.FanartTV.Poster\scraper.Image.FanartTV.vbproj", "{A5277330-A443-46AB-A058-016A3B6AF8AC}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMPA", "Addons\scraper.IMPA.Poster\scraper.Image.IMPA.vbproj", "{D9878E03-87D7-429E-AA0C-A7116A31FA7F}"
@@ -186,14 +184,6 @@ Global
 		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x64.Build.0 = Release|x64
 		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x86.ActiveCfg = Release|x86
 		{2A08A524-88DA-432F-92E6-8DC63C5376DA}.Release|x86.Build.0 = Release|x86
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Debug|x64.ActiveCfg = Debug|x64
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Debug|x64.Build.0 = Debug|x64
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Debug|x86.ActiveCfg = Debug|x86
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Debug|x86.Build.0 = Debug|x86
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Release|x64.ActiveCfg = Release|x64
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Release|x64.Build.0 = Release|x64
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Release|x86.ActiveCfg = Release|x86
-		{8DAFAF56-AD78-4B47-866F-E8179511AF5B}.Release|x86.Build.0 = Release|x86
 		{A5277330-A443-46AB-A058-016A3B6AF8AC}.Debug|x64.ActiveCfg = Debug|x64
 		{A5277330-A443-46AB-A058-016A3B6AF8AC}.Debug|x64.Build.0 = Debug|x64
 		{A5277330-A443-46AB-A058-016A3B6AF8AC}.Debug|x86.ActiveCfg = Debug|x86
