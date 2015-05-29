@@ -26,7 +26,6 @@ Imports System.Reflection
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports RestSharp
-Imports WatTmdb
 Imports NLog
 Imports System.Xml.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
@@ -58,6 +57,7 @@ Public Class frmMain
     Public fCommandLine As New CommandLine
 
     Private TaskList As New List(Of Task)
+    Private TasksDone As Boolean = True
 
     Private alActors As New List(Of String)
     Private FilterRaise_Movies As Boolean = False
@@ -11531,9 +11531,10 @@ doCancel:
             If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
+
     Private Sub TaskRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         TaskList.Add(New Task With {.mType = mType, .Params = _params})
-        Me.tmrRunTasks.Start()
+        If TasksDone Then Me.tmrRunTasks.Start()
     End Sub
     ''' <summary>
     ''' This is a generic callback function.
@@ -19689,10 +19690,12 @@ doCancel:
 
     Private Sub tmrRunTasks_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrRunTasks.Tick
         Me.tmrRunTasks.Enabled = False
+        Me.TasksDone = False
         While Me.TaskList.Count > 0
             GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params)
             Me.TaskList.RemoveAt(0)
         End While
+        Me.TasksDone = True
     End Sub
 
     Private Sub tmrSearchWait_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Movies.Tick
