@@ -234,10 +234,6 @@ Namespace TMDB
             If Options.bCast Then
                 If Movie.Credits IsNot Nothing AndAlso Movie.Credits.Cast IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.Movies.Cast In Movie.Credits.Cast
-                        Dim aName As String = aCast.Name
-                        Dim aRole As String = aCast.Character
-                        Dim aPath As String = aCast.ProfilePath
-                        Dim aBaseURL As String = _TMDBApi.Config.Images.BaseUrl
                         nMovie.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                            .Role = aCast.Character, _
                                                                            .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty)})
