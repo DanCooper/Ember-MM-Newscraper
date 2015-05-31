@@ -787,6 +787,7 @@ Public Class dlgTrakttvManager
             dgvtraktPlaycount.Rows.Clear()
             myWatchedMovies = Nothing
             mydictWatchedMovies = Nothing
+            btntraktPlaycountSyncWatchedSeries.Enabled = False
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             'Get watched movies of user
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -910,7 +911,7 @@ Public Class dlgTrakttvManager
             myWatchedShows = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
-
+            btntraktPlaycountSyncWatchedMovies.Enabled = False
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             ' Get all episodes on Trakt.tv that are marked as 'seen' or 'watched'
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
