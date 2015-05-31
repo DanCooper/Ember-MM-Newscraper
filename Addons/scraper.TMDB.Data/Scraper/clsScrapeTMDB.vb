@@ -123,12 +123,12 @@ Namespace TMDB
             Try
                 _MySettings = Settings
 
-                _TMDBApi = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
+                _TMDBApi = New TMDbLib.Client.TMDbClient(_MySettings.ApiKey)
                 _TMDBApi.GetConfig()
                 _TMDBApi.DefaultLanguage = _MySettings.PrefLanguage
 
                 If _MySettings.FallBackEng Then
-                    _TMDBApiE = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
+                    _TMDBApiE = New TMDbLib.Client.TMDbClient(_MySettings.ApiKey)
                     _TMDBApiE.GetConfig()
                     _TMDBApiE.DefaultLanguage = "en"
                 Else
@@ -521,15 +521,17 @@ Namespace TMDB
             If bwTMDB.CancellationPending Or MovieSet Is Nothing Then Return Nothing
 
             'Plot
-            'If Options.bPlot Then
-            '    If MovieSet.Overview Is Nothing OrElse (MovieSet.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(MovieSet.Overview)) Then
-            '        If _MySettings.FallBackEng AndAlso MovieSetE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieSetE.Overview) Then
-            '            nMovieSet.Plot = MovieSetE.Overview
-            '        End If
-            '    Else
-            '        nMovieSet.Plot = MovieSet.Overview
-            '    End If
-            'End If
+            If Options.bPlot Then
+                If MovieSet.Overview Is Nothing OrElse (MovieSet.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(MovieSet.Overview)) Then
+                    If _MySettings.FallBackEng AndAlso MovieSetE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieSetE.Overview) Then
+                        'nMovieSet.Plot = MovieSetE.Overview
+                        DBMovieSet.Plot = MovieSetE.Overview
+                    End If
+                Else
+                    'nMovieSet.Plot = MovieSet.Overview
+                    DBMovieSet.Plot = MovieSet.Overview
+                End If
+            End If
 
             If bwTMDB.CancellationPending Then Return Nothing
 
