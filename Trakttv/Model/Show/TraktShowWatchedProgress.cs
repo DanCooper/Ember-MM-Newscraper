@@ -8,6 +8,7 @@ namespace Trakttv.TraktAPI.Model
 {
     public class TraktShowWatchedProgress
     {
+        public string ShowTitle { get; set; }
         public string ShowID { get; set; }
         public int EpisodesAired { get; set; }
         public int EpisodesWatched { get; set; }
