@@ -59,7 +59,7 @@ Public Class dlgTVImageSelect
     Private _season As Integer = -999
     Private _type As Enums.ImageType_TV = Enums.ImageType_TV.All
     Private _withcurrent As Boolean = True
-    Private _ScrapeType As Enums.ScrapeType
+    Private _ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
 
 #End Region 'Fields
 
@@ -385,7 +385,7 @@ Public Class dlgTVImageSelect
         Return False
     End Function
 
-    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.ImageType_TV, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As System.Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.ImageType_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As System.Windows.Forms.DialogResult
         Me._id = ShowID
         Me._type = Type
         Me._withcurrent = WithCurrent
@@ -1237,7 +1237,7 @@ Public Class dlgTVImageSelect
 
     Private Sub bwLoadImages_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages.RunWorkerCompleted
         Me.pnlStatus.Visible = False
-        If _ScrapeType = Enums.ScrapeType.FullAuto Then
+        If _ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAuto Then
             DoneAndClose()
         Else
             If Not e.Cancelled Then

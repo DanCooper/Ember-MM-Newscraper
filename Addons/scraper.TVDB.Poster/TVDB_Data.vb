@@ -290,7 +290,7 @@ Public Class TVDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.Scraper
+    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.Scraper
         LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, ShowLang, SourceLang, Ordering, filterOptions, ScrapeType, WithCurrent)

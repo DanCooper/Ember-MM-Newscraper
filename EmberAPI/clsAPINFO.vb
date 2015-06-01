@@ -46,7 +46,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByVal DBMovie As Structures.DBMovie, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As Structures.DBMovie
+    Public Shared Function MergeDataScraperResults(ByVal DBMovie As Structures.DBMovie, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_Movie) As Structures.DBMovie
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -73,7 +73,7 @@ Public Class NFO
         Dim new_Year As Boolean = False
 
         'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
+        If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
             PreviewDataScraperResults(ScrapedList)
         End If
 

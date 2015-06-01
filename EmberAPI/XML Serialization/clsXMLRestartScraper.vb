@@ -5,7 +5,7 @@
 Partial Public Class clsXMLRestartScraper
     Private _selectedField As Boolean
 
-    Private _sTypeField As Enums.ScrapeType
+    Private _sTypeField As Enums.ScrapeType_Movie_MovieSet_TV
 
     Private _OptionsField As New Structures.ScrapeOptions_Movie
 
@@ -25,11 +25,11 @@ Partial Public Class clsXMLRestartScraper
         End Set
     End Property
 
-    Public Property sType As Enums.ScrapeType
+    Public Property sType As Enums.ScrapeType_Movie_MovieSet_TV
         Get
             Return Me._sTypeField
         End Get
-        Set(value As Enums.ScrapeType)
+        Set(value As Enums.ScrapeType_Movie_MovieSet_TV)
             Me._sTypeField = value
         End Set
     End Property

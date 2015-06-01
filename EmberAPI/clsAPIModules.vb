@@ -726,7 +726,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -738,7 +738,7 @@ Public Class ModulesManager
             End While
 
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-            If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
+            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
                 DBMovie.RemoveActorThumbs = True
                 DBMovie.RemoveBanner = True
                 DBMovie.RemoveClearArt = True
@@ -833,7 +833,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As Boolean
+    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_MovieSet) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1452,7 +1452,7 @@ Public Class ModulesManager
         End If
     End Function
 
-    Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Boolean
+    Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Boolean
         Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID)
         If testDBTV.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult

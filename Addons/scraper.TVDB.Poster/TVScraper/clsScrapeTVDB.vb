@@ -136,7 +136,7 @@ Public Class Scraper
         sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
-    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean)
+    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean)
         sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .ShowLang = ShowLang, .SourceLang = SourceLang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
     End Sub
 
@@ -706,7 +706,7 @@ Public Class Scraper
         End Sub
 
         Public Sub StartSingleScraper(ByVal sInfo As Structures.ScrapeInfo)
-            If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
+            If String.IsNullOrEmpty(sInfo.TVDBID) AndAlso sInfo.ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk Then
                 RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                 Using dTVDBSearch As New dlgTVDBSearchResults
                     If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
@@ -737,7 +737,7 @@ Public Class Scraper
                             If sInfo.iSeason >= 0 Then
                                 Me.SaveImages()
                             Else
-                                If sInfo.ScrapeType = Enums.ScrapeType.FullAuto Then
+                                If sInfo.ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAuto Then
                                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.SaveAuto, 0, Nothing)
                                 Else
                                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Verifying, 0, Nothing)
@@ -747,7 +747,7 @@ Public Class Scraper
                             RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Cancelled, 0, Nothing)
                         End If
                     End Using
-                ElseIf sInfo.ScrapeType = Enums.ScrapeType.FullAsk Then
+                ElseIf sInfo.ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk Then
                     RaiseEvent ScraperEvent(Enums.ScraperEventType_TV.Searching, 0, Nothing)
                     Using dTVDBSearch As New dlgTVDBSearchResults
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then

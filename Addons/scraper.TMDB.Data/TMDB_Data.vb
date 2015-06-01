@@ -446,7 +446,7 @@ Public Class TMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started TMDB Scraper")
 
         LoadSettings_Movie()
@@ -467,7 +467,7 @@ Public Class TMDB_Data
             ElseIf Not String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
                 _scraper.GetMovieInfo(oDBMovie.Movie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
-            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
+            ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBMovie.Movie.Title) Then
                     _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, filterOptions)
@@ -479,13 +479,13 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(nMovie.TMDBID) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
                     nMovie = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
         End If
 
-        If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
+        If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto Then
             If String.IsNullOrEmpty(oDBMovie.Movie.ID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions, oDBMovie.Movie.Year) = Windows.Forms.DialogResult.OK Then
@@ -521,7 +521,7 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -541,7 +541,7 @@ Public Class TMDB_Data
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
                 _scraper.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, filterOptions, False)
-            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
+            ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
                 If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
                     DBMovieSet.MovieSet = _scraper.GetSearchMovieSetInfo(DBMovieSet.MovieSet.Title, DBMovieSet, ScrapeType, filterOptions)
                 End If
@@ -551,7 +551,7 @@ Public Class TMDB_Data
 
         ' why a scraper should initialize the DBMovie structure?
         ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
-        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
+        If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
          AndAlso ModulesManager.Instance.externalScrapersModules_Data_MovieSet.OrderBy(Function(y) y.ModuleOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovieSet.MovieSet.ID = String.Empty
             DBMovieSet.RemoveBanner = True
@@ -574,10 +574,10 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
-            If ScrapeType = Enums.ScrapeType.SingleScrape Then
+            If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
 
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
