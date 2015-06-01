@@ -1491,4 +1491,10 @@
   <string id="1399">Scan folder for new content</string>
   <string id="1400">Add folder as a new movie source</string>
   <string id="1401">Add folder as a new tv show source</string>
+  <string id="1402">Send to watch history</string>
+  <string id="1403">Added to watch history</string>
+  <string id="1404">Submit watched episodes to trakt.tv history</string>
+  <string id="1405">Submit watched movies to trakt.tv history</string>
+  <string id="1406">Delete selected item from trakt.tv history</string>
+  <string id="1407">Deleted</string>
 </strings>
