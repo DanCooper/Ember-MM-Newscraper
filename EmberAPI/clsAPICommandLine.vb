@@ -53,25 +53,27 @@ Public Class CommandLine
 #End Region 'Properties
 
 #Region "Methods"
-    Public Sub RunCommandLine(ByVal Args() As String)
+    Public Sub RunCommandLine(ByVal Args() As String, ByVal isFirstInstance As Boolean)
         If Args.Count = 0 Then Return
 
         logger.Trace("Call CommandLine")
 
         Dim MoviePath As String = String.Empty
         Dim isSingle As Boolean = False
-        Dim hasSpec As Boolean = False
-        Dim scanFolder As Boolean = False
-        Dim clScrapeType As Enums.ScrapeType = Enums.ScrapeType.None
         Dim clExport As Boolean = False
         Dim clExportResizePoster As Integer = 0
         Dim clExportTemplate As String = "template"
-        Dim clAsk As Boolean = False
         Dim nowindow As Boolean = False
         Dim RunModule As Boolean = False
         Dim ModuleName As String = String.Empty
-        Dim UpdateTVShows As Boolean = False
-        Dim scanFolderPath As String = String.Empty
+
+        If isFirstInstance Then
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+            Master.DB.ConnectMyVideosDB()
+            Master.DB.LoadMovieSourcesFromDB()
+            Master.DB.LoadTVSourcesFromDB()
+            Master.DB.LoadExcludeDirsFromDB()
+        End If
 
         For i As Integer = 0 To Args.Count - 1
 
@@ -94,66 +96,80 @@ Public Class CommandLine
                     Else
                         Exit For
                     End If
+                Case "-cleanvideodb"
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
                 Case "-fullask"
-                    clScrapeType = Enums.ScrapeType.FullAsk
-                    clAsk = True
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, CustomScrapeModifier}))
                 Case "-fullauto"
-                    clScrapeType = Enums.ScrapeType.FullAuto
-                    clAsk = False
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, CustomScrapeModifier}))
                 Case "-fullskip"
-                    clScrapeType = Enums.ScrapeType.FullSkip
-                    clAsk = False
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.FullSkip, CustomScrapeModifier}))
                 Case "-missask"
-                    clScrapeType = Enums.ScrapeType.MissAsk
-                    clAsk = True
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MissAsk, CustomScrapeModifier}))
                 Case "-missauto"
-                    clScrapeType = Enums.ScrapeType.MissAuto
-                    clAsk = False
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MissAuto, CustomScrapeModifier}))
                 Case "-missskip"
-                    clScrapeType = Enums.ScrapeType.MissSkip
-                    clAsk = True
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MissSkip, CustomScrapeModifier}))
                 Case "-newask"
-                    clScrapeType = Enums.ScrapeType.NewAsk
-                    clAsk = True
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.NewAsk, CustomScrapeModifier}))
                 Case "-newauto"
-                    clScrapeType = Enums.ScrapeType.NewAuto
-                    clAsk = False
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, CustomScrapeModifier}))
                 Case "-newskip"
-                    clScrapeType = Enums.ScrapeType.NewSkip
-                    clAsk = False
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.NewSkip, CustomScrapeModifier}))
                 Case "-markask"
-                    clScrapeType = Enums.ScrapeType.MarkAsk
-                    clAsk = True
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk, CustomScrapeModifier}))
                 Case "-markauto"
-                    clScrapeType = Enums.ScrapeType.MarkAuto
-                    clAsk = False
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, CustomScrapeModifier}))
                 Case "-markskip"
-                    clScrapeType = Enums.ScrapeType.MarkSkip
-                    clAsk = True
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    i = SetScraperMod(Args, i, CustomScrapeModifier)
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MarkSkip, CustomScrapeModifier}))
                 Case "-file"
-                    If Args.Count - 1 > i Then
-                        isSingle = False
-                        hasSpec = True
-                        clScrapeType = Enums.ScrapeType.SingleScrape
-                        If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            MoviePath = Args(i + 1).Replace("""", String.Empty)
-                            i += 1
-                        End If
-                    Else
-                        Exit For
-                    End If
+                    'If Args.Count - 1 > i Then
+                    '    isSingle = False
+                    '    hasSpec = True
+                    '    clScrapeType = Enums.ScrapeType_Movie.SingleScrape
+                    '    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                    '        MoviePath = Args(i + 1).Replace("""", String.Empty)
+                    '        i += 1
+                    '    End If
+                    'Else
+                    '    Exit For
+                    'End If
                 Case "-folder"
-                    If Args.Count - 1 > i Then
-                        isSingle = True
-                        hasSpec = True
-                        clScrapeType = Enums.ScrapeType.SingleScrape
-                        If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            MoviePath = Args(i + 1).Replace("""", String.Empty)
-                            i += 1
-                        End If
-                    Else
-                        Exit For
-                    End If
+                    'If Args.Count - 1 > i Then
+                    '    isSingle = True
+                    '    hasSpec = True
+                    '    clScrapeType = Enums.ScrapeType_Movie.SingleScrape
+                    '    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                    '        MoviePath = Args(i + 1).Replace("""", String.Empty)
+                    '        i += 1
+                    '    End If
+                    'Else
+                    '    Exit For
+                    'End If
                 Case "-scanfolder"
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
@@ -183,36 +199,9 @@ Public Class CommandLine
                     Else
                         Exit For
                     End If
-                Case "-all"
-                    Functions.SetScraperMod(Enums.ModType_Movie.All, True)
-                Case "-banner"
-                    Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
-                Case "-clearart"
-                    Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
-                Case "-clearlogo"
-                    Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
-                Case "-discart"
-                    Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
-                Case "-efanarts"
-                    Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
-                Case "-ethumbs"
-                    Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
-                Case "-fanart"
-                    Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
-                Case "-landscape"
-                    Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
-                Case "-nfo"
-                    Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
-                Case "-poster"
-                    Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
-                Case "-theme"
-                    Functions.SetScraperMod(Enums.ModType_Movie.Theme, True)
-                Case "-trailer"
-                    Functions.SetScraperMod(Enums.ModType_Movie.Trailer, True)
                 Case "--verbose"
-                    clAsk = True
                 Case "-nowindow"
-                    nowindow = True
+                    Master.fLoading.Hide()
                 Case "-run"
                     If Args.Count - 1 > i Then
                         ModuleName = Args(i + 1).Replace("""", String.Empty)
@@ -220,27 +209,75 @@ Public Class CommandLine
                     Else
                         Exit For
                     End If
-                Case "-tvupdate"
-                    UpdateTVShows = True
-                    'Case Else
-                    'If File.Exists(Args(2).Replace("""", String.Empty)) Then
-                    'MoviePath = Args(2).Replace("""", String.Empty)
-                    'End If
+                Case "-updatemovie"
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, String.Empty, String.Empty}))
+                Case "-updatetv"
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, String.Empty, String.Empty}))
             End Select
         Next
     End Sub
 
-    Public Sub AddMovieSource(ByVal FolderPath As String)
-        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addmoviesource", FolderPath}))
-    End Sub
+    Private Function SetScraperMod(ByVal Args() As String, ByVal iStartPos As Integer, ByRef ScrapeModifier As Structures.ScrapeModifier_Movie_MovieSet) As Integer
+        Dim iEndPos As Integer = iStartPos
 
-    Public Sub AddTVShowSource(ByVal FolderPath As String)
-        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addtvshowsource", FolderPath}))
-    End Sub
+        For i As Integer = iStartPos + 1 To Args.Count - 1
+            Select Case Args(i).ToLower
+                Case "-all"
+                    ScrapeModifier.ActorThumbs = True
+                    ScrapeModifier.Banner = True
+                    ScrapeModifier.CharacterArt = True
+                    ScrapeModifier.ClearArt = True
+                    ScrapeModifier.ClearLogo = True
+                    ScrapeModifier.DiscArt = True
+                    ScrapeModifier.EFanarts = True
+                    ScrapeModifier.EThumbs = True
+                    ScrapeModifier.Fanart = True
+                    ScrapeModifier.Landscape = True
+                    ScrapeModifier.Meta = True
+                    ScrapeModifier.NFO = True
+                    ScrapeModifier.Poster = True
+                    ScrapeModifier.Theme = True
+                    ScrapeModifier.Trailer = True
+                Case "-actorthumbs"
+                    ScrapeModifier.ActorThumbs = True
+                Case "-banner"
+                    ScrapeModifier.Banner = True
+                Case "-characterart"
+                    ScrapeModifier.CharacterArt = True
+                Case "-clearart"
+                    ScrapeModifier.ClearArt = True
+                Case "-clearlogo"
+                    ScrapeModifier.ClearLogo = True
+                Case "-discart"
+                    ScrapeModifier.DiscArt = True
+                Case "-efanarts"
+                    ScrapeModifier.EFanarts = True
+                Case "-ethumbs"
+                    ScrapeModifier.EThumbs = True
+                Case "-fanart"
+                    ScrapeModifier.Fanart = True
+                Case "-landscape"
+                    ScrapeModifier.Landscape = True
+                Case "-meta"
+                    ScrapeModifier.Meta = True
+                Case "-nfo"
+                    ScrapeModifier.NFO = True
+                Case "-poster"
+                    ScrapeModifier.Poster = True
+                Case "-theme"
+                    ScrapeModifier.Theme = True
+                Case "-trailer"
+                    ScrapeModifier.Trailer = True
+                Case Else
+                    Return i - 1
+            End Select
+            iEndPos = i
+        Next
 
-    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal FolderPath As String = "")
-        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"loadmedia", Scan, SourceName, FolderPath}))
-    End Sub
+        Return iEndPos
+    End Function
 
 #End Region 'Methods
 

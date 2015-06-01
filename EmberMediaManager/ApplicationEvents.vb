@@ -87,9 +87,9 @@ Namespace My
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
 
-            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            Dim aBit As String = "x64"
             If Master.is32Bit Then
-                aBit = Master.eLang.GetString(1007, "x86")
+                aBit = "x86"
             End If
             Master.fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
 
@@ -112,7 +112,7 @@ Namespace My
                 e.BringToForeground = True
             ElseIf e.CommandLine.Count > 0 Then
                 Dim Args() As String = e.CommandLine.ToArray
-                frmMain.fCommandLine.RunCommandLine(args)
+                frmMain.fCommandLine.RunCommandLine(Args, False)
             End If
         End Sub
 

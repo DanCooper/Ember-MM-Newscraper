@@ -888,7 +888,7 @@ Public Class Enums
     ''' and whether results should be automatically chosen or asked of the user.
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum ScrapeType As Integer
+    Public Enum ScrapeType_Movie_MovieSet_TV As Integer
         SingleScrape = 0
         FullAuto = 1
         FullAsk = 2
@@ -1856,7 +1856,7 @@ Public Class Structures
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
         Dim Options As ScrapeOptions_Movie
-        Dim ScrapeType As Enums.ScrapeType
+        Dim ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
     End Structure
     ''' <summary>
     ''' Structure representing a movie source path and its metadata
@@ -2058,7 +2058,7 @@ Public Class Structures
         Dim ShowTitle As String
         Dim TVDBID As String
         Dim WithCurrent As Boolean
-        Dim ScrapeType As Enums.ScrapeType
+        Dim ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
     End Structure
 
     Public Structure ScrapeModifier_Movie_MovieSet
