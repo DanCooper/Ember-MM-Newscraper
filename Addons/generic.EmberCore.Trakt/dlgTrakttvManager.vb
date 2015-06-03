@@ -73,6 +73,8 @@ Public Class dlgTrakttvManager
     Private myWatchlistEpisodes As New Dictionary(Of String, List(Of KeyValuePair(Of Integer, List(Of TraktAPI.Model.TraktEpisodeWatched.Season.Episode))))
     Private myWatchlistMovies As New List(Of TraktAPI.Model.TraktMovieWatchList)
 
+    'Tab: trakt.tv Comments variables
+    Private myCommentsMovies As New List(Of TraktAPI.Model.TraktCommentItem)
 
     'Tab: trakt.tv Listviewer variables
     'fetched listnames
@@ -164,6 +166,23 @@ Public Class dlgTrakttvManager
             btntraktPlaycountSyncWatchedMovies.Text = Master.eLang.GetString(1405, "Submit watched movies to trakt.tv history")
             btntraktPlaycountSyncWatchedSeries.Text = Master.eLang.GetString(1404, "Submit watched episodes to trakt.tv history")
             btntraktPlaycountSyncDeleteItem.Text = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history")
+
+            'Tab: Sync Comments
+            btntraktCommentsDetailsDelete.Text = Master.eLang.GetString(1410, "Delete comment from trakt.tv")
+            btntraktCommentsDetailsUpdate.Text = Master.eLang.GetString(1409, "Update comment on trakt.tv")
+            btntraktCommentsDetailsSend.Text = Master.eLang.GetString(1411, "Submit comment to trakt.tv")
+            btntraktCommentsGet.Text = Master.eLang.GetString(1419, "Load your movie comments")
+            lbltraktCommentsDetailsDate.Text = Master.eLang.GetString(792, "Adding Date")
+            lbltraktCommentsDetailsDescription.Text = Master.eLang.GetString(1413, "Comment")
+            lbltraktCommentsDetailsLikes.Text = Master.eLang.GetString(1416, "Likes")
+            lbltraktCommentsDetailsRating.Text = Master.eLang.GetString(400, "Rating")
+            lbltraktCommentsDetailsReplies.Text = Master.eLang.GetString(1415, "Replies")
+            lbltraktCommentsDetailsType.Text = Master.eLang.GetString(1288, "Type")
+            gbtraktCommentsList.Text = Master.eLang.GetString(1413, "Comment")
+            gbtraktCommentsDetails.Text = Master.eLang.GetString(26, "Details")
+            gbtraktCommentsGET.Text = Master.eLang.GetString(1421, "Load comments")
+            gbtraktComments.Text = Master.eLang.GetString(1418, "Sync Comments")
+            lbltraktCommentsNotice.Text = Master.eLang.GetString(1420, "!IMPORTANT RULES!\n\n\n\n1. Comments must be at least 5 words\n\n2. Comments 200 words or longer will be automatically marked as a review\n\n3. Correctly indicate if the comment contains spoilers\n\n4. Only write comments in English").Replace("\n", Environment.NewLine)
 
             'Tab: Sync Lists/Tags
             Me.lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
@@ -1707,7 +1726,7 @@ Public Class dlgTrakttvManager
                 If result = Windows.Forms.DialogResult.Yes Then
                     For i = traktLists.Count - 1 To 0 Step -1
                         If traktLists(i).ListDelete = True AndAlso Not traktLists(i).Ids Is Nothing AndAlso Not String.IsNullOrEmpty(traktLists(i).Ids.Slug) Then
-                            Dim traktResponseDeleteUserList = TrakttvAPI.DeleteUserList(traktUser, traktLists(i).Ids.Slug)
+                            Dim traktResponseDeleteUserList = TrakttvAPI.RemoveUserList(traktUser, traktLists(i).Ids.Slug)
                             If traktResponseDeleteUserList = False Then
                                 logger.Info("[" & traktLists(i).Ids.Slug & "] " & "Delete list on trakt.tv FAILED!")
                             Else
@@ -1744,7 +1763,7 @@ Public Class dlgTrakttvManager
                     tmpTraktList.Description = traktlist.Description
                     tmpTraktList.DisplayNumbers = traktlist.DisplayNumbers
                     tmpTraktList.Privacy = traktlist.Privacy
-                    Dim traktResponseCreateCustomList = TrakttvAPI.CreateCustomList(tmpTraktList, traktUser)
+                    Dim traktResponseCreateCustomList = TrakttvAPI.AddUserList(tmpTraktList, traktUser)
 
                     '3.POST ListItems to trakt.tv NEWLIST_<Listname> to add movies!
                     If Not traktResponseCreateCustomList Is Nothing AndAlso Not traktResponseCreateCustomList.Ids Is Nothing Then
@@ -3029,9 +3048,282 @@ Public Class dlgTrakttvManager
     End Sub
 #End Region 'Trakt.tv Listviewer
 
+#Region "Trakt.tv Comments"
+
+    ''' <summary>
+    ''' GET comments of movies from trakt.tv and display in Datagridview
+    ''' </summary>
+    ''' <param name="sender">"Load your movie comments"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/06/01 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub btntraktCommentsGet_Click(sender As Object, e As EventArgs) Handles btntraktCommentsGet.Click
+        Try
+            If Not myCommentsMovies Is Nothing Then
+                myCommentsMovies.Clear()
+            End If
+            dgvtraktComments.DataSource = Nothing
+            dgvtraktComments.Rows.Clear()
+
+            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            'GET movie comments of user
+            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+
+            If Not String.IsNullOrEmpty(traktToken) Then
+                Dim traktMovieComments As IEnumerable(Of TraktAPI.Model.TraktCommentItem) = TrakttvAPI.GetComments(traktUser, "all", "movies")
+
+                For Each Item As TraktAPI.Model.TraktCommentItem In traktMovieComments
+                    'Check if information is stored...
+                    If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
+                            myCommentsMovies.Add(Item)
+                    End If
+                Next
+
+                'Set up /load listofwatchedmovies into datagridview
+                btntraktCommentsDetailsDelete.Enabled = False
+                btntraktCommentsDetailsSend.Enabled = False
+                btntraktCommentsDetailsUpdate.Enabled = False
+                'we map to dgv manually
+                dgvtraktWatchlist.AutoGenerateColumns = False
+                Dim HasCommentOnTrakt As Boolean = False
+                For Each sRow As DataRow In Me.dtMovies.Rows
+                    If sRow.Item("Title").ToString <> "" AndAlso sRow.Item("Imdb").ToString <> "" Then
+                        HasCommentOnTrakt = False
+                        If Not myCommentsMovies Is Nothing Then
+                            For Each Item As TraktAPI.Model.TraktCommentItem In myCommentsMovies
+                                If Item.Movie.Ids.Imdb = "tt" & sRow.Item("Imdb").ToString Then
+                                    'listed-At is not user friendly formatted, so change format a bit
+                                    '"listed_at": 2014-09-01T09:10:11.000Z (original)
+                                    'new format here: 2014-09-01  09:10:11
+                                    Dim myDateString As String = Item.Comment.CreatedAt
+                                    Dim myDate As DateTime
+                                    Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                                    If isDate Then
+                                        'dgvtraktComments.Rows.Add(New Object() {sRow.Item("Title").ToString, myDate.ToString("yyyy-MM-dd hh:mm"), Item.Comment.Replies, Item.Comment.Likes, Item.Comment.Id, sRow.Item("Imdb").ToString})
+                                        dgvtraktComments.Rows.Add(New Object() {sRow.Item("Title").ToString, Item.Comment.CreatedAt, Item.Comment.Replies, Item.Comment.Likes, Item.Comment.Id, sRow.Item("Imdb").ToString})
+                                    Else
+                                        dgvtraktComments.Rows.Add(New Object() {sRow.Item("Title").ToString, Item.Comment.CreatedAt, Item.Comment.Replies, Item.Comment.Likes, Item.Comment.Id, sRow.Item("Imdb").ToString})
+                                    End If
+                                    HasCommentOnTrakt = True
+                                    Exit For
+                                End If
+                            Next
+                        End If
+                        If HasCommentOnTrakt = False Then
+                            dgvtraktComments.Rows.Add(New Object() {sRow.Item("Title").ToString, "", "", "", "", sRow.Item("Imdb").ToString})
+                        End If
+                    End If
+                Next
+            Else
+                logger.Warn("[btntraktCommentsGet_Click] No token!")
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            If Not myCommentsMovies Is Nothing Then
+                myCommentsMovies.Clear()
+            End If
+            dgvtraktComments.DataSource = Nothing
+            dgvtraktComments.Rows.Clear()
+        End Try
+    End Sub
+
+    ''' <summary>
+    '''  Send comment to trakt.tv
+    ''' </summary>
+    ''' <param name="sender">"Submit comment to trakt.tv"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/06/01 Cocotus - First implementation
+    ''' This sub  handles submitting rcomments of movies to trakt.tv
+    ''' </remarks>
+    Private Sub btntraktCommentsDetailsSend_Click(sender As Object, e As EventArgs) Handles btntraktCommentsDetailsSend.Click
+
+        traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+        If Not String.IsNullOrEmpty(traktToken) Then
+            Dim response As String = Master.eLang.GetString(1411, "Submit comment to trakt.tv") & "? " & Master.eLang.GetString(36, "Movies") & ":" & Environment.NewLine
+            Dim tmpTraktSynchronize As New TraktAPI.Model.TraktCommentMovie
+            tmpTraktSynchronize.Movie = New TraktAPI.Model.TraktMovie
+            tmpTraktSynchronize.Movie.Ids = New TraktAPI.Model.TraktMovieBase
+            tmpTraktSynchronize.Movie.Ids.Imdb = "tt" & dgvtraktComments.CurrentRow.Cells(5).Value.ToString
+            tmpTraktSynchronize.Movie.Title = dgvtraktComments.CurrentRow.Cells(0).Value.ToString
+            tmpTraktSynchronize.Text = txttraktCommentsDetailsComment.Text
+            tmpTraktSynchronize.IsSpoiler = chktraktCommentsDetailsSpoiler.Checked
+            response = response & dgvtraktComments.CurrentRow.Cells(0).Value.ToString & Environment.NewLine
+
+            Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+            If result = Windows.Forms.DialogResult.Yes Then
+                Dim traktResponse = TrakttvAPI.AddCommentForMovie(tmpTraktSynchronize)
+                If Not traktResponse Is Nothing Then
+                    If traktResponse.Id > 0 Then
+                        logger.Info("Added comment to trakt.tv!")
+                        response = Master.eLang.GetString(1412, "Added comment to trakt.tv!")
+                        btntraktCommentsGet_Click(Nothing, Nothing)
+                    Else
+                        logger.Info("No comment submitted!")
+                        response = Master.eLang.GetString(1134, "Error!")
+                    End If
+                Else
+                    response = Master.eLang.GetString(1134, "Error!")
+                End If
+                MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
+            End If
+
+        End If
+    End Sub
+
+    ''' <summary>
+    '''  Delete comment from trakt.tv
+    ''' </summary>
+    ''' <param name="sender">"Delete comment from trakt.tv"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/06/01 Cocotus - First implementation
+    ''' This sub  handles deleting a comment from trakt.tv
+    ''' </remarks>
+    Private Sub btntraktCommentsDetailsDelete_Click(sender As Object, e As EventArgs) Handles btntraktCommentsDetailsDelete.Click
+        traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+        If Not String.IsNullOrEmpty(traktToken) Then
+            Dim response As String = Master.eLang.GetString(1410, "Delete comment from trakt.tv") & "? " & Master.eLang.GetString(36, "Movies") & ":" & Environment.NewLine
+            response = response & dgvtraktComments.CurrentRow.Cells(0).Value.ToString & Environment.NewLine
+
+            Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+            If result = Windows.Forms.DialogResult.Yes Then
+                Dim traktResponse = TrakttvAPI.RemoveCommentOrReply(CInt(dgvtraktComments.CurrentRow.Cells(4).Value))
+                If traktResponse Then
+                    logger.Info("Deleted comment from trakt.tv!")
+                    response = Master.eLang.GetString(1407, "Deleted") & "!"
+                    btntraktCommentsGet_Click(Nothing, Nothing)
+                Else
+                    response = Master.eLang.GetString(1134, "Error!")
+                End If
+                MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
+            End If
+
+        End If
+    End Sub
+
+    ''' <summary>
+    '''  Delete comment from trakt.tv
+    ''' </summary>
+    ''' <param name="sender">"Delete comment from trakt.tv"-Button in Form</param>
+    ''' <remarks>
+    ''' 2015/06/01 Cocotus - First implementation
+    ''' This sub  handles deleting a comment from trakt.tv
+    ''' </remarks>
+    Private Sub btntraktCommentsDetailsUpdate_Click(sender As Object, e As EventArgs) Handles btntraktCommentsDetailsUpdate.Click
+
+        traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+        If Not String.IsNullOrEmpty(traktToken) Then
+            Dim response As String = Master.eLang.GetString(1409, "Update comment on trakt.tv") & "? " & Master.eLang.GetString(36, "Movies") & ":" & Environment.NewLine
+            Dim tmpTraktSynchronize As New TraktAPI.Model.TraktCommentBase
+            tmpTraktSynchronize.Text = txttraktCommentsDetailsComment.Text
+            tmpTraktSynchronize.IsSpoiler = chktraktCommentsDetailsSpoiler.Checked
+            response = response & dgvtraktComments.CurrentRow.Cells(0).Value.ToString & Environment.NewLine
+
+            Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+            If result = Windows.Forms.DialogResult.Yes Then
+                Dim traktResponse = TrakttvAPI.UpdateComment(CStr(dgvtraktComments.CurrentRow.Cells(4).Value), tmpTraktSynchronize)
+                If Not traktResponse Is Nothing Then
+                    If traktResponse.Id > 0 Then
+                        logger.Info("Updated comment on trakt.tv!")
+                        response = Master.eLang.GetString(1408, "Updated") & "!"
+                        btntraktCommentsGet_Click(Nothing, Nothing)
+                    Else
+                        logger.Info("No comment submitted!")
+                        response = Master.eLang.GetString(1134, "Error!")
+                    End If
+                Else
+                    response = Master.eLang.GetString(1134, "Error!")
+                End If
+                MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
+            End If
+
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Open link in datagrid using default browser
+    ''' </summary>
+    ''' <param name="sender">Cell click event</param>
+    ''' <remarks>
+    ''' 2015/06/01 Cocotus - First implementation
+    Private Sub dgvtraktComments_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtraktComments.CellContentClick
+        If e.RowIndex > -1 AndAlso e.ColumnIndex = 4 AndAlso dgvtraktComments.CurrentCell.RowIndex > -1 Then
+            'URL to comment on trakt.tv
+            System.Diagnostics.Process.Start("http://trakt.tv/comments/" & dgvtraktComments.CurrentCell.Value.ToString())
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Handles SelectedRow Changed-Event
+    ''' </summary>
+    ''' <param name="sender">Selection Changed event of Datagrid</param>
+    ''' <remarks>
+    ''' 2015/05/30 Cocotus - First implementation
+    ''' enable/disable Send/Update/Delete Comment-Button 
+    Private Sub dgvtraktComments_SelectionChanged(sender As Object, e As EventArgs) Handles dgvtraktComments.SelectionChanged
+        If dgvtraktComments.CurrentRow.Index > -1 Then
+            lbltraktCommentsDetailsDate2.Text = ""
+            lbltraktCommentsDetailsLikes2.Text = ""
+            lbltraktCommentsDetailsRating2.Text = ""
+            lbltraktCommentsDetailsReplies2.Text = ""
+            lbltraktCommentsDetailsType2.Text = ""
+            txttraktCommentsDetailsComment.Text = ""
+
+            For Each movie As DataRow In dtMovies.Rows
+                If movie.Item("Imdb").ToString = dgvtraktComments.CurrentRow.Cells(5).Value.ToString AndAlso movie.Table.Columns.Contains("Comment") Then
+                    txttraktCommentsDetailsComment.Text = movie.Item("Comment").ToString
+                    Exit For
+                End If
+            Next
+            If String.IsNullOrEmpty(txttraktCommentsDetailsComment.Text) Then
+                For Each comment In myCommentsMovies
+                    'Find current selected row 
+                    If comment.Comment.Id.ToString = dgvtraktComments.CurrentRow.Cells(4).Value.ToString Then
+                        lbltraktCommentsDetailsDate2.Text = dgvtraktComments.CurrentRow.Cells(1).Value.ToString
+                        lbltraktCommentsDetailsLikes2.Text = comment.Comment.Likes.ToString
+                        lbltraktCommentsDetailsRating2.Text = comment.Movie.Rating.ToString
+                        lbltraktCommentsDetailsReplies2.Text = comment.Comment.Replies.ToString
+                        If comment.Comment.IsReview Then
+                            lbltraktCommentsDetailsType2.Text = "Review"
+                        Else
+                            lbltraktCommentsDetailsType2.Text = "Comment"
+                        End If
+
+                        txttraktCommentsDetailsComment.Text = comment.Comment.Text
+                        Exit For
+                    End If
+                Next
+            End If
+
+            'If column CommentID is filled in datarow, then its a trakt.tv comment, otherwise there's no comment for this entry on trakt.tv
+            If Not String.IsNullOrEmpty(dgvtraktComments.CurrentRow.Cells(4).Value.ToString) Then
+                ' Dim myStartTime As DateTime = DateTime.ParseExact(dgvtraktComments.CurrentRow.Cells(1).Value.ToString, "yyyy-MM-dd hh:mm", Globalization.CultureInfo.InvariantCulture)
+                Dim myStartTime As DateTime = If(DateTime.TryParse(dgvtraktComments.CurrentRow.Cells(1).Value.ToString, myStartTime), myStartTime, Nothing)
+                Dim myEndTime As DateTime = If(DateTime.TryParse(DateTime.Now.ToString(), myEndTime), myEndTime, Nothing)
+                Dim elapsedTime As TimeSpan = myEndTime.Subtract(myStartTime)
+                'right now you can't edit a comment older than 60minutes!
+                If elapsedTime.TotalMinutes < 60 Then
+                    btntraktCommentsDetailsDelete.Enabled = True
+                    btntraktCommentsDetailsUpdate.Enabled = True
+                    btntraktCommentsDetailsSend.Enabled = False
+                End If
+                'no comment on trakt.tv yet
+            Else
+                btntraktCommentsDetailsDelete.Enabled = False
+                btntraktCommentsDetailsUpdate.Enabled = False
+                btntraktCommentsDetailsSend.Enabled = True
+            End If
+            'no row selected
+        Else
+            btntraktCommentsDetailsDelete.Enabled = False
+            btntraktCommentsDetailsUpdate.Enabled = False
+            btntraktCommentsDetailsSend.Enabled = False
+        End If
+    End Sub
+
+#End Region
+
 #End Region 'Methods
-
-
 
 End Class
 

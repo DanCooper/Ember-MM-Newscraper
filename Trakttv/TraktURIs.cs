@@ -35,6 +35,13 @@ namespace Trakttv
         public const string SENDListEdit = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}";
         public const string SENDListItemsAdd = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}/items";
         public const string SENDListItemsRemove = "https://api-v2launch.trakt.tv/users/{0}/lists/{1}/items/remove";
+        
+        //Comments requests
+        public const string SENDCommentAdd = "https://api-v2launch.trakt.tv/comments";
+        public const string SENDCommentLike = "https://api-v2launch.trakt.tv/comments/{0}/like";
+        public const string SENDCommentDelete = "https://api-v2launch.trakt.tv/comments/{0}";
+        public const string SENDCommentUpdate = "https://api-v2launch.trakt.tv/comments/{0}";
+        public const string SENDCommentReply = "https://api-v2launch.trakt.tv/comments/{0}/replies";
 
         #endregion
 
@@ -69,6 +76,10 @@ namespace Trakttv
         public const string GETNetworkFollowers = "https://api-v2launch.trakt.tv/users/{0}/followers?extended=full,images";
         public const string GETNetworkFollowing = "https://api-v2launch.trakt.tv/users/{0}/following?extended=full,images";
         
+        // Comments requests
+        public const string GETUserComments = "https://api-v2launch.trakt.tv/users/{0}/comments/{1}/{2}?extended=full,images";      
+        public const string GETCommentReplies = "https://api-v2launch.trakt.tv/comments/{0}/replies";
+        public const string GETComment = "https://api-v2launch.trakt.tv/comments/{0}";
         #endregion
     }
 }

@@ -201,7 +201,7 @@ namespace Trakttv
                 Stream responseStream = response.GetResponseStream();
                 var reader = new StreamReader(responseStream);
                 string strResponse = reader.ReadToEnd();
-                //logger.Info("[SENDToTrakt] Response: " + strResponse);
+             // logger.Info("[SENDToTrakt] Response: " + strResponse);
                 if (OnDataReceived != null)
                     OnDataReceived(strResponse);
 
@@ -231,12 +231,12 @@ namespace Trakttv
         }
 
 
-        static string ReplaceOnTrakt(string address, string postData)
+        static string UPDATEOnTrakt(string address, string postData)
         {
             return SENDToTrakt(address, postData, true, "PUT");
         }
 
-        static bool DeleteFromTrakt(string address)
+        static bool REMOVEFromTrakt(string address)
         {
             var response = READFromTrakt(address, "DELETE");
             return response != null;
@@ -465,13 +465,48 @@ namespace Trakttv
         }
         #endregion
 
+        #region GET Comments
+        /// <summary>
+        /// Get comments of user
+        /// </summary>
+        /// <param name="username">Username of commentator</param>
+        /// <param name="comment_type">Possible values: all, reviews, shouts</param>
+        /// <param name="type">Possible values: all, movies, shows, seasons, episodes, lists</param>
+        public static IEnumerable<TraktCommentItem> GetComments(string username, string comment_type, string type)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETUserComments, username, comment_type, type));
+            return response.FromJSONArray<TraktCommentItem>();
+        }
+
+         /// <summary>
+        /// Get replies for a users comment
+        /// </summary>
+        /// <param name="idcomment">ID of the comment</param>
+        public static IEnumerable<TraktCommentItem> GetRepliesForComment(string idcomment)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETCommentReplies, idcomment));
+            return response.FromJSONArray<TraktCommentItem>();
+        }
+
+        /// <summary>
+        /// Get comment/reply
+        /// </summary>
+        /// <param name="idcomment">ID of the comment</param>
+        public static IEnumerable<TraktCommentItem> GetCommentOrReply(string idcomment)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETComment, idcomment));
+            return response.FromJSONArray<TraktCommentItem>();
+        }
+
+        #endregion
+
         #region POST User List
 
         /// <summary>
         /// Create new personal list on trakt
         /// </summary>
         /// <param name="user">The user to get</param>
-        public static TraktListDetail CreateCustomList(TraktList list, string username)
+        public static TraktListDetail AddUserList(TraktList list, string username)
         {
             var response = SENDToTrakt(string.Format(TraktURIs.SENDListAdd, username), list.ToJSON());
             return response.FromJSON<TraktListDetail>();
@@ -483,7 +518,7 @@ namespace Trakttv
         /// <param name="user">The user to get</param>
         public static TraktListDetail UpdateCustomList(TraktListDetail list, string username, string id)
         {
-            var response = ReplaceOnTrakt(string.Format(TraktURIs.SENDListEdit, username,id), list.ToJSON());
+            var response = UPDATEOnTrakt(string.Format(TraktURIs.SENDListEdit, username,id), list.ToJSON());
             return response.FromJSON<TraktListDetail>();
         }
 
@@ -511,9 +546,9 @@ namespace Trakttv
         /// Delete existing list on trakt
         /// </summary>
         /// <param name="user">The user to get</param>
-        public static bool DeleteUserList(string username, string listId)
+        public static bool RemoveUserList(string username, string listId)
         {
-            return DeleteFromTrakt(string.Format(TraktURIs.SENDListDelete, username, listId));
+            return REMOVEFromTrakt(string.Format(TraktURIs.SENDListDelete, username, listId));
         }
 
         #endregion
@@ -651,6 +686,70 @@ namespace Trakttv
             };
 
             return RemoveEpisodesFromWatchlist(episodes);
+        }
+
+        #endregion
+
+        #region POST Comment/Reply/Like
+
+        /// <summary>
+        /// Like a comment
+        /// </summary>
+        /// <param name="commentID">A specific comment ID</param>
+        public static bool AddLikeToComment(int commentID)
+        {
+            var response = SENDToTrakt(string.Format(TraktURIs.SENDCommentLike, commentID), null);
+            return response != null;
+        }
+
+        /// <summary>
+        /// UnLike a comment
+        /// </summary>
+        /// <param name="commentID">A specific comment ID</param>
+        public static bool RemoveLikeFromComment(int commentID)
+        {
+            return REMOVEFromTrakt(string.Format(TraktURIs.SENDCommentLike, commentID));
+        }
+
+        /// <summary>
+        /// Add a new comment to a movie
+        /// </summary>
+        /// <param name="moviecomment">contains all info necessary for posting a comment for a movie</param>
+        public static TraktComment AddCommentForMovie(TraktCommentMovie moviecomment)
+        {
+            var response = SENDToTrakt(TraktURIs.SENDCommentAdd, moviecomment.ToJSON());
+            return response.FromJSON<TraktComment>();
+        }
+
+        /// <summary>
+        /// Update a single comment created within the last hour
+        /// </summary>
+        /// <param name="commentID">A specific comment ID</param>
+        /// <param name="comment">Base comment object (spoiler info and text)</param>
+        public static TraktComment UpdateComment(string commentID, TraktCommentBase comment)
+        {
+            var response = SENDToTrakt(string.Format(TraktURIs.SENDCommentUpdate, commentID), comment.ToJSON());
+            return response.FromJSON<TraktComment>();
+        }
+
+        /// <summary>
+        /// Delete a single comment/reply created within the last hour. This also effectively removes any replies this comment has
+        /// </summary>
+        /// <param name="commentID">A specific comment ID</param>
+        public static bool RemoveCommentOrReply(int commentID)
+        {
+            return REMOVEFromTrakt(string.Format(TraktURIs.SENDCommentDelete, commentID));
+        }
+
+        /// <summary>
+        /// Add a new reply to an existing comment
+        /// </summary>
+        /// <param name="commentID">A specific comment ID</param>
+        /// <param name="comment">Base comment object (spoiler info and text)</param>
+        public static TraktComment AddReplyForComment(string commentID, TraktCommentBase comment)
+        {
+            var response = SENDToTrakt(string.Format(TraktURIs.SENDCommentReply, commentID), comment.ToJSON());
+            return response.FromJSON<TraktComment>();
         }
 
         #endregion

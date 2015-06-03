@@ -1497,4 +1497,17 @@
   <string id="1405">Submit watched movies to trakt.tv history</string>
   <string id="1406">Delete selected item from trakt.tv history</string>
   <string id="1407">Deleted</string>
+  <string id="1408">Updated</string>
+  <string id="1409">Update comment on trakt.tv</string>
+  <string id="1410">Delete comment from trakt.tv</string>
+  <string id="1411">Submit comment to trakt.tv</string>
+  <string id="1412">Added comment to trakt.tv</string>
+  <string id="1413">Comment</string>
+  <string id="1415">Replies</string>
+  <string id="1416">Likes</string>
+  <string id="1417">Likes</string>
+  <string id="1418">Sync Comments</string>
+  <string id="1419">Load your movie comments</string> 
+  <string id="1420">!IMPORTANT RULES!\n\n\n\n1. Comments must be at least 5 words\n\n2. Comments 200 words or longer will be automatically marked as a review\n\n3. Correctly indicate if the comment contains spoilers\n\n4. Only write comments in English</string>
+  <string id="1421">Load comments</string>
 </strings>
