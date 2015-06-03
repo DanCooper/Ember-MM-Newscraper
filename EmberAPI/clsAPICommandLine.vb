@@ -85,7 +85,7 @@ Public Class CommandLine
                             i += 1
                         End If
                     Else
-                        Exit For
+                        logger.Warn("No path or invalid path specified for -addmoviesource command")
                     End If
                 Case "-addtvshowsource"
                     If Args.Count - 1 > i Then
@@ -94,7 +94,7 @@ Public Class CommandLine
                             i += 1
                         End If
                     Else
-                        Exit For
+                        logger.Warn("No path or invalid path specified for -addtvshowsource command")
                     End If
                 Case "-cleanvideodb"
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
@@ -178,7 +178,7 @@ Public Class CommandLine
                             i += 1
                         End If
                     Else
-                        Exit For
+                        logger.Warn("No path or invalid path specified for -scanfolder command")
                     End If
                 Case "-export"
                     If Args.Count - 1 > i Then
@@ -209,12 +209,52 @@ Public Class CommandLine
                     Else
                         Exit For
                     End If
-                Case "-updatemovie"
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                Case "-updatemovies"
+                    If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
+                        Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
+                        Dim SourceName As String = Master.MovieSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower).Name
+                        If SourceName IsNot Nothing Then
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, SourceName, String.Empty}))
+                            i += 1
+                        Else
+                            SourceName = Master.MovieSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower).Name
+                            If SourceName IsNot Nothing Then
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, SourceName, String.Empty}))
+                                i += 1
+                            Else
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, String.Empty, String.Empty}))
-                Case "-updatetv"
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                            End If
+                        End If
+                    Else
+                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, String.Empty, String.Empty}))
+                    End If
+                Case "-updatetvshows"
+                    If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
+                        Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
+                        Dim SourceName As String = Master.TVSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower).Name
+                        If SourceName IsNot Nothing Then
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, SourceName, String.Empty}))
+                            i += 1
+                        Else
+                            SourceName = Master.TVSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower).Name
+                            If SourceName IsNot Nothing Then
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, SourceName, String.Empty}))
+                                i += 1
+                            Else
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, String.Empty, String.Empty}))
+                            End If
+                        End If
+                    Else
+                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, String.Empty, String.Empty}))
+                    End If
             End Select
         Next
     End Sub
