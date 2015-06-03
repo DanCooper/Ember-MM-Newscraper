@@ -328,7 +328,7 @@ Public Class dlgEditMovieSet
                     MovieBanner = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1057, "No banner images could be found. Please check to see if any banner scrapers are enabled."), Master.eLang.GetString(972, "No Banners Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(972, "No Banners found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -392,7 +392,7 @@ Public Class dlgEditMovieSet
                     MovieClearArt = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), Master.eLang.GetString(1102, "No ClearArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -456,7 +456,7 @@ Public Class dlgEditMovieSet
                     MovieClearLogo = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), Master.eLang.GetString(1103, "No ClearLogos Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -520,7 +520,7 @@ Public Class dlgEditMovieSet
                     MovieDiscArt = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), Master.eLang.GetString(1104, "No DiscArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -583,7 +583,7 @@ Public Class dlgEditMovieSet
                     MovieFanart = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), Master.eLang.GetString(970, "No Fanart Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(970, "No Fanart found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -647,7 +647,7 @@ Public Class dlgEditMovieSet
                     MovieLandscape = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1058, "No landscape images could be found. Please check to see if any landscape scrapers are enabled."), Master.eLang.GetString(972, "No Landscapes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -711,7 +711,7 @@ Public Class dlgEditMovieSet
                     MoviePoster = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub

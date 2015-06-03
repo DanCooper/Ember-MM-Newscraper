@@ -223,7 +223,7 @@
   <string id="222">Folder Not Found</string>
   <string id="223">Select Studio</string>
   <string id="224">Edit the details for the selected movie.</string>
-  <string id="225">No Trailers Found</string>
+  <string id="225">No Trailers found</string>
   <string id="226">Studio:</string>
   <string id="227">Trailer URL:</string>
   <string id="228">Credits:</string>
@@ -944,7 +944,7 @@
   <string id="943">There are no known episodes for this show. Scrape the show, season, or episode and try again.</string>
   <string id="944">No Known Episodes</string>
   <string id="945">There is no poster available for this episode.</string>
-  <string id="946">No Posters Found</string>
+  <string id="946">No Posters found</string>
   <string id="947">Guest Star</string>
   <string id="948">TV Search Results</string>
   <string id="949">The ID you entered is not a valid TVDB ID.</string>
@@ -1058,10 +1058,10 @@
     "Jezz_X" and Wayne "nitr8" Humphrey
     Media Flags
   </string>
-  <string id="969">No fanart could be found. Please check to see if any fanart scrapers are enabled.</string>
-  <string id="970">No Fanart Found</string>
-  <string id="971">No poster images could be found. Please check to see if any poster scrapers are enabled.</string>
-  <string id="972">No Posters Found</string>
+  <string id="969"></string>
+  <string id="970">No Fanart found</string>
+  <string id="971"></string>
+  <string id="972">No Posters found</string>
   <string id="973">Actor Thumbs Only</string>
   <string id="974">You have extratfanarts queued to be transferred to the movie directory.</string>
   <string id="975">Extrafanarts Only</string>
@@ -1146,8 +1146,8 @@
   <string id="1054">Get ClearLogo</string>
   <string id="1055">Get DiscArt</string>
   <string id="1056">Get Landscape</string>
-  <string id="1057">No banner images could be found. Please check to see if any banner scrapers are enabled.</string>
-  <string id="1058">No landscape images could be found. Please check to see if any landscape scrapers are enabled.</string>
+  <string id="1057"></string>
+  <string id="1058"></string>
   <string id="1059">Landscape</string>
   <string id="1060">Banner Only</string>
   <string id="1061">Landscape Only</string>
@@ -1188,12 +1188,12 @@
   <string id="1096">ClearArt</string>
   <string id="1097">ClearLogo</string>
   <string id="1098">DiscArt</string>
-  <string id="1099">No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled.</string>
-  <string id="1100">No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled.</string>
-  <string id="1101">No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled.</string>
-  <string id="1102">No ClearArts Found</string>
-  <string id="1103">No ClearLogos Found</string>
-  <string id="1104">No DiscArts Found</string>
+  <string id="1099"></string>
+  <string id="1100"></string>
+  <string id="1101"></string>
+  <string id="1102">No ClearArts found</string>
+  <string id="1103">No ClearLogos found</string>
+  <string id="1104">No DiscArts found</string>
   <string id="1105">Only HD</string>
   <string id="1106">A ClearArt of your preferred size could not be found. Please choose another.</string>
   <string id="1107">A ClearLogo of your preferred size could not be found. Please choose another.</string>
@@ -1250,9 +1250,9 @@
   <string id="1158">Bitrate</string>
   <string id="1159">Encoding Settings</string>
   <string id="1160">Restart last scrape...</string>
-  <string id="1161">No trailers could be found. Please check to see if any trailer scrapers are enabled.</string>
-  <string id="1162">No themes could be found. Please check to see if any theme scrapers are enabled.</string>
-  <string id="1163">No Themes Found</string>
+  <string id="1161"></string>
+  <string id="1162"></string>
+  <string id="1163">No Themes found</string>
   <string id="1164">Loading Main Form. Please wait...</string>
   <string id="1165">Initializing Main Form. Please wait...</string>
   <string id="1166">Default Language</string>
@@ -1286,7 +1286,7 @@
   <string id="1194">Enable Scraper Resume</string>
   <string id="1195">Trailers</string>
   <string id="1196">Remove Trailer</string>
-  <string id="1197">No Landscapes Found</string>
+  <string id="1197">No Landscapes found</string>
   <string id="1198">Enable Image Scrape On Double Right Click</string>
   <string id="1199">Select Language...</string>
   <string id="1200">Change Language</string>
@@ -1432,8 +1432,8 @@
   <string id="1340">Remove watched movies from trakt.tv watchlist</string>
   <string id="1341">Clear trakt.tv watchlist</string>
   <string id="1342">Send unwatched movies to trakt.tv watchlist</string>
-  <string id="1343">No CharacterArts Found</string>
-  <string id="1344">No CharacterArt images could be found. Please check to see if any CharacterArt scrapers are enabled.</string>
+  <string id="1343">No CharacterArts found</string>
+  <string id="1344"></string>
   <string id="1345">Scrape popular lists</string>
   <string id="1346">Scrape lists of favorite users</string>
   <string id="1347">Scrape lists of friends</string>
@@ -1452,7 +1452,7 @@
   <string id="1360">Scraping Media (Selected MovieSets - Skip):</string>
   <string id="1361">New Episode(s)</string>
   <string id="1362">New Show(s)</string>
-  <string id="1363">No Banners Found</string>
+  <string id="1363">No Banners found</string>
   <string id="1364">Movies removed from trakt.tv watchlist!</string>
   <string id="1365">No changes made!</string>
   <string id="1366">Movies added to trakt.tv watchlist!</string>
