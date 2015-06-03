@@ -685,7 +685,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 22
+        Dim MyVideosDBVersion As Integer = 23
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1718,9 +1718,7 @@ Public Class Database
 
         _TVDB.EpID = EpID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT idEpisode, idShow, Episode, Title, New, Mark, TVEpPathID, Source, Lock, ", _
-                                                   "Season, Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount, ", _
-                                                   "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode FROM episode WHERE idEpisode = ", EpID, ";")
+            SQLcommand.CommandText = String.Concat("SELECT * FROM episode WHERE idEpisode = ", EpID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     SQLreader.Read()
@@ -1756,6 +1754,10 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("SubEpisode")) Then .SubEpisode = Convert.ToInt32(SQLreader("SubEpisode"))
+                        If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
+                        If Not DBNull.Value.Equals(SQLreader("strIMDB")) Then .IMDB = SQLreader("strIMDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = SQLreader("strTMDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("strTVDB")) Then .TVDB = SQLreader("strTVDB").ToString
                     End With
                 End If
             End Using
@@ -3426,17 +3428,19 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
-                 "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount,", _
-                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 "idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode, ", _
+                 "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount, ", _
+                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ", _
+                 "iLastPlayed, strIMDB, strTMDB, strTVDB", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idEpisode, idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
-                 "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount,", _
-                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 "idEpisode, idShow, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode, ", _
+                 "Rating, Plot, Aired, Director, Credits, NfoPath, NeedsSave, Missing, Playcount, ", _
+                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ", _
+                 "iLastPlayed, strIMDB, strTMDB, strTVDB", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim parTVEpID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpID", DbType.UInt64, 0, "idEpisode")
                 parTVEpID.Value = _TVEpDB.EpID
@@ -3468,6 +3472,10 @@ Public Class Database
             Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
             Dim parHasSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
             Dim parSubEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubEpisode", DbType.String, 0, "SubEpisode")
+            Dim par_iLastPlayed As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.Int32, 0, "iLastPlayed")
+            Dim par_strIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "strIMDB")
+            Dim par_strTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
+            Dim par_strTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTVDB", DbType.String, 0, "strTVDB")
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
@@ -3533,6 +3541,9 @@ Public Class Database
                 If .SubEpisodeSpecified Then
                     parSubEpisode.Value = .SubEpisode
                 End If
+                par_strIMDB.Value = .IMDB
+                par_strTMDB.Value = .TMDB
+                par_strTVDB.Value = .TVDB
             End With
 
             If IsNew Then

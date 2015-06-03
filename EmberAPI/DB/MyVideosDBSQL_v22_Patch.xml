@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v22_to_v23">
+    <command type="DB">
+      <description>add strIMDB/strTMDB to actors</description>
+      <execute>
+        ALTER TABLE actors ADD COLUMN strIMDB text;
+        ALTER TABLE actors ADD COLUMN strTMDB text;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add iLastPlayed/strIMDB/strTMDB/strTVDB to episode</description>
+      <execute>
+        ALTER TABLE episode ADD COLUMN iLastPlayed integer;
+        ALTER TABLE episode ADD COLUMN strIMDB text;
+        ALTER TABLE episode ADD COLUMN strTMDB text;
+        ALTER TABLE episode ADD COLUMN strTVDB text;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add iLastPlayed to movie</description>
+      <execute>
+        ALTER TABLE movie ADD COLUMN iLastPlayed integer;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add strTVDB to seasons</description>
+      <execute>
+        ALTER TABLE seasons ADD COLUMN strTVDB text;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add strIMDB/strTMDB to tvshow</description>
+      <execute>
+        ALTER TABLE tvshow ADD COLUMN strIMDB text;
+        ALTER TABLE tvshow ADD COLUMN strTMDB text;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

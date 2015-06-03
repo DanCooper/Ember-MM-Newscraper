@@ -38,6 +38,8 @@ Namespace MediaContainers
         Private _episode As Integer
         Private _fanart As New Images
         Private _fileInfo As New MediaInfo.Fileinfo
+        Private _imdb As String
+        Private _lastplayed As String
         Private _localfile As String
         Private _playcount As String
         Private _plot As String
@@ -48,6 +50,8 @@ Namespace MediaContainers
         Private _season As Integer
         Private _subepisode As Integer
         Private _title As String
+        Private _tmdb As String
+        Private _tvdb As String
         Private _videosource As String
         Private _votes As String
 
@@ -317,6 +321,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("lastplayed")> _
+        Public Property LastPlayed() As String
+            Get
+                Return Me._lastplayed
+            End Get
+            Set(ByVal value As String)
+                Me._lastplayed = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LastPlayedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._lastplayed)
+            End Get
+        End Property
+
         <Obsolete("This property is depreciated. Use Episode.Directors [List(Of String)] instead.")> _
         <XmlIgnore()> _
         Public Property Director() As String
@@ -447,6 +468,57 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("uniqueid")> _
+        Public Property TVDB() As String
+            Get
+                Return Me._tvdb
+            End Get
+            Set(ByVal value As String)
+                Me._tvdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TVDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tvdb)
+            End Get
+        End Property
+
+        <XmlElement("imdb")> _
+        Public Property IMDB() As String
+            Get
+                Return Me._imdb
+            End Get
+            Set(ByVal value As String)
+                Me._imdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property IMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._imdb)
+            End Get
+        End Property
+
+        <XmlElement("tmdb")> _
+        Public Property TMDB() As String
+            Get
+                Return Me._tmdb
+            End Get
+            Set(ByVal value As String)
+                Me._tmdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdb)
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -462,6 +534,8 @@ Namespace MediaContainers
             Me._episode = -999
             Me._fanart = New Images
             Me._fileInfo = New MediaInfo.Fileinfo
+            Me._imdb = String.Empty
+            Me._lastplayed = String.Empty
             Me._localfile = String.Empty
             Me._playcount = String.Empty
             Me._plot = String.Empty
@@ -471,6 +545,8 @@ Namespace MediaContainers
             Me._runtime = String.Empty
             Me._season = -999
             Me._subepisode = -999
+            Me._tmdb = String.Empty
+            Me._tvdb = String.Empty
             Me._title = String.Empty
             Me._videosource = String.Empty
             Me._votes = String.Empty
