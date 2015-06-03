@@ -392,6 +392,8 @@ Public Class Scraper
                                     End If
 
                                     With tEpisode
+                                        .TVDB = If(Episode.Element("id") Is Nothing, String.Empty, Episode.Element("id").Value)
+                                        .IMDB = If(Episode.Element("IMDB_ID") Is Nothing, String.Empty, Episode.Element("IMDB_ID").Value)
                                         .Title = Episode.Element("EpisodeName").Value
                                         If tOrdering = Enums.Ordering.DVD Then
                                             .Season = Convert.ToInt32(Episode.Element("DVD_season").Value)
@@ -1143,6 +1145,7 @@ Public Class Scraper
                                 With tShow.TVShow
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
+                                    .IMDB = If(xS(0).Element("IMDB_ID") Is Nothing, .IMDB, xS(0).Element("IMDB_ID").Value)
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockShowTitle) Then .Title = If(xS(0).Element("SeriesName") Is Nothing, .Title, xS(0).Element("SeriesName").Value)
                                     If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuide.URL = If(Not String.IsNullOrEmpty(clsAdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, clsAdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
                                     If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.TVLockShowGenre) Then .Genre = If(xS(0).Element("Genre") Is Nothing, .Genre, String.Join(" / ", xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|"))))
@@ -1222,7 +1225,10 @@ Public Class Scraper
                                 End If
 
                                 If xE IsNot Nothing Then
+                                    If xE.Element("seasonid") IsNot Nothing Then Episode.SeasonTVDB = xE.Element("seasonid").Value
                                     With Episode.TVEp
+                                        If xE.Element("id") IsNot Nothing Then .TVDB = xE.Element("id").Value
+                                        If xE.Element("IMDB_ID") IsNot Nothing Then .IMDB = xE.Element("IMDB_ID").Value
                                         If sInfo.Options.bEpTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso Not String.IsNullOrEmpty(xE.Element("EpisodeName").Value) Then .Title = xE.Element("EpisodeName").Value
                                         If byTitle OrElse iEp = -999 Then
                                             If tOrdering = Enums.Ordering.DVD Then

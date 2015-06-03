@@ -1916,11 +1916,13 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _id As Long
+        Private _imdb As String
         Private _name As String
         Private _order As Integer
         Private _role As String
         Private _thumbpath As String
         Private _thumburl As String
+        Private _tmdb As String
 
 #End Region 'Fields
 
@@ -2039,6 +2041,40 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("imdbid")> _
+        Public Property IMDB() As String
+            Get
+                Return Me._imdb
+            End Get
+            Set(ByVal Value As String)
+                Me._imdb = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property IMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._imdb)
+            End Get
+        End Property
+
+        <XmlElement("tmdbid")> _
+        Public Property TMDB() As String
+            Get
+                Return Me._tmdb
+            End Get
+            Set(ByVal Value As String)
+                Me._tmdb = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdb)
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -2050,6 +2086,7 @@ Namespace MediaContainers
             Me._role = String.Empty
             Me._thumbpath = String.Empty
             Me._thumburl = String.Empty
+            Me._tmdb = String.Empty
         End Sub
 
         Public Overrides Function ToString() As String
@@ -2149,24 +2186,26 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _title As String
-        Private _id As String
-        Private _episodeguide As New EpisodeGuide
-        Private _rating As String
-        Private _genres As New List(Of String)
-        Private _mpaa As String
-        Private _premiered As String
-        Private _studio As String
-        Private _studios As New List(Of String)
-        Private _plot As String
-        Private _runtime As String
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
+        Private _directors As New List(Of String)
+        Private _episodeguide As New EpisodeGuide
+        Private _genres As New List(Of String)
+        Private _id As String
+        Private _imdb As String
+        Private _mpaa As String
+        Private _plot As String
+        Private _premiered As String
+        Private _rating As String
+        Private _runtime As String
         Private _sorttitle As String
         Private _status As String
+        Private _studio As String
+        Private _studios As New List(Of String)
         Private _tags As New List(Of String)
+        Private _title As String
+        Private _tmdb As String
         Private _votes As String
-        Private _directors As New List(Of String)
 
 #End Region 'Fields
 
@@ -2228,6 +2267,40 @@ Namespace MediaContainers
         Public ReadOnly Property IDSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._id)
+            End Get
+        End Property
+
+        <XmlElement("imdb")> _
+        Public Property IMDB() As String
+            Get
+                Return Me._imdb
+            End Get
+            Set(ByVal value As String)
+                Me._imdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property IMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._imdb)
+            End Get
+        End Property
+
+        <XmlElement("tmdb")> _
+        Public Property TMDB() As String
+            Get
+                Return Me._tmdb
+            End Get
+            Set(ByVal value As String)
+                Me._tmdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdb)
             End Get
         End Property
 
@@ -2555,12 +2628,14 @@ Namespace MediaContainers
             _rating = String.Empty
             _plot = String.Empty
             _runtime = String.Empty
+            _imdb = String.Empty
             _mpaa = String.Empty
             _genres.Clear()
             _premiered = String.Empty
             _sorttitle = String.Empty
             _status = String.Empty
             _studio = String.Empty
+            _tmdb = String.Empty
             _votes = String.Empty
             _actors.Clear()
             _episodeguide.URL = String.Empty

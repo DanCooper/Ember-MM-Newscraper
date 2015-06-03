@@ -2017,6 +2017,7 @@ Public Class Structures
         Dim SeasonID As Long
         Dim SeasonLandscapePath As String
         Dim SeasonPosterPath As String
+        Dim SeasonTVDB As String
         Dim ShowBannerPath As String
         Dim ShowCharacterArtPath As String
         Dim ShowClearArtPath As String

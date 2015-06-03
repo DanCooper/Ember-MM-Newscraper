@@ -236,7 +236,8 @@ Namespace TMDB
                     For Each aCast As TMDbLib.Objects.Movies.Cast In Movie.Credits.Cast
                         nMovie.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                            .Role = aCast.Character, _
-                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty)})
+                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                           .TMDB = CStr(aCast.Id)})
                     Next
                 End If
             End If
