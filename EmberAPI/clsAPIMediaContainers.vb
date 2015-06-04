@@ -730,6 +730,7 @@ Namespace MediaContainers
         Private _dateadded As String
         Private _scrapersource As String
         Private _datemodified As String
+        Private _lastplayed As String
 #End Region 'Fields
 
 #Region "Constructors"
@@ -1287,6 +1288,23 @@ Namespace MediaContainers
         Public ReadOnly Property PlayCountSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._playcount) AndAlso Not Me._playcount = "0"
+            End Get
+        End Property
+
+        <XmlElement("lastplayed")> _
+        Public Property LastPlayed() As String
+            Get
+                Return Me._lastplayed
+            End Get
+            Set(ByVal value As String)
+                Me._lastplayed = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LastPlayedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._lastplayed)
             End Get
         End Property
 

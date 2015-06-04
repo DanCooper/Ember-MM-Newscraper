@@ -1405,6 +1405,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDBID = SQLreader("TMDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = SQLreader("TMDBColID").ToString
+                        If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
                     End With
                 End If
             End Using
@@ -2584,8 +2585,8 @@ Public Class Database
                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                  "DateAdded, EFanartsPath, ThemePath, ", _
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
             Else
                 SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
                  "idMovie, MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
@@ -2593,8 +2594,8 @@ Public Class Database
                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, NeedsSave, ", _
                  "DateAdded, EFanartsPath, ThemePath, ", _
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
                 Dim parMovieID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.Int32, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
             End If
@@ -2648,6 +2649,7 @@ Public Class Database
             Dim par_movie_MarkCustom3 As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom3", DbType.Boolean, 0, "MarkCustom3")
             Dim par_movie_MarkCustom4 As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom4", DbType.Boolean, 0, "MarkCustom4")
             Dim par_movie_HasSet As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasSet", DbType.Boolean, 0, "HasSet")
+            Dim par_movie_iLastPlayed As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iLastPlayed", DbType.Int32, 0, "iLastPlayed")
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
@@ -2696,6 +2698,19 @@ Public Class Database
             Catch
                 par_movie_DateModified.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateModified)
                 _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+            End Try
+
+            Try
+                Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                par_movie_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+            Catch
+                'Kodi save it only as yyyy-MM-dd, try that
+                Try
+                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    par_movie_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                Catch
+                    par_movie_iLastPlayed.Value = Nothing 'need to be NOTHING instead of String.Empty
+                End Try
             End Try
 
             ' First let's save it to NFO, even because we will need the NFO path
@@ -3501,6 +3516,19 @@ Public Class Database
             Catch ex As Exception
                 parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _TVEpDB.DateAdded)
                 _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+            End Try
+
+            Try
+                Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                par_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+            Catch
+                'Kodi save it only as yyyy-MM-dd, try that
+                Try
+                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    par_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                Catch
+                    par_iLastPlayed.Value = Nothing 'need to be NOTHING instead of String.Empty
+                End Try
             End Try
 
             ' First let's save it to NFO, even because we will need the NFO path
