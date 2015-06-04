@@ -185,6 +185,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
         Me.Close()
     End Sub
 
@@ -302,6 +303,7 @@ Public Class dlgTVDBSearchResults
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
                 Me.Close()
             End If
         ElseIf Me.chkManual.Checked AndAlso Me._manualresult IsNot Nothing Then
@@ -316,6 +318,7 @@ Public Class dlgTVDBSearchResults
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
                 Me.Close()
             End If
         End If
@@ -353,7 +356,7 @@ Public Class dlgTVDBSearchResults
                         Me.lvSearchResults.Items.Add(lItem)
                     Next
                 End If
-                
+
                 Me.lblSearching.Visible = False
                 Me.ProgressBar.Visible = False
 
@@ -405,6 +408,7 @@ Public Class dlgTVDBSearchResults
 
             Case Enums.ScraperEventType_TV.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
                 Me.Close()
         End Select
     End Sub

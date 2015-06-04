@@ -365,7 +365,6 @@
         Me.ProgressBar.Name = "ProgressBar"
         Me.ProgressBar.Size = New System.Drawing.Size(100, 16)
         Me.ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar.Visible = False
         '
         'dlgTVDBSearchResults
         '

@@ -627,7 +627,6 @@ Public Class ModulesManager
                             If Not TVScraperFound Then
                                 _externalTVScraperModule.ModuleOrder = 999
                             End If
-                            AddHandler _externalTVScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_ScraperEvent_TV_old
                         Else
                             Dim t2 As Type = fileType.GetInterface("ScraperModule_Image_TV")
                             If Not t2 Is Nothing Then
@@ -1337,6 +1336,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
         End If
@@ -1374,6 +1374,7 @@ Public Class ModulesManager
             Try
                 _externalScraperModule.ProcessorModule.ScraperEnabled = value
             Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
     End Sub
@@ -1412,6 +1413,7 @@ Public Class ModulesManager
             Try
                 _externaltvScraperModule.ProcessorModule.CancelAsync()
             Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
     End Sub
@@ -1426,6 +1428,7 @@ Public Class ModulesManager
             Try
                 ret = _externaltvScraperModule.ProcessorModule.GetLangs(sMirror, Langs)
             Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             If ret.breakChain Then Exit For
         Next
@@ -1443,6 +1446,7 @@ Public Class ModulesManager
                 Try
                     ret = _externaltvScraperModule.ProcessorModule.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Aired, Lang, Ordering, Options)
                 Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
                 If ret.breakChain Then Exit For
             Next
@@ -1461,8 +1465,11 @@ Public Class ModulesManager
             End While
             For Each _externaltvScraperModule As _externalScraperModuleClass_TV In externalScrapersModules_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled)
                 Try
+                    AddHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_ScraperEvent_TV_old
                     ret = _externaltvScraperModule.ProcessorModule.Scraper(ShowID, ShowTitle, TVDBID, ShowLang, SourceLang, Ordering, Options, ScrapeType, WithCurrent)
+                    RemoveHandler _externaltvScraperModule.ProcessorModule.TVScraperEvent, AddressOf Handler_ScraperEvent_TV_old
                 Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
                 If ret.breakChain Then Exit For
             Next
@@ -1483,6 +1490,7 @@ Public Class ModulesManager
                 Try
                     ret = _externaltvScraperModule.ProcessorModule.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, Options)
                 Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
                 If ret.breakChain Then Exit For
             Next
@@ -1502,6 +1510,7 @@ Public Class ModulesManager
             Try
                 ret = _externaltvScraperModule.ProcessorModule.GetSingleImage(Title, ShowID, TVDBID, Type, Season, Episode, Lang, Ordering, CurrentImage, Image)
             Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             If ret.breakChain Then Exit For
         Next
