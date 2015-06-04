@@ -382,11 +382,11 @@
         Me.Controls.Add(Me.pnlTop)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(649, 406)
         Me.Name = "dlgTVDBSearchResults"
-        Me.ShowInTaskbar = False
         Me.Text = "TV Search Results"
         CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTop.ResumeLayout(False)

@@ -426,11 +426,11 @@ Partial Class dlgIMDBSearchResults
         Me.Controls.Add(Me.tvResults)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(670, 500)
         Me.Name = "dlgIMDBSearchResults"
-        Me.ShowIcon = false
         Me.Text = "Search Results"
         CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlTop.ResumeLayout(false)
