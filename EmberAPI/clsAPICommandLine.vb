@@ -53,6 +53,7 @@ Public Class CommandLine
 #End Region 'Properties
 
 #Region "Methods"
+
     Public Sub RunCommandLine(ByVal Args() As String, ByVal isFirstInstance As Boolean)
         If Args.Count = 0 Then Return
 
@@ -181,34 +182,34 @@ Public Class CommandLine
                         logger.Warn("No path or invalid path specified for -scanfolder command")
                     End If
                 Case "-export"
-                    If Args.Count - 1 > i Then
-                        MoviePath = Args(i + 1).Replace("""", String.Empty)
-                        clExport = True
-                    Else
-                        Exit For
-                    End If
+                    'If Args.Count - 1 > i Then
+                    '    MoviePath = Args(i + 1).Replace("""", String.Empty)
+                    '    clExport = True
+                    'Else
+                    '    Exit For
+                    'End If
                 Case "-template"
-                    If Args.Count - 1 > i Then
-                        clExportTemplate = Args(i + 1).Replace("""", String.Empty)
-                    Else
-                        Exit For
-                    End If
+                    'If Args.Count - 1 > i Then
+                    '    clExportTemplate = Args(i + 1).Replace("""", String.Empty)
+                    'Else
+                    '    Exit For
+                    'End If
                 Case "-resize"
-                    If Args.Count - 1 > i Then
-                        clExportResizePoster = Convert.ToUInt16(Args(i + 1).Replace("""", String.Empty))
-                    Else
-                        Exit For
-                    End If
+                    'If Args.Count - 1 > i Then
+                    '    clExportResizePoster = Convert.ToUInt16(Args(i + 1).Replace("""", String.Empty))
+                    'Else
+                    '    Exit For
+                    'End If
                 Case "--verbose"
                 Case "-nowindow"
                     Master.fLoading.Hide()
                 Case "-run"
-                    If Args.Count - 1 > i Then
-                        ModuleName = Args(i + 1).Replace("""", String.Empty)
-                        RunModule = True
-                    Else
-                        Exit For
-                    End If
+                    'If Args.Count - 1 > i Then
+                    '    ModuleName = Args(i + 1).Replace("""", String.Empty)
+                    '    RunModule = True
+                    'Else
+                    '    Exit For
+                    'End If
                 Case "-updatemovies"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)

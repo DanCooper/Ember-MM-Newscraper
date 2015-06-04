@@ -24,9 +24,12 @@ Imports NLog
 
 
 Public Class MediaStub
+
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-#End Region
+
+#End Region 'Fields
 
 #Region "Methods"
     ''' <summary>
@@ -51,7 +54,7 @@ Public Class MediaStub
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
 
@@ -101,7 +104,7 @@ Public Class MediaStub
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
