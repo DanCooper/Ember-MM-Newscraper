@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v23_to_v24">
+    <command type="DB">
+      <description>add trigger delete_source to Sources</description>
+      <execute>
+        CREATE TRIGGER delete_source
+        AFTER DELETE
+        ON Sources
+        BEGIN
+        DELETE FROM movie WHERE Source=old.Name;
+        END;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add trigger delete_source to TVSources</description>
+      <execute>
+        CREATE TRIGGER delete_tvsource
+        AFTER DELETE
+        ON TVSources
+        BEGIN
+        DELETE FROM tvshow WHERE Source=old.Name;
+        END;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

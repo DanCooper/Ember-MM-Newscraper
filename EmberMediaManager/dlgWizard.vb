@@ -1013,8 +1013,6 @@ Public Class dlgWizard
                         Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                         While Me.lvMovies.SelectedItems.Count > 0
                             parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
-                            SQLcommand.ExecuteNonQuery()
                             SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
@@ -1040,15 +1038,9 @@ Public Class dlgWizard
                         Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                         While Me.lvTVSources.SelectedItems.Count > 0
                             parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = "SELECT idShow FROM tvshow WHERE Source = (?);"
-                            Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                                While SQLReader.Read
-                                    Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
-                                End While
-                            End Using
                             SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
                             SQLcommand.ExecuteNonQuery()
-                            lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
+                            lvTVSources.Items.Remove(Me.lvTVSources.SelectedItems(0))
                         End While
                     End Using
                     SQLtransaction.Commit()

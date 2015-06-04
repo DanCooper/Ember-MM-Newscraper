@@ -536,6 +536,13 @@ CREATE TABLE Sources(
 	);
 CREATE UNIQUE INDEX UniqueSource ON Sources (Path);
 
+CREATE TRIGGER delete_source
+	AFTER DELETE
+	ON Sources
+BEGIN
+	DELETE FROM movie WHERE Source=old.Name;
+END;
+
 CREATE TABLE TVEpPaths(
 	ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	TVEpPath TEXT NOT NULL
@@ -594,6 +601,13 @@ CREATE TABLE TVSources(
 	EpisodeSorting INTEGER NOT NULL DEFAULT 0
 	);
 CREATE UNIQUE INDEX UniqueTVSource ON TVSources (Path);
+
+CREATE TRIGGER delete_tvsource
+	AFTER DELETE
+	ON TVSources
+BEGIN
+	DELETE FROM tvshow WHERE Source=old.Name;
+END;
 
 CREATE TABLE OrigPaths(
 	OrigPath TEXT NOT NULL,
