@@ -79,6 +79,10 @@
     <Compile Include="Exceptions\InvalidApiKeyException.cs" />
     <Compile Include="Exceptions\TraktException.cs" />
     <Compile Include="JSONExtensions.cs" />
+    <Compile Include="Model\Comment\TraktComment.cs" />
+    <Compile Include="Model\Comment\TraktCommentBase.cs" />
+    <Compile Include="Model\Comment\TraktCommentItem.cs" />
+    <Compile Include="Model\Comment\TraktCommentMovie.cs" />
     <Compile Include="Model\Lists\TraktList.cs" />
     <Compile Include="Model\Lists\TraktListDetail.cs" />
     <Compile Include="Model\Lists\TraktListItem.cs" />

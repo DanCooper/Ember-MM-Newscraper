@@ -49,8 +49,8 @@ Partial Class dlgTrakttvManager
         Me.tbptraktPlaycount = New System.Windows.Forms.TabPage()
         Me.pnltraktPlaycount = New System.Windows.Forms.Panel()
         Me.gbtraktPlaycount = New System.Windows.Forms.GroupBox()
-        Me.btntraktPlaycountSyncDeleteItem = New System.Windows.Forms.Button()
         Me.btntraktPlaycountSyncRating = New System.Windows.Forms.Button()
+        Me.btntraktPlaycountSyncDeleteItem = New System.Windows.Forms.Button()
         Me.gbtraktPlaycountSync = New System.Windows.Forms.GroupBox()
         Me.btntraktPlaycountSyncWatchedMovies = New System.Windows.Forms.Button()
         Me.btntraktPlaycountSyncWatchedSeries = New System.Windows.Forms.Button()
@@ -119,6 +119,38 @@ Partial Class dlgTrakttvManager
         Me.lbltraktListsCurrentList = New System.Windows.Forms.Label()
         Me.btntraktListsRemove = New System.Windows.Forms.Button()
         Me.lbtraktListsMoviesinLists = New System.Windows.Forms.ListBox()
+        Me.tbptraktComments = New System.Windows.Forms.TabPage()
+        Me.gbtraktComments = New System.Windows.Forms.GroupBox()
+        Me.lbltraktCommentsNotice = New System.Windows.Forms.Label()
+        Me.gbtraktCommentsList = New System.Windows.Forms.GroupBox()
+        Me.dgvtraktComments = New System.Windows.Forms.DataGridView()
+        Me.coltraktCommentsMovie = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktCommentsDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktCommentsReplies = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktCommentsLikes = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktCommentsURL = New System.Windows.Forms.DataGridViewLinkColumn()
+        Me.coltraktCommentsImdb = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.chktraktCommentsOnlyNoComments = New System.Windows.Forms.CheckBox()
+        Me.chktraktCommentsOnlyComments = New System.Windows.Forms.CheckBox()
+        Me.gbtraktCommentsDetails = New System.Windows.Forms.GroupBox()
+        Me.btntraktCommentsDetailsSend = New System.Windows.Forms.Button()
+        Me.btntraktCommentsDetailsUpdate = New System.Windows.Forms.Button()
+        Me.lbltraktCommentsDetailsDate2 = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsType2 = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsReplies2 = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsLikes2 = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsRating2 = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsRating = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsLikes = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsReplies = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsType = New System.Windows.Forms.Label()
+        Me.btntraktCommentsDetailsDelete = New System.Windows.Forms.Button()
+        Me.chktraktCommentsDetailsSpoiler = New System.Windows.Forms.CheckBox()
+        Me.lbltraktCommentsDetailsDescription = New System.Windows.Forms.Label()
+        Me.lbltraktCommentsDetailsDate = New System.Windows.Forms.Label()
+        Me.txttraktCommentsDetailsComment = New System.Windows.Forms.TextBox()
+        Me.gbtraktCommentsGET = New System.Windows.Forms.GroupBox()
+        Me.btntraktCommentsGet = New System.Windows.Forms.Button()
         Me.tbptraktListViewer = New System.Windows.Forms.TabPage()
         Me.pnltraktListsComparer = New System.Windows.Forms.Panel()
         Me.gbtraktListsViewer = New System.Windows.Forms.GroupBox()
@@ -176,6 +208,12 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsMovies.SuspendLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbtraktListsMoviesInLists.SuspendLayout()
+        Me.tbptraktComments.SuspendLayout()
+        Me.gbtraktComments.SuspendLayout()
+        Me.gbtraktCommentsList.SuspendLayout()
+        CType(Me.dgvtraktComments, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbtraktCommentsDetails.SuspendLayout()
+        Me.gbtraktCommentsGET.SuspendLayout()
         Me.tbptraktListViewer.SuspendLayout()
         Me.pnltraktListsComparer.SuspendLayout()
         Me.gbtraktListsViewer.SuspendLayout()
@@ -358,6 +396,7 @@ Partial Class dlgTrakttvManager
         Me.tbTrakt.Controls.Add(Me.tbptraktPlaycount)
         Me.tbTrakt.Controls.Add(Me.tbptraktWatchlist)
         Me.tbTrakt.Controls.Add(Me.tbptraktListsSync)
+        Me.tbTrakt.Controls.Add(Me.tbptraktComments)
         Me.tbTrakt.Controls.Add(Me.tbptraktListViewer)
         Me.tbTrakt.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbTrakt.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -408,18 +447,6 @@ Partial Class dlgTrakttvManager
         Me.gbtraktPlaycount.TabStop = False
         Me.gbtraktPlaycount.Text = "Sync Playcount"
         '
-        'btntraktPlaycountSyncDeleteItem
-        '
-        Me.btntraktPlaycountSyncDeleteItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.btntraktPlaycountSyncDeleteItem.Enabled = False
-        Me.btntraktPlaycountSyncDeleteItem.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktPlaycountSyncDeleteItem.Location = New System.Drawing.Point(889, 104)
-        Me.btntraktPlaycountSyncDeleteItem.Name = "btntraktPlaycountSyncDeleteItem"
-        Me.btntraktPlaycountSyncDeleteItem.Size = New System.Drawing.Size(159, 44)
-        Me.btntraktPlaycountSyncDeleteItem.TabIndex = 43
-        Me.btntraktPlaycountSyncDeleteItem.Text = "Delete selected item from trakt.tv history"
-        Me.btntraktPlaycountSyncDeleteItem.UseVisualStyleBackColor = False
-        '
         'btntraktPlaycountSyncRating
         '
         Me.btntraktPlaycountSyncRating.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
@@ -431,6 +458,18 @@ Partial Class dlgTrakttvManager
         Me.btntraktPlaycountSyncRating.TabIndex = 42
         Me.btntraktPlaycountSyncRating.Text = "Submit rating to trakt.tv"
         Me.btntraktPlaycountSyncRating.UseVisualStyleBackColor = False
+        '
+        'btntraktPlaycountSyncDeleteItem
+        '
+        Me.btntraktPlaycountSyncDeleteItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.btntraktPlaycountSyncDeleteItem.Enabled = False
+        Me.btntraktPlaycountSyncDeleteItem.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktPlaycountSyncDeleteItem.Location = New System.Drawing.Point(889, 104)
+        Me.btntraktPlaycountSyncDeleteItem.Name = "btntraktPlaycountSyncDeleteItem"
+        Me.btntraktPlaycountSyncDeleteItem.Size = New System.Drawing.Size(159, 44)
+        Me.btntraktPlaycountSyncDeleteItem.TabIndex = 43
+        Me.btntraktPlaycountSyncDeleteItem.Text = "Delete selected item from trakt.tv history"
+        Me.btntraktPlaycountSyncDeleteItem.UseVisualStyleBackColor = False
         '
         'gbtraktPlaycountSync
         '
@@ -1195,6 +1234,351 @@ Partial Class dlgTrakttvManager
         Me.lbtraktListsMoviesinLists.Size = New System.Drawing.Size(222, 329)
         Me.lbtraktListsMoviesinLists.TabIndex = 1
         '
+        'tbptraktComments
+        '
+        Me.tbptraktComments.Controls.Add(Me.gbtraktComments)
+        Me.tbptraktComments.Location = New System.Drawing.Point(4, 27)
+        Me.tbptraktComments.Name = "tbptraktComments"
+        Me.tbptraktComments.Padding = New System.Windows.Forms.Padding(3)
+        Me.tbptraktComments.Size = New System.Drawing.Size(1099, 439)
+        Me.tbptraktComments.TabIndex = 4
+        Me.tbptraktComments.Text = "Comments"
+        Me.tbptraktComments.UseVisualStyleBackColor = True
+        '
+        'gbtraktComments
+        '
+        Me.gbtraktComments.Controls.Add(Me.lbltraktCommentsNotice)
+        Me.gbtraktComments.Controls.Add(Me.gbtraktCommentsList)
+        Me.gbtraktComments.Controls.Add(Me.gbtraktCommentsGET)
+        Me.gbtraktComments.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbtraktComments.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbtraktComments.Location = New System.Drawing.Point(3, 3)
+        Me.gbtraktComments.Name = "gbtraktComments"
+        Me.gbtraktComments.Size = New System.Drawing.Size(1093, 433)
+        Me.gbtraktComments.TabIndex = 42
+        Me.gbtraktComments.TabStop = False
+        Me.gbtraktComments.Text = "Sync Comments"
+        '
+        'lbltraktCommentsNotice
+        '
+        Me.lbltraktCommentsNotice.Font = New System.Drawing.Font("Segoe UI Semibold", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktCommentsNotice.ForeColor = System.Drawing.Color.Maroon
+        Me.lbltraktCommentsNotice.Location = New System.Drawing.Point(8, 119)
+        Me.lbltraktCommentsNotice.Name = "lbltraktCommentsNotice"
+        Me.lbltraktCommentsNotice.Size = New System.Drawing.Size(151, 303)
+        Me.lbltraktCommentsNotice.TabIndex = 50
+        Me.lbltraktCommentsNotice.Text = "Comments must be at least 5 words" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Comments 200 words or longer will be automat" & _
+    "ically marked as a review" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Correctly indicate if the comment contains spoilers" & _
+    "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Only write comments in English"
+        '
+        'gbtraktCommentsList
+        '
+        Me.gbtraktCommentsList.Controls.Add(Me.dgvtraktComments)
+        Me.gbtraktCommentsList.Controls.Add(Me.chktraktCommentsOnlyNoComments)
+        Me.gbtraktCommentsList.Controls.Add(Me.chktraktCommentsOnlyComments)
+        Me.gbtraktCommentsList.Controls.Add(Me.gbtraktCommentsDetails)
+        Me.gbtraktCommentsList.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbtraktCommentsList.Location = New System.Drawing.Point(165, 23)
+        Me.gbtraktCommentsList.Name = "gbtraktCommentsList"
+        Me.gbtraktCommentsList.Size = New System.Drawing.Size(925, 410)
+        Me.gbtraktCommentsList.TabIndex = 46
+        Me.gbtraktCommentsList.TabStop = False
+        Me.gbtraktCommentsList.Text = "Comments"
+        '
+        'dgvtraktComments
+        '
+        Me.dgvtraktComments.AllowUserToAddRows = False
+        Me.dgvtraktComments.AllowUserToDeleteRows = False
+        Me.dgvtraktComments.AllowUserToResizeColumns = False
+        Me.dgvtraktComments.AllowUserToResizeRows = False
+        Me.dgvtraktComments.BackgroundColor = System.Drawing.Color.White
+        Me.dgvtraktComments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvtraktComments.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.coltraktCommentsMovie, Me.coltraktCommentsDate, Me.coltraktCommentsReplies, Me.coltraktCommentsLikes, Me.coltraktCommentsURL, Me.coltraktCommentsImdb})
+        Me.dgvtraktComments.Location = New System.Drawing.Point(9, 20)
+        Me.dgvtraktComments.MultiSelect = False
+        Me.dgvtraktComments.Name = "dgvtraktComments"
+        Me.dgvtraktComments.RowHeadersVisible = False
+        Me.dgvtraktComments.RowHeadersWidth = 175
+        Me.dgvtraktComments.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvtraktComments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvtraktComments.ShowCellErrors = False
+        Me.dgvtraktComments.ShowCellToolTips = False
+        Me.dgvtraktComments.ShowRowErrors = False
+        Me.dgvtraktComments.Size = New System.Drawing.Size(363, 356)
+        Me.dgvtraktComments.TabIndex = 71
+        '
+        'coltraktCommentsMovie
+        '
+        Me.coltraktCommentsMovie.Frozen = True
+        Me.coltraktCommentsMovie.HeaderText = "Movie"
+        Me.coltraktCommentsMovie.Name = "coltraktCommentsMovie"
+        Me.coltraktCommentsMovie.ReadOnly = True
+        Me.coltraktCommentsMovie.Width = 113
+        '
+        'coltraktCommentsDate
+        '
+        Me.coltraktCommentsDate.Frozen = True
+        Me.coltraktCommentsDate.HeaderText = "Date"
+        Me.coltraktCommentsDate.Name = "coltraktCommentsDate"
+        Me.coltraktCommentsDate.ReadOnly = True
+        '
+        'coltraktCommentsReplies
+        '
+        Me.coltraktCommentsReplies.Frozen = True
+        Me.coltraktCommentsReplies.HeaderText = "Replies"
+        Me.coltraktCommentsReplies.Name = "coltraktCommentsReplies"
+        Me.coltraktCommentsReplies.ReadOnly = True
+        Me.coltraktCommentsReplies.Width = 50
+        '
+        'coltraktCommentsLikes
+        '
+        Me.coltraktCommentsLikes.Frozen = True
+        Me.coltraktCommentsLikes.HeaderText = "Likes"
+        Me.coltraktCommentsLikes.Name = "coltraktCommentsLikes"
+        Me.coltraktCommentsLikes.Width = 50
+        '
+        'coltraktCommentsURL
+        '
+        Me.coltraktCommentsURL.Frozen = True
+        Me.coltraktCommentsURL.HeaderText = "URL"
+        Me.coltraktCommentsURL.Name = "coltraktCommentsURL"
+        Me.coltraktCommentsURL.ReadOnly = True
+        Me.coltraktCommentsURL.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.coltraktCommentsURL.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.coltraktCommentsURL.Width = 50
+        '
+        'coltraktCommentsImdb
+        '
+        Me.coltraktCommentsImdb.Frozen = True
+        Me.coltraktCommentsImdb.HeaderText = "Imdb"
+        Me.coltraktCommentsImdb.MinimumWidth = 2
+        Me.coltraktCommentsImdb.Name = "coltraktCommentsImdb"
+        Me.coltraktCommentsImdb.Width = 2
+        '
+        'chktraktCommentsOnlyNoComments
+        '
+        Me.chktraktCommentsOnlyNoComments.AutoSize = True
+        Me.chktraktCommentsOnlyNoComments.Location = New System.Drawing.Point(9, 382)
+        Me.chktraktCommentsOnlyNoComments.Name = "chktraktCommentsOnlyNoComments"
+        Me.chktraktCommentsOnlyNoComments.Size = New System.Drawing.Size(190, 17)
+        Me.chktraktCommentsOnlyNoComments.TabIndex = 70
+        Me.chktraktCommentsOnlyNoComments.Text = "only movies without comments"
+        Me.chktraktCommentsOnlyNoComments.UseVisualStyleBackColor = True
+        Me.chktraktCommentsOnlyNoComments.Visible = False
+        '
+        'chktraktCommentsOnlyComments
+        '
+        Me.chktraktCommentsOnlyComments.AutoSize = True
+        Me.chktraktCommentsOnlyComments.Location = New System.Drawing.Point(201, 382)
+        Me.chktraktCommentsOnlyComments.Name = "chktraktCommentsOnlyComments"
+        Me.chktraktCommentsOnlyComments.Size = New System.Drawing.Size(172, 17)
+        Me.chktraktCommentsOnlyComments.TabIndex = 69
+        Me.chktraktCommentsOnlyComments.Text = "only movies with comments"
+        Me.chktraktCommentsOnlyComments.UseVisualStyleBackColor = True
+        Me.chktraktCommentsOnlyComments.Visible = False
+        '
+        'gbtraktCommentsDetails
+        '
+        Me.gbtraktCommentsDetails.Controls.Add(Me.btntraktCommentsDetailsSend)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.btntraktCommentsDetailsUpdate)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsDate2)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsType2)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsReplies2)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsLikes2)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsRating2)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsRating)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsLikes)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsReplies)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsType)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.btntraktCommentsDetailsDelete)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.chktraktCommentsDetailsSpoiler)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsDescription)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsDate)
+        Me.gbtraktCommentsDetails.Controls.Add(Me.txttraktCommentsDetailsComment)
+        Me.gbtraktCommentsDetails.Location = New System.Drawing.Point(378, 20)
+        Me.gbtraktCommentsDetails.Name = "gbtraktCommentsDetails"
+        Me.gbtraktCommentsDetails.Size = New System.Drawing.Size(541, 381)
+        Me.gbtraktCommentsDetails.TabIndex = 48
+        Me.gbtraktCommentsDetails.TabStop = False
+        Me.gbtraktCommentsDetails.Text = "Details"
+        '
+        'btntraktCommentsDetailsSend
+        '
+        Me.btntraktCommentsDetailsSend.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktCommentsDetailsSend.Location = New System.Drawing.Point(140, 331)
+        Me.btntraktCommentsDetailsSend.Name = "btntraktCommentsDetailsSend"
+        Me.btntraktCommentsDetailsSend.Size = New System.Drawing.Size(127, 44)
+        Me.btntraktCommentsDetailsSend.TabIndex = 68
+        Me.btntraktCommentsDetailsSend.Text = "Post comment"
+        Me.btntraktCommentsDetailsSend.UseVisualStyleBackColor = True
+        '
+        'btntraktCommentsDetailsUpdate
+        '
+        Me.btntraktCommentsDetailsUpdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktCommentsDetailsUpdate.Location = New System.Drawing.Point(273, 331)
+        Me.btntraktCommentsDetailsUpdate.Name = "btntraktCommentsDetailsUpdate"
+        Me.btntraktCommentsDetailsUpdate.Size = New System.Drawing.Size(127, 44)
+        Me.btntraktCommentsDetailsUpdate.TabIndex = 67
+        Me.btntraktCommentsDetailsUpdate.Text = "Update comment"
+        Me.btntraktCommentsDetailsUpdate.UseVisualStyleBackColor = True
+        '
+        'lbltraktCommentsDetailsDate2
+        '
+        Me.lbltraktCommentsDetailsDate2.BackColor = System.Drawing.SystemColors.Control
+        Me.lbltraktCommentsDetailsDate2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lbltraktCommentsDetailsDate2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbltraktCommentsDetailsDate2.Location = New System.Drawing.Point(9, 36)
+        Me.lbltraktCommentsDetailsDate2.Name = "lbltraktCommentsDetailsDate2"
+        Me.lbltraktCommentsDetailsDate2.Size = New System.Drawing.Size(83, 20)
+        Me.lbltraktCommentsDetailsDate2.TabIndex = 66
+        '
+        'lbltraktCommentsDetailsType2
+        '
+        Me.lbltraktCommentsDetailsType2.BackColor = System.Drawing.SystemColors.Control
+        Me.lbltraktCommentsDetailsType2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lbltraktCommentsDetailsType2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbltraktCommentsDetailsType2.Location = New System.Drawing.Point(98, 36)
+        Me.lbltraktCommentsDetailsType2.Name = "lbltraktCommentsDetailsType2"
+        Me.lbltraktCommentsDetailsType2.Size = New System.Drawing.Size(97, 20)
+        Me.lbltraktCommentsDetailsType2.TabIndex = 65
+        '
+        'lbltraktCommentsDetailsReplies2
+        '
+        Me.lbltraktCommentsDetailsReplies2.BackColor = System.Drawing.SystemColors.Control
+        Me.lbltraktCommentsDetailsReplies2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lbltraktCommentsDetailsReplies2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbltraktCommentsDetailsReplies2.Location = New System.Drawing.Point(201, 36)
+        Me.lbltraktCommentsDetailsReplies2.Name = "lbltraktCommentsDetailsReplies2"
+        Me.lbltraktCommentsDetailsReplies2.Size = New System.Drawing.Size(52, 20)
+        Me.lbltraktCommentsDetailsReplies2.TabIndex = 64
+        '
+        'lbltraktCommentsDetailsLikes2
+        '
+        Me.lbltraktCommentsDetailsLikes2.BackColor = System.Drawing.SystemColors.Control
+        Me.lbltraktCommentsDetailsLikes2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lbltraktCommentsDetailsLikes2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbltraktCommentsDetailsLikes2.Location = New System.Drawing.Point(272, 36)
+        Me.lbltraktCommentsDetailsLikes2.Name = "lbltraktCommentsDetailsLikes2"
+        Me.lbltraktCommentsDetailsLikes2.Size = New System.Drawing.Size(52, 20)
+        Me.lbltraktCommentsDetailsLikes2.TabIndex = 63
+        '
+        'lbltraktCommentsDetailsRating2
+        '
+        Me.lbltraktCommentsDetailsRating2.BackColor = System.Drawing.SystemColors.Control
+        Me.lbltraktCommentsDetailsRating2.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbltraktCommentsDetailsRating2.Location = New System.Drawing.Point(472, 36)
+        Me.lbltraktCommentsDetailsRating2.Name = "lbltraktCommentsDetailsRating2"
+        Me.lbltraktCommentsDetailsRating2.Size = New System.Drawing.Size(61, 37)
+        Me.lbltraktCommentsDetailsRating2.TabIndex = 62
+        Me.lbltraktCommentsDetailsRating2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lbltraktCommentsDetailsRating
+        '
+        Me.lbltraktCommentsDetailsRating.AutoSize = True
+        Me.lbltraktCommentsDetailsRating.Location = New System.Drawing.Point(472, 18)
+        Me.lbltraktCommentsDetailsRating.Name = "lbltraktCommentsDetailsRating"
+        Me.lbltraktCommentsDetailsRating.Size = New System.Drawing.Size(61, 13)
+        Me.lbltraktCommentsDetailsRating.TabIndex = 60
+        Me.lbltraktCommentsDetailsRating.Text = "My Rating"
+        '
+        'lbltraktCommentsDetailsLikes
+        '
+        Me.lbltraktCommentsDetailsLikes.AutoSize = True
+        Me.lbltraktCommentsDetailsLikes.Location = New System.Drawing.Point(269, 18)
+        Me.lbltraktCommentsDetailsLikes.Name = "lbltraktCommentsDetailsLikes"
+        Me.lbltraktCommentsDetailsLikes.Size = New System.Drawing.Size(33, 13)
+        Me.lbltraktCommentsDetailsLikes.TabIndex = 59
+        Me.lbltraktCommentsDetailsLikes.Text = "Likes"
+        '
+        'lbltraktCommentsDetailsReplies
+        '
+        Me.lbltraktCommentsDetailsReplies.AutoSize = True
+        Me.lbltraktCommentsDetailsReplies.Location = New System.Drawing.Point(198, 18)
+        Me.lbltraktCommentsDetailsReplies.Name = "lbltraktCommentsDetailsReplies"
+        Me.lbltraktCommentsDetailsReplies.Size = New System.Drawing.Size(44, 13)
+        Me.lbltraktCommentsDetailsReplies.TabIndex = 57
+        Me.lbltraktCommentsDetailsReplies.Text = "Replies"
+        '
+        'lbltraktCommentsDetailsType
+        '
+        Me.lbltraktCommentsDetailsType.AutoSize = True
+        Me.lbltraktCommentsDetailsType.Location = New System.Drawing.Point(95, 18)
+        Me.lbltraktCommentsDetailsType.Name = "lbltraktCommentsDetailsType"
+        Me.lbltraktCommentsDetailsType.Size = New System.Drawing.Size(32, 13)
+        Me.lbltraktCommentsDetailsType.TabIndex = 56
+        Me.lbltraktCommentsDetailsType.Text = "Type"
+        '
+        'btntraktCommentsDetailsDelete
+        '
+        Me.btntraktCommentsDetailsDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktCommentsDetailsDelete.Location = New System.Drawing.Point(406, 331)
+        Me.btntraktCommentsDetailsDelete.Name = "btntraktCommentsDetailsDelete"
+        Me.btntraktCommentsDetailsDelete.Size = New System.Drawing.Size(127, 44)
+        Me.btntraktCommentsDetailsDelete.TabIndex = 49
+        Me.btntraktCommentsDetailsDelete.Text = "Delete comment"
+        Me.btntraktCommentsDetailsDelete.UseVisualStyleBackColor = True
+        '
+        'chktraktCommentsDetailsSpoiler
+        '
+        Me.chktraktCommentsDetailsSpoiler.AutoSize = True
+        Me.chktraktCommentsDetailsSpoiler.Location = New System.Drawing.Point(3, 331)
+        Me.chktraktCommentsDetailsSpoiler.Name = "chktraktCommentsDetailsSpoiler"
+        Me.chktraktCommentsDetailsSpoiler.Size = New System.Drawing.Size(62, 17)
+        Me.chktraktCommentsDetailsSpoiler.TabIndex = 53
+        Me.chktraktCommentsDetailsSpoiler.Text = "Spoiler"
+        Me.chktraktCommentsDetailsSpoiler.UseVisualStyleBackColor = True
+        '
+        'lbltraktCommentsDetailsDescription
+        '
+        Me.lbltraktCommentsDetailsDescription.AutoSize = True
+        Me.lbltraktCommentsDetailsDescription.Location = New System.Drawing.Point(6, 60)
+        Me.lbltraktCommentsDetailsDescription.Name = "lbltraktCommentsDetailsDescription"
+        Me.lbltraktCommentsDetailsDescription.Size = New System.Drawing.Size(58, 13)
+        Me.lbltraktCommentsDetailsDescription.TabIndex = 48
+        Me.lbltraktCommentsDetailsDescription.Text = "Comment"
+        '
+        'lbltraktCommentsDetailsDate
+        '
+        Me.lbltraktCommentsDetailsDate.AutoSize = True
+        Me.lbltraktCommentsDetailsDate.Location = New System.Drawing.Point(6, 19)
+        Me.lbltraktCommentsDetailsDate.Name = "lbltraktCommentsDetailsDate"
+        Me.lbltraktCommentsDetailsDate.Size = New System.Drawing.Size(31, 13)
+        Me.lbltraktCommentsDetailsDate.TabIndex = 44
+        Me.lbltraktCommentsDetailsDate.Text = "Date"
+        '
+        'txttraktCommentsDetailsComment
+        '
+        Me.txttraktCommentsDetailsComment.AcceptsReturn = True
+        Me.txttraktCommentsDetailsComment.AcceptsTab = True
+        Me.txttraktCommentsDetailsComment.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txttraktCommentsDetailsComment.Location = New System.Drawing.Point(3, 76)
+        Me.txttraktCommentsDetailsComment.Multiline = True
+        Me.txttraktCommentsDetailsComment.Name = "txttraktCommentsDetailsComment"
+        Me.txttraktCommentsDetailsComment.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txttraktCommentsDetailsComment.Size = New System.Drawing.Size(530, 249)
+        Me.txttraktCommentsDetailsComment.TabIndex = 43
+        '
+        'gbtraktCommentsGET
+        '
+        Me.gbtraktCommentsGET.Controls.Add(Me.btntraktCommentsGet)
+        Me.gbtraktCommentsGET.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbtraktCommentsGET.Location = New System.Drawing.Point(11, 23)
+        Me.gbtraktCommentsGET.Name = "gbtraktCommentsGET"
+        Me.gbtraktCommentsGET.Size = New System.Drawing.Size(148, 84)
+        Me.gbtraktCommentsGET.TabIndex = 44
+        Me.gbtraktCommentsGET.TabStop = False
+        Me.gbtraktCommentsGET.Text = "Load comments"
+        '
+        'btntraktCommentsGet
+        '
+        Me.btntraktCommentsGet.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktCommentsGet.Location = New System.Drawing.Point(6, 23)
+        Me.btntraktCommentsGet.Name = "btntraktCommentsGet"
+        Me.btntraktCommentsGet.Size = New System.Drawing.Size(133, 46)
+        Me.btntraktCommentsGet.TabIndex = 36
+        Me.btntraktCommentsGet.Text = "Load your movie comments"
+        Me.btntraktCommentsGet.UseVisualStyleBackColor = True
+        '
         'tbptraktListViewer
         '
         Me.tbptraktListViewer.Controls.Add(Me.pnltraktListsComparer)
@@ -1595,6 +1979,14 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsMovies.ResumeLayout(False)
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbtraktListsMoviesInLists.ResumeLayout(False)
+        Me.tbptraktComments.ResumeLayout(False)
+        Me.gbtraktComments.ResumeLayout(False)
+        Me.gbtraktCommentsList.ResumeLayout(False)
+        Me.gbtraktCommentsList.PerformLayout()
+        CType(Me.dgvtraktComments, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbtraktCommentsDetails.ResumeLayout(False)
+        Me.gbtraktCommentsDetails.PerformLayout()
+        Me.gbtraktCommentsGET.ResumeLayout(False)
         Me.tbptraktListViewer.ResumeLayout(False)
         Me.pnltraktListsComparer.ResumeLayout(False)
         Me.gbtraktListsViewer.ResumeLayout(False)
@@ -1730,5 +2122,37 @@ Partial Class dlgTrakttvManager
     Friend WithEvents btntraktPlaycountSyncWatchedSeries As System.Windows.Forms.Button
     Friend WithEvents gbtraktPlaycountSync As System.Windows.Forms.GroupBox
     Friend WithEvents btntraktPlaycountSyncDeleteItem As System.Windows.Forms.Button
+    Friend WithEvents tbptraktComments As System.Windows.Forms.TabPage
+    Friend WithEvents gbtraktComments As System.Windows.Forms.GroupBox
+    Friend WithEvents gbtraktCommentsGET As System.Windows.Forms.GroupBox
+    Friend WithEvents btntraktCommentsGet As System.Windows.Forms.Button
+    Friend WithEvents gbtraktCommentsList As System.Windows.Forms.GroupBox
+    Friend WithEvents gbtraktCommentsDetails As System.Windows.Forms.GroupBox
+    Friend WithEvents btntraktCommentsDetailsDelete As System.Windows.Forms.Button
+    Friend WithEvents chktraktCommentsDetailsSpoiler As System.Windows.Forms.CheckBox
+    Friend WithEvents lbltraktCommentsDetailsDescription As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsDate As System.Windows.Forms.Label
+    Friend WithEvents txttraktCommentsDetailsComment As System.Windows.Forms.TextBox
+    Friend WithEvents lbltraktCommentsNotice As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsType As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsLikes As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsReplies As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsRating As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsRating2 As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsType2 As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsReplies2 As System.Windows.Forms.Label
+    Friend WithEvents lbltraktCommentsDetailsDate2 As System.Windows.Forms.Label
+    Friend WithEvents btntraktCommentsDetailsSend As System.Windows.Forms.Button
+    Friend WithEvents btntraktCommentsDetailsUpdate As System.Windows.Forms.Button
+    Friend WithEvents chktraktCommentsOnlyNoComments As System.Windows.Forms.CheckBox
+    Friend WithEvents chktraktCommentsOnlyComments As System.Windows.Forms.CheckBox
+    Friend WithEvents dgvtraktComments As System.Windows.Forms.DataGridView
+    Friend WithEvents lbltraktCommentsDetailsLikes2 As System.Windows.Forms.Label
+    Friend WithEvents coltraktCommentsMovie As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktCommentsDate As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktCommentsReplies As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktCommentsLikes As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents coltraktCommentsURL As System.Windows.Forms.DataGridViewLinkColumn
+    Friend WithEvents coltraktCommentsImdb As System.Windows.Forms.DataGridViewTextBoxColumn
 
 End Class
