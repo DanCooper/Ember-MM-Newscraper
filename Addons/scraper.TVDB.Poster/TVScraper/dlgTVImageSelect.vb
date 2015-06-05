@@ -1351,8 +1351,8 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Season Poster
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonPoster Then
+        'Season Poster/AllSeasons Poster
+        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonPoster OrElse Me._type = Enums.ImageType_TV.AllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.SeasonPosters
                 If File.Exists(tImg.LocalThumb) Then
                     tImg.WebImage.FromFile(tImg.LocalThumb)
@@ -1387,8 +1387,8 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Season Banner
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonBanner Then
+        'Season Banner/AllSeasons Banner
+        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonBanner OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.SeasonBanners
                 If File.Exists(tImg.LocalThumb) Then
                     tImg.WebImage.FromFile(tImg.LocalThumb)
@@ -1423,8 +1423,8 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Season Landscape
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonLandscape Then
+        'Season Landscape/AllSeasons Landscape
+        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonLandscape OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.SeasonLandscapes
                 If File.Exists(tImg.LocalThumb) Then
                     tImg.WebImage.FromFile(tImg.LocalThumb)
@@ -1459,7 +1459,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Show/AllSeason Poster
+        'Show/AllSeasons Poster
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowPoster OrElse Me._type = Enums.ImageType_TV.AllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.Posters
                 If File.Exists(tImg.LocalThumb) Then
@@ -1495,7 +1495,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Show/AllSeason Banner
+        'Show/AllSeasons Banner
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowBanner OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.ShowBanners
                 If File.Exists(tImg.LocalThumb) Then
@@ -1639,7 +1639,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Show/AllSeason Landscape
+        'Show/AllSeasons Landscape
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.ShowLandscapes
                 If File.Exists(tImg.LocalThumb) Then
@@ -1675,7 +1675,7 @@ Public Class dlgTVImageSelect
             Next
         End If
 
-        'Show/AllSeason/Season/Episode Fanart
+        'Show/AllSeasons/Season/Episode Fanart
         If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart OrElse Me._type = Enums.ImageType_TV.SeasonFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart Then
             For Each tImg As MediaContainers.Image In Scraper.tmpTVDBShow.Fanarts
                 If File.Exists(tImg.LocalThumb) Then
