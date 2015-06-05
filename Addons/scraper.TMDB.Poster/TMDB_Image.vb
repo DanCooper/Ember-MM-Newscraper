@@ -279,7 +279,7 @@ Public Class TMDB_Image
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_Movie()
@@ -298,14 +298,14 @@ Public Class TMDB_Image
 
             Dim _scraper As New TMDB.Scraper
 
-            ImageList = _scraper.GetImages(DBMovie.Movie.TMDBID, Type, Settings, Enums.Content_Type.Movie)
+            ImagesContainer = _scraper.GetImages(DBMovie.Movie.TMDBID, Type, Settings, Enums.Content_Type.Movie)
         End If
 
         logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -326,7 +326,7 @@ Public Class TMDB_Image
 
             Dim _scraper As New TMDB.Scraper
 
-            ImageList = _scraper.GetImages(DBMovieSet.MovieSet.ID, Type, Settings, Enums.Content_Type.MovieSet)
+            ImagesContainer = _scraper.GetImages(DBMovieSet.MovieSet.ID, Type, Settings, Enums.Content_Type.MovieSet)
         End If
 
         logger.Trace("Finished TMDB Scraper")

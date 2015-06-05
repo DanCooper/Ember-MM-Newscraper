@@ -901,85 +901,64 @@ Public Class Images
             With Master.eSettings
                 Select Case fType
                     Case Enums.ImageType_Movie.Banner
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
-                            (.MovieBannerEden OrElse .MovieBannerAD OrElse .MovieBannerNMJ OrElse .MovieBannerYAMJ OrElse _
-                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieBannerExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieBannerExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MovieBannerExpertVTS))))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
+                            .MovieBannerAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.ClearArt
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
-                            (.MovieClearArtEden OrElse .MovieClearArtAD OrElse _
-                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearArtExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearArtExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MovieClearArtExpertVTS))))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
+                            .MovieClearArtAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.ClearLogo
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
-                            (.MovieClearLogoEden OrElse .MovieClearLogoAD OrElse _
-                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearLogoExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MovieClearLogoExpertVTS))))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
+                            .MovieClearLogoAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.DiscArt
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
-                            (.MovieDiscArtEden OrElse .MovieDiscArtAD OrElse _
-                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieDiscArtExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieDiscArtExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MovieDiscArtExpertVTS))))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
+                            .MovieDiscArtAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.EFanarts
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso _
-                            (.MovieExtrafanartsEden OrElse .MovieExtrafanartsFrodo)) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso _
+                            .MovieEFanartsAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.EThumbs
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso _
-                            (.MovieExtrathumbsEden OrElse .MovieExtrathumbsFrodo)) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso _
+                            .MovieEThumbsAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.Fanart
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite)) AndAlso _
-                        (.MovieFanartBoxee OrElse .MovieFanartFrodo OrElse .MovieFanartEden OrElse .MovieFanartYAMJ OrElse _
-                         .MovieFanartNMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieFanartExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieFanartExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MovieFanartExpertVTS)))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite) AndAlso _
+                        .MovieFanartAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.Landscape
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
-                            (.MovieLandscapeEden OrElse .MovieLandscapeAD OrElse _
-                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieLandscapeExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MovieLandscapeExpertVTS))))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
+                            .MovieLandscapeAnyEnabled Then
                             Return True
                         Else
                             Return False
                         End If
                     Case Enums.ImageType_Movie.Poster
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite)) AndAlso _
-                        (.MoviePosterBoxee OrElse .MoviePosterFrodo OrElse .MoviePosterEden OrElse .MoviePosterNMJ OrElse _
-                         .MoviePosterYAMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MoviePosterExpertBDMV) OrElse _
-                         Not String.IsNullOrEmpty(.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(.MoviePosterExpertSingle) OrElse _
-                         Not String.IsNullOrEmpty(.MoviePosterExpertVTS)))) Then
+                        If isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite) AndAlso _
+                        .MoviePosterAnyEnabled Then
                             Return True
                         Else
                             Return False

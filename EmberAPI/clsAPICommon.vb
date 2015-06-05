@@ -674,16 +674,17 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum ScraperCapabilities_Movie_MovieSet
-        Poster = 0
-        Fanart = 1
-        Trailer = 2
-        ActorThumbs = 3
-        Banner = 4
-        ClearArt = 5
-        ClearLogo = 6
-        DiscArt = 7
-        Landscape = 8
-        Theme = 99
+        All = 0
+        ActorThumbs = 1
+        Banner = 2
+        ClearArt = 3
+        ClearLogo = 4
+        DiscArt = 5
+        Fanart = 6
+        Landscape = 7
+        Poster = 8
+        Theme = 9
+        Trailer = 10
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities

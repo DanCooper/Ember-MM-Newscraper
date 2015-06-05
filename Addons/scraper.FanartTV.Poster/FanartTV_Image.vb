@@ -607,7 +607,7 @@ Public Class FanartTV_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_Movie()
@@ -622,9 +622,9 @@ Public Class FanartTV_Image
         Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, Type, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, Type, Settings)
         ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, Type, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, Type, Settings)
         Else
             logger.Trace(String.Concat("No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
         End If
@@ -633,7 +633,7 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_MovieSet()
@@ -654,7 +654,7 @@ Public Class FanartTV_Image
             Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
             Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
-            ImageList = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
         End If
 
         logger.Trace("Finished scrape FanartTV")

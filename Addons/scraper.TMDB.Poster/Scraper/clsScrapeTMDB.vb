@@ -58,7 +58,8 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper, ByVal ContentType As Enums.Content_Type) As List(Of MediaContainers.Image)
+        Public Function GetImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper, ByVal ContentType As Enums.Content_Type) As MediaContainers.ImagesContainer
+            Dim alImagesContainer As New MediaContainers.ImagesContainer
             Dim alPosters As New List(Of MediaContainers.Image) 'main poster list
             Dim alPostersP As New List(Of MediaContainers.Image) 'preferred language poster list
             Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
@@ -84,10 +85,9 @@ Namespace TMDB
                 End If
 
                 'Fanart
-                If Type = Enums.ScraperCapabilities_Movie_MovieSet.Fanart Then
-                    If Results.Backdrops Is Nothing Then Return alPosters
+                If (Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse Type = Enums.ScraperCapabilities_Movie_MovieSet.Fanart) AndAlso Results.Backdrops IsNot Nothing Then
                     For Each image In Results.Backdrops
-                        Dim tmpPoster As New MediaContainers.Image With { _
+                        Dim tmpImage As New MediaContainers.Image With { _
                             .Height = image.Height.ToString, _
                             .Likes = 0, _
                             .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
@@ -97,14 +97,15 @@ Namespace TMDB
                             .VoteAverage = image.VoteAverage.ToString, _
                             .VoteCount = image.VoteCount, _
                             .Width = image.Width.ToString}
-                        alPosters.Add(tmpPoster)
-                    Next
 
-                    'Poster
-                ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Poster Then
-                    If Results.Posters Is Nothing Then Return alPosters
+                        alImagesContainer.Fanarts.Add(tmpImage)
+                    Next
+                End If
+
+                'Poster
+                If (Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse Type = Enums.ScraperCapabilities_Movie_MovieSet.Poster) AndAlso Results.Posters IsNot Nothing Then
                     For Each image In Results.Posters
-                        Dim tmpPoster As New MediaContainers.Image With { _
+                        Dim tmpImage As New MediaContainers.Image With { _
                                 .Height = image.Height.ToString, _
                                 .Likes = 0, _
                                 .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
@@ -115,23 +116,23 @@ Namespace TMDB
                                 .VoteCount = image.VoteCount, _
                                 .Width = image.Width.ToString}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
+                        If tmpImage.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpImage)
+                        ElseIf tmpImage.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
+                                alPostersE.Add(tmpImage)
                             End If
-                        ElseIf tmpPoster.ShortLang = "xx" Then
+                        ElseIf tmpImage.ShortLang = "xx" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
+                                alPostersN.Add(tmpImage)
                             End If
-                        ElseIf String.IsNullOrEmpty(tmpPoster.ShortLang) Then
+                        ElseIf String.IsNullOrEmpty(tmpImage.ShortLang) Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
+                                alPostersN.Add(tmpImage)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
+                                alPostersO.Add(tmpImage)
                             End If
                         End If
                     Next
@@ -145,12 +146,12 @@ Namespace TMDB
             For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
                 alPostersOs.Add(xPoster)
             Next
-            alPosters.AddRange(alPostersP)
-            alPosters.AddRange(alPostersE)
-            alPosters.AddRange(alPostersOs)
-            alPosters.AddRange(alPostersN)
+            alImagesContainer.Posters.AddRange(alPostersP)
+            alImagesContainer.Posters.AddRange(alPostersE)
+            alImagesContainer.Posters.AddRange(alPostersOs)
+            alImagesContainer.Posters.AddRange(alPostersN)
 
-            Return alPosters
+            Return alImagesContainer
         End Function
 
 #End Region 'Methods

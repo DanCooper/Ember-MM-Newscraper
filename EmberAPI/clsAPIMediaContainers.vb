@@ -2991,6 +2991,122 @@ Namespace MediaContainers
 
     End Class
 
+    Public Class [ImagesContainer]
+
+#Region "Fields"
+
+        Private _banners As New List(Of Image)
+        Private _characterarts As New List(Of Image)
+        Private _cleararts As New List(Of Image)
+        Private _clearlogos As New List(Of Image)
+        Private _discarts As New List(Of Image)
+        Private _fanarts As New List(Of Image)
+        Private _landscapes As New List(Of Image)
+        Private _posters As New List(Of Image)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Banners() As List(Of Image)
+            Get
+                Return Me._banners
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._banners = value
+            End Set
+        End Property
+
+        Public Property CharacterArts() As List(Of Image)
+            Get
+                Return Me._characterarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._characterarts = value
+            End Set
+        End Property
+
+        Public Property ClearArts() As List(Of Image)
+            Get
+                Return Me._cleararts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._cleararts = value
+            End Set
+        End Property
+
+        Public Property ClearLogos() As List(Of Image)
+            Get
+                Return Me._clearlogos
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._clearlogos = value
+            End Set
+        End Property
+
+        Public Property DiscArts() As List(Of Image)
+            Get
+                Return Me._discarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._discarts = value
+            End Set
+        End Property
+
+        Public Property Fanarts() As List(Of Image)
+            Get
+                Return Me._fanarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._fanarts = value
+            End Set
+        End Property
+
+        Public Property Landscapes() As List(Of Image)
+            Get
+                Return Me._landscapes
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._landscapes = value
+            End Set
+        End Property
+
+        Public Property Posters() As List(Of Image)
+            Get
+                Return Me._posters
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._posters = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._banners.Clear()
+            Me._characterarts.Clear()
+            Me._cleararts.Clear()
+            Me._clearlogos.Clear()
+            Me._discarts.Clear()
+            Me._fanarts.Clear()
+            Me._landscapes.Clear()
+            Me._posters.Clear()
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
     <Serializable()> _
     Public Class [Set]
 
