@@ -119,19 +119,28 @@ Namespace FanartTVs
                 If Type = Enums.ScraperCapabilities_Movie_MovieSet.Banner Then
                     If Results.List.Moviebanner Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviebanner
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "185", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "185", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "185", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "185", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "185", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -141,38 +150,56 @@ Namespace FanartTVs
                     If ((Results.List.Hdmovieclearart Is Nothing AndAlso Settings.ClearArtOnlyHD) OrElse (Results.List.Hdmovieclearart Is Nothing AndAlso Results.List.Movieart Is Nothing)) Then Return alPosters
                     If Results.List.Hdmovieclearart IsNot Nothing Then
                         For Each image In Results.List.Hdmovieclearart
-                            If image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                            ElseIf image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "562", _
+                                .Likes = CInt(image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .ShortLang = image.Lang, _
+                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = image.Url, _
+                                .Width = "1000"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang))})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
                     End If
                     If Results.List.Movieart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
                         For Each image In Results.List.Movieart
-                            If image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "500", .Height = "281", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                            ElseIf image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "281", _
+                                .Likes = CInt(image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .ShortLang = image.Lang, _
+                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = image.Url, _
+                                .Width = "500"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "500", .Height = "281", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "500", .Height = "281", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "500", .Height = "281", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
@@ -183,19 +210,28 @@ Namespace FanartTVs
                     If ((Results.List.Hdmovielogo Is Nothing AndAlso Settings.ClearLogoOnlyHD) OrElse (Results.List.Hdmovielogo Is Nothing AndAlso Results.List.Movielogo Is Nothing)) Then Return alPosters
                     If Results.List.Hdmovielogo IsNot Nothing Then
                         For Each image In Results.List.Hdmovielogo
-                            If image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "800", .Height = "310", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                            ElseIf image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "310", _
+                                .Likes = CInt(image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .ShortLang = image.Lang, _
+                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = image.Url, _
+                                .Width = "800"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "800", .Height = "310", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "800", .Height = "310", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "800", .Height = "310", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
@@ -203,19 +239,28 @@ Namespace FanartTVs
 
                     If Results.List.Movielogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
                         For Each image In Results.List.Movielogo
-                            If image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "400", .Height = "155", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                            ElseIf image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "155", _
+                                .Likes = CInt(image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .ShortLang = image.Lang, _
+                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = image.Url, _
+                                .Width = "400"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "400", .Height = "155", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "400", .Height = "155", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "400", .Height = "155", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
@@ -225,19 +270,30 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.DiscArt Then
                     If Results.List.Moviedisc Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviedisc
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1000", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Disc = CInt(image.Disc), .DiscType = image.DiscType})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Disc = CInt(image.Disc), _
+                            .DiscType = image.DiscType, _
+                            .Height = "1000", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1000", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Disc = CInt(image.Disc), .DiscType = image.DiscType})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1000", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Disc = CInt(image.Disc), .DiscType = image.DiscType})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1000", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Disc = CInt(image.Disc), .DiscType = image.DiscType})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -253,19 +309,28 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Landscape Then
                     If Results.List.Moviethumb Is Nothing Then Return alPosters
                     For Each image In Results.List.Moviethumb
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "562", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "562", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -274,19 +339,28 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_Movie_MovieSet.Poster Then
                     If Results.List.Movieposter Is Nothing Then Return alPosters
                     For Each image In Results.List.Movieposter
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1426", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(CInt(image.Likes))})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "1426", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1426", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1426", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1000", .Height = "1426", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -315,7 +389,6 @@ Namespace FanartTVs
             Dim alPostersO As New List(Of MediaContainers.Image) 'all others poster list
             Dim alPostersOs As New List(Of MediaContainers.Image) 'all others sorted poster list
             Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list (lang="00")
-            Dim ParentID As String
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -334,20 +407,29 @@ Namespace FanartTVs
                 If Type = Enums.ScraperCapabilities_TV.AllSeasonsBanner OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner Then
                     If Results.List.Tvbanner Is Nothing Then Return alPosters
                     For Each image In Results.List.Tvbanner
-                        ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "185", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .TVBannerType = Enums.TVBannerType.Any, _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -356,20 +438,30 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.SeasonBanner Then
                     If Results.List.Seasonbanner Is Nothing Then Return alPosters
                     For Each image In Results.List.Seasonbanner
-                        ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "185", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Season = If(image.Season = "all", 999, CInt(image.Season)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .TVBannerType = Enums.TVBannerType.Any, _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "185", .TVBannerType = Enums.TVBannerType.Any, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -378,20 +470,28 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.ShowCharacterArt Then
                     If Results.List.Characterart Is Nothing Then Return alPosters
                     For Each image In Results.List.Characterart
-                        ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "512", .Height = "512", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "512", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .URL = image.Url, _
+                            .Width = "512"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "512", .Height = "512", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "512", .Height = "512", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "512", .Height = "512", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -401,40 +501,56 @@ Namespace FanartTVs
                     If ((Results.List.Hdclearart Is Nothing AndAlso Settings.ClearArtOnlyHD) OrElse (Results.List.Hdclearart Is Nothing AndAlso Results.List.Clearart Is Nothing)) Then Return alPosters
                     If Results.List.Hdclearart IsNot Nothing Then
                         For Each image In Results.List.Hdclearart
-                            ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                            If image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "562", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                            ElseIf image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "562", _
+                                .Likes = CInt(image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .ShortLang = image.Lang, _
+                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = image.Url, _
+                                .Width = "1000"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "562", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang))})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "562", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "562", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
                     End If
                     If Results.List.Clearart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
                         For Each image In Results.List.Clearart
-                            ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                            If image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "500", .Height = "281", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                            ElseIf image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "281", _
+                                .Likes = CInt(image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .ShortLang = image.Lang, _
+                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = image.Url, _
+                                .Width = "500"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "500", .Height = "281", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "500", .Height = "281", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "500", .Height = "281", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
@@ -445,40 +561,56 @@ Namespace FanartTVs
                     If ((Results.List.HdTListvlogo Is Nothing AndAlso Settings.ClearLogoOnlyHD) OrElse (Results.List.HdTListvlogo Is Nothing AndAlso Results.List.Clearlogo Is Nothing)) Then Return alPosters
                     If Results.List.HdTListvlogo IsNot Nothing Then
                         For Each Image In Results.List.HdTListvlogo
-                            ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
-                            If Image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "800", .Height = "310", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
-                            ElseIf Image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "310", _
+                                .Likes = CInt(Image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                                .ShortLang = Image.Lang, _
+                                .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = Image.Url, _
+                                .Width = "800"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "800", .Height = "310", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf Image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "800", .Height = "310", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "800", .Height = "310", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
                     End If
                     If Results.List.Clearlogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
                         For Each Image In Results.List.Clearlogo
-                            ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
-                            If Image.Lang = Settings.PrefLanguage Then
-                                alPostersP.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "400", .Height = "155", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
-                            ElseIf Image.Lang = "en" Then
+                            Dim tmpPoster As New MediaContainers.Image With { _
+                                .Height = "155", _
+                                .Likes = CInt(Image.Likes), _
+                                .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                                .ShortLang = Image.Lang, _
+                                .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
+                                .URL = Image.Url, _
+                                .Width = "400"}
+
+                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                                alPostersP.Add(tmpPoster)
+                            ElseIf tmpPoster.ShortLang = "en" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "400", .Height = "155", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                    alPostersE.Add(tmpPoster)
                                 End If
-                            ElseIf Image.Lang = "00" Then
+                            ElseIf tmpPoster.ShortLang = "00" Then
                                 If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "400", .Height = "155", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                    alPostersN.Add(tmpPoster)
                                 End If
                             Else
                                 If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "400", .Height = "155", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                    alPostersO.Add(tmpPoster)
                                 End If
                             End If
                         Next
@@ -488,7 +620,6 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsFanart OrElse Type = Enums.ScraperCapabilities_TV.SeasonFanart OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart Then
                     If Results.List.Showbackground Is Nothing Then Return alPosters
                     For Each image In Results.List.Showbackground
-                        ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
                         alPosters.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
 
@@ -496,20 +627,28 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsLandscape OrElse Type = Enums.ScraperCapabilities_TV.ShowLandscape Then
                     If Results.List.Tvthumb Is Nothing Then Return alPosters
                     For Each Image In Results.List.Tvthumb
-                        ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
-                        If Image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
-                        ElseIf Image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "281", _
+                            .Likes = CInt(Image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                            .ShortLang = Image.Lang, _
+                            .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
+                            .URL = Image.Url, _
+                            .Width = "500"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf Image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -518,20 +657,30 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.SeasonLandscape Then
                     If Results.List.Seasonthumb Is Nothing Then Return alPosters
                     For Each Image In Results.List.Seasonthumb
-                        ParentID = Image.Url.Substring(Image.Url.LastIndexOf("/") + 1, Image.Url.Length - (Image.Url.LastIndexOf("/") + 1))
-                        If Image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes), .Season = If(Image.Season = "all", 999, CInt(Image.Season))})
-                        ElseIf Image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "281", _
+                            .Likes = CInt(Image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                            .Season = If(Image.Season = "all", 999, CInt(Image.Season)), _
+                            .ShortLang = Image.Lang, _
+                            .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
+                            .TVBannerType = Enums.TVBannerType.Any, _
+                            .URL = Image.Url, _
+                            .Width = "500"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes), .Season = If(Image.Season = "all", 999, CInt(Image.Season))})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf Image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes), .Season = If(Image.Season = "all", 999, CInt(Image.Season))})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = Image.Url, .Width = "500", .Height = "281", .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), .ShortLang = Image.Lang, .LongLang = If(String.IsNullOrEmpty(Image.Lang), "", Localization.ISOGetLangByCode2(Image.Lang)), .Likes = CInt(Image.Likes), .Season = If(Image.Season = "all", 999, CInt(Image.Season))})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -540,20 +689,29 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsPoster OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster Then
                     If Results.List.Tvposter Is Nothing Then Return alPosters
                     For Each image In Results.List.Tvposter
-                        ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "1426", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .TVBannerType = Enums.TVBannerType.Any, _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
@@ -562,20 +720,30 @@ Namespace FanartTVs
                 ElseIf Type = Enums.ScraperCapabilities_TV.SeasonPoster Then
                     If Results.List.Seasonposter Is Nothing Then Return alPosters
                     For Each image In Results.List.Seasonposter
-                        ParentID = image.Url.Substring(image.Url.LastIndexOf("/") + 1, image.Url.Length - (image.Url.LastIndexOf("/") + 1))
-                        If image.Lang = Settings.PrefLanguage Then
-                            alPostersP.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
-                        ElseIf image.Lang = "en" Then
+                        Dim tmpPoster As New MediaContainers.Image With { _
+                            .Height = "1426", _
+                            .Likes = CInt(image.Likes), _
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Season = If(image.Season = "all", 999, CInt(image.Season)), _
+                            .ShortLang = image.Lang, _
+                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
+                            .TVBannerType = Enums.TVBannerType.Any, _
+                            .URL = image.Url, _
+                            .Width = "1000"}
+
+                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
+                            alPostersP.Add(tmpPoster)
+                        ElseIf tmpPoster.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
+                                alPostersE.Add(tmpPoster)
                             End If
-                        ElseIf image.Lang = "00" Then
+                        ElseIf tmpPoster.ShortLang = "00" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
+                                alPostersN.Add(tmpPoster)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1000", .Height = "1426", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes), .Season = If(image.Season = "all", 999, CInt(image.Season))})
+                                alPostersO.Add(tmpPoster)
                             End If
                         End If
                     Next
