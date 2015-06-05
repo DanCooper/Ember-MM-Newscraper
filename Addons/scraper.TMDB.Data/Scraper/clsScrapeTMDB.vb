@@ -264,7 +264,7 @@ Namespace TMDB
 
             'Collection ID
             If Options.bCollectionID Then
-                If Movie.BelongsToCollection Is Nothing OrElse Movie.BelongsToCollection.Count > 0 Then
+                If Movie.BelongsToCollection Is Nothing OrElse (Movie.BelongsToCollection IsNot Nothing AndAlso Movie.BelongsToCollection.Count = 0) Then
                     If _MySettings.FallBackEng AndAlso MovieE.BelongsToCollection IsNot Nothing AndAlso MovieE.BelongsToCollection.Count > 0 Then
                         nMovie.AddSet(Nothing, MovieE.BelongsToCollection.Item(0).Name, Nothing, CStr(MovieE.BelongsToCollection.Item(0).Id))
                         nMovie.TMDBColID = CStr(MovieE.BelongsToCollection.Item(0).Id)
@@ -279,7 +279,6 @@ Namespace TMDB
 
             'Countries
             If Options.bCountry Then
-                nMovie.Countries.Clear()
                 If Movie.ProductionCountries IsNot Nothing AndAlso Movie.ProductionCountries.Count > 0 Then
                     For Each aContry As TMDbLib.Objects.Movies.ProductionCountry In Movie.ProductionCountries
                         nMovie.Countries.Add(aContry.Name)
@@ -368,13 +367,7 @@ Namespace TMDB
 
             'Rating
             If Options.bRating Then
-                If Movie.VoteAverage = 0 Then
-                    If _MySettings.FallBackEng Then
-                        nMovie.Rating = CStr(MovieE.VoteAverage)
-                    End If
-                Else
-                    nMovie.Rating = CStr(Movie.VoteAverage)
-                End If
+                nMovie.Rating = CStr(Movie.VoteAverage)
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -472,13 +465,7 @@ Namespace TMDB
 
             'Votes
             If Options.bVotes Then
-                If Movie.VoteCount = 0 Then
-                    If _MySettings.FallBackEng Then
-                        nMovie.Votes = CStr(MovieE.VoteCount)
-                    End If
-                Else
-                    nMovie.Votes = CStr(Movie.VoteCount)
-                End If
+                nMovie.Votes = CStr(Movie.VoteCount)
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing
