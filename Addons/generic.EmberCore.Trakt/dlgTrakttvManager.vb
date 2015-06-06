@@ -54,7 +54,7 @@ Public Class dlgTrakttvManager
     Private traktGetShowProgress As Boolean = False
 
     'Tab: trakt.tv Sync Playcount variables
-    Private mydictWatchedMovies As New Dictionary(Of String, KeyValuePair(Of String, Integer))
+    '  Private mydictWatchedMovies As New Dictionary(Of String, KeyValuePair(Of String, Integer))
     ' Private myWatchedEpisodes As New Dictionary(Of String, KeyValuePair(Of String, List(Of TraktAPI.Model.TraktSyncEpisodeWatched)))
     'Helper: Saving 3 values in Dictionary style: TVDB, SeasonNumber|Episodenumber
     Private mydictWatchedEpisodes As New Dictionary(Of String, List(Of KeyValuePair(Of Integer, List(Of TraktAPI.Model.TraktEpisodeWatched.Season.Episode))))
@@ -172,7 +172,7 @@ Public Class dlgTrakttvManager
             btntraktCommentsDetailsUpdate.Text = Master.eLang.GetString(1409, "Update comment on trakt.tv")
             btntraktCommentsDetailsSend.Text = Master.eLang.GetString(1411, "Submit comment to trakt.tv")
             btntraktCommentsGet.Text = Master.eLang.GetString(1419, "Load your movie comments")
-            lbltraktCommentsDetailsDate.Text = Master.eLang.GetString(792, "Adding Date")
+            lbltraktCommentsDetailsDate.Text = Master.eLang.GetString(601, "Adding Date")
             lbltraktCommentsDetailsDescription.Text = Master.eLang.GetString(1413, "Comment")
             lbltraktCommentsDetailsLikes.Text = Master.eLang.GetString(1416, "Likes")
             lbltraktCommentsDetailsRating.Text = Master.eLang.GetString(400, "Rating")
@@ -183,6 +183,10 @@ Public Class dlgTrakttvManager
             gbtraktCommentsGET.Text = Master.eLang.GetString(1421, "Load comments")
             gbtraktComments.Text = Master.eLang.GetString(1418, "Sync Comments")
             lbltraktCommentsNotice.Text = Master.eLang.GetString(1420, "!IMPORTANT RULES!\n\n\n\n1. Comments must be at least 5 words\n\n2. Comments 200 words or longer will be automatically marked as a review\n\n3. Correctly indicate if the comment contains spoilers\n\n4. Only write comments in English").Replace("\n", Environment.NewLine)
+            coltraktCommentsMovie.HeaderText = Master.eLang.GetString(21, "Title")
+            coltraktCommentsURL.HeaderText = Master.eLang.GetString(1323, "URL")
+            coltraktCommentsReplies.HeaderText = Master.eLang.GetString(1415, "Replies")
+            coltraktCommentsDate.HeaderText = Master.eLang.GetString(601, "Adding Date")
 
             'Tab: Sync Lists/Tags
             Me.lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
@@ -805,7 +809,6 @@ Public Class dlgTrakttvManager
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             myWatchedMovies = Nothing
-            mydictWatchedMovies = Nothing
             btntraktPlaycountSyncWatchedSeries.Enabled = False
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             'Get watched movies of user
@@ -839,7 +842,15 @@ Public Class dlgTrakttvManager
                         If Not dictMovieWatched.ContainsKey(Item.Movie.Title) Then
 
                             Dim tmpwatchedratedmovie As New TraktAPI.Model.TraktMovieWatchedRated
-                            tmpwatchedratedmovie.LastWatchedAt = Item.LastWatchedAt
+                            'listed-At is not user friendly formatted, so change format a bit
+                            '"listed_at": 2014-09-01T09:10:11.000Z (original)
+                            'new format here: 2014-09-01  09:10:11
+                            Dim myDateString As String = Item.LastWatchedAt
+                            Dim myDate As DateTime
+                            Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                            If isDate Then
+                                tmpwatchedratedmovie.LastWatchedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                            End If
                             tmpwatchedratedmovie.Movie = Item.Movie
                             tmpwatchedratedmovie.Plays = Item.Plays
 
@@ -858,46 +869,28 @@ Public Class dlgTrakttvManager
                             If myWatchedMovies Is Nothing Then
                                 myWatchedMovies = New List(Of TraktAPI.Model.TraktMovieWatchedRated)
                             End If
-                            myWatchedMovies.Add(tmpwatchedratedmovie)
                             'Now store imdbid, title and playcount information into dictionary (for now no other info needed...)
                             If Item.Movie.Ids.Imdb.Length > 2 AndAlso Item.Movie.Ids.Imdb.Substring(0, 2) = "tt" Then
                                 'IMDBID beginning with tt -> strip tt first and save only number!
-                                dictMovieWatched.Add(Item.Movie.Title, New KeyValuePair(Of String, Integer)(Item.Movie.Ids.Imdb.Substring(2), CInt(Item.Plays)))
-                            Else
-                                'IMDBID is alright
-                                dictMovieWatched.Add(Item.Movie.Title, New KeyValuePair(Of String, Integer)(Item.Movie.Ids.Imdb, CInt(Item.Plays)))
+                                tmpwatchedratedmovie.Movie.Ids.Imdb = Item.Movie.Ids.Imdb.Substring(2)
                             End If
+                            myWatchedMovies.Add(tmpwatchedratedmovie)
                         End If
                     End If
                 Next
             Else
 
             End If
-            mydictWatchedMovies = dictMovieWatched
 
             dgvtraktPlaycount.AutoGenerateColumns = True
-            If Not mydictWatchedMovies Is Nothing Then
+            If Not myWatchedMovies Is Nothing Then
                 btntraktPlaycountSyncLibrary.Enabled = True
                 btntraktPlaycountSyncWatchedMovies.Enabled = True
                 'we map to dgv manually
                 dgvtraktPlaycount.AutoGenerateColumns = False
                 'fill rows
-                'For Each Item In myWatchedMovies
-                '    dgvtraktPlaycount.Rows.Add(New Object() {Item.Key, Item.Value.Value})
-                'Next
                 For Each Item As TraktAPI.Model.TraktMovieWatchedRated In myWatchedMovies
-
-                    'listed-At is not user friendly formatted, so change format a bit
-                    '"listed_at": 2014-09-01T09:10:11.000Z (original)
-                    'new format here: 2014-09-01  09:10:11
-                    Dim myDateString As String = Item.LastWatchedAt
-                    Dim myDate As DateTime
-                    Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                    If isDate Then
-                        dgvtraktPlaycount.Rows.Add(New Object() {Item.Movie.Title, Item.Plays, myDate.ToString("yyyy-MM-dd hh:mm"), "", Item.Rating})
-                    Else
-                        dgvtraktPlaycount.Rows.Add(New Object() {Item.Movie.Title, Item.Plays, Item.LastWatchedAt, "", "", Item.Rating})
-                    End If
+                    dgvtraktPlaycount.Rows.Add(New Object() {Item.Movie.Title, Item.Plays, Item.LastWatchedAt, "", Item.Rating})
                 Next
             Else
                 btntraktPlaycountSyncLibrary.Enabled = False
@@ -925,7 +918,6 @@ Public Class dlgTrakttvManager
         Try
             Me.Cursor = Cursors.WaitCursor
             mydictWatchedEpisodes = Nothing
-            mydictWatchedMovies = Nothing
             myWatchedMovies = Nothing
             myWatchedShows = Nothing
             dgvtraktPlaycount.DataSource = Nothing
@@ -1028,7 +1020,7 @@ Public Class dlgTrakttvManager
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            mydictWatchedMovies = Nothing
+            myWatchedMovies = Nothing
             btntraktPlaycountSyncWatchedSeries.Enabled = False
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
@@ -1106,15 +1098,15 @@ Public Class dlgTrakttvManager
 
         'if isMovie=false then it's a single TvShow to delete, else a single movie
         If IsMovie = True Then
-            If Not mydictWatchedMovies Is Nothing Then
-                For Each watchedMovieData In mydictWatchedMovies
+            If Not myWatchedMovies Is Nothing Then
+                For Each watchedMovieData In myWatchedMovies
                     'lookup for movie title (since we don't have a IMDB column in datagrid)
-                    If watchedMovieData.Key = dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString Then
+                    If watchedMovieData.Movie.Title = dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString Then
                         response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "? ID: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString & Environment.NewLine
-                        If Integer.TryParse(watchedMovieData.Value.Key, 0) Then
-                            ID = "tt" & watchedMovieData.Value.Key
+                        If Integer.TryParse(watchedMovieData.Movie.Ids.Imdb, 0) Then
+                            ID = "tt" & watchedMovieData.Movie.Ids.Imdb
                         Else
-                            ID = watchedMovieData.Value.Key
+                            ID = watchedMovieData.Movie.Ids.Imdb
                         End If
                         Exit For
                     End If
@@ -1198,9 +1190,9 @@ Public Class dlgTrakttvManager
             For Each sRow As DataRow In Me.dtMovies.Rows
                 If sRow.Item("Playcount").ToString <> "0" AndAlso sRow.Item("Playcount").ToString <> "" AndAlso sRow.Item("Imdb").ToString <> "" Then
                     SyncThisItem = True
-                    If Not mydictWatchedMovies Is Nothing Then
-                        For Each watchedMovieData In mydictWatchedMovies
-                            If watchedMovieData.Value.Key = sRow.Item("Imdb").ToString Then
+                    If Not myWatchedMovies Is Nothing Then
+                        For Each watchedMovieData In myWatchedMovies
+                            If watchedMovieData.Movie.Ids.Imdb = sRow.Item("Imdb").ToString Then
                                 SyncThisItem = False
                                 Exit For
                             End If
@@ -1214,7 +1206,12 @@ Public Class dlgTrakttvManager
                         Else
                             tmpTraktWatchedSyncMovie.Ids.Imdb = sRow.Item("Imdb").ToString
                         End If
-                        'tmpTraktWatchedSyncMovie.WatchedAt = Date.Now.ToString
+                        If sRow.Table.Columns.Contains("iLastPlayed") AndAlso Not sRow.Item("iLastPlayed") Is DBNull.Value Then
+                            Dim myDate As DateTime
+                            myDate = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(sRow.Item("iLastPlayed").ToString))
+                            '   Dim isDate As Boolean = DateTime.TryParse(sRow.Item("iLastPlayed").ToString, myDate)
+                            tmpTraktWatchedSyncMovie.WatchedAt = myDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssK")
+                        End If
                         tmpTraktSynchronize.Movies.Add(tmpTraktWatchedSyncMovie)
                         response = response & sRow.Item("Title").ToString & Environment.NewLine
                     End If
@@ -1385,10 +1382,18 @@ Public Class dlgTrakttvManager
     Private Sub SaveMoviePlaycount()
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim i As Integer = 0
-            For Each watchedMovieData In mydictWatchedMovies
+            For Each watchedMovieData In myWatchedMovies
                 i += 1
-                '  logger.Info("[SaveMoviePlaycount] MovieID" & watchedMovieData.Value.Key & " Playcount: " & watchedMovieData.Value.Value.ToString)
-                Master.DB.SaveMoviePlayCountInDatabase(watchedMovieData, True)
+                For Each srow As DataRow In dtMovies.Rows
+                    If watchedMovieData.Movie.Ids.Imdb = srow.Item("Imdb").ToString Then
+                        Dim tmpMovie As New Structures.DBMovie
+                        tmpMovie = Master.DB.LoadMovieFromDB(CLng(srow.Item("idMovie")))
+                        tmpMovie.Movie.PlayCount = CStr(watchedMovieData.Plays)
+                        tmpMovie.Movie.LastPlayed = CStr(watchedMovieData.LastWatchedAt)
+                        Master.DB.SaveMovieToDB(tmpMovie, False, False, True)
+                        Exit For
+                    End If
+                Next
                 ' Invoke to update UI from thread...
                 prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
                 Threading.Thread.Sleep(10)
