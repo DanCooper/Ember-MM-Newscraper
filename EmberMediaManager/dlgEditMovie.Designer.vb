@@ -224,6 +224,7 @@ Partial Class dlgEditMovie
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.txtLastPlayed = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -2483,6 +2484,16 @@ Partial Class dlgEditMovie
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
+        'txtLastPlayed
+        '
+        Me.txtLastPlayed.BackColor = System.Drawing.SystemColors.Window
+        Me.txtLastPlayed.Enabled = False
+        Me.txtLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtLastPlayed.Location = New System.Drawing.Point(215, 592)
+        Me.txtLastPlayed.Name = "txtLastPlayed"
+        Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
+        Me.txtLastPlayed.TabIndex = 74
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -2490,6 +2501,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(1008, 641)
+        Me.Controls.Add(Me.txtLastPlayed)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.btnChangeMovie)
@@ -2565,9 +2577,9 @@ Partial Class dlgEditMovie
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
@@ -2766,5 +2778,6 @@ End Sub
     Friend WithEvents tblThemePreviewNoPlayer As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblThemePreviewNoPlayer As System.Windows.Forms.Label
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
 
 End Class

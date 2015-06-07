@@ -552,7 +552,15 @@ Public Class dlgEditEpisode
                 'Playcount <> Empty and not 0 -> Tag filled -> Checked!
                 Me.chkWatched.Checked = True
             End If
-
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.LastPlayed) Then
+                Dim timecode As Double = 0
+                Double.TryParse(Master.currShow.TVEp.LastPlayed, timecode)
+                If timecode > 0 Then
+                    .txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
+                Else
+                    .txtLastPlayed.Text = Master.currShow.TVEp.LastPlayed
+                End If
+            End If
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                 EpisodeFanart.FromFile(Master.currShow.EpFanartPath)
                 If EpisodeFanart.Image IsNot Nothing Then
@@ -972,6 +980,7 @@ Public Class dlgEditEpisode
                 'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
                 If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
                     Master.currShow.TVEp.Playcount = "1"
+                    Master.currShow.TVEp.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 End If
 
                 'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -986,6 +995,7 @@ Public Class dlgEditEpisode
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
                 If Integer.TryParse(Master.currShow.TVEp.Playcount, 0) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
                     Master.currShow.TVEp.Playcount = ""
+                    Master.currShow.TVEp.LastPlayed = ""
                 End If
 
                 'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -1348,5 +1358,6 @@ Public Class dlgEditEpisode
     End Sub
 
 #End Region 'Methods
+
 
 End Class
