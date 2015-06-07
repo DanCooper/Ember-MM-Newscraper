@@ -2675,6 +2675,7 @@ Namespace MediaContainers
     End Class
 
     Public Class [Image]
+        Implements IComparable(Of [Image])
 
 #Region "Fields"
 
@@ -2987,6 +2988,14 @@ Namespace MediaContainers
             End Select
         End Sub
 
+        Public Function CompareTo(ByVal other As [Image]) As Integer Implements IComparable(Of [Image]).CompareTo
+            Dim retVal As Integer = (Me.Height).CompareTo(other.Height)
+            If retVal = 0 Then
+                retVal = (Me.Height).CompareTo(other.Height) * -1
+            End If
+            Return retVal
+        End Function
+
 #End Region 'Methods
 
     End Class
@@ -3101,6 +3110,17 @@ Namespace MediaContainers
             Me._fanarts.Clear()
             Me._landscapes.Clear()
             Me._posters.Clear()
+        End Sub
+
+        Public Sub SortImages()
+            Me._banners.Sort()
+            Me._characterarts.Sort()
+            Me._cleararts.Sort()
+            Me._clearlogos.Sort()
+            Me._discarts.Sort()
+            Me._fanarts.Sort()
+            Me._landscapes.Sort()
+            Me._posters.Sort()
         End Sub
 
 #End Region 'Methods

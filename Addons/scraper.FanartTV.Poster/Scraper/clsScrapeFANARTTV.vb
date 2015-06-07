@@ -96,12 +96,6 @@ Namespace FanartTVs
 
         Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper) As MediaContainers.ImagesContainer
             Dim alImagesContainer As New MediaContainers.ImagesContainer
-            'Dim alPosters As New List(Of MediaContainers.Image) 'main poster list
-            'Dim alPostersP As New List(Of MediaContainers.Image) 'preferred language poster list
-            'Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
-            'Dim alPostersO As New List(Of MediaContainers.Image) 'all others poster list
-            'Dim alPostersOs As New List(Of MediaContainers.Image) 'all others sorted poster list
-            'Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list (lang="00")
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -371,15 +365,6 @@ Namespace FanartTVs
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-
-            'Image sorting
-            'For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
-            '    alPostersOs.Add(xPoster)
-            'Next
-            'alPosters.AddRange(alPostersP)
-            'alPosters.AddRange(alPostersE)
-            'alPosters.AddRange(alPostersOs)
-            'alPosters.AddRange(alPostersN)
 
             Return alImagesContainer
         End Function

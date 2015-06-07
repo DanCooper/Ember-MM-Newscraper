@@ -60,12 +60,6 @@ Namespace TMDB
 
         Public Function GetImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper, ByVal ContentType As Enums.Content_Type) As MediaContainers.ImagesContainer
             Dim alImagesContainer As New MediaContainers.ImagesContainer
-            Dim alPosters As New List(Of MediaContainers.Image) 'main poster list
-            Dim alPostersP As New List(Of MediaContainers.Image) 'preferred language poster list
-            Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
-            Dim alPostersO As New List(Of MediaContainers.Image) 'all others poster list
-            Dim alPostersOs As New List(Of MediaContainers.Image) 'all others sorted poster list
-            Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list
 
             If bwTMDB.CancellationPending Then Return Nothing
 
@@ -117,22 +111,22 @@ Namespace TMDB
                                 .Width = image.Width.ToString}
 
                         If tmpImage.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpImage)
+                            alImagesContainer.Posters.Add(tmpImage)
                         ElseIf tmpImage.ShortLang = "en" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpImage)
+                                alImagesContainer.Posters.Add(tmpImage)
                             End If
                         ElseIf tmpImage.ShortLang = "xx" Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpImage)
+                                alImagesContainer.Posters.Add(tmpImage)
                             End If
                         ElseIf String.IsNullOrEmpty(tmpImage.ShortLang) Then
                             If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpImage)
+                                alImagesContainer.Posters.Add(tmpImage)
                             End If
                         Else
                             If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpImage)
+                                alImagesContainer.Posters.Add(tmpImage)
                             End If
                         End If
                     Next
@@ -141,15 +135,6 @@ Namespace TMDB
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-
-            'Image sorting
-            For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
-                alPostersOs.Add(xPoster)
-            Next
-            alImagesContainer.Posters.AddRange(alPostersP)
-            alImagesContainer.Posters.AddRange(alPostersE)
-            alImagesContainer.Posters.AddRange(alPostersOs)
-            alImagesContainer.Posters.AddRange(alPostersN)
 
             Return alImagesContainer
         End Function
