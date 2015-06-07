@@ -54,13 +54,12 @@ Public Class dlgTrakttvManager
     Private traktGetShowProgress As Boolean = False
 
     'Tab: trakt.tv Sync Playcount variables
-    '  Private mydictWatchedMovies As New Dictionary(Of String, KeyValuePair(Of String, Integer))
-    ' Private myWatchedEpisodes As New Dictionary(Of String, KeyValuePair(Of String, List(Of TraktAPI.Model.TraktSyncEpisodeWatched)))
-    'Helper: Saving 3 values in Dictionary style: TVDB, SeasonNumber|Episodenumber
-    Private mydictWatchedEpisodes As New Dictionary(Of String, List(Of KeyValuePair(Of Integer, List(Of TraktAPI.Model.TraktEpisodeWatched.Season.Episode))))
+    'stores scraped trakt.tv watched-show data
+    Private myWatchedEpisodes As New List(Of TraktAPI.Model.TraktEpisodeWatched)
+    'helper class/objekt used just for datagrid column binding
     Private myWatchedShows As New List(Of TraktAPI.Model.TraktShowWatchedProgress)
+    'stores scraped trakt.tv watched-movies data
     Private myWatchedMovies As New List(Of TraktAPI.Model.TraktMovieWatchedRated)
-    Private myRatedMovies As New List(Of TraktAPI.Model.TraktMovieRated)
 
     'Tab: trakt.tv Sync Lists/Tags variables
     'reflects the current list collection which will be synced to trakt.tv
@@ -281,6 +280,11 @@ Public Class dlgTrakttvManager
                 cbotraktListsFavorites.Enabled = False
             End If
 
+            'set default sort order
+            dgvtraktPlaycount.Sort(coltraktPlaycountLastWatched, System.ComponentModel.ListSortDirection.Descending)
+            dgvtraktWatchlist.Sort(coltraktWatchlistListedAt, System.ComponentModel.ListSortDirection.Descending)
+            dgvtraktComments.Sort(coltraktCommentsDate, System.ComponentModel.ListSortDirection.Descending)
+
             AddHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
 
         Catch ex As Exception
@@ -479,10 +483,9 @@ Public Class dlgTrakttvManager
                         Dim myDate As DateTime
                         Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
                         If isDate Then
-                            dgvtraktWatchlist.Rows.Add(New Object() {Item.Movie.Title, Item.Movie.Year, myDate.ToString("yyyy-MM-dd hh:mm"), "http://www.imdb.com/title/" & Item.Movie.Ids.Imdb})
-                        Else
-                            dgvtraktWatchlist.Rows.Add(New Object() {Item.Movie.Title, Item.Movie.Year, Item.ListedAt, "http://www.imdb.com/title/" & Item.Movie.Ids.Imdb})
+                            Item.ListedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                         End If
+                        dgvtraktWatchlist.Rows.Add(New Object() {Item.Movie.Title, Item.Movie.Year, Item.ListedAt, "http://www.imdb.com/title/" & Item.Movie.Ids.Imdb})
                     Next
                 Else
                     btntraktWatchlistSyncLibrary.Enabled = False
@@ -805,7 +808,8 @@ Public Class dlgTrakttvManager
     Private Sub btntraktPlaycountGetMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetMovies.Click
         Try
             Me.Cursor = Cursors.WaitCursor
-            mydictWatchedEpisodes = Nothing
+            myWatchedEpisodes = Nothing
+            myWatchedShows = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             myWatchedMovies = Nothing
@@ -813,8 +817,6 @@ Public Class dlgTrakttvManager
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             'Get watched movies of user
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            'Helper: Saving 3 values in Dictionary style
-            Dim dictMovieWatched As New Dictionary(Of String, KeyValuePair(Of String, Integer))
 
             ' Use new Trakttv wrapper class to get watched data!
 
@@ -824,7 +826,6 @@ Public Class dlgTrakttvManager
                 Dim traktRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated)
 
                 If traktWatchedMovies Is Nothing Then
-                    mydictWatchedEpisodes = Nothing
                     dgvtraktPlaycount.DataSource = Nothing
                     dgvtraktPlaycount.Rows.Clear()
                     btntraktPlaycountSyncLibrary.Enabled = False
@@ -839,8 +840,7 @@ Public Class dlgTrakttvManager
                 For Each Item As TraktAPI.Model.TraktMovieWatched In traktWatchedMovies
                     'Check if information is stored...
                     If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
-                        If Not dictMovieWatched.ContainsKey(Item.Movie.Title) Then
-
+           
                             Dim tmpwatchedratedmovie As New TraktAPI.Model.TraktMovieWatchedRated
                             'listed-At is not user friendly formatted, so change format a bit
                             '"listed_at": 2014-09-01T09:10:11.000Z (original)
@@ -875,8 +875,8 @@ Public Class dlgTrakttvManager
                                 tmpwatchedratedmovie.Movie.Ids.Imdb = Item.Movie.Ids.Imdb.Substring(2)
                             End If
                             myWatchedMovies.Add(tmpwatchedratedmovie)
+
                         End If
-                    End If
                 Next
             Else
 
@@ -897,9 +897,12 @@ Public Class dlgTrakttvManager
                 btntraktPlaycountSyncWatchedMovies.Enabled = True
             End If
             Me.Cursor = Cursors.Default
+            dgvtraktPlaycount.Sort(coltraktPlaycountLastWatched, System.ComponentModel.ListSortDirection.Descending)
         Catch ex As Exception
+            myWatchedMovies = Nothing
+            myWatchedShows = Nothing
+            myWatchedEpisodes = Nothing
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            mydictWatchedEpisodes = Nothing
             btntraktPlaycountSyncWatchedMovies.Enabled = False
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
@@ -917,19 +920,15 @@ Public Class dlgTrakttvManager
     Private Sub btntraktPlaycountGetSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetSeries.Click
         Try
             Me.Cursor = Cursors.WaitCursor
-            mydictWatchedEpisodes = Nothing
             myWatchedMovies = Nothing
             myWatchedShows = Nothing
+            myWatchedEpisodes = Nothing
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             btntraktPlaycountSyncWatchedMovies.Enabled = False
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             ' Get all episodes on Trakt.tv that are marked as 'seen' or 'watched'
             '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            'Helper: Saving 3 values in Dictionary style
-            ' Dim dictEpisodesWatched As New Dictionary(Of String, KeyValuePair(Of String, List(Of TraktAPI.Model.TraktSyncEpisodeWatched)))
-            'Helper: Saving 3 values in Dictionary style: TVDB, SeasonNumber|Episodenumber
-            Dim dictEpisodesWatched As New Dictionary(Of String, List(Of KeyValuePair(Of Integer, List(Of TraktAPI.Model.TraktEpisodeWatched.Season.Episode))))
 
             ' Use new Trakttv wrapper class to get watched data!
             traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
@@ -940,9 +939,7 @@ Public Class dlgTrakttvManager
                 If traktWatchedEpisodes Is Nothing = False Then
                     For Each watchedtvshow In traktWatchedEpisodes
 
-                        If Not watchedtvshow.Show.Title Is Nothing AndAlso watchedtvshow.Show.Title <> "" AndAlso Not watchedtvshow.Show.Ids.Tvdb Is Nothing AndAlso watchedtvshow.Show.Ids.Tvdb.ToString <> "" Then
-                            If Not dictEpisodesWatched.ContainsKey(CStr(watchedtvshow.Show.Ids.Tvdb)) Then
-
+                        If Not watchedtvshow.Show.Title Is Nothing AndAlso watchedtvshow.Show.Title <> "" AndAlso Not watchedtvshow.Show.Ids.Tvdb Is Nothing AndAlso watchedtvshow.Show.Ids.Tvdb.ToString <> "" Then      
                                 Dim tmpwatchedshow As New TraktAPI.Model.TraktShowWatchedProgress
                                 Dim traktShowProgress As New TraktAPI.Model.TraktShowProgress
 
@@ -960,27 +957,31 @@ Public Class dlgTrakttvManager
                                 tmpwatchedshow.ShowTitle = watchedtvshow.Show.Title
                                 tmpwatchedshow.ShowID = CStr(watchedtvshow.Show.Ids.Tvdb)
                                 tmpwatchedshow.EpisodePlaycount = watchedtvshow.Plays
-                                tmpwatchedshow.LastWatchedEpisode = watchedtvshow.WatchedAt
+
+                                'listed-At is not user friendly formatted, so change format a bit
+                                '"listed_at": 2014-09-01T09:10:11.000Z (original)
+                                'new format here: 2014-09-01  09:10:11
+                                Dim myDateString As String = watchedtvshow.WatchedAt
+                                Dim myDate As DateTime
+                                Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                                If isDate Then
+                                    watchedtvshow.WatchedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                    tmpwatchedshow.LastWatchedEpisode = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                End If
                                 If myWatchedShows Is Nothing Then
                                     myWatchedShows = New List(Of TraktAPI.Model.TraktShowWatchedProgress)
                                 End If
                                 myWatchedShows.Add(tmpwatchedshow)
-
-                                'Now store tvdbID, title and the season-episode-list in dictionary...
-                                Dim listWatchedEpisodes As New List(Of KeyValuePair(Of Integer, List(Of TraktAPI.Model.TraktEpisodeWatched.Season.Episode)))
-                                For Each watchedseason In watchedtvshow.Seasons
-                                    Dim episodesinseason As New KeyValuePair(Of Integer, List(Of TraktAPI.Model.TraktEpisodeWatched.Season.Episode))(watchedseason.Number, watchedseason.Episodes)
-                                    listWatchedEpisodes.Add(episodesinseason)
-                                Next
-                                dictEpisodesWatched.Add(CStr(watchedtvshow.Show.Ids.Tvdb), listWatchedEpisodes)
-                            End If
+                                If myWatchedEpisodes Is Nothing Then
+                                    myWatchedEpisodes = New List(Of TraktAPI.Model.TraktEpisodeWatched)
+                                End If
+                                myWatchedEpisodes.Add(watchedtvshow)
                         End If
                     Next
                 End If
-                mydictWatchedEpisodes = dictEpisodesWatched
 
                 dgvtraktPlaycount.AutoGenerateColumns = True
-                If Not mydictWatchedEpisodes Is Nothing Then
+                If Not myWatchedShows Is Nothing Then
                     btntraktPlaycountSyncLibrary.Enabled = True
                     btntraktPlaycountSyncWatchedSeries.Enabled = True
                     'we map to dgv manually
@@ -988,29 +989,9 @@ Public Class dlgTrakttvManager
                     'fill rows
                     For Each watchedshow In myWatchedShows
                         If traktGetShowProgress = True Then
-                            'listed-At is not user friendly formatted, so change format a bit
-                            '"listed_at": 2014-09-01T09:10:11.000Z (original)
-                            'new format here: 2014-09-01  09:10:11
-                            Dim myDateString As String = watchedshow.LastWatchedEpisode
-                            Dim myDate As DateTime
-                            Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                            If isDate Then
-                                dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, myDate.ToString("yyyy-MM-dd hh:mm"), watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, ""})
-                            Else
-                                dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, ""})
-                            End If
+                             dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, ""})
                         Else
-                            'listed-At is not user friendly formatted, so change format a bit
-                            '"listed_at": 2014-09-01T09:10:11.000Z (original)
-                            'new format here: 2014-09-01  09:10:11
-                            Dim myDateString As String = watchedshow.LastWatchedEpisode
-                            Dim myDate As DateTime
-                            Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                            If isDate Then
-                                dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, myDate.ToString("yyyy-MM-dd hh:mm"), "", ""})
-                            Else
-                                dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, "", ""})
-                            End If
+                            dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, "", ""})
                         End If
                     Next
                 Else
@@ -1018,9 +999,12 @@ Public Class dlgTrakttvManager
                 End If
             End If
             Me.Cursor = Cursors.Default
+            dgvtraktPlaycount.Sort(coltraktPlaycountLastWatched, System.ComponentModel.ListSortDirection.Descending)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             myWatchedMovies = Nothing
+            myWatchedShows = Nothing
+            myWatchedEpisodes = Nothing
             btntraktPlaycountSyncWatchedSeries.Enabled = False
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
@@ -1266,14 +1250,18 @@ Public Class dlgTrakttvManager
             For Each sRow As DataRow In Me.dtEpisodes.Rows
                 If sRow.Item("Playcount").ToString <> "0" AndAlso sRow.Item("Playcount").ToString <> "" AndAlso sRow.Item("TVDB").ToString <> "" Then
                     SyncThisItem = True
-                    If Not mydictWatchedEpisodes Is Nothing Then
-                        For Each watchedShowData In mydictWatchedEpisodes
-                            If watchedShowData.Key = sRow.Item("TVDB").ToString Then
-                                '  loop through every season of tvshow
-                                For z = 0 To watchedShowData.Value.Count - 1
-                                    ' now go to every episode of current season
-                                    For Each episode In watchedShowData.Value(z).Value
-                                        If watchedShowData.Value(z).Key.ToString = sRow.Item("Season").ToString AndAlso episode.Number.ToString = sRow.Item("Episode").ToString Then
+                    If Not myWatchedEpisodes Is Nothing Then
+                        For Each watchedshow In myWatchedEpisodes
+                            If SyncThisItem = False Then Exit For
+                            If watchedshow.Show.Ids.Tvdb.ToString = sRow.Item("TVDB").ToString Then
+                                If SyncThisItem = False Then Exit For
+                                'every season of watched show
+                                For Each watchedseason In watchedshow.Seasons
+                                    If SyncThisItem = False Then Exit For
+                                    'every episode of watched season
+                                    For Each watchedepisode In watchedseason.Episodes
+                                        ' now go to every episode of current season
+                                        If watchedseason.Number.ToString = sRow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = sRow.Item("Episode").ToString Then
                                             SyncThisItem = False
                                             Exit For
                                         End If
@@ -1294,6 +1282,11 @@ Public Class dlgTrakttvManager
                         tmpTraktSyncShowWatchedSeasonItem.Episodes = New List(Of TraktAPI.Model.TraktSyncShowWatchedEx.Season.Episode)
                         Dim tmpTraktSyncShowWatchedEpisodeItem As New TraktAPI.Model.TraktSyncShowWatchedEx.Season.Episode
                         tmpTraktSyncShowWatchedEpisodeItem.Number = CInt(sRow.Item("Episode"))
+                        If sRow.Table.Columns.Contains("iLastPlayed") AndAlso Not sRow.Item("iLastPlayed") Is DBNull.Value Then
+                            Dim myDate As DateTime
+                            myDate = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(sRow.Item("iLastPlayed").ToString))
+                            tmpTraktSyncShowWatchedEpisodeItem.WatchedAt = myDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssK")
+                        End If
                         tmpTraktSyncShowWatchedSeasonItem.Episodes.Add(tmpTraktSyncShowWatchedEpisodeItem)
 
                         tmpTraktWatchedSyncShowData.Seasons.Add(tmpTraktSyncShowWatchedSeasonItem)
@@ -1355,12 +1348,12 @@ Public Class dlgTrakttvManager
             traktthread = New Threading.Thread(AddressOf SaveMoviePlaycount)
             traktthread.IsBackground = True
             traktthread.Start()
-        ElseIf Not mydictWatchedEpisodes Is Nothing Then
+        ElseIf Not myWatchedEpisodes Is Nothing Then
             'save episodes playcount!
             prgtraktPlaycount.Value = 0
-            prgtraktPlaycount.Maximum = mydictWatchedEpisodes.Count
+            prgtraktPlaycount.Maximum = myWatchedEpisodes.Count
             'start not with empty progressbar(no problem for movies) because it takes long to update for first tv show and user might think it hangs -> set value 1 to show something is going on
-            If mydictWatchedEpisodes.Count > 1 Then
+            If myWatchedEpisodes.Count > 1 Then
                 prgtraktPlaycount.Value = 1
             End If
             prgtraktPlaycount.Minimum = 0
@@ -1412,16 +1405,33 @@ Public Class dlgTrakttvManager
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim i As Integer = 0
-            For Each watchedShowData In mydictWatchedEpisodes
+            'watched shows at trakt.tv
+            For Each watchedshow In myWatchedEpisodes
                 i += 1
-
-                '  loop through every season of certain tvshow
-                For z = 0 To watchedShowData.Value.Count - 1
-                    ' now go to every episode of current season
-                    For Each episode In watchedShowData.Value(z).Value
-                        '..and save playcount of every episode to database
-                        '    logger.Info("[SaveEpisodePlaycount] ShowID" & watchedShowData.Key & " Season: " & watchedShowData.Value(z).Key.ToString & " Episode: " & episode.Number.ToString)
-                        Master.DB.SaveEpisodePlayCountInDatabase(watchedShowData.Key, watchedShowData.Value(z).Key.ToString, episode.Number.ToString, True)
+                'every season of watched show
+                For Each watchedseason In watchedshow.Seasons
+                    'every episode of watched season
+                    For Each watchedepisode In watchedseason.Episodes
+                        For Each srow As DataRow In dtEpisodes.Rows
+                            'search for episode in Emberdatabase and update playcount/lastplayed value
+                            If watchedshow.Show.Ids.Tvdb.ToString = srow.Item("TVDB").ToString AndAlso watchedseason.Number.ToString = srow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = srow.Item("Episode").ToString Then
+                                Dim tmpshow As New Structures.DBTV
+                                tmpshow = Master.DB.LoadTVEpFromDB(CLng(srow.Item("idEpisode")), True)
+                                tmpshow.TVEp.Playcount = CStr(watchedepisode.Plays)
+                                'date is not user friendly formatted, so change format a bit
+                                '2014-09-01T09:10:11.000Z (original)
+                                'new format here: 2014-09-01  09:10:11
+                                Dim myDateString As String = watchedepisode.WatchedAt
+                                Dim myDate As DateTime
+                                Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                                If isDate Then
+                                    tmpshow.TVEp.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                End If
+                                Master.DB.SaveTVEpToDB(tmpshow, False, False, True)
+                                'Updated episode in Ember, next episode please!
+                                Exit For
+                            End If
+                        Next
                     Next
                 Next
                 ' Invoke to update UI from thread...
@@ -1494,8 +1504,8 @@ Public Class dlgTrakttvManager
                     lbltraktPlaycountstate.Text = "Done!"
                     lbltraktPlaycountstate.Visible = True
                 End If
-            ElseIf Not mydictWatchedEpisodes Is Nothing Then
-                If i = mydictWatchedEpisodes.Count - 1 Then
+            ElseIf Not myWatchedEpisodes Is Nothing Then
+                If i = myWatchedEpisodes.Count - 1 Then
                     lbltraktPlaycountstate.Text = "Done!"
                     lbltraktPlaycountstate.Visible = True
                 End If
@@ -3081,7 +3091,13 @@ Public Class dlgTrakttvManager
                 For Each Item As TraktAPI.Model.TraktCommentItem In traktMovieComments
                     'Check if information is stored...
                     If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
-                            myCommentsMovies.Add(Item)
+                        Dim myDateString As String = Item.Comment.CreatedAt
+                        Dim myDate As DateTime
+                        Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                        If isDate Then
+                            Item.Comment.CreatedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                        End If
+                        myCommentsMovies.Add(Item)
                     End If
                 Next
 

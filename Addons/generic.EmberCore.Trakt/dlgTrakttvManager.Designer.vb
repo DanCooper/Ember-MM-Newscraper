@@ -23,13 +23,13 @@ Partial Class dlgTrakttvManager
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
-        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle43 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle44 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle45 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle46 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle47 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle48 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle49 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -56,6 +56,11 @@ Partial Class dlgTrakttvManager
         Me.btntraktPlaycountSyncWatchedSeries = New System.Windows.Forms.Button()
         Me.btntraktPlaycountGetMovies = New System.Windows.Forms.Button()
         Me.dgvtraktPlaycount = New System.Windows.Forms.DataGridView()
+        Me.coltraktPlaycountTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountPlayed = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountLastWatched = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountProgress = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coltraktPlaycountRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lbltraktPlaycountstate = New System.Windows.Forms.Label()
         Me.prgtraktPlaycount = New System.Windows.Forms.ProgressBar()
         Me.lbltraktPlaycounthelp = New System.Windows.Forms.Label()
@@ -172,11 +177,6 @@ Partial Class dlgTrakttvManager
         Me.coltraktListTrailer = New System.Windows.Forms.DataGridViewLinkColumn()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.coltraktPlaycountTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountPlayed = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountLastWatched = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountProgress = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coltraktPlaycountRating = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktCommentsMovie = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktCommentsDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktCommentsReplies = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -537,6 +537,53 @@ Partial Class dlgTrakttvManager
         Me.dgvtraktPlaycount.ShowRowErrors = False
         Me.dgvtraktPlaycount.Size = New System.Drawing.Size(612, 400)
         Me.dgvtraktPlaycount.TabIndex = 32
+        '
+        'coltraktPlaycountTitle
+        '
+        Me.coltraktPlaycountTitle.Frozen = True
+        Me.coltraktPlaycountTitle.HeaderText = "Title"
+        Me.coltraktPlaycountTitle.Name = "coltraktPlaycountTitle"
+        Me.coltraktPlaycountTitle.ReadOnly = True
+        Me.coltraktPlaycountTitle.Width = 250
+        '
+        'coltraktPlaycountPlayed
+        '
+        DataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle43
+        Me.coltraktPlaycountPlayed.Frozen = True
+        Me.coltraktPlaycountPlayed.HeaderText = "Played"
+        Me.coltraktPlaycountPlayed.Name = "coltraktPlaycountPlayed"
+        Me.coltraktPlaycountPlayed.ReadOnly = True
+        Me.coltraktPlaycountPlayed.Width = 65
+        '
+        'coltraktPlaycountLastWatched
+        '
+        Me.coltraktPlaycountLastWatched.Frozen = True
+        Me.coltraktPlaycountLastWatched.HeaderText = "Last watched"
+        Me.coltraktPlaycountLastWatched.Name = "coltraktPlaycountLastWatched"
+        Me.coltraktPlaycountLastWatched.ReadOnly = True
+        Me.coltraktPlaycountLastWatched.Width = 120
+        '
+        'coltraktPlaycountProgress
+        '
+        DataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle44
+        Me.coltraktPlaycountProgress.HeaderText = "Progress"
+        Me.coltraktPlaycountProgress.Name = "coltraktPlaycountProgress"
+        Me.coltraktPlaycountProgress.ReadOnly = True
+        Me.coltraktPlaycountProgress.Width = 80
+        '
+        'coltraktPlaycountRating
+        '
+        DataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle45.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        DataGridViewCellStyle45.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle45.Format = "N0"
+        DataGridViewCellStyle45.NullValue = Nothing
+        Me.coltraktPlaycountRating.DefaultCellStyle = DataGridViewCellStyle45
+        Me.coltraktPlaycountRating.HeaderText = "Rating"
+        Me.coltraktPlaycountRating.Name = "coltraktPlaycountRating"
+        Me.coltraktPlaycountRating.Width = 90
         '
         'lbltraktPlaycountstate
         '
@@ -1110,8 +1157,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle29.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle29
+        DataGridViewCellStyle46.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle46
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -1258,7 +1305,7 @@ Partial Class dlgTrakttvManager
         Me.dgvtraktComments.ShowCellErrors = False
         Me.dgvtraktComments.ShowCellToolTips = False
         Me.dgvtraktComments.ShowRowErrors = False
-        Me.dgvtraktComments.Size = New System.Drawing.Size(363, 356)
+        Me.dgvtraktComments.Size = New System.Drawing.Size(460, 356)
         Me.dgvtraktComments.TabIndex = 71
         '
         'chktraktCommentsOnlyNoComments
@@ -1301,9 +1348,9 @@ Partial Class dlgTrakttvManager
         Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsDescription)
         Me.gbtraktCommentsDetails.Controls.Add(Me.lbltraktCommentsDetailsDate)
         Me.gbtraktCommentsDetails.Controls.Add(Me.txttraktCommentsDetailsComment)
-        Me.gbtraktCommentsDetails.Location = New System.Drawing.Point(378, 20)
+        Me.gbtraktCommentsDetails.Location = New System.Drawing.Point(475, 20)
         Me.gbtraktCommentsDetails.Name = "gbtraktCommentsDetails"
-        Me.gbtraktCommentsDetails.Size = New System.Drawing.Size(541, 381)
+        Me.gbtraktCommentsDetails.Size = New System.Drawing.Size(444, 381)
         Me.gbtraktCommentsDetails.TabIndex = 48
         Me.gbtraktCommentsDetails.TabStop = False
         Me.gbtraktCommentsDetails.Text = "Details"
@@ -1311,9 +1358,9 @@ Partial Class dlgTrakttvManager
         'btntraktCommentsDetailsSend
         '
         Me.btntraktCommentsDetailsSend.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktCommentsDetailsSend.Location = New System.Drawing.Point(69, 331)
+        Me.btntraktCommentsDetailsSend.Location = New System.Drawing.Point(6, 328)
         Me.btntraktCommentsDetailsSend.Name = "btntraktCommentsDetailsSend"
-        Me.btntraktCommentsDetailsSend.Size = New System.Drawing.Size(134, 44)
+        Me.btntraktCommentsDetailsSend.Size = New System.Drawing.Size(118, 44)
         Me.btntraktCommentsDetailsSend.TabIndex = 68
         Me.btntraktCommentsDetailsSend.Text = "Post comment"
         Me.btntraktCommentsDetailsSend.UseVisualStyleBackColor = True
@@ -1321,9 +1368,9 @@ Partial Class dlgTrakttvManager
         'btntraktCommentsDetailsUpdate
         '
         Me.btntraktCommentsDetailsUpdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktCommentsDetailsUpdate.Location = New System.Drawing.Point(374, 331)
+        Me.btntraktCommentsDetailsUpdate.Location = New System.Drawing.Point(284, 328)
         Me.btntraktCommentsDetailsUpdate.Name = "btntraktCommentsDetailsUpdate"
-        Me.btntraktCommentsDetailsUpdate.Size = New System.Drawing.Size(159, 44)
+        Me.btntraktCommentsDetailsUpdate.Size = New System.Drawing.Size(148, 44)
         Me.btntraktCommentsDetailsUpdate.TabIndex = 67
         Me.btntraktCommentsDetailsUpdate.Text = "Update comment"
         Me.btntraktCommentsDetailsUpdate.UseVisualStyleBackColor = True
@@ -1333,7 +1380,7 @@ Partial Class dlgTrakttvManager
         Me.lbltraktCommentsDetailsDate2.BackColor = System.Drawing.SystemColors.Control
         Me.lbltraktCommentsDetailsDate2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lbltraktCommentsDetailsDate2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbltraktCommentsDetailsDate2.Location = New System.Drawing.Point(9, 36)
+        Me.lbltraktCommentsDetailsDate2.Location = New System.Drawing.Point(6, 33)
         Me.lbltraktCommentsDetailsDate2.Name = "lbltraktCommentsDetailsDate2"
         Me.lbltraktCommentsDetailsDate2.Size = New System.Drawing.Size(83, 20)
         Me.lbltraktCommentsDetailsDate2.TabIndex = 66
@@ -1343,9 +1390,9 @@ Partial Class dlgTrakttvManager
         Me.lbltraktCommentsDetailsType2.BackColor = System.Drawing.SystemColors.Control
         Me.lbltraktCommentsDetailsType2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lbltraktCommentsDetailsType2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbltraktCommentsDetailsType2.Location = New System.Drawing.Point(98, 36)
+        Me.lbltraktCommentsDetailsType2.Location = New System.Drawing.Point(95, 33)
         Me.lbltraktCommentsDetailsType2.Name = "lbltraktCommentsDetailsType2"
-        Me.lbltraktCommentsDetailsType2.Size = New System.Drawing.Size(97, 20)
+        Me.lbltraktCommentsDetailsType2.Size = New System.Drawing.Size(77, 20)
         Me.lbltraktCommentsDetailsType2.TabIndex = 65
         '
         'lbltraktCommentsDetailsReplies2
@@ -1353,7 +1400,7 @@ Partial Class dlgTrakttvManager
         Me.lbltraktCommentsDetailsReplies2.BackColor = System.Drawing.SystemColors.Control
         Me.lbltraktCommentsDetailsReplies2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lbltraktCommentsDetailsReplies2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbltraktCommentsDetailsReplies2.Location = New System.Drawing.Point(201, 36)
+        Me.lbltraktCommentsDetailsReplies2.Location = New System.Drawing.Point(178, 33)
         Me.lbltraktCommentsDetailsReplies2.Name = "lbltraktCommentsDetailsReplies2"
         Me.lbltraktCommentsDetailsReplies2.Size = New System.Drawing.Size(52, 20)
         Me.lbltraktCommentsDetailsReplies2.TabIndex = 64
@@ -1363,7 +1410,7 @@ Partial Class dlgTrakttvManager
         Me.lbltraktCommentsDetailsLikes2.BackColor = System.Drawing.SystemColors.Control
         Me.lbltraktCommentsDetailsLikes2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lbltraktCommentsDetailsLikes2.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbltraktCommentsDetailsLikes2.Location = New System.Drawing.Point(272, 36)
+        Me.lbltraktCommentsDetailsLikes2.Location = New System.Drawing.Point(249, 33)
         Me.lbltraktCommentsDetailsLikes2.Name = "lbltraktCommentsDetailsLikes2"
         Me.lbltraktCommentsDetailsLikes2.Size = New System.Drawing.Size(52, 20)
         Me.lbltraktCommentsDetailsLikes2.TabIndex = 63
@@ -1372,7 +1419,7 @@ Partial Class dlgTrakttvManager
         '
         Me.lbltraktCommentsDetailsRating2.BackColor = System.Drawing.SystemColors.Control
         Me.lbltraktCommentsDetailsRating2.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbltraktCommentsDetailsRating2.Location = New System.Drawing.Point(472, 36)
+        Me.lbltraktCommentsDetailsRating2.Location = New System.Drawing.Point(371, 33)
         Me.lbltraktCommentsDetailsRating2.Name = "lbltraktCommentsDetailsRating2"
         Me.lbltraktCommentsDetailsRating2.Size = New System.Drawing.Size(61, 37)
         Me.lbltraktCommentsDetailsRating2.TabIndex = 62
@@ -1381,7 +1428,7 @@ Partial Class dlgTrakttvManager
         'lbltraktCommentsDetailsRating
         '
         Me.lbltraktCommentsDetailsRating.AutoSize = True
-        Me.lbltraktCommentsDetailsRating.Location = New System.Drawing.Point(472, 18)
+        Me.lbltraktCommentsDetailsRating.Location = New System.Drawing.Point(371, 15)
         Me.lbltraktCommentsDetailsRating.Name = "lbltraktCommentsDetailsRating"
         Me.lbltraktCommentsDetailsRating.Size = New System.Drawing.Size(61, 13)
         Me.lbltraktCommentsDetailsRating.TabIndex = 60
@@ -1390,7 +1437,7 @@ Partial Class dlgTrakttvManager
         'lbltraktCommentsDetailsLikes
         '
         Me.lbltraktCommentsDetailsLikes.AutoSize = True
-        Me.lbltraktCommentsDetailsLikes.Location = New System.Drawing.Point(269, 18)
+        Me.lbltraktCommentsDetailsLikes.Location = New System.Drawing.Point(246, 15)
         Me.lbltraktCommentsDetailsLikes.Name = "lbltraktCommentsDetailsLikes"
         Me.lbltraktCommentsDetailsLikes.Size = New System.Drawing.Size(33, 13)
         Me.lbltraktCommentsDetailsLikes.TabIndex = 59
@@ -1399,7 +1446,7 @@ Partial Class dlgTrakttvManager
         'lbltraktCommentsDetailsReplies
         '
         Me.lbltraktCommentsDetailsReplies.AutoSize = True
-        Me.lbltraktCommentsDetailsReplies.Location = New System.Drawing.Point(198, 18)
+        Me.lbltraktCommentsDetailsReplies.Location = New System.Drawing.Point(175, 15)
         Me.lbltraktCommentsDetailsReplies.Name = "lbltraktCommentsDetailsReplies"
         Me.lbltraktCommentsDetailsReplies.Size = New System.Drawing.Size(44, 13)
         Me.lbltraktCommentsDetailsReplies.TabIndex = 57
@@ -1408,7 +1455,7 @@ Partial Class dlgTrakttvManager
         'lbltraktCommentsDetailsType
         '
         Me.lbltraktCommentsDetailsType.AutoSize = True
-        Me.lbltraktCommentsDetailsType.Location = New System.Drawing.Point(95, 18)
+        Me.lbltraktCommentsDetailsType.Location = New System.Drawing.Point(92, 15)
         Me.lbltraktCommentsDetailsType.Name = "lbltraktCommentsDetailsType"
         Me.lbltraktCommentsDetailsType.Size = New System.Drawing.Size(32, 13)
         Me.lbltraktCommentsDetailsType.TabIndex = 56
@@ -1417,9 +1464,9 @@ Partial Class dlgTrakttvManager
         'btntraktCommentsDetailsDelete
         '
         Me.btntraktCommentsDetailsDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btntraktCommentsDetailsDelete.Location = New System.Drawing.Point(209, 331)
+        Me.btntraktCommentsDetailsDelete.Location = New System.Drawing.Point(130, 328)
         Me.btntraktCommentsDetailsDelete.Name = "btntraktCommentsDetailsDelete"
-        Me.btntraktCommentsDetailsDelete.Size = New System.Drawing.Size(159, 44)
+        Me.btntraktCommentsDetailsDelete.Size = New System.Drawing.Size(148, 44)
         Me.btntraktCommentsDetailsDelete.TabIndex = 49
         Me.btntraktCommentsDetailsDelete.Text = "Delete comment"
         Me.btntraktCommentsDetailsDelete.UseVisualStyleBackColor = True
@@ -1427,7 +1474,7 @@ Partial Class dlgTrakttvManager
         'chktraktCommentsDetailsSpoiler
         '
         Me.chktraktCommentsDetailsSpoiler.AutoSize = True
-        Me.chktraktCommentsDetailsSpoiler.Location = New System.Drawing.Point(3, 331)
+        Me.chktraktCommentsDetailsSpoiler.Location = New System.Drawing.Point(303, 36)
         Me.chktraktCommentsDetailsSpoiler.Name = "chktraktCommentsDetailsSpoiler"
         Me.chktraktCommentsDetailsSpoiler.Size = New System.Drawing.Size(62, 17)
         Me.chktraktCommentsDetailsSpoiler.TabIndex = 53
@@ -1437,7 +1484,7 @@ Partial Class dlgTrakttvManager
         'lbltraktCommentsDetailsDescription
         '
         Me.lbltraktCommentsDetailsDescription.AutoSize = True
-        Me.lbltraktCommentsDetailsDescription.Location = New System.Drawing.Point(6, 60)
+        Me.lbltraktCommentsDetailsDescription.Location = New System.Drawing.Point(3, 57)
         Me.lbltraktCommentsDetailsDescription.Name = "lbltraktCommentsDetailsDescription"
         Me.lbltraktCommentsDetailsDescription.Size = New System.Drawing.Size(58, 13)
         Me.lbltraktCommentsDetailsDescription.TabIndex = 48
@@ -1446,7 +1493,7 @@ Partial Class dlgTrakttvManager
         'lbltraktCommentsDetailsDate
         '
         Me.lbltraktCommentsDetailsDate.AutoSize = True
-        Me.lbltraktCommentsDetailsDate.Location = New System.Drawing.Point(6, 19)
+        Me.lbltraktCommentsDetailsDate.Location = New System.Drawing.Point(3, 16)
         Me.lbltraktCommentsDetailsDate.Name = "lbltraktCommentsDetailsDate"
         Me.lbltraktCommentsDetailsDate.Size = New System.Drawing.Size(31, 13)
         Me.lbltraktCommentsDetailsDate.TabIndex = 44
@@ -1457,11 +1504,11 @@ Partial Class dlgTrakttvManager
         Me.txttraktCommentsDetailsComment.AcceptsReturn = True
         Me.txttraktCommentsDetailsComment.AcceptsTab = True
         Me.txttraktCommentsDetailsComment.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txttraktCommentsDetailsComment.Location = New System.Drawing.Point(3, 76)
+        Me.txttraktCommentsDetailsComment.Location = New System.Drawing.Point(6, 73)
         Me.txttraktCommentsDetailsComment.Multiline = True
         Me.txttraktCommentsDetailsComment.Name = "txttraktCommentsDetailsComment"
         Me.txttraktCommentsDetailsComment.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txttraktCommentsDetailsComment.Size = New System.Drawing.Size(530, 249)
+        Me.txttraktCommentsDetailsComment.Size = New System.Drawing.Size(426, 249)
         Me.txttraktCommentsDetailsComment.TabIndex = 43
         '
         'gbtraktCommentsGET
@@ -1769,8 +1816,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListYear
         '
-        DataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle30
+        DataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle47
         Me.coltraktListYear.Frozen = True
         Me.coltraktListYear.HeaderText = "Year"
         Me.coltraktListYear.Name = "coltraktListYear"
@@ -1779,9 +1826,9 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListRating
         '
-        DataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle31.NullValue = Nothing
-        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle31
+        DataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle48.NullValue = Nothing
+        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle48
         Me.coltraktListRating.HeaderText = "Rating"
         Me.coltraktListRating.Name = "coltraktListRating"
         Me.coltraktListRating.ReadOnly = True
@@ -1796,8 +1843,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListIMDB
         '
-        DataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle32
+        DataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle49
         Me.coltraktListIMDB.HeaderText = "IMDB"
         Me.coltraktListIMDB.Name = "coltraktListIMDB"
         Me.coltraktListIMDB.ReadOnly = True
@@ -1837,60 +1884,13 @@ Partial Class dlgTrakttvManager
         Me.tblBottom.Size = New System.Drawing.Size(1107, 38)
         Me.tblBottom.TabIndex = 0
         '
-        'coltraktPlaycountTitle
-        '
-        Me.coltraktPlaycountTitle.Frozen = True
-        Me.coltraktPlaycountTitle.HeaderText = "Title"
-        Me.coltraktPlaycountTitle.Name = "coltraktPlaycountTitle"
-        Me.coltraktPlaycountTitle.ReadOnly = True
-        Me.coltraktPlaycountTitle.Width = 250
-        '
-        'coltraktPlaycountPlayed
-        '
-        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle33
-        Me.coltraktPlaycountPlayed.Frozen = True
-        Me.coltraktPlaycountPlayed.HeaderText = "Played"
-        Me.coltraktPlaycountPlayed.Name = "coltraktPlaycountPlayed"
-        Me.coltraktPlaycountPlayed.ReadOnly = True
-        Me.coltraktPlaycountPlayed.Width = 65
-        '
-        'coltraktPlaycountLastWatched
-        '
-        Me.coltraktPlaycountLastWatched.Frozen = True
-        Me.coltraktPlaycountLastWatched.HeaderText = "Last watched"
-        Me.coltraktPlaycountLastWatched.Name = "coltraktPlaycountLastWatched"
-        Me.coltraktPlaycountLastWatched.ReadOnly = True
-        Me.coltraktPlaycountLastWatched.Width = 120
-        '
-        'coltraktPlaycountProgress
-        '
-        DataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle34
-        Me.coltraktPlaycountProgress.HeaderText = "Progress"
-        Me.coltraktPlaycountProgress.Name = "coltraktPlaycountProgress"
-        Me.coltraktPlaycountProgress.ReadOnly = True
-        Me.coltraktPlaycountProgress.Width = 80
-        '
-        'coltraktPlaycountRating
-        '
-        DataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle35.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        DataGridViewCellStyle35.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle35.Format = "N0"
-        DataGridViewCellStyle35.NullValue = Nothing
-        Me.coltraktPlaycountRating.DefaultCellStyle = DataGridViewCellStyle35
-        Me.coltraktPlaycountRating.HeaderText = "Rating"
-        Me.coltraktPlaycountRating.Name = "coltraktPlaycountRating"
-        Me.coltraktPlaycountRating.Width = 90
-        '
         'coltraktCommentsMovie
         '
         Me.coltraktCommentsMovie.Frozen = True
         Me.coltraktCommentsMovie.HeaderText = "Movie"
         Me.coltraktCommentsMovie.Name = "coltraktCommentsMovie"
         Me.coltraktCommentsMovie.ReadOnly = True
-        Me.coltraktCommentsMovie.Width = 113
+        Me.coltraktCommentsMovie.Width = 182
         '
         'coltraktCommentsDate
         '
@@ -1898,7 +1898,7 @@ Partial Class dlgTrakttvManager
         Me.coltraktCommentsDate.HeaderText = "Date"
         Me.coltraktCommentsDate.Name = "coltraktCommentsDate"
         Me.coltraktCommentsDate.ReadOnly = True
-        Me.coltraktCommentsDate.Width = 90
+        Me.coltraktCommentsDate.Width = 116
         '
         'coltraktCommentsReplies
         '
