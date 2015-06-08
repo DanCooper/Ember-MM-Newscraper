@@ -4583,6 +4583,7 @@ Public Class dlgSettings
     Private Sub LoadMoviePosterSizes()
         Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
+        items.Add("1400x2100", Enums.MoviePosterSize.HD1426)
         items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
         items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
         Me.cbMoviePosterPrefSize.DataSource = items.ToList

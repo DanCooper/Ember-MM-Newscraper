@@ -927,8 +927,9 @@ Public Class Enums
 
     Public Enum MoviePosterSize As Integer
         Any = 0
-        HD1500 = 1
-        HD1426 = 2
+        HD2100 = 1
+        HD1500 = 2
+        HD1426 = 3
     End Enum
 
     Public Enum TVBannerSize As Integer
