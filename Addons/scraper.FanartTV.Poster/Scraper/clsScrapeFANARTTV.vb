@@ -122,21 +122,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alImagesContainer.Banners.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alImagesContainer.Banners.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alImagesContainer.Banners.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alImagesContainer.Banners.Add(tmpPoster)
-                            End If
-                        End If
+                        alImagesContainer.Banners.Add(tmpPoster)
                     Next
                 End If
 
@@ -154,21 +140,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "1000"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alImagesContainer.ClearArts.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alImagesContainer.ClearArts.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alImagesContainer.ClearArts.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alImagesContainer.ClearArts.Add(tmpPoster)
-                                End If
-                            End If
+                            alImagesContainer.ClearArts.Add(tmpPoster)
                         Next
                     End If
                     If Results.List.Movieart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
@@ -182,21 +154,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "500"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alImagesContainer.ClearArts.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alImagesContainer.ClearArts.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alImagesContainer.ClearArts.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alImagesContainer.ClearArts.Add(tmpPoster)
-                                End If
-                            End If
+                            alImagesContainer.ClearArts.Add(tmpPoster)
                         Next
                     End If
                 End If
@@ -215,21 +173,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "800"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alImagesContainer.ClearLogos.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alImagesContainer.ClearLogos.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alImagesContainer.ClearLogos.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alImagesContainer.ClearLogos.Add(tmpPoster)
-                                End If
-                            End If
+                            alImagesContainer.ClearLogos.Add(tmpPoster)
                         Next
                     End If
 
@@ -244,21 +188,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "400"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alImagesContainer.ClearLogos.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alImagesContainer.ClearLogos.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alImagesContainer.ClearLogos.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alImagesContainer.ClearLogos.Add(tmpPoster)
-                                End If
-                            End If
+                            alImagesContainer.ClearLogos.Add(tmpPoster)
                         Next
                     End If
                 End If
@@ -277,21 +207,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alImagesContainer.DiscArts.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alImagesContainer.DiscArts.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alImagesContainer.DiscArts.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alImagesContainer.DiscArts.Add(tmpPoster)
-                            End If
-                        End If
+                        alImagesContainer.DiscArts.Add(tmpPoster)
                     Next
                 End If
 
@@ -314,21 +230,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alImagesContainer.Landscapes.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alImagesContainer.Landscapes.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alImagesContainer.Landscapes.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alImagesContainer.Landscapes.Add(tmpPoster)
-                            End If
-                        End If
+                        alImagesContainer.Landscapes.Add(tmpPoster)
                     Next
                 End If
 
@@ -344,21 +246,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alImagesContainer.Posters.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alImagesContainer.Posters.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alImagesContainer.Posters.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alImagesContainer.Posters.Add(tmpPoster)
-                            End If
-                        End If
+                        alImagesContainer.Posters.Add(tmpPoster)
                     Next
                 End If
 

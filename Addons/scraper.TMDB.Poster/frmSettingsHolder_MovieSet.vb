@@ -116,9 +116,6 @@ Public Class frmSettingsHolder_MovieSet
     Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
-        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
-        Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Posters")
         Me.gbScraperImagesOpts.Text = Master.eLang.GetString(268, "Images - Scraper specific")
@@ -126,7 +123,6 @@ Public Class frmSettingsHolder_MovieSet
         Me.lblAPIKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblPrefLanguage.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
@@ -146,30 +142,6 @@ Public Class frmSettingsHolder_MovieSet
     Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
         _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkGetBlankImages_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkGetBlankImages.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkGetEnglishImages_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkPrefLanguageOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-
-        Me.chkGetBlankImages.Enabled = Me.chkPrefLanguageOnly.Checked
-        Me.chkGetEnglishImages.Enabled = Me.chkPrefLanguageOnly.Checked
-
-        If Not Me.chkPrefLanguageOnly.Checked Then
-            Me.chkGetBlankImages.Checked = False
-            Me.chkGetEnglishImages.Checked = False
-        End If
     End Sub
 
     Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click

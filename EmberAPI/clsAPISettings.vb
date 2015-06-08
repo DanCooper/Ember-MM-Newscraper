@@ -443,6 +443,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetDisplayImageSelect() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetDisplayImageSelect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetDisplayImageSelect = value
+        End Set
+    End Property
+
     Public Property MovieDisplayYear() As Boolean
         Get
             Return Settings._XMLSettings.MovieDisplayYear
@@ -4070,6 +4079,78 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieImagesGetBlankImages() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieImagesGetBlankImages
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieImagesGetBlankImages = value
+        End Set
+    End Property
+
+    Public Property MovieImagesGetEnglishImages() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieImagesGetEnglishImages
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieImagesGetEnglishImages = value
+        End Set
+    End Property
+
+    Public Property MovieImagesPrefLanguage() As String
+        Get
+            Return Settings._XMLSettings.MovieImagesPrefLanguage
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieImagesPrefLanguage = value
+        End Set
+    End Property
+
+    Public Property MovieImagesPrefLanguageOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieImagesPrefLanguageOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieImagesPrefLanguageOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesGetBlankImages() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetImagesGetBlankImages
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetImagesGetBlankImages = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesGetEnglishImages() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetImagesGetEnglishImages
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetImagesGetEnglishImages = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesPrefLanguage() As String
+        Get
+            Return Settings._XMLSettings.MovieSetImagesPrefLanguage
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetImagesPrefLanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesPrefLanguageOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetImagesPrefLanguageOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetImagesPrefLanguageOnly = value
+        End Set
+    End Property
+
     Public Property MovieUseFrodo() As Boolean
         Get
             Return Settings._XMLSettings.MovieUseFrodo
@@ -6277,6 +6358,10 @@ Public Class Settings
         Me.MovieGeneralIgnoreLastScan = True
         Me.MovieGeneralMarkNew = False
         Me.MovieGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieImagesGetBlankImages = False
+        Me.MovieImagesGetEnglishImages = False
+        Me.MovieImagesPrefLanguage = "en"
+        Me.MovieImagesPrefLanguageOnly = False
         Me.MovieIMDBURL = String.Empty
         Me.MovieLandscapeOverwrite = True
         Me.MovieLevTolerance = 0
@@ -6386,6 +6471,7 @@ Public Class Settings
         Me.MovieSetClickScrape = False
         Me.MovieSetClickScrapeAsk = False
         Me.MovieSetDiscArtOverwrite = True
+        Me.MovieSetDisplayImageSelect = True
         Me.MovieSetFanartHeight = 0
         Me.MovieSetFanartOverwrite = True
         Me.MovieSetFanartPrefSizeOnly = False
@@ -6394,6 +6480,10 @@ Public Class Settings
         Me.MovieSetFanartWidth = 0
         Me.MovieSetGeneralMarkNew = False
         Me.MovieSetGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieSetImagesGetBlankImages = False
+        Me.MovieSetImagesGetEnglishImages = False
+        Me.MovieSetImagesPrefLanguage = "en"
+        Me.MovieSetImagesPrefLanguageOnly = False
         Me.MovieSetLandscapeOverwrite = True
         Me.MovieSetLockPlot = False
         Me.MovieSetLockTitle = False

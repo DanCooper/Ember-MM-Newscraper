@@ -45,11 +45,6 @@ Partial Class frmSettingsHolder_Movie
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
-        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
-        Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
-        Me.lblPrefLanguage = New System.Windows.Forms.Label()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
@@ -284,7 +279,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 145)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(432, 183)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(432, 110)
         Me.gbScraperOpts.TabIndex = 95
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -304,23 +299,15 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 2, 1)
         Me.tblScraperOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
         Me.tblScraperOpts.Controls.Add(Me.lblEMMAPI, 2, 0)
-        Me.tblScraperOpts.Controls.Add(Me.chkGetBlankImages, 2, 5)
-        Me.tblScraperOpts.Controls.Add(Me.chkGetEnglishImages, 2, 4)
-        Me.tblScraperOpts.Controls.Add(Me.chkPrefLanguageOnly, 2, 3)
-        Me.tblScraperOpts.Controls.Add(Me.cbPrefLanguage, 1, 3)
-        Me.tblScraperOpts.Controls.Add(Me.lblPrefLanguage, 0, 3)
         Me.tblScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperOpts.Name = "tblScraperOpts"
-        Me.tblScraperOpts.RowCount = 7
+        Me.tblScraperOpts.RowCount = 4
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.Size = New System.Drawing.Size(426, 162)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(426, 89)
         Me.tblScraperOpts.TabIndex = 98
         '
         'lblAPIHint
@@ -390,72 +377,6 @@ Partial Class frmSettingsHolder_Movie
         Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
         Me.lblEMMAPI.TabIndex = 12
         Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
-        '
-        'chkGetBlankImages
-        '
-        Me.chkGetBlankImages.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGetBlankImages.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkGetBlankImages, 2)
-        Me.chkGetBlankImages.Enabled = False
-        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetBlankImages.Location = New System.Drawing.Point(171, 142)
-        Me.chkGetBlankImages.Name = "chkGetBlankImages"
-        Me.chkGetBlankImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkGetBlankImages.Size = New System.Drawing.Size(160, 17)
-        Me.chkGetBlankImages.TabIndex = 19
-        Me.chkGetBlankImages.Text = "Also Get Blank Images"
-        Me.chkGetBlankImages.UseVisualStyleBackColor = True
-        '
-        'chkGetEnglishImages
-        '
-        Me.chkGetEnglishImages.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGetEnglishImages.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkGetEnglishImages, 2)
-        Me.chkGetEnglishImages.Enabled = False
-        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(171, 119)
-        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
-        Me.chkGetEnglishImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkGetEnglishImages.Size = New System.Drawing.Size(169, 17)
-        Me.chkGetEnglishImages.TabIndex = 17
-        Me.chkGetEnglishImages.Text = "Also Get English Images"
-        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
-        '
-        'chkPrefLanguageOnly
-        '
-        Me.chkPrefLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkPrefLanguageOnly.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkPrefLanguageOnly, 2)
-        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(171, 94)
-        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
-        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
-        Me.chkPrefLanguageOnly.TabIndex = 18
-        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
-        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
-        '
-        'cbPrefLanguage
-        '
-        Me.cbPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.cbPrefLanguage.FormattingEnabled = True
-        Me.cbPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbPrefLanguage.Location = New System.Drawing.Point(120, 92)
-        Me.cbPrefLanguage.Name = "cbPrefLanguage"
-        Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
-        Me.cbPrefLanguage.TabIndex = 8
-        '
-        'lblPrefLanguage
-        '
-        Me.lblPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPrefLanguage.AutoSize = True
-        Me.lblPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblPrefLanguage.Location = New System.Drawing.Point(3, 96)
-        Me.lblPrefLanguage.Name = "lblPrefLanguage"
-        Me.lblPrefLanguage.Size = New System.Drawing.Size(111, 13)
-        Me.lblPrefLanguage.TabIndex = 7
-        Me.lblPrefLanguage.Text = "Preferred Language:"
         '
         'pnlSettingsBottom
         '
@@ -586,7 +507,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'frmFanartTVMediaSettingsHolder_Movie
+        'frmSettingsHolder_Movie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -598,7 +519,7 @@ Partial Class frmSettingsHolder_Movie
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmFanartTVMediaSettingsHolder_Movie"
+        Me.Name = "frmSettingsHolder_Movie"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -645,8 +566,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents gbScraperImagesOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents chkScrapeLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeDiscArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearArt As System.Windows.Forms.CheckBox
@@ -654,9 +573,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkScrapeBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearLogoOnlyHD As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearArtOnlyHD As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGetBlankImages As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPrefLanguageOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents lblAPIHint As System.Windows.Forms.Label
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel

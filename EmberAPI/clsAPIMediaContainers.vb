@@ -2989,10 +2989,7 @@ Namespace MediaContainers
         End Sub
 
         Public Function CompareTo(ByVal other As [Image]) As Integer Implements IComparable(Of [Image]).CompareTo
-            Dim retVal As Integer = (Me.Height).CompareTo(other.Height)
-            If retVal = 0 Then
-                retVal = (Me.Height).CompareTo(other.Height) * -1
-            End If
+            Dim retVal As Integer = (Me.ShortLang).CompareTo(other.ShortLang)
             Return retVal
         End Function
 
@@ -3112,18 +3109,94 @@ Namespace MediaContainers
             Me._posters.Clear()
         End Sub
 
-        Public Sub SortImages()
+        Public Sub Sort(ByRef ContentType As Enums.Content_Type)
+            Dim cSettings As New Settings
+
+            Select Case ContentType
+                Case Enums.Content_Type.Movie
+                    cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
+                    cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
+                    cSettings.PrefLanguage = Master.eSettings.MovieImagesPrefLanguage
+                    cSettings.PrefLanguageOnly = Master.eSettings.MovieImagesPrefLanguageOnly
+                Case Enums.Content_Type.MovieSet
+                    cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
+                    cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
+                    cSettings.PrefLanguage = Master.eSettings.MovieSetImagesPrefLanguage
+                    cSettings.PrefLanguageOnly = Master.eSettings.MovieSetImagesPrefLanguageOnly
+            End Select
+
+            'sort all List(Of Image) by Image.ShortLang
             Me._banners.Sort()
             Me._characterarts.Sort()
             Me._cleararts.Sort()
             Me._clearlogos.Sort()
             Me._discarts.Sort()
-            Me._fanarts.Sort()
             Me._landscapes.Sort()
             Me._posters.Sort()
+
+            'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
+            'Fanart are not filtered, since they have no language specification
+            Me._banners = SortImages(Me._banners, cSettings)
+            Me._characterarts = SortImages(Me._characterarts, cSettings)
+            Me._cleararts = SortImages(Me._cleararts, cSettings)
+            Me._clearlogos = SortImages(Me._clearlogos, cSettings)
+            Me._discarts = SortImages(Me._discarts, cSettings)
+            Me._landscapes = SortImages(Me._landscapes, cSettings)
+            Me._posters = SortImages(Me._posters, cSettings)
         End Sub
 
+        Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
+            Dim SortedList As New List(Of Image)
+
+            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.PrefLanguage)
+                SortedList.Add(tmpImage)
+            Next
+
+            If (cSettings.GetEnglishImages OrElse Not cSettings.PrefLanguageOnly) AndAlso Not cSettings.PrefLanguage = "en" Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
+                    SortedList.Add(tmpImage)
+                Next
+            End If
+
+            If cSettings.GetBlankImages OrElse Not cSettings.PrefLanguageOnly Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
+                    SortedList.Add(tmpImage)
+                Next
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
+                    SortedList.Add(tmpImage)
+                Next
+            End If
+
+            If Not cSettings.PrefLanguageOnly Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.PrefLanguage OrElse _
+                                                                   Not f.ShortLang = "en" OrElse _
+                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") OrElse _
+                                                                   Not f.ShortLang = String.Empty)
+                    SortedList.Add(tmpImage)
+                Next
+            End If
+
+            Return SortedList
+        End Function
+
 #End Region 'Methods
+
+#Region "Nested Types"
+
+        Private Structure Settings
+
+#Region "Fields"
+
+            Dim GetBlankImages As Boolean
+            Dim GetEnglishImages As Boolean
+            Dim PrefLanguage As String
+            Dim PrefLanguageOnly As Boolean
+
+#End Region
+
+        End Structure
+
+#End Region
 
     End Class
 

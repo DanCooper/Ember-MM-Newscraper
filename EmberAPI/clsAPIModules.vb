@@ -902,13 +902,12 @@ Public Class ModulesManager
                         If ret.breakChain Then Exit For
                     End If
                 Next
-                'sorting
-                ImagesContainer.SortImages()
 
-                'For Each xImage As MediaContainers.Image In ImagesContainer.Banners.OrderBy(Function(p) (p.LongLang))
-                '    alPostersOs.Add(xImage)
-                'Next
+                'sorting
+                ImagesContainer.Sort(Enums.Content_Type.Movie)
+
             End If
+
             Return ret.Cancelled
         Else
             Return True 'Cancelled
@@ -940,8 +939,7 @@ Public Class ModulesManager
                     Try
                         Dim aContainer As New MediaContainers.ImagesContainer
                         ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aContainer)
-                        If aContainer IsNot Nothing Then 'AndAlso aContainer.Count > 0 Then
-                            'For Each aIm In aContainer
+                        If aContainer IsNot Nothing Then 
                             ImagesContainer.Banners.AddRange(aContainer.Banners)
                             ImagesContainer.CharacterArts.AddRange(aContainer.CharacterArts)
                             ImagesContainer.ClearArts.AddRange(aContainer.ClearArts)
@@ -950,7 +948,6 @@ Public Class ModulesManager
                             ImagesContainer.Fanarts.AddRange(aContainer.Fanarts)
                             ImagesContainer.Landscapes.AddRange(aContainer.Landscapes)
                             ImagesContainer.Posters.AddRange(aContainer.Posters)
-                            'Next
                         End If
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
@@ -959,7 +956,12 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 End If
             Next
+
+            'sorting
+            ImagesContainer.Sort(Enums.Content_Type.MovieSet)
+
         End If
+
         Return ret.Cancelled
     End Function
     ''' <summary>

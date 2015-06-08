@@ -183,11 +183,6 @@ Public Class TMDB_Image
         _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
         _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
-        _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
-        _setup_Movie.chkGetBlankImages.Checked = _MySettings_Movie.GetBlankImages
-        _setup_Movie.chkGetEnglishImages.Checked = _MySettings_Movie.GetEnglishImages
-        _setup_Movie.chkPrefLanguageOnly.Checked = _MySettings_Movie.PrefLanguageOnly
-        _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
         _setup_Movie.API = _setup_Movie.txtApiKey.Text
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
@@ -221,11 +216,6 @@ Public Class TMDB_Image
         _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
         _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey
-        _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
-        _setup_MovieSet.chkGetBlankImages.Checked = _MySettings_MovieSet.GetBlankImages
-        _setup_MovieSet.chkGetEnglishImages.Checked = _MySettings_MovieSet.GetEnglishImages
-        _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.PrefLanguageOnly
-        _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text
         _setup_MovieSet.API = _setup_MovieSet.txtApiKey.Text
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
@@ -255,10 +245,6 @@ Public Class TMDB_Image
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
         _MySettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_Movie.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
-        _MySettings_Movie.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.Movie)
 
         ConfigScrapeModifier_Movie.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.Movie)
@@ -269,10 +255,6 @@ Public Class TMDB_Image
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_MovieSet.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.MovieSet)
 
         ConfigScrapeModifier_MovieSet.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.MovieSet)
@@ -290,11 +272,7 @@ Public Class TMDB_Image
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
             Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-            Settings.GetBlankImages = _MySettings_Movie.GetBlankImages
-            Settings.GetEnglishImages = _MySettings_Movie.GetEnglishImages
             Settings.APIKey = _MySettings_Movie.APIKey
-            Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
-            Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
             Dim _scraper As New TMDB.Scraper
 
@@ -318,11 +296,7 @@ Public Class TMDB_Image
 
         If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
             Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-            Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
-            Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
             Settings.APIKey = _MySettings_MovieSet.APIKey
-            Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
-            Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
             Dim _scraper As New TMDB.Scraper
 
@@ -339,10 +313,6 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
 
             settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("GetBlankImages", _MySettings_Movie.GetBlankImages, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("GetEnglishImages", _MySettings_Movie.GetEnglishImages, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_Movie.PrefLanguageOnly, , , Enums.Content_Type.Movie)
-            settings.SetSetting("PrefLanguage", _MySettings_Movie.PrefLanguage, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
@@ -352,18 +322,10 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_MovieSet.Fanart, , , Enums.Content_Type.MovieSet)
 
             settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("GetBlankImages", _MySettings_MovieSet.GetBlankImages, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("GetEnglishImages", _MySettings_MovieSet.GetEnglishImages, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_MovieSet.PrefLanguageOnly, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.MovieSet)
         End Using
     End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
-        _MySettings_Movie.PrefLanguage = _setup_Movie.cbPrefLanguage.Text
-        _MySettings_Movie.GetBlankImages = _setup_Movie.chkGetBlankImages.Checked
-        _MySettings_Movie.GetEnglishImages = _setup_Movie.chkGetEnglishImages.Checked
-        _MySettings_Movie.PrefLanguageOnly = _setup_Movie.chkPrefLanguageOnly.Checked
         ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
         ConfigScrapeModifier_Movie.Fanart = _setup_Movie.chkScrapeFanart.Checked
         SaveSettings_Movie()
@@ -377,10 +339,6 @@ Public Class TMDB_Image
     End Sub
 
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
-        _MySettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
-        _MySettings_MovieSet.GetBlankImages = _setup_MovieSet.chkGetBlankImages.Checked
-        _MySettings_MovieSet.GetEnglishImages = _setup_MovieSet.chkGetEnglishImages.Checked
-        _MySettings_MovieSet.PrefLanguageOnly = _setup_MovieSet.chkPrefLanguageOnly.Checked
         ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
         ConfigScrapeModifier_MovieSet.Fanart = _setup_MovieSet.chkScrapeFanart.Checked
         SaveSettings_MovieSet()
@@ -408,11 +366,9 @@ Public Class TMDB_Image
     Structure sMySettings
 
 #Region "Fields"
+
         Dim APIKey As String
-        Dim PrefLanguage As String
-        Dim PrefLanguageOnly As Boolean
-        Dim GetEnglishImages As Boolean
-        Dim GetBlankImages As Boolean
+
 #End Region 'Fields
 
     End Structure

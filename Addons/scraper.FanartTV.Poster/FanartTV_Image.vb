@@ -279,9 +279,6 @@ Public Class FanartTV_Image
         _setup_Movie = New frmSettingsHolder_Movie
         LoadSettings_Movie()
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
-        _setup_Movie.chkGetBlankImages.Checked = _MySettings_Movie.GetBlankImages
-        _setup_Movie.chkGetEnglishImages.Checked = _MySettings_Movie.GetEnglishImages
-        _setup_Movie.chkPrefLanguageOnly.Checked = _MySettings_Movie.PrefLanguageOnly
         _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
         _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
         _setup_Movie.chkScrapeBanner.Checked = ConfigScrapeModifier_Movie.Banner
@@ -292,7 +289,6 @@ Public Class FanartTV_Image
         _setup_Movie.chkScrapeDiscArt.Checked = ConfigScrapeModifier_Movie.DiscArt
         _setup_Movie.chkScrapeLandscape.Checked = ConfigScrapeModifier_Movie.Landscape
         _setup_Movie.txtApiKey.Text = _MySettings_Movie.ApiKey
-        _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
 
         If Not String.IsNullOrEmpty(_MySettings_Movie.ApiKey) Then
             _setup_Movie.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -322,9 +318,6 @@ Public Class FanartTV_Image
         _setup_MovieSet = New frmSettingsHolder_MovieSet
         LoadSettings_MovieSet()
         _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
-        _setup_MovieSet.chkGetBlankImages.Checked = _MySettings_MovieSet.GetBlankImages
-        _setup_MovieSet.chkGetEnglishImages.Checked = _MySettings_MovieSet.GetEnglishImages
-        _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.PrefLanguageOnly
         _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
         _setup_MovieSet.chkScrapeBanner.Checked = ConfigScrapeModifier_MovieSet.Banner
@@ -335,7 +328,6 @@ Public Class FanartTV_Image
         _setup_MovieSet.chkScrapeDiscArt.Checked = ConfigScrapeModifier_MovieSet.DiscArt
         _setup_MovieSet.chkScrapeLandscape.Checked = ConfigScrapeModifier_MovieSet.Landscape
         _setup_MovieSet.txtApiKey.Text = _MySettings_MovieSet.ApiKey
-        _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
 
         If Not String.IsNullOrEmpty(_MySettings_MovieSet.ApiKey) Then
             _setup_MovieSet.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -409,10 +401,6 @@ Public Class FanartTV_Image
 
     Sub LoadSettings_Movie()
         _MySettings_Movie.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.Movie)
-        _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
-        _MySettings_Movie.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.Movie)
         _MySettings_Movie.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.Movie)
         _MySettings_Movie.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.Movie)
 
@@ -429,10 +417,6 @@ Public Class FanartTV_Image
 
     Sub LoadSettings_MovieSet()
         _MySettings_MovieSet.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.MovieSet)
 
@@ -483,10 +467,6 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier_Movie.Landscape, , , Enums.Content_Type.Movie)
 
             settings.SetSetting("ApiKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
-            settings.SetSetting("PrefLanguage", _MySettings_Movie.PrefLanguage, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("GetBlankImages", _MySettings_Movie.GetBlankImages, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("GetEnglishImages", _MySettings_Movie.GetEnglishImages, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_Movie.PrefLanguageOnly, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
@@ -503,10 +483,6 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier_MovieSet.Landscape, , , Enums.Content_Type.MovieSet)
 
             settings.SetSetting("ApiKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("GetBlankImages", _MySettings_MovieSet.GetBlankImages, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("GetEnglishImages", _MySettings_MovieSet.GetEnglishImages, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_MovieSet.PrefLanguageOnly, , , Enums.Content_Type.MovieSet)
         End Using
     End Sub
 
@@ -535,10 +511,6 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
-        _MySettings_Movie.PrefLanguage = _setup_Movie.cbPrefLanguage.Text
-        _MySettings_Movie.PrefLanguageOnly = _setup_Movie.chkPrefLanguageOnly.Checked
-        _MySettings_Movie.GetBlankImages = _setup_Movie.chkGetBlankImages.Checked
-        _MySettings_Movie.GetEnglishImages = _setup_Movie.chkGetEnglishImages.Checked
         _MySettings_Movie.ClearArtOnlyHD = _setup_Movie.chkScrapeClearArtOnlyHD.Checked
         _MySettings_Movie.ClearLogoOnlyHD = _setup_Movie.chkScrapeClearLogoOnlyHD.Checked
         ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
@@ -558,10 +530,6 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
-        _MySettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
-        _MySettings_MovieSet.PrefLanguageOnly = _setup_MovieSet.chkPrefLanguageOnly.Checked
-        _MySettings_MovieSet.GetBlankImages = _setup_MovieSet.chkGetBlankImages.Checked
-        _MySettings_MovieSet.GetEnglishImages = _setup_MovieSet.chkGetEnglishImages.Checked
         _MySettings_MovieSet.ClearArtOnlyHD = _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked
         _MySettings_MovieSet.ClearLogoOnlyHD = _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked
         ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
@@ -612,14 +580,10 @@ Public Class FanartTV_Image
 
         LoadSettings_Movie()
 
-        Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
+        Dim Settings As New FanartTVs.Scraper.sMySettings_ForScraper
         Settings.ApiKey = _MySettings_Movie.ApiKey
         Settings.ClearArtOnlyHD = _MySettings_Movie.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_Movie.ClearLogoOnlyHD
-        Settings.GetBlankImages = _MySettings_Movie.GetBlankImages
-        Settings.GetEnglishImages = _MySettings_Movie.GetEnglishImages
-        Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
-        Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, Type, Settings)
@@ -645,14 +609,10 @@ Public Class FanartTV_Image
         End If
 
         If Not String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
-            Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
+            Dim Settings As New FanartTVs.Scraper.sMySettings_ForScraper
             Settings.ApiKey = _MySettings_MovieSet.ApiKey
             Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
             Settings.ClearLogoOnlyHD = _MySettings_MovieSet.ClearLogoOnlyHD
-            Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
-            Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
-            Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
-            Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, Type, Settings)
         End If

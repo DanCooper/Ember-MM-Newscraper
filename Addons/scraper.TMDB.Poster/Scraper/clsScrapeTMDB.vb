@@ -110,25 +110,7 @@ Namespace TMDB
                                 .VoteCount = image.VoteCount, _
                                 .Width = image.Width.ToString}
 
-                        If tmpImage.ShortLang = Settings.PrefLanguage Then
-                            alImagesContainer.Posters.Add(tmpImage)
-                        ElseIf tmpImage.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alImagesContainer.Posters.Add(tmpImage)
-                            End If
-                        ElseIf tmpImage.ShortLang = "xx" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alImagesContainer.Posters.Add(tmpImage)
-                            End If
-                        ElseIf String.IsNullOrEmpty(tmpImage.ShortLang) Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alImagesContainer.Posters.Add(tmpImage)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alImagesContainer.Posters.Add(tmpImage)
-                            End If
-                        End If
+                        alImagesContainer.Posters.Add(tmpImage)
                     Next
                 End If
 
@@ -157,11 +139,9 @@ Namespace TMDB
         Structure sMySettings_ForScraper
 
 #Region "Fields"
+
             Dim APIKey As String
-            Dim PrefLanguage As String
-            Dim PrefLanguageOnly As Boolean
-            Dim GetEnglishImages As Boolean
-            Dim GetBlankImages As Boolean
+
 #End Region 'Fields
 
         End Structure

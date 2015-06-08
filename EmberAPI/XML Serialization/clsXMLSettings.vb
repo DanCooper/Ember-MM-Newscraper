@@ -127,6 +127,10 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegeneralmarknew As Boolean
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
+    Private _movieimagespreflanguage As String
+    Private _movieimagespreflanguageonly As Boolean
+    Private _movieimagesgetblankimages As Boolean
+    Private _movieimagesgetenglishimages As Boolean
     Private _movieimdburl As String
     Private _movielandscapeoverwrite As Boolean
     Private _movielevtolerance As Integer
@@ -236,6 +240,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetclickscrape As Boolean
     Private _moviesetclickscrapeask As Boolean
     Private _moviesetdiscartoverwrite As Boolean
+    Private _moviesetdisplayimageselect As Boolean
     Private _moviesetfanartheight As Integer
     Private _moviesetfanartoverwrite As Boolean
     Private _moviesetfanartprefsizeonly As Boolean
@@ -244,6 +249,10 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralmarknew As Boolean
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
+    Private _moviesetimagespreflanguage As String
+    Private _moviesetimagespreflanguageonly As Boolean
+    Private _moviesetimagesgetblankimages As Boolean
+    Private _moviesetimagesgetenglishimages As Boolean
     Private _moviesetlandscapeoverwrite As Boolean
     Private _moviesetlockplot As Boolean
     Private _moviesetlocktitle As Boolean
@@ -1291,6 +1300,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviedisplayimageselect = value
+        End Set
+    End Property
+
+    Public Property MovieSetDisplayImageSelect() As Boolean
+        Get
+            Return Me._moviesetdisplayimageselect
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdisplayimageselect = value
         End Set
     End Property
 
@@ -5852,6 +5870,78 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._moviefanartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property MovieImagesGetBlankImages() As Boolean
+        Get
+            Return Me._movieimagesgetblankimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieimagesgetblankimages = value
+        End Set
+    End Property
+
+    Public Property MovieImagesGetEnglishImages() As Boolean
+        Get
+            Return Me._movieimagesgetenglishimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieimagesgetenglishimages = value
+        End Set
+    End Property
+
+    Public Property MovieImagesPrefLanguage() As String
+        Get
+            Return Me._movieimagespreflanguage
+        End Get
+        Set(ByVal value As String)
+            Me._movieimagespreflanguage = value
+        End Set
+    End Property
+
+    Public Property MovieImagesPrefLanguageOnly() As Boolean
+        Get
+            Return Me._movieimagespreflanguageonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieimagespreflanguageonly = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesGetBlankImages() As Boolean
+        Get
+            Return Me._moviesetimagesgetblankimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetimagesgetblankimages = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesGetEnglishImages() As Boolean
+        Get
+            Return Me._moviesetimagesgetenglishimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetimagesgetenglishimages = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesPrefLanguage() As String
+        Get
+            Return Me._moviesetimagespreflanguage
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetimagespreflanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesPrefLanguageOnly() As Boolean
+        Get
+            Return Me._moviesetimagespreflanguageonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetimagespreflanguageonly = value
         End Set
     End Property
 
