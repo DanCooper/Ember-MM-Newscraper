@@ -1087,7 +1087,9 @@ Public Class NFO
                     End If
                 End If
 
-            Catch
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+
                 xmlMov.Clear()
                 If Not String.IsNullOrEmpty(sPath) Then
 
@@ -1158,7 +1160,9 @@ Public Class NFO
                     '    End If
                 End If
 
-            Catch
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+
                 xmlMovSet.Clear()
                 'If Not String.IsNullOrEmpty(sPath) Then
 
@@ -1246,7 +1250,9 @@ Public Class NFO
                     End If
                 End If
 
-            Catch
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameEpNonConfNfo(sPath, True)
@@ -1309,7 +1315,9 @@ Public Class NFO
                     End If
                 End If
 
-            Catch
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameEpNonConfNfo(sPath, True)
@@ -1340,7 +1348,9 @@ Public Class NFO
                     End If
                 End If
 
-            Catch
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameShowNonConfNfo(sPath)
@@ -1353,6 +1363,7 @@ Public Class NFO
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
 
             Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             'Boxee support
