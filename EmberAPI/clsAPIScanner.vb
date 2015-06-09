@@ -1090,6 +1090,10 @@ Public Class Scanner
                 End If
             Else
                 tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(TVShowPaths.Item(TVContainer.ShowPath.ToLower)))
+                TVContainer.AllSeasonsBanner = tmpTVDB.SeasonBannerPath
+                TVContainer.AllSeasonsFanart = tmpTVDB.SeasonFanartPath
+                TVContainer.AllSeasonsLandscape = tmpTVDB.SeasonLandscapePath
+                TVContainer.AllSeasonsPoster = tmpTVDB.SeasonPosterPath
             End If
 
             If tmpTVDB.ShowID > -1 Then
@@ -1210,9 +1214,6 @@ Public Class Scanner
                                 'Do the Save
                                 Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)
 
-                                'Save the All Seasons entry
-                                Master.DB.SaveTVSeasonToDB(New Structures.DBTV With {.ShowID = tmpTVDB.ShowID, .SeasonBannerPath = TVContainer.AllSeasonsBanner, .SeasonFanartPath = TVContainer.AllSeasonsFanart, .SeasonLandscapePath = TVContainer.AllSeasonsLandscape, .SeasonPosterPath = TVContainer.AllSeasonsPoster, .TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}}, True)
-
                                 Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title)})
                             Else
                                 Dim i As Integer = CInt(sEpisode.Episode)
@@ -1300,15 +1301,15 @@ Public Class Scanner
                                 'Do the Save
                                 Master.DB.SaveTVEpToDB(tmpTVDB, True, True, True, toNfo)
 
-                                'Save the All Seasons entry
-                                Master.DB.SaveTVSeasonToDB(New Structures.DBTV With {.ShowID = tmpTVDB.ShowID, .SeasonBannerPath = TVContainer.AllSeasonsBanner, .SeasonFanartPath = TVContainer.AllSeasonsFanart, .SeasonLandscapePath = TVContainer.AllSeasonsLandscape, .SeasonPosterPath = TVContainer.AllSeasonsPoster, .TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}}, True)
-
                                 Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title)})
                             End If
                         Next
                     End If
                 Next
             End If
+
+            'Save the All Seasons entry
+            Master.DB.SaveTVSeasonToDB(New Structures.DBTV With {.ShowID = tmpTVDB.ShowID, .SeasonBannerPath = TVContainer.AllSeasonsBanner, .SeasonFanartPath = TVContainer.AllSeasonsFanart, .SeasonLandscapePath = TVContainer.AllSeasonsLandscape, .SeasonPosterPath = TVContainer.AllSeasonsPoster, .TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}}, True)
         End If
     End Sub
 
