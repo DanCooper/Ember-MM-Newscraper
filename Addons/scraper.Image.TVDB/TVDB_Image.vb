@@ -91,10 +91,10 @@ Public Class TVDB_Image
                 Return ConfigScrapeModifier.AllSeasonsFanart
             Case Enums.ScraperCapabilities_TV.AllSeasonsPoster
                 Return ConfigScrapeModifier.AllSeasonsPoster
+            Case Enums.ScraperCapabilities_TV.EpisodePoster
+                Return ConfigScrapeModifier.EpisodePoster
             Case Enums.ScraperCapabilities_TV.SeasonBanner
                 Return ConfigScrapeModifier.SeasonBanner
-            Case Enums.ScraperCapabilities_TV.SeasonFanart
-                Return ConfigScrapeModifier.SeasonFanart
             Case Enums.ScraperCapabilities_TV.SeasonPoster
                 Return ConfigScrapeModifier.SeasonPoster
             Case Enums.ScraperCapabilities_TV.ShowBanner
@@ -132,18 +132,14 @@ Public Class TVDB_Image
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.chkGetEnglishImages.Checked = _MySettings.GetEnglishImages
-        _setup.chkPrefLanguageOnly.Checked = _MySettings.PrefLanguageOnly
+        _setup.chkScrapeEpisodePoster.Checked = ConfigScrapeModifier.EpisodePoster
         _setup.chkScrapeSeasonBanner.Checked = ConfigScrapeModifier.SeasonBanner
-        _setup.chkScrapeSeasonFanart.Checked = ConfigScrapeModifier.SeasonFanart
         _setup.chkScrapeSeasonPoster.Checked = ConfigScrapeModifier.SeasonPoster
         _setup.chkScrapeShowBanner.Checked = ConfigScrapeModifier.ShowBanner
         _setup.chkScrapeShowFanart.Checked = ConfigScrapeModifier.ShowFanart
         _setup.chkScrapeShowPoster.Checked = ConfigScrapeModifier.ShowPoster
+
         _setup.txtApiKey.Text = _MySettings.ApiKey
-        If _setup.cbPrefLanguage.Items.Count > 0 Then
-            _setup.cbPrefLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _MySettings.PrefLanguage).name
-        End If
 
         If Not String.IsNullOrEmpty(_MySettings.ApiKey) Then
             _setup.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -170,13 +166,9 @@ Public Class TVDB_Image
 
     Sub LoadSettings()
         _MySettings.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "")
-        _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en")
-        _MySettings.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False)
-        _MySettings.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False)
-        _MySettings.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False)
 
+        ConfigScrapeModifier.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
         ConfigScrapeModifier.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)
-        ConfigScrapeModifier.SeasonFanart = clsAdvancedSettings.GetBooleanSetting("DoSeasonFanart", True)
         ConfigScrapeModifier.SeasonLandscape = clsAdvancedSettings.GetBooleanSetting("DoSeasonLandscape", True)
         ConfigScrapeModifier.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True)
         ConfigScrapeModifier.ShowBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True)
@@ -191,8 +183,8 @@ Public Class TVDB_Image
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("DoEpisodePoster", ConfigScrapeModifier.EpisodePoster)
             settings.SetBooleanSetting("DoSeasonBanner", ConfigScrapeModifier.SeasonBanner)
-            settings.SetBooleanSetting("DoSeasonFanart", ConfigScrapeModifier.SeasonFanart)
             settings.SetBooleanSetting("DoSeasonLandscape", ConfigScrapeModifier.SeasonLandscape)
             settings.SetBooleanSetting("DoSeasonPoster", ConfigScrapeModifier.SeasonPoster)
             settings.SetBooleanSetting("DoShowBanner", ConfigScrapeModifier.ShowBanner)
@@ -204,19 +196,12 @@ Public Class TVDB_Image
             settings.SetBooleanSetting("DoShowPoster", ConfigScrapeModifier.ShowPoster)
 
             settings.SetSetting("ApiKey", _setup.txtApiKey.Text)
-            settings.SetSetting("PrefLanguage", _MySettings.PrefLanguage)
-            settings.SetBooleanSetting("GetBlankImages", _MySettings.GetBlankImages)
-            settings.SetBooleanSetting("GetEnglishImages", _MySettings.GetEnglishImages)
-            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings.PrefLanguageOnly)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_TV.SaveSetupScraper
-        _MySettings.PrefLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setup.cbPrefLanguage.Text).abbreviation
-        _MySettings.PrefLanguageOnly = _setup.chkPrefLanguageOnly.Checked
-        _MySettings.GetEnglishImages = _setup.chkGetEnglishImages.Checked
+        ConfigScrapeModifier.EpisodePoster = _setup.chkScrapeEpisodePoster.Checked
         ConfigScrapeModifier.SeasonBanner = _setup.chkScrapeSeasonBanner.Checked
-        ConfigScrapeModifier.SeasonFanart = _setup.chkScrapeSeasonFanart.Checked
         ConfigScrapeModifier.SeasonPoster = _setup.chkScrapeSeasonPoster.Checked
         ConfigScrapeModifier.ShowBanner = _setup.chkScrapeShowBanner.Checked
         ConfigScrapeModifier.ShowFanart = _setup.chkScrapeShowFanart.Checked
@@ -230,20 +215,16 @@ Public Class TVDB_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.ImagesContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("Started scrape TVDB")
 
         LoadSettings()
 
-        Dim Settings As TVDBs.Scraper.sMySettings_ForScraper
+        Dim Settings As TVDBs.Scraper.MySettings
         Settings.ApiKey = _MySettings.ApiKey
-        Settings.GetBlankImages = _MySettings.GetBlankImages
-        Settings.GetEnglishImages = _MySettings.GetEnglishImages
-        Settings.PrefLanguage = _MySettings.PrefLanguage
-        Settings.PrefLanguageOnly = _MySettings.PrefLanguageOnly
 
         If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
-            ImageList = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
         Else
             logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
         End If
@@ -263,11 +244,9 @@ Public Class TVDB_Image
     Structure sMySettings
 
 #Region "Fields"
+
         Dim ApiKey As String
-        Dim GetEnglishImages As Boolean
-        Dim GetBlankImages As Boolean
-        Dim PrefLanguage As String
-        Dim PrefLanguageOnly As Boolean
+
 #End Region 'Fields
 
     End Structure

@@ -31,7 +31,6 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperImagesSeason = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScrapeSeasonBanner = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeSeasonFanart = New System.Windows.Forms.CheckBox()
         Me.chkScrapeSeasonLandscape = New System.Windows.Forms.CheckBox()
         Me.chkScrapeSeasonPoster = New System.Windows.Forms.CheckBox()
         Me.gbScraperImagesTVShow = New System.Windows.Forms.GroupBox()
@@ -53,11 +52,6 @@ Partial Class frmSettingsHolder_TV
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
-        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
-        Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
-        Me.lblPrefLanguage = New System.Windows.Forms.Label()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
@@ -96,7 +90,7 @@ Partial Class frmSettingsHolder_TV
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(642, 505)
+        Me.pnlSettings.Size = New System.Drawing.Size(456, 369)
         Me.pnlSettings.TabIndex = 0
         '
         'pnlSettingsMain
@@ -106,7 +100,7 @@ Partial Class frmSettingsHolder_TV
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 29)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(642, 439)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(456, 303)
         Me.pnlSettingsMain.TabIndex = 98
         '
         'tblSettingsMain
@@ -125,7 +119,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsMain.Size = New System.Drawing.Size(642, 439)
+        Me.tblSettingsMain.Size = New System.Drawing.Size(456, 303)
         Me.tblSettingsMain.TabIndex = 0
         '
         'gbScraperImagesOpts
@@ -177,21 +171,19 @@ Partial Class frmSettingsHolder_TV
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonBanner, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonFanart, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonLandscape, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonPoster, 0, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonLandscape, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonPoster, 0, 2)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 6
+        Me.TableLayoutPanel1.RowCount = 5
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(180, 115)
         Me.TableLayoutPanel1.TabIndex = 98
         '
@@ -208,25 +200,12 @@ Partial Class frmSettingsHolder_TV
         Me.chkScrapeSeasonBanner.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeSeasonBanner.UseVisualStyleBackColor = True
         '
-        'chkScrapeSeasonFanart
-        '
-        Me.chkScrapeSeasonFanart.AutoSize = True
-        Me.chkScrapeSeasonFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeSeasonFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeSeasonFanart.Location = New System.Drawing.Point(3, 26)
-        Me.chkScrapeSeasonFanart.Name = "chkScrapeSeasonFanart"
-        Me.chkScrapeSeasonFanart.Size = New System.Drawing.Size(80, 17)
-        Me.chkScrapeSeasonFanart.TabIndex = 1
-        Me.chkScrapeSeasonFanart.Text = "Get Fanart"
-        Me.chkScrapeSeasonFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkScrapeSeasonFanart.UseVisualStyleBackColor = True
-        '
         'chkScrapeSeasonLandscape
         '
         Me.chkScrapeSeasonLandscape.AutoSize = True
         Me.chkScrapeSeasonLandscape.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeSeasonLandscape.Location = New System.Drawing.Point(3, 49)
+        Me.chkScrapeSeasonLandscape.Location = New System.Drawing.Point(3, 26)
         Me.chkScrapeSeasonLandscape.Name = "chkScrapeSeasonLandscape"
         Me.chkScrapeSeasonLandscape.Size = New System.Drawing.Size(101, 17)
         Me.chkScrapeSeasonLandscape.TabIndex = 7
@@ -239,7 +218,7 @@ Partial Class frmSettingsHolder_TV
         Me.chkScrapeSeasonPoster.AutoSize = True
         Me.chkScrapeSeasonPoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeSeasonPoster.Location = New System.Drawing.Point(3, 72)
+        Me.chkScrapeSeasonPoster.Location = New System.Drawing.Point(3, 49)
         Me.chkScrapeSeasonPoster.Name = "chkScrapeSeasonPoster"
         Me.chkScrapeSeasonPoster.Size = New System.Drawing.Size(79, 17)
         Me.chkScrapeSeasonPoster.TabIndex = 0
@@ -414,7 +393,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 172)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(432, 183)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(432, 110)
         Me.gbScraperOpts.TabIndex = 95
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -422,41 +401,36 @@ Partial Class frmSettingsHolder_TV
         'tblScraperOpts
         '
         Me.tblScraperOpts.AutoSize = True
-        Me.tblScraperOpts.ColumnCount = 5
+        Me.tblScraperOpts.ColumnCount = 4
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblScraperOpts.Controls.Add(Me.lblAPIHint, 0, 2)
         Me.tblScraperOpts.Controls.Add(Me.lblAPIKey, 0, 0)
-        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 3, 1)
-        Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 2, 1)
+        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 2, 1)
+        Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 1, 1)
         Me.tblScraperOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
-        Me.tblScraperOpts.Controls.Add(Me.lblEMMAPI, 2, 0)
-        Me.tblScraperOpts.Controls.Add(Me.chkGetBlankImages, 2, 5)
-        Me.tblScraperOpts.Controls.Add(Me.chkGetEnglishImages, 2, 4)
-        Me.tblScraperOpts.Controls.Add(Me.chkPrefLanguageOnly, 2, 3)
-        Me.tblScraperOpts.Controls.Add(Me.cbPrefLanguage, 1, 3)
-        Me.tblScraperOpts.Controls.Add(Me.lblPrefLanguage, 0, 3)
+        Me.tblScraperOpts.Controls.Add(Me.lblEMMAPI, 1, 0)
         Me.tblScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperOpts.Name = "tblScraperOpts"
-        Me.tblScraperOpts.RowCount = 7
+        Me.tblScraperOpts.RowCount = 4
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.Size = New System.Drawing.Size(426, 162)
+        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperOpts.Size = New System.Drawing.Size(426, 89)
         Me.tblScraperOpts.TabIndex = 98
         '
         'lblAPIHint
         '
         Me.lblAPIHint.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIHint, 4)
+        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIHint, 3)
         Me.lblAPIHint.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblAPIHint.Location = New System.Drawing.Point(3, 49)
         Me.lblAPIHint.MaximumSize = New System.Drawing.Size(430, 0)
@@ -470,7 +444,6 @@ Partial Class frmSettingsHolder_TV
         '
         Me.lblAPIKey.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblAPIKey.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblAPIKey, 2)
         Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAPIKey.Location = New System.Drawing.Point(3, 3)
         Me.lblAPIKey.Name = "lblAPIKey"
@@ -501,7 +474,6 @@ Partial Class frmSettingsHolder_TV
         'btnUnlockAPI
         '
         Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblScraperOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
         Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
         Me.btnUnlockAPI.Name = "btnUnlockAPI"
         Me.btnUnlockAPI.Size = New System.Drawing.Size(162, 23)
@@ -521,80 +493,14 @@ Partial Class frmSettingsHolder_TV
         Me.lblEMMAPI.TabIndex = 12
         Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
-        'chkGetBlankImages
-        '
-        Me.chkGetBlankImages.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGetBlankImages.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkGetBlankImages, 2)
-        Me.chkGetBlankImages.Enabled = False
-        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetBlankImages.Location = New System.Drawing.Point(171, 142)
-        Me.chkGetBlankImages.Name = "chkGetBlankImages"
-        Me.chkGetBlankImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkGetBlankImages.Size = New System.Drawing.Size(160, 17)
-        Me.chkGetBlankImages.TabIndex = 19
-        Me.chkGetBlankImages.Text = "Also Get Blank Images"
-        Me.chkGetBlankImages.UseVisualStyleBackColor = True
-        '
-        'chkGetEnglishImages
-        '
-        Me.chkGetEnglishImages.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGetEnglishImages.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkGetEnglishImages, 2)
-        Me.chkGetEnglishImages.Enabled = False
-        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(171, 119)
-        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
-        Me.chkGetEnglishImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkGetEnglishImages.Size = New System.Drawing.Size(169, 17)
-        Me.chkGetEnglishImages.TabIndex = 17
-        Me.chkGetEnglishImages.Text = "Also Get English Images"
-        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
-        '
-        'chkPrefLanguageOnly
-        '
-        Me.chkPrefLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkPrefLanguageOnly.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkPrefLanguageOnly, 2)
-        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(171, 94)
-        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
-        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
-        Me.chkPrefLanguageOnly.TabIndex = 18
-        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
-        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
-        '
-        'cbPrefLanguage
-        '
-        Me.cbPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.cbPrefLanguage.FormattingEnabled = True
-        Me.cbPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbPrefLanguage.Location = New System.Drawing.Point(120, 92)
-        Me.cbPrefLanguage.Name = "cbPrefLanguage"
-        Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
-        Me.cbPrefLanguage.TabIndex = 8
-        '
-        'lblPrefLanguage
-        '
-        Me.lblPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPrefLanguage.AutoSize = True
-        Me.lblPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblPrefLanguage.Location = New System.Drawing.Point(3, 96)
-        Me.lblPrefLanguage.Name = "lblPrefLanguage"
-        Me.lblPrefLanguage.Size = New System.Drawing.Size(111, 13)
-        Me.lblPrefLanguage.TabIndex = 7
-        Me.lblPrefLanguage.Text = "Preferred Language:"
-        '
         'pnlSettingsBottom
         '
         Me.pnlSettingsBottom.AutoSize = True
         Me.pnlSettingsBottom.Controls.Add(Me.tblSettingsBottom)
         Me.pnlSettingsBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlSettingsBottom.Location = New System.Drawing.Point(0, 468)
+        Me.pnlSettingsBottom.Location = New System.Drawing.Point(0, 332)
         Me.pnlSettingsBottom.Name = "pnlSettingsBottom"
-        Me.pnlSettingsBottom.Size = New System.Drawing.Size(642, 37)
+        Me.pnlSettingsBottom.Size = New System.Drawing.Size(456, 37)
         Me.pnlSettingsBottom.TabIndex = 97
         '
         'tblSettingsBottom
@@ -612,7 +518,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblSettingsBottom.RowCount = 2
         Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsBottom.Size = New System.Drawing.Size(642, 37)
+        Me.tblSettingsBottom.Size = New System.Drawing.Size(456, 37)
         Me.tblSettingsBottom.TabIndex = 98
         '
         'pbIconBottom
@@ -648,7 +554,7 @@ Partial Class frmSettingsHolder_TV
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(642, 29)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(456, 29)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -671,14 +577,14 @@ Partial Class frmSettingsHolder_TV
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(642, 29)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(456, 29)
         Me.tblSettingsTop.TabIndex = 99
         '
         'btnDown
         '
         Me.btnDown.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(616, 3)
+        Me.btnDown.Location = New System.Drawing.Point(430, 3)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 3
@@ -689,7 +595,7 @@ Partial Class frmSettingsHolder_TV
         Me.lblScraperOrder.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblScraperOrder.AutoSize = True
         Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblScraperOrder.Location = New System.Drawing.Point(523, 8)
+        Me.lblScraperOrder.Location = New System.Drawing.Point(337, 8)
         Me.lblScraperOrder.Name = "lblScraperOrder"
         Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
         Me.lblScraperOrder.TabIndex = 1
@@ -699,7 +605,7 @@ Partial Class frmSettingsHolder_TV
         '
         Me.btnUp.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(587, 3)
+        Me.btnUp.Location = New System.Drawing.Point(401, 3)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 2
@@ -716,19 +622,19 @@ Partial Class frmSettingsHolder_TV
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'frmFanartTVMediaSettingsHolder_TV
+        'frmSettingsHolder_TV
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(642, 505)
+        Me.ClientSize = New System.Drawing.Size(456, 369)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmFanartTVMediaSettingsHolder_TV"
+        Me.Name = "frmSettingsHolder_TV"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -783,8 +689,6 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents gbScraperImagesOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkScrapeShowPoster As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeShowFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents chkScrapeShowLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeShowCharacterArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeShowClearArt As System.Windows.Forms.CheckBox
@@ -792,9 +696,6 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents chkScrapeShowBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeShowClearLogoOnlyHD As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeShowClearArtOnlyHD As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGetBlankImages As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPrefLanguageOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents lblAPIHint As System.Windows.Forms.Label
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
@@ -810,7 +711,6 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents gbScraperImagesSeason As System.Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkScrapeSeasonLandscape As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScrapeSeasonFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeSeasonBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeSeasonPoster As System.Windows.Forms.CheckBox
 

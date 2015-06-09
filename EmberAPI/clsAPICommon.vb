@@ -691,6 +691,7 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum ScraperCapabilities_TV
+        All = 0
         AllSeasonsBanner = 1
         AllSeasonsFanart = 2
         AllSeasonsLandscape = 3
@@ -2089,6 +2090,8 @@ Public Class Structures
         Dim AllSeasonsLandscape As Boolean
         Dim AllSeasonsPoster As Boolean
         Dim DoSearch As Boolean
+        Dim EpisodeFanart As Boolean
+        Dim EpisodePoster As Boolean
         Dim Meta As Boolean
         Dim NFO As Boolean
         Dim SeasonBanner As Boolean

@@ -2997,7 +2997,7 @@ Namespace MediaContainers
 
     End Class
 
-    Public Class [ImagesContainer]
+    Public Class ImagesContainer_Movie_MovieSet
 
 #Region "Fields"
 
@@ -3131,11 +3131,12 @@ Namespace MediaContainers
             Me._cleararts.Sort()
             Me._clearlogos.Sort()
             Me._discarts.Sort()
+            Me._fanarts.Sort()
             Me._landscapes.Sort()
             Me._posters.Sort()
 
             'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
-            'Fanart are not filtered, since they have no language specification
+            'Fanarts are not filtered, most of all have no language specification
             Me._banners = SortImages(Me._banners, cSettings)
             Me._characterarts = SortImages(Me._characterarts, cSettings)
             Me._cleararts = SortImages(Me._cleararts, cSettings)
@@ -3143,6 +3144,264 @@ Namespace MediaContainers
             Me._discarts = SortImages(Me._discarts, cSettings)
             Me._landscapes = SortImages(Me._landscapes, cSettings)
             Me._posters = SortImages(Me._posters, cSettings)
+        End Sub
+
+        Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
+            Dim SortedList As New List(Of Image)
+
+            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.PrefLanguage)
+                SortedList.Add(tmpImage)
+            Next
+
+            If (cSettings.GetEnglishImages OrElse Not cSettings.PrefLanguageOnly) AndAlso Not cSettings.PrefLanguage = "en" Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
+                    SortedList.Add(tmpImage)
+                Next
+            End If
+
+            If cSettings.GetBlankImages OrElse Not cSettings.PrefLanguageOnly Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
+                    SortedList.Add(tmpImage)
+                Next
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
+                    SortedList.Add(tmpImage)
+                Next
+            End If
+
+            If Not cSettings.PrefLanguageOnly Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.PrefLanguage OrElse _
+                                                                   Not f.ShortLang = "en" OrElse _
+                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") OrElse _
+                                                                   Not f.ShortLang = String.Empty)
+                    SortedList.Add(tmpImage)
+                Next
+            End If
+
+            Return SortedList
+        End Function
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+        Private Structure Settings
+
+#Region "Fields"
+
+            Dim GetBlankImages As Boolean
+            Dim GetEnglishImages As Boolean
+            Dim PrefLanguage As String
+            Dim PrefLanguageOnly As Boolean
+
+#End Region
+
+        End Structure
+
+#End Region
+
+    End Class
+
+    Public Class ImagesContainer_TV
+
+#Region "Fields"
+
+        Private _episodefanarts As New List(Of Image)
+        Private _episodeposters As New List(Of Image)
+        Private _seasonbanners As New List(Of Image)
+        Private _seasonfanarts As New List(Of Image)
+        Private _seasonlandscapes As New List(Of Image)
+        Private _seasonposters As New List(Of Image)
+        Private _showbanners As New List(Of Image)
+        Private _showcharacterarts As New List(Of Image)
+        Private _showcleararts As New List(Of Image)
+        Private _showclearlogos As New List(Of Image)
+        Private _showfanarts As New List(Of Image)
+        Private _showlandscapes As New List(Of Image)
+        Private _showposters As New List(Of Image)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property EpisodeFanarts() As List(Of Image)
+            Get
+                Return Me._episodefanarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._episodefanarts = value
+            End Set
+        End Property
+
+        Public Property EpisodePosters() As List(Of Image)
+            Get
+                Return Me._episodeposters
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._episodeposters = value
+            End Set
+        End Property
+
+        Public Property SeasonBanners() As List(Of Image)
+            Get
+                Return Me._seasonbanners
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._seasonbanners = value
+            End Set
+        End Property
+
+        Public Property SeasonFanarts() As List(Of Image)
+            Get
+                Return Me._seasonfanarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._seasonfanarts = value
+            End Set
+        End Property
+
+        Public Property SeasonLandscapes() As List(Of Image)
+            Get
+                Return Me._seasonlandscapes
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._seasonlandscapes = value
+            End Set
+        End Property
+
+        Public Property SeasonPosters() As List(Of Image)
+            Get
+                Return Me._seasonposters
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._seasonposters = value
+            End Set
+        End Property
+
+        Public Property ShowBanners() As List(Of Image)
+            Get
+                Return Me._showbanners
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showbanners = value
+            End Set
+        End Property
+
+        Public Property ShowCharacterArts() As List(Of Image)
+            Get
+                Return Me._showcharacterarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showcharacterarts = value
+            End Set
+        End Property
+
+        Public Property ShowClearArts() As List(Of Image)
+            Get
+                Return Me._showcleararts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showcleararts = value
+            End Set
+        End Property
+
+        Public Property ShowClearLogos() As List(Of Image)
+            Get
+                Return Me._showclearlogos
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showclearlogos = value
+            End Set
+        End Property
+
+        Public Property ShowFanarts() As List(Of Image)
+            Get
+                Return Me._showfanarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showfanarts = value
+            End Set
+        End Property
+
+        Public Property ShowLandscapes() As List(Of Image)
+            Get
+                Return Me._showlandscapes
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showlandscapes = value
+            End Set
+        End Property
+
+        Public Property ShowPosters() As List(Of Image)
+            Get
+                Return Me._showposters
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._showposters = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._episodefanarts.Clear()
+            Me._episodeposters.Clear()
+            Me._seasonbanners.Clear()
+            Me._seasonfanarts.Clear()
+            Me._seasonlandscapes.Clear()
+            Me._seasonposters.Clear()
+            Me._showbanners.Clear()
+            Me._showcharacterarts.Clear()
+            Me._showcleararts.Clear()
+            Me._showclearlogos.Clear()
+            Me._showfanarts.Clear()
+            Me._showlandscapes.Clear()
+            Me._showposters.Clear()
+        End Sub
+
+        Public Sub Sort()
+            Dim cSettings As New Settings
+            cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
+            cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
+            cSettings.PrefLanguage = Master.eSettings.TVImagesPrefLanguage
+            cSettings.PrefLanguageOnly = Master.eSettings.TVImagesPrefLanguageOnly
+
+            'sort all List(Of Image) by Image.ShortLang
+            Me._episodefanarts.Sort()
+            Me._episodeposters.Sort()
+            Me._seasonbanners.Sort()
+            Me._seasonfanarts.Sort()
+            Me._seasonlandscapes.Sort()
+            Me._seasonposters.Sort()
+            Me._showbanners.Sort()
+            Me._showcharacterarts.Sort()
+            Me._showcleararts.Sort()
+            Me._showclearlogos.Sort()
+            Me._showfanarts.Sort()
+            Me._showlandscapes.Sort()
+            Me._showposters.Sort()
+
+            'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
+            'Fanarts are not filtered, most of all have no language specification
+            Me._episodeposters = SortImages(Me._episodeposters, cSettings)
+            Me._seasonbanners = SortImages(Me._seasonbanners, cSettings)
+            Me._seasonlandscapes = SortImages(Me._seasonlandscapes, cSettings)
+            Me._seasonposters = SortImages(Me._seasonposters, cSettings)
+            Me._showbanners = SortImages(Me._showbanners, cSettings)
+            Me._showcharacterarts = SortImages(Me._showcharacterarts, cSettings)
+            Me._showcleararts = SortImages(Me._showcleararts, cSettings)
+            Me._showclearlogos = SortImages(Me._showclearlogos, cSettings)
+            Me._showlandscapes = SortImages(Me._showlandscapes, cSettings)
+            Me._showposters = SortImages(Me._showposters, cSettings)
         End Sub
 
         Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)

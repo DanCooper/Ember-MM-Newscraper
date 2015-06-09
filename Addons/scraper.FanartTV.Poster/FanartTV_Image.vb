@@ -357,11 +357,7 @@ Public Class FanartTV_Image
         _setup_TV = New frmSettingsHolder_TV
         LoadSettings_TV()
         _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
-        _setup_TV.chkGetBlankImages.Checked = _MySettings_TV.GetBlankImages
-        _setup_TV.chkGetEnglishImages.Checked = _MySettings_TV.GetEnglishImages
-        _setup_TV.chkPrefLanguageOnly.Checked = _MySettings_TV.PrefLanguageOnly
         _setup_TV.chkScrapeSeasonBanner.Checked = ConfigScrapeModifier_TV.SeasonBanner
-        _setup_TV.chkScrapeSeasonFanart.Checked = ConfigScrapeModifier_TV.SeasonFanart
         _setup_TV.chkScrapeSeasonLandscape.Checked = ConfigScrapeModifier_TV.SeasonLandscape
         _setup_TV.chkScrapeSeasonPoster.Checked = ConfigScrapeModifier_TV.SeasonPoster
         _setup_TV.chkScrapeShowBanner.Checked = ConfigScrapeModifier_TV.ShowBanner
@@ -374,7 +370,6 @@ Public Class FanartTV_Image
         _setup_TV.chkScrapeShowLandscape.Checked = ConfigScrapeModifier_TV.ShowLandscape
         _setup_TV.chkScrapeShowPoster.Checked = ConfigScrapeModifier_TV.ShowPoster
         _setup_TV.txtApiKey.Text = _MySettings_TV.ApiKey
-        _setup_TV.cbPrefLanguage.Text = _MySettings_TV.PrefLanguage
 
         If Not String.IsNullOrEmpty(_MySettings_TV.ApiKey) Then
             _setup_TV.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -441,7 +436,6 @@ Public Class FanartTV_Image
         _MySettings_TV.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.TV)
 
         ConfigScrapeModifier_TV.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True, , Enums.Content_Type.TV)
-        ConfigScrapeModifier_TV.SeasonFanart = clsAdvancedSettings.GetBooleanSetting("DoSeasonFanart", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.SeasonLandscape = clsAdvancedSettings.GetBooleanSetting("DoSeasonLandscape", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True, , Enums.Content_Type.TV)
@@ -491,7 +485,6 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_TV.ClearArtOnlyHD, , , Enums.Content_Type.TV)
             settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_TV.ClearLogoOnlyHD, , , Enums.Content_Type.TV)
             settings.SetBooleanSetting("DoSeasonBanner", ConfigScrapeModifier_TV.SeasonBanner, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoSeasonFanart", ConfigScrapeModifier_TV.SeasonFanart, , , Enums.Content_Type.TV)
             settings.SetBooleanSetting("DoSeasonLandscape", ConfigScrapeModifier_TV.SeasonLandscape, , , Enums.Content_Type.TV)
             settings.SetBooleanSetting("DoSeasonPoster", ConfigScrapeModifier_TV.SeasonPoster, , , Enums.Content_Type.TV)
             settings.SetBooleanSetting("DoShowBanner", ConfigScrapeModifier_TV.ShowBanner, , , Enums.Content_Type.TV)
@@ -503,10 +496,6 @@ Public Class FanartTV_Image
             settings.SetBooleanSetting("DoShowPoster", ConfigScrapeModifier_TV.ShowPoster, , , Enums.Content_Type.TV)
 
             settings.SetSetting("ApiKey", _setup_TV.txtApiKey.Text, , , Enums.Content_Type.TV)
-            settings.SetSetting("PrefLanguage", _MySettings_TV.PrefLanguage, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("GetBlankImages", _MySettings_TV.GetBlankImages, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("GetEnglishImages", _MySettings_TV.GetEnglishImages, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_TV.PrefLanguageOnly, , , Enums.Content_Type.TV)
         End Using
     End Sub
 
@@ -549,14 +538,9 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_TV.SaveSetupScraper
-        _MySettings_TV.PrefLanguage = _setup_TV.cbPrefLanguage.Text
-        _MySettings_TV.PrefLanguageOnly = _setup_TV.chkPrefLanguageOnly.Checked
-        _MySettings_TV.GetBlankImages = _setup_TV.chkGetBlankImages.Checked
-        _MySettings_TV.GetEnglishImages = _setup_TV.chkGetEnglishImages.Checked
         _MySettings_TV.ClearArtOnlyHD = _setup_TV.chkScrapeShowClearArtOnlyHD.Checked
         _MySettings_TV.ClearLogoOnlyHD = _setup_TV.chkScrapeShowClearLogoOnlyHD.Checked
         ConfigScrapeModifier_TV.SeasonBanner = _setup_TV.chkScrapeSeasonBanner.Checked
-        ConfigScrapeModifier_TV.SeasonFanart = _setup_TV.chkScrapeSeasonFanart.Checked
         ConfigScrapeModifier_TV.SeasonLandscape = _setup_TV.chkScrapeSeasonLandscape.Checked
         ConfigScrapeModifier_TV.SeasonPoster = _setup_TV.chkScrapeSeasonPoster.Checked
         ConfigScrapeModifier_TV.ShowBanner = _setup_TV.chkScrapeShowBanner.Checked
@@ -575,12 +559,12 @@ Public Class FanartTV_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_Movie()
 
-        Dim Settings As New FanartTVs.Scraper.sMySettings_ForScraper
+        Dim Settings As New FanartTVs.Scraper.MySettings
         Settings.ApiKey = _MySettings_Movie.ApiKey
         Settings.ClearArtOnlyHD = _MySettings_Movie.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_Movie.ClearLogoOnlyHD
@@ -597,7 +581,7 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_MovieSet()
@@ -609,7 +593,7 @@ Public Class FanartTV_Image
         End If
 
         If Not String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
-            Dim Settings As New FanartTVs.Scraper.sMySettings_ForScraper
+            Dim Settings As New FanartTVs.Scraper.MySettings
             Settings.ApiKey = _MySettings_MovieSet.ApiKey
             Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
             Settings.ClearLogoOnlyHD = _MySettings_MovieSet.ClearLogoOnlyHD
@@ -621,22 +605,18 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.ImagesContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("Started scrape FanartTV")
 
         LoadSettings_TV()
 
-        Dim Settings As FanartTVs.Scraper.sMySettings_ForScraper
+        Dim Settings As FanartTVs.Scraper.MySettings
         Settings.ApiKey = _MySettings_TV.ApiKey
         Settings.ClearArtOnlyHD = _MySettings_TV.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_TV.ClearLogoOnlyHD
-        Settings.GetBlankImages = _MySettings_TV.GetBlankImages
-        Settings.GetEnglishImages = _MySettings_TV.GetEnglishImages
-        Settings.PrefLanguage = _MySettings_TV.PrefLanguage
-        Settings.PrefLanguageOnly = _MySettings_TV.PrefLanguageOnly
 
         If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
-            ImageList = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
         Else
             logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
         End If

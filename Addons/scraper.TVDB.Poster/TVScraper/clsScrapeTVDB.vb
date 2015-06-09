@@ -1277,6 +1277,7 @@ Public Class Scraper
             Else
                 sID = sInfo.TVDBID
             End If
+
             'and finally the images
             Try
                 If ImagesOnly OrElse tShow.TVShow IsNot Nothing Then
@@ -1286,144 +1287,98 @@ Public Class Scraper
                         tShow.TVShow = New MediaContainers.TVShow With {.TVDBID = sInfo.TVDBID}
                     End If
 
-                    'Banner AllSeasons/Show
-                    Dim aList As New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowBanner, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.ShowBanners.Add(img)
-                            Next
-                        End If
-                    End If
+                    Dim aContainer As New MediaContainers.ImagesContainer_TV
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.All, aContainer) Then
 
-                    'Banner Season
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonBanner, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasonswide", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasonswide", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.SeasonBanners.Add(img)
-                            Next
-                        End If
-                    End If
+                        'Banner AllSeasons/Show 
+                        For Each img In aContainer.ShowBanners
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters\_cache\graphical", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.ShowBanners.Add(img)
+                        Next
 
-                    'CharacterArt Show
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowCharacterArt, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.ShowCharacterArts.Add(img)
-                            Next
-                        End If
-                    End If
+                        'Banner Season
+                        For Each img In aContainer.SeasonBanners
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasonswide", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasonswide", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.SeasonBanners.Add(img)
+                        Next
 
-                    'ClearArt Show
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearArt, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.ShowClearArts.Add(img)
-                            Next
-                        End If
-                    End If
+                        'CharacterArt Show
+                        For Each img In aContainer.ShowCharacterArts
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescharacterarts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.ShowCharacterArts.Add(img)
+                        Next
 
-                    'ClearLogo Show
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowClearLogo, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.ShowClearLogos.Add(img)
-                            Next
-                        End If
-                    End If
+                        'ClearArt Show
+                        For Each img In aContainer.ShowClearArts
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriescleararts\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.ShowClearArts.Add(img)
+                        Next
 
-                    'Fanart AllSeasons/Season/Show
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowFanart, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.Fanarts.Add(img)
-                            Next
-                        End If
-                    End If
+                        'ClearLogo Show 
+                        For Each img In aContainer.ShowClearLogos
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesclearlogos\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.ShowClearLogos.Add(img)
+                        Next
 
-                    'Landscape AllSeasons/Show
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowLandscape, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.ShowLandscapes.Add(img)
-                            Next
-                        End If
-                    End If
+                        'Fanart AllSeasons/Season/Show 
+                        For Each img In aContainer.ShowFanarts
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart\_cache\fanart\original", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.Fanarts.Add(img)
+                        Next
 
-                    'Landscape Season
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonLandscape, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.SeasonLandscapes.Add(img)
-                            Next
-                        End If
-                    End If
+                        'Landscape AllSeasons/Show 
+                        For Each img In aContainer.ShowLandscapes
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "serieslandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.ShowLandscapes.Add(img)
+                        Next
 
-                    'Poster AllSeasons/Show
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.ShowPoster, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.Posters.Add(img)
-                            Next
-                        End If
-                    End If
+                        'Landscape Season 
+                        For Each img In aContainer.SeasonLandscapes
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonlandscapes\_cache", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.SeasonLandscapes.Add(img)
+                        Next
 
-                    'Poster Season
-                    aList = New List(Of MediaContainers.Image)
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.SeasonPoster, aList) Then
-                        If aList.Count > 0 Then
-                            For Each img In aList
-                                img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                If Not String.IsNullOrEmpty(img.ThumbURL) Then
-                                    img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
-                                End If
-                                tmpTVDBShow.SeasonPosters.Add(img)
-                            Next
-                        End If
+                        'Poster AllSeasons/Show 
+                        For Each img In aContainer.ShowPosters
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters\_cache\posters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.Posters.Add(img)
+                        Next
+
+                        'Poster Season 
+                        For Each img In aContainer.SeasonPosters
+                            img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            If Not String.IsNullOrEmpty(img.ThumbURL) Then
+                                img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters\_cache\seasons", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
+                            End If
+                            tmpTVDBShow.SeasonPosters.Add(img)
+                        Next
                     End If
                 End If
             Catch ex As Exception

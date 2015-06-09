@@ -40,8 +40,8 @@ Namespace MPDB
 
 #Region "Methods"
 
-        Public Function GetMPDBPosters(ByVal imdbID As String) As MediaContainers.ImagesContainer
-            Dim alContainer As New MediaContainers.ImagesContainer
+        Public Function GetMPDBPosters(ByVal imdbID As String) As MediaContainers.ImagesContainer_Movie_MovieSet
+            Dim alContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
 
             Try
                 Dim sHTTP As New HTTP

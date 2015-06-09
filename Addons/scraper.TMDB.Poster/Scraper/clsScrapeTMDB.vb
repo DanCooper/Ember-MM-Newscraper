@@ -29,7 +29,7 @@ Namespace TMDB
 #Region "Fields"
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Private _MySettings As TMDB.Scraper.sMySettings_ForScraper
+        Private _MySettings As TMDB.Scraper.MySettings
 
         Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
@@ -58,8 +58,8 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper, ByVal ContentType As Enums.Content_Type) As MediaContainers.ImagesContainer
-            Dim alImagesContainer As New MediaContainers.ImagesContainer
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As MySettings, ByVal ContentType As Enums.Content_Type) As MediaContainers.ImagesContainer_Movie_MovieSet
+            Dim alImagesContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
 
             If bwTMDB.CancellationPending Then Return Nothing
 
@@ -121,6 +121,79 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
+        Public Function GetImages_TV(ByVal tmdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
+            Dim alContainer As New MediaContainers.ImagesContainer_TV
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            Try
+                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
+                TMDBClient.GetConfig()
+
+                Dim Results As TMDbLib.Objects.General.ImagesWithId = Nothing
+                Results = TMDBClient.GetTvShowImages(CInt(tmdbID))
+
+                If Results Is Nothing Then
+                    Return Nothing
+                End If
+
+                'Fanart
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                    For Each image In Results.Backdrops
+                        Dim tmpImage As New MediaContainers.Image With { _
+                            .Height = image.Height.ToString, _
+                            .Likes = 0, _
+                            .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                            .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
+                            .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w300" & image.FilePath, _
+                            .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
+                            .VoteAverage = image.VoteAverage.ToString, _
+                            .VoteCount = image.VoteCount, _
+                            .Width = image.Width.ToString}
+
+                        alContainer.ShowFanarts.Add(tmpImage)
+                    Next
+                End If
+
+                'Poster
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster) AndAlso Results.Posters IsNot Nothing Then
+                    For Each image In Results.Posters
+                        Dim tmpImage As New MediaContainers.Image With { _
+                                .Height = image.Height.ToString, _
+                                .Likes = 0, _
+                                .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                                .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
+                                .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
+                                .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
+                                .VoteAverage = image.VoteAverage.ToString, _
+                                .VoteCount = image.VoteCount, _
+                                .Width = image.Width.ToString}
+
+                        alContainer.ShowPosters.Add(tmpImage)
+                    Next
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return alContainer
+        End Function
+
+        Public Function GetTMDBbyTVDB(ByRef tvdbID As String, ByRef Settings As MySettings) As String
+            Dim tmdbID As String = String.Empty
+
+            Try
+                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
+                tmdbID = TMDBClient.Find(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID).TvResults.Item(0).Id.ToString
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return tmdbID
+        End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -136,7 +209,7 @@ Namespace TMDB
 
         End Structure
 
-        Structure sMySettings_ForScraper
+        Structure MySettings
 
 #Region "Fields"
 

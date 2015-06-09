@@ -3521,6 +3521,7 @@ Public Class dlgSettings
             Me.cbTVASFanartPrefSize.SelectedValue = .TVASFanartPrefSize
             Me.cbTVASPosterPrefSize.SelectedValue = .TVASPosterPrefSize
             Me.cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
+            Me.cbTVImagesPrefLanguage.SelectedItem = .TVImagesPrefLanguage
             Me.cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             Me.cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
             Me.cbTVScraperRatingRegion.Text = .TVScraperRatingRegion
@@ -3778,6 +3779,11 @@ Public Class dlgSettings
             Me.chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             Me.chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
+            If .TVImagesPrefLanguageOnly Then
+                Me.chkTVImagesPrefLanguageOnly.Checked = True
+                Me.chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
+                Me.chkTVImagesGetEnglishImages.Checked = .TVImagesGetEnglishImages
+            End If
             Me.chkTVLockEpisodeLanguageA.Checked = .TVLockEpisodeLanguageA
             Me.chkTVLockEpisodeLanguageV.Checked = .TVLockEpisodeLanguageV
             Me.chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
@@ -5563,6 +5569,10 @@ Public Class dlgSettings
             .TVGeneralSeasonListSorting.AddRange(Me.TVGeneralSeasonListSorting)
             .TVGeneralShowListSorting.Clear()
             .TVGeneralShowListSorting.AddRange(Me.TVGeneralShowListSorting)
+            .TVImagesGetBlankImages = Me.chkTVImagesGetBlankImages.Checked
+            .TVImagesGetEnglishImages = Me.chkTVImagesGetEnglishImages.Checked
+            .TVImagesPrefLanguage = Me.cbTVImagesPrefLanguage.Text
+            .TVImagesPrefLanguageOnly = Me.chkTVImagesPrefLanguageOnly.Checked
             .TVLockEpisodeLanguageA = Me.chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = Me.chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
@@ -8601,6 +8611,30 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieSetImagesGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesGetBlankImages.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesPrefLanguageOnly.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkTVImagesGetBlankImages.Enabled = Me.chkTVImagesPrefLanguageOnly.Checked
+        Me.chkTVImagesGetEnglishImages.Enabled = Me.chkTVImagesPrefLanguageOnly.Checked
+
+        If Not Me.chkTVImagesPrefLanguageOnly.Checked Then
+            Me.chkTVImagesGetBlankImages.Checked = False
+            Me.chkTVImagesGetEnglishImages.Checked = False
+        End If
+    End Sub
+
+    Private Sub cbTVImagesPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTVImagesPrefLanguage.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVImagesGetEnglishImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesGetEnglishImages.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVImagesGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesGetBlankImages.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

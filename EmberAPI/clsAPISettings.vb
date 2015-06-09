@@ -4151,6 +4151,42 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVImagesGetBlankImages() As Boolean
+        Get
+            Return Settings._XMLSettings.TVImagesGetBlankImages
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesGetBlankImages = value
+        End Set
+    End Property
+
+    Public Property TVImagesGetEnglishImages() As Boolean
+        Get
+            Return Settings._XMLSettings.TVImagesGetEnglishImages
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesGetEnglishImages = value
+        End Set
+    End Property
+
+    Public Property TVImagesPrefLanguage() As String
+        Get
+            Return Settings._XMLSettings.TVImagesPrefLanguage
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVImagesPrefLanguage = value
+        End Set
+    End Property
+
+    Public Property TVImagesPrefLanguageOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVImagesPrefLanguageOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesPrefLanguageOnly = value
+        End Set
+    End Property
+
     Public Property MovieUseFrodo() As Boolean
         Get
             Return Settings._XMLSettings.MovieUseFrodo
@@ -6586,6 +6622,10 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
+        Me.MovieImagesGetBlankImages = False
+        Me.MovieImagesGetEnglishImages = False
+        Me.MovieImagesPrefLanguage = "en"
+        Me.MovieImagesPrefLanguageOnly = False
         Me.TVLockEpisodeLanguageA = False
         Me.TVLockEpisodeLanguageV = False
         Me.TVLockEpisodePlot = False

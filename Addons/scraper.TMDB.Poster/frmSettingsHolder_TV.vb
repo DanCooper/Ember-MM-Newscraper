@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports System.Diagnostics
 
-Public Class frmSettingsHolder
+Public Class frmSettingsHolder_TV
 
 #Region "Events"
 
@@ -71,35 +71,22 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Image._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Image_TV.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Image._AssemblyName).ModuleOrder = order + 1
+            ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder = order + 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Image._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
-            ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Image._AssemblyName).ModuleOrder = order - 1
+            ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder = order - 1
             RaiseEvent SetupScraperChanged(chkEnabled.Checked, -1)
             orderChanged()
-        End If
-    End Sub
-
-    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
-            Me.lblEMMAPI.Visible = False
-            Me.txtApiKey.Enabled = True
-        Else
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-            Me.lblEMMAPI.Visible = True
-            Me.txtApiKey.Enabled = False
-            Me.txtApiKey.Text = String.Empty
         End If
     End Sub
 
@@ -107,28 +94,16 @@ Public Class frmSettingsHolder
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkScrapeSeasonBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeSeasonBanner.CheckedChanged
+    Private Sub chkScrapeFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScrapeShowBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowBanner.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScrapeShowFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowFanart.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScrapeSeasonPoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeSeasonPoster.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScrapeShowPoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeShowPoster.CheckedChanged
+    Private Sub chkScrapePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Image._AssemblyName).ModuleOrder
+        Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Image._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_Image_TV.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Image_TV.Count - 1)
             btnUp.Enabled = (order > 0)
@@ -142,20 +117,30 @@ Public Class frmSettingsHolder
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkScrapeEpisodePoster.Text = Master.eLang.GetString(939, "Get Poster")
-        Me.chkScrapeSeasonBanner.Text = Master.eLang.GetString(1051, "Get Banner")
         Me.chkScrapeSeasonPoster.Text = Master.eLang.GetString(939, "Get Poster")
-        Me.chkScrapeShowBanner.Text = Master.eLang.GetString(1051, "Get Banner")
         Me.chkScrapeShowFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.chkScrapeShowPoster.Text = Master.eLang.GetString(939, "Get Poster")
-        Me.gbScraperImagesOpts.Text = Master.eLang.GetString(268, "Images - Scraper specific")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.gbScraperImagesEpisode.Text = Master.eLang.GetString(727, "Episode")
         Me.gbScraperImagesSeason.Text = Master.eLang.GetString(650, "Season")
         Me.gbScraperImagesTVShow.Text = Master.eLang.GetString(700, "TV Show")
-        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
-        Me.lblAPIKey.Text = String.Concat(Master.eLang.GetString(932, "TVDB API Key"), ":")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
+        Me.lblAPIKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+    End Sub
+
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
     End Sub
 
     Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter

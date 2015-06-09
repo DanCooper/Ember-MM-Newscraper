@@ -94,8 +94,8 @@ Namespace FanartTVs
         '	End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As sMySettings_ForScraper) As MediaContainers.ImagesContainer
-            Dim alImagesContainer As New MediaContainers.ImagesContainer
+        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_Movie_MovieSet
+            Dim alImagesContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -257,13 +257,8 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As sMySettings_ForScraper) As List(Of MediaContainers.Image)
-            Dim alPosters As New List(Of MediaContainers.Image) 'main poster list
-            Dim alPostersP As New List(Of MediaContainers.Image) 'preferred language poster list
-            Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
-            Dim alPostersO As New List(Of MediaContainers.Image) 'all others poster list
-            Dim alPostersOs As New List(Of MediaContainers.Image) 'all others sorted poster list
-            Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list (lang="00")
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
+            Dim alContainer As New MediaContainers.ImagesContainer_TV
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -279,8 +274,7 @@ Namespace FanartTVs
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Banner AllSeasons/Show
-                If Type = Enums.ScraperCapabilities_TV.AllSeasonsBanner OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner Then
-                    If Results.List.Tvbanner Is Nothing Then Return alPosters
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsBanner OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner) AndAlso Results.List.Tvbanner IsNot Nothing Then
                     For Each image In Results.List.Tvbanner
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "185", _
@@ -292,26 +286,12 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.ShowBanners.Add(tmpPoster)
                     Next
+                End If
 
-                    'Banner Season
-                ElseIf Type = Enums.ScraperCapabilities_TV.SeasonBanner Then
-                    If Results.List.Seasonbanner Is Nothing Then Return alPosters
+                'Banner Season
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.SeasonBanner) AndAlso Results.List.Seasonbanner IsNot Nothing Then
                     For Each image In Results.List.Seasonbanner
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "185", _
@@ -324,26 +304,12 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.SeasonBanners.Add(tmpPoster)
                     Next
+                End If
 
-                    'CharacterArt Show
-                ElseIf Type = Enums.ScraperCapabilities_TV.ShowCharacterArt Then
-                    If Results.List.Characterart Is Nothing Then Return alPosters
+                'CharacterArt Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowCharacterArt) AndAlso Results.List.Characterart IsNot Nothing Then
                     For Each image In Results.List.Characterart
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "512", _
@@ -354,26 +320,12 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "512"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.ShowCharacterArts.Add(tmpPoster)
                     Next
+                End If
 
-                    'ClearArt Show
-                ElseIf Type = Enums.ScraperCapabilities_TV.ShowClearArt Then
-                    If ((Results.List.Hdclearart Is Nothing AndAlso Settings.ClearArtOnlyHD) OrElse (Results.List.Hdclearart Is Nothing AndAlso Results.List.Clearart Is Nothing)) Then Return alPosters
+                'ClearArt Show
+                If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowClearArt Then
                     If Results.List.Hdclearart IsNot Nothing Then
                         For Each image In Results.List.Hdclearart
                             Dim tmpPoster As New MediaContainers.Image With { _
@@ -385,21 +337,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "1000"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alPostersP.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(tmpPoster)
-                                End If
-                            End If
+                            alContainer.ShowClearArts.Add(tmpPoster)
                         Next
                     End If
                     If Results.List.Clearart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
@@ -413,27 +351,13 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "500"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alPostersP.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(tmpPoster)
-                                End If
-                            End If
+                            alContainer.ShowClearArts.Add(tmpPoster)
                         Next
                     End If
+                End If
 
-                    'ClearLogo Show
-                ElseIf Type = Enums.ScraperCapabilities_TV.ShowClearLogo Then
-                    If ((Results.List.HdTListvlogo Is Nothing AndAlso Settings.ClearLogoOnlyHD) OrElse (Results.List.HdTListvlogo Is Nothing AndAlso Results.List.Clearlogo Is Nothing)) Then Return alPosters
+                'ClearLogo Show
+                If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowClearLogo Then
                     If Results.List.HdTListvlogo IsNot Nothing Then
                         For Each Image In Results.List.HdTListvlogo
                             Dim tmpPoster As New MediaContainers.Image With { _
@@ -445,21 +369,7 @@ Namespace FanartTVs
                                 .URL = Image.Url, _
                                 .Width = "800"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alPostersP.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(tmpPoster)
-                                End If
-                            End If
+                            alContainer.ShowClearLogos.Add(tmpPoster)
                         Next
                     End If
                     If Results.List.Clearlogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
@@ -473,34 +383,20 @@ Namespace FanartTVs
                                 .URL = Image.Url, _
                                 .Width = "400"}
 
-                            If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                                alPostersP.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                    alPostersE.Add(tmpPoster)
-                                End If
-                            ElseIf tmpPoster.ShortLang = "00" Then
-                                If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                    alPostersN.Add(tmpPoster)
-                                End If
-                            Else
-                                If Not Settings.PrefLanguageOnly Then
-                                    alPostersO.Add(tmpPoster)
-                                End If
-                            End If
+                            alContainer.ShowClearLogos.Add(tmpPoster)
                         Next
                     End If
+                End If
 
-                    'Fanart AllSeasons/Season/Show
-                ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsFanart OrElse Type = Enums.ScraperCapabilities_TV.SeasonFanart OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart Then
-                    If Results.List.Showbackground Is Nothing Then Return alPosters
+                'Fanart AllSeasons/Season/Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsFanart OrElse Type = Enums.ScraperCapabilities_TV.SeasonFanart OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
-                        alPosters.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alContainer.ShowFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
+                End If
 
-                    'Landscape AllSeasons/Show
-                ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsLandscape OrElse Type = Enums.ScraperCapabilities_TV.ShowLandscape Then
-                    If Results.List.Tvthumb Is Nothing Then Return alPosters
+                'Landscape AllSeasons/Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsLandscape OrElse Type = Enums.ScraperCapabilities_TV.ShowLandscape) AndAlso Results.List.Tvthumb IsNot Nothing Then
                     For Each Image In Results.List.Tvthumb
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "281", _
@@ -511,26 +407,12 @@ Namespace FanartTVs
                             .URL = Image.Url, _
                             .Width = "500"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.ShowLandscapes.Add(tmpPoster)
                     Next
+                End If
 
-                    'Landscape Season
-                ElseIf Type = Enums.ScraperCapabilities_TV.SeasonLandscape Then
-                    If Results.List.Seasonthumb Is Nothing Then Return alPosters
+                'Landscape Season
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.SeasonLandscape) AndAlso Results.List.Seasonthumb IsNot Nothing Then
                     For Each Image In Results.List.Seasonthumb
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "281", _
@@ -543,26 +425,12 @@ Namespace FanartTVs
                             .URL = Image.Url, _
                             .Width = "500"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.SeasonLandscapes.Add(tmpPoster)
                     Next
+                End If
 
-                    'Poster AllSeasons/Show
-                ElseIf Type = Enums.ScraperCapabilities_TV.AllSeasonsPoster OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster Then
-                    If Results.List.Tvposter Is Nothing Then Return alPosters
+                'Poster AllSeasons/Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsPoster OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster) AndAlso Results.List.Tvposter IsNot Nothing Then
                     For Each image In Results.List.Tvposter
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "1426", _
@@ -574,26 +442,12 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.ShowPosters.Add(tmpPoster)
                     Next
+                End If
 
-                    'Poster Season
-                ElseIf Type = Enums.ScraperCapabilities_TV.SeasonPoster Then
-                    If Results.List.Seasonposter Is Nothing Then Return alPosters
+                'Poster Season
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.SeasonPoster) AndAlso Results.List.Seasonposter IsNot Nothing Then
                     For Each image In Results.List.Seasonposter
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "1426", _
@@ -606,21 +460,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        If tmpPoster.ShortLang = Settings.PrefLanguage Then
-                            alPostersP.Add(tmpPoster)
-                        ElseIf tmpPoster.ShortLang = "en" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
-                                alPostersE.Add(tmpPoster)
-                            End If
-                        ElseIf tmpPoster.ShortLang = "00" Then
-                            If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
-                                alPostersN.Add(tmpPoster)
-                            End If
-                        Else
-                            If Not Settings.PrefLanguageOnly Then
-                                alPostersO.Add(tmpPoster)
-                            End If
-                        End If
+                        alContainer.SeasonPosters.Add(tmpPoster)
                     Next
                 End If
 
@@ -628,16 +468,7 @@ Namespace FanartTVs
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            'Image sorting
-            For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
-                alPostersOs.Add(xPoster)
-            Next
-            alPosters.AddRange(alPostersP)
-            alPosters.AddRange(alPostersE)
-            alPosters.AddRange(alPostersOs)
-            alPosters.AddRange(alPostersN)
-
-            Return alPosters
+            Return alContainer
         End Function
 
 
@@ -667,17 +498,13 @@ Namespace FanartTVs
 
         End Structure
 
-        Structure sMySettings_ForScraper
+        Structure MySettings
 
 #Region "Fields"
 
             Dim ApiKey As String
             Dim ClearArtOnlyHD As Boolean
             Dim ClearLogoOnlyHD As Boolean
-            Dim GetEnglishImages As Boolean
-            Dim GetBlankImages As Boolean
-            Dim PrefLanguage As String
-            Dim PrefLanguageOnly As Boolean
 
 #End Region 'Fields
 

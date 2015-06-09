@@ -127,10 +127,10 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegeneralmarknew As Boolean
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
-    Private _movieimagespreflanguage As String
-    Private _movieimagespreflanguageonly As Boolean
     Private _movieimagesgetblankimages As Boolean
     Private _movieimagesgetenglishimages As Boolean
+    Private _movieimagespreflanguage As String
+    Private _movieimagespreflanguageonly As Boolean
     Private _movieimdburl As String
     Private _movielandscapeoverwrite As Boolean
     Private _movielevtolerance As Integer
@@ -249,10 +249,10 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralmarknew As Boolean
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
-    Private _moviesetimagespreflanguage As String
-    Private _moviesetimagespreflanguageonly As Boolean
     Private _moviesetimagesgetblankimages As Boolean
     Private _moviesetimagesgetenglishimages As Boolean
+    Private _moviesetimagespreflanguage As String
+    Private _moviesetimagespreflanguageonly As Boolean
     Private _moviesetlandscapeoverwrite As Boolean
     Private _moviesetlockplot As Boolean
     Private _moviesetlocktitle As Boolean
@@ -356,6 +356,10 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralmarknewshows As Boolean
     Private _tvgeneralseasonlistsorting As List(Of ListSorting)
     Private _tvgeneralshowlistsorting As List(Of ListSorting)
+    Private _tvimagesgetblankimages As Boolean
+    Private _tvimagesgetenglishimages As Boolean
+    Private _tvimagespreflanguage As String
+    Private _tvimagespreflanguageonly As Boolean
     Private _tvlockepisodelanguagea As Boolean
     Private _tvlockepisodelanguagev As Boolean
     Private _tvlockepisodeplot As Boolean
@@ -5942,6 +5946,42 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesetimagespreflanguageonly = value
+        End Set
+    End Property
+
+    Public Property TVImagesGetBlankImages() As Boolean
+        Get
+            Return Me._tvimagesgetblankimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagesgetblankimages = value
+        End Set
+    End Property
+
+    Public Property TVImagesGetEnglishImages() As Boolean
+        Get
+            Return Me._tvimagesgetenglishimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagesgetenglishimages = value
+        End Set
+    End Property
+
+    Public Property TVImagesPrefLanguage() As String
+        Get
+            Return Me._tvimagespreflanguage
+        End Get
+        Set(ByVal value As String)
+            Me._tvimagespreflanguage = value
+        End Set
+    End Property
+
+    Public Property TVImagesPrefLanguageOnly() As Boolean
+        Get
+            Return Me._tvimagespreflanguageonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagespreflanguageonly = value
         End Set
     End Property
 
