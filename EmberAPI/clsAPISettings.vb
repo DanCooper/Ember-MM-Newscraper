@@ -2702,11 +2702,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVSeasonPosterPrefSize() As Enums.TVPosterSize
+    Public Property TVSeasonPosterPrefSize() As Enums.TVSeasonPosterSize
         Get
             Return Settings._XMLSettings.TVSeasonPosterPrefSize
         End Get
-        Set(ByVal value As Enums.TVPosterSize)
+        Set(ByVal value As Enums.TVSeasonPosterSize)
             Settings._XMLSettings.TVSeasonPosterPrefSize = value
         End Set
     End Property
@@ -6699,7 +6699,7 @@ Public Class Settings
         Me.TVSeasonMissingPoster = False
         Me.TVSeasonPosterHeight = 0
         Me.TVSeasonPosterOverwrite = True
-        Me.TVSeasonPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.HD1426
         Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterResize = False

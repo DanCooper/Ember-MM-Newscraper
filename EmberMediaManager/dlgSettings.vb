@@ -4603,7 +4603,7 @@ Public Class dlgSettings
     Private Sub LoadMoviePosterSizes()
         Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
-        items.Add("1400x2100", Enums.MoviePosterSize.HD1426)
+        items.Add("1400x2100", Enums.MoviePosterSize.HD2100)
         items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
         items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
         Me.cbMoviePosterPrefSize.DataSource = items.ToList
@@ -4661,20 +4661,28 @@ Public Class dlgSettings
     Private Sub LoadTVPosterSizes()
         Dim items As New Dictionary(Of String, Enums.TVPosterSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.TVPosterSize.Any)
+        items.Add("1000x1500", Enums.TVPosterSize.HD1500)
         items.Add("1000x1426", Enums.TVPosterSize.HD1426)
         items.Add("680x1000", Enums.TVPosterSize.HD1000)
         Me.cbTVASPosterPrefSize.DataSource = items.ToList
         Me.cbTVASPosterPrefSize.DisplayMember = "Key"
         Me.cbTVASPosterPrefSize.ValueMember = "Value"
-        Me.cbTVSeasonPosterPrefSize.DataSource = items.ToList
-        Me.cbTVSeasonPosterPrefSize.DisplayMember = "Key"
-        Me.cbTVSeasonPosterPrefSize.ValueMember = "Value"
         Me.cbTVShowPosterPrefSize.DataSource = items.ToList
         Me.cbTVShowPosterPrefSize.DisplayMember = "Key"
         Me.cbTVShowPosterPrefSize.ValueMember = "Value"
-        Dim items2 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
-        items2.Add("400x225", Enums.TVEpisodePosterSize.SD225)
-        Me.cbTVEpisodePosterPrefSize.DataSource = items2.ToList
+
+        Dim items2 As New Dictionary(Of String, Enums.TVSeasonPosterSize)
+        items2.Add(Master.eLang.GetString(745, "Any"), Enums.TVSeasonPosterSize.Any)
+        items2.Add("1000x1500", Enums.TVSeasonPosterSize.HD1500)
+        items2.Add("1000x1426", Enums.TVSeasonPosterSize.HD1426)
+        items2.Add("400x578", Enums.TVSeasonPosterSize.HD578)
+        Me.cbTVSeasonPosterPrefSize.DataSource = items2.ToList
+        Me.cbTVSeasonPosterPrefSize.DisplayMember = "Key"
+        Me.cbTVSeasonPosterPrefSize.ValueMember = "Value"
+
+        Dim items3 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
+        items3.Add("400x225", Enums.TVEpisodePosterSize.SD225)
+        Me.cbTVEpisodePosterPrefSize.DataSource = items3.ToList
         Me.cbTVEpisodePosterPrefSize.DisplayMember = "Key"
         Me.cbTVEpisodePosterPrefSize.ValueMember = "Value"
     End Sub
@@ -5644,7 +5652,7 @@ Public Class dlgSettings
             .TVSeasonLandscapeOverwrite = Me.chkTVSeasonLandscapeOverwrite.Checked
             .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterHeight.Text), Convert.ToInt32(Me.txtTVSeasonPosterHeight.Text), 0)
             .TVSeasonPosterOverwrite = Me.chkTVSeasonPosterOverwrite.Checked
-            .TVSeasonPosterPrefSize = CType(Me.cbTVSeasonPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
+            .TVSeasonPosterPrefSize = CType(Me.cbTVSeasonPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVSeasonPosterSize)).Value
             .TVSeasonPosterPrefSizeOnly = Me.chkTVSeasonPosterPrefSizeOnly.Checked
             .TVSeasonPosterResize = Me.chkTVSeasonPosterResize.Checked
             .TVSeasonPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterWidth.Text), Convert.ToInt32(Me.txtTVSeasonPosterWidth.Text), 0)

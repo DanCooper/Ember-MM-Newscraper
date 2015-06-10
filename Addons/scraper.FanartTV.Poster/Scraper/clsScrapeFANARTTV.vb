@@ -273,8 +273,8 @@ Namespace FanartTVs
                 End If
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
-                'Banner AllSeasons/Show
-                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsBanner OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner) AndAlso Results.List.Tvbanner IsNot Nothing Then
+                'Banner Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner) AndAlso Results.List.Tvbanner IsNot Nothing Then
                     For Each image In Results.List.Tvbanner
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "185", _
@@ -388,15 +388,15 @@ Namespace FanartTVs
                     End If
                 End If
 
-                'Fanart AllSeasons/Season/Show
-                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsFanart OrElse Type = Enums.ScraperCapabilities_TV.SeasonFanart OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
+                'Fanart Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
                         alContainer.ShowFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
-                'Landscape AllSeasons/Show
-                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsLandscape OrElse Type = Enums.ScraperCapabilities_TV.ShowLandscape) AndAlso Results.List.Tvthumb IsNot Nothing Then
+                'Landscape Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowLandscape) AndAlso Results.List.Tvthumb IsNot Nothing Then
                     For Each Image In Results.List.Tvthumb
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "281", _
@@ -429,8 +429,8 @@ Namespace FanartTVs
                     Next
                 End If
 
-                'Poster AllSeasons/Show
-                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsPoster OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster) AndAlso Results.List.Tvposter IsNot Nothing Then
+                'Poster Show
+                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster) AndAlso Results.List.Tvposter IsNot Nothing Then
                     For Each image In Results.List.Tvposter
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "1426", _

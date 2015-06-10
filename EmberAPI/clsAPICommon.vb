@@ -706,11 +706,10 @@ Public Class Enums
         ShowCharacterArt = 12
         ShowClearArt = 13
         ShowClearLogo = 14
-        ShowEFanarts = 15
-        ShowFanart = 16
-        ShowLandscape = 17
-        ShowPoster = 18
-        ShowTheme = 19
+        ShowFanart = 15
+        ShowLandscape = 16
+        ShowPoster = 17
+        ShowTheme = 18
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -954,8 +953,9 @@ Public Class Enums
 
     Public Enum TVPosterSize As Integer
         Any = 0
-        HD1426 = 1      'Fanart.tv has only 1000x1426
-        HD1000 = 2      'TVDB has only 680x1000
+        HD1500 = 1
+        HD1426 = 2      'Fanart.tv has only 1000x1426
+        HD1000 = 3      'TVDB has only 680x1000
     End Enum
 
     Public Enum TVEpisodePosterSize As Integer
@@ -965,8 +965,9 @@ Public Class Enums
 
     Public Enum TVSeasonPosterSize As Integer
         Any = 0
-        HD1426 = 1
-        HD578 = 2
+        HD1500 = 1
+        HD1426 = 2
+        HD578 = 3
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options
@@ -2090,6 +2091,7 @@ Public Class Structures
         Dim AllSeasonsLandscape As Boolean
         Dim AllSeasonsPoster As Boolean
         Dim DoSearch As Boolean
+        Dim EFanarts As Boolean
         Dim EpisodeFanart As Boolean
         Dim EpisodePoster As Boolean
         Dim Meta As Boolean

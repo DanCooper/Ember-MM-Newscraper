@@ -1282,11 +1282,11 @@ Public Class Scraper
             Try
                 If ImagesOnly OrElse tShow.TVShow IsNot Nothing Then
 
-                    'get external scraper images
                     If tShow.TVShow Is Nothing OrElse String.IsNullOrEmpty(tShow.TVShow.TVDBID) Then
                         tShow.TVShow = New MediaContainers.TVShow With {.TVDBID = sInfo.TVDBID}
                     End If
 
+                    'get external scraper images
                     Dim aContainer As New MediaContainers.ImagesContainer_TV
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.All, aContainer) Then
 

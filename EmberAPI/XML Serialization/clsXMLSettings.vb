@@ -432,7 +432,7 @@ Partial Public Class clsXMLSettings
     Private _tvseasonmissingposter As Boolean
     Private _tvseasonposterheight As Integer
     Private _tvseasonposteroverwrite As Boolean
-    Private _tvseasonposterprefsize As Enums.TVPosterSize
+    Private _tvseasonposterprefsize As Enums.TVSeasonPosterSize
     Private _tvseasonposterprefsizeonly As Boolean
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
@@ -3564,11 +3564,11 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVSeasonPosterPrefSize() As Enums.TVPosterSize
+    Public Property TVSeasonPosterPrefSize() As Enums.TVSeasonPosterSize
         Get
             Return Me._tvseasonposterprefsize
         End Get
-        Set(ByVal value As Enums.TVPosterSize)
+        Set(ByVal value As Enums.TVSeasonPosterSize)
             Me._tvseasonposterprefsize = value
         End Set
     End Property

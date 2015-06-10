@@ -3060,7 +3060,7 @@ Public Class Images
     Public Shared Function GetPreferredTVSeasonPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVSeasonPosterPrefSize = Enums.TVPosterSize.Any Then
+        If Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
             imgResult = ImageList.Find(Function(f) f.Season = iSeason)
         End If
 
@@ -3068,7 +3068,7 @@ Public Class Images
             imgResult = ImageList.Find(Function(f) f.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize AndAlso f.Season = iSeason)
         End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonPosterPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVPosterSize.Any Then
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonPosterPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
             imgResult = ImageList.Find(Function(f) f.Season = iSeason)
         End If
 

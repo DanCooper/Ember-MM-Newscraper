@@ -85,12 +85,6 @@ Public Class TVDB_Image
 
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_TV.AllSeasonsBanner
-                Return ConfigScrapeModifier.AllSeasonsBanner
-            Case Enums.ScraperCapabilities_TV.AllSeasonsFanart
-                Return ConfigScrapeModifier.AllSeasonsFanart
-            Case Enums.ScraperCapabilities_TV.AllSeasonsPoster
-                Return ConfigScrapeModifier.AllSeasonsPoster
             Case Enums.ScraperCapabilities_TV.EpisodePoster
                 Return ConfigScrapeModifier.EpisodePoster
             Case Enums.ScraperCapabilities_TV.SeasonBanner
@@ -99,8 +93,6 @@ Public Class TVDB_Image
                 Return ConfigScrapeModifier.SeasonPoster
             Case Enums.ScraperCapabilities_TV.ShowBanner
                 Return ConfigScrapeModifier.ShowBanner
-            Case Enums.ScraperCapabilities_TV.ShowEFanarts
-                Return ConfigScrapeModifier.ShowEFanarts
             Case Enums.ScraperCapabilities_TV.ShowFanart
                 Return ConfigScrapeModifier.ShowFanart
             Case Enums.ScraperCapabilities_TV.ShowPoster
@@ -169,15 +161,9 @@ Public Class TVDB_Image
 
         ConfigScrapeModifier.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
         ConfigScrapeModifier.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)
-        ConfigScrapeModifier.SeasonLandscape = clsAdvancedSettings.GetBooleanSetting("DoSeasonLandscape", True)
         ConfigScrapeModifier.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True)
         ConfigScrapeModifier.ShowBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True)
-        ConfigScrapeModifier.ShowCharacterArt = clsAdvancedSettings.GetBooleanSetting("DoShowCharacterArt", True)
-        ConfigScrapeModifier.ShowClearArt = clsAdvancedSettings.GetBooleanSetting("DoShowClearArt", True)
-        ConfigScrapeModifier.ShowClearLogo = clsAdvancedSettings.GetBooleanSetting("DoShowClearLogo", True)
-        ConfigScrapeModifier.ShowEFanarts = ConfigScrapeModifier.ShowFanart
         ConfigScrapeModifier.ShowFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True)
-        ConfigScrapeModifier.ShowLandscape = clsAdvancedSettings.GetBooleanSetting("DoShowLandscape", True)
         ConfigScrapeModifier.ShowPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True)
     End Sub
 
@@ -185,14 +171,9 @@ Public Class TVDB_Image
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoEpisodePoster", ConfigScrapeModifier.EpisodePoster)
             settings.SetBooleanSetting("DoSeasonBanner", ConfigScrapeModifier.SeasonBanner)
-            settings.SetBooleanSetting("DoSeasonLandscape", ConfigScrapeModifier.SeasonLandscape)
             settings.SetBooleanSetting("DoSeasonPoster", ConfigScrapeModifier.SeasonPoster)
             settings.SetBooleanSetting("DoShowBanner", ConfigScrapeModifier.ShowBanner)
-            settings.SetBooleanSetting("DoShowCharacterArt", ConfigScrapeModifier.ShowCharacterArt)
-            settings.SetBooleanSetting("DoShowClearArt", ConfigScrapeModifier.ShowClearArt)
-            settings.SetBooleanSetting("DoShowClearLogo", ConfigScrapeModifier.ShowClearLogo)
             settings.SetBooleanSetting("DoShowFanart", ConfigScrapeModifier.ShowFanart)
-            settings.SetBooleanSetting("DoShowLandscape", ConfigScrapeModifier.ShowLandscape)
             settings.SetBooleanSetting("DoShowPoster", ConfigScrapeModifier.ShowPoster)
 
             settings.SetSetting("ApiKey", _setup.txtApiKey.Text)

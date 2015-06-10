@@ -62,8 +62,8 @@ Namespace TVDBs
 
                 If Results.Banners IsNot Nothing Then
 
-                    'Banner AllSeasons/Show
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsBanner OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner Then
+                    'Banner Show
+                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.series)
                             Dim img As New MediaContainers.Image With {.Height = "140", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -94,8 +94,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'Fanart AllSeasons/Season/Show
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsFanart OrElse Type = Enums.ScraperCapabilities_TV.SeasonFanart OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart Then
+                    'Fanart Show
+                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
                             alContainer.ShowFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                           .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -109,8 +109,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'Poster AllSeasons/Show
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.AllSeasonsPoster OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster Then
+                    'Poster Show
+                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
                             Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                           .LongLang = Localization.ISOGetLangByCode2(image.Language), _

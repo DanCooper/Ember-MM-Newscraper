@@ -184,18 +184,8 @@ Public Class FanartTV_Image
 
     Function QueryScraperCapabilities_TV(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_TV.AllSeasonsBanner
-                Return ConfigScrapeModifier_TV.AllSeasonsBanner
-            Case Enums.ScraperCapabilities_TV.AllSeasonsFanart
-                Return ConfigScrapeModifier_TV.AllSeasonsFanart
-            Case Enums.ScraperCapabilities_TV.AllSeasonsLandscape
-                Return ConfigScrapeModifier_TV.AllSeasonsLandscape
-            Case Enums.ScraperCapabilities_TV.AllSeasonsPoster
-                Return ConfigScrapeModifier_TV.AllSeasonsPoster
             Case Enums.ScraperCapabilities_TV.SeasonBanner
                 Return ConfigScrapeModifier_TV.SeasonBanner
-            Case Enums.ScraperCapabilities_TV.SeasonFanart
-                Return ConfigScrapeModifier_TV.SeasonFanart
             Case Enums.ScraperCapabilities_TV.SeasonLandscape
                 Return ConfigScrapeModifier_TV.SeasonLandscape
             Case Enums.ScraperCapabilities_TV.SeasonPoster
@@ -208,8 +198,6 @@ Public Class FanartTV_Image
                 Return ConfigScrapeModifier_TV.ShowClearArt
             Case Enums.ScraperCapabilities_TV.ShowClearLogo
                 Return ConfigScrapeModifier_TV.ShowClearLogo
-            Case Enums.ScraperCapabilities_TV.ShowEFanarts
-                Return ConfigScrapeModifier_TV.ShowEFanarts
             Case Enums.ScraperCapabilities_TV.ShowFanart
                 Return ConfigScrapeModifier_TV.ShowFanart
             Case Enums.ScraperCapabilities_TV.ShowLandscape
@@ -428,10 +416,6 @@ Public Class FanartTV_Image
 
     Sub LoadSettings_TV()
         _MySettings_TV.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.TV)
-        _MySettings_TV.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.TV)
-        _MySettings_TV.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.TV)
-        _MySettings_TV.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.TV)
-        _MySettings_TV.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.TV)
         _MySettings_TV.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.TV)
         _MySettings_TV.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.TV)
 
@@ -442,10 +426,10 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_TV.ShowCharacterArt = clsAdvancedSettings.GetBooleanSetting("DoShowCharacterArt", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowClearArt = clsAdvancedSettings.GetBooleanSetting("DoShowClearArt", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowClearLogo = clsAdvancedSettings.GetBooleanSetting("DoShowClearLogo", True, , Enums.Content_Type.TV)
-        ConfigScrapeModifier_TV.ShowEFanarts = ConfigScrapeModifier_TV.ShowFanart
         ConfigScrapeModifier_TV.ShowFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowLandscape = clsAdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.EFanarts = ConfigScrapeModifier_TV.ShowFanart
     End Sub
 
     Sub SaveSettings_Movie()

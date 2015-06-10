@@ -2956,8 +2956,12 @@ Namespace MediaContainers
 
         Private Sub DetectImageSize(ByRef strHeigth As String)
             Select Case strHeigth
+                Case "2100"
+                    Me._moviepostersize = Enums.MoviePosterSize.HD2100
                 Case "1500"
                     Me._moviepostersize = Enums.MoviePosterSize.HD1500
+                    Me._tvpostersize = Enums.TVPosterSize.HD1500
+                    Me._tvseasonpostersize = Enums.TVSeasonPosterSize.HD1500
                 Case "1426"
                     Me._moviepostersize = Enums.MoviePosterSize.HD1426
                     Me._tvpostersize = Enums.TVPosterSize.HD1426

@@ -168,14 +168,10 @@ Public Class TMDB_Image
 
     Function QueryScraperCapabilities_TV(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_TV.AllSeasonsPoster
-                Return ConfigScrapeModifier_TV.AllSeasonsPoster
             Case Enums.ScraperCapabilities_TV.EpisodePoster
                 Return ConfigScrapeModifier_TV.EpisodePoster
             Case Enums.ScraperCapabilities_TV.SeasonPoster
                 Return ConfigScrapeModifier_TV.SeasonPoster
-            Case Enums.ScraperCapabilities_TV.ShowEFanarts
-                Return ConfigScrapeModifier_TV.ShowEFanarts
             Case Enums.ScraperCapabilities_TV.ShowFanart
                 Return ConfigScrapeModifier_TV.ShowFanart
             Case Enums.ScraperCapabilities_TV.ShowPoster
