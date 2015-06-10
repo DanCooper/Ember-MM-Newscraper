@@ -1,3 +1,43 @@
+Changelog 1.4.7.0 (2015-06-10)
+
+[Main]
+added: Windows shell context menu entries (check Settings -> Misc)
+added: mapping for hevc/h265 (reset the video codec mapping to default)
+added: LastPlayed for movies and episodes (read and write to/from NFO)
+added: more IDs (IMDB/TMDB/TVDB) for actors, movies, seasons, tv shows and episodes (not all are in use atm)
+added: more preferred image sizes
+added: error loging to all NFO readers
+fixed: some language issues
+fixed: removing movie/tv show sources takes a lot of time
+fixed: AllSeasons image flags be removed if new episodes has been added
+fixed: some issues with dialogs (missing in Taskbar, Icons)
+fixed: default settings
+fixed: main screen images start positions
+changed: all language settings for images are move to global "Scraper - Images" settings
+changed: image scrapers handling (massive API calls reducing)
+changed: CommandLine handling (for informations see http://forum.kodi.tv/showthread.php?tid=228652)
+
+[TMDB]
+added: scrape images for tv shows/seasons (episodes are not yet implemented)
+fixed: request limit handling
+fixed: crash if more than 40 search results was found (request limit issue)
+changed: new API wrapper
+
+[TVDB]
+fixed: crash on every second (re-)scrape
+fixed: Select Image dialog does not shown images they are specified as AllSeasons
+
+[Trakt.tv]
+added: Sync of lastplayed date for episodes and movies in trakt.tv manager
+added: comment support in trakt.tv manager to post new comments/reviews for movies on trakt.tv‏
+
+[IMPA]
+removed: scraper is broken and out-of-date
+
+[MPDB]
+removed: scraper is broken and out-of-date
+
+
 Changelog 1.4.6.0 (2015-05-21)
 
 [Main]
