@@ -91,7 +91,7 @@ Partial Public Class clsXMLSettings
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
     Private _moviediscartoverwrite As Boolean
-    Private _moviedisplayimageselect As Boolean
+    Private _movieimagesdisplayimageselect As Boolean
     Private _moviedisplayyear As Boolean
     Private _movieefanartsheight As Integer
     Private _movieefanartslimit As Integer
@@ -173,7 +173,7 @@ Partial Public Class clsXMLSettings
     Private _moviemissingsubtitles As Boolean
     Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
-    Private _movienosaveimagestonfo As Boolean
+    Private _movieimagesnotsaveurltonfo As Boolean
     Private _movieposterheight As Integer
     Private _movieposteroverwrite As Boolean
     Private _movieposterprefsizeonly As Boolean
@@ -240,7 +240,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetclickscrape As Boolean
     Private _moviesetclickscrapeask As Boolean
     Private _moviesetdiscartoverwrite As Boolean
-    Private _moviesetdisplayimageselect As Boolean
+    Private _moviesetimagesdisplayimageselect As Boolean
     Private _moviesetfanartheight As Integer
     Private _moviesetfanartoverwrite As Boolean
     Private _moviesetfanartprefsizeonly As Boolean
@@ -1298,21 +1298,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieDisplayImageSelect() As Boolean
+    Public Property MovieImagesDisplayImageSelect() As Boolean
         Get
-            Return Me._moviedisplayimageselect
+            Return Me._movieimagesdisplayimageselect
         End Get
         Set(ByVal value As Boolean)
-            Me._moviedisplayimageselect = value
+            Me._movieimagesdisplayimageselect = value
         End Set
     End Property
 
-    Public Property MovieSetDisplayImageSelect() As Boolean
+    Public Property MovieSetImagesDisplayImageSelect() As Boolean
         Get
-            Return Me._moviesetdisplayimageselect
+            Return Me._moviesetimagesdisplayimageselect
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetdisplayimageselect = value
+            Me._moviesetimagesdisplayimageselect = value
         End Set
     End Property
 
@@ -2807,12 +2807,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieNoSaveImagesToNfo() As Boolean
+    Public Property MovieImagesNotSaveURLToNfo() As Boolean
         Get
-            Return Me._movienosaveimagestonfo
+            Return Me._movieimagesnotsaveurltonfo
         End Get
         Set(ByVal value As Boolean)
-            Me._movienosaveimagestonfo = value
+            Me._movieimagesnotsaveurltonfo = value
         End Set
     End Property
 

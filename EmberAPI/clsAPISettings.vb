@@ -434,21 +434,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieDisplayImageSelect() As Boolean
+    Public Property MovieImagesDisplayImageSelect() As Boolean
         Get
-            Return Settings._XMLSettings.MovieDisplayImageSelect
+            Return Settings._XMLSettings.MovieImagesDisplayImageSelect
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieDisplayImageSelect = value
+            Settings._XMLSettings.MovieImagesDisplayImageSelect = value
         End Set
     End Property
 
-    Public Property MovieSetDisplayImageSelect() As Boolean
+    Public Property MovieSetImagesDisplayImageSelect() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetDisplayImageSelect
+            Return Settings._XMLSettings.MovieSetImagesDisplayImageSelect
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetDisplayImageSelect = value
+            Settings._XMLSettings.MovieSetImagesDisplayImageSelect = value
         End Set
     End Property
 
@@ -1946,12 +1946,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieNoSaveImagesToNfo() As Boolean
+    Public Property MovieImagesNotSaveURLToNfo() As Boolean
         Get
-            Return Settings._XMLSettings.MovieNoSaveImagesToNfo
+            Return Settings._XMLSettings.MovieImagesNotSaveURLToNfo
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieNoSaveImagesToNfo = value
+            Settings._XMLSettings.MovieImagesNotSaveURLToNfo = value
         End Set
     End Property
 
@@ -6358,7 +6358,7 @@ Public Class Settings
         Me.MovieClickScrape = False
         Me.MovieClickScrapeAsk = False
         Me.MovieDiscArtOverwrite = True
-        Me.MovieDisplayImageSelect = True
+        Me.MovieImagesDisplayImageSelect = True
         Me.MovieDisplayYear = False
         Me.MovieEFanartsHeight = 0
         Me.MovieEFanartsLimit = 4
@@ -6440,7 +6440,7 @@ Public Class Settings
         Me.MovieMissingSubtitles = False
         Me.MovieMissingTheme = False
         Me.MovieMissingTrailer = False
-        Me.MovieNoSaveImagesToNfo = False
+        Me.MovieImagesNotSaveURLToNfo = False
         Me.MoviePosterHeight = 0
         Me.MoviePosterOverwrite = True
         Me.MoviePosterPrefSizeOnly = False
@@ -6507,7 +6507,7 @@ Public Class Settings
         Me.MovieSetClickScrape = False
         Me.MovieSetClickScrapeAsk = False
         Me.MovieSetDiscArtOverwrite = True
-        Me.MovieSetDisplayImageSelect = True
+        Me.MovieSetImagesDisplayImageSelect = True
         Me.MovieSetFanartHeight = 0
         Me.MovieSetFanartOverwrite = True
         Me.MovieSetFanartPrefSizeOnly = False

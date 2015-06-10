@@ -2406,11 +2406,11 @@ Public Class dlgSettings
         Me.btnTVEpisodeFilterRemove.Enabled = Not Me.chkTVEpisodeNoFilter.Checked
     End Sub
 
-    Private Sub chkMovieImageSelect_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayImageSelect.CheckedChanged
+    Private Sub chkMovieImageSelect_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieImagesDisplayImageSelect.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNoSaveImagesToNfo.CheckedChanged
+    Private Sub chkMovieNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieImagesNotSaveURLToNfo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3584,7 +3584,6 @@ Public Class dlgSettings
             Me.chkMovieClickScrape.Checked = .MovieClickScrape
             Me.chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
             Me.chkMovieDiscArtOverwrite.Checked = .MovieDiscArtOverwrite
-            Me.chkMovieDisplayImageSelect.Checked = .MovieDisplayImageSelect
             Me.chkMovieDisplayYear.Checked = .MovieDisplayYear
             Me.chkMovieEFanartsOverwrite.Checked = .MovieEFanartsOverwrite
             Me.chkMovieEFanartsPrefOnly.Checked = .MovieEFanartsPrefSizeOnly
@@ -3609,6 +3608,8 @@ Public Class dlgSettings
             End If
             Me.chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
             Me.chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
+            Me.chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
+            Me.chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
             If .MovieImagesPrefLanguageOnly Then
                 Me.chkMovieImagesPrefLanguageOnly.Checked = True
                 Me.chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
@@ -3640,7 +3641,6 @@ Public Class dlgSettings
             Me.chkMovieLockVotes.Checked = .MovieLockVotes
             Me.chkMovieLockCredits.Checked = .MovieLockCredits
             Me.chkMovieLockYear.Checked = .MovieLockYear
-            Me.chkMovieNoSaveImagesToNfo.Checked = .MovieNoSaveImagesToNfo
             Me.chkMoviePosterOverwrite.Checked = .MoviePosterOverwrite
             Me.chkMoviePosterPrefOnly.Checked = .MoviePosterPrefSizeOnly
             Me.chkMoviePosterResize.Checked = .MoviePosterResize
@@ -3663,7 +3663,6 @@ Public Class dlgSettings
             Me.chkMovieSetClickScrape.Checked = .MovieSetClickScrape
             Me.chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
             Me.chkMovieSetDiscArtOverwrite.Checked = .MovieSetDiscArtOverwrite
-            Me.chkMovieSetDisplayImageSelect.Checked = .MovieSetDisplayImageSelect
             Me.chkMovieSetFanartOverwrite.Checked = .MovieSetFanartOverwrite
             Me.chkMovieSetFanartPrefOnly.Checked = .MovieSetFanartPrefSizeOnly
             Me.chkMovieSetFanartResize.Checked = .MovieSetFanartResize
@@ -3672,6 +3671,7 @@ Public Class dlgSettings
                 Me.txtMovieSetFanartWidth.Text = .MovieSetFanartWidth.ToString
             End If
             Me.chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
+            Me.chkMovieSetImagesDisplayImageSelect.Checked = .MovieSetImagesDisplayImageSelect
             If .MovieSetImagesPrefLanguageOnly Then
                 Me.chkMovieSetImagesPrefLanguageOnly.Checked = True
                 Me.chkMovieSetImagesGetBlankImages.Checked = .MovieSetImagesGetBlankImages
@@ -5312,7 +5312,6 @@ Public Class dlgSettings
             .MovieClickScrape = Me.chkMovieClickScrape.Checked
             .MovieClickScrapeAsk = Me.chkMovieClickScrapeAsk.Checked
             .MovieDiscArtOverwrite = Me.chkMovieDiscArtOverwrite.Checked
-            .MovieDisplayImageSelect = Me.chkMovieDisplayImageSelect.Checked
             .MovieDisplayYear = Me.chkMovieDisplayYear.Checked
             .MovieEFanartsHeight = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsHeight.Text), Convert.ToInt32(Me.txtMovieEFanartsHeight.Text), 0)
             .MovieEFanartsLimit = If(Not String.IsNullOrEmpty(Me.txtMovieEFanartsLimit.Text), Convert.ToInt32(Me.txtMovieEFanartsLimit.Text), 0)
@@ -5350,8 +5349,10 @@ Public Class dlgSettings
             .MovieGeneralMarkNew = Me.chkMovieGeneralMarkNew.Checked
             .MovieGeneralMediaListSorting.Clear()
             .MovieGeneralMediaListSorting.AddRange(Me.MovieGeneralMediaListSorting)
+            .MovieImagesDisplayImageSelect = Me.chkMovieImagesDisplayImageSelect.Checked
             .MovieImagesGetBlankImages = Me.chkMovieImagesGetBlankImages.Checked
             .MovieImagesGetEnglishImages = Me.chkMovieImagesGetEnglishImages.Checked
+            .MovieImagesNotSaveURLToNfo = Me.chkMovieImagesNotSaveURLToNfo.Checked
             .MovieImagesPrefLanguage = Me.cbMovieImagesPrefLanguage.Text
             .MovieImagesPrefLanguageOnly = Me.chkMovieImagesPrefLanguageOnly.Checked
             If Not String.IsNullOrEmpty(Me.txtMovieIMDBURL.Text) Then
@@ -5388,7 +5389,6 @@ Public Class dlgSettings
             .MovieLockYear = Me.chkMovieLockYear.Checked
             .MovieMetadataPerFileType.Clear()
             .MovieMetadataPerFileType.AddRange(Me.MovieMeta)
-            .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
             .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
             .MoviePosterOverwrite = Me.chkMoviePosterOverwrite.Checked
             .MoviePosterPrefSizeOnly = Me.chkMoviePosterPrefOnly.Checked
@@ -5409,7 +5409,6 @@ Public Class dlgSettings
             .MovieSetClickScrape = Me.chkMovieSetClickScrape.Checked
             .MovieSetClickScrapeAsk = Me.chkMovieSetClickScrapeAsk.Checked
             .MovieSetDiscArtOverwrite = Me.chkMovieSetDiscArtOverwrite.Checked
-            .MovieSetDisplayImageSelect = Me.chkMovieSetDisplayImageSelect.Checked
             .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartHeight.Text), Convert.ToInt32(Me.txtMovieSetFanartHeight.Text), 0)
             .MovieSetFanartOverwrite = Me.chkMovieSetFanartOverwrite.Checked
             .MovieSetFanartPrefSizeOnly = Me.chkMovieSetFanartPrefOnly.Checked
@@ -5419,6 +5418,7 @@ Public Class dlgSettings
             .MovieSetGeneralMarkNew = Me.chkMovieSetGeneralMarkNew.Checked
             .MovieSetGeneralMediaListSorting.Clear()
             .MovieSetGeneralMediaListSorting.AddRange(Me.MovieSetGeneralMediaListSorting)
+            .MovieSetImagesDisplayImageSelect = Me.chkMovieSetImagesDisplayImageSelect.Checked
             .MovieSetImagesGetBlankImages = Me.chkMovieSetImagesGetBlankImages.Checked
             .MovieSetImagesGetEnglishImages = Me.chkMovieSetImagesGetEnglishImages.Checked
             .MovieSetImagesPrefLanguage = Me.cbMovieSetImagesPrefLanguage.Text
@@ -6176,11 +6176,13 @@ Public Class dlgSettings
         Dim strAlsoGetBlankImages As String = Master.eLang.GetString(1207, "Also Get Blank Images")
         Me.chkMovieImagesGetBlankImages.Text = strAlsoGetBlankImages
         Me.chkMovieSetImagesGetBlankImages.Text = strAlsoGetBlankImages
+        Me.chkTVImagesGetBlankImages.Text = strAlsoGetBlankImages
 
         'Also Get English Images
         Dim strAlsoGetEnglishImages As String = Master.eLang.GetString(737, "Also Get English Images")
         Me.chkMovieImagesGetEnglishImages.Text = strAlsoGetEnglishImages
         Me.chkMovieSetImagesGetEnglishImages.Text = strAlsoGetEnglishImages
+        Me.chkTVImagesGetEnglishImages.Text = strAlsoGetEnglishImages
 
         'Ask On Click Scrape
         Dim strAskOnClickScrape As String = Master.eLang.GetString(852, "Ask On Click Scrape")
@@ -6342,8 +6344,14 @@ Public Class dlgSettings
 
         'Display "Image Select" dialog while single scraping
         Dim strDisplayImgDialog As String = Master.eLang.GetString(499, "Display ""Image Select"" dialog while single scraping")
-        Me.chkMovieDisplayImageSelect.Text = strDisplayImgDialog
-        Me.chkMovieSetDisplayImageSelect.Text = strDisplayImgDialog
+        Me.chkMovieImagesDisplayImageSelect.Text = strDisplayImgDialog
+        Me.chkMovieSetImagesDisplayImageSelect.Text = strDisplayImgDialog
+        Me.chkTVImagesDisplayImageSelect.Text = strDisplayImgDialog
+
+        'Do not save URLs to NFO"
+        Dim strNotSaveURLToNfo As String = Master.eLang.GetString(498, "Do not save URLs to NFO")
+        Me.chkMovieImagesNotSaveURLToNfo.Text = strNotSaveURLToNfo
+        Me.chkTVImagesNotSaveURLToNfo.Text = strNotSaveURLToNfo
 
         'Duration Format
         Dim strDurationFormat As String = Master.eLang.GetString(515, "Duration Format")
@@ -6472,6 +6480,12 @@ Public Class dlgSettings
         Me.colTVGeneralEpisodeListSortingHide.Text = strHide
         Me.colTVGeneralSeasonListSortingHide.Text = strHide
         Me.colTVGeneralShowListSortingHide.Text = strHide
+
+        'Images
+        Dim strImages As String = Master.eLang.GetString(497, "Images")
+        Me.gbMovieImagesOpts.Text = strImages
+        Me.gbMovieSetImagesOpts.Text = strImages
+        Me.gbTVImagesOpts.Text = strImages
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
@@ -6641,6 +6655,7 @@ Public Class dlgSettings
         Dim strOnlyImgSelLang As String = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkMovieImagesPrefLanguageOnly.Text = strOnlyImgSelLang
         Me.chkMovieSetImagesPrefLanguageOnly.Text = strOnlyImgSelLang
+        Me.chkTVImagesPrefLanguageOnly.Text = strOnlyImgSelLang
 
         'Optional Images
         Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
@@ -6751,6 +6766,7 @@ Public Class dlgSettings
         Dim strPreferredLanguage As String = Master.eLang.GetString(741, "Preferred Language")
         Me.gbMovieImagesLanguageOpts.Text = strPreferredLanguage
         Me.gbMovieSetImagesLanguageOpts.Text = strPreferredLanguage
+        Me.gbTVImagesLanguageOpts.Text = strPreferredLanguage
 
         'Preferred Size:
         Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
@@ -6964,7 +6980,6 @@ Public Class dlgSettings
         Me.chkMovieGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
-        Me.chkMovieNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
         Me.chkMovieProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.chkMovieRecognizeVTSExpertVTS.Text = String.Format(Master.eLang.GetString(537, "Recognize VIDEO_TS{0}without VIDEO_TS folder"), Environment.NewLine)
         Me.chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
@@ -7035,7 +7050,6 @@ Public Class dlgSettings
         Me.gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.gbMovieGeneralGenreFilterOpts.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
-        Me.gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
         Me.gbMovieScraperCertificationOpts.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")

@@ -1401,7 +1401,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
                         If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                         If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
-                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieNoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieImagesNotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDBID = SQLreader("TMDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = SQLreader("TMDBColID").ToString
@@ -2727,7 +2727,7 @@ Public Class Database
             par_movie_ThemePath.Value = _movieDB.ThemePath
             par_movie_TrailerPath.Value = _movieDB.TrailerPath
 
-            If Not Master.eSettings.MovieNoSaveImagesToNfo Then
+            If Not Master.eSettings.MovieImagesNotSaveURLToNfo Then
                 par_movie_FanartURL.Value = _movieDB.Movie.Fanart.URL
             Else
                 par_movie_FanartURL.Value = String.Empty
