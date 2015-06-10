@@ -2695,6 +2695,7 @@ Namespace MediaContainers
         Private _thumburl As String
         Private _tvbannersize As Enums.TVBannerSize
         Private _tvbannertype As Enums.TVBannerType
+        Private _tvepisodepostersize As Enums.TVEpisodePosterSize
         Private _tvfanartsize As Enums.TVFanartSize
         Private _tvpostersize As Enums.TVPosterSize
         Private _tvseasonpostersize As Enums.TVSeasonPosterSize
@@ -2850,6 +2851,12 @@ Namespace MediaContainers
             End Set
         End Property
 
+        Public ReadOnly Property TVEpisodePosterSize() As Enums.TVEpisodePosterSize
+            Get
+                Return Me._tvepisodepostersize
+            End Get
+        End Property
+
         Public ReadOnly Property TVFanartSize() As Enums.TVFanartSize
             Get
                 Return Me._tvfanartsize
@@ -2943,6 +2950,7 @@ Namespace MediaContainers
             Me._thumburl = String.Empty
             Me._tvbannersize = Enums.TVBannerSize.Any
             Me._tvbannertype = Enums.TVBannerType.Any
+            Me._tvepisodepostersize = Enums.TVEpisodePosterSize.Any
             Me._tvfanartsize = Enums.TVFanartSize.Any
             Me._tvpostersize = Enums.TVPosterSize.Any
             Me._tvseasonpostersize = Enums.TVSeasonPosterSize.Any
@@ -2970,12 +2978,15 @@ Namespace MediaContainers
                     Me._tvpostersize = Enums.TVPosterSize.HD1000
                 Case "1080"
                     Me._moviefanartsize = Enums.MovieFanartSize.HD1080
+                    Me._tvepisodepostersize = Enums.TVEpisodePosterSize.HD1080
                     Me._tvfanartsize = Enums.TVFanartSize.HD1080
                 Case "720"
                     Me._moviefanartsize = Enums.MovieFanartSize.HD720
                     Me._tvfanartsize = Enums.TVFanartSize.HD720
                 Case "578"
                     Me._tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
+                Case "225"
+                    Me._tvepisodepostersize = Enums.TVEpisodePosterSize.SD225
                 Case "185"
                     Me._moviebannersize = Enums.MovieBannerSize.HD185
                     Me._tvbannersize = Enums.TVBannerSize.HD185
@@ -2986,6 +2997,7 @@ Namespace MediaContainers
                     Me._moviefanartsize = Enums.MovieFanartSize.Any
                     Me._moviepostersize = Enums.MoviePosterSize.Any
                     Me._tvbannersize = Enums.TVBannerSize.Any
+                    Me._tvepisodepostersize = Enums.TVEpisodePosterSize.Any
                     Me._tvfanartsize = Enums.TVFanartSize.Any
                     Me._tvpostersize = Enums.TVPosterSize.Any
                     Me._tvseasonpostersize = Enums.TVSeasonPosterSize.Any

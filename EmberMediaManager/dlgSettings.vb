@@ -1898,6 +1898,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub cbTVEpisodePosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVEpisodePosterPrefSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub CheckHideSettings()
         If chkGeneralHideBanner.Checked AndAlso chkGeneralHideCharacterArt.Checked AndAlso chkGeneralHideClearArt.Checked AndAlso chkGeneralHideClearLogo.Checked AndAlso _
               chkGeneralHideDiscArt.Checked AndAlso chkGeneralHideFanart.Checked AndAlso chkGeneralHideFanartSmall.Checked AndAlso chkGeneralHideLandscape.Checked AndAlso chkGeneralHidePoster.Checked Then
@@ -3521,6 +3525,7 @@ Public Class dlgSettings
             Me.cbTVASFanartPrefSize.SelectedValue = .TVASFanartPrefSize
             Me.cbTVASPosterPrefSize.SelectedValue = .TVASPosterPrefSize
             Me.cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
+            Me.cbTVEpisodePosterPrefSize.SelectedValue = .TVEpisodePosterPrefSize
             Me.cbTVImagesPrefLanguage.SelectedItem = .TVImagesPrefLanguage
             Me.cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             Me.cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
@@ -4681,6 +4686,8 @@ Public Class dlgSettings
         Me.cbTVSeasonPosterPrefSize.ValueMember = "Value"
 
         Dim items3 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
+        items3.Add(Master.eLang.GetString(745, "Any"), Enums.TVEpisodePosterSize.Any)
+        items3.Add("1920x1080", Enums.TVEpisodePosterSize.HD1080)
         items3.Add("400x225", Enums.TVEpisodePosterSize.SD225)
         Me.cbTVEpisodePosterPrefSize.DataSource = items3.ToList
         Me.cbTVEpisodePosterPrefSize.DisplayMember = "Key"

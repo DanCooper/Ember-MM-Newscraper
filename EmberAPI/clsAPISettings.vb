@@ -6349,7 +6349,7 @@ Public Class Settings
         Me.MovieBannerHeight = 0
         Me.MovieBannerOverwrite = True
         Me.MovieBannerPrefSizeOnly = False
-        Me.MovieBannerPrefSize = Enums.MovieBannerSize.HD185
+        Me.MovieBannerPrefSize = Enums.MovieBannerSize.Any
         Me.MovieBannerResize = False
         Me.MovieBannerWidth = 0
         Me.MovieCleanDB = False
@@ -6358,7 +6358,6 @@ Public Class Settings
         Me.MovieClickScrape = False
         Me.MovieClickScrapeAsk = False
         Me.MovieDiscArtOverwrite = True
-        Me.MovieImagesDisplayImageSelect = True
         Me.MovieDisplayYear = False
         Me.MovieEFanartsHeight = 0
         Me.MovieEFanartsLimit = 4
@@ -6394,8 +6393,10 @@ Public Class Settings
         Me.MovieGeneralIgnoreLastScan = True
         Me.MovieGeneralMarkNew = False
         Me.MovieGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieImagesDisplayImageSelect = True
         Me.MovieImagesGetBlankImages = False
         Me.MovieImagesGetEnglishImages = False
+        Me.MovieImagesNotSaveURLToNfo = False
         Me.MovieImagesPrefLanguage = "en"
         Me.MovieImagesPrefLanguageOnly = False
         Me.MovieIMDBURL = String.Empty
@@ -6440,7 +6441,6 @@ Public Class Settings
         Me.MovieMissingSubtitles = False
         Me.MovieMissingTheme = False
         Me.MovieMissingTrailer = False
-        Me.MovieImagesNotSaveURLToNfo = False
         Me.MoviePosterHeight = 0
         Me.MoviePosterOverwrite = True
         Me.MoviePosterPrefSizeOnly = False
@@ -6497,7 +6497,7 @@ Public Class Settings
         Me.MovieSetBannerHeight = 0
         Me.MovieSetBannerOverwrite = True
         Me.MovieSetBannerPrefSizeOnly = False
-        Me.MovieSetBannerPrefSize = Enums.MovieBannerSize.HD185
+        Me.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any
         Me.MovieSetBannerResize = False
         Me.MovieSetBannerWidth = 0
         Me.MovieSetCleanDB = False
@@ -6507,7 +6507,6 @@ Public Class Settings
         Me.MovieSetClickScrape = False
         Me.MovieSetClickScrapeAsk = False
         Me.MovieSetDiscArtOverwrite = True
-        Me.MovieSetImagesDisplayImageSelect = True
         Me.MovieSetFanartHeight = 0
         Me.MovieSetFanartOverwrite = True
         Me.MovieSetFanartPrefSizeOnly = False
@@ -6516,6 +6515,7 @@ Public Class Settings
         Me.MovieSetFanartWidth = 0
         Me.MovieSetGeneralMarkNew = False
         Me.MovieSetGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieSetImagesDisplayImageSelect = True
         Me.MovieSetImagesGetBlankImages = False
         Me.MovieSetImagesGetEnglishImages = False
         Me.MovieSetImagesPrefLanguage = "en"
@@ -6578,14 +6578,14 @@ Public Class Settings
         Me.TVASBannerWidth = 0
         Me.TVASFanartHeight = 0
         Me.TVASFanartOverwrite = True
-        Me.TVASFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVASFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVASFanartPrefSizeOnly = False
         Me.TVASFanartResize = False
         Me.TVASFanartWidth = 0
         Me.TVASLandscapeOverwrite = True
         Me.TVASPosterHeight = 0
         Me.TVASPosterOverwrite = True
-        Me.TVASPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVASPosterPrefSize = Enums.TVPosterSize.Any
         Me.TVASPosterPrefSizeOnly = False
         Me.TVASPosterResize = False
         Me.TVASPosterWidth = 0
@@ -6597,7 +6597,7 @@ Public Class Settings
         Me.TVEpisodeClickScrapeAsk = False
         Me.TVEpisodeFanartHeight = 0
         Me.TVEpisodeFanartOverwrite = True
-        Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVEpisodeFanartPrefSizeOnly = False
         Me.TVEpisodeFanartResize = False
         Me.TVEpisodeFanartWidth = 0
@@ -6609,7 +6609,7 @@ Public Class Settings
         Me.TVEpisodeNoFilter = True
         Me.TVEpisodePosterHeight = 0
         Me.TVEpisodePosterOverwrite = True
-        Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.SD225
+        Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any
         Me.TVEpisodePosterResize = False
         Me.TVEpisodePosterWidth = 0
         Me.TVEpisodeProperCase = True
@@ -6622,10 +6622,10 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
-        Me.MovieImagesGetBlankImages = False
-        Me.MovieImagesGetEnglishImages = False
-        Me.MovieImagesPrefLanguage = "en"
-        Me.MovieImagesPrefLanguageOnly = False
+        Me.TVImagesGetBlankImages = False
+        Me.TVImagesGetEnglishImages = False
+        Me.TVImagesPrefLanguage = "en"
+        Me.TVImagesPrefLanguageOnly = False
         Me.TVLockEpisodeLanguageA = False
         Me.TVLockEpisodeLanguageV = False
         Me.TVLockEpisodePlot = False
@@ -6687,7 +6687,7 @@ Public Class Settings
         Me.TVSeasonClickScrapeAsk = False
         Me.TVSeasonFanartHeight = 0
         Me.TVSeasonFanartOverwrite = True
-        Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVSeasonFanartPrefSizeOnly = False
         Me.TVSeasonFanartPrefSizeOnly = False
         Me.TVSeasonFanartResize = False
@@ -6699,7 +6699,7 @@ Public Class Settings
         Me.TVSeasonMissingPoster = False
         Me.TVSeasonPosterHeight = 0
         Me.TVSeasonPosterOverwrite = True
-        Me.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.HD1426
+        Me.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any
         Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterResize = False
@@ -6720,14 +6720,14 @@ Public Class Settings
         Me.TVShowEFanartsLimit = 4
         Me.TVShowEFanartsOverwrite = True
         Me.TVShowEFanartsPrefOnly = False
-        Me.TVShowEFanartsPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVShowEFanartsPrefSize = Enums.TVFanartSize.Any
         Me.TVShowEFanartsPrefSizeOnly = False
         Me.TVShowEFanartsResize = False
         Me.TVShowEFanartsHeight = 0
         Me.TVShowEFanartsWidth = 0
         Me.TVShowFanartHeight = 0
         Me.TVShowFanartOverwrite = True
-        Me.TVShowFanartPrefSize = Enums.TVFanartSize.HD1080
+        Me.TVShowFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVShowFanartPrefSizeOnly = False
         Me.TVShowFanartResize = False
         Me.TVShowFanartWidth = 0
@@ -6747,7 +6747,7 @@ Public Class Settings
         Me.TVShowMissingTheme = False
         Me.TVShowPosterHeight = 0
         Me.TVShowPosterOverwrite = True
-        Me.TVShowPosterPrefSize = Enums.TVPosterSize.HD1000
+        Me.TVShowPosterPrefSize = Enums.TVPosterSize.Any
         Me.TVShowPosterPrefSizeOnly = False
         Me.TVShowPosterResize = False
         Me.TVShowPosterWidth = 0
