@@ -9746,7 +9746,8 @@ doCancel:
             Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
             ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
-            Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)
+            'Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)    TODO: move the Location to theme settings
+            Me.pnlFanartSmall.Location = New Point(124, 130)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblFanartSmallSize.Visible = True
@@ -9771,7 +9772,8 @@ doCancel:
             Me.pbLandscapeCache.Image = Me.MainLandscape.Image
             ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
-            Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
+            'Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
+            Me.pnlLandscape.Location = New Point(419, 130)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblLandscapeSize.Visible = True
@@ -9796,7 +9798,8 @@ doCancel:
             Me.pbClearArtCache.Image = Me.MainClearArt.Image
             ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
-            Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
+            'Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
+            Me.pnlClearArt.Location = New Point(715, 130)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblClearArtSize.Visible = True
@@ -9821,7 +9824,8 @@ doCancel:
             Me.pbCharacterArtCache.Image = Me.MainCharacterArt.Image
             ImageUtils.ResizePB(Me.pbCharacterArt, Me.pbCharacterArtCache, Me.CharacterArtMaxHeight, Me.CharacterArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbCharacterArt)
-            Me.pnlCharacterArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+            'Me.pnlCharacterArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+            Me.pnlCharacterArt.Location = New Point(1011, 130)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblCharacterArtSize.Visible = True
@@ -9846,7 +9850,8 @@ doCancel:
             Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
             ImageUtils.ResizePB(Me.pbDiscArt, Me.pbDiscArtCache, Me.DiscArtMaxHeight, Me.DiscArtMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbDiscArt)
-            Me.pnlDiscArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+            'Me.pnlDiscArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+            Me.pnlDiscArt.Location = New Point(1011, 130)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblDiscArtSize.Visible = True
@@ -9871,7 +9876,8 @@ doCancel:
             Me.pbBannerCache.Image = Me.MainBanner.Image
             ImageUtils.ResizePB(Me.pbBanner, Me.pbBannerCache, Me.BannerMaxHeight, Me.BannerMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbBanner)
-            Me.pnlBanner.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
+            'Me.pnlBanner.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
+            Me.pnlBanner.Location = New Point(124, 327)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblBannerSize.Visible = True
@@ -9896,7 +9902,8 @@ doCancel:
             Me.pbClearLogoCache.Image = Me.MainClearLogo.Image
             ImageUtils.ResizePB(Me.pbClearLogo, Me.pbClearLogoCache, Me.ClearLogoMaxHeight, Me.ClearLogoMaxWidth)
             If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearLogo)
-            Me.pnlClearLogo.Location = New Point(Me.pnlLandscape.Location.X, Me.pnlLandscape.Location.Y + Me.pnlLandscape.Height + 5)
+            'Me.pnlClearLogo.Location = New Point(Me.pnlLandscape.Location.X, Me.pnlLandscape.Location.Y + Me.pnlLandscape.Height + 5)
+            Me.pnlClearLogo.Location = New Point(419, 327)
 
             If Master.eSettings.GeneralShowImgDims Then
                 Me.lblClearLogoSize.Visible = True
