@@ -525,7 +525,6 @@ Partial Class dlgEditSeason
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEditSeason"
-        Me.ShowInTaskbar = False
         Me.Text = "Edit Season"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

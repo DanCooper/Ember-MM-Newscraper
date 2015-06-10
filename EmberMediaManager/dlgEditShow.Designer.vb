@@ -69,7 +69,9 @@ Partial Class dlgEditShow
         Me.pbStar1 = New System.Windows.Forms.PictureBox()
         Me.lblRating = New System.Windows.Forms.Label()
         Me.lblPremiered = New System.Windows.Forms.Label()
+        Me.lblSortTitle = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
+        Me.txtSortTitle = New System.Windows.Forms.TextBox()
         Me.txtTitle = New System.Windows.Forms.TextBox()
         Me.tpShowPoster = New System.Windows.Forms.TabPage()
         Me.btnSetShowPosterDL = New System.Windows.Forms.Button()
@@ -163,8 +165,6 @@ Partial Class dlgEditShow
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
         Me.lblEpisodeSorting = New System.Windows.Forms.Label()
-        Me.lblSortTitle = New System.Windows.Forms.Label()
-        Me.txtSortTitle = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -675,6 +675,16 @@ Partial Class dlgEditShow
         Me.lblPremiered.TabIndex = 2
         Me.lblPremiered.Text = "Premiered:"
         '
+        'lblSortTitle
+        '
+        Me.lblSortTitle.AutoSize = True
+        Me.lblSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblSortTitle.Location = New System.Drawing.Point(6, 48)
+        Me.lblSortTitle.Name = "lblSortTitle"
+        Me.lblSortTitle.Size = New System.Drawing.Size(56, 13)
+        Me.lblSortTitle.TabIndex = 0
+        Me.lblSortTitle.Text = "Sort Title:"
+        '
         'lblTitle
         '
         Me.lblTitle.AutoSize = True
@@ -684,6 +694,14 @@ Partial Class dlgEditShow
         Me.lblTitle.Size = New System.Drawing.Size(32, 13)
         Me.lblTitle.TabIndex = 0
         Me.lblTitle.Text = "Title:"
+        '
+        'txtSortTitle
+        '
+        Me.txtSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSortTitle.Location = New System.Drawing.Point(6, 64)
+        Me.txtSortTitle.Name = "txtSortTitle"
+        Me.txtSortTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtSortTitle.TabIndex = 1
         '
         'txtTitle
         '
@@ -1818,24 +1836,6 @@ Partial Class dlgEditShow
         Me.lblEpisodeSorting.Text = "Episode Sorted by:"
         Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'lblSortTitle
-        '
-        Me.lblSortTitle.AutoSize = True
-        Me.lblSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblSortTitle.Location = New System.Drawing.Point(6, 48)
-        Me.lblSortTitle.Name = "lblSortTitle"
-        Me.lblSortTitle.Size = New System.Drawing.Size(56, 13)
-        Me.lblSortTitle.TabIndex = 0
-        Me.lblSortTitle.Text = "Sort Title:"
-        '
-        'txtSortTitle
-        '
-        Me.txtSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSortTitle.Location = New System.Drawing.Point(6, 64)
-        Me.txtSortTitle.Name = "txtSortTitle"
-        Me.txtSortTitle.Size = New System.Drawing.Size(192, 22)
-        Me.txtSortTitle.TabIndex = 1
-        '
         'dlgEditShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -1857,7 +1857,6 @@ Partial Class dlgEditShow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEditShow"
-        Me.ShowInTaskbar = False
         Me.Text = "Edit Show"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
