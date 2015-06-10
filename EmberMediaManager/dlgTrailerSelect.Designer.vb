@@ -428,10 +428,10 @@ Partial Class dlgTrailerSelect
         Me.Controls.Add(Me.pblBottom)
         Me.Controls.Add(Me.pnlMain)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTrailerSelect"
-        Me.ShowIcon = False
         Me.Text = "Select Trailer"
         Me.gbSelectTrailer.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
