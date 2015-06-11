@@ -944,7 +944,7 @@
   <string id="943">There are no known episodes for this show. Scrape the show, season, or episode and try again.</string>
   <string id="944">No Known Episodes</string>
   <string id="945">There is no poster available for this episode.</string>
-  <string id="946">No Posters found</string>
+  <string id="946"></string>
   <string id="947">Guest Star</string>
   <string id="948">TV Search Results</string>
   <string id="949">The ID you entered is not a valid TVDB ID.</string>
@@ -1059,7 +1059,7 @@
     Media Flags
   </string>
   <string id="969"></string>
-  <string id="970">No Fanart found</string>
+  <string id="970">No Fanarts found</string>
   <string id="971"></string>
   <string id="972">No Posters found</string>
   <string id="973">Actor Thumbs Only</string>

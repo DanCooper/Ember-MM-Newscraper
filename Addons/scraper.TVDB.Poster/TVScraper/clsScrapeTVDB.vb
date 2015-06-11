@@ -510,7 +510,7 @@ Public Class Scraper
                                         End If
                                     End Using
                                 Else
-                                    MessageBox.Show(Master.eLang.GetString(945, "There is no poster available for this episode."), Master.eLang.GetString(946, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                    MessageBox.Show(Master.eLang.GetString(945, "There is no poster available for this episode."), Master.eLang.GetString(972, "No Posters found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     RetImage.Dispose()
                                 End If
                             Else
@@ -540,7 +540,7 @@ Public Class Scraper
                                 End If
                             End Using
                         Else
-                            MessageBox.Show(Master.eLang.GetString(945, "There is no poster available for this episode."), Master.eLang.GetString(946, "No Posters Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            MessageBox.Show(Master.eLang.GetString(945, "There is no poster available for this episode."), Master.eLang.GetString(972, "No Posters found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                             RetImage.Dispose()
                         End If
                     Else

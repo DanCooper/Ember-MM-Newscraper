@@ -508,7 +508,7 @@ Public Class dlgEditMovie
                         MovieBanner = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(972, "No Banners found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -584,7 +584,7 @@ Public Class dlgEditMovie
                         MovieClearArt = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -660,7 +660,7 @@ Public Class dlgEditMovie
                         MovieClearLogo = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -736,7 +736,7 @@ Public Class dlgEditMovie
                         MovieDiscArt = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -843,7 +843,7 @@ Public Class dlgEditMovie
                         MovieFanart = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(970, "No Fanart found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
 
@@ -922,7 +922,7 @@ Public Class dlgEditMovie
                         MovieLandscape = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -998,7 +998,7 @@ Public Class dlgEditMovie
                         MoviePoster = pResults.WebImage
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
         Catch ex As Exception
@@ -1060,7 +1060,7 @@ Public Class dlgEditMovie
                         ThemeAddToPlayer(MovieTheme)
                     End If
                 Else
-                    MessageBox.Show(Master.eLang.GetString(1163, "No Themes found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(1163, "No Themes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End If
 

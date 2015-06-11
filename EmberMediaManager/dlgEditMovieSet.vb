@@ -328,7 +328,7 @@ Public Class dlgEditMovieSet
                     MovieBanner = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(972, "No Banners found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -392,7 +392,7 @@ Public Class dlgEditMovieSet
                     MovieClearArt = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -456,7 +456,7 @@ Public Class dlgEditMovieSet
                     MovieClearLogo = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -520,7 +520,7 @@ Public Class dlgEditMovieSet
                     MovieDiscArt = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -583,7 +583,7 @@ Public Class dlgEditMovieSet
                     MovieFanart = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(970, "No Fanart found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -647,7 +647,7 @@ Public Class dlgEditMovieSet
                     MovieLandscape = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub
@@ -711,7 +711,7 @@ Public Class dlgEditMovieSet
                     MoviePoster = pResults.WebImage
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub

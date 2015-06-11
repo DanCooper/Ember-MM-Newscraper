@@ -13946,7 +13946,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), Master.eLang.GetString(1363, "No Banners Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -13980,7 +13980,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1057, "No Banner images could be found. Please check to see if any Banner scrapers are enabled."), Master.eLang.GetString(1363, "No Banners Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14168,7 +14168,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), Master.eLang.GetString(1102, "No ClearArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14202,7 +14202,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), Master.eLang.GetString(1102, "No ClearArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14292,7 +14292,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), Master.eLang.GetString(1103, "No ClearLogos Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14326,7 +14326,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1100, "No ClearLogo images could be found. Please check to see if any ClearLogo scrapers are enabled."), Master.eLang.GetString(1103, "No ClearLogos Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14416,7 +14416,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), Master.eLang.GetString(1104, "No DiscArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14450,7 +14450,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1101, "No DiscArt images could be found. Please check to see if any DiscArt scrapers are enabled."), Master.eLang.GetString(1104, "No DiscArts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14524,7 +14524,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), Master.eLang.GetString(970, "No Fanarts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14558,7 +14558,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(969, "No Fanart could be found. Please check to see if any fanart scrapers are enabled."), Master.eLang.GetString(970, "No Fanarts Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14711,7 +14711,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), Master.eLang.GetString(1197, "No Landscapes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14745,7 +14745,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), Master.eLang.GetString(1197, "No Landscapes Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14873,7 +14873,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Poster Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
@@ -14907,7 +14907,7 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                MessageBox.Show(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), Master.eLang.GetString(972, "No Poster Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                         End If
                         Me.SetControlsEnabled(True)
