@@ -108,7 +108,7 @@ Public Class Database
                 Dim par_update_actors_strTMDB As SQLite.SQLiteParameter = SQLcommand_update_actors.Parameters.Add("par_actors_strTMDB", DbType.String, 0, "strTMDB")
                 par_update_actors_strThumb.Value = thumbURLs
                 par_update_actors_strIMDB.Value = strIMDB
-                par_update_actors_strThumb.Value = strTMDB
+                par_update_actors_strTMDB.Value = strTMDB
                 SQLcommand_update_actors.ExecuteNonQuery()
             End Using
         End If
