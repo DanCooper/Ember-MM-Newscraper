@@ -6140,7 +6140,8 @@ Public Class Settings
                 'Now we deserialize just the data in a local, shared, variable. So we can reference to us
                 Master.eSettings = Me
             End If
-        Catch
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Try
                 Using srSettings As New StreamReader(configpath)
                     Dim sSettings As String = srSettings.ReadToEnd
@@ -6153,6 +6154,9 @@ Public Class Settings
                     sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
                     'old allseasons/season/tvshow banner type
                     sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
+                    'old seasonposter size HD1000
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>", _
+                                                                             "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
 
                     Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
                     Using reader As TextReader = New StringReader(sSettings)
@@ -6161,8 +6165,9 @@ Public Class Settings
                     'Now we deserialize just the data in a local, shared, variable. So we can reference to us
                     Master.eSettings = Me
                 End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+            Catch ex2 As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                File.Copy(configpath, String.Concat(configpath, "_backup"), True)
                 Master.eSettings = New Settings
             End Try
         End Try
