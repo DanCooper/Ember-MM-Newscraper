@@ -430,8 +430,14 @@ Public Class TMDB_Image
             End If
         End If
 
-        If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, Type, Settings)
+        If Not Type = Enums.ScraperCapabilities_TV.EpisodePoster Then
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, Type, Settings)
+            End If
+        Else
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) AndAlso DBTV.TVEp IsNot Nothing Then
+                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEp.Season, DBTV.TVEp.Episode, Settings)
+            End If
         End If
 
         logger.Trace("Finished TMDB Scraper")

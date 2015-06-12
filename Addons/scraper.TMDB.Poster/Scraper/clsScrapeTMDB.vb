@@ -180,6 +180,47 @@ Namespace TMDB
             Return alContainer
         End Function
 
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
+            Dim alContainer As New MediaContainers.ImagesContainer_TV
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
+            Try
+                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
+                TMDBClient.GetConfig()
+
+                Dim Results As TMDbLib.Objects.General.StillImages = Nothing
+                Results = TMDBClient.GetTvEpisodeImages(CInt(tmdbID), iSeason, iEpisode)
+
+                If Results Is Nothing Then
+                    Return Nothing
+                End If
+
+                'Poster
+                If Results.Stills IsNot Nothing Then
+                    For Each image In Results.Stills
+                        Dim tmpImage As New MediaContainers.Image With { _
+                                .Height = image.Height.ToString, _
+                                .Likes = 0, _
+                                .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                                .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
+                                .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
+                                .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
+                                .VoteAverage = image.VoteAverage.ToString, _
+                                .VoteCount = image.VoteCount, _
+                                .Width = image.Width.ToString}
+
+                        alContainer.EpisodePosters.Add(tmpImage)
+                    Next
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return alContainer
+        End Function
+
         Public Function GetTMDBbyTVDB(ByRef tvdbID As String, ByRef Settings As MySettings) As String
             Dim tmdbID As String = String.Empty
 

@@ -162,6 +162,55 @@ Public Class Interfaces
 
     End Interface
 
+    Public Interface ScraperModule_Data_TV
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="oDBTV">Clone of original DBTV. To fill with new TVDB, IMDB or TMDB ID's for subsequent scrapers.</param>
+        ''' <param name="nShow">New and empty Show container to fill with new scraped data</param>
+        ''' <param name="ScrapeType">What kind of data is being requested from the scrape(global scraper settings)</param>
+        ''' <param name="Options"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV) As ModuleResult
+
+#End Region 'Methods
+
+    End Interface
+
     Public Interface ScraperModule_Image_Movie
 
 #Region "Events"
@@ -476,9 +525,9 @@ Public Class Interfaces
 
         Function GetLangs(ByVal sMirror As String, ByRef Langs As clsXMLTVDBLanguages) As ModuleResult
 
-        Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As ModuleResult
+        Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByRef epDetails As MediaContainers.EpisodeDetails) As ModuleResult
 
-        Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As ModuleResult
+        Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByRef epDetails As MediaContainers.EpisodeDetails) As ModuleResult
 
         Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.ImageType_TV, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef Image As Images) As ModuleResult
 
@@ -490,11 +539,11 @@ Public Class Interfaces
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-        Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As ModuleResult
+        Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As ModuleResult
 
-        Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As ModuleResult
+        Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As ModuleResult
 
-        Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As ModuleResult
+        Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As ModuleResult
 
 #End Region 'Methods
 

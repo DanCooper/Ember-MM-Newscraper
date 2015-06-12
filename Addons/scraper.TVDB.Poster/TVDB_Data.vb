@@ -30,7 +30,7 @@ Public Class TVDB_Data
     Public Shared _AssemblyName As String
 
     Public Shared TVScraper As Scraper
-    Public Shared ConfigOptions As New Structures.TVScrapeOptions
+    Public Shared ConfigOptions As New Structures.ScrapeOptions_TV
 
     Private strPrivateAPIKey As String = String.Empty
     Private _Name As String = "TVDB Data Poster"
@@ -102,12 +102,12 @@ Public Class TVDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleEpisode
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleEpisode
         epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Lang, Ordering, Options)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleEpisode
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByRef epDetails As MediaContainers.EpisodeDetails) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.GetSingleEpisode
         epDetails = TVScraper.GetSingleEpisode(ShowID, TVDBID, Aired, Lang, Ordering, Options)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -283,23 +283,23 @@ Public Class TVDB_Data
 
     End Sub
 
-    Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ScrapeEpisode
+    Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ScrapeEpisode
         LoadSettings()
-        Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Aired, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.Scraper
+    Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.Scraper
         LoadSettings()
-        Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, ShowLang, SourceLang, Ordering, filterOptions, ScrapeType, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ScrapeSeason
+    Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_TV.ScrapeSeason
         LoadSettings()
-        Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

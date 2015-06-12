@@ -1093,7 +1093,7 @@ Public Class Database
         _TVDB.EpisodeSorting = _tmpTVDB.EpisodeSorting
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
-        _TVDB.isOnlineShow = _tmpTVDB.isOnlineShow
+        _TVDB.IsOnlineShow = _tmpTVDB.IsOnlineShow
         _TVDB.ListTitle = _tmpTVDB.ListTitle
         _TVDB.Ordering = _tmpTVDB.Ordering
         _TVDB.ShowBannerPath = _tmpTVDB.ShowBannerPath
@@ -1898,6 +1898,22 @@ Public Class Database
 
         Return New Structures.DBTV With {.EpID = -1}
     End Function
+
+    Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal WithShow As Boolean) As Structures.DBTV
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            ' One more Query Better then re-write all function again
+            SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", iShowID, iSeason, iEpisode)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.Read Then
+                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), WithShow)
+                Else
+                    Return New Structures.DBTV With {.EpID = -1} ' No Movie Found
+                End If
+            End Using
+        End Using
+
+        Return New Structures.DBTV With {.EpID = -1}
+    End Function
     ''' <summary>
     ''' Retrieve details for the given ShowID. If AllSeasonPosterEnabled is <c>True</c>, also retrieve the AllSeasonsPoster
     ''' </summary>
@@ -2079,7 +2095,7 @@ Public Class Database
         End Try
 
         'Check if the path is available and ready to edit
-        If Directory.Exists(_TVDB.ShowPath) Then _TVDB.isOnlineShow = True
+        If Directory.Exists(_TVDB.ShowPath) Then _TVDB.IsOnlineShow = True
 
         Return _TVDB
     End Function

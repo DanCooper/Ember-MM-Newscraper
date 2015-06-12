@@ -452,6 +452,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVImagesDisplayImageSelect() As Boolean
+        Get
+            Return Settings._XMLSettings.TVImagesDisplayImageSelect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesDisplayImageSelect = value
+        End Set
+    End Property
+
     Public Property MovieDisplayYear() As Boolean
         Get
             Return Settings._XMLSettings.MovieDisplayYear
@@ -6627,6 +6636,7 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
+        Me.TVImagesDisplayImageSelect = True
         Me.TVImagesGetBlankImages = False
         Me.TVImagesGetEnglishImages = False
         Me.TVImagesPrefLanguage = "en"

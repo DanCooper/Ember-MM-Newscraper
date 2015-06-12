@@ -204,10 +204,18 @@ Public Class TVDB_Image
         Dim Settings As TVDBs.Scraper.MySettings
         Settings.ApiKey = _MySettings.ApiKey
 
-        If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
-            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+        If Not Type = Enums.ScraperCapabilities_TV.EpisodePoster Then
+            If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            End If
         Else
-            logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            If Not String.IsNullOrEmpty(DBTV.TVShow.ID) AndAlso DBTV.TVEp IsNot Nothing Then
+                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.ID, DBTV.TVEp.Season, DBTV.TVEp.Episode, Settings)
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            End If
         End If
 
         logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape TVDB")

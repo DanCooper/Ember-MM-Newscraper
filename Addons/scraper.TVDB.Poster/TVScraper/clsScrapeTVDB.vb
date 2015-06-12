@@ -104,11 +104,11 @@ Public Class Scraper
         Return aTVDBLang
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
         Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
-    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
+    Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
         Return sObject.GetSingleEpisodeByAired(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iEpisode = -999, .iSeason = -999, .Aired = Aired, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
@@ -128,15 +128,15 @@ Public Class Scraper
         sObject.SaveImages()
     End Sub
 
-    Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
+    Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV)
         sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .Aired = Aired, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
-    Public Sub ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
+    Public Sub ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV)
         sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
-    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean)
+    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean)
         sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .ShowLang = ShowLang, .SourceLang = SourceLang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
     End Sub
 
@@ -480,6 +480,7 @@ Public Class Scraper
         End Function
 
         Public Sub GetSingleImage(ByVal sInfo As Structures.ScrapeInfo, ByRef RetImage As Images)
+            Dim DBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(sInfo.ShowID, sInfo.iSeason, sInfo.iEpisode, True)
             tmpTVDBShow = New TVDBShow
 
             If sInfo.ImageType = Enums.ImageType_TV.EpisodePoster Then
@@ -492,7 +493,6 @@ Public Class Scraper
 
                             Dim tmpEp As MediaContainers.EpisodeDetails = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Episode = sInfo.iEpisode AndAlso e.Season = sInfo.iSeason)
                             If tmpEp IsNot Nothing Then
-
                                 If File.Exists(tmpEp.LocalFile) Then
                                     RetImage.FromFile(tmpEp.LocalFile)
                                 Else
@@ -1288,7 +1288,7 @@ Public Class Scraper
 
                     'get external scraper images
                     Dim aContainer As New MediaContainers.ImagesContainer_TV
-                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.All, aContainer) Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.All, aContainer, False) Then
 
                         'Banner AllSeasons/Show 
                         For Each img In aContainer.ShowBanners

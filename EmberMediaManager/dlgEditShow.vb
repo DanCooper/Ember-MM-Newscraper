@@ -1244,7 +1244,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+        If Master.currShow.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
             If Not Master.eSettings.TVASBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
             If Not Master.eSettings.TVASFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
             If Not Master.eSettings.TVASLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
@@ -1430,15 +1430,16 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowBannerAnyEnabled Then
+            If Not String.IsNullOrEmpty(Master.currShow.ShowBannerPath) AndAlso Master.currShow.ShowBannerPath.Substring(0, 1) = ":" Then
+                ShowBanner.FromWeb(Master.currShow.ShowBannerPath.Substring(1, Master.currShow.ShowBannerPath.Length - 1))
+            ElseIf Not String.IsNullOrEmpty(Master.currShow.ShowBannerPath) Then
                 ShowBanner.FromFile(Master.currShow.ShowBannerPath)
-                If ShowBanner.Image IsNot Nothing Then
-                    .pbShowBanner.Image = ShowBanner.Image
-                    .pbShowBanner.Tag = ShowBanner
-
-                    .lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowBanner.Image.Width, .pbShowBanner.Image.Height)
-                    .lblShowBannerSize.Visible = True
-                End If
+            End If
+            If ShowBanner.Image IsNot Nothing Then
+                .pbShowBanner.Image = ShowBanner.Image
+                .pbShowBanner.Tag = ShowBanner
+                .lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowBanner.Image.Width, .pbShowBanner.Image.Height)
+                .lblShowBannerSize.Visible = True
             End If
 
             If Master.eSettings.TVShowCharacterArtAnyEnabled Then

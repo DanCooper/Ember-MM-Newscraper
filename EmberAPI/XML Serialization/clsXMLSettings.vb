@@ -356,6 +356,7 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralmarknewshows As Boolean
     Private _tvgeneralseasonlistsorting As List(Of ListSorting)
     Private _tvgeneralshowlistsorting As List(Of ListSorting)
+    Private _tvimagesdisplayimageselect As Boolean
     Private _tvimagesgetblankimages As Boolean
     Private _tvimagesgetenglishimages As Boolean
     Private _tvimagespreflanguage As String
@@ -1313,6 +1314,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesetimagesdisplayimageselect = value
+        End Set
+    End Property
+
+    Public Property TVImagesDisplayImageSelect() As Boolean
+        Get
+            Return Me._tvimagesdisplayimageselect
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagesdisplayimageselect = value
         End Set
     End Property
 

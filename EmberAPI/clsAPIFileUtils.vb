@@ -349,7 +349,7 @@ Namespace FileUtils
                     Return False
                 End If
             End While
-            dbTV.isOnlineShow = True
+            dbTV.IsOnlineShow = True
             Return True
         End Function
 

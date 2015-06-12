@@ -1602,8 +1602,8 @@ Public Class Functions
     ''' <param name="Options2">Secondary Structures.TVScrapeOptions</param>
     ''' <returns>Structures.TVScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.TVScrapeOptions, ByVal Options2 As Structures.TVScrapeOptions) As Structures.TVScrapeOptions
-        Dim filterOptions As New Structures.TVScrapeOptions
+    Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_TV, ByVal Options2 As Structures.ScrapeOptions_TV) As Structures.ScrapeOptions_TV
+        Dim filterOptions As New Structures.ScrapeOptions_TV
         filterOptions.bEpActors = Options.bEpActors AndAlso Options2.bEpActors
         filterOptions.bEpAired = Options.bEpAired AndAlso Options2.bEpAired
         filterOptions.bEpCredits = Options.bEpCredits AndAlso Options2.bEpCredits
@@ -2013,7 +2013,7 @@ Public Class Structures
         Dim IsMarkSeason As Boolean
         Dim IsMarkShow As Boolean
         Dim IsOnlineEp As Boolean
-        Dim isOnlineShow As Boolean
+        Dim IsOnlineShow As Boolean
         Dim ListTitle As String
         Dim Ordering As Enums.Ordering
         Dim RemoveActorThumbs As Boolean
@@ -2057,7 +2057,7 @@ Public Class Structures
         Dim iEpisode As Integer
         Dim ImageType As Enums.ImageType_TV
         Dim iSeason As Integer
-        Dim Options As Structures.TVScrapeOptions
+        Dim Options As Structures.ScrapeOptions_TV
         Dim ShowLang As String
         Dim SourceLang As String
         Dim ShowID As Integer
@@ -2155,20 +2155,11 @@ Public Class Structures
         Dim bPlot As Boolean
         Dim bTitle As Boolean
     End Structure
-
-    Public Structure SettingsResult
-        Dim DidCancel As Boolean
-        Dim NeedsRefresh_Movie As Boolean
-        Dim NeedsRefresh_MovieSet As Boolean
-        Dim NeedsRefresh_TV As Boolean
-        Dim NeedsUpdate As Boolean
-        Dim NeedsRestart As Boolean
-    End Structure
     ''' <summary>
     ''' Structure representing possible scrape options for TV shows
     ''' </summary>
     ''' <remarks></remarks>
-    Public Structure TVScrapeOptions
+    Public Structure ScrapeOptions_TV
         Dim bEpActors As Boolean
         Dim bEpAired As Boolean
         Dim bEpCredits As Boolean
@@ -2193,6 +2184,15 @@ Public Class Structures
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean
         Dim bShowVotes As Boolean
+    End Structure
+
+    Public Structure SettingsResult
+        Dim DidCancel As Boolean
+        Dim NeedsRefresh_Movie As Boolean
+        Dim NeedsRefresh_MovieSet As Boolean
+        Dim NeedsRefresh_TV As Boolean
+        Dim NeedsUpdate As Boolean
+        Dim NeedsRestart As Boolean
     End Structure
 
     Public Structure ModulesMenus

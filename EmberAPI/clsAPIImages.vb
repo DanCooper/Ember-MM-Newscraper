@@ -886,89 +886,66 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
     End Sub
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="mMovie"></param>
-    ''' <param name="fType"></param>
-    ''' <param name="isChange"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType_Movie, Optional ByVal isChange As Boolean = False) As Boolean
-        '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
 
-        Try
-            With Master.eSettings
-                Select Case fType
-                    Case Enums.ImageType_Movie.Banner
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
-                            .MovieBannerAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.ClearArt
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
-                            .MovieClearArtAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.ClearLogo
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
-                            .MovieClearLogoAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.DiscArt
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
-                            .MovieDiscArtAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.EFanarts
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso _
-                            .MovieEFanartsAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.EThumbs
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso _
-                            .MovieEThumbsAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.Fanart
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite) AndAlso _
-                        .MovieFanartAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.Landscape
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
-                            .MovieLandscapeAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.Poster
-                        If isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite) AndAlso _
-                        .MoviePosterAnyEnabled Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                End Select
-            End With
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return False
-        End Try
+    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ImageType_Movie, Optional ByVal isChange As Boolean = False) As Boolean
+        With Master.eSettings
+            Select Case fType
+                Case Enums.ImageType_Movie.Banner
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.ClearArt
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso .MovieClearArtAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.ClearLogo
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso .MovieClearLogoAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.DiscArt
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso .MovieDiscArtAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.EFanarts
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso .MovieEFanartsAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.EThumbs
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso .MovieEThumbsAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.Fanart
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite) AndAlso .MovieFanartAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.Landscape
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso .MovieLandscapeAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.Poster
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite) AndAlso .MoviePosterAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+            End Select
+        End With
     End Function
     ''' <summary>
     ''' 
@@ -979,59 +956,101 @@ Public Class Images
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function IsAllowedToDownload(ByVal mMovieSet As Structures.DBMovieSet, ByVal fType As Enums.ImageType_Movie, Optional ByVal isChange As Boolean = False) As Boolean
-        '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
+        With Master.eSettings
+            Select Case fType
+                Case Enums.ImageType_Movie.Banner
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.BannerPath) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.ClearArt
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearArtPath) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.ClearLogo
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearLogoPath) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.DiscArt
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.DiscArtPath) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.Fanart
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.FanartPath) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.Landscape
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.LandscapePath) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_Movie.Poster
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.PosterPath) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+            End Select
+        End With
+    End Function
 
-        Try
-            With Master.eSettings
-                Select Case fType
-                    Case Enums.ImageType_Movie.Banner
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.BannerPath) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.ClearArt
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearArtPath) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.ClearLogo
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearLogoPath) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.DiscArt
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.DiscArtPath) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.Fanart
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.FanartPath) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.Landscape
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.LandscapePath) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ImageType_Movie.Poster
-                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.PosterPath) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
-                            Return True
-                        Else
-                            Return False
-                        End If
-                End Select
-            End With
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return False
-        End Try
+    Public Function IsAllowedToDownload(ByVal mTV As Structures.DBTV, ByVal fType As Enums.ImageType_TV, Optional ByVal isChange As Boolean = False) As Boolean
+        With Master.eSettings
+            Select Case fType
+                Case Enums.ImageType_TV.ShowBanner
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowBannerPath) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowCharacterArt
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowCharacterArtPath) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowClearArt
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowClearArtPath) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowClearLogo
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowClearLogoPath) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowFanart
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowFanartPath) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowLandscape
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowLandscapePath) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowPoster
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowPosterPath) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+            End Select
+        End With
     End Function
 
     Public Sub ResizeExtraFanart(ByVal fromPath As String, ByVal toPath As String)

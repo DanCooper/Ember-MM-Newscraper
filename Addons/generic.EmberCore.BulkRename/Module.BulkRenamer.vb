@@ -209,7 +209,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub cmnuRenamerAuto_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVShow.Click
-        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+        If Master.currShow.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
             Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
@@ -220,7 +220,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub cmnuRenamerManual_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVShows.Click
-        If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+        If Master.currShow.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
             Using dRenameManual As New dlgRenameManual_TVShow
