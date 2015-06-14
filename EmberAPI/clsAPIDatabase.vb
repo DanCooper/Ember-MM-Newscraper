@@ -4262,6 +4262,7 @@ Public Class Database
                             _movieSavetoNFO.Movie.PlayCount = WatchedMovieData.Value.Value.ToString
                             Master.DB.SaveMovieToDB(_movieSavetoNFO, False, BatchMode, True)
 
+                            'TODO @DanCooper Please move following YAMJ part out of this function and delete function because its no longer needed!
                             'create .watched files
                             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                                 For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType_Movie.WatchedFile)
@@ -4277,54 +4278,7 @@ Public Class Database
             End Using
         End Using
     End Sub
-    ''' <summary>
-    ''' Save the PlayCount Tag for watched episode into Ember database /NFO if not already set
-    ''' </summary>
-    ''' <param name="strTVDBID">TVDBID for TV Show identification</param>
-    ''' <param name="strSeason">Season Number</param>
-    ''' <param name="strEpisode">Episode Number</param>
-    ''' <remarks>
-    ''' cocotus 2013/03 Trakt.tv syncing - Episodes
-    ''' not using loop here, only do one episode a time (call function repeatedly!)!
-    '''</remarks>
-    Public Sub SaveEpisodePlayCountInDatabase(ByVal strTVDBID As String, ByVal strSeason As String, ByVal strEpisode As String, ByVal BatchMode As Boolean)
-        Dim tempTVDBID As String = String.Empty
 
-        'First get the internal ID of TVShow using the TVDBID info
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT idShow FROM tvshow WHERE tvdb = '{0}';", strTVDBID)
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                If SQLreader.HasRows Then
-                    While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("idShow")) Then
-                            tempTVDBID = SQLreader("idShow").ToString
-                            Exit While
-                        End If
-                    End While
-                Else
-                    'No ID --> TV Show doesn't Exist in Ember --> Exit no updates!
-                    Exit Sub
-                End If
-            End Using
-        End Using
-
-        'Now we search episodes of the found TV Show
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2} AND Missing = 0;", tempTVDBID, strSeason, strEpisode)
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                If SQLreader.HasRows Then
-                    While SQLreader.Read
-                        Dim currPlaycount As String = If(Not DBNull.Value.Equals(SQLreader("Playcount")), SQLreader("Playcount").ToString, Nothing) 'Playcount is always Nothing or > 0
-                        If currPlaycount Is Nothing Then
-                            Dim _episodeSavetoNFO = Master.DB.LoadTVEpFromDB(CInt(SQLreader("idEpisode")), True)
-                            _episodeSavetoNFO.TVEp.Playcount = "1"
-                            Master.DB.SaveTVEpToDB(_episodeSavetoNFO, False, False, BatchMode, True)
-                        End If
-                    End While
-                End If
-            End Using
-        End Using
-    End Sub
 
     ''' <summary>
     ''' Check if provided querystring is valid SQL

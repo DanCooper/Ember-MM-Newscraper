@@ -1950,6 +1950,7 @@ Public Class dlgEditMovie
                     Me.chkWatched.Checked = True
                 End If
                 'cocotus end
+
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
                     .txtTitle.Text = Master.currMovie.Movie.Title
                 End If
@@ -2014,6 +2015,16 @@ Public Class dlgEditMovie
 
                 If Master.currMovie.Movie.Certifications.Count > 0 Then
                     .txtCerts.Text = Master.currMovie.Movie.Certification
+                End If
+
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.LastPlayed) Then
+                    Dim timecode As Double = 0
+                    Double.TryParse(Master.currMovie.Movie.LastPlayed, timecode)
+                    If timecode > 0 Then
+                        .txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
+                    Else
+                        .txtLastPlayed.Text = Master.currMovie.Movie.LastPlayed
+                    End If
                 End If
 
                 Me.SelectMPAA()
@@ -3000,8 +3011,8 @@ Public Class dlgEditMovie
                     'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
                     If String.IsNullOrEmpty(Master.currMovie.Movie.PlayCount) Or Master.currMovie.Movie.PlayCount = "0" Then
                         Master.currMovie.Movie.PlayCount = "1"
+                        Master.currMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
-
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                         For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
                             If Not File.Exists(a) Then
@@ -3014,6 +3025,7 @@ Public Class dlgEditMovie
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
                     If Integer.TryParse(Master.currMovie.Movie.PlayCount, 0) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
                         Master.currMovie.Movie.PlayCount = ""
+                        Master.currMovie.Movie.LastPlayed = ""
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then

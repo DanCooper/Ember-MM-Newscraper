@@ -111,6 +111,7 @@ Partial Class dlgEditEpisode
         Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.txtLastPlayed = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -1008,6 +1009,16 @@ Partial Class dlgEditEpisode
         Me.tsFilename.Size = New System.Drawing.Size(55, 17)
         Me.tsFilename.Text = "Filename"
         '
+        'txtLastPlayed
+        '
+        Me.txtLastPlayed.BackColor = System.Drawing.SystemColors.Window
+        Me.txtLastPlayed.Enabled = False
+        Me.txtLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtLastPlayed.Location = New System.Drawing.Point(96, 552)
+        Me.txtLastPlayed.Name = "txtLastPlayed"
+        Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
+        Me.txtLastPlayed.TabIndex = 75
+        '
         'dlgEditEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -1015,6 +1026,7 @@ Partial Class dlgEditEpisode
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 601)
+        Me.Controls.Add(Me.txtLastPlayed)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.tcEditEpisode)
@@ -1144,5 +1156,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents btnSetMovieSubtitleScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieSubtitleLocal As System.Windows.Forms.Button
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
 
 End Class
