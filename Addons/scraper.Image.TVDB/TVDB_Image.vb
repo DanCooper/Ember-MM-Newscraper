@@ -37,6 +37,7 @@ Public Class TVDB_Image
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
     Private _scraper As New Scraper
+    Private strPrivateAPIKey As String = String.Empty
 
 #End Region 'Fields
 
@@ -157,7 +158,8 @@ Public Class TVDB_Image
     End Function
 
     Sub LoadSettings()
-        _MySettings.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "")
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("ApiKey", "")
+        _MySettings.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
 
         ConfigScrapeModifier.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
         ConfigScrapeModifier.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)

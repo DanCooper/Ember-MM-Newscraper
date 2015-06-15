@@ -187,7 +187,7 @@ Public Class NFO
             End If
 
             'Votes
-            If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse DBMovie.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Options.bVotes AndAlso _
+            If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse DBMovie.Movie.Votes = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Options.bVotes AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Not scrapedmovie.Votes = "0" AndAlso Master.eSettings.MovieScraperVotes AndAlso Not new_Votes Then
                 DBMovie.Movie.Votes = Regex.Replace(scrapedmovie.Votes, "\D", String.Empty)
                 new_Votes = True
@@ -442,8 +442,8 @@ Public Class NFO
     ''' <summary>
     ''' Returns the "merged" result of each data scraper results
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped</param>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
+    ''' <param name="DBTV">TV Show to be scraped</param>
+    ''' <param name="ScrapedList"><c>List(Of MediaContainers.TVShow)</c> which contains unfiltered results of each data scraper</param>
     ''' <returns>The scrape result of movie (after applying various global scraper settings here)</returns>
     ''' <remarks>
     ''' This is used to determine the result of data scraping by going through all scraperesults of every data scraper and applying global data scraper settings here!
@@ -452,350 +452,314 @@ Public Class NFO
     ''' </remarks>
     Public Shared Function MergeDataScraperResults(ByVal DBTV As Structures.DBTV, ByVal ScrapedList As List(Of MediaContainers.TVShow), ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV) As Structures.DBTV
 
-        ''protects the first scraped result against overwriting
-        'Dim new_Actors As Boolean = False
-        'Dim new_Certification As Boolean = False
-        'Dim new_CollectionID As Boolean = False
-        'Dim new_Collections As Boolean = False
-        'Dim new_Countries As Boolean = False
-        'Dim new_Credits As Boolean = False
-        'Dim new_Directors As Boolean = False
-        'Dim new_Genres As Boolean = False
-        'Dim new_MPAA As Boolean = False
-        'Dim new_OriginalTitle As Boolean = False
-        'Dim new_Outline As Boolean = False
-        'Dim new_Plot As Boolean = False
-        'Dim new_Rating As Boolean = False
-        'Dim new_ReleaseDate As Boolean = False
-        'Dim new_Runtime As Boolean = False
-        'Dim new_Studio As Boolean = False
-        'Dim new_Tagline As Boolean = False
-        'Dim new_Title As Boolean = False
-        'Dim new_Top250 As Boolean = False
-        'Dim new_Trailer As Boolean = False
-        'Dim new_Votes As Boolean = False
-        'Dim new_Year As Boolean = False
+        'protects the first scraped result against overwriting
+        Dim new_Actors As Boolean = False
+        Dim new_Certification As Boolean = False
+        Dim new_Collections As Boolean = False
+        Dim new_ShowCountries As Boolean = False
+        Dim new_Credits As Boolean = False
+        Dim new_Directors As Boolean = False
+        Dim new_ShowGenres As Boolean = False
+        Dim new_ShowMPAA As Boolean = False
+        Dim new_Outline As Boolean = False
+        Dim new_ShowPlot As Boolean = False
+        Dim new_ShowRating As Boolean = False
+        Dim new_ShowPremiered As Boolean = False
+        Dim new_ShowRuntime As Boolean = False
+        Dim new_ShowStatus As Boolean = False
+        Dim new_ShowStudio As Boolean = False
+        Dim new_Tagline As Boolean = False
+        Dim new_ShowTitle As Boolean = False
+        Dim new_Top250 As Boolean = False
+        Dim new_Trailer As Boolean = False
+        Dim new_ShowVotes As Boolean = False
+        Dim new_Year As Boolean = False
 
         ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
         'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
         '    PreviewDataScraperResults(ScrapedList)
         'End If
 
-        'For Each scrapedmovie In ScrapedList
+        For Each scrapedshow In ScrapedList
 
-        '    'TMDBScraper fills ID and TMDBID, IMDB-Scraper fills IMDBID - add that to nMovie!
-        '    If Not String.IsNullOrEmpty(scrapedmovie.IMDBID) Then
-        '        DBTV.Movie.IMDBID = scrapedmovie.IMDBID
-        '    End If
-        '    If Not String.IsNullOrEmpty(scrapedmovie.ID) Then
-        '        DBTV.Movie.ID = scrapedmovie.ID
-        '    End If
-        '    If Not String.IsNullOrEmpty(scrapedmovie.TMDBID) Then
-        '        DBTV.Movie.TMDBID = scrapedmovie.TMDBID
-        '    End If
+            If Not String.IsNullOrEmpty(scrapedshow.ID) Then
+                DBTV.TVShow.ID = scrapedshow.ID
+            End If
+            If Not String.IsNullOrEmpty(scrapedshow.IMDB) Then
+                DBTV.TVShow.IMDB = scrapedshow.IMDB
+            End If
+            If Not String.IsNullOrEmpty(scrapedshow.TMDB) Then
+                DBTV.TVShow.TMDB = scrapedshow.TMDB
+            End If
 
-        '    'Originaltitle
-        '    If (String.IsNullOrEmpty(DBTV.Movie.OriginalTitle) OrElse Not Master.eSettings.MovieLockOriginalTitle) AndAlso Options.bOriginalTitle AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.OriginalTitle) AndAlso Master.eSettings.MovieScraperOriginalTitle AndAlso Not new_OriginalTitle Then
-        '        DBTV.Movie.OriginalTitle = scrapedmovie.OriginalTitle
-        '        new_OriginalTitle = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOriginalTitle AndAlso Not Master.eSettings.MovieLockOriginalTitle Then
-        '        DBTV.Movie.OriginalTitle = String.Empty
-        '    End If
+            'Title
+            If (String.IsNullOrEmpty(DBTV.TVShow.Title) OrElse Not Master.eSettings.TVLockShowTitle) AndAlso Options.bShowTitle AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Title) AndAlso Master.eSettings.TVScraperShowTitle AndAlso Not new_ShowTitle Then
+                DBTV.TVShow.Title = scrapedshow.Title
+                new_ShowTitle = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowTitle AndAlso Not Master.eSettings.TVLockShowTitle Then
+                DBTV.TVShow.Title = String.Empty
+            End If
 
-        '    'Title
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Title) OrElse Not Master.eSettings.MovieLockTitle) AndAlso Options.bTitle AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Title) AndAlso Master.eSettings.MovieScraperTitle AndAlso Not new_Title Then
-        '        DBTV.Movie.Title = scrapedmovie.Title
-        '        new_Title = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTitle AndAlso Not Master.eSettings.MovieLockTitle Then
-        '        DBTV.Movie.Title = String.Empty
-        '    End If
+            'MPAA
+            If (String.IsNullOrEmpty(DBTV.TVShow.MPAA) OrElse Not Master.eSettings.TVLockShowMPAA) AndAlso Options.bShowMPAA AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.MPAA) AndAlso Master.eSettings.TVScraperShowMPAA AndAlso Not new_ShowMPAA Then
+                DBTV.TVShow.MPAA = scrapedshow.MPAA
+                new_ShowMPAA = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowMPAA AndAlso Not Master.eSettings.TVLockShowMPAA Then
+                DBTV.TVShow.MPAA = String.Empty
+            End If
 
-        '    'Year
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Year) OrElse Not Master.eSettings.MovieLockYear) AndAlso Options.bYear AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Year) AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
-        '        DBTV.Movie.Year = scrapedmovie.Year
-        '        new_Year = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
-        '        DBTV.Movie.Year = String.Empty
-        '    End If
+            'Certification
+            If (DBTV.TVShow.Certifications.Count < 1 OrElse Not Master.eSettings.TVLockShowCert) AndAlso Options.bShowCert AndAlso _
+                scrapedshow.Certifications.Count > 0 AndAlso Master.eSettings.TVScraperShowCert AndAlso Not new_Certification Then
+                If Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
+                    DBTV.TVShow.Certifications.Clear()
+                    DBTV.TVShow.Certifications.AddRange(scrapedshow.Certifications)
+                    new_Certification = True
+                Else
+                    For Each tCert In scrapedshow.Certifications
+                        If tCert.StartsWith(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name) Then
+                            DBTV.TVShow.Certifications.Clear()
+                            DBTV.TVShow.Certifications.Add(tCert)
+                            new_Certification = True
+                            Exit For
+                        End If
+                    Next
+                End If
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCert AndAlso Not Master.eSettings.TVLockShowCert Then
+                DBTV.TVShow.Certifications.Clear()
+            End If
 
-        '    'MPAA
-        '    If (String.IsNullOrEmpty(DBTV.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) AndAlso Options.bMPAA AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.MPAA) AndAlso Master.eSettings.MovieScraperMPAA AndAlso Not new_MPAA Then
-        '        DBTV.Movie.MPAA = scrapedmovie.MPAA
-        '        new_MPAA = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperMPAA AndAlso Not Master.eSettings.MovieLockMPAA Then
-        '        DBTV.Movie.MPAA = String.Empty
-        '    End If
+            'Premiered
+            If (String.IsNullOrEmpty(DBTV.TVShow.Premiered) OrElse Not Master.eSettings.TVLockShowPremiered) AndAlso Options.bShowPremiered AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Premiered) AndAlso Master.eSettings.TVScraperShowPremiered AndAlso Not new_ShowPremiered Then
+                If Master.eSettings.MovieScraperReleaseFormat = False Then
+                    Dim formatteddate As Date
+                    If DateTime.TryParseExact(scrapedshow.Premiered, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture, Globalization.DateTimeStyles.None, formatteddate) Then
+                        DBTV.TVShow.Premiered = Strings.FormatDateTime(formatteddate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
+                    Else
+                        DBTV.TVShow.Premiered = scrapedshow.Premiered
+                    End If
+                Else
+                    DBTV.TVShow.Premiered = scrapedshow.Premiered
+                End If
+                new_ShowPremiered = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPremiered AndAlso Not Master.eSettings.TVLockShowPremiered Then
+                DBTV.TVShow.Premiered = String.Empty
+            End If
 
-        '    'Certification
-        '    If (DBTV.Movie.Certifications.Count < 1 OrElse Not Master.eSettings.MovieLockCert) AndAlso Options.bCert AndAlso _
-        '        scrapedmovie.Certifications.Count > 0 AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
-        '        If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-        '            DBTV.Movie.Certifications.Clear()
-        '            DBTV.Movie.Certifications.AddRange(scrapedmovie.Certifications)
-        '            new_Certification = True
-        '        Else
-        '            For Each tCert In scrapedmovie.Certifications
-        '                If tCert.StartsWith(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name) Then
-        '                    DBTV.Movie.Certifications.Clear()
-        '                    DBTV.Movie.Certifications.Add(tCert)
-        '                    new_Certification = True
-        '                    Exit For
-        '                End If
-        '            Next
-        '        End If
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
-        '        DBTV.Movie.Certifications.Clear()
-        '    End If
+            'Rating
+            If (String.IsNullOrEmpty(DBTV.TVShow.Rating) OrElse DBTV.TVShow.Rating = "0" OrElse Not Master.eSettings.TVLockShowRating) AndAlso Options.bShowRating AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Rating) AndAlso Not scrapedshow.Rating = "0" AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_ShowRating Then
+                DBTV.TVShow.Rating = scrapedshow.Rating
+                new_ShowRating = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
+                DBTV.TVShow.Rating = String.Empty
+            End If
 
-        '    'ReleaseDate
-        '    If (String.IsNullOrEmpty(DBTV.Movie.ReleaseDate) OrElse Not Master.eSettings.MovieLockReleaseDate) AndAlso Options.bRelease AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.ReleaseDate) AndAlso Master.eSettings.MovieScraperRelease AndAlso Not new_ReleaseDate Then
-        '        If Master.eSettings.MovieScraperReleaseFormat = False Then
-        '            Dim formatteddate As Date
-        '            If DateTime.TryParseExact(scrapedmovie.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture, Globalization.DateTimeStyles.None, formatteddate) Then
-        '                DBTV.Movie.ReleaseDate = Strings.FormatDateTime(formatteddate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
-        '            Else
-        '                DBTV.Movie.ReleaseDate = scrapedmovie.ReleaseDate
-        '            End If
-        '        Else
-        '            DBTV.Movie.ReleaseDate = scrapedmovie.ReleaseDate
-        '        End If
-        '        new_ReleaseDate = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRelease AndAlso Not Master.eSettings.MovieLockReleaseDate Then
-        '        DBTV.Movie.ReleaseDate = String.Empty
-        '    End If
+            '    'Trailer
+            '    If (String.IsNullOrEmpty(DBTV.Movie.Trailer) OrElse Not Master.eSettings.MovieLockTrailer) AndAlso Options.bTrailer AndAlso _
+            '        Not String.IsNullOrEmpty(scrapedmovie.Trailer) AndAlso Master.eSettings.MovieScraperTrailer AndAlso Not new_Trailer Then
+            '        If Master.eSettings.MovieScraperXBMCTrailerFormat Then
+            '            DBTV.Movie.Trailer = scrapedmovie.Trailer.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+            '            DBTV.Movie.Trailer = DBTV.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+            '        Else
+            '            DBTV.Movie.Trailer = scrapedmovie.Trailer
+            '        End If
+            '        new_Trailer = True
+            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTrailer AndAlso Not Master.eSettings.MovieLockTrailer Then
+            '        DBTV.Movie.Trailer = String.Empty
+            '    End If
 
-        '    'Rating
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Rating) OrElse DBTV.Movie.Rating = "0" OrElse Not Master.eSettings.MovieLockRating) AndAlso Options.bRating AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Rating) AndAlso Not scrapedmovie.Rating = "0" AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
-        '        DBTV.Movie.Rating = scrapedmovie.Rating
-        '        new_Rating = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
-        '        DBTV.Movie.Rating = String.Empty
-        '    End If
+            'Votes
+            If (String.IsNullOrEmpty(DBTV.TVShow.Votes) OrElse DBTV.TVShow.Votes = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Options.bShowVotes AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Votes) AndAlso Not scrapedshow.Votes = "0" AndAlso Master.eSettings.TVScraperShowVotes AndAlso Not new_ShowVotes Then
+                DBTV.TVShow.Votes = Regex.Replace(scrapedshow.Votes, "\D", String.Empty)
+                new_ShowVotes = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowVotes AndAlso Not Master.eSettings.TVLockShowVotes Then
+                DBTV.TVShow.Votes = String.Empty
+            End If
 
-        '    'Trailer
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Trailer) OrElse Not Master.eSettings.MovieLockTrailer) AndAlso Options.bTrailer AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Trailer) AndAlso Master.eSettings.MovieScraperTrailer AndAlso Not new_Trailer Then
-        '        If Master.eSettings.MovieScraperXBMCTrailerFormat Then
-        '            DBTV.Movie.Trailer = scrapedmovie.Trailer.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-        '            DBTV.Movie.Trailer = DBTV.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-        '        Else
-        '            DBTV.Movie.Trailer = scrapedmovie.Trailer
-        '        End If
-        '        new_Trailer = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTrailer AndAlso Not Master.eSettings.MovieLockTrailer Then
-        '        DBTV.Movie.Trailer = String.Empty
-        '    End If
+            '    'Top250
+            '    If (String.IsNullOrEmpty(DBTV.Movie.Top250) OrElse Not Master.eSettings.MovieLockTop250) AndAlso Options.bTop250 AndAlso _
+            '        Not String.IsNullOrEmpty(scrapedmovie.Top250) AndAlso Master.eSettings.MovieScraperTop250 AndAlso Not new_Top250 Then
+            '        DBTV.Movie.Top250 = scrapedmovie.Top250
+            '        new_Top250 = True
+            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTop250 AndAlso Not Master.eSettings.MovieLockTop250 Then
+            '        DBTV.Movie.Top250 = String.Empty
+            '    End If
 
-        '    'Votes
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Votes) OrElse DBTV.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso Options.bVotes AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Not scrapedmovie.Votes = "0" AndAlso Master.eSettings.MovieScraperVotes AndAlso Not new_Votes Then
-        '        DBTV.Movie.Votes = Regex.Replace(scrapedmovie.Votes, "\D", String.Empty)
-        '        new_Votes = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperVotes AndAlso Not Master.eSettings.MovieLockVotes Then
-        '        DBTV.Movie.Votes = String.Empty
-        '    End If
+            'Actors
+            If (DBTV.TVShow.Actors.Count < 1 OrElse Not Master.eSettings.TVLockShowActors) AndAlso Options.bShowActors AndAlso _
+                scrapedshow.Actors.Count > 0 AndAlso Master.eSettings.TVScraperShowActors AndAlso Not new_Actors Then
 
-        '    'Top250
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Top250) OrElse Not Master.eSettings.MovieLockTop250) AndAlso Options.bTop250 AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Top250) AndAlso Master.eSettings.MovieScraperTop250 AndAlso Not new_Top250 Then
-        '        DBTV.Movie.Top250 = scrapedmovie.Top250
-        '        new_Top250 = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTop250 AndAlso Not Master.eSettings.MovieLockTop250 Then
-        '        DBTV.Movie.Top250 = String.Empty
-        '    End If
+                'If Master.eSettings.MovieScraperCastWithImgOnly Then
+                '    For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
+                '        If String.IsNullOrEmpty(scrapedmovie.Actors(i).ThumbURL) Then
+                '            scrapedmovie.Actors.RemoveAt(i)
+                '        End If
+                '    Next
+                'End If
 
-        '    'Actors
-        '    If (DBTV.Movie.Actors.Count < 1 OrElse Not Master.eSettings.MovieLockActors) AndAlso Options.bCast AndAlso _
-        '        scrapedmovie.Actors.Count > 0 AndAlso Master.eSettings.MovieScraperCast AndAlso Not new_Actors Then
+                'If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
+                '    scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
+                'End If
 
-        '        If Master.eSettings.MovieScraperCastWithImgOnly Then
-        '            For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
-        '                If String.IsNullOrEmpty(scrapedmovie.Actors(i).ThumbURL) Then
-        '                    scrapedmovie.Actors.RemoveAt(i)
-        '                End If
-        '            Next
-        '        End If
+                DBTV.TVShow.Actors = scrapedshow.Actors
+                'added check if there's any actors left to add, if not then try with results of following scraper...
+                If scrapedshow.Actors.Count > 0 Then
+                    new_Actors = True
+                    'add numbers for ordering
+                    Dim iOrder As Integer = 0
+                    For Each actor In scrapedshow.Actors
+                        actor.Order = iOrder
+                        iOrder += 1
+                    Next
+                End If
 
-        '        If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
-        '            scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
-        '        End If
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowActors AndAlso Not Master.eSettings.TVLockShowActors Then
+                DBTV.TVShow.Actors.Clear()
+            End If
 
-        '        DBTV.Movie.Actors = scrapedmovie.Actors
-        '        'added check if there's any actors left to add, if not then try with results of following scraper...
-        '        If scrapedmovie.Actors.Count > 0 Then
-        '            new_Actors = True
-        '            'add numbers for ordering
-        '            Dim iOrder As Integer = 0
-        '            For Each actor In scrapedmovie.Actors
-        '                actor.Order = iOrder
-        '                iOrder += 1
-        '            Next
-        '        End If
+            '    'Tagline
+            '    If (String.IsNullOrEmpty(DBTV.Movie.Tagline) OrElse Not Master.eSettings.MovieLockTagline) AndAlso Options.bTagline AndAlso _
+            '        Not String.IsNullOrEmpty(scrapedmovie.Tagline) AndAlso Master.eSettings.MovieScraperTagline AndAlso Not new_Tagline Then
+            '        DBTV.Movie.Tagline = scrapedmovie.Tagline
+            '        new_Tagline = True
+            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTagline AndAlso Not Master.eSettings.MovieLockTagline Then
+            '        DBTV.Movie.Tagline = String.Empty
+            '    End If
 
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCast AndAlso Not Master.eSettings.MovieLockActors Then
-        '        DBTV.Movie.Actors.Clear()
-        '    End If
+            '    'Directors
+            '    If (DBTV.Movie.Directors.Count < 1 OrElse Not Master.eSettings.MovieLockDirector) AndAlso Options.bDirector AndAlso _
+            '        scrapedmovie.Directors.Count > 0 AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
+            '        DBTV.Movie.Directors.Clear()
+            '        DBTV.Movie.Directors.AddRange(scrapedmovie.Directors)
+            '        new_Directors = True
+            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperDirector AndAlso Not Master.eSettings.MovieLockDirector Then
+            '        DBTV.Movie.Directors.Clear()
+            '    End If
 
-        '    'Tagline
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Tagline) OrElse Not Master.eSettings.MovieLockTagline) AndAlso Options.bTagline AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Tagline) AndAlso Master.eSettings.MovieScraperTagline AndAlso Not new_Tagline Then
-        '        DBTV.Movie.Tagline = scrapedmovie.Tagline
-        '        new_Tagline = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTagline AndAlso Not Master.eSettings.MovieLockTagline Then
-        '        DBTV.Movie.Tagline = String.Empty
-        '    End If
+            'Countries
+            If (DBTV.TVShow.Countries.Count < 1 OrElse Not Master.eSettings.TVLockShowCountry) AndAlso Options.bShowCountry AndAlso _
+                scrapedshow.Countries.Count > 0 AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
+                DBTV.TVShow.Countries.Clear()
+                DBTV.TVShow.Countries.AddRange(scrapedshow.Countries)
+                new_ShowCountries = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCountry AndAlso Not Master.eSettings.TVLockShowCountry Then
+                DBTV.TVShow.Countries.Clear()
+            End If
 
-        '    'Directors
-        '    If (DBTV.Movie.Directors.Count < 1 OrElse Not Master.eSettings.MovieLockDirector) AndAlso Options.bDirector AndAlso _
-        '        scrapedmovie.Directors.Count > 0 AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
-        '        DBTV.Movie.Directors.Clear()
-        '        DBTV.Movie.Directors.AddRange(scrapedmovie.Directors)
-        '        new_Directors = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperDirector AndAlso Not Master.eSettings.MovieLockDirector Then
-        '        DBTV.Movie.Directors.Clear()
-        '    End If
+            '    'Outline
+            '    If (String.IsNullOrEmpty(DBTV.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
+            '        Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
+            '        DBTV.Movie.Outline = scrapedmovie.Outline
+            '        new_Outline = True
+            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
+            '        DBTV.Movie.Outline = String.Empty
+            '    End If
+            '    'check if brackets should be removed...
+            '    If Master.eSettings.MovieScraperCleanPlotOutline Then
+            '        DBTV.Movie.Outline = StringUtils.RemoveBrackets(DBTV.Movie.Outline)
+            '    End If
 
-        '    'Countries
-        '    If (DBTV.Movie.Countries.Count < 1 OrElse Not Master.eSettings.MovieLockCountry) AndAlso Options.bCountry AndAlso _
-        '        scrapedmovie.Countries.Count > 0 AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
-        '        DBTV.Movie.Countries.Clear()
-        '        DBTV.Movie.Countries.AddRange(scrapedmovie.Countries)
-        '        new_Countries = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
-        '        DBTV.Movie.Countries.Clear()
-        '    End If
+            'Plot
+            If (String.IsNullOrEmpty(DBTV.TVShow.Plot) OrElse Not Master.eSettings.TVLockShowPlot) AndAlso Options.bShowPlot AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Plot) AndAlso Master.eSettings.TVScraperShowPlot AndAlso Not new_ShowPlot Then
+                DBTV.TVShow.Plot = scrapedshow.Plot
+                new_ShowPlot = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPlot AndAlso Not Master.eSettings.TVLockShowPlot Then
+                DBTV.TVShow.Plot = String.Empty
+            End If
+            ''check if brackets should be removed...
+            'If Master.eSettings.MovieScraperCleanPlotOutline Then
+            '    DBTV.TVShow.Plot = StringUtils.RemoveBrackets(DBTV.Movie.Plot)
+            'End If
 
-        '    'Outline
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Options.bOutline AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Outline) AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
-        '        DBTV.Movie.Outline = scrapedmovie.Outline
-        '        new_Outline = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
-        '        DBTV.Movie.Outline = String.Empty
-        '    End If
-        '    'check if brackets should be removed...
-        '    If Master.eSettings.MovieScraperCleanPlotOutline Then
-        '        DBTV.Movie.Outline = StringUtils.RemoveBrackets(DBTV.Movie.Outline)
-        '    End If
+            'Genres
+            If (DBTV.TVShow.Genres.Count < 1 OrElse Not Master.eSettings.TVLockShowGenre) AndAlso Options.bShowGenre AndAlso _
+                scrapedshow.Genres.Count > 0 AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_ShowGenres Then
+                'Check if scraped genre(s) are in user language and filter list if not!
+                'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
+                Dim tGenre As String = String.Join("/", scrapedshow.Genres.ToArray).Trim
+                Dim _genres As New List(Of String)
+                tGenre = StringUtils.GenreFilter(tGenre)
+                If Not String.IsNullOrEmpty(tGenre) Then
+                    Dim sGenres() As String = tGenre.Split("/"c)
+                    _genres.AddRange(sGenres.ToList)
+                End If
 
-        '    'Plot
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot) AndAlso Options.bPlot AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Plot) AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
-        '        DBTV.Movie.Plot = scrapedmovie.Plot
-        '        new_Plot = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPlot AndAlso Not Master.eSettings.MovieLockPlot Then
-        '        DBTV.Movie.Plot = String.Empty
-        '    End If
-        '    'check if brackets should be removed...
-        '    If Master.eSettings.MovieScraperCleanPlotOutline Then
-        '        DBTV.Movie.Plot = StringUtils.RemoveBrackets(DBTV.Movie.Plot)
-        '    End If
+                'If Master.eSettings.TVScraperShowGenreLimit > 0 AndAlso Master.eSettings.TVScraperShowGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
+                '    _genres.RemoveRange(Master.eSettings.TVScraperShowGenreLimit, _genres.Count - Master.eSettings.TVScraperShowGenreLimit)
+                'End If
+                DBTV.TVShow.Genres.Clear()
+                DBTV.TVShow.Genres.AddRange(_genres)
+                new_ShowGenres = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
+                DBTV.TVShow.Genres.Clear()
+            End If
 
-        '    'Genres
-        '    If (DBTV.Movie.Genres.Count < 1 OrElse Not Master.eSettings.MovieLockGenre) AndAlso Options.bGenre AndAlso _
-        '        scrapedmovie.Genres.Count > 0 AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
-        '        'Check if scraped genre(s) are in user language and filter list if not!
-        '        'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
-        '        Dim tGenre As String = String.Join("/", scrapedmovie.Genres.ToArray).Trim
-        '        Dim _genres As New List(Of String)
-        '        tGenre = StringUtils.GenreFilter(tGenre)
-        '        If Not String.IsNullOrEmpty(tGenre) Then
-        '            Dim sGenres() As String = tGenre.Split("/"c)
-        '            _genres.AddRange(sGenres.ToList)
-        '        End If
+            'Runtime
+            If (String.IsNullOrEmpty(DBTV.TVShow.Runtime) OrElse DBTV.TVShow.Runtime = "0" OrElse Not Master.eSettings.TVLockShowRuntime) AndAlso Options.bShowRuntime AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Runtime) AndAlso Not scrapedshow.Runtime = "0" AndAlso Master.eSettings.TVScraperShowRuntime AndAlso Not new_ShowRuntime Then
+                DBTV.TVShow.Runtime = scrapedshow.Runtime
+                new_ShowRuntime = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRuntime AndAlso Not Master.eSettings.TVLockShowRuntime Then
+                DBTV.TVShow.Runtime = String.Empty
+            End If
 
-        '        If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
-        '            _genres.RemoveRange(Master.eSettings.MovieScraperGenreLimit, _genres.Count - Master.eSettings.MovieScraperGenreLimit)
-        '        End If
-        '        DBTV.Movie.Genres.Clear()
-        '        DBTV.Movie.Genres.AddRange(_genres)
-        '        new_Genres = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
-        '        DBTV.Movie.Genres.Clear()
-        '    End If
+            'Status
+            If (String.IsNullOrEmpty(DBTV.TVShow.Status) OrElse Not Master.eSettings.TVLockShowStatus) AndAlso Options.bShowStatus AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.Status) AndAlso Master.eSettings.TVScraperShowStatus AndAlso Not new_ShowStatus Then
+                DBTV.TVShow.Status = scrapedshow.Status
+                new_ShowStatus = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStatus AndAlso Not Master.eSettings.TVLockShowStatus Then
+                DBTV.TVShow.Status = String.Empty
+            End If
 
-        '    'Runtime
-        '    If (String.IsNullOrEmpty(DBTV.Movie.Runtime) OrElse DBTV.Movie.Runtime = "0" OrElse Not Master.eSettings.MovieLockRuntime) AndAlso Options.bRuntime AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.Runtime) AndAlso Not scrapedmovie.Runtime = "0" AndAlso Master.eSettings.MovieScraperRuntime AndAlso Not new_Runtime Then
-        '        DBTV.Movie.Runtime = scrapedmovie.Runtime
-        '        new_Runtime = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRuntime AndAlso Not Master.eSettings.MovieLockRuntime Then
-        '        DBTV.Movie.Runtime = String.Empty
-        '    End If
+            'Studios
+            If (DBTV.TVShow.Studios.Count < 1 OrElse Not Master.eSettings.TVLockShowStudio) AndAlso Options.bShowStudio AndAlso _
+                scrapedshow.Studios.Count > 0 AndAlso Master.eSettings.TVScraperShowStudio AndAlso Not new_ShowStudio Then
+                DBTV.TVShow.Studios.Clear()
 
-        '    'Studios
-        '    If (DBTV.Movie.Studios.Count < 1 OrElse Not Master.eSettings.MovieLockStudio) AndAlso Options.bStudio AndAlso _
-        '        scrapedmovie.Studios.Count > 0 AndAlso Master.eSettings.MovieScraperStudio AndAlso Not new_Studio Then
-        '        DBTV.Movie.Studios.Clear()
+                Dim _studios As New List(Of String)
+                _studios.AddRange(scrapedshow.Studios)
 
-        '        Dim _studios As New List(Of String)
-        '        _studios.AddRange(scrapedmovie.Studios)
+                'If Master.eSettings.TVScraperShowStudioWithImgOnly Then
+                '    For i = _studios.Count - 1 To 0 Step -1
+                '        If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
+                '            _studios.RemoveAt(i)
+                '        End If
+                '    Next
+                'End If
 
-        '        If Master.eSettings.MovieScraperStudioWithImgOnly Then
-        '            For i = _studios.Count - 1 To 0 Step -1
-        '                If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-        '                    _studios.RemoveAt(i)
-        '                End If
-        '            Next
-        '        End If
-
-        '        If Master.eSettings.MovieScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
-        '            _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
-        '        End If
+                'If Master.eSettings.tvScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
+                '    _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
+                'End If
 
 
-        '        DBTV.Movie.Studios.AddRange(_studios)
-        '        'added check if there's any studios left to add, if not then try with results of following scraper...
-        '        If _studios.Count > 0 Then
-        '            new_Studio = True
-        '        End If
+                DBTV.TVShow.Studios.AddRange(_studios)
+                'added check if there's any studios left to add, if not then try with results of following scraper...
+                If _studios.Count > 0 Then
+                    new_ShowStudio = True
+                End If
 
 
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperStudio AndAlso Not Master.eSettings.MovieLockStudio Then
-        '        DBTV.Movie.Studios.Clear()
-        '    End If
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
+                DBTV.TVShow.Studios.Clear()
+            End If
 
-        '    'Credits
-        '    If (DBTV.Movie.Credits.Count < 1 OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
-        '        scrapedmovie.Credits.Count > 0 AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
-        '        DBTV.Movie.Credits.Clear()
-        '        DBTV.Movie.Credits.AddRange(scrapedmovie.Credits)
-        '        new_Credits = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
-        '        DBTV.Movie.Credits.Clear()
-        '    End If
-
-        '    'Collection ID
-        '    If (String.IsNullOrEmpty(DBTV.Movie.TMDBColID) OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso Options.bCollectionID AndAlso _
-        '        Not String.IsNullOrEmpty(scrapedmovie.TMDBColID) AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
-        '        DBTV.Movie.TMDBColID = scrapedmovie.TMDBColID
-        '        new_CollectionID = True
-        '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
-        '        DBTV.Movie.TMDBColID = String.Empty
-        '    End If
-
-        '    'Collections
-        '    If (DBTV.Movie.Sets.Count = 0 OrElse Not Master.eSettings.MovieLockCollections) AndAlso _
-        '        scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
-        '        DBTV.Movie.Sets.Clear()
-        '        For Each movieset In scrapedmovie.Sets
-        '            If Not String.IsNullOrEmpty(movieset.Title) Then
-        '                For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-        '                    movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
-        '                Next
-        '            End If
-        '        Next
-        '        DBTV.Movie.Sets.AddRange(scrapedmovie.Sets)
-        '        new_Collections = True
-        '    End If
-        '    'TODO Tags
-        'Next
+            '    'Credits
+            '    If (DBTV.Movie.Credits.Count < 1 OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
+            '        scrapedmovie.Credits.Count > 0 AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
+            '        DBTV.Movie.Credits.Clear()
+            '        DBTV.Movie.Credits.AddRange(scrapedmovie.Credits)
+            '        new_Credits = True
+            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
+            '        DBTV.Movie.Credits.Clear()
+            '    End If
+        Next
 
         ''Plot for Outline
         'If ((String.IsNullOrEmpty(DBTV.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Not Master.eSettings.MovieScraperPlotForOutlineIfEmpty) OrElse _
@@ -803,45 +767,40 @@ Public Class NFO
         '    DBTV.Movie.Outline = StringUtils.ShortenOutline(DBTV.Movie.Plot, Master.eSettings.MovieScraperOutlineLimit)
         'End If
 
-        ''Certification for MPAA
-        'If DBTV.Movie.Certifications.Count > 0 AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso _
-        '    (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (String.IsNullOrEmpty(DBTV.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA) OrElse _
-        '     Not new_MPAA AndAlso (String.IsNullOrEmpty(DBTV.Movie.MPAA) OrElse Not Master.eSettings.MovieLockMPAA)) Then
+        'Certification for MPAA
+        If DBTV.TVShow.Certifications.Count > 0 AndAlso Master.eSettings.TVScraperShowCertForMPAA AndAlso _
+            (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (String.IsNullOrEmpty(DBTV.TVShow.MPAA) OrElse Not Master.eSettings.TVLockShowMPAA) OrElse _
+             Not new_ShowMPAA AndAlso (String.IsNullOrEmpty(DBTV.TVShow.MPAA) OrElse Not Master.eSettings.TVLockShowMPAA)) Then
 
-        '    Dim tmpstring As String = String.Empty
-        '    tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBTV.Movie.Certification), If(Master.eSettings.MovieScraperCertOnlyValue, DBTV.Movie.Certification.Split(Convert.ToChar(":"))(1), DBTV.Movie.Certification))
-        '    'only update DBMovie if scraped result is not empty/nothing!
-        '    If Not String.IsNullOrEmpty(tmpstring) Then
-        '        DBTV.Movie.MPAA = tmpstring
-        '    End If
-        'End If
+            Dim tmpstring As String = String.Empty
+            tmpstring = If(Master.eSettings.TVScraperShowCertLang = "us", StringUtils.USACertToMPAA(DBTV.TVShow.Certification), If(Master.eSettings.TVScraperShowCertOnlyValue, DBTV.TVShow.Certification.Split(Convert.ToChar(":"))(1), DBTV.TVShow.Certification))
+            'only update DBMovie if scraped result is not empty/nothing!
+            If Not String.IsNullOrEmpty(tmpstring) Then
+                DBTV.TVShow.MPAA = tmpstring
+            End If
+        End If
 
-        ''MPAA value if MPAA is not available
-        'If String.IsNullOrEmpty(DBTV.Movie.MPAA) AndAlso Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then
-        '    DBTV.Movie.MPAA = Master.eSettings.MovieScraperMPAANotRated
-        'End If
+        'MPAA value if MPAA is not available
+        If String.IsNullOrEmpty(DBTV.TVShow.MPAA) AndAlso Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then
+            DBTV.TVShow.MPAA = Master.eSettings.TVScraperShowMPAANotRated
+        End If
 
-        ''set ListTitle at the end of merging
-        'If Not String.IsNullOrEmpty(DBTV.Movie.Title) Then
-        '    Dim tTitle As String = StringUtils.SortTokens_Movie(DBTV.Movie.Title)
-        '    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBTV.Movie.Year) Then
-        '        DBTV.ListTitle = String.Format("{0} ({1})", tTitle, DBTV.Movie.Year)
-        '    Else
-        '        DBTV.ListTitle = tTitle
-        '    End If
-        'Else
-        '    If FileUtils.Common.isVideoTS(DBTV.Filename) Then
-        '        DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).Name)
-        '    ElseIf FileUtils.Common.isBDRip(DBTV.Filename) Then
-        '        DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).FullName).Name)
-        '    Else
-        '        If DBTV.UseFolder AndAlso DBTV.IsSingle Then
-        '            DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBTV.Filename).Name)
-        '        Else
-        '            DBTV.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBTV.Filename))
-        '        End If
-        '    End If
-        'End If
+        'set ListTitle at the end of merging
+        If Not String.IsNullOrEmpty(DBTV.TVShow.Title) Then
+            DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
+            'Else
+            '    If FileUtils.Common.isVideoTS(DBTV.Filename) Then
+            '        DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).Name)
+            '    ElseIf FileUtils.Common.isBDRip(DBTV.Filename) Then
+            '        DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).FullName).Name)
+            '    Else
+            '        If DBTV.UseFolder AndAlso DBTV.IsSingle Then
+            '            DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBTV.Filename).Name)
+            '        Else
+            '            DBTV.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBTV.Filename))
+            '        End If
+            '    End If
+        End If
 
         Return DBTV
     End Function

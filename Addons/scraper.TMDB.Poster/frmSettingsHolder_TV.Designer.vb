@@ -33,8 +33,8 @@ Partial Class frmSettingsHolder_TV
         Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbScraperFieldsOpts = New System.Windows.Forms.GroupBox()
+        Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperImagesSeason = New System.Windows.Forms.GroupBox()
         Me.tblScraperImagesSeason = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScrapeSeasonPoster = New System.Windows.Forms.CheckBox()
@@ -61,8 +61,8 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox1.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.gbScraperFieldsOpts.SuspendLayout()
+        Me.tblScraperFieldsOpts.SuspendLayout()
         Me.gbScraperImagesSeason.SuspendLayout()
         Me.tblScraperImagesSeason.SuspendLayout()
         Me.gbScraperImagesTVShow.SuspendLayout()
@@ -106,7 +106,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.Controls.Add(Me.gbScraperOpts, 0, 1)
-        Me.tblSettingsMain.Controls.Add(Me.GroupBox1, 0, 0)
+        Me.tblSettingsMain.Controls.Add(Me.gbScraperFieldsOpts, 0, 0)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
@@ -207,38 +207,38 @@ Partial Class frmSettingsHolder_TV
         Me.lblEMMAPI.TabIndex = 14
         Me.lblEMMAPI.Text = "Ember Media Manager API key"
         '
-        'GroupBox1
+        'gbScraperFieldsOpts
         '
-        Me.GroupBox1.AutoSize = True
-        Me.GroupBox1.Controls.Add(Me.TableLayoutPanel1)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 3)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(432, 94)
-        Me.GroupBox1.TabIndex = 97
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Images - Scraper specific"
+        Me.gbScraperFieldsOpts.AutoSize = True
+        Me.gbScraperFieldsOpts.Controls.Add(Me.tblScraperFieldsOpts)
+        Me.gbScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
+        Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(432, 94)
+        Me.gbScraperFieldsOpts.TabIndex = 97
+        Me.gbScraperFieldsOpts.TabStop = False
+        Me.gbScraperFieldsOpts.Text = "Images - Scraper specific"
         '
-        'TableLayoutPanel1
+        'tblScraperFieldsOpts
         '
-        Me.TableLayoutPanel1.AutoSize = True
-        Me.TableLayoutPanel1.ColumnCount = 4
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.gbScraperImagesSeason, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.gbScraperImagesTVShow, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.gbScraperImagesEpisode, 2, 0)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(426, 73)
-        Me.TableLayoutPanel1.TabIndex = 11
+        Me.tblScraperFieldsOpts.AutoSize = True
+        Me.tblScraperFieldsOpts.ColumnCount = 4
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperFieldsOpts.Controls.Add(Me.gbScraperImagesSeason, 1, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.gbScraperImagesTVShow, 0, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.gbScraperImagesEpisode, 2, 0)
+        Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
+        Me.tblScraperFieldsOpts.RowCount = 2
+        Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(426, 73)
+        Me.tblScraperFieldsOpts.TabIndex = 11
         '
         'gbScraperImagesSeason
         '
@@ -535,10 +535,10 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperOpts.ResumeLayout(False)
         Me.tblScraperOpts.PerformLayout()
         CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.gbScraperFieldsOpts.ResumeLayout(False)
+        Me.gbScraperFieldsOpts.PerformLayout()
+        Me.tblScraperFieldsOpts.ResumeLayout(False)
+        Me.tblScraperFieldsOpts.PerformLayout()
         Me.gbScraperImagesSeason.ResumeLayout(False)
         Me.gbScraperImagesSeason.PerformLayout()
         Me.tblScraperImagesSeason.ResumeLayout(False)
@@ -584,8 +584,8 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents gbScraperImagesSeason As System.Windows.Forms.GroupBox
     Friend WithEvents tblScraperImagesSeason As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkScrapeSeasonPoster As System.Windows.Forms.CheckBox

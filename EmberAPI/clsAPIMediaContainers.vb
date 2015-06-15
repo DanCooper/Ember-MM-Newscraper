@@ -2206,16 +2206,20 @@ Namespace MediaContainers
 
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
+        Private _certifications As New List(Of String)
+        Private _countries As New List(Of String)
         Private _directors As New List(Of String)
         Private _episodeguide As New EpisodeGuide
         Private _genres As New List(Of String)
         Private _id As String
         Private _imdb As String
         Private _mpaa As String
+        Private _originaltitle As String
         Private _plot As String
         Private _premiered As String
         Private _rating As String
         Private _runtime As String
+        Private _scrapersource As String
         Private _sorttitle As String
         Private _status As String
         Private _studio As String
@@ -2251,6 +2255,23 @@ Namespace MediaContainers
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("originaltitle")> _
+        Public Property OriginalTitle() As String
+            Get
+                Return Me._originaltitle
+            End Get
+            Set(ByVal value As String)
+                Me._originaltitle = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property OriginalTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._originaltitle)
             End Get
         End Property
 
@@ -2461,6 +2482,72 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Certification() As String
+            Get
+                Return String.Join(" / ", _certifications.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _certifications.Clear()
+                AddCertification(value)
+            End Set
+        End Property
+
+        <XmlElement("certification")> _
+        Public Property Certifications() As List(Of String)
+            Get
+                Return _certifications
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _certifications.Clear()
+                Else
+                    _certifications = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CertificationsSpecified() As Boolean
+            Get
+                Return Me._certifications.Count > 0
+            End Get
+        End Property
+
+        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Country() As String
+            Get
+                Return String.Join(" / ", _countries.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _countries.Clear()
+                AddCountry(value)
+            End Set
+        End Property
+
+        <XmlElement("country")> _
+        Public Property Countries() As List(Of String)
+            Get
+                Return _countries
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _countries.Clear()
+                Else
+                    _countries = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CountriesSpecified() As Boolean
+            Get
+                Return Me._countries.Count > 0
+            End Get
+        End Property
+
         <XmlElement("premiered")> _
         Public Property Premiered() As String
             Get
@@ -2599,9 +2686,56 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
+
+        Public Sub AddCertification(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
+                For Each certification As String In values
+                    certification = certification.Trim
+                    If Not _certifications.Contains(certification) Then
+                        _certifications.Add(certification)
+                    End If
+                Next
+            Else
+                If Not _certifications.Contains(value) Then
+                    _certifications.Add(value.Trim)
+                End If
+            End If
+        End Sub
+
+        Public Sub AddCountry(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
+                For Each country As String In values
+                    country = country.Trim
+                    If Not _countries.Contains(country) Then
+                        _countries.Add(country)
+                    End If
+                Next
+            Else
+                value = value.Trim
+                If Not _countries.Contains(value) Then
+                    _countries.Add(value.Trim)
+                End If
+            End If
+        End Sub
 
         Public Sub AddGenre(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
@@ -2648,8 +2782,10 @@ Namespace MediaContainers
             _runtime = String.Empty
             _imdb = String.Empty
             _mpaa = String.Empty
+            _originaltitle = String.Empty
             _genres.Clear()
             _premiered = String.Empty
+            _scrapersource = String.Empty
             _sorttitle = String.Empty
             _status = String.Empty
             _studio = String.Empty
@@ -2660,6 +2796,8 @@ Namespace MediaContainers
             _tags.Clear()
             _directors.Clear()
             _studios.Clear()
+            _certifications.Clear()
+            _countries.Clear()
         End Sub
 
         Public Sub BlankId()

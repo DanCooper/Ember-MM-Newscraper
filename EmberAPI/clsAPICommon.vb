@@ -2173,9 +2173,12 @@ Public Class Structures
         Dim bEpTitle As Boolean
         Dim bEpVotes As Boolean
         Dim bShowActors As Boolean
+        Dim bShowCert As Boolean
+        Dim bShowCountry As Boolean
         Dim bShowEpisodeGuide As Boolean
         Dim bShowGenre As Boolean
         Dim bShowMPAA As Boolean
+        Dim bShowOriginalTitle As Boolean
         Dim bShowPlot As Boolean
         Dim bShowPremiered As Boolean
         Dim bShowRating As Boolean

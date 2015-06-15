@@ -919,8 +919,10 @@ Public Class ModulesManager
             '    DBMovie.Movie.Year = tmpYear
             'End If
 
-            'create a copy of DBMovie
+            'create a copy of DBTV
             oShow.Filename = DBTV.Filename
+            oShow.Ordering = DBTV.Ordering
+            oShow.ShowLanguage = DBTV.ShowLanguage
             oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .ID = DBTV.TVShow.ID, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
             If (modules.Count() <= 0) Then

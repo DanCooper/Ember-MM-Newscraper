@@ -14370,7 +14370,7 @@ doCancel:
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-            Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
+            Me.tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
             Application.DoEvents()
 
             Using dEditShow As New dlgEditShow
@@ -20966,7 +20966,7 @@ doCancel:
 
                 Select Case iProgress
                     Case 0 ' show
-                        Me.tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show:")
+                        Me.tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
                         Me.tspbLoading.Visible = True
                         Me.tslLoading.Visible = True
                         Using dEditShow As New dlgEditShow

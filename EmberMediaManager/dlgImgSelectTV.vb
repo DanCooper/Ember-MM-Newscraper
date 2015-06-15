@@ -557,14 +557,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVShowClearArtAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.ShowClearArt.LocalFile) AndAlso File.Exists(TVDBImages.ShowClearArt.LocalFile) Then
                     TVDBImages.ShowClearArt.WebImage.FromFile(TVDBImages.ShowClearArt.LocalFile)
-                    Master.currShow.ShowClearArtPath = TVDBImages.ShowClearArt.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.ShowClearArt.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.ShowClearArt.LocalFile) Then
                     TVDBImages.ShowClearArt.WebImage.Clear()
                     TVDBImages.ShowClearArt.WebImage.FromWeb(TVDBImages.ShowClearArt.URL)
                     If TVDBImages.ShowClearArt.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.ShowClearArt.LocalFile).FullName)
                         TVDBImages.ShowClearArt.WebImage.Save(TVDBImages.ShowClearArt.LocalFile)
-                        Master.currShow.ShowClearArtPath = TVDBImages.ShowClearArt.LocalFile
                     End If
                 End If
             End If
@@ -573,14 +571,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVShowClearLogoAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.ShowClearLogo.LocalFile) AndAlso File.Exists(TVDBImages.ShowClearLogo.LocalFile) Then
                     TVDBImages.ShowClearLogo.WebImage.FromFile(TVDBImages.ShowClearLogo.LocalFile)
-                    Master.currShow.ShowClearLogoPath = TVDBImages.ShowClearLogo.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.ShowClearLogo.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.ShowClearLogo.LocalFile) Then
                     TVDBImages.ShowClearLogo.WebImage.Clear()
                     TVDBImages.ShowClearLogo.WebImage.FromWeb(TVDBImages.ShowClearLogo.URL)
                     If TVDBImages.ShowClearLogo.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.ShowClearLogo.LocalFile).FullName)
                         TVDBImages.ShowClearLogo.WebImage.Save(TVDBImages.ShowClearLogo.LocalFile)
-                        Master.currShow.ShowClearLogoPath = TVDBImages.ShowClearLogo.LocalFile
                     End If
                 End If
             End If
@@ -589,14 +585,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVShowFanartAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(TVDBImages.ShowFanart.LocalFile) Then
                     TVDBImages.ShowFanart.WebImage.FromFile(TVDBImages.ShowFanart.LocalFile)
-                    Master.currShow.ShowFanartPath = TVDBImages.ShowFanart.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.ShowFanart.LocalFile) Then
                     TVDBImages.ShowFanart.WebImage.Clear()
                     TVDBImages.ShowFanart.WebImage.FromWeb(TVDBImages.ShowFanart.URL)
                     If TVDBImages.ShowFanart.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.ShowFanart.LocalFile).FullName)
                         TVDBImages.ShowFanart.WebImage.Save(TVDBImages.ShowFanart.LocalFile)
-                        Master.currShow.ShowFanartPath = TVDBImages.ShowFanart.LocalFile
                     End If
                 End If
             End If
@@ -605,14 +599,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVShowLandscapeAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.ShowLandscape.LocalFile) AndAlso File.Exists(TVDBImages.ShowLandscape.LocalFile) Then
                     TVDBImages.ShowLandscape.WebImage.FromFile(TVDBImages.ShowLandscape.LocalFile)
-                    Master.currShow.ShowLandscapePath = TVDBImages.ShowLandscape.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.ShowLandscape.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.ShowLandscape.LocalFile) Then
                     TVDBImages.ShowLandscape.WebImage.Clear()
                     TVDBImages.ShowLandscape.WebImage.FromWeb(TVDBImages.ShowLandscape.URL)
                     If TVDBImages.ShowLandscape.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.ShowLandscape.LocalFile).FullName)
                         TVDBImages.ShowLandscape.WebImage.Save(TVDBImages.ShowLandscape.LocalFile)
-                        Master.currShow.ShowLandscapePath = TVDBImages.ShowLandscape.LocalFile
                     End If
                 End If
             End If
@@ -621,14 +613,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVShowPosterAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.ShowPoster.LocalFile) AndAlso File.Exists(TVDBImages.ShowPoster.LocalFile) Then
                     TVDBImages.ShowPoster.WebImage.FromFile(TVDBImages.ShowPoster.LocalFile)
-                    Master.currShow.ShowPosterPath = TVDBImages.ShowPoster.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.ShowPoster.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.ShowPoster.LocalFile) Then
                     TVDBImages.ShowPoster.WebImage.Clear()
                     TVDBImages.ShowPoster.WebImage.FromWeb(TVDBImages.ShowPoster.URL)
                     If TVDBImages.ShowPoster.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.ShowPoster.LocalFile).FullName)
                         TVDBImages.ShowPoster.WebImage.Save(TVDBImages.ShowPoster.LocalFile)
-                        Master.currShow.ShowPosterPath = TVDBImages.ShowPoster.LocalFile
                     End If
                 End If
             End If
@@ -637,14 +627,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVASBannerAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.AllSeasonsBanner.LocalFile) AndAlso File.Exists(TVDBImages.AllSeasonsBanner.LocalFile) Then
                     TVDBImages.AllSeasonsBanner.WebImage.FromFile(TVDBImages.AllSeasonsBanner.LocalFile)
-                    Master.currShow.SeasonBannerPath = TVDBImages.AllSeasonsBanner.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.AllSeasonsBanner.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.AllSeasonsBanner.LocalFile) Then
                     TVDBImages.AllSeasonsBanner.WebImage.Clear()
                     TVDBImages.AllSeasonsBanner.WebImage.FromWeb(TVDBImages.AllSeasonsBanner.URL)
                     If TVDBImages.AllSeasonsBanner.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.AllSeasonsBanner.LocalFile).FullName)
                         TVDBImages.AllSeasonsBanner.WebImage.Save(TVDBImages.AllSeasonsBanner.LocalFile)
-                        Master.currShow.SeasonBannerPath = TVDBImages.AllSeasonsBanner.LocalFile
                     End If
                 End If
             End If
@@ -653,14 +641,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVASFanartAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.AllSeasonsFanart.LocalFile) AndAlso File.Exists(TVDBImages.AllSeasonsFanart.LocalFile) Then
                     TVDBImages.AllSeasonsFanart.WebImage.FromFile(TVDBImages.AllSeasonsFanart.LocalFile)
-                    Master.currShow.SeasonFanartPath = TVDBImages.AllSeasonsFanart.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.AllSeasonsFanart.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.AllSeasonsFanart.LocalFile) Then
                     TVDBImages.AllSeasonsFanart.WebImage.Clear()
                     TVDBImages.AllSeasonsFanart.WebImage.FromWeb(TVDBImages.AllSeasonsFanart.URL)
                     If TVDBImages.AllSeasonsFanart.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.AllSeasonsFanart.LocalFile).FullName)
                         TVDBImages.AllSeasonsFanart.WebImage.Save(TVDBImages.AllSeasonsFanart.LocalFile)
-                        Master.currShow.SeasonFanartPath = TVDBImages.AllSeasonsFanart.LocalFile
                     End If
                 End If
             End If
@@ -669,14 +655,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVASLandscapeAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.AllSeasonsLandscape.LocalFile) AndAlso File.Exists(TVDBImages.AllSeasonsLandscape.LocalFile) Then
                     TVDBImages.AllSeasonsLandscape.WebImage.FromFile(TVDBImages.AllSeasonsLandscape.LocalFile)
-                    Master.currShow.SeasonLandscapePath = TVDBImages.AllSeasonsLandscape.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.AllSeasonsLandscape.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.AllSeasonsLandscape.LocalFile) Then
                     TVDBImages.AllSeasonsLandscape.WebImage.Clear()
                     TVDBImages.AllSeasonsLandscape.WebImage.FromWeb(TVDBImages.AllSeasonsLandscape.URL)
                     If TVDBImages.AllSeasonsLandscape.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.AllSeasonsLandscape.LocalFile).FullName)
                         TVDBImages.AllSeasonsLandscape.WebImage.Save(TVDBImages.AllSeasonsLandscape.LocalFile)
-                        Master.currShow.SeasonLandscapePath = TVDBImages.AllSeasonsLandscape.LocalFile
                     End If
                 End If
             End If
@@ -685,14 +669,12 @@ Public Class dlgImgSelectTV
             If Master.eSettings.TVASPosterAnyEnabled Then
                 If Not String.IsNullOrEmpty(TVDBImages.AllSeasonsPoster.LocalFile) AndAlso File.Exists(TVDBImages.AllSeasonsPoster.LocalFile) Then
                     TVDBImages.AllSeasonsPoster.WebImage.FromFile(TVDBImages.AllSeasonsPoster.LocalFile)
-                    Master.currShow.SeasonPosterPath = TVDBImages.AllSeasonsPoster.LocalFile
                 ElseIf Not String.IsNullOrEmpty(TVDBImages.AllSeasonsPoster.URL) AndAlso Not String.IsNullOrEmpty(TVDBImages.AllSeasonsPoster.LocalFile) Then
                     TVDBImages.AllSeasonsPoster.WebImage.Clear()
                     TVDBImages.AllSeasonsPoster.WebImage.FromWeb(TVDBImages.AllSeasonsPoster.URL)
                     If TVDBImages.AllSeasonsPoster.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(TVDBImages.AllSeasonsPoster.LocalFile).FullName)
                         TVDBImages.AllSeasonsPoster.WebImage.Save(TVDBImages.AllSeasonsPoster.LocalFile)
-                        Master.currShow.SeasonPosterPath = TVDBImages.AllSeasonsPoster.LocalFile
                     End If
                 End If
             End If
@@ -1926,12 +1908,7 @@ Public Class dlgImgSelectTV
         Dim tImages As New Images
         Dim tImage As Image = Nothing
         Dim iTag As ImageTag = DirectCast(DirectCast(sender, PictureBox).Tag, ImageTag)
-        'If iTag.isFanart Then
         DownloadFullsizeImage(iTag, tImages)
-        tImage = tImages.Image
-        'Else
-        '    tImage = DirectCast(sender, PictureBox).Image
-        'End If
 
         ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage)
     End Sub

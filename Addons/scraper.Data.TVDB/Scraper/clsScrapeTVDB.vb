@@ -47,6 +47,115 @@ Namespace TVDBs
 
 #Region "Methods"
 
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_TV, ByVal IsSearch As Boolean, ByRef Settings As MySettings) As Boolean
+            If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
+
+            'clear nShow from search results
+            nShow.Clear()
+
+            Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
+            Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
+
+            Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(strID), Settings.Language, tvdbMirror).Result
+            If Results Is Nothing Then
+                Return Nothing
+            End If
+
+            nShow.Scrapersource = "TVDB"
+            nShow.ID = CStr(Results.Series.Id)
+            nShow.IMDB = CStr(Results.Series.IMDBId)
+
+            'Cast (Actors)
+            If Options.bShowActors Then
+                If Results.Actors IsNot Nothing Then
+                    For Each aCast As TVDB.Model.Actor In Results.Actors.OrderBy(Function(f) f.SortOrder)
+                        nShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
+                                                                          .Order = aCast.SortOrder, _
+                                                                          .Role = aCast.Role, _
+                                                                          .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", tvdbMirror.Address, aCast.ImagePath), String.Empty), _
+                                                                          .TMDB = CStr(aCast.Id)})
+                    Next
+                End If
+            End If
+
+            'Genres
+            If Options.bShowGenre Then
+                Dim aGenres As List(Of String) = Nothing
+                If Results.Series.Genre IsNot Nothing Then
+                    aGenres = Results.Series.Genre.Split(CChar(",")).ToList
+                End If
+
+                If aGenres IsNot Nothing Then
+                    For Each tGenre As String In aGenres
+                        nShow.Genres.Add(tGenre.Trim)
+                    Next
+                End If
+            End If
+
+            'MPAA
+            If Options.bShowMPAA Then
+                nShow.MPAA = Results.Series.ContentRating
+            End If
+
+            'Plot
+            If Options.bShowPlot Then
+                If Results.Series.Overview IsNot Nothing Then
+                    nShow.Plot = Results.Series.Overview
+                End If
+            End If
+
+            'Posters (only for SearchResult dialog, auto fallback to "en" by TMDB)
+            If GetPoster Then
+                'Dim Images As TMDbLib.Objects.General.Images
+                'Images = _TMDBApi.GetMovieImages(Movie.Id)
+                'If Images IsNot Nothing AndAlso Images.Posters IsNot Nothing Then
+                '    If Images.Posters.Count > 0 Then
+                '        _sPoster = _TMDBApi.Config.Images.BaseUrl & "w92" & Images.Posters(0).FilePath
+                '    Else
+                '        _sPoster = String.Empty
+                '    End If
+                'End If
+            End If
+
+            'Premiered
+            If Options.bShowPremiered Then
+                nShow.Premiered = CStr(Results.Series.FirstAired)
+            End If
+
+            'Rating
+            If Options.bShowRating Then
+                nShow.Rating = CStr(Results.Series.Rating)
+            End If
+
+            'Runtime
+            If Options.bShowRuntime Then
+                nShow.Runtime = CStr(Results.Series.Runtime)
+            End If
+
+            'Status
+            If Options.bShowStatus Then
+                nShow.Status = Results.Series.Status
+            End If
+
+            'Studios
+            If Options.bShowStudio Then
+                nShow.Studios.Add(Results.Series.Network)
+            End If
+
+            'Title
+            If Options.bShowTitle Then
+                nShow.Title = Results.Series.Name
+            End If
+
+            'Votes
+            If Options.bShowVotes Then
+                nShow.Votes = CStr(Results.Series.RatingCount)
+            End If
+
+            Return True
+        End Function
+
+
         Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
             Dim alContainer As New MediaContainers.ImagesContainer_TV
 
@@ -151,42 +260,6 @@ Namespace TVDBs
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
-
-            Try
-                Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
-                Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
-
-                Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(tvdbID), tvdbMirror).Result
-                If Results Is Nothing Then
-                    Return Nothing
-                End If
-
-                If bwTVDB.CancellationPending Then Return Nothing
-
-                'Poster
-                If Results.Series.Episodes IsNot Nothing Then
-                    For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.CombinedEpisodeNumber = iEpisode)
-                        Dim img As New MediaContainers.Image With {.Height = CStr(tEpisode.ThumbHeight), _
-                                                                   .LongLang = Localization.ISOGetLangByCode2(tEpisode.Language), _
-                                                                   .Season = tEpisode.SeasonNumber, _
-                                                                   .ShortLang = tEpisode.Language, _
-                                                                   .ThumbURL = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(tvdbMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty), _
-                                                                   .URL = String.Concat(tvdbMirror.Address, "/banners/", tEpisode.PictureFilename), _
-                                                                   .Width = CStr(tEpisode.ThumbWidth)}
-
-                        alContainer.EpisodePosters.Add(img)
-                    Next
-                End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
-            Return alContainer
-        End Function
-
 
 #End Region 'Methods
 
@@ -219,6 +292,7 @@ Namespace TVDBs
 #Region "Fields"
 
             Dim ApiKey As String
+            Dim Language As String
 
 #End Region 'Fields
 
