@@ -1091,6 +1091,13 @@ Public Class Database
         _tmpTVDB = LoadTVShowFromDB(_TVDB.ShowID)
 
         _TVDB.EpisodeSorting = _tmpTVDB.EpisodeSorting
+        _TVDB.ImagesContainer.ShowBanner = _tmpTVDB.ImagesContainer.ShowBanner
+        _TVDB.ImagesContainer.ShowCharacterArt = _tmpTVDB.ImagesContainer.ShowCharacterArt
+        _TVDB.ImagesContainer.ShowClearArt = _tmpTVDB.ImagesContainer.ShowClearArt
+        _TVDB.ImagesContainer.ShowClearLogo = _tmpTVDB.ImagesContainer.ShowClearLogo
+        _TVDB.ImagesContainer.ShowFanart = _tmpTVDB.ImagesContainer.ShowFanart
+        _TVDB.ImagesContainer.ShowLandscape = _tmpTVDB.ImagesContainer.ShowLandscape
+        _TVDB.ImagesContainer.ShowPoster = _tmpTVDB.ImagesContainer.ShowPoster
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
         _TVDB.IsOnlineShow = _tmpTVDB.IsOnlineShow
@@ -1685,6 +1692,7 @@ Public Class Database
         Dim _TVDB As New Structures.DBTV
         _TVDB.ShowID = ShowID
         _TVDB.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
+        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer_TV
 
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = 999;")
@@ -1735,6 +1743,7 @@ Public Class Database
                     _TVDB.IsMarkEp = Convert.ToBoolean(SQLreader("Mark"))
                     _TVDB.IsLockEp = Convert.ToBoolean(SQLreader("Lock"))
                     _TVDB.EpNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
+                    _TVDB.ImagesContainer = New MediaContainers.ImagesContainer_TV
                     _TVDB.TVEp = New MediaContainers.EpisodeDetails
                     With _TVDB.TVEp
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
@@ -1939,6 +1948,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
+        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer_TV
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
@@ -1968,6 +1978,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal WithShow As Boolean) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
+        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer_TV
 
         _TVDB.SeasonID = SeasonID
         _TVDB.TVEp = New MediaContainers.EpisodeDetails
@@ -1989,6 +2000,13 @@ Public Class Database
                 End If
             End Using
         End Using
+
+        'ImagesContainer
+        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer_TV
+        If Not String.IsNullOrEmpty(_TVDB.SeasonBannerPath) Then _TVDB.ImagesContainer.SeasonBanner.WebImage.FromFile(_TVDB.SeasonBannerPath)
+        If Not String.IsNullOrEmpty(_TVDB.SeasonFanartPath) Then _TVDB.ImagesContainer.SeasonFanart.WebImage.FromFile(_TVDB.SeasonFanartPath)
+        If Not String.IsNullOrEmpty(_TVDB.SeasonLandscapePath) Then _TVDB.ImagesContainer.SeasonLandscape.WebImage.FromFile(_TVDB.SeasonLandscapePath)
+        If Not String.IsNullOrEmpty(_TVDB.SeasonPosterPath) Then _TVDB.ImagesContainer.SeasonPoster.WebImage.FromFile(_TVDB.SeasonPosterPath)
 
         If WithShow Then FillTVShowFromDB(_TVDB)
 
@@ -2088,6 +2106,16 @@ Public Class Database
                     End While
                 End Using
             End Using
+
+            'ImagesContainer
+            _TVDB.ImagesContainer = New MediaContainers.ImagesContainer_TV
+            If Not String.IsNullOrEmpty(_TVDB.ShowBannerPath) Then _TVDB.ImagesContainer.ShowBanner.WebImage.FromFile(_TVDB.ShowBannerPath)
+            If Not String.IsNullOrEmpty(_TVDB.ShowCharacterArtPath) Then _TVDB.ImagesContainer.ShowCharacterArt.WebImage.FromFile(_TVDB.ShowCharacterArtPath)
+            If Not String.IsNullOrEmpty(_TVDB.ShowClearArtPath) Then _TVDB.ImagesContainer.ShowClearArt.WebImage.FromFile(_TVDB.ShowClearArtPath)
+            If Not String.IsNullOrEmpty(_TVDB.ShowClearLogoPath) Then _TVDB.ImagesContainer.ShowClearLogo.WebImage.FromFile(_TVDB.ShowClearLogoPath)
+            If Not String.IsNullOrEmpty(_TVDB.ShowFanartPath) Then _TVDB.ImagesContainer.ShowFanart.WebImage.FromFile(_TVDB.ShowFanartPath)
+            If Not String.IsNullOrEmpty(_TVDB.ShowLandscapePath) Then _TVDB.ImagesContainer.ShowLandscape.WebImage.FromFile(_TVDB.ShowLandscapePath)
+            If Not String.IsNullOrEmpty(_TVDB.ShowPosterPath) Then _TVDB.ImagesContainer.ShowPoster.WebImage.FromFile(_TVDB.ShowPosterPath)
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)

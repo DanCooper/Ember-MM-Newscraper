@@ -94,8 +94,8 @@ Namespace FanartTVs
         '	End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_Movie_MovieSet
-            Dim alImagesContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_Movie_MovieSet
+            Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -257,8 +257,8 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"

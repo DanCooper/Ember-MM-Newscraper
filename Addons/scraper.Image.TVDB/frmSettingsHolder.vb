@@ -129,7 +129,7 @@ Public Class frmSettingsHolder
 
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Image._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Image_TV.Count > 0 Then
+        If ModulesManager.Instance.externalScrapersModules_Image_TV.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Image_TV.Count - 1)
             btnUp.Enabled = (order > 0)
         Else

@@ -38,7 +38,7 @@ Public Class APIXML
     Public Shared dLanguages As New Dictionary(Of String, String)
     Public Shared dStudios As New Dictionary(Of String, String)
     Public Shared GenreXML As New clsXMLGenres
-    Public Shared MovieCertLanguagesXML As New clsXMLMovieCertLanguages
+    Public Shared CertLanguagesXML As New clsXMLCertLanguages
     Public Shared RatingXML As New clsXMLRatings
     Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
     Public Shared FilterXML As New clsXMLFilter
@@ -155,19 +155,19 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim cPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "MovieCertLanguages.xml")
+            Dim cPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "CertLanguages.xml")
             If File.Exists(cPath) Then
                 objStreamReader = New StreamReader(cPath)
-                Dim xCert As New XmlSerializer(MovieCertLanguagesXML.GetType)
+                Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
 
-                MovieCertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLMovieCertLanguages)
+                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLCertLanguages)
                 objStreamReader.Close()
             Else
-                Dim cPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultMovieCertLanguages.xml")
+                Dim cPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultCertLanguages.xml")
                 objStreamReader = New StreamReader(cPathD)
-                Dim xCert As New XmlSerializer(MovieCertLanguagesXML.GetType)
+                Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
 
-                MovieCertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLMovieCertLanguages)
+                CertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLCertLanguages)
                 objStreamReader.Close()
 
                 Try
@@ -562,7 +562,7 @@ Public Class APIXML
         Return imgRating
     End Function
 
-    Public Shared Function GetRatingList() As Object()
+    Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
         Try
             If Not Master.eSettings.MovieScraperCertForMPAA Then
@@ -570,7 +570,7 @@ Public Class APIXML
                     retRatings.Add(r.searchstring)
                 Next
             Else
-                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower)
+                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower)
                     retRatings.Add(r.searchstring)
                 Next
             End If
@@ -580,14 +580,18 @@ Public Class APIXML
         Return retRatings.ToArray
     End Function
 
-    Public Shared Function GetTVRatingRegions() As Object()
+    Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
         Try
-            For Each r In RatingXML.tv
-                If retRatings.FindIndex(Function(f) f = r.country) = -1 Then
-                    retRatings.Add(r.country)
-                End If
-            Next
+            If Not Master.eSettings.TVScraperShowCertForMPAA Then
+                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = "usa")
+                    retRatings.Add(r.searchstring)
+                Next
+            Else
+                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name.ToLower)
+                    retRatings.Add(r.searchstring)
+                Next
+            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -637,19 +641,6 @@ Public Class APIXML
         End Try
 
         Return imgRating
-    End Function
-
-    Public Shared Function GetTVRatingList() As Object()
-        Dim retRatings As New List(Of String)
-        Try
-            For Each r In RatingXML.tv.FindAll(Function(f) f.country = Master.eSettings.TVScraperRatingRegion.ToLower)
-                retRatings.Add(r.searchstring)
-            Next
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-        Return retRatings.ToArray
     End Function
 
     Public Shared Function XMLToLowerCase(ByVal sXML As String) As String

@@ -368,7 +368,7 @@ Public Class TMDB_Image
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_Movie()
@@ -390,7 +390,7 @@ Public Class TMDB_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -414,7 +414,7 @@ Public Class TMDB_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.ImagesContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_TV()

@@ -155,7 +155,6 @@ Partial Class dlgImgSelectTV
         Me.pbUndo.Size = New System.Drawing.Size(16, 16)
         Me.pbUndo.TabIndex = 14
         Me.pbUndo.TabStop = False
-        Me.pbUndo.Visible = False
         '
         'lblCurrentImage
         '
@@ -168,7 +167,7 @@ Partial Class dlgImgSelectTV
         Me.lblCurrentImage.Text = "Current Image:"
         Me.lblCurrentImage.Visible = False
         '
-        'dlgTVImageSelect
+        'dlgImgSelectTV
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -192,7 +191,7 @@ Partial Class dlgImgSelectTV
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(870, 525)
-        Me.Name = "dlgTVImageSelect"
+        Me.Name = "dlgImgSelectTV"
         Me.Text = "TV Image Selection"
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlStatus.ResumeLayout(False)

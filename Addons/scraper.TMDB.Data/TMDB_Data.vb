@@ -285,8 +285,9 @@ Public Class TMDB_Data
         _setup_TV.chkScraperEpTitle.Checked = ConfigOptions_TV.bEpTitle
         _setup_TV.chkScraperEpVotes.Checked = ConfigOptions_TV.bEpVotes
         _setup_TV.chkScraperShowActors.Checked = ConfigOptions_TV.bShowActors
-        _setup_TV.chkScraperShowGenre.Checked = ConfigOptions_TV.bShowGenre
         _setup_TV.chkScraperShowCert.Checked = ConfigOptions_TV.bShowCert
+        _setup_TV.chkScraperShowGenre.Checked = ConfigOptions_TV.bShowGenre
+        _setup_TV.chkScraperShowOriginalTitle.Checked = ConfigOptions_TV.bShowOriginalTitle
         _setup_TV.chkScraperShowPlot.Checked = ConfigOptions_TV.bShowPlot
         _setup_TV.chkScraperShowPremiered.Checked = ConfigOptions_TV.bShowPremiered
         _setup_TV.chkScraperShowRating.Checked = ConfigOptions_TV.bShowRating
@@ -385,9 +386,10 @@ Public Class TMDB_Data
         ConfigOptions_TV.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.Episode)
         ConfigOptions_TV.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.Episode)
         ConfigOptions_TV.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.Show)
+        ConfigOptions_TV.bShowCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.Content_Type.Show)
-        ConfigOptions_TV.bShowMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.Content_Type.Show)
+        ConfigOptions_TV.bShowOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.Show)
@@ -467,9 +469,10 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpTitle, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpVotes, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bShowActors, , , Enums.Content_Type.Show)
+            settings.SetBooleanSetting("DoCert", ConfigOptions_TV.bShowCert, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions_TV.bShowEpisodeGuide, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoGenre", ConfigOptions_TV.bShowGenre, , , Enums.Content_Type.Show)
-            settings.SetBooleanSetting("DoMPAA", ConfigOptions_TV.bShowMPAA, , , Enums.Content_Type.Show)
+            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions_TV.bShowOriginalTitle, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bShowPlot, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoPremiered", ConfigOptions_TV.bShowPremiered, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bShowRating, , , Enums.Content_Type.Show)
@@ -550,6 +553,7 @@ Public Class TMDB_Data
         ConfigOptions_TV.bShowActors = _setup_TV.chkScraperShowActors.Checked
         ConfigOptions_TV.bShowCert = _setup_TV.chkScraperShowCert.Checked
         ConfigOptions_TV.bShowGenre = _setup_TV.chkScraperShowGenre.Checked
+        ConfigOptions_TV.bShowOriginalTitle = _setup_TV.chkScraperShowOriginalTitle.Checked
         ConfigOptions_TV.bShowPlot = _setup_TV.chkScraperShowPlot.Checked
         ConfigOptions_TV.bShowPremiered = _setup_TV.chkScraperShowPremiered.Checked
         ConfigOptions_TV.bShowRating = _setup_TV.chkScraperShowRating.Checked

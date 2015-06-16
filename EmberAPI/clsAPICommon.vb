@@ -1079,14 +1079,6 @@ Public Class Enums
         SaveAuto = 11
     End Enum
 
-    Public Enum TVScraperUpdateTime As Integer
-        Week = 0
-        BiWeekly = 1
-        Month = 2
-        Never = 3
-        Always = 4
-    End Enum
-
 #End Region 'Enumerations
 
 End Class 'Enums
@@ -1294,9 +1286,11 @@ Public Class Functions
             .bEpTitle = Master.eSettings.TVScraperEpisodeTitle
             .bEpVotes = Master.eSettings.TVScraperEpisodeVotes
             .bShowActors = Master.eSettings.TVScraperShowActors
+            .bShowCert = Master.eSettings.TVScraperShowCert
             .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
             .bShowGenre = Master.eSettings.TVScraperShowGenre
             .bShowMPAA = Master.eSettings.TVScraperShowMPAA
+            .bShowOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
             .bShowPlot = Master.eSettings.TVScraperShowPlot
             .bShowPremiered = Master.eSettings.TVScraperShowPremiered
             .bShowRating = Master.eSettings.TVScraperShowRating
@@ -1617,9 +1611,12 @@ Public Class Functions
         filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
         filterOptions.bEpVotes = Options.bEpVotes AndAlso Options2.bEpVotes
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
+        filterOptions.bShowCert = Options.bShowCert AndAlso Options2.bShowCert
+        filterOptions.bShowCountry = Options.bShowCountry AndAlso Options2.bShowCountry
         filterOptions.bShowEpisodeGuide = Options.bShowEpisodeGuide AndAlso Options2.bShowEpisodeGuide
         filterOptions.bShowGenre = Options.bShowGenre AndAlso Options2.bShowGenre
         filterOptions.bShowMPAA = Options.bShowMPAA AndAlso Options2.bShowMPAA
+        filterOptions.bShowOriginalTitle = Options.bShowOriginalTitle AndAlso Options2.bShowOriginalTitle
         filterOptions.bShowPlot = Options.bShowPlot AndAlso Options2.bShowPlot
         filterOptions.bShowPremiered = Options.bShowPremiered AndAlso Options2.bShowPremiered
         filterOptions.bShowRating = Options.bShowRating AndAlso Options2.bShowRating
@@ -2006,6 +2003,7 @@ Public Class Structures
         Dim EpSubtitles As List(Of MediaInfo.Subtitle)
         Dim Filename As String
         Dim FilenameID As Long
+        Dim ImagesContainer As MediaContainers.ImagesContainer_TV
         Dim IsLockEp As Boolean
         Dim IsLockSeason As Boolean
         Dim IsLockShow As Boolean

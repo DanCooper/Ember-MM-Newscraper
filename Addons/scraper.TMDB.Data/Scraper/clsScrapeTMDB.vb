@@ -249,7 +249,7 @@ Namespace TMDB
                     For Each cCountry In Movie.Releases.Countries
                         If Not String.IsNullOrEmpty(cCountry.Certification) Then
                             Try
-                                Dim tCountry As String = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower).name
+                                Dim tCountry As String = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower).name
                                 nMovie.Certifications.Add(String.Concat(tCountry, ":", cCountry.Certification))
                             Catch ex As Exception
                                 logger.Warn("Unhandled certification language encountered: {0}", cCountry.Iso_3166_1.ToLower)
@@ -632,7 +632,7 @@ Namespace TMDB
                     For Each cCountry In Show.ContentRatings.Results
                         If Not String.IsNullOrEmpty(cCountry.Rating) Then
                             Try
-                                Dim tCountry As String = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower).name
+                                Dim tCountry As String = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower).name
                                 nShow.Certifications.Add(String.Concat(tCountry, ":", cCountry.Rating))
                             Catch ex As Exception
                                 logger.Warn("Unhandled certification language encountered: {0}", cCountry.Iso_3166_1.ToLower)

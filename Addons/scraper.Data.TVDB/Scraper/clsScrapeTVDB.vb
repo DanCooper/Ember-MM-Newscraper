@@ -156,8 +156,8 @@ Namespace TVDBs
         End Function
 
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
                 Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)

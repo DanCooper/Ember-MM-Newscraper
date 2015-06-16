@@ -58,8 +58,8 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As MySettings, ByVal ContentType As Enums.Content_Type) As MediaContainers.ImagesContainer_Movie_MovieSet
-            Dim alImagesContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef Settings As MySettings, ByVal ContentType As Enums.Content_Type) As MediaContainers.SearchResultsContainer_Movie_MovieSet
+            Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
             If bwTMDB.CancellationPending Then Return Nothing
 
@@ -121,8 +121,8 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tmdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TV(ByVal tmdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             If bwTMDB.CancellationPending Then Return Nothing
 
@@ -180,8 +180,8 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             If bwTMDB.CancellationPending Then Return Nothing
 

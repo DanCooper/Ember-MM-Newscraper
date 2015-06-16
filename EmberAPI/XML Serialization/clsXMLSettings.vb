@@ -373,6 +373,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockshowcountry As Boolean
     Private _tvlockshowgenre As Boolean
     Private _tvlockshowmpaa As Boolean
+    Private _tvlockshoworiginaltitle As Boolean
     Private _tvlockshowplot As Boolean
     Private _tvlockshowpremiered As Boolean
     Private _tvlockshowrating As Boolean
@@ -400,10 +401,11 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisodevotes As Boolean
     Private _tvscrapermetadatascan As Boolean
     Private _tvscraperoptionsordering As Enums.Ordering
-    Private _tvscraperratingregion As String
     Private _tvscrapershowactors As Boolean
     Private _tvscrapershowcert As Boolean
     Private _tvscrapershowcertformpaa As Boolean
+    Private _tvscrapershowcertformpaafallback As Boolean
+    Private _tvscrapershowcertfsk As Boolean
     Private _tvscrapershowcertlang As String
     Private _tvscrapershowcertonlyvalue As Boolean
     Private _tvscrapershowcountry As Boolean
@@ -411,6 +413,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowgenre As Boolean
     Private _tvscrapershowmpaa As Boolean
     Private _tvscrapershowmpaanotrated As String
+    Private _tvscrapershoworiginaltitle As Boolean
     Private _tvscrapershowplot As Boolean
     Private _tvscrapershowpremiered As Boolean
     Private _tvscrapershowrating As Boolean
@@ -419,7 +422,6 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowstudio As Boolean
     Private _tvscrapershowtitle As Boolean
     Private _tvscrapershowvotes As Boolean
-    Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
     Private _tvscraperusemdduration As Boolean
     Private _tvscraperusesruntimeforep As Boolean
     Private _tvseasonbannerheight As Integer
@@ -2216,6 +2218,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapercertfsk = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCertFSK() As Boolean
+        Get
+            Return Me._tvscrapershowcertfsk
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowcertfsk = value
         End Set
     End Property
     Public Property MovieLockStudio() As Boolean
@@ -4107,6 +4118,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVScraperShowOriginalTitle() As Boolean
+        Get
+            Return Me._tvscrapershoworiginaltitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershoworiginaltitle = value
+        End Set
+    End Property
+
     Public Property TVScraperShowCert() As Boolean
         Get
             Return Me._tvscrapershowcert
@@ -4440,6 +4460,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVLockShowOriginalTitle() As Boolean
+        Get
+            Return Me._tvlockshoworiginaltitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockshoworiginaltitle = value
+        End Set
+    End Property
+
     Public Property TVLockShowPlot() As Boolean
         Get
             Return Me._tvlockshowplot
@@ -4572,15 +4601,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowpropercase = value
-        End Set
-    End Property
-
-    Public Property TVScraperRatingRegion() As String
-        Get
-            Return Me._tvscraperratingregion
-        End Get
-        Set(ByVal value As String)
-            Me._tvscraperratingregion = value
         End Set
     End Property
 
@@ -4854,15 +4874,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVScraperUpdateTime() As Enums.TVScraperUpdateTime
-        Get
-            Return Me._tvscraperupdatetime
-        End Get
-        Set(ByVal value As Enums.TVScraperUpdateTime)
-            Me._tvscraperupdatetime = value
-        End Set
-    End Property
-
     Public Property MovieTrailerEnable() As Boolean
         Get
             Return Me._movietrailerenable
@@ -4905,6 +4916,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapercertformpaafallback = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCertForMPAAFallback() As Boolean
+        Get
+            Return Me._tvscrapershowcertformpaafallback
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowcertformpaafallback = value
         End Set
     End Property
 

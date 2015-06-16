@@ -268,27 +268,14 @@ Public Class Scraper
             Dim fExists As Boolean = File.Exists(fPath)
             Dim doDownload As Boolean = False
 
-            Select Case Master.eSettings.TVScraperUpdateTime
-                Case Enums.TVScraperUpdateTime.Always
-                    'Check how old the ZIP file is. If it's older than 10min -> try to get a fresh/updated file
-                    'This is usefull for non english users because TVDB can has much "not yet translated" information if the file is to old
-                    If File.Exists(fPath) Then
-                        Dim fileInfo As New FileInfo(fPath)
-                        If fileInfo.LastWriteTime < DateTime.Now.AddMinutes(-10) Then
-                            doDownload = True
-                        End If
-                    Else
-                        doDownload = True
-                    End If
-                Case Enums.TVScraperUpdateTime.Never
-                    doDownload = False
-                Case Enums.TVScraperUpdateTime.Week
-                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(7) < Date.Now Then doDownload = True
-                Case Enums.TVScraperUpdateTime.BiWeekly
-                    If fExists AndAlso File.GetCreationTime(fPath).AddDays(14) < Date.Now Then doDownload = True
-                Case Enums.TVScraperUpdateTime.Month
-                    If fExists AndAlso File.GetCreationTime(fPath).AddMonths(1) < Date.Now Then doDownload = True
-            End Select
+            If File.Exists(fPath) Then
+                Dim fileInfo As New FileInfo(fPath)
+                If fileInfo.LastWriteTime < DateTime.Now.AddMinutes(-10) Then
+                    doDownload = True
+                End If
+            Else
+                doDownload = True
+            End If
 
             If doDownload OrElse Not fExists Then
                 Using sHTTP As New HTTP
@@ -1287,7 +1274,7 @@ Public Class Scraper
                     End If
 
                     'get external scraper images
-                    Dim aContainer As New MediaContainers.ImagesContainer_TV
+                    Dim aContainer As New MediaContainers.SearchResultsContainer_TV
                     If Not ModulesManager.Instance.ScrapeImage_TV(tShow, Enums.ScraperCapabilities_TV.All, aContainer, False) Then
 
                         'Banner AllSeasons/Show 

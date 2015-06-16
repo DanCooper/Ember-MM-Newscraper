@@ -41,8 +41,8 @@ Namespace IMPA
 
 #Region "Methods"
 
-        Public Function GetIMPAPosters(ByVal imdbID As String) As MediaContainers.ImagesContainer_Movie_MovieSet
-            Dim alContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Public Function GetIMPAPosters(ByVal imdbID As String) As MediaContainers.SearchResultsContainer_Movie_MovieSet
+            Dim alContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
             Dim ParentID As String
             Dim oV As String = String.Empty
 

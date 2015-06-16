@@ -79,7 +79,7 @@ Public Class frmSettingsHolder
 
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Trailer_Movie.FirstOrDefault(Function(p) p.AssemblyName = Apple_trailer._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count > 0 Then
+        If ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Trailer_Movie.Count - 1)
             btnUp.Enabled = (order > 0)
         Else

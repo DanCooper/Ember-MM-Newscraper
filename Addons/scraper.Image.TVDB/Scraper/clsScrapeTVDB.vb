@@ -47,8 +47,8 @@ Namespace TVDBs
 
 #Region "Methods"
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
                 Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
@@ -151,8 +151,8 @@ Namespace TVDBs
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
                 Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)

@@ -1822,7 +1822,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub cbTVScraperUpdateTime_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperUpdateTime.SelectedIndexChanged
+    Private Sub cbTVScraperUpdateTime_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1846,7 +1846,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub cbTVScraperRatingRegion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperRatingRegion.SelectedIndexChanged
+    Private Sub cbTVScraperRatingRegion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1977,6 +1977,27 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkTVScraperShowCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowCert.CheckedChanged
+        Me.SetApplyButton(True)
+
+        If Not Me.chkTVScraperShowCert.Checked Then
+            Me.cbTVScraperShowCertLang.Enabled = False
+            Me.cbTVScraperShowCertLang.SelectedIndex = 0
+            Me.chkTVScraperShowCertForMPAA.Enabled = False
+            Me.chkTVScraperShowCertForMPAA.Checked = False
+            Me.chkTVScraperShowCertFSK.Enabled = False
+            Me.chkTVScraperShowCertFSK.Checked = False
+            Me.chkTVScraperShowCertOnlyValue.Enabled = False
+            Me.chkTVScraperShowCertOnlyValue.Checked = False
+        Else
+            Me.cbTVScraperShowCertLang.Enabled = True
+            Me.cbTVScraperShowCertLang.SelectedIndex = 0
+            Me.chkTVScraperShowCertForMPAA.Enabled = True
+            Me.chkTVScraperShowCertFSK.Enabled = True
+            Me.chkTVScraperShowCertOnlyValue.Enabled = True
+        End If
+    End Sub
+
     Private Sub chkMovieScraperMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMPAA.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1993,6 +2014,17 @@ Public Class dlgSettings
             Me.chkMovieScraperCertForMPAAFallback.Checked = False
         Else
             Me.chkMovieScraperCertForMPAAFallback.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkTVScraperShowCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowCertForMPAA.CheckedChanged
+        Me.SetApplyButton(True)
+
+        If Not Me.chkTVScraperShowCertForMPAA.Checked Then
+            Me.chkTVScraperShowCertForMPAAFallback.Enabled = False
+            Me.chkTVScraperShowCertForMPAAFallback.Checked = False
+        Else
+            Me.chkTVScraperShowCertForMPAAFallback.Enabled = True
         End If
     End Sub
 
@@ -2849,11 +2881,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowMPAA.CheckedChanged
+    Private Sub chkTVScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowMPAA.CheckedChanged, chkTVScraperShowOriginalTitle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtTVScraperShowMPAANotRated_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVScraperShowMPAANotRated.TextChanged
+    Private Sub txtTVScraperShowMPAANotRated_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2965,7 +2997,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVLockShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowPlot.CheckedChanged
+    Private Sub chkTVLockShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowPlot.CheckedChanged, chkTVLockShowOriginalTitle.CheckedChanged, chkTVLockShowMPAA.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3529,8 +3561,6 @@ Public Class dlgSettings
             Me.cbTVImagesPrefLanguage.SelectedItem = .TVImagesPrefLanguage
             Me.cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             Me.cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
-            Me.cbTVScraperRatingRegion.Text = .TVScraperRatingRegion
-            Me.cbTVScraperUpdateTime.SelectedValue = .TVScraperUpdateTime
             Me.cbTVSeasonBannerPrefSize.SelectedValue = .TVSeasonBannerPrefSize
             Me.cbTVSeasonBannerPrefType.SelectedValue = .TVSeasonBannerPrefType
             Me.cbTVSeasonFanartPrefSize.SelectedValue = .TVSeasonFanartPrefSize
@@ -3622,6 +3652,7 @@ Public Class dlgSettings
             End If
             Me.chkMovieLandscapeOverwrite.Checked = .MovieLandscapeOverwrite
             Me.chkMovieLockActors.Checked = .MovieLockActors
+            Me.chkMovieLockCert.Checked = .MovieLockCert
             Me.chkMovieLockCountry.Checked = .MovieLockCountry
             Me.chkMovieLockCollectionID.Checked = .MovieLockCollectionID
             Me.chkMovieLockCollections.Checked = .MovieLockCollections
@@ -3629,7 +3660,6 @@ Public Class dlgSettings
             Me.chkMovieLockGenre.Checked = .MovieLockGenre
             Me.chkMovieLockLanguageA.Checked = .MovieLockLanguageA
             Me.chkMovieLockLanguageV.Checked = .MovieLockLanguageV
-            Me.chkMovieLockCert.Checked = .MovieLockCert
             Me.chkMovieLockMPAA.Checked = .MovieLockMPAA
             Me.chkMovieLockOriginalTitle.Checked = .MovieLockOriginalTitle
             Me.chkMovieLockOutline.Checked = .MovieLockOutline
@@ -3796,7 +3826,10 @@ Public Class dlgSettings
             Me.chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
             Me.chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
             Me.chkTVLockEpisodeVotes.Checked = .TVLockEpisodeVotes
+            Me.chkTVLockShowCert.Checked = .TVLockShowCert
             Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
+            Me.chkTVLockShowMPAA.Checked = .TVLockShowMPAA
+            Me.chkTVLockShowOriginalTitle.Checked = .TVLockShowOriginalTitle
             Me.chkTVLockShowPlot.Checked = .TVLockShowPlot
             Me.chkTVLockShowRating.Checked = .TVLockShowRating
             Me.chkTVLockShowRuntime.Checked = .TVLockShowRuntime
@@ -3819,10 +3852,16 @@ Public Class dlgSettings
             Me.chkTVScraperEpisodeVotes.Checked = .TVScraperEpisodeVotes
             Me.chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
             Me.chkTVScraperShowActors.Checked = .TVScraperShowActors
+            Me.chkTVScraperShowCert.Checked = .TVScraperShowCert
+            Me.chkTVScraperShowCertForMPAA.Checked = .TVScraperShowCertForMPAA
+            Me.chkTVScraperShowCertForMPAAFallback.Checked = .TVScraperShowCertForMPAAFallback
+            Me.chkTVScraperShowCertFSK.Checked = .TVScraperShowCertFSK
+            Me.chkTVScraperShowCertOnlyValue.Checked = .TVScraperShowCertOnlyValue
             Me.chkTVScraperShowEpiGuideURL.Checked = .TVScraperShowEpiGuideURL
             Me.chkTVScraperShowGenre.Checked = .TVScraperShowGenre
             Me.chkTVScraperShowMPAA.Checked = .TVScraperShowMPAA
             Me.txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
+            Me.chkTVScraperShowOriginalTitle.Checked = .TVScraperShowOriginalTitle
             Me.chkTVScraperShowPlot.Checked = .TVScraperShowPlot
             Me.chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
             Me.chkTVScraperShowRating.Checked = .TVScraperShowRating
@@ -3948,14 +3987,31 @@ Public Class dlgSettings
             Try
                 Me.cbMovieScraperCertLang.Items.Clear()
                 Me.cbMovieScraperCertLang.Items.Add(Master.eLang.All)
-                Me.cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.MovieCertLanguagesXML.Language Select lLang.name).ToArray)
+                Me.cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
                 If Me.cbMovieScraperCertLang.Items.Count > 0 Then
                     If .MovieScraperCertLang = Master.eLang.All Then
                         Me.cbMovieScraperCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                        Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                        Me.cbMovieScraperCertLang.Text = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
                     Else
                         Me.cbMovieScraperCertLang.SelectedIndex = 0
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Try
+                Me.cbTVScraperShowCertLang.Items.Clear()
+                Me.cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
+                Me.cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
+                If Me.cbTVScraperShowCertLang.Items.Count > 0 Then
+                    If .TVScraperShowCertLang = Master.eLang.All Then
+                        Me.cbTVScraperShowCertLang.SelectedIndex = 0
+                    ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
+                        Me.cbTVScraperShowCertLang.Text = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang).name
+                    Else
+                        Me.cbTVScraperShowCertLang.SelectedIndex = 0
                     End If
                 End If
             Catch ex As Exception
@@ -4310,7 +4366,6 @@ Public Class dlgSettings
         Me.LoadIntLangs()
         Me.LoadLangs()
         Me.LoadThemes()
-        Me.LoadTVRatingRegions()
         Me.FillSettings()
         Me.lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
         Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
@@ -4514,10 +4569,6 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub LoadTVRatingRegions()
-        Me.cbTVScraperRatingRegion.Items.AddRange(APIXML.GetTVRatingRegions)
-    End Sub
-
     Private Sub LoadTVShowMatching()
         Dim lvItem As ListViewItem
         lvTVSourcesRegexTVShowMatching.Items.Clear()
@@ -4703,18 +4754,6 @@ Public Class dlgSettings
         Me.cbTVScraperOptionsOrdering.DataSource = items.ToList
         Me.cbTVScraperOptionsOrdering.DisplayMember = "Key"
         Me.cbTVScraperOptionsOrdering.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadTVScraperUpdateTime()
-        Dim items As New Dictionary(Of String, Enums.TVScraperUpdateTime)
-        items.Add(Master.eLang.GetString(749, "Week"), Enums.TVScraperUpdateTime.Week)
-        items.Add(Master.eLang.GetString(750, "Bi-Weekly"), Enums.TVScraperUpdateTime.BiWeekly)
-        items.Add(Master.eLang.GetString(751, "Month"), Enums.TVScraperUpdateTime.Month)
-        items.Add(Master.eLang.GetString(752, "Never"), Enums.TVScraperUpdateTime.Never)
-        items.Add(Master.eLang.GetString(753, "Always"), Enums.TVScraperUpdateTime.Always)
-        Me.cbTVScraperUpdateTime.DataSource = items.ToList
-        Me.cbTVScraperUpdateTime.DisplayMember = "Key"
-        Me.cbTVScraperUpdateTime.ValueMember = "Value"
     End Sub
 
     Private Sub LoadTVBannerSizes()
@@ -5370,6 +5409,7 @@ Public Class dlgSettings
             .MovieLandscapeOverwrite = Me.chkMovieLandscapeOverwrite.Checked
             .MovieLevTolerance = If(Not String.IsNullOrEmpty(Me.txtMovieLevTolerance.Text), Convert.ToInt32(Me.txtMovieLevTolerance.Text), 0)
             .MovieLockActors = Me.chkMovieLockActors.Checked
+            .MovieLockCert = Me.chkMovieLockCert.Checked
             .MovieLockCollectionID = Me.chkMovieLockCollectionID.Checked
             .MovieLockCollections = Me.chkMovieLockCollections.Checked
             .MovieLockCountry = Me.chkMovieLockCountry.Checked
@@ -5377,7 +5417,6 @@ Public Class dlgSettings
             .MovieLockGenre = Me.chkMovieLockGenre.Checked
             .MovieLockLanguageA = Me.chkMovieLockLanguageA.Checked
             .MovieLockLanguageV = Me.chkMovieLockLanguageV.Checked
-            .MovieLockCert = Me.chkMovieLockCert.Checked
             .MovieLockMPAA = Me.chkMovieLockMPAA.Checked
             .MovieLockOutline = Me.chkMovieLockOutline.Checked
             .MovieLockPlot = Me.chkMovieLockPlot.Checked
@@ -5458,7 +5497,7 @@ Public Class dlgSettings
                 If Me.cbMovieScraperCertLang.SelectedIndex = 0 Then
                     .MovieScraperCertLang = Master.eLang.All
                 Else
-                    .MovieScraperCertLang = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
+                    .MovieScraperCertLang = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
                 End If
             End If
             .MovieScraperCleanFields = Me.chkMovieScraperCleanFields.Checked
@@ -5595,7 +5634,10 @@ Public Class dlgSettings
             .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
             .TVLockEpisodeTitle = Me.chkTVLockEpisodeTitle.Checked
             .TVLockEpisodeVotes = Me.chkTVLockEpisodeVotes.Checked
+            .TVLockShowCert = Me.chkTVLockShowCert.Checked
             .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
+            .TVLockShowMPAA = Me.chkTVLockShowMPAA.Checked
+            .TVLockShowOriginalTitle = Me.chkTVLockShowOriginalTitle.Checked
             .TVLockShowPlot = Me.chkTVLockShowPlot.Checked
             .TVLockShowRating = Me.chkTVLockShowRating.Checked
             .TVLockShowRuntime = Me.chkTVLockShowRuntime.Checked
@@ -5622,15 +5664,23 @@ Public Class dlgSettings
             .TVScraperEpisodeVotes = Me.chkTVScraperEpisodeVotes.Checked
             .TVScraperMetaDataScan = Me.chkTVScraperMetaDataScan.Checked
             .TVScraperOptionsOrdering = CType(Me.cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
-            If String.IsNullOrEmpty(Me.cbTVScraperRatingRegion.Text) Then
-                .TVScraperRatingRegion = "usa"
-            Else
-                .TVScraperRatingRegion = Me.cbTVScraperRatingRegion.Text
-            End If
             .TVScraperShowActors = Me.chkTVScraperShowActors.Checked
+            .TVScraperShowCert = Me.chkTVScraperShowCert.Checked
+            .TVScraperShowCertForMPAA = Me.chkTVScraperShowCertForMPAA.Checked
+            .TVScraperShowCertForMPAAFallback = Me.chkTVScraperShowCertForMPAAFallback.Checked
+            .TVScraperShowCertFSK = Me.chkTVScraperShowCertFSK.Checked
+            .TVScraperShowCertOnlyValue = Me.chkTVScraperShowCertOnlyValue.Checked
+            If Me.cbTVScraperShowCertLang.Text <> String.Empty Then
+                If Me.cbTVScraperShowCertLang.SelectedIndex = 0 Then
+                    .TVScraperShowCertLang = Master.eLang.All
+                Else
+                    .TVScraperShowCertLang = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbTVScraperShowCertLang.Text).abbreviation
+                End If
+            End If
             .TVScraperShowEpiGuideURL = Me.chkTVScraperShowEpiGuideURL.Checked
             .TVScraperShowGenre = Me.chkTVScraperShowGenre.Checked
             .TVScraperShowMPAA = Me.chkTVScraperShowMPAA.Checked
+            .TVScraperShowOriginalTitle = Me.chkTVScraperShowOriginalTitle.Checked
             .TVScraperShowMPAANotRated = Me.txtTVScraperShowMPAANotRated.Text
             .TVScraperShowPlot = Me.chkTVScraperShowPlot.Checked
             .TVScraperShowPremiered = Me.chkTVScraperShowPremiered.Checked
@@ -5640,7 +5690,6 @@ Public Class dlgSettings
             .TVScraperShowStudio = Me.chkTVScraperShowStudio.Checked
             .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
             .TVScraperShowVotes = Me.chkTVScraperShowVotes.Checked
-            .TVScraperUpdateTime = CType(Me.cbTVScraperUpdateTime.SelectedItem, KeyValuePair(Of String, Enums.TVScraperUpdateTime)).Value
             .TVScraperUseMDDuration = Me.chkTVScraperUseMDDuration.Checked
             .TVScraperUseSRuntimeForEp = Me.chkTVScraperUseSRuntimeForEp.Checked
             .TVSeasonBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerHeight.Text), Convert.ToInt32(Me.txtTVSeasonBannerHeight.Text), 0)
@@ -6249,7 +6298,9 @@ Public Class dlgSettings
         'Certification
         Dim strCertification As String = Master.eLang.GetString(722, "Certification")
         Me.gbMovieScraperCertificationOpts.Text = strCertification
+        Me.gbTVScraperCertificationOpts.Text = strCertification
         Me.lblMovieScraperGlobalCertification.Text = strCertification
+        Me.lblTVScraperGlobalCertification.Text = strCertification
 
         'CharacterArt
         Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
@@ -7057,7 +7108,6 @@ Public Class dlgSettings
         Me.gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.gbMovieGeneralGenreFilterOpts.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
-        Me.gbMovieScraperCertificationOpts.Text = Master.eLang.GetString(56, "Certification")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
@@ -7102,8 +7152,6 @@ Public Class dlgSettings
         Me.lblProxyUsername.Text = Master.eLang.GetString(425, "Username:")
         Me.lblSettingsTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
         Me.lblTVScraperGlobalGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
-        Me.lblTVScraperRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
-        Me.lblTVScraperUpdateTime.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
         Me.lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
         Me.lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(699, "Regex")
         Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = Master.eLang.GetString(695, "Default Season")
@@ -7157,7 +7205,6 @@ Public Class dlgSettings
         Me.LoadTVFanartSizes()
         Me.LoadTVPosterSizes()
         Me.LoadTVScraperOptionsOrdering()
-        Me.LoadTVScraperUpdateTime()
     End Sub
 
     Private Sub tcFileSystemCleaner_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcFileSystemCleaner.SelectedIndexChanged

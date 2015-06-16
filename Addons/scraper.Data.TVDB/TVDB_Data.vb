@@ -142,7 +142,7 @@ Public Class TVDB_Data
         SPanel.Name = String.Concat(Me._Name, "_TV")
         SPanel.Text = "TVDB"
         SPanel.Prefix = "TVDBTVInfo_"
-        SPanel.Order = 100
+        SPanel.Order = 110
         SPanel.Parent = "pnlTVData"
         SPanel.Type = Master.eLang.GetString(653, "TV Shows")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)

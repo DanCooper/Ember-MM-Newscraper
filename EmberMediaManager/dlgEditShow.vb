@@ -32,7 +32,6 @@ Public Class dlgEditShow
     Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
     Private ActorThumbsHasChanged As Boolean = False
-    Private ASBanner As New Images With {.IsEdit = True}
     Private ASFanart As New Images With {.IsEdit = True}
     Private ASLandscape As New Images With {.IsEdit = True}
     Private ASPoster As New Images With {.IsEdit = True}
@@ -164,7 +163,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveASBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASBanner.Click
         Me.pbASBanner.Image = Nothing
         Me.pbASBanner.Tag = Nothing
-        Me.ASBanner.Dispose()
+        Master.currShow.ImagesContainer.SeasonBanner.WebImage.Dispose()
 
         Me.lblASBannerSize.Text = String.Empty
         Me.lblASBannerSize.Visible = False
@@ -173,7 +172,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveASFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASFanart.Click
         Me.pbASFanart.Image = Nothing
         Me.pbASFanart.Tag = Nothing
-        Me.ASFanart.Dispose()
+        Master.currShow.ImagesContainer.SeasonFanart.WebImage.Dispose()
 
         Me.lblASFanartSize.Text = String.Empty
         Me.lblASFanartSize.Visible = False
@@ -182,7 +181,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveASLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASLandscape.Click
         Me.pbASLandscape.Image = Nothing
         Me.pbASLandscape.Tag = Nothing
-        Me.ASLandscape.Dispose()
+        Master.currShow.ImagesContainer.SeasonLandscape.WebImage.Dispose()
 
         Me.lblASLandscapeSize.Text = String.Empty
         Me.lblASLandscapeSize.Visible = False
@@ -191,7 +190,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveASPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveASPoster.Click
         Me.pbASPoster.Image = Nothing
         Me.pbASPoster.Tag = Nothing
-        Me.ASPoster.Dispose()
+        Master.currShow.ImagesContainer.SeasonPoster.WebImage.Dispose()
 
         Me.lblASPosterSize.Text = String.Empty
         Me.lblASPosterSize.Visible = False
@@ -200,7 +199,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowBanner.Click
         Me.pbShowBanner.Image = Nothing
         Me.pbShowBanner.Tag = Nothing
-        Me.ShowBanner.Dispose()
+        Master.currShow.ImagesContainer.ShowBanner.WebImage.Dispose()
 
         Me.lblShowBannerSize.Text = String.Empty
         Me.lblShowBannerSize.Visible = False
@@ -209,7 +208,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowCharacterArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowCharacterArt.Click
         Me.pbShowCharacterArt.Image = Nothing
         Me.pbShowCharacterArt.Tag = Nothing
-        Me.ShowCharacterArt.Dispose()
+        Master.currShow.ImagesContainer.ShowCharacterArt.WebImage.Dispose()
 
         Me.lblShowCharacterArtSize.Text = String.Empty
         Me.lblShowCharacterArtSize.Visible = False
@@ -218,7 +217,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearArt.Click
         Me.pbShowClearArt.Image = Nothing
         Me.pbShowClearArt.Tag = Nothing
-        Me.ShowClearArt.Dispose()
+        Master.currShow.ImagesContainer.ShowClearArt.WebImage.Dispose()
 
         Me.lblShowClearArtSize.Text = String.Empty
         Me.lblShowClearArtSize.Visible = False
@@ -227,7 +226,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearLogo.Click
         Me.pbShowClearLogo.Image = Nothing
         Me.pbShowClearLogo.Tag = Nothing
-        Me.ShowClearLogo.Dispose()
+        Master.currShow.ImagesContainer.ShowClearLogo.WebImage.Dispose()
 
         Me.lblShowClearLogoSize.Text = String.Empty
         Me.lblShowClearLogoSize.Visible = False
@@ -236,7 +235,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowFanart.Click
         Me.pbShowFanart.Image = Nothing
         Me.pbShowFanart.Tag = Nothing
-        Me.ShowFanart.Dispose()
+        Master.currShow.ImagesContainer.ShowFanart.WebImage.Dispose()
 
         Me.lblShowFanartSize.Text = String.Empty
         Me.lblShowFanartSize.Visible = False
@@ -245,7 +244,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowLandscape.Click
         Me.pbShowLandscape.Image = Nothing
         Me.pbShowLandscape.Tag = Nothing
-        Me.ShowLandscape.Dispose()
+        Master.currShow.ImagesContainer.ShowLandscape.WebImage.Dispose()
 
         Me.lblShowLandscapeSize.Text = String.Empty
         Me.lblShowLandscapeSize.Visible = False
@@ -254,7 +253,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowPoster.Click
         Me.pbShowPoster.Image = Nothing
         Me.pbShowPoster.Tag = Nothing
-        Me.ShowPoster.Dispose()
+        Master.currShow.ImagesContainer.ShowPoster.WebImage.Dispose()
 
         Me.lblShowPosterSize.Text = String.Empty
         Me.lblShowPosterSize.Visible = False
@@ -265,10 +264,10 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetASBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASBanner, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.SeasonBanner.WebImage, Images))
 
         If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-            ASBanner = tImage
+            Master.currShow.ImagesContainer.SeasonBanner.WebImage = tImage
             Me.pbASBanner.Image = tImage.Image
             Me.pbASBanner.Tag = tImage
 
@@ -286,10 +285,10 @@ Public Class dlgEditShow
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                ASBanner.FromFile(ofdImage.FileName)
-                If ASBanner.Image IsNot Nothing Then
-                    Me.pbASBanner.Image = ASBanner.Image
-                    Me.pbASBanner.Tag = ASBanner
+                Master.currShow.ImagesContainer.SeasonBanner.WebImage.FromFile(ofdImage.FileName)
+                If Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image IsNot Nothing Then
+                    Me.pbASBanner.Image = Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image
+                    Me.pbASBanner.Tag = Master.currShow.ImagesContainer.SeasonBanner.WebImage
 
                     Me.lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASBanner.Image.Width, Me.pbASBanner.Image.Height)
                     Me.lblASBannerSize.Visible = True
@@ -307,9 +306,9 @@ Public Class dlgEditShow
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.Image IsNot Nothing Then
-                        ASBanner = tImage
-                        Me.pbASBanner.Image = ASBanner.Image
-                        Me.pbASBanner.Tag = ASBanner
+                        Master.currShow.ImagesContainer.SeasonBanner.WebImage = tImage
+                        Me.pbASBanner.Image = Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image
+                        Me.pbASBanner.Tag = Master.currShow.ImagesContainer.SeasonBanner.WebImage
 
                         Me.lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASBanner.Image.Width, Me.pbASBanner.Image.Height)
                         Me.lblASBannerSize.Visible = True
@@ -1387,10 +1386,9 @@ Public Class dlgEditShow
             Me.SelectMPAA()
 
             If Master.eSettings.TVASBannerAnyEnabled Then
-                .ASBanner.FromFile(Master.currShow.SeasonBannerPath)
-                If .ASBanner.Image IsNot Nothing Then
-                    .pbASBanner.Image = .ASBanner.Image
-                    .pbASBanner.Tag = ASBanner
+                If Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image IsNot Nothing Then
+                    .pbASBanner.Image = Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image
+                    .pbASBanner.Tag = Master.currShow.ImagesContainer.SeasonBanner.WebImage
 
                     .lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbASBanner.Image.Width, .pbASBanner.Image.Height)
                     .lblASBannerSize.Visible = True
@@ -1624,7 +1622,7 @@ Public Class dlgEditShow
     Private Sub LoadRatings()
         Me.lbMPAA.Items.Add(Master.eLang.None)
         If Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then Me.lbMPAA.Items.Add(Master.eSettings.TVScraperShowMPAANotRated)
-        Me.lbMPAA.Items.AddRange(APIXML.GetTVRatingList)
+        Me.lbMPAA.Items.AddRange(APIXML.GetRatingList_TV)
     End Sub
 
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
@@ -1689,9 +1687,9 @@ Public Class dlgEditShow
     Private Sub pbASBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbASBanner.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.Image IsNot Nothing Then
-            ASBanner = tImage
-            Me.pbASBanner.Image = ASBanner.Image
-            Me.pbASBanner.Tag = ASBanner
+            Master.currShow.ImagesContainer.SeasonBanner.WebImage = tImage
+            Me.pbASBanner.Image = Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image
+            Me.pbASBanner.Tag = Master.currShow.ImagesContainer.SeasonBanner.WebImage
             Me.lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASBanner.Image.Width, Me.pbASBanner.Image.Height)
             Me.lblASBannerSize.Visible = True
         End If
@@ -2358,16 +2356,16 @@ Public Class dlgEditShow
                 End If
 
                 'AllSeasonBanner
-                If .ASBanner.Image IsNot Nothing Then
-                    Master.currShow.SeasonBannerPath = .ASBanner.SaveAsTVASBanner(Master.currShow, "")
+                If Master.currShow.ImagesContainer.SeasonBanner.WebImage.Image IsNot Nothing Then
+                    Master.currShow.SeasonBannerPath = Master.currShow.ImagesContainer.SeasonBanner.WebImage.SaveAsTVASBanner(Master.currShow)
                 Else
-                    .ASBanner.DeleteTVASBanner(Master.currShow)
+                    Master.currShow.ImagesContainer.SeasonBanner.WebImage.DeleteTVASBanner(Master.currShow)
                     Master.currShow.SeasonBannerPath = String.Empty
                 End If
 
                 'AllSeason Fanart
                 If .ASFanart.Image IsNot Nothing Then
-                    Master.currShow.SeasonFanartPath = .ASFanart.SaveAsTVASFanart(Master.currShow, "")
+                    Master.currShow.SeasonFanartPath = .ASFanart.SaveAsTVASFanart(Master.currShow)
                 Else
                     .ASFanart.DeleteTVASFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = String.Empty
@@ -2375,7 +2373,7 @@ Public Class dlgEditShow
 
                 'AllSeason Landscape
                 If .ASLandscape.Image IsNot Nothing Then
-                    Master.currShow.SeasonLandscapePath = .ASLandscape.SaveAsTVASLandscape(Master.currShow, "")
+                    Master.currShow.SeasonLandscapePath = .ASLandscape.SaveAsTVASLandscape(Master.currShow)
                 Else
                     .ASLandscape.DeleteTVASLandscape(Master.currShow)
                     Master.currShow.SeasonLandscapePath = String.Empty
@@ -2383,7 +2381,7 @@ Public Class dlgEditShow
 
                 'AllSeason Poster
                 If .ASPoster.Image IsNot Nothing Then
-                    Master.currShow.SeasonPosterPath = .ASPoster.SaveAsTVASPoster(Master.currShow, "")
+                    Master.currShow.SeasonPosterPath = .ASPoster.SaveAsTVASPoster(Master.currShow)
                 Else
                     .ASPoster.DeleteTVASPoster(Master.currShow)
                     Master.currShow.SeasonPosterPath = String.Empty
@@ -2391,7 +2389,7 @@ Public Class dlgEditShow
 
                 'Show Banner 
                 If .ShowBanner.Image IsNot Nothing Then
-                    Master.currShow.ShowBannerPath = .ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
+                    Master.currShow.ShowBannerPath = .ShowBanner.SaveAsTVShowBanner(Master.currShow)
                 Else
                     .ShowBanner.DeleteTVShowBanner(Master.currShow)
                     Master.currShow.ShowBannerPath = String.Empty
@@ -2399,7 +2397,7 @@ Public Class dlgEditShow
 
                 'Show CharacterArt 
                 If .ShowCharacterArt.Image IsNot Nothing Then
-                    Master.currShow.ShowCharacterArtPath = .ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
+                    Master.currShow.ShowCharacterArtPath = .ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow)
                 Else
                     .ShowCharacterArt.DeleteTVShowCharacterArt(Master.currShow)
                     Master.currShow.ShowCharacterArtPath = String.Empty
@@ -2407,7 +2405,7 @@ Public Class dlgEditShow
 
                 'Show ClearArt 
                 If .ShowClearArt.Image IsNot Nothing Then
-                    Master.currShow.ShowClearArtPath = .ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
+                    Master.currShow.ShowClearArtPath = .ShowClearArt.SaveAsTVShowClearArt(Master.currShow)
                 Else
                     .ShowClearArt.DeleteTVShowClearArt(Master.currShow)
                     Master.currShow.ShowClearArtPath = String.Empty
@@ -2415,7 +2413,7 @@ Public Class dlgEditShow
 
                 'Show ClearLogo 
                 If .ShowClearLogo.Image IsNot Nothing Then
-                    Master.currShow.ShowClearLogoPath = .ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
+                    Master.currShow.ShowClearLogoPath = .ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow)
                 Else
                     .ShowClearLogo.DeleteTVShowClearLogo(Master.currShow)
                     Master.currShow.ShowClearLogoPath = String.Empty
@@ -2423,7 +2421,7 @@ Public Class dlgEditShow
 
                 'Show Fanart
                 If .ShowFanart.Image IsNot Nothing Then
-                    Master.currShow.ShowFanartPath = .ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
+                    Master.currShow.ShowFanartPath = .ShowFanart.SaveAsTVShowFanart(Master.currShow)
                 Else
                     .ShowFanart.DeleteTVShowFanart(Master.currShow)
                     Master.currShow.ShowFanartPath = String.Empty
@@ -2431,7 +2429,7 @@ Public Class dlgEditShow
 
                 'Show Landscape
                 If .ShowLandscape.Image IsNot Nothing Then
-                    Master.currShow.ShowLandscapePath = .ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
+                    Master.currShow.ShowLandscapePath = .ShowLandscape.SaveAsTVShowLandscape(Master.currShow)
                 Else
                     .ShowLandscape.DeleteTVShowLandscape(Master.currShow)
                     Master.currShow.ShowLandscapePath = String.Empty
@@ -2439,7 +2437,7 @@ Public Class dlgEditShow
 
                 'Show Poster
                 If .ShowPoster.Image IsNot Nothing Then
-                    Master.currShow.ShowPosterPath = .ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
+                    Master.currShow.ShowPosterPath = .ShowPoster.SaveAsTVShowPoster(Master.currShow)
                 Else
                     .ShowPoster.DeleteTVShowPosters(Master.currShow)
                     Master.currShow.ShowPosterPath = String.Empty

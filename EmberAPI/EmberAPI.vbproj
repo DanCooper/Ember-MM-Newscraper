@@ -393,7 +393,7 @@
     <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConverts.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\DefaultMovieCertLanguages.xml">
+    <Content Include="Defaults\DefaultCertLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defaults\DefaultQueries.xml">

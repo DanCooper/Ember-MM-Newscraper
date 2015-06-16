@@ -80,7 +80,7 @@ Public Class frmSettingsHolder
 
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Data_Movie.Count > 0 Then
+        If ModulesManager.Instance.externalScrapersModules_Data_Movie.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1)
             btnUp.Enabled = (order > 0)
         Else

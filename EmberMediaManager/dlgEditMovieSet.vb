@@ -306,7 +306,7 @@ Public Class dlgEditMovieSet
     Private Sub btnSetMovieBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
@@ -370,7 +370,7 @@ Public Class dlgEditMovieSet
     Private Sub btnSetMovieClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
@@ -434,7 +434,7 @@ Public Class dlgEditMovieSet
     Private Sub btnSetMovieClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
@@ -498,7 +498,7 @@ Public Class dlgEditMovieSet
     Private Sub btnSetMovieDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
@@ -561,7 +561,7 @@ Public Class dlgEditMovieSet
 
     Private Sub btnSetMovieFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartScrape.Click
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim pResults As New MediaContainers.Image
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
@@ -625,7 +625,7 @@ Public Class dlgEditMovieSet
     Private Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
@@ -689,7 +689,7 @@ Public Class dlgEditMovieSet
     Private Sub btnSetMoviePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterScrape.Click
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 

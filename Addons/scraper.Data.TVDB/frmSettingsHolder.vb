@@ -57,7 +57,6 @@ Public Class frmSettingsHolder
         _api = String.Empty
         InitializeComponent()
         Me.SetUp()
-        orderChanged()
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
@@ -182,7 +181,7 @@ Public Class frmSettingsHolder
 
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Data_TV.Count > 0 Then
+        If ModulesManager.Instance.externalScrapersModules_Data_TV.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Data_TV.Count - 1)
             btnUp.Enabled = (order > 0)
         Else

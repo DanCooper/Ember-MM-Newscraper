@@ -960,7 +960,7 @@ Public Class ModulesManager
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer_Movie_MovieSet, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal showMessage As Boolean) As Boolean
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -977,7 +977,7 @@ Public Class ModulesManager
                     If Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                         AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                         Try
-                            Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                             ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aContainer)
                             If aContainer IsNot Nothing Then
                                 ImagesContainer.Banners.AddRange(aContainer.Banners)
@@ -1015,7 +1015,7 @@ Public Class ModulesManager
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.ImagesContainer_Movie_MovieSet) As Boolean
+    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1031,7 +1031,7 @@ Public Class ModulesManager
                 If Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                     Try
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aContainer)
                         If aContainer IsNot Nothing Then
                             ImagesContainer.Banners.AddRange(aContainer.Banners)
@@ -1066,7 +1066,7 @@ Public Class ModulesManager
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.ImagesContainer_TV, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -1083,7 +1083,7 @@ Public Class ModulesManager
                     If Type = Enums.ScraperCapabilities_TV.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                         AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                         Try
-                            Dim aContainer As New MediaContainers.ImagesContainer_TV
+                            Dim aContainer As New MediaContainers.SearchResultsContainer_TV
                             ret = _externalScraperModule.ProcessorModule.Scraper(DBTV, Type, aContainer)
                             If aContainer IsNot Nothing Then
                                 ImagesContainer.EpisodeFanarts.AddRange(aContainer.EpisodeFanarts)

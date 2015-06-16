@@ -198,7 +198,7 @@ Public Class TVDB_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.ImagesContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("Started scrape TVDB")
 
         LoadSettings()

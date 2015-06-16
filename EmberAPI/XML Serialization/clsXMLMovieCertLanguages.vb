@@ -1,18 +1,18 @@
 ﻿
 '''<remarks/>
 <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="MovieCertLanguages")> _
-Partial Public Class clsXMLMovieCertLanguages
+ System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="CertLanguages")> _
+Partial Public Class clsXMLCertLanguages
 
-    Private languageField As New List(Of MovieCertLanguages)
+    Private languageField As New List(Of CertLanguages)
 
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute("Language")> _
-    Public Property Language() As List(Of MovieCertLanguages)
+    Public Property Language() As List(Of CertLanguages)
         Get
             Return Me.languageField
         End Get
-        Set(value As List(Of MovieCertLanguages))
+        Set(value As List(Of CertLanguages))
             Me.languageField = value
         End Set
     End Property
@@ -20,7 +20,7 @@ End Class
 
 '''<remarks/>
 <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class MovieCertLanguages
+Partial Public Class CertLanguages
 
     Private nameField As String
 

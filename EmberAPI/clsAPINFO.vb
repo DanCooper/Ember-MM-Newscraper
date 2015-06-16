@@ -133,7 +133,7 @@ Public Class NFO
                     new_Certification = True
                 Else
                     For Each tCert In scrapedmovie.Certifications
-                        If tCert.StartsWith(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name) Then
+                        If tCert.StartsWith(APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name) Then
                             DBMovie.Movie.Certifications.Clear()
                             DBMovie.Movie.Certifications.Add(tCert)
                             new_Certification = True
@@ -470,6 +470,7 @@ Public Class NFO
         Dim new_ShowStudio As Boolean = False
         Dim new_Tagline As Boolean = False
         Dim new_ShowTitle As Boolean = False
+        Dim new_ShowOriginalTitle As Boolean = False
         Dim new_Top250 As Boolean = False
         Dim new_Trailer As Boolean = False
         Dim new_ShowVotes As Boolean = False
@@ -490,6 +491,15 @@ Public Class NFO
             End If
             If Not String.IsNullOrEmpty(scrapedshow.TMDB) Then
                 DBTV.TVShow.TMDB = scrapedshow.TMDB
+            End If
+
+            'Originaltitle
+            If (String.IsNullOrEmpty(DBTV.TVShow.OriginalTitle) OrElse Not Master.eSettings.TVLockShowOriginalTitle) AndAlso Options.bShowOriginalTitle AndAlso _
+                Not String.IsNullOrEmpty(scrapedshow.OriginalTitle) AndAlso Master.eSettings.TVScraperShowOriginalTitle AndAlso Not new_ShowOriginalTitle Then
+                DBTV.TVShow.OriginalTitle = scrapedshow.OriginalTitle
+                new_ShowOriginalTitle = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowOriginalTitle AndAlso Not Master.eSettings.TVLockShowOriginalTitle Then
+                DBTV.TVShow.OriginalTitle = String.Empty
             End If
 
             'Title
@@ -519,7 +529,7 @@ Public Class NFO
                     new_Certification = True
                 Else
                     For Each tCert In scrapedshow.Certifications
-                        If tCert.StartsWith(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name) Then
+                        If tCert.StartsWith(APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name) Then
                             DBTV.TVShow.Certifications.Clear()
                             DBTV.TVShow.Certifications.Add(tCert)
                             new_Certification = True

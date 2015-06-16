@@ -2125,7 +2125,7 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf MovieScraperEvent
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
             Dim Banner As New MediaContainers.Image
             Dim ClearArt As New MediaContainers.Image
             Dim ClearLogo As New MediaContainers.Image
@@ -2862,7 +2862,7 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_MovieSet, AddressOf MovieSetScraperEvent
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
             Dim Banner As New MediaContainers.Image
             Dim ClearArt As New MediaContainers.Image
             Dim ClearLogo As New MediaContainers.Image
@@ -3445,7 +3445,7 @@ Public Class frmMain
         'AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf TVScraperEvent
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.ImagesContainer_TV
+            Dim aContainer As New MediaContainers.SearchResultsContainer_TV
             Dim ShowBanner As New MediaContainers.Image
             Dim ShowCharacterArt As New MediaContainers.Image
             Dim ShowClearArt As New MediaContainers.Image
@@ -3533,17 +3533,10 @@ Public Class frmMain
 
                     If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                         Using dImgSelect As New dlgImgSelectTV()
-                            If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.All, aContainer, etList, efList, True) = DialogResult.OK Then
-                                ShowBanner = dImgSelect.Results.ShowBanner
-
-                                If Not String.IsNullOrEmpty(ShowBanner.LocalFile) Then
-                                    DBScrapeShow.ShowBannerPath = ShowBanner.LocalFile
-                                Else
-                                    DBScrapeShow.ShowBannerPath = ":" & ShowBanner.URL
-                                End If
+                            If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.All, aContainer, True) = DialogResult.OK Then
+                                DBScrapeShow.ImagesContainer = dImgSelect.Results
                             End If
                         End Using
-
 
                     Else 'autoscraping
                         If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeShow, Enums.ImageType_TV.ShowPoster) Then
@@ -3567,7 +3560,7 @@ Public Class frmMain
                                         MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dImgSelect As New dlgImgSelectTV()
-                                        If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.ShowPoster, aContainer, etList, efList) = DialogResult.OK Then
+                                        If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.ShowPoster, aContainer) = DialogResult.OK Then
                                             ShowPoster = dImgSelect.Results.ShowPoster
                                             If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
                                                 ShowPoster.WebImage.FromWeb(ShowPoster.URL)
@@ -14916,7 +14909,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -14950,7 +14943,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15138,7 +15131,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15172,7 +15165,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15262,7 +15255,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15296,7 +15289,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15386,7 +15379,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15420,7 +15413,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15494,7 +15487,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15528,7 +15521,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15681,7 +15674,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15715,7 +15708,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15843,7 +15836,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15877,7 +15870,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
                         
-                        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)

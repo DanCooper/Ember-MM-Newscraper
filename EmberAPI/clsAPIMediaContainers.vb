@@ -3151,7 +3151,288 @@ Namespace MediaContainers
 
     End Class
 
-    Public Class ImagesContainer_Movie_MovieSet
+    Public Class ImagesContainer_TV
+
+#Region "Fields"
+
+        Private _extrafanarts As New List(Of Image)
+        Private _extrathumbs As New List(Of Image)
+        Private _seasonbanner As New Image
+        Private _seasonfanart As New Image
+        Private _seasonimages As New List(Of SeasonImagesContainer)
+        Private _seasonlandscape As New Image
+        Private _seasonposter As New Image
+        Private _showbanner As New Image
+        Private _showcharacterart As New Image
+        Private _showclearart As New Image
+        Private _showclearlogo As New Image
+        Private _showfanart As New Image
+        Private _showlandscape As New Image
+        Private _showposter As New Image
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property ExtraFanarts() As List(Of Image)
+            Get
+                Return Me._extrafanarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._extrafanarts = value
+            End Set
+        End Property
+
+        Public Property ExtraThumbs() As List(Of Image)
+            Get
+                Return Me._extrathumbs
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._extrathumbs = value
+            End Set
+        End Property
+
+        Public Property SeasonBanner() As Image
+            Get
+                Return Me._seasonbanner
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonbanner = value
+            End Set
+        End Property
+
+        Public Property SeasonFanart() As Image
+            Get
+                Return Me._seasonfanart
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonfanart = value
+            End Set
+        End Property
+
+        Public Property SeasonImages() As List(Of SeasonImagesContainer)
+            Get
+                Return Me._seasonimages
+            End Get
+            Set(ByVal value As List(Of SeasonImagesContainer))
+                Me._seasonimages = value
+            End Set
+        End Property
+
+        Public Property SeasonLandscape() As Image
+            Get
+                Return Me._seasonlandscape
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonlandscape = value
+            End Set
+        End Property
+
+        Public Property SeasonPoster() As Image
+            Get
+                Return Me._seasonposter
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonposter = value
+            End Set
+        End Property
+
+        Public Property ShowBanner() As Image
+            Get
+                Return Me._showbanner
+            End Get
+            Set(ByVal value As Image)
+                Me._showbanner = value
+            End Set
+        End Property
+
+        Public Property ShowCharacterArt() As Image
+            Get
+                Return Me._showcharacterart
+            End Get
+            Set(ByVal value As Image)
+                Me._showcharacterart = value
+            End Set
+        End Property
+
+        Public Property ShowClearArt() As Image
+            Get
+                Return Me._showclearart
+            End Get
+            Set(ByVal value As Image)
+                Me._showclearart = value
+            End Set
+        End Property
+
+        Public Property ShowClearLogo() As Image
+            Get
+                Return Me._showclearlogo
+            End Get
+            Set(ByVal value As Image)
+                Me._showclearlogo = value
+            End Set
+        End Property
+
+        Public Property ShowFanart() As Image
+            Get
+                Return Me._showfanart
+            End Get
+            Set(ByVal value As Image)
+                Me._showfanart = value
+            End Set
+        End Property
+
+        Public Property ShowLandscape() As Image
+            Get
+                Return Me._showlandscape
+            End Get
+            Set(ByVal value As Image)
+                Me._showlandscape = value
+            End Set
+        End Property
+
+        Public Property ShowPoster() As Image
+            Get
+                Return Me._showposter
+            End Get
+            Set(ByVal value As Image)
+                Me._showposter = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._extrafanarts.Clear()
+            Me._extrathumbs.Clear()
+            Me._seasonbanner = New MediaContainers.Image
+            Me._seasonfanart = New MediaContainers.Image
+            Me._seasonimages.Clear()
+            Me._seasonlandscape = New MediaContainers.Image
+            Me._seasonposter = New MediaContainers.Image
+            Me._showbanner = New MediaContainers.Image
+            Me._showcharacterart = New MediaContainers.Image
+            Me._showclearart = New MediaContainers.Image
+            Me._showclearlogo = New MediaContainers.Image
+            Me._showfanart = New MediaContainers.Image
+            Me._showlandscape = New MediaContainers.Image
+            Me._showposter = New MediaContainers.Image
+        End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+#End Region 'Nested Types
+
+    End Class
+
+    <Serializable()> _
+    Public Class SeasonImagesContainer
+
+#Region "Fields"
+
+        Private _alreadysaved As Boolean
+        Private _banner As MediaContainers.Image
+        Private _fanart As MediaContainers.Image
+        Private _landscape As MediaContainers.Image
+        Private _poster As MediaContainers.Image
+        Private _season As Integer
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property AlreadySaved() As Boolean
+            Get
+                Return Me._alreadysaved
+            End Get
+            Set(ByVal value As Boolean)
+                Me._alreadysaved = value
+            End Set
+        End Property
+
+        Public Property Banner() As MediaContainers.Image
+            Get
+                Return Me._banner
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._banner = value
+            End Set
+        End Property
+
+        Public Property Fanart() As MediaContainers.Image
+            Get
+                Return Me._fanart
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._fanart = value
+            End Set
+        End Property
+
+        Public Property Landscape() As MediaContainers.Image
+            Get
+                Return Me._landscape
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._landscape = value
+            End Set
+        End Property
+
+        Public Property Poster() As MediaContainers.Image
+            Get
+                Return Me._poster
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._poster = value
+            End Set
+        End Property
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._alreadysaved = False
+            Me._banner = New MediaContainers.Image
+            Me._fanart = New MediaContainers.Image
+            Me._landscape = New MediaContainers.Image
+            Me._poster = New MediaContainers.Image
+            Me._season = -1
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class SearchResultsContainer_Movie_MovieSet
 
 #Region "Fields"
 
@@ -3347,15 +3628,15 @@ Namespace MediaContainers
             Dim PrefLanguage As String
             Dim PrefLanguageOnly As Boolean
 
-#End Region
+#End Region 'Fields
 
         End Structure
 
-#End Region
+#End Region 'Nested Types
 
     End Class
 
-    Public Class ImagesContainer_TV
+    Public Class SearchResultsContainer_TV
 
 #Region "Fields"
 
@@ -3605,11 +3886,11 @@ Namespace MediaContainers
             Dim PrefLanguage As String
             Dim PrefLanguageOnly As Boolean
 
-#End Region
+#End Region 'Fields
 
         End Structure
 
-#End Region
+#End Region 'Nested Types
 
     End Class
 

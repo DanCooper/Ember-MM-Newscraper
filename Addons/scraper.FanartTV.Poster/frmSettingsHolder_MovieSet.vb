@@ -144,7 +144,7 @@ Public Class frmSettingsHolder_MovieSet
 
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Image_MovieSet.FirstOrDefault(Function(p) p.AssemblyName = FanartTV_Image._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Image_MovieSet.Count > 0 Then
+        If ModulesManager.Instance.externalScrapersModules_Image_MovieSet.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Image_MovieSet.Count - 1)
             btnUp.Enabled = (order > 0)
         Else
