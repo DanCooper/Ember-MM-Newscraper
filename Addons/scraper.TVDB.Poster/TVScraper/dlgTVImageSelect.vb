@@ -358,18 +358,18 @@ Public Class dlgTVImageSelect
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                     If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
-                        Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
+                        Episode.TVEp.Fanart.WebImage.FromFile(Episode.EpFanartPath)
                     ElseIf Scraper.TVDBImages.ShowFanart.WebImage.Image IsNot Nothing Then
-                        Episode.TVEp.Fanart = Scraper.TVDBImages.ShowFanart.WebImage
+                        Episode.TVEp.Fanart = Scraper.TVDBImages.ShowFanart
                     End If
                 End If
 
                 'Poster
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
                     If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
-                        Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.TVEp.LocalFile)
                     ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
-                        Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.EpPosterPath)
                     End If
                 End If
                 If Me.bwLoadImages.CancellationPending Then
@@ -1332,14 +1332,14 @@ Public Class dlgTVImageSelect
             For Each Epi As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
                 If Not File.Exists(Epi.TVEp.LocalFile) Then
                     If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
-                        Epi.TVEp.Poster.FromWeb(Epi.TVEp.PosterURL)
-                        If Epi.TVEp.Poster.Image IsNot Nothing Then
+                        Epi.TVEp.Poster.WebImage.FromWeb(Epi.TVEp.PosterURL)
+                        If Epi.TVEp.Poster.WebImage.Image IsNot Nothing Then
                             Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
-                            Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+                            Epi.TVEp.Poster.WebImage.Save(Epi.TVEp.LocalFile)
                         End If
                     End If
                 Else
-                    Epi.TVEp.Poster.FromFile(Epi.TVEp.LocalFile)
+                    Epi.TVEp.Poster.WebImage.FromFile(Epi.TVEp.LocalFile)
                 End If
 
                 If Me.bwLoadImages.CancellationPending Then

@@ -155,6 +155,7 @@ Partial Class dlgImgSelectTV
         Me.pbUndo.Size = New System.Drawing.Size(16, 16)
         Me.pbUndo.TabIndex = 14
         Me.pbUndo.TabStop = False
+        Me.pbUndo.Visible = False
         '
         'lblCurrentImage
         '

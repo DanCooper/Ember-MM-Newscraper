@@ -5699,7 +5699,7 @@ doCancel:
 
         If tEpisode IsNot Nothing Then
             Master.currShow.TVEp = tEpisode
-            Master.currShow.EpPosterPath = tEpisode.Poster.SaveAsTVEpisodePoster(Master.currShow)
+            Master.currShow.EpPosterPath = tEpisode.Poster.WebImage.SaveAsTVEpisodePoster(Master.currShow)
 
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
@@ -5716,11 +5716,10 @@ doCancel:
     End Sub
 
     Private Sub cmnuShowChange_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowChange.Click
-        Me.SetControlsEnabled(False, True)
-        Dim ShowLang As String = Me.dgvTVShows.Item("Language", Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        Dim SourceLang As String = Master.DB.GetTVSourceLanguage(Me.dgvTVShows.Item("Source", Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item("idShow", Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item("ListTitle", Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(ShowLang), SourceLang, ShowLang), SourceLang, DirectCast(Convert.ToInt32(Me.dgvTVShows.Item("Ordering", Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, False)
-        Me.SetControlsEnabled(True)
+        If Me.dgvTVShows.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
+        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
+        Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
+        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions)
     End Sub
 
     Private Sub cmnuSeasonRemoveFromDisk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
@@ -14983,14 +14982,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowBannerPath) Then
-                                oldImage.FromFile(Master.currShow.ShowBannerPath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowBanner)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowBanner(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15013,16 +15008,12 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.SeasonBannerPath) Then
-                                oldImage.FromFile(Master.currShow.SeasonBannerPath)
-                            End If
-
-                            Dim tImage As New Images
+                            Dim tImage As New MediaContainers.Image
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonBanner)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASBanner(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15030,9 +15021,9 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonBanner)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonBanner(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15081,14 +15072,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowCharacterArtPath) Then
-                                oldImage.FromFile(Master.currShow.ShowCharacterArtPath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowCharacterArt)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowCharacterArt(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15205,14 +15192,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowClearArtPath) Then
-                                oldImage.FromFile(Master.currShow.ShowClearArtPath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowClearArt)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearArt(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15329,14 +15312,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowClearLogoPath) Then
-                                oldImage.FromFile(Master.currShow.ShowClearLogoPath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowClearLogo)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearLogo(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15561,14 +15540,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowFanartPath) Then
-                                oldImage.FromFile(Master.currShow.ShowFanartPath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowFanart)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowFanart(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15591,16 +15566,12 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.SeasonFanartPath) Then
-                                oldImage.FromFile(Master.currShow.SeasonFanartPath)
-                            End If
-
-                            Dim tImage As New Images
+                            Dim tImage As New MediaContainers.Image
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonFanart)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASFanart(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15608,9 +15579,9 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonFanart)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonFanart(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15627,20 +15598,20 @@ doCancel:
                             Me.SetControlsEnabled(False)
 
                             Dim newImage As New Images
-                            Dim oldImage As New Images
+                            Dim oldImage As New MediaContainers.Image
                             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
                             Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
                             If Not String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
-                                oldImage.FromFile(Master.currShow.EpFanartPath)
+                                oldImage.WebImage.FromFile(Master.currShow.EpFanartPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodeFanart(Master.currShow)
                                 If Me.ReloadEpisode(EpisodeID) Then
@@ -15748,14 +15719,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowLandscapePath) Then
-                                oldImage.FromFile(Master.currShow.ShowLandscapePath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowLandscape)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowLandscape(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15778,16 +15745,12 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.SeasonLandscapePath) Then
-                                oldImage.FromFile(Master.currShow.SeasonLandscapePath)
-                            End If
-
-                            Dim tImage As New Images
+                            Dim tImage As New MediaContainers.Image
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonLandscape)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASLandscape(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15795,9 +15758,9 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonLandscape)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonLandscape(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15910,14 +15873,10 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ShowPosterPath) Then
-                                oldImage.FromFile(Master.currShow.ShowPosterPath)
-                            End If
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.ShowPoster)
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowPoster(Master.currShow)
                                 Me.SetShowListItemAfterEdit(ShowID, indX)
@@ -15940,16 +15899,12 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.SeasonPosterPath) Then
-                                oldImage.FromFile(Master.currShow.SeasonPosterPath)
-                            End If
-
-                            Dim tImage As New Images
+                            Dim tImage As New MediaContainers.Image
 
                             If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonPoster)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASPoster(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15957,9 +15912,9 @@ doCancel:
                                     End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
-                                If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                    newImage = tImage
+                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonPoster)
+                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                    newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonPoster(Master.currShow)
                                     If Me.ReloadSeason(ShowID, Season, False) Then
@@ -15975,20 +15930,20 @@ doCancel:
                             Me.SetControlsEnabled(False)
 
                             Dim newImage As New Images
-                            Dim oldImage As New Images
+                            Dim oldImage As New MediaContainers.Image
                             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
                             Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
                             If Not String.IsNullOrEmpty(Master.currShow.EpPosterPath) Then
-                                oldImage.FromFile(Master.currShow.EpPosterPath)
+                                oldImage.WebImage.FromFile(Master.currShow.EpPosterPath)
                             End If
 
-                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
 
-                            If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-                                newImage = tImage
+                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+                                newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodePoster(Master.currShow)
                                 If Me.ReloadEpisode(EpisodeID) Then

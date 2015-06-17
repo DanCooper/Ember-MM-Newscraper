@@ -464,11 +464,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MovieBanner = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MovieBanner = tImage.WebImage
                         Me.pbMovieBanner.Image = MovieBanner.Image
                         Me.pbMovieBanner.Tag = MovieBanner
 
@@ -540,11 +540,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieClearArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MovieClearArt = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MovieClearArt = tImage.WebImage
                         Me.pbMovieClearArt.Image = MovieClearArt.Image
                         Me.pbMovieClearArt.Tag = MovieClearArt
 
@@ -616,11 +616,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieClearLogoDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MovieClearLogo = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MovieClearLogo = tImage.WebImage
                         Me.pbMovieClearLogo.Image = MovieClearLogo.Image
                         Me.pbMovieClearLogo.Tag = MovieClearLogo
 
@@ -692,11 +692,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieDiscArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MovieDiscArt = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MovieDiscArt = tImage.WebImage
                         Me.pbMovieDiscArt.Image = MovieDiscArt.Image
                         Me.pbMovieDiscArt.Tag = MovieDiscArt
 
@@ -798,11 +798,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MovieFanart = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MovieFanart = tImage.WebImage
                         Me.pbMovieFanart.Image = MovieFanart.Image
                         Me.pbMovieFanart.Tag = MovieFanart
 
@@ -878,11 +878,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MovieLandscape = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MovieLandscape = tImage.WebImage
                         Me.pbMovieLandscape.Image = MovieLandscape.Image
                         Me.pbMovieLandscape.Tag = MovieLandscape
 
@@ -954,11 +954,11 @@ Public Class dlgEditMovie
     Private Sub btnSetMoviePosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
-                Dim tImage As Images
+                Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.Image IsNot Nothing Then
-                        MoviePoster = tImage
+                    If tImage.WebImage.Image IsNot Nothing Then
+                        MoviePoster = tImage.WebImage
                         Me.pbMoviePoster.Image = MoviePoster.Image
                         Me.pbMoviePoster.Tag = MoviePoster
 
@@ -2391,9 +2391,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MovieBanner = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MovieBanner = tImage.WebImage
             Me.pbMovieBanner.Image = MovieBanner.Image
             Me.pbMovieBanner.Tag = MovieBanner
             Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
@@ -2410,9 +2410,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearArt.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MovieClearArt = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MovieClearArt = tImage.WebImage
             Me.pbMovieClearArt.Image = MovieClearArt.Image
             Me.pbMovieClearArt.Tag = MovieClearArt
             Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
@@ -2429,9 +2429,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearLogo.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MovieClearLogo = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MovieClearLogo = tImage.WebImage
             Me.pbMovieClearLogo.Image = MovieClearLogo.Image
             Me.pbMovieClearLogo.Tag = MovieClearLogo
             Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
@@ -2448,9 +2448,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieDiscArt.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MovieDiscArt = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MovieDiscArt = tImage.WebImage
             Me.pbMovieDiscArt.Image = MovieDiscArt.Image
             Me.pbMovieDiscArt.Tag = MovieDiscArt
             Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
@@ -2467,9 +2467,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MovieFanart = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MovieFanart = tImage.WebImage
             Me.pbMovieFanart.Image = MovieFanart.Image
             Me.pbMovieFanart.Tag = MovieFanart
             Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
@@ -2486,9 +2486,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MovieLandscape = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MovieLandscape = tImage.WebImage
             Me.pbMovieLandscape.Image = MovieLandscape.Image
             Me.pbMovieLandscape.Tag = MovieLandscape
             Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
@@ -2505,9 +2505,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbMoviePoster.DragDrop
-        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.Image IsNot Nothing Then
-            MoviePoster = tImage
+        Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If tImage.WebImage.Image IsNot Nothing Then
+            MoviePoster = tImage.WebImage
             Me.pbMoviePoster.Image = MoviePoster.Image
             Me.pbMoviePoster.Tag = MoviePoster
             Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)

@@ -1152,16 +1152,16 @@ Public Class Scanner
 
                                         If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
                                             If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
-                                                tmpTVDB.TVEp.Poster.FromFile(tmpTVDB.TVEp.LocalFile)
-                                                If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
-                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
+                                                tmpTVDB.TVEp.Poster.WebImage.FromFile(tmpTVDB.TVEp.LocalFile)
+                                                If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
+                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
                                                 End If
                                             ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
-                                                tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
-                                                If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                tmpTVDB.TVEp.Poster.WebImage.FromWeb(tmpTVDB.TVEp.PosterURL)
+                                                If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
                                                     Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
-                                                    tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)
-                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
+                                                    tmpTVDB.TVEp.Poster.WebImage.Save(tmpTVDB.TVEp.LocalFile)
+                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
                                                 End If
                                             End If
                                         End If
@@ -1242,16 +1242,16 @@ Public Class Scanner
 
                                         If String.IsNullOrEmpty(tmpTVDB.EpPosterPath) Then
                                             If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
-                                                tmpTVDB.TVEp.Poster.FromFile(tmpTVDB.TVEp.LocalFile)
-                                                If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
-                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
+                                                tmpTVDB.TVEp.Poster.WebImage.FromFile(tmpTVDB.TVEp.LocalFile)
+                                                If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
+                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
                                                 End If
                                             ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
-                                                tmpTVDB.TVEp.Poster.FromWeb(tmpTVDB.TVEp.PosterURL)
-                                                If Not IsNothing(tmpTVDB.TVEp.Poster.Image) Then
+                                                tmpTVDB.TVEp.Poster.WebImage.FromWeb(tmpTVDB.TVEp.PosterURL)
+                                                If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
                                                     Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
-                                                    tmpTVDB.TVEp.Poster.Save(tmpTVDB.TVEp.LocalFile)
-                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.SaveAsTVEpisodePoster(tmpTVDB)
+                                                    tmpTVDB.TVEp.Poster.WebImage.Save(tmpTVDB.TVEp.LocalFile)
+                                                    tmpTVDB.EpPosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
                                                 End If
                                             End If
                                         End If

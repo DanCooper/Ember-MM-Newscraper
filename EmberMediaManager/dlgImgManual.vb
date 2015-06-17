@@ -29,17 +29,17 @@ Public Class dlgImgManual
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'Dim DLType As New Enums.MovieImageType
-    Dim tImage As New Images With {.IsEdit = True}
+    Dim tImage As New MediaContainers.Image
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public Property Results As Images
+    Public Property Results As MediaContainers.Image
         Get
             Return tImage
         End Get
-        Set(value As Images)
+        Set(value As MediaContainers.Image)
             tImage = value
         End Set
     End Property
@@ -67,12 +67,12 @@ Public Class dlgImgManual
 
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
         Try
-            tImage.FromWeb(Me.txtURL.Text)
+            tImage.WebImage.FromWeb(Me.txtURL.Text)
 
-            If tImage.Image IsNot Nothing Then
+            If tImage.WebImage.Image IsNot Nothing Then
 
                 Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(tImage.Image)
+                    dImgView.ShowDialog(tImage.WebImage.Image)
                 End Using
 
             End If
@@ -110,8 +110,8 @@ Public Class dlgImgManual
 
         Try
 
-            If tImage.Image Is Nothing Then
-                tImage.FromWeb(Me.txtURL.Text)
+            If tImage.WebImage.Image Is Nothing Then
+                tImage.WebImage.FromWeb(Me.txtURL.Text)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)

@@ -859,65 +859,44 @@ Public Class ModulesManager
                 Application.DoEvents()
             End While
 
-            ''clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-            'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
-            '    DBTV.RemoveActorThumbs = True
-            '    'DBMovie.RemoveBanner = True
-            '    'DBMovie.RemoveClearArt = True
-            '    'DBMovie.RemoveClearLogo = True
-            '    'DBMovie.RemoveDiscArt = True
-            '    'DBMovie.RemoveEFanarts = True
-            '    'DBMovie.RemoveEThumbs = True
-            '    'DBMovie.RemoveFanart = True
-            '    'DBMovie.RemoveLandscape = True
-            '    'DBMovie.RemovePoster = True
-            '    'DBMovie.RemoveTheme = True
-            '    'DBMovie.RemoveTrailer = True
-            '    DBTV.EpFanartPath = String.Empty
-            '    DBTV.EpNfoPath = String.Empty
-            '    DBTV.EpPosterPath = String.Empty
-            '    DBTV.SeasonBannerPath = String.Empty
-            '    DBTV.SeasonFanartPath = String.Empty
-            '    DBTV.SeasonLandscapePath = String.Empty
-            '    DBTV.SeasonPosterPath = String.Empty
-            '    DBTV.ShowBannerPath = String.Empty
-            '    DBTV.ShowCharacterArtPath = String.Empty
-            '    DBTV.ShowClearArtPath = String.Empty
-            '    DBTV.ShowClearLogoPath = String.Empty
-            '    DBTV.ShowFanartPath = String.Empty
-            '    DBTV.ShowLandscapePath = String.Empty
-            '    DBTV.ShowNfoPath = String.Empty
-            '    DBTV.ShowPosterPath = String.Empty
-            '    DBTV.ShowCharacterArtPath = String.Empty
-            '    DBTV.ShowThemePath = String.Empty
-            '    DBTV.TVEp.Clear()
-            '    DBTV.TVShow.Clear()
+            'clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
+            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
+                DBTV.RemoveActorThumbs = True
+                'DBMovie.RemoveBanner = True
+                'DBMovie.RemoveClearArt = True
+                'DBMovie.RemoveClearLogo = True
+                'DBMovie.RemoveDiscArt = True
+                'DBMovie.RemoveEFanarts = True
+                'DBMovie.RemoveEThumbs = True
+                'DBMovie.RemoveFanart = True
+                'DBMovie.RemoveLandscape = True
+                'DBMovie.RemovePoster = True
+                'DBMovie.RemoveTheme = True
+                'DBMovie.RemoveTrailer = True
+                DBTV.EpFanartPath = String.Empty
+                DBTV.EpNfoPath = String.Empty
+                DBTV.EpPosterPath = String.Empty
+                DBTV.SeasonBannerPath = String.Empty
+                DBTV.SeasonFanartPath = String.Empty
+                DBTV.SeasonLandscapePath = String.Empty
+                DBTV.SeasonPosterPath = String.Empty
+                DBTV.ShowBannerPath = String.Empty
+                DBTV.ShowCharacterArtPath = String.Empty
+                DBTV.ShowClearArtPath = String.Empty
+                DBTV.ShowClearLogoPath = String.Empty
+                DBTV.ShowFanartPath = String.Empty
+                DBTV.ShowLandscapePath = String.Empty
+                DBTV.ShowNfoPath = String.Empty
+                DBTV.ShowPosterPath = String.Empty
+                DBTV.ShowCharacterArtPath = String.Empty
+                DBTV.ShowThemePath = String.Empty
+                DBTV.TVEp.Clear()
+                DBTV.TVShow.Clear()
 
-            '    Dim tmpTitle As String = String.Empty
-            '    If FileUtils.Common.isVideoTS(DBTV.Filename) Then
-            '        tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).Name, False)
-            '    ElseIf FileUtils.Common.isBDRip(DBTV.Filename) Then
-            '        tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).FullName).Name, False)
-            '    Else
-            '        tmpTitle = StringUtils.FilterName_Movie(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
-            '    End If
+                Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTV.ShowPath), False)
 
-            '    Dim tmpYear As String = String.Empty
-            '    If FileUtils.Common.isVideoTS(DBTV.Filename) Then
-            '        tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).Name)
-            '    ElseIf FileUtils.Common.isBDRip(DBTV.Filename) Then
-            '        tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).FullName).Name)
-            '    Else
-            '        If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
-            '            tmpYear = StringUtils.GetYear(Directory.GetParent(DBTV.Filename).Name)
-            '        Else
-            '            tmpYear = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBTV.Filename))
-            '        End If
-            '    End If
-
-            '    DBMovie.Movie.Title = tmpTitle
-            '    DBMovie.Movie.Year = tmpYear
-            'End If
+                DBTV.TVShow.Title = tmpTitle
+            End If
 
             'create a copy of DBTV
             oShow.Filename = DBTV.Filename
@@ -1630,8 +1609,8 @@ Public Class ModulesManager
         End If
     End Function
 
-    Public Function TVSingleImageOnly(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.ImageType_TV, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images) As Images
-        Dim Image As New Images
+    Public Function TVSingleImageOnly(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.ImageType_TV, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As MediaContainers.Image) As MediaContainers.Image
+        Dim Image As New MediaContainers.Image
         Dim ret As Interfaces.ModuleResult
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()

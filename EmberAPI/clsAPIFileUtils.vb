@@ -722,8 +722,8 @@ Namespace FileUtils
             Return False
         End Function
 
-        Public Shared Function GetDoppedImage(ByVal e As DragEventArgs) As Images
-            Dim tImage As New Images
+        Public Shared Function GetDoppedImage(ByVal e As DragEventArgs) As MediaContainers.Image
+            Dim tImage As New MediaContainers.Image
             If e.Data.GetDataPresent("HTML FORMAT") Then
                 Dim clipboardHtml As String = CStr(e.Data.GetData("HTML Format"))
                 Dim htmlFragment As String = getHtmlFragment(clipboardHtml)
@@ -731,20 +731,20 @@ Namespace FileUtils
                 Dim baseURL As String = parseBaseURL(clipboardHtml)
 
                 If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
-                    tImage.FromWeb(imageSrc)
-                    If tImage.Image IsNot Nothing Then
+                    tImage.WebImage.FromWeb(imageSrc)
+                    If tImage.WebImage.Image IsNot Nothing Then
                         Return tImage
                     End If
                 Else
-                    tImage.FromWeb(baseURL + imageSrc.Substring(1))
-                    If tImage.Image IsNot Nothing Then
+                    tImage.WebImage.FromWeb(baseURL + imageSrc.Substring(1))
+                    If tImage.WebImage.Image IsNot Nothing Then
                         Return tImage
                     End If
                 End If
             ElseIf e.Data.GetDataPresent(DataFormats.FileDrop, False) Then
                 Dim localImage() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-                tImage.FromFile(localImage(0).ToString)
-                If tImage.Image IsNot Nothing Then
+                tImage.WebImage.FromFile(localImage(0).ToString)
+                If tImage.WebImage.Image IsNot Nothing Then
                     Return tImage
                 End If
             End If

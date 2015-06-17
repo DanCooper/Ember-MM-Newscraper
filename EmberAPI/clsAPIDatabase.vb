@@ -1677,16 +1677,51 @@ Public Class Database
         Return _tagDB
     End Function
 
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, Optional ByVal OnlySeason As Integer = -1) As MediaContainers.TVShowContainer
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
+        Dim _TVShowContainer As New MediaContainers.TVShowContainer
+
+        _TVShowContainer.Show = Master.DB.LoadTVFullShowFromDB(ShowID)
+        _TVShowContainer.AllSeason = Master.DB.LoadTVAllSeasonsFromDB(ShowID)
+
+        Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            If OnlySeason = -1 Then
+                SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", ShowID, " AND Missing = 0;")
+            Else
+                SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+            End If
+            Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
+                If SQLRCount.HasRows Then
+                    SQLRCount.Read()
+                    If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            If OnlySeason = 999 Then
+                                SQLCommand.CommandText = String.Concat("SELECT idEpisode, Lock FROM episode WHERE idShow = ", ShowID, " AND Missing = 0;")
+                            Else
+                                SQLCommand.CommandText = String.Concat("SELECT idEpisode, Lock FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                            End If
+                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                While SQLReader.Read
+                                    _TVShowContainer.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), True))
+                                End While
+                            End Using
+                        End Using
+                    End If
+                End If
+            End Using
+        End Using
+
+        Return _TVShowContainer
+    End Function
+
     ''' <summary>
-    ''' Get the posterpath for the all seasons entry.
+    ''' Get the posterpath for the AllSeasons entry.
     ''' </summary>
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve base show information</param>
     ''' <returns>Structures.DBTV object</returns>
     Public Function LoadTVAllSeasonsFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
-        'TODO This method seems mis-named, and may not be performing its intended role
-        'DanCooper: Works correctly. AllSeasonsPosters don't have existing episodes, so it needs to be fetched manually from DB.
-
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVDB As New Structures.DBTV
@@ -3841,6 +3876,8 @@ Public Class Database
         _TVSeasonDB.SeasonID = ID
 
         'Images
+        _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.Content_Type.Season)
+
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.SeasonID, " AND media_type = 'season';")
             SQLcommand_art.ExecuteNonQuery()
@@ -3996,6 +4033,8 @@ Public Class Database
                 Next
 
                 'Images
+                _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.Content_Type.Show)
+
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ShowID)
                     SQLcommand_art.ExecuteNonQuery()

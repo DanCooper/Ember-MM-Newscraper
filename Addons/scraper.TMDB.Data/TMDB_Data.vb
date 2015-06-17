@@ -860,7 +860,7 @@ Public Class TMDB_Data
             ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
-                    '_scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, filterOptions)
+                    _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, filterOptions)
                 End If
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -877,16 +877,16 @@ Public Class TMDB_Data
 
         If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto Then
             If String.IsNullOrEmpty(oDBTV.TVShow.TVDBID) Then
-                'Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
-                '    If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, filterOptions, oDBMovie.Movie.Year) = Windows.Forms.DialogResult.OK Then
-                '        _scraper.GetMovieInfo(nMovie.TMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
-                '        'if a movie is found, set DoSearch back to "false" for following scrapers
-                '        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)
-                '    Else
-                '        nMovie = Nothing
-                '        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                '    End If
-                'End Using
+                Using dSearch As New dlgTMDBSearchResults_TV(Settings, _scraper)
+                    If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, filterOptions) = Windows.Forms.DialogResult.OK Then
+                        _scraper.GetTVShowInfo(nShow.TMDB, nShow, False, filterOptions, False)
+                        'if a tvshow is found, set DoSearch back to "false" for following scrapers
+                        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)
+                    Else
+                        nShow = Nothing
+                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                    End If
+                End Using
             End If
         End If
 

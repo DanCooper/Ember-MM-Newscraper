@@ -92,6 +92,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.SeasonBanner = defImg
+                ImageResultsContainer.SeasonBanner = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -106,6 +107,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.SeasonFanart = defImg
+                ImageResultsContainer.SeasonFanart = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -120,6 +122,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.SeasonLandscape = defImg
+                ImageResultsContainer.SeasonLandscape = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -134,6 +137,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.SeasonPoster = defImg
+                ImageResultsContainer.SeasonPoster = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -148,6 +152,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowBanner = defImg
+                ImageResultsContainer.ShowBanner = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -162,6 +167,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowCharacterArt = defImg
+                ImageResultsContainer.ShowCharacterArt = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -176,6 +182,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowClearArt = defImg
+                ImageResultsContainer.ShowClearArt = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -190,6 +197,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowClearLogo = defImg
+                ImageResultsContainer.ShowClearLogo = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -204,6 +212,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowFanart = defImg
+                ImageResultsContainer.ShowFanart = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -218,6 +227,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowLandscape = defImg
+                ImageResultsContainer.ShowLandscape = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -232,6 +242,7 @@ Public Class dlgImgSelectTV
 
             If defImg IsNot Nothing Then
                 DefaultImagesContainer.ShowPoster = defImg
+                ImageResultsContainer.ShowPoster = defImg
             End If
         End If
         If Me.bwLoadImages.CancellationPending Then
@@ -303,18 +314,18 @@ Public Class dlgImgSelectTV
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                     If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
-                        Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
+                        Episode.TVEp.Fanart.WebImage.FromFile(Episode.EpFanartPath)
                     ElseIf ImageResultsContainer.ShowFanart.WebImage.Image IsNot Nothing Then
-                        Episode.TVEp.Fanart = ImageResultsContainer.ShowFanart.WebImage
+                        Episode.TVEp.Fanart = ImageResultsContainer.ShowFanart
                     End If
                 End If
 
                 'Poster
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
                     If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
-                        Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.TVEp.LocalFile)
                     ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
-                        Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.EpPosterPath)
                     End If
                 End If
                 If Me.bwLoadImages.CancellationPending Then
@@ -350,7 +361,7 @@ Public Class dlgImgSelectTV
         End If
     End Function
 
-    Private Sub AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal fTag As ImageTag)
+    Private Sub AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal fTag As MediaContainers.Image)
         Try
             ReDim Preserve Me.pnlImage(iIndex)
             ReDim Preserve Me.pbImage(iIndex)
@@ -371,7 +382,7 @@ Public Class dlgImgSelectTV
             Me.lblImage(iIndex).BackColor = Color.White
             Me.lblImage(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
             Me.lblImage(iIndex).Text = sDescription
-            Me.pbImage(iIndex).Image = fTag.ImageObj.Image
+            Me.pbImage(iIndex).Image = fTag.WebImage.Image
             Me.pnlImage(iIndex).Left = iLeft
             Me.pbImage(iIndex).Left = 3
             Me.lblImage(iIndex).Left = 0
@@ -877,47 +888,47 @@ Public Class dlgImgSelectTV
 
         Select Case Me._type
             Case Enums.ImageType_TV.AllSeasonsBanner
-                ImageResultsContainer.SeasonBanner.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.SeasonBanner = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.AllSeasonsFanart
-                ImageResultsContainer.SeasonFanart.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.SeasonFanart = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.AllSeasonsLandscape
-                ImageResultsContainer.SeasonLandscape.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.SeasonLandscape = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.AllSeasonsPoster
-                ImageResultsContainer.SeasonPoster.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.SeasonPoster = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.SeasonPoster
                 cSI = New MediaContainers.SeasonImagesContainer
                 cSI.Season = Me._season
-                cSI.Poster.WebImage = CType(Me.pbCurrent.Tag, Images)
+                cSI.Poster = CType(Me.pbCurrent.Tag, MediaContainers.Image)
                 ImageResultsContainer.SeasonImages.Add(cSI)
             Case Enums.ImageType_TV.SeasonBanner
                 cSI = New MediaContainers.SeasonImagesContainer
                 cSI.Season = Me._season
-                cSI.Banner.WebImage = CType(Me.pbCurrent.Tag, Images)
+                cSI.Banner = CType(Me.pbCurrent.Tag, MediaContainers.Image)
                 ImageResultsContainer.SeasonImages.Add(cSI)
             Case Enums.ImageType_TV.SeasonFanart
                 cSI = New MediaContainers.SeasonImagesContainer
                 cSI.Season = Me._season
-                cSI.Fanart.WebImage = CType(Me.pbCurrent.Tag, Images)
+                cSI.Fanart = CType(Me.pbCurrent.Tag, MediaContainers.Image)
                 ImageResultsContainer.SeasonImages.Add(cSI)
             Case Enums.ImageType_TV.SeasonLandscape
                 cSI = New MediaContainers.SeasonImagesContainer
                 cSI.Season = Me._season
-                cSI.Landscape.WebImage = CType(Me.pbCurrent.Tag, Images)
+                cSI.Landscape = CType(Me.pbCurrent.Tag, MediaContainers.Image)
                 ImageResultsContainer.SeasonImages.Add(cSI)
             Case Enums.ImageType_TV.ShowBanner
-                ImageResultsContainer.ShowBanner.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowBanner = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowCharacterArt
-                ImageResultsContainer.ShowCharacterArt.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowCharacterArt = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowClearArt
-                ImageResultsContainer.ShowClearArt.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowClearArt = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowClearLogo
-                ImageResultsContainer.ShowClearLogo.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowClearLogo = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowFanart, Enums.ImageType_TV.EpisodeFanart
-                ImageResultsContainer.ShowFanart.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowFanart = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowLandscape
-                ImageResultsContainer.ShowLandscape.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowLandscape = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowPoster
-                ImageResultsContainer.ShowPoster.WebImage = CType(Me.pbCurrent.Tag, Images)
+                ImageResultsContainer.ShowPoster = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.All
                 If _withcurrent Then
                     If Master.eSettings.TVShowBannerAnyEnabled AndAlso Me.tmpShowContainer.Show.ImagesContainer.ShowBanner.WebImage.Image IsNot Nothing Then
@@ -984,8 +995,8 @@ Public Class dlgImgSelectTV
                     End If
 
                     If Master.eSettings.TVASBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonBannerPath) Then
-                        ImageResultsContainer.SeasonBanner.WebImage.FromFile(tmpShowContainer.AllSeason.SeasonBannerPath)
-                        ImageResultsContainer.SeasonBanner.LocalFile = tmpShowContainer.AllSeason.SeasonBannerPath
+                        ImageResultsContainer.SeasonBanner = Me.tmpShowContainer.Show.ImagesContainer.SeasonBanner
+                        DefaultImagesContainer.SeasonBanner = Me.tmpShowContainer.Show.ImagesContainer.SeasonBanner
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
@@ -993,8 +1004,8 @@ Public Class dlgImgSelectTV
                     End If
 
                     If Master.eSettings.TVASFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonFanartPath) Then
-                        ImageResultsContainer.SeasonFanart.WebImage.FromFile(tmpShowContainer.AllSeason.SeasonFanartPath)
-                        ImageResultsContainer.SeasonFanart.LocalFile = tmpShowContainer.AllSeason.SeasonFanartPath
+                        ImageResultsContainer.SeasonFanart = Me.tmpShowContainer.Show.ImagesContainer.SeasonFanart
+                        DefaultImagesContainer.SeasonFanart = Me.tmpShowContainer.Show.ImagesContainer.SeasonFanart
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
@@ -1002,8 +1013,8 @@ Public Class dlgImgSelectTV
                     End If
 
                     If Master.eSettings.TVASLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonLandscapePath) Then
-                        ImageResultsContainer.SeasonLandscape.WebImage.FromFile(tmpShowContainer.AllSeason.SeasonLandscapePath)
-                        ImageResultsContainer.SeasonLandscape.LocalFile = tmpShowContainer.AllSeason.SeasonLandscapePath
+                        ImageResultsContainer.SeasonLandscape = Me.tmpShowContainer.Show.ImagesContainer.SeasonLandscape
+                        DefaultImagesContainer.SeasonLandscape = Me.tmpShowContainer.Show.ImagesContainer.SeasonLandscape
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
@@ -1011,8 +1022,8 @@ Public Class dlgImgSelectTV
                     End If
 
                     If Master.eSettings.TVASPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonPosterPath) Then
-                        ImageResultsContainer.SeasonPoster.WebImage.FromFile(tmpShowContainer.AllSeason.SeasonPosterPath)
-                        ImageResultsContainer.SeasonPoster.LocalFile = tmpShowContainer.AllSeason.SeasonPosterPath
+                        ImageResultsContainer.SeasonPoster = Me.tmpShowContainer.Show.ImagesContainer.SeasonPoster
+                        DefaultImagesContainer.SeasonPoster = Me.tmpShowContainer.Show.ImagesContainer.SeasonPoster
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
@@ -1212,7 +1223,7 @@ Public Class dlgImgSelectTV
         Me.bwLoadData.RunWorkerAsync()
     End Sub
 
-    Private Sub DoSelect(ByVal iIndex As Integer, ByVal SelTag As ImageTag)
+    Private Sub DoSelect(ByVal iIndex As Integer, ByVal SelTag As MediaContainers.Image)
         Try
             For i As Integer = 0 To Me.pnlImage.Count - 1
                 Me.pnlImage(i).BackColor = Color.White
@@ -1326,14 +1337,14 @@ Public Class dlgImgSelectTV
             For Each Epi As Structures.DBTV In tmpShowContainer.Episodes
                 If Not File.Exists(Epi.TVEp.LocalFile) Then
                     If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
-                        Epi.TVEp.Poster.FromWeb(Epi.TVEp.PosterURL)
-                        If Epi.TVEp.Poster.Image IsNot Nothing Then
+                        Epi.TVEp.Poster.WebImage.FromWeb(Epi.TVEp.PosterURL)
+                        If Epi.TVEp.Poster.WebImage.Image IsNot Nothing Then
                             Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
-                            Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+                            Epi.TVEp.Poster.WebImage.Save(Epi.TVEp.LocalFile)
                         End If
                     End If
                 Else
-                    Epi.TVEp.Poster.FromFile(Epi.TVEp.LocalFile)
+                    Epi.TVEp.Poster.WebImage.FromFile(Epi.TVEp.LocalFile)
                 End If
 
                 If Me.bwLoadImages.CancellationPending Then
@@ -1668,12 +1679,12 @@ Public Class dlgImgSelectTV
         Return Me.SetDefaults()
     End Function
 
-    Private Sub DownloadFullsizeImage(ByVal iTag As ImageTag, ByRef tImage As Images)
+    Private Sub DownloadFullsizeImage(ByVal iTag As MediaContainers.Image, ByRef tImage As Images)
         Dim sHTTP As New HTTP
 
-        If Not String.IsNullOrEmpty(iTag.Path) AndAlso File.Exists(iTag.Path) Then
-            tImage.FromFile(iTag.Path)
-        ElseIf Not String.IsNullOrEmpty(iTag.Path) AndAlso Not String.IsNullOrEmpty(iTag.URL) Then
+        If Not String.IsNullOrEmpty(iTag.LocalFile) AndAlso File.Exists(iTag.LocalFile) Then
+            tImage.FromFile(iTag.LocalFile)
+        ElseIf Not String.IsNullOrEmpty(iTag.LocalFile) AndAlso Not String.IsNullOrEmpty(iTag.URL) Then
             Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
             Me.pnlStatus.Visible = True
@@ -1682,8 +1693,8 @@ Public Class dlgImgSelectTV
 
             tImage.FromWeb(iTag.URL)
             If tImage.Image IsNot Nothing Then
-                Directory.CreateDirectory(Directory.GetParent(iTag.Path).FullName)
-                tImage.Save(iTag.Path)
+                Directory.CreateDirectory(Directory.GetParent(iTag.LocalFile).FullName)
+                tImage.Save(iTag.LocalFile)
             End If
 
             sHTTP = Nothing
@@ -1735,7 +1746,7 @@ Public Class dlgImgSelectTV
 
     Private Sub lblImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim iindex As Integer = Convert.ToInt32(DirectCast(sender, Label).Name)
-        Me.DoSelect(iindex, DirectCast(DirectCast(sender, Label).Tag, ImageTag))
+        Me.DoSelect(iindex, DirectCast(DirectCast(sender, Label).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
@@ -1750,16 +1761,16 @@ Public Class dlgImgSelectTV
     Private Sub pbDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbDelete.Click
         Me.pbCurrent.Image = Nothing
         Me.pbCurrent.Tag = Nothing
-        Me.SetImage(New ImageTag)
+        Me.SetImage(New MediaContainers.Image)
     End Sub
 
     Private Sub pbImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, ImageTag))
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub pbImage_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim tImages As New Images
-        Dim iTag As ImageTag = DirectCast(DirectCast(sender, PictureBox).Tag, ImageTag)
+        Dim iTag As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image)
         DownloadFullsizeImage(iTag, tImages)
 
         ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImages.Image)
@@ -1770,52 +1781,52 @@ Public Class dlgImgSelectTV
             If SelImgType = Enums.ImageType_TV.ShowBanner Then
                 ImageResultsContainer.ShowBanner = DefaultImagesContainer.ShowBanner
                 Me.pbCurrent.Image = ImageResultsContainer.ShowBanner.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.ShowBanner.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.ShowBanner
             ElseIf SelImgType = Enums.ImageType_TV.ShowCharacterArt Then
                 ImageResultsContainer.ShowCharacterArt = DefaultImagesContainer.ShowCharacterArt
                 Me.pbCurrent.Image = ImageResultsContainer.ShowCharacterArt.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.ShowCharacterArt.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.ShowCharacterArt
             ElseIf SelImgType = Enums.ImageType_TV.ShowClearArt Then
                 ImageResultsContainer.ShowClearArt = DefaultImagesContainer.ShowClearArt
                 Me.pbCurrent.Image = ImageResultsContainer.ShowClearArt.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.ShowClearArt.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.ShowClearArt
             ElseIf SelImgType = Enums.ImageType_TV.ShowClearLogo Then
                 ImageResultsContainer.ShowClearLogo = DefaultImagesContainer.ShowClearLogo
                 Me.pbCurrent.Image = ImageResultsContainer.ShowClearLogo.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.ShowClearLogo.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.ShowClearLogo
             ElseIf SelImgType = Enums.ImageType_TV.ShowFanart Then
                 ImageResultsContainer.ShowFanart = DefaultImagesContainer.ShowFanart
                 Me.pbCurrent.Image = ImageResultsContainer.ShowFanart.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.ShowFanart.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.ShowFanart
             ElseIf SelImgType = Enums.ImageType_TV.ShowPoster Then
                 ImageResultsContainer.ShowPoster = DefaultImagesContainer.ShowPoster
                 Me.pbCurrent.Image = ImageResultsContainer.ShowPoster.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.ShowPoster.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.ShowPoster
             End If
         ElseIf Me.SelSeason = 999 Then
             If SelImgType = Enums.ImageType_TV.AllSeasonsBanner Then
                 ImageResultsContainer.SeasonBanner = DefaultImagesContainer.SeasonBanner
                 Me.pbCurrent.Image = ImageResultsContainer.SeasonBanner.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.SeasonBanner.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.SeasonBanner
             ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsFanart Then
                 ImageResultsContainer.SeasonFanart = DefaultImagesContainer.SeasonFanart
                 Me.pbCurrent.Image = ImageResultsContainer.SeasonFanart.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.SeasonFanart.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.SeasonFanart
             ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsLandscape Then
                 ImageResultsContainer.SeasonLandscape = DefaultImagesContainer.SeasonLandscape
                 Me.pbCurrent.Image = ImageResultsContainer.SeasonLandscape.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.SeasonLandscape.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.SeasonLandscape
             ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsPoster Then
                 ImageResultsContainer.SeasonPoster = DefaultImagesContainer.SeasonPoster
                 Me.pbCurrent.Image = ImageResultsContainer.SeasonPoster.WebImage.Image
-                Me.pbCurrent.Tag = ImageResultsContainer.SeasonPoster.WebImage
+                Me.pbCurrent.Tag = ImageResultsContainer.SeasonPoster
             End If
         Else
             If SelImgType = Enums.ImageType_TV.SeasonBanner Then
                 Dim dSPost As MediaContainers.Image = DefaultImagesContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner
                 ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner = dSPost
                 Me.pbCurrent.Image = dSPost.WebImage.Image
-                Me.pbCurrent.Tag = dSPost.WebImage
+                Me.pbCurrent.Tag = dSPost
 
                 'TVDBImages.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner
 
@@ -1832,97 +1843,67 @@ Public Class dlgImgSelectTV
                 tSFan.LocalFile = dSFan.LocalFile
                 tSFan.URL = dSFan.URL
                 Me.pbCurrent.Image = dSFan.WebImage.Image
-                Me.pbCurrent.Tag = dSFan.WebImage
+                Me.pbCurrent.Tag = dSFan
             ElseIf SelImgType = Enums.ImageType_TV.SeasonLandscape Then
                 Dim dSPost As MediaContainers.Image = DefaultImagesContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape
                 ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape = dSPost
                 Me.pbCurrent.Image = dSPost.WebImage.Image
-                Me.pbCurrent.Tag = dSPost.WebImage
+                Me.pbCurrent.Tag = dSPost
             ElseIf SelImgType = Enums.ImageType_TV.SeasonPoster Then
                 Dim dSPost As MediaContainers.Image = DefaultImagesContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster
                 ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster = dSPost
                 Me.pbCurrent.Image = dSPost.WebImage.Image
-                Me.pbCurrent.Tag = dSPost.WebImage
+                Me.pbCurrent.Tag = dSPost
             End If
         End If
     End Sub
 
     Private Sub pnlImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Panel).Name)
-        Me.DoSelect(iIndex, DirectCast(DirectCast(sender, Panel).Tag, ImageTag))
+        Me.DoSelect(iIndex, DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
     End Sub
 
-    Private Sub SetImage(ByVal SelTag As ImageTag)
-        If SelTag.ImageObj IsNot Nothing Then
-            Me.pbCurrent.Image = SelTag.ImageObj.Image
-            Me.pbCurrent.Tag = SelTag.ImageObj
+    Private Sub SetImage(ByVal SelTag As MediaContainers.Image)
+        If SelTag.WebImage.Image IsNot Nothing Then
+            Me.pbCurrent.Image = SelTag.WebImage.Image
+            Me.pbCurrent.Tag = SelTag
         End If
 
         If Me.SelSeason = -999 Then
             If SelImgType = Enums.ImageType_TV.ShowBanner Then
-                ImageResultsContainer.ShowBanner.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowBanner.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowBanner.URL = SelTag.URL
+                ImageResultsContainer.ShowBanner = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.ShowCharacterArt Then
-                ImageResultsContainer.ShowCharacterArt.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowCharacterArt.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowCharacterArt.URL = SelTag.URL
+                ImageResultsContainer.ShowCharacterArt = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.ShowClearArt Then
-                ImageResultsContainer.ShowClearArt.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowClearArt.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowClearArt.URL = SelTag.URL
+                ImageResultsContainer.ShowClearArt = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.ShowClearLogo Then
-                ImageResultsContainer.ShowClearLogo.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowClearLogo.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowClearLogo.URL = SelTag.URL
+                ImageResultsContainer.ShowClearLogo = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.ShowLandscape Then
-                ImageResultsContainer.ShowLandscape.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowLandscape.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowLandscape.URL = SelTag.URL
+                ImageResultsContainer.ShowLandscape = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.ShowFanart Then
-                ImageResultsContainer.ShowFanart.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowFanart.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowFanart.URL = SelTag.URL
+                ImageResultsContainer.ShowFanart = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.ShowPoster Then
-                ImageResultsContainer.ShowPoster.WebImage = SelTag.ImageObj
-                ImageResultsContainer.ShowPoster.LocalFile = SelTag.Path
-                ImageResultsContainer.ShowPoster.URL = SelTag.URL
+                ImageResultsContainer.ShowPoster = SelTag
             End If
         ElseIf Me.SelSeason = 999 Then
             If SelImgType = Enums.ImageType_TV.AllSeasonsBanner Then
-                ImageResultsContainer.SeasonBanner.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonBanner.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonBanner.URL = SelTag.URL
+                ImageResultsContainer.SeasonBanner = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsFanart Then
-                ImageResultsContainer.SeasonFanart.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonFanart.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonFanart.URL = SelTag.URL
+                ImageResultsContainer.SeasonFanart = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsLandscape Then
-                ImageResultsContainer.SeasonLandscape.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonLandscape.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonLandscape.URL = SelTag.URL
+                ImageResultsContainer.SeasonLandscape = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsPoster Then
-                ImageResultsContainer.SeasonPoster.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonPoster.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonPoster.URL = SelTag.URL
+                ImageResultsContainer.SeasonPoster = SelTag
             End If
         Else
             If SelImgType = Enums.ImageType_TV.SeasonBanner Then
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner.URL = SelTag.URL
+                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.SeasonFanart Then
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.URL = SelTag.URL
+                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.SeasonLandscape Then
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape.URL = SelTag.URL
+                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape = SelTag
             ElseIf SelImgType = Enums.ImageType_TV.SeasonPoster Then
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster.WebImage = SelTag.ImageObj
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster.LocalFile = SelTag.Path
-                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster.URL = SelTag.URL
+                ImageResultsContainer.SeasonImages.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster = SelTag
             End If
         End If
     End Sub
@@ -1960,7 +1941,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -1983,7 +1964,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2006,7 +1987,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2029,7 +2010,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2052,7 +2033,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2075,7 +2056,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2098,7 +2079,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2121,7 +2102,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2133,7 +2114,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2156,7 +2137,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2179,7 +2160,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2191,7 +2172,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2214,7 +2195,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2226,7 +2207,7 @@ Public Class dlgImgSelectTV
                         Else
                             imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                         End If
-                        Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                        Me.AddImage(imgText, iCount, tvImage)
                     End If
                     iCount += 1
                 Next
@@ -2253,7 +2234,7 @@ Public Class dlgImgSelectTV
                                 Else
                                     imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, tvImage)
                             End If
                             iCount += 1
                         Next
@@ -2277,7 +2258,7 @@ Public Class dlgImgSelectTV
                                 Else
                                     imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, tvImage)
                             End If
                             iCount += 1
                         Next
@@ -2301,7 +2282,7 @@ Public Class dlgImgSelectTV
                                 Else
                                     imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, tvImage)
                             End If
                             iCount += 1
                         Next
@@ -2325,7 +2306,7 @@ Public Class dlgImgSelectTV
                                 Else
                                     imgText = String.Format("{0}x{1}", tvImage.Width, tvImage.Height & Environment.NewLine & tvImage.LongLang)
                                 End If
-                                Me.AddImage(imgText, iCount, New ImageTag With {.URL = tvImage.URL, .Path = tvImage.LocalFile, .ImageObj = tvImage.WebImage})
+                                Me.AddImage(imgText, iCount, tvImage)
                             End If
                             iCount += 1
                         Next
@@ -2342,18 +2323,6 @@ Public Class dlgImgSelectTV
 #End Region 'Methods
 
 #Region "Nested Types"
-
-    Private Structure ImageTag
-
-#Region "Fields"
-
-        Dim Path As String
-        Dim URL As String
-        Dim ImageObj As Images
-
-#End Region 'Fields
-
-    End Structure
 
     Public Class TVDBShow
 

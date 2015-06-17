@@ -613,10 +613,10 @@ Public Class Scraper
                         If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                             Master.currShow = tmpTVDBShow.Episodes(0)
                             If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso File.Exists(Master.currShow.TVEp.LocalFile) Then
-                                Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                                If Master.currShow.TVEp.Poster.Image IsNot Nothing Then
+                                Master.currShow.TVEp.Poster.WebImage.FromWeb(Master.currShow.TVEp.PosterURL)
+                                If Master.currShow.TVEp.Poster.WebImage.Image IsNot Nothing Then
                                     Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
-                                    Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                    Master.currShow.TVEp.Poster.WebImage.Save(Master.currShow.TVEp.LocalFile)
                                 End If
                             End If
                             If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) Then Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
@@ -634,10 +634,10 @@ Public Class Scraper
                     If tmpTVDBShow.Episodes(0).TVShow.ID.Length > 0 Then
                         Master.currShow = tmpTVDBShow.Episodes(0)
                         If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
-                            Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
-                            If Master.currShow.TVEp.Poster.Image IsNot Nothing Then
+                            Master.currShow.TVEp.Poster.WebImage.FromWeb(Master.currShow.TVEp.PosterURL)
+                            If Master.currShow.TVEp.Poster.WebImage.Image IsNot Nothing Then
                                 Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
-                                Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                Master.currShow.TVEp.Poster.WebImage.Save(Master.currShow.TVEp.LocalFile)
                             End If
                         End If
                         If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) Then Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
@@ -652,10 +652,10 @@ Public Class Scraper
                             If dTVDBSearch.ShowDialog(sInfo) = Windows.Forms.DialogResult.OK Then
                                 Master.currShow = tmpTVDBShow.Episodes(0)
                                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) AndAlso Not File.Exists(Master.currShow.TVEp.LocalFile) Then
-                                    Master.currShow.TVEp.Poster.FromWeb(Master.currShow.TVEp.PosterURL)
+                                    Master.currShow.TVEp.Poster.WebImage.FromWeb(Master.currShow.TVEp.PosterURL)
                                     If Master.currShow.TVEp.Poster IsNot Nothing Then
                                         Directory.CreateDirectory(Directory.GetParent(Master.currShow.TVEp.LocalFile).FullName)
-                                        Master.currShow.TVEp.Poster.Save(Master.currShow.TVEp.LocalFile)
+                                        Master.currShow.TVEp.Poster.WebImage.Save(Master.currShow.TVEp.LocalFile)
                                     End If
                                 End If
                                 If Not String.IsNullOrEmpty(Master.currShow.TVEp.LocalFile) Then Master.currShow.EpPosterPath = Master.currShow.TVEp.LocalFile
@@ -764,7 +764,7 @@ Public Class Scraper
             End If
         End Sub
 
-        Private Sub bwtvDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
+        Private Sub bwTVDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVDB.DoWork
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
             Select Case Args.Type
@@ -850,11 +850,11 @@ Public Class Scraper
                     If Me.bwTVDB.CancellationPending Then Return
 
                     If Episode.TVEp.Season > -1 AndAlso Episode.TVEp.Episode > -1 AndAlso Not Episode.IsLockEp Then
-                        If Episode.TVEp.Poster.Image IsNot Nothing Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
+                        If Episode.TVEp.Poster.WebImage.Image IsNot Nothing Then Episode.EpPosterPath = Episode.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(Episode, Episode.TVEp.PosterURL)
 
                         If Me.bwTVDB.CancellationPending Then Return
 
-                        If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Episode.TVEp.Fanart.Image IsNot Nothing Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
+                        If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Episode.TVEp.Fanart.WebImage.Image IsNot Nothing Then Episode.EpFanartPath = Episode.TVEp.Fanart.WebImage.SaveAsTVEpisodeFanart(Episode, )
 
                         If Me.bwTVDB.CancellationPending Then Return
 
