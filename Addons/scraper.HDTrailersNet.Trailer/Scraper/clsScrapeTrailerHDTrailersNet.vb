@@ -31,7 +31,7 @@ Namespace HDTrailersNet
 
         Private originaltitle As String
         Private title As String
-        Private _trailerlist As New List(Of Trailers)
+        Private _trailerlist As New List(Of MediaContainers.Trailer)
 
 #End Region 'Fields
 
@@ -48,11 +48,11 @@ Namespace HDTrailersNet
 
 #Region "Properties"
 
-        Public Property TrailerList() As List(Of Trailers)
+        Public Property TrailerList() As List(Of MediaContainers.Trailer)
             Get
                 Return _trailerlist
             End Get
-            Set(ByVal value As List(Of Trailers))
+            Set(ByVal value As List(Of MediaContainers.Trailer))
                 _trailerlist = value
             End Set
         End Property
@@ -62,7 +62,7 @@ Namespace HDTrailersNet
 #Region "Methods"
 
         Private Sub Clear()
-            _trailerlist = New List(Of Trailers)
+            _trailerlist = New List(Of MediaContainers.Trailer)
         End Sub
 
 
@@ -189,16 +189,16 @@ Namespace HDTrailersNet
                                 If item.Groups.Count > 0 Then
                                     'only accept mov and mp4 files for now
                                     If Not item.Groups(1).Value Is Nothing AndAlso (item.Groups(1).Value.EndsWith(".mov") OrElse item.Groups(1).Value.EndsWith(".mp4")) Then
-                                        Dim trailer As New Trailers
+                                        Dim trailer As New MediaContainers.Trailer
                                         'trailer description
                                         If Not item.Groups(2).Value Is Nothing Then
-                                            trailer.Description = item.Groups(2).Value
+                                            trailer.Title = item.Groups(2).Value
                                         End If
                                         'trailer URLs
                                         trailer.VideoURL = item.Groups(1).Value
                                         trailer.WebURL = item.Groups(1).Value
                                         'trailer extension
-                                        trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                        trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                         'trailer source
                                         trailer.Source = "HD-Trailers.net"
                                         '..and most important: trailer quality

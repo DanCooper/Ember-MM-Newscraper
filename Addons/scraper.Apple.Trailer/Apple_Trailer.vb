@@ -151,7 +151,7 @@ Public Class Apple_Trailer
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         Dim tTitle As String = String.Empty
@@ -165,7 +165,7 @@ Public Class Apple_Trailer
         Dim tAppleTrailer As New Apple.Scraper(tTitle, DBMovie.Movie.IMDBID)
 
         If tAppleTrailer.TrailerList.Count > 0 Then
-            URLList = tAppleTrailer.TrailerList
+            TrailerList = tAppleTrailer.TrailerList
         End If
 
         logger.Trace("Finished scrape", New StackTrace().ToString())

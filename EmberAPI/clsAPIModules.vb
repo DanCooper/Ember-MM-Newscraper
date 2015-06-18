@@ -1146,10 +1146,9 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Boolean
+    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
-        Dim aList As List(Of Trailers)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
@@ -1162,16 +1161,14 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 Try
-                    aList = New List(Of Trailers)
+                    Dim aList As New List(Of MediaContainers.Trailer)
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
-                    If aList IsNot Nothing AndAlso aList.Count > 0 Then
-                        For Each aIm In aList
-                            URLList.Add(aIm)
-                        Next
+                    If aList IsNot Nothing Then
+                        TrailerList.AddRange(aList)
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                End Try
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+        End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 If ret.breakChain Then Exit For
             Next

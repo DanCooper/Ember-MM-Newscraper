@@ -993,6 +993,17 @@ Public Class Enums
         UNKNOWN = 6
     End Enum
     ''' <summary>
+    ''' Enum representing the trailer type options
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TrailerType As Integer
+        Any = 0
+        Clip = 1
+        Featurette = 2
+        Teaser = 3
+        Trailer = 4
+    End Enum
+    ''' <summary>
     ''' Enum representing the trailer codec options
     ''' </summary>
     ''' <remarks></remarks>

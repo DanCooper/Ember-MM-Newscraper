@@ -4338,6 +4338,24 @@ Namespace MediaContainers
 
     Public Class [Trailer]
 
+#Region "Fields"
+
+        Private _audiourl As String
+        Private _duration As String
+        Private _isDash As Boolean
+        Private _longlang As String
+        Private _quality As Enums.TrailerVideoQuality
+        Private _scraper As String
+        Private _shortlang As String
+        Private _source As String
+        Private _title As String
+        Private _type As Enums.TrailerType
+        Private _videourl As String
+        Private _webtrailer As New Trailers
+        Private _weburl As String
+
+#End Region 'Fields
+
 #Region "Constructors"
 
         Public Sub New()
@@ -4347,20 +4365,162 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
-        Public Property Quality As String
-        Public Property URL As String ' path to image (local or url)
-        Public Property WebTrailer As Trailers
-        Public Property ShortLang As String
-        Public Property LongLang As String
+        ''' <summary>
+        ''' download audio URL of the trailer
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property AudioURL() As String
+            Get
+                Return _audiourl
+            End Get
+            Set(ByVal value As String)
+                _audiourl = value
+            End Set
+        End Property
+
+        Public Property Duration() As String
+            Get
+                Return Me._duration
+            End Get
+            Set(ByVal value As String)
+                Me._duration = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' If is a Dash video, we need also an audio URL to merge video and audio
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property isDash() As Boolean
+            Get
+                Return _isDash
+            End Get
+            Set(ByVal value As Boolean)
+                _isDash = value
+            End Set
+        End Property
+
+        Public Property LongLang() As String
+            Get
+                Return Me._longlang
+            End Get
+            Set(ByVal value As String)
+                Me._longlang = value
+            End Set
+        End Property
+
+        Public Property Quality() As Enums.TrailerVideoQuality
+            Get
+                Return Me._quality
+            End Get
+            Set(ByVal value As Enums.TrailerVideoQuality)
+                Me._quality = value
+            End Set
+        End Property
+
+        Public Property Scraper() As String
+            Get
+                Return Me._scraper
+            End Get
+            Set(ByVal value As String)
+                Me._scraper = value
+            End Set
+        End Property
+
+        Public Property ShortLang() As String
+            Get
+                Return Me._shortlang
+            End Get
+            Set(ByVal value As String)
+                Me._shortlang = value
+            End Set
+        End Property
+
+        Public Property Source() As String
+            Get
+                Return Me._source
+            End Get
+            Set(ByVal value As String)
+                Me._source = value
+            End Set
+        End Property
+
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
+        Public Property Type() As Enums.TrailerType
+            Get
+                Return Me._type
+            End Get
+            Set(ByVal value As Enums.TrailerType)
+                Me._type = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' download video URL of the trailer
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property VideoURL() As String
+            Get
+                Return _videourl
+            End Get
+            Set(ByVal value As String)
+                _videourl = value
+            End Set
+        End Property
+
+        Public Property WebTrailer() As Trailers
+            Get
+                Return Me._webtrailer
+            End Get
+            Set(ByVal value As Trailers)
+                Me._webtrailer = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' website URL of the trailer for preview in browser
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property WebURL() As String
+            Get
+                Return _weburl
+            End Get
+            Set(ByVal value As String)
+                _weburl = value
+            End Set
+        End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._URL = String.Empty
-            Me._Quality = String.Empty
-            Me._WebTrailer = New Trailers
+            Me._audiourl = String.Empty
+            Me._duration = String.Empty
+            Me._isDash = False
+            Me._longlang = String.Empty
+            Me._quality = Enums.TrailerVideoQuality.Any
+            Me._scraper = String.Empty
+            Me._shortlang = String.Empty
+            Me._source = String.Empty
+            Me._title = String.Empty
+            Me._type = Enums.TrailerType.Any
+            Me._videourl = String.Empty
+            Me._webtrailer = New Trailers
+            Me._weburl = String.Empty
         End Sub
 
 #End Region 'Methods

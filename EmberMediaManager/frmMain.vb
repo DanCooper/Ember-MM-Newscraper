@@ -2136,7 +2136,7 @@ Public Class frmMain
             Dim Theme As New MediaContainers.Theme
             Dim Trailer As New MediaContainers.Trailer
             Dim tURL As String = String.Empty
-            Dim aUrlList As New List(Of Trailers)
+            Dim aUrlList As New List(Of MediaContainers.Trailer)
             Dim efList As New List(Of String)
             Dim etList As New List(Of String)
             Dim tUrlList As New List(Of Themes)
@@ -2663,13 +2663,13 @@ Public Class frmMain
 
 
                                     'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
-                                    For Each _trailer As Trailers In aUrlList
+                                    For Each _trailer As MediaContainers.Trailer In aUrlList
                                         'trailer URL shoud never be empty at this point anyway, might as well remove check
                                         If Not String.IsNullOrEmpty(_trailer.VideoURL) Then
                                             'this will download the trailer and save it temporarly as "dummy.ext"
                                             Trailer.WebTrailer.FromWeb(_trailer)
                                             'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
-                                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.VideoURL) Then
+                                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.Extention) Then
                                                 'now rename dummy.ext to trailer and save it in movie folder
                                                 tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                 If Not String.IsNullOrEmpty(tURL) Then
@@ -2695,7 +2695,7 @@ Public Class frmMain
                                     Using dTrailerSelect As New dlgTrailerSelect
                                         If dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList, False, True, False) = DialogResult.OK Then
                                             Trailer = dTrailerSelect.Results
-                                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.VideoURL) Then
+                                            If Not String.IsNullOrEmpty(Trailer.VideoURL) Then
                                                 tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                 If Not String.IsNullOrEmpty(tURL) Then
                                                     DBScrapeMovie.TrailerPath = tURL

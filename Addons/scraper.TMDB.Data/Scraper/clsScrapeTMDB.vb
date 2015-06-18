@@ -231,17 +231,17 @@ Namespace TMDB
 
             If strID.Substring(0, 2).ToLower = "tt" Then
                 'search movie by IMDB ID
-                Movie = _TMDBApi.GetMovie(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Trailers)
+                Movie = _TMDBApi.GetMovie(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos)
                 If _MySettings.FallBackEng Then
-                    MovieE = _TMDBApiE.GetMovie(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Trailers)
+                    MovieE = _TMDBApiE.GetMovie(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos)
                 Else
                     MovieE = Movie
                 End If
             Else
                 'search movie by TMDB ID
-                Movie = _TMDBApi.GetMovie(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Trailers)
+                Movie = _TMDBApi.GetMovie(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos)
                 If _MySettings.FallBackEng Then
-                    MovieE = _TMDBApiE.GetMovie(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Trailers)
+                    MovieE = _TMDBApiE.GetMovie(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos)
                 Else
                     MovieE = Movie
                 End If
@@ -472,17 +472,17 @@ Namespace TMDB
 
             'Trailer
             If Options.bTrailer Then
-                Dim aTrailers As TMDbLib.Objects.Movies.Trailers = Nothing
-                If Movie.Trailers Is Nothing OrElse (Movie.Trailers IsNot Nothing AndAlso Movie.Trailers.Youtube.Count = 0) Then
-                    If _MySettings.FallBackEng AndAlso MovieE.Trailers IsNot Nothing AndAlso MovieE.Trailers.Youtube.Count > 0 Then
-                        aTrailers = MovieE.Trailers
+                Dim aTrailers As List(Of TMDbLib.Objects.General.Video) = Nothing
+                If Movie.Videos Is Nothing OrElse (Movie.Videos IsNot Nothing AndAlso Movie.Videos.Results.Count = 0) Then
+                    If _MySettings.FallBackEng AndAlso MovieE.Videos IsNot Nothing AndAlso MovieE.Videos.Results.Count > 0 Then
+                        aTrailers = MovieE.Videos.Results
                     End If
                 Else
-                    aTrailers = Movie.Trailers
+                    aTrailers = Movie.Videos.Results
                 End If
 
-                If aTrailers IsNot Nothing AndAlso aTrailers.Youtube IsNot Nothing AndAlso aTrailers.Youtube.Count > 0 Then
-                    nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & aTrailers.Youtube(0).Source
+                If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
+                    nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & aTrailers(0).Key
                 End If
             End If
 

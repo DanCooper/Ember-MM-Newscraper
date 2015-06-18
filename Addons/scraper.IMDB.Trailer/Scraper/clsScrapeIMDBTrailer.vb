@@ -30,7 +30,7 @@ Namespace IMDB
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private IMDBID As String
-        Private _trailerlist As New List(Of Trailers)
+        Private _trailerlist As New List(Of MediaContainers.Trailer)
 
 #End Region 'Fields
 
@@ -46,11 +46,11 @@ Namespace IMDB
 
 #Region "Properties"
 
-        Public Property TrailerList() As List(Of Trailers)
+        Public Property TrailerList() As List(Of MediaContainers.Trailer)
             Get
                 Return _trailerlist
             End Get
-            Set(ByVal value As List(Of Trailers))
+            Set(ByVal value As List(Of MediaContainers.Trailer))
                 _trailerlist = value
             End Set
         End Property
@@ -60,7 +60,7 @@ Namespace IMDB
 #Region "Methods"
 
         Private Sub Clear()
-            _trailerlist = New List(Of Trailers)
+            _trailerlist = New List(Of MediaContainers.Trailer)
         End Sub
 
         Private Sub GetMovieTrailers()
@@ -131,7 +131,7 @@ Namespace IMDB
                                         sHTTP = New HTTP
                                         Dim DetailsPage As String = sHTTP.DownloadData(Details)
                                         Dim trailerLenght As String = Regex.Match(DetailsPage, "duration title-hover"">\((?<LENGHT>.*?)\)</span>").Groups(1).Value.ToString
-                                        _trailerlist.Add(New Trailers With {.VideoURL = Website, .Description = TrailerTitle, .WebURL = Website, .Duration = trailerLenght, .Source = "IMDB"})
+                                        _trailerlist.Add(New MediaContainers.Trailer With {.VideoURL = Website, .Title = TrailerTitle, .WebURL = Website, .Duration = trailerLenght, .Source = "IMDB"})
                                     Next
                                 Next
                             End If

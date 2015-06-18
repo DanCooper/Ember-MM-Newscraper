@@ -482,7 +482,7 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
