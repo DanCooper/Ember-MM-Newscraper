@@ -253,7 +253,7 @@ Public Class TVDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper
+    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper
         logger.Trace("Started TVDB Scraper")
 
         LoadSettings()
@@ -313,6 +313,20 @@ Public Class TVDB_Data
             oDBTV.TVShow.IMDB = nShow.IMDB
         End If
 
+        logger.Trace("Finished TVDB Scraper")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+        logger.Trace("Started TVDB Scraper")
+        nEpisode = Nothing
+        logger.Trace("Finished TVDB Scraper")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+        logger.Trace("Started TVDB Scraper")
+        nEpisode = Nothing
         logger.Trace("Finished TVDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

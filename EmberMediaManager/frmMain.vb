@@ -3475,7 +3475,7 @@ Public Class frmMain
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
             If Master.GlobalScrapeMod.NFO Then
-                If ModulesManager.Instance.ScrapeData_TV(DBScrapeShow, Args.scrapeType, Args.Options_TV, ScrapeList.Count = 1) Then
+                If ModulesManager.Instance.ScrapeData_TV(DBScrapeShow, Args.scrapeType, Args.Options_TV, ScrapeList.Count = 1, True) Then
                     Cancelled = True
                 End If
             Else
@@ -3485,7 +3485,7 @@ Public Class frmMain
                                                                          Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or Master.GlobalScrapeMod.Poster Or _
                                                                          Master.GlobalScrapeMod.Theme) Then
                     Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
-                    If ModulesManager.Instance.ScrapeData_TV(DBScrapeShow, Args.scrapeType, tOpt, ScrapeList.Count = 1) Then
+                    If ModulesManager.Instance.ScrapeData_TV(DBScrapeShow, Args.scrapeType, tOpt, ScrapeList.Count = 1, False) Then
                         Exit For
                     End If
                 End If

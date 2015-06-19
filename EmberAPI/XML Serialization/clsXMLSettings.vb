@@ -361,6 +361,10 @@ Partial Public Class clsXMLSettings
     Private _tvimagesgetenglishimages As Boolean
     Private _tvimagespreflanguage As String
     Private _tvimagespreflanguageonly As Boolean
+    Private _tvlockepisodeactors As Boolean
+    Private _tvlockepisodeaired As Boolean
+    Private _tvlockepisodecredits As Boolean
+    Private _tvlockepisodedirector As Boolean
     Private _tvlockepisodelanguagea As Boolean
     Private _tvlockepisodelanguagev As Boolean
     Private _tvlockepisodeplot As Boolean
@@ -1419,6 +1423,42 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockepisodelanguagev = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeActors() As Boolean
+        Get
+            Return Me._tvlockepisodeactors
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodeactors = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeAired() As Boolean
+        Get
+            Return Me._tvlockepisodeaired
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodeaired = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeCredits() As Boolean
+        Get
+            Return Me._tvlockepisodecredits
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodecredits = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeDirector() As Boolean
+        Get
+            Return Me._tvlockepisodedirector
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodedirector = value
         End Set
     End Property
 

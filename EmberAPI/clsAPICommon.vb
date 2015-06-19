@@ -2049,6 +2049,7 @@ Public Class Structures
         Dim Source As String
         Dim TVEp As MediaContainers.EpisodeDetails
         Dim TVShow As MediaContainers.TVShow
+        Dim TVShowContainer As MediaContainers.TVShowContainer
         Dim VideoSource As String
     End Structure
 

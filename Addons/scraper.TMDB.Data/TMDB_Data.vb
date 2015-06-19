@@ -644,7 +644,7 @@ Public Class TMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper_Movie(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started TMDB Scraper")
 
         LoadSettings_Movie()
@@ -719,7 +719,7 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
+    Function Scraper_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -835,8 +835,8 @@ Public Class TMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper
-        logger.Trace("Started TVDB Scraper")
+    Function Scraper_TV(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper
+        logger.Trace("Started TMDB Scraper")
 
         LoadSettings_TV()
 
@@ -844,7 +844,7 @@ Public Class TMDB_Data
         Settings.ApiKey = _MySettings_TV.APIKey
         Settings.FallBackEng = _MySettings_TV.FallBackEng
         Settings.GetAdultItems = _MySettings_TV.GetAdultItems
-        Settings.PrefLanguage = _MySettings_TV.PrefLanguage
+        Settings.PrefLanguage = oDBTV.ShowLanguage
 
         Dim _scraper As New TMDB.Scraper(Settings)
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)
@@ -852,11 +852,11 @@ Public Class TMDB_Data
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then
                 'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False)
+                _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
             ElseIf Not String.IsNullOrEmpty(oDBTV.TVShow.ID) Then
                 oDBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(oDBTV.TVShow.ID)
                 If String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False)
+                _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
             ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
@@ -879,7 +879,7 @@ Public Class TMDB_Data
             If String.IsNullOrEmpty(oDBTV.TVShow.TVDBID) Then
                 Using dSearch As New dlgTMDBSearchResults_TV(Settings, _scraper)
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, filterOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetTVShowInfo(nShow.TMDB, nShow, False, filterOptions, False)
+                        _scraper.GetTVShowInfo(nShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)
                     Else
@@ -901,7 +901,51 @@ Public Class TMDB_Data
             oDBTV.TVShow.IMDB = nShow.IMDB
         End If
 
-        logger.Trace("Finished TVDB Scraper")
+        logger.Trace("Finished TMDB Scraper")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+        logger.Trace("Started TMDB Scraper")
+
+        LoadSettings_TV()
+
+        Dim Settings As TMDB.Scraper.sMySettings_ForScraper
+        Settings.ApiKey = _MySettings_TV.APIKey
+        Settings.FallBackEng = _MySettings_TV.FallBackEng
+        Settings.GetAdultItems = _MySettings_TV.GetAdultItems
+        Settings.PrefLanguage = Lang
+
+        Dim _scraper As New TMDB.Scraper(Settings)
+        Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)
+
+        If Ordering = Enums.Ordering.Standard Then
+            nEpisode = _scraper.GetTVEpisodeInfo(CInt(_scraper.GetTMDBbyTVDB(TVDBID)), Season, Episode, filterOptions)
+        End If
+
+        logger.Trace("Finished TMDB Scraper")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+        logger.Trace("Started TMDB Scraper")
+
+        LoadSettings_TV()
+
+        Dim Settings As TMDB.Scraper.sMySettings_ForScraper
+        Settings.ApiKey = _MySettings_TV.APIKey
+        Settings.FallBackEng = _MySettings_TV.FallBackEng
+        Settings.GetAdultItems = _MySettings_TV.GetAdultItems
+        Settings.PrefLanguage = Lang
+
+        Dim _scraper As New TMDB.Scraper(Settings)
+        Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)
+
+        If Ordering = Enums.Ordering.Standard Then
+            nEpisode = _scraper.GetTVEpisodeInfo(CInt(_scraper.GetTMDBbyTVDB(TVDBID)), Aired, filterOptions)
+        End If
+
+        logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

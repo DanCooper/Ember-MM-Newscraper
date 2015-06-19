@@ -544,6 +544,42 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockEpisodeActors() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeActors
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeActors = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeAired() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeAired
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeAired = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeCredits() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeCredits
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeCredits = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeDirector() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeDirector
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeDirector = value
+        End Set
+    End Property
+
     Public Property TVLockEpisodePlot() As Boolean
         Get
             Return Settings._XMLSettings.TVLockEpisodePlot
@@ -6758,6 +6794,10 @@ Public Class Settings
         Me.TVImagesGetEnglishImages = False
         Me.TVImagesPrefLanguage = "en"
         Me.TVImagesPrefLanguageOnly = False
+        Me.TVLockEpisodeActors = False
+        Me.TVLockEpisodeAired = False
+        Me.TVLockEpisodeCredits = False
+        Me.TVLockEpisodeDirector = False
         Me.TVLockEpisodeLanguageA = False
         Me.TVLockEpisodeLanguageV = False
         Me.TVLockEpisodePlot = False

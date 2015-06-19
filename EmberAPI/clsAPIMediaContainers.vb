@@ -257,10 +257,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -1182,10 +1182,10 @@ Namespace MediaContainers
         <XmlElement("tagline")> _
         Public Property Tagline() As String
             Get
-                Return Me._tagline
+                Return Me._tagline.Trim
             End Get
             Set(ByVal value As String)
-                Me._tagline = value
+                Me._tagline = value.Trim
             End Set
         End Property
 
@@ -1209,10 +1209,10 @@ Namespace MediaContainers
         <XmlElement("outline")> _
         Public Property Outline() As String
             Get
-                Return Me._outline
+                Return Me._outline.Trim
             End Get
             Set(ByVal value As String)
-                Me._outline = value
+                Me._outline = value.Trim
             End Set
         End Property
 
@@ -1226,10 +1226,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -1900,10 +1900,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -2621,10 +2621,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
