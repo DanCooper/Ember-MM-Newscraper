@@ -31,7 +31,7 @@ Partial Class dlgTMDBSearchResults_TV
         Me.lblTagline = New System.Windows.Forms.Label()
         Me.txtPlot = New System.Windows.Forms.TextBox()
         Me.lblYear = New System.Windows.Forms.Label()
-        Me.lblDirector = New System.Windows.Forms.Label()
+        Me.lblCreator = New System.Windows.Forms.Label()
         Me.lblGenre = New System.Windows.Forms.Label()
         Me.txtTMDBID = New System.Windows.Forms.TextBox()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -42,7 +42,7 @@ Partial Class dlgTMDBSearchResults_TV
         Me.btnVerify = New System.Windows.Forms.Button()
         Me.lblTMDBID = New System.Windows.Forms.Label()
         Me.lblAiredHeader = New System.Windows.Forms.Label()
-        Me.lblDirectorHeader = New System.Windows.Forms.Label()
+        Me.lblCreatorHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
         Me.lblTMDBHeader = New System.Windows.Forms.Label()
         Me.lblPlotHeader = New System.Windows.Forms.Label()
@@ -146,15 +146,15 @@ Partial Class dlgTMDBSearchResults_TV
         Me.lblYear.Text = "0000"
         Me.lblYear.Visible = False
         '
-        'lblDirector
+        'lblCreator
         '
-        Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDirector.Location = New System.Drawing.Point(476, 186)
-        Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(165, 16)
-        Me.lblDirector.TabIndex = 15
-        Me.lblDirector.Text = "Director"
-        Me.lblDirector.Visible = False
+        Me.lblCreator.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCreator.Location = New System.Drawing.Point(476, 186)
+        Me.lblCreator.Name = "lblCreator"
+        Me.lblCreator.Size = New System.Drawing.Size(165, 54)
+        Me.lblCreator.TabIndex = 15
+        Me.lblCreator.Text = "Creator"
+        Me.lblCreator.Visible = False
         '
         'lblGenre
         '
@@ -267,16 +267,16 @@ Partial Class dlgTMDBSearchResults_TV
         Me.lblAiredHeader.Text = "Aired:"
         Me.lblAiredHeader.Visible = False
         '
-        'lblDirectorHeader
+        'lblCreatorHeader
         '
-        Me.lblDirectorHeader.AutoSize = True
-        Me.lblDirectorHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirectorHeader.Location = New System.Drawing.Point(414, 186)
-        Me.lblDirectorHeader.Name = "lblDirectorHeader"
-        Me.lblDirectorHeader.Size = New System.Drawing.Size(51, 13)
-        Me.lblDirectorHeader.TabIndex = 14
-        Me.lblDirectorHeader.Text = "Director:"
-        Me.lblDirectorHeader.Visible = False
+        Me.lblCreatorHeader.AutoSize = True
+        Me.lblCreatorHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCreatorHeader.Location = New System.Drawing.Point(414, 186)
+        Me.lblCreatorHeader.Name = "lblCreatorHeader"
+        Me.lblCreatorHeader.Size = New System.Drawing.Size(61, 13)
+        Me.lblCreatorHeader.TabIndex = 14
+        Me.lblCreatorHeader.Text = "Creator(s):"
+        Me.lblCreatorHeader.Visible = False
         '
         'lblGenreHeader
         '
@@ -412,7 +412,7 @@ Partial Class dlgTMDBSearchResults_TV
         Me.Controls.Add(Me.lblPlotHeader)
         Me.Controls.Add(Me.lblTMDBHeader)
         Me.Controls.Add(Me.lblGenreHeader)
-        Me.Controls.Add(Me.lblDirectorHeader)
+        Me.Controls.Add(Me.lblCreatorHeader)
         Me.Controls.Add(Me.lblAiredHeader)
         Me.Controls.Add(Me.lblTMDBID)
         Me.Controls.Add(Me.btnVerify)
@@ -420,7 +420,7 @@ Partial Class dlgTMDBSearchResults_TV
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.txtTMDBID)
         Me.Controls.Add(Me.lblGenre)
-        Me.Controls.Add(Me.lblDirector)
+        Me.Controls.Add(Me.lblCreator)
         Me.Controls.Add(Me.lblYear)
         Me.Controls.Add(Me.txtPlot)
         Me.Controls.Add(Me.lblTagline)
@@ -454,7 +454,7 @@ Partial Class dlgTMDBSearchResults_TV
     Friend WithEvents lblTagline As System.Windows.Forms.Label
     Friend WithEvents txtPlot As System.Windows.Forms.TextBox
     Friend WithEvents lblYear As System.Windows.Forms.Label
-    Friend WithEvents lblDirector As System.Windows.Forms.Label
+    Friend WithEvents lblCreator As System.Windows.Forms.Label
     Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents txtTMDBID As System.Windows.Forms.TextBox
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
@@ -465,7 +465,7 @@ Partial Class dlgTMDBSearchResults_TV
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents lblTMDBID As System.Windows.Forms.Label
     Friend WithEvents lblAiredHeader As System.Windows.Forms.Label
-    Friend WithEvents lblDirectorHeader As System.Windows.Forms.Label
+    Friend WithEvents lblCreatorHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblTMDBHeader As System.Windows.Forms.Label
     Friend WithEvents lblPlotHeader As System.Windows.Forms.Label

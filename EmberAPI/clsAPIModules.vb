@@ -864,6 +864,7 @@ Public Class ModulesManager
             oShow.Filename = DBTV.Filename
             oShow.Ordering = DBTV.Ordering
             oShow.ShowLanguage = DBTV.ShowLanguage
+            oShow.ShowPath = DBTV.ShowPath
             oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .ID = DBTV.TVShow.ID, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
             If (modules.Count() <= 0) Then

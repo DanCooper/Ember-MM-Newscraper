@@ -1624,6 +1624,7 @@ Public Class Functions
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
         filterOptions.bShowCert = Options.bShowCert AndAlso Options2.bShowCert
         filterOptions.bShowCountry = Options.bShowCountry AndAlso Options2.bShowCountry
+        filterOptions.bShowCreator = Options.bShowCreator AndAlso Options2.bShowCreator
         filterOptions.bShowEpisodeGuide = Options.bShowEpisodeGuide AndAlso Options2.bShowEpisodeGuide
         filterOptions.bShowGenre = Options.bShowGenre AndAlso Options2.bShowGenre
         filterOptions.bShowMPAA = Options.bShowMPAA AndAlso Options2.bShowMPAA
@@ -2185,6 +2186,7 @@ Public Class Structures
         Dim bShowActors As Boolean
         Dim bShowCert As Boolean
         Dim bShowCountry As Boolean
+        Dim bShowCreator As Boolean
         Dim bShowEpisodeGuide As Boolean
         Dim bShowGenre As Boolean
         Dim bShowMPAA As Boolean

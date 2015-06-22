@@ -269,8 +269,6 @@ Public Class TMDB_Data
         _setup_TV = New frmSettingsHolder_TV
         LoadSettings_TV()
         _setup_TV.API = _setup_TV.txtApiKey.Text
-        _setup_TV.Lang = _setup_TV.cbPrefLanguage.Text
-        _setup_TV.cbPrefLanguage.Text = _MySettings_TV.PrefLanguage
         _setup_TV.chkFallBackEng.Checked = _MySettings_TV.FallBackEng
         _setup_TV.chkGetAdultItems.Checked = _MySettings_TV.GetAdultItems
         _setup_TV.chkScraperEpActors.Checked = ConfigOptions_TV.bEpActors
@@ -286,6 +284,7 @@ Public Class TMDB_Data
         _setup_TV.chkScraperEpVotes.Checked = ConfigOptions_TV.bEpVotes
         _setup_TV.chkScraperShowActors.Checked = ConfigOptions_TV.bShowActors
         _setup_TV.chkScraperShowCert.Checked = ConfigOptions_TV.bShowCert
+        _setup_TV.chkScraperShowCreator.Checked = ConfigOptions_TV.bShowCreator
         _setup_TV.chkScraperShowGenre.Checked = ConfigOptions_TV.bShowGenre
         _setup_TV.chkScraperShowOriginalTitle.Checked = ConfigOptions_TV.bShowOriginalTitle
         _setup_TV.chkScraperShowPlot.Checked = ConfigOptions_TV.bShowPlot
@@ -552,6 +551,7 @@ Public Class TMDB_Data
         ConfigOptions_TV.bEpVotes = _setup_TV.chkScraperEpVotes.Checked
         ConfigOptions_TV.bShowActors = _setup_TV.chkScraperShowActors.Checked
         ConfigOptions_TV.bShowCert = _setup_TV.chkScraperShowCert.Checked
+        ConfigOptions_TV.bShowCreator = _setup_TV.chkScraperShowCreator.Checked
         ConfigOptions_TV.bShowGenre = _setup_TV.chkScraperShowGenre.Checked
         ConfigOptions_TV.bShowOriginalTitle = _setup_TV.chkScraperShowOriginalTitle.Checked
         ConfigOptions_TV.bShowPlot = _setup_TV.chkScraperShowPlot.Checked
@@ -564,7 +564,6 @@ Public Class TMDB_Data
         ConfigOptions_TV.bShowVotes = _setup_TV.chkScraperShowVotes.Checked
         _MySettings_TV.FallBackEng = _setup_TV.chkFallBackEng.Checked
         _MySettings_TV.GetAdultItems = _setup_TV.chkGetAdultItems.Checked
-        _MySettings_TV.PrefLanguage = _setup_TV.cbPrefLanguage.Text
         SaveSettings_TV()
         If DoDispose Then
             RemoveHandler _setup_TV.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_TV
@@ -853,8 +852,12 @@ Public Class TMDB_Data
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then
                 'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
-            ElseIf Not String.IsNullOrEmpty(oDBTV.TVShow.ID) Then
-                oDBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(oDBTV.TVShow.ID)
+            ElseIf Not String.IsNullOrEmpty(oDBTV.TVShow.TVDBID) Then
+                oDBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(oDBTV.TVShow.TVDBID)
+                If String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
+            ElseIf Not String.IsNullOrEmpty(oDBTV.TVShow.IMDB) Then
+                oDBTV.TVShow.TMDB = _scraper.GetTMDBbyIMDB(oDBTV.TVShow.IMDB)
                 If String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                 _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
             ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
@@ -867,7 +870,7 @@ Public Class TMDB_Data
             End If
         End If
 
-        If String.IsNullOrEmpty(nShow.TVDBID) Then
+        If String.IsNullOrEmpty(nShow.TMDB) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
                     nShow = Nothing
@@ -876,7 +879,7 @@ Public Class TMDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto Then
-            If String.IsNullOrEmpty(oDBTV.TVShow.TVDBID) Then
+            If String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then
                 Using dSearch As New dlgTMDBSearchResults_TV(Settings, _scraper)
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, filterOptions) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetTVShowInfo(nShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
@@ -899,6 +902,9 @@ Public Class TMDB_Data
         End If
         If Not String.IsNullOrEmpty(nShow.IMDB) Then
             oDBTV.TVShow.IMDB = nShow.IMDB
+        End If
+        If Not String.IsNullOrEmpty(nShow.TMDB) Then
+            oDBTV.TVShow.TMDB = nShow.TMDB
         End If
 
         logger.Trace("Finished TMDB Scraper")

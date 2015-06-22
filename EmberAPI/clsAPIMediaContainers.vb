@@ -2199,6 +2199,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     <XmlRoot("tvshow")> _
     Public Class TVShow
 
@@ -2208,6 +2209,7 @@ Namespace MediaContainers
         Private _boxeeTvDb As String
         Private _certifications As New List(Of String)
         Private _countries As New List(Of String)
+        Private _creators As New List(Of String)
         Private _directors As New List(Of String)
         Private _episodeguide As New EpisodeGuide
         Private _genres As New List(Of String)
@@ -2703,6 +2705,27 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlElement("creator")> _
+        Public Property Creators() As List(Of String)
+            Get
+                Return _creators
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _creators.Clear()
+                Else
+                    _creators = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CreatedBySpecified() As Boolean
+            Get
+                Return _creators.Count > 0
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -2781,30 +2804,31 @@ Namespace MediaContainers
         End Sub
 
         Public Sub Clear()
-            _title = String.Empty
-            _id = String.Empty
+            _actors.Clear()
             _boxeeTvDb = String.Empty
-            _rating = String.Empty
-            _plot = String.Empty
-            _runtime = String.Empty
+            _certifications.Clear()
+            _countries.Clear()
+            _creators.Clear()
+            _directors.Clear()
+            _episodeguide.URL = String.Empty
+            _genres.Clear()
+            _id = String.Empty
             _imdb = String.Empty
             _mpaa = String.Empty
             _originaltitle = String.Empty
-            _genres.Clear()
+            _plot = String.Empty
             _premiered = String.Empty
+            _rating = String.Empty
+            _runtime = String.Empty
             _scrapersource = String.Empty
             _sorttitle = String.Empty
             _status = String.Empty
             _studio = String.Empty
+            _studios.Clear()
+            _tags.Clear()
+            _title = String.Empty
             _tmdb = String.Empty
             _votes = String.Empty
-            _actors.Clear()
-            _episodeguide.URL = String.Empty
-            _tags.Clear()
-            _directors.Clear()
-            _studios.Clear()
-            _certifications.Clear()
-            _countries.Clear()
         End Sub
 
         Public Sub BlankId()
