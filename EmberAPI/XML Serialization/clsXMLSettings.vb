@@ -365,6 +365,7 @@ Partial Public Class clsXMLSettings
     Private _tvlockepisodeaired As Boolean
     Private _tvlockepisodecredits As Boolean
     Private _tvlockepisodedirector As Boolean
+    Private _tvlockepisodegueststars As Boolean
     Private _tvlockepisodelanguagea As Boolean
     Private _tvlockepisodelanguagev As Boolean
     Private _tvlockepisodeplot As Boolean
@@ -397,6 +398,7 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisodedirector As Boolean
     Private _tvscraperepisodeepisode As Boolean
     Private _tvscraperepisodegueststars As Boolean
+    Private _tvscraperepisodegueststarstoactors As Boolean
     Private _tvscraperepisodeplot As Boolean
     Private _tvscraperepisoderating As Boolean
     Private _tvscraperepisoderuntime As Boolean
@@ -1459,6 +1461,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockepisodedirector = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeGuestStars() As Boolean
+        Get
+            Return Me._tvlockepisodegueststars
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockepisodegueststars = value
         End Set
     End Property
 
@@ -4056,6 +4067,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscraperepisodegueststars = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeGuestStarsToActors() As Boolean
+        Get
+            Return Me._tvscraperepisodegueststarstoactors
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperepisodegueststarstoactors = value
         End Set
     End Property
 

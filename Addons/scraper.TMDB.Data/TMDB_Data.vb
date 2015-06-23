@@ -284,6 +284,7 @@ Public Class TMDB_Data
         _setup_TV.chkScraperEpVotes.Checked = ConfigOptions_TV.bEpVotes
         _setup_TV.chkScraperShowActors.Checked = ConfigOptions_TV.bShowActors
         _setup_TV.chkScraperShowCert.Checked = ConfigOptions_TV.bShowCert
+        _setup_TV.chkScraperShowCountry.Checked = ConfigOptions_TV.bShowCountry
         _setup_TV.chkScraperShowCreator.Checked = ConfigOptions_TV.bShowCreator
         _setup_TV.chkScraperShowGenre.Checked = ConfigOptions_TV.bShowGenre
         _setup_TV.chkScraperShowOriginalTitle.Checked = ConfigOptions_TV.bShowOriginalTitle
@@ -386,6 +387,8 @@ Public Class TMDB_Data
         ConfigOptions_TV.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.Episode)
         ConfigOptions_TV.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.Content_Type.Show)
+        ConfigOptions_TV.bShowCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.Content_Type.Show)
+        ConfigOptions_TV.bShowCreator = clsAdvancedSettings.GetBooleanSetting("DoCreator", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.Content_Type.Show)
         ConfigOptions_TV.bShowOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.Content_Type.Show)
@@ -463,12 +466,14 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoEpisode", ConfigOptions_TV.bEpEpisode, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoGuestStars", ConfigOptions_TV.bEpGuestStars, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bEpPlot, , , Enums.Content_Type.Episode)
-            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bShowRating, , , Enums.Content_Type.Episode)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bEpRating, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoSeason", ConfigOptions_TV.bEpSeason, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpTitle, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpVotes, , , Enums.Content_Type.Episode)
             settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bShowActors, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoCert", ConfigOptions_TV.bShowCert, , , Enums.Content_Type.Show)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions_TV.bShowCountry, , , Enums.Content_Type.Show)
+            settings.SetBooleanSetting("DoCreator", ConfigOptions_TV.bShowCreator, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions_TV.bShowEpisodeGuide, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoGenre", ConfigOptions_TV.bShowGenre, , , Enums.Content_Type.Show)
             settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions_TV.bShowOriginalTitle, , , Enums.Content_Type.Show)
@@ -843,7 +848,7 @@ Public Class TMDB_Data
         Settings.ApiKey = _MySettings_TV.APIKey
         Settings.FallBackEng = _MySettings_TV.FallBackEng
         Settings.GetAdultItems = _MySettings_TV.GetAdultItems
-        Settings.PrefLanguage = oDBTV.ShowLanguage
+        Settings.PrefLanguage = oDBTV.Language
 
         Dim _scraper As New TMDB.Scraper(Settings)
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)

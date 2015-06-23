@@ -811,7 +811,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_TV(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean, ByVal withEpisodes As Boolean) As Boolean
-        If DBTV.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
+        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
             Dim oShow As New Structures.DBTV
@@ -824,35 +824,31 @@ Public Class ModulesManager
             'clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
                 DBTV.RemoveActorThumbs = True
-                'DBMovie.RemoveBanner = True
-                'DBMovie.RemoveClearArt = True
-                'DBMovie.RemoveClearLogo = True
-                'DBMovie.RemoveDiscArt = True
-                'DBMovie.RemoveEFanarts = True
-                'DBMovie.RemoveEThumbs = True
-                'DBMovie.RemoveFanart = True
-                'DBMovie.RemoveLandscape = True
-                'DBMovie.RemovePoster = True
-                'DBMovie.RemoveTheme = True
-                'DBMovie.RemoveTrailer = True
-                DBTV.EpFanartPath = String.Empty
-                DBTV.EpNfoPath = String.Empty
-                DBTV.EpPosterPath = String.Empty
-                DBTV.SeasonBannerPath = String.Empty
-                DBTV.SeasonFanartPath = String.Empty
-                DBTV.SeasonLandscapePath = String.Empty
-                DBTV.SeasonPosterPath = String.Empty
-                DBTV.ShowBannerPath = String.Empty
-                DBTV.ShowCharacterArtPath = String.Empty
-                DBTV.ShowClearArtPath = String.Empty
-                DBTV.ShowClearLogoPath = String.Empty
-                DBTV.ShowFanartPath = String.Empty
-                DBTV.ShowLandscapePath = String.Empty
-                DBTV.ShowNfoPath = String.Empty
-                DBTV.ShowPosterPath = String.Empty
-                DBTV.ShowCharacterArtPath = String.Empty
-                DBTV.ShowThemePath = String.Empty
+                DBTV.RemoveBanner = True
+                DBTV.RemoveCharacterArt = True
+                DBTV.RemoveClearArt = True
+                DBTV.RemoveClearLogo = True
+                DBTV.RemoveDiscArt = True
+                DBTV.RemoveEFanarts = True
+                DBTV.RemoveEThumbs = True
+                DBTV.RemoveFanart = True
+                DBTV.RemoveLandscape = True
+                DBTV.RemovePoster = True
+                DBTV.RemoveTheme = True
+                DBTV.RemoveTrailer = True
+                DBTV.BannerPath = String.Empty
+                DBTV.CharacterArtPath = String.Empty
+                DBTV.ClearArtPath = String.Empty
+                DBTV.ClearLogoPath = String.Empty
+                DBTV.EFanartsPath = String.Empty
+                DBTV.FanartPath = String.Empty
+                DBTV.LandscapePath = String.Empty
+                DBTV.NfoPath = String.Empty
+                DBTV.PosterPath = String.Empty
+                DBTV.CharacterArtPath = String.Empty
+                DBTV.ThemePath = String.Empty
                 DBTV.TVEp.Clear()
+                DBTV.TVSeason.Clear()
                 DBTV.TVShow.Clear()
 
                 Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTV.ShowPath), False)
@@ -863,7 +859,7 @@ Public Class ModulesManager
             'create a copy of DBTV
             oShow.Filename = DBTV.Filename
             oShow.Ordering = DBTV.Ordering
-            oShow.ShowLanguage = DBTV.ShowLanguage
+            oShow.Language = DBTV.Language
             oShow.ShowPath = DBTV.ShowPath
             oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .ID = DBTV.TVShow.ID, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
@@ -1105,7 +1101,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal showMessage As Boolean) As Boolean
-        If DBTV.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
+        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
 
@@ -1601,7 +1597,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
         Dim testDBTV As Structures.DBTV = Master.currShow
-        If testDBTV.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
                 Application.DoEvents()
@@ -1623,7 +1619,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Boolean
         Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID)
-        If testDBTV.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
                 Application.DoEvents()
@@ -1645,7 +1641,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
         Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID)
-        If testDBTV.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
                 Application.DoEvents()
@@ -1764,7 +1760,7 @@ Public Class ModulesManager
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
         Dim testDBTV As Structures.DBTV = Master.currShow
-        If testDBTV.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             Dim epDetails As New MediaContainers.EpisodeDetails
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)

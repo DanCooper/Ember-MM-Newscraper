@@ -96,8 +96,8 @@ Public Class dlgEditEpisode
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
-            If dlgManualEdit.ShowDialog(Master.currShow.EpNfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currShow.TVEp = NFO.LoadTVEpFromNFO(Master.currShow.EpNfoPath, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode)
+            If dlgManualEdit.ShowDialog(Master.currShow.NfoPath) = Windows.Forms.DialogResult.OK Then
+                Master.currShow.TVEp = NFO.LoadTVEpFromNFO(Master.currShow.NfoPath, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode)
                 Me.FillInfo()
             End If
         Catch ex As Exception
@@ -435,7 +435,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
             If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
             If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
                 tcEditEpisode.TabPages.Remove(tpEpisodePoster)
@@ -554,7 +554,7 @@ Public Class dlgEditEpisode
             End If
 
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                EpisodeFanart.FromFile(Master.currShow.EpFanartPath)
+                EpisodeFanart.FromFile(Master.currShow.FanartPath)
                 If EpisodeFanart.Image IsNot Nothing Then
                     .pbEpisodeFanart.Image = EpisodeFanart.Image
                     .pbEpisodeFanart.Tag = EpisodeFanart
@@ -565,7 +565,7 @@ Public Class dlgEditEpisode
             End If
 
             If Master.eSettings.TVEpisodePosterAnyEnabled Then
-                EpisodePoster.FromFile(Master.currShow.EpPosterPath)
+                EpisodePoster.FromFile(Master.currShow.PosterPath)
                 If EpisodePoster.Image IsNot Nothing Then
                     .pbEpisodePoster.Image = EpisodePoster.Image
                     .pbEpisodePoster.Tag = EpisodePoster
@@ -1021,22 +1021,22 @@ Public Class dlgEditEpisode
 
             'Episode Fanart
             If .EpisodeFanart.Image IsNot Nothing Then
-                Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
+                Master.currShow.FanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
             Else
                 .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
-                Master.currShow.EpFanartPath = String.Empty
+                Master.currShow.FanartPath = String.Empty
             End If
 
             'Episode Poster
             If .EpisodePoster.Image IsNot Nothing Then
-                Master.currShow.EpPosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
+                Master.currShow.PosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
             Else
                 .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
-                Master.currShow.EpPosterPath = String.Empty
+                Master.currShow.PosterPath = String.Empty
             End If
 
             Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
-            For Each Subtitle In Master.currShow.EpSubtitles
+            For Each Subtitle In Master.currShow.Subtitles
                 If Subtitle.toRemove Then
                     removeSubtitles.Add(Subtitle)
                 End If
@@ -1045,7 +1045,7 @@ Public Class dlgEditEpisode
                 If File.Exists(Subtitle.SubsPath) Then
                     File.Delete(Subtitle.SubsPath)
                 End If
-                Master.currShow.EpSubtitles.Remove(Subtitle)
+                Master.currShow.Subtitles.Remove(Subtitle)
             Next
         End With
     End Sub
@@ -1263,12 +1263,12 @@ Public Class dlgEditEpisode
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 Dim tmpFileInfo As New MediaInfo.Fileinfo
-                tmpFileInfo.StreamDetails.Subtitle.AddRange(Master.currShow.EpSubtitles)
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(Master.currShow.Subtitles)
                 Using dEditStream As New dlgFIStreamEditor
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                            Master.currShow.EpSubtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                            Master.currShow.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
                         End If
                         'NeedToRefresh = True
                         LoadSubtitles()
@@ -1285,7 +1285,7 @@ Public Class dlgEditEpisode
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    Master.currShow.EpSubtitles(Convert.ToInt16(i.Text)).toRemove = True
+                    Master.currShow.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
                 End If
                 'NeedToRefresh = True
                 LoadSubtitles()
@@ -1302,7 +1302,7 @@ Public Class dlgEditEpisode
         lvSubtitles.Groups.Clear()
         lvSubtitles.Items.Clear()
         Try
-            If Master.currShow.EpSubtitles.Count > 0 Then
+            If Master.currShow.Subtitles.Count > 0 Then
                 g = New ListViewGroup
                 g.Header = Master.eLang.GetString(597, "Subtitle Stream")
                 lvSubtitles.Groups.Add(g)
@@ -1321,8 +1321,8 @@ Public Class dlgEditEpisode
                 g.Items.Add(i)
                 lvSubtitles.Items.Add(i)
                 Dim s As MediaInfo.Subtitle
-                For c = 0 To Master.currShow.EpSubtitles.Count - 1
-                    s = Master.currShow.EpSubtitles(c)
+                For c = 0 To Master.currShow.Subtitles.Count - 1
+                    s = Master.currShow.Subtitles(c)
                     If Not s Is Nothing Then
                         i = New ListViewItem
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")

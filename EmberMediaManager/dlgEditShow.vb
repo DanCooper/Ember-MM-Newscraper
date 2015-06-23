@@ -142,8 +142,8 @@ Public Class dlgEditShow
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
-            If dlgManualEdit.ShowDialog(Master.currShow.ShowNfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currShow.TVShow = NFO.LoadTVShowFromNFO(Master.currShow.ShowNfoPath)
+            If dlgManualEdit.ShowDialog(Master.currShow.NfoPath) = Windows.Forms.DialogResult.OK Then
+                Master.currShow.TVShow = NFO.LoadTVShowFromNFO(Master.currShow.NfoPath)
                 Me.FillInfo()
             End If
         Catch ex As Exception
@@ -219,7 +219,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowBanner, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowBanner, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowBanner = tImage
@@ -277,7 +277,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowCharacterArt, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowCharacterArt, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowCharacterArt = tImage
@@ -355,7 +355,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowClearArt, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowClearArt, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowClearArt = tImage
@@ -413,7 +413,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowClearLogo, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowClearLogo, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowClearLogo = tImage
@@ -471,7 +471,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowFanart, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowFanart, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowFanart = tImage
@@ -509,7 +509,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowLandscape, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowLandscape, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowLandscape = tImage
@@ -587,7 +587,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowPoster, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, CType(Master.currShow.ImagesContainer.ShowPoster, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Master.currShow.ImagesContainer.ShowPoster = tImage
@@ -900,7 +900,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
-        If Not Master.currShow.ClearShowEFanarts OrElse hasClearedEF Then LoadEFanarts()
+        If Not Master.currShow.RemoveEFanarts OrElse hasClearedEF Then LoadEFanarts()
     End Sub
 
     Private Sub bwEFanarts_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEFanarts.RunWorkerCompleted
@@ -956,7 +956,7 @@ Public Class dlgEditShow
             If iIndex >= 0 Then
                 Dim tPath As String = Me.EFanartsList.Item(iIndex).Path
                 If Me.EFanartsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
-                    Master.currShow.efList.RemoveAll(Function(Str) Str = tPath)
+                    Master.currShow.EFanarts.RemoveAll(Function(Str) Str = tPath)
                     EFanartsList.Remove(EFanartsList.Item(iIndex))
                 Else
                     efDeleteList.Add(Me.EFanartsList.Item(iIndex).Path)
@@ -979,7 +979,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Master.currShow.IsOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
             If Not Master.eSettings.TVShowBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
             If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowCharacterArt)
             If Not Master.eSettings.TVShowClearArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearArt)
@@ -1296,9 +1296,9 @@ Public Class dlgEditShow
             End If
 
             ' load scraped Extrafanarts
-            If Not Master.currShow.efList Is Nothing Then
+            If Not Master.currShow.EFanarts Is Nothing Then
                 If Not EF_i >= EF_max Then
-                    For Each fanart As String In Master.currShow.efList
+                    For Each fanart As String In Master.currShow.EFanarts
                         Dim EFImage As New Images
                         If Not String.IsNullOrEmpty(fanart) Then
                             EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
@@ -1841,7 +1841,7 @@ Public Class dlgEditShow
         Try
             For Each a In FileUtils.GetFilenameList.TVShow(Master.currShow.ShowPath, Enums.ModType_TV.ShowEFanarts)
                 If Not String.IsNullOrEmpty(a) Then
-                    If Master.currShow.ClearShowEFanarts AndAlso Not hasClearedEF Then
+                    If Master.currShow.RemoveEFanarts AndAlso Not hasClearedEF Then
                         FileUtils.Delete.DeleteDirectory(a)
                         hasClearedEF = True
                     Else
@@ -1861,7 +1861,7 @@ Public Class dlgEditShow
                         For Each lItem As ExtraImages In EFanartsList
                             Dim efPath As String = lItem.Image.SaveAsTVShowExtrafanart(Master.currShow, lItem.Name)
                             If lItem.Index = 0 Then
-                                Master.currShow.ShowEFanartsPath = efPath
+                                Master.currShow.EFanartsPath = efPath
                             End If
                         Next
 

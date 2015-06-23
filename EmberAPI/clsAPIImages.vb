@@ -563,15 +563,15 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim Season As Integer = mShow.TVSeason.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
             Dim SeasonFirstEpisodePath As String = String.Empty
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -597,15 +597,15 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim Season As Integer = mShow.TVSeason.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
             Dim SeasonFirstEpisodePath As String = String.Empty
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -631,15 +631,15 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim Season As Integer = mShow.TVSeason.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
             Dim SeasonFirstEpisodePath As String = String.Empty
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -665,15 +665,15 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim Season As Integer = mShow.TVSeason.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
             Dim SeasonFirstEpisodePath As String = String.Empty
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -1008,43 +1008,49 @@ Public Class Images
         With Master.eSettings
             Select Case fType
                 Case Enums.ImageType_TV.ShowBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowBannerPath) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.BannerPath) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType_TV.ShowCharacterArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowCharacterArtPath) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.CharacterArtPath) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType_TV.ShowClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowClearArtPath) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ClearArtPath) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType_TV.ShowClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowClearLogoPath) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ClearLogoPath) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Enums.ImageType_TV.ShowEFanarts
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.EFanartsPath) OrElse .TVShowEFanartsOverwrite) AndAlso .TVShowEFanartsAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType_TV.ShowFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowFanartPath) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.FanartPath) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType_TV.ShowLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowLandscapePath) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.LandscapePath) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType_TV.ShowPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ShowPosterPath) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.PosterPath) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -2023,15 +2029,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVSeasonBannerResize AndAlso (_image.Width > Master.eSettings.TVSeasonBannerWidth OrElse _image.Height > Master.eSettings.TVSeasonBannerHeight)
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim Season As Integer = mShow.TVSeason.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
             Dim SeasonFirstEpisodePath As String = String.Empty
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2087,15 +2093,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVSeasonFanartResize AndAlso (_image.Width > Master.eSettings.TVSeasonFanartWidth OrElse _image.Height > Master.eSettings.TVSeasonFanartHeight)
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
+            Dim Season As Integer = mShow.TVSeason.Season
             Dim SeasonFirstEpisodePath As String = String.Empty
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2150,15 +2156,15 @@ Public Class Images
 
         Try
             Dim pPath As String = String.Empty
-            Dim Season As Integer = mShow.TVEp.Season
+            Dim Season As Integer = mShow.TVSeason.Season
             Dim SeasonFirstEpisodePath As String = String.Empty
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
@@ -2208,15 +2214,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVSeasonPosterResize AndAlso (_image.Width > Master.eSettings.TVSeasonPosterWidth OrElse _image.Height > Master.eSettings.TVSeasonPosterHeight)
 
         Try
-            Dim Season As Integer = mShow.TVEp.Season
+            Dim Season As Integer = mShow.TVSeason.Season
             Dim SeasonFirstEpisodePath As String = String.Empty
-            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVSeason.Season)
             Dim ShowPath As String = mShow.ShowPath
 
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If

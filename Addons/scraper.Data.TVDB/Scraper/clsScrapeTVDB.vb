@@ -35,6 +35,8 @@ Namespace TVDBs
 
         Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
 
+        Private _sPoster As String
+
 #End Region 'Fields
 
 #Region "Events"
@@ -65,7 +67,7 @@ Namespace TVDBs
             nShow.ID = CStr(Results.Series.Id)
             nShow.IMDB = CStr(Results.Series.IMDBId)
 
-            'Cast (Actors)
+            'Actors
             If Options.bShowActors Then
                 If Results.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In Results.Actors.OrderBy(Function(f) f.SortOrder)
@@ -104,17 +106,13 @@ Namespace TVDBs
                 End If
             End If
 
-            'Posters (only for SearchResult dialog, auto fallback to "en" by TMDB)
+            'Posters (only for SearchResult dialog, auto fallback to "en" by TVDB)
             If GetPoster Then
-                'Dim Images As TMDbLib.Objects.General.Images
-                'Images = _TMDBApi.GetMovieImages(Movie.Id)
-                'If Images IsNot Nothing AndAlso Images.Posters IsNot Nothing Then
-                '    If Images.Posters.Count > 0 Then
-                '        _sPoster = _TMDBApi.Config.Images.BaseUrl & "w92" & Images.Posters(0).FilePath
-                '    Else
-                '        _sPoster = String.Empty
-                '    End If
-                'End If
+                If Results.Series.Poster IsNot Nothing AndAlso Not String.IsNullOrEmpty(Results.Series.Poster) Then
+                    _sPoster = String.Concat(tvdbMirror.Address, "/banners/", Results.Series.Poster)
+                Else
+                    _sPoster = String.Empty
+                End If
             End If
 
             'Premiered

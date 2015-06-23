@@ -260,7 +260,7 @@ Public Class TVDB_Data
 
         Dim Settings As TVDBs.Scraper.MySettings
         Settings.ApiKey = _MySettings.APIKey
-        Settings.Language = oDBTV.ShowLanguage
+        Settings.Language = oDBTV.Language
 
         Dim _scraper As New TVDBs.Scraper
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
@@ -317,14 +317,14 @@ Public Class TVDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+    Public Function Scraper_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
         logger.Trace("Started TVDB Scraper")
         nEpisode = Nothing
         logger.Trace("Finished TVDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+    Public Function Scraper_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
         logger.Trace("Started TVDB Scraper")
         nEpisode = Nothing
         logger.Trace("Finished TVDB Scraper")

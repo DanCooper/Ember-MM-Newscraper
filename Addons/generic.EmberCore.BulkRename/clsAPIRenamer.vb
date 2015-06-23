@@ -423,7 +423,7 @@ Public Class FileFolderRenamer
 
     Private Shared Sub DoRenameSingle_Show(ByVal _frename As FileRename, ByRef _tv As Structures.DBTV, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
-            If Not _tv.IsLockEp AndAlso Not _frename.DirExist Then
+            If Not _tv.IsLock AndAlso Not _frename.DirExist Then
                 Dim getError As Boolean = False
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
                 Dim destDir As String = Path.Combine(_frename.BasePath, _frename.NewPath)
@@ -790,7 +790,7 @@ Public Class FileFolderRenamer
                 Next
             End If
 
-            EpisodeFile.ID = CInt(_tmpTVEpisode.EpID)
+            EpisodeFile.ID = CInt(_tmpTVEpisode.ID)
 
             'Aired
             If _tmpTVEpisode.TVEp.AiredSpecified Then
@@ -798,7 +798,7 @@ Public Class FileFolderRenamer
             End If
 
             'Lock
-            EpisodeFile.IsLocked = _tmpTVEpisode.IsLockEp
+            EpisodeFile.IsLocked = _tmpTVEpisode.IsLock
 
             'Show ListTitle
             If _tmpTVEpisode.ListTitle IsNot Nothing Then
@@ -1145,7 +1145,7 @@ Public Class FileFolderRenamer
 
         Try
             ShowFile.ID = CInt(_tmpTVShow.ShowID)
-            ShowFile.IsLocked = _tmpTVShow.IsLockShow
+            ShowFile.IsLocked = _tmpTVShow.IsLock
 
             If String.IsNullOrEmpty(_tmpTVShow.TVShow.Title) Then
                 ShowFile.Title = _tmpTVShow.ListTitle
@@ -1648,7 +1648,7 @@ Public Class FileFolderRenamer
                                         EpisodeFile = New FileFolderRenamer.FileRename
                                         _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
-                                        If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
+                                        If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                             'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
                                             EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
                                             AddEpisode(EpisodeFile)
@@ -1774,12 +1774,12 @@ Public Class FileFolderRenamer
     End Sub
 
     Private Shared Sub UpdatePaths_Episode(ByRef _DBE As Structures.DBTV, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
-        If Not String.IsNullOrEmpty(_DBE.EpFanartPath) Then _DBE.EpFanartPath = Path.Combine(Directory.GetParent(_DBE.EpFanartPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EpFanartPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBE.FanartPath) Then _DBE.FanartPath = Path.Combine(Directory.GetParent(_DBE.FanartPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.FanartPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBE.Filename) Then _DBE.Filename = Path.Combine(Directory.GetParent(_DBE.Filename).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.Filename).Replace(oldFile, newFile))
-        If Not String.IsNullOrEmpty(_DBE.EpNfoPath) Then _DBE.EpNfoPath = Path.Combine(Directory.GetParent(_DBE.EpNfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EpNfoPath).Replace(oldFile, newFile))
-        If Not String.IsNullOrEmpty(_DBE.EpPosterPath) Then _DBE.EpPosterPath = Path.Combine(Directory.GetParent(_DBE.EpPosterPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.EpPosterPath).Replace(oldFile, newFile))
-        If _DBE.EpSubtitles.Count > 0 Then
-            For Each subtitle In _DBE.EpSubtitles
+        If Not String.IsNullOrEmpty(_DBE.NfoPath) Then _DBE.NfoPath = Path.Combine(Directory.GetParent(_DBE.NfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.NfoPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBE.PosterPath) Then _DBE.PosterPath = Path.Combine(Directory.GetParent(_DBE.PosterPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBE.PosterPath).Replace(oldFile, newFile))
+        If _DBE.Subtitles.Count > 0 Then
+            For Each subtitle In _DBE.Subtitles
                 subtitle.SubsPath = Path.Combine(Directory.GetParent(subtitle.SubsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(subtitle.SubsPath).Replace(oldFile, newFile))
             Next
         End If
@@ -1808,26 +1808,19 @@ Public Class FileFolderRenamer
     End Sub
 
     Private Shared Sub UpdatePaths_Show(ByRef _DBE As Structures.DBTV, ByVal oldPath As String, ByVal newPath As String)
-        If _DBE.EpNfoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EpNfoPath) Then _DBE.EpNfoPath = _DBE.EpNfoPath.Replace(oldPath, newPath)
-        If _DBE.EpFanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EpFanartPath) Then _DBE.EpFanartPath = _DBE.EpFanartPath.Replace(oldPath, newPath)
-        If _DBE.EpPosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EpPosterPath) Then _DBE.EpPosterPath = _DBE.EpPosterPath.Replace(oldPath, newPath)
-        If _DBE.SeasonBannerPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonBannerPath) Then _DBE.SeasonBannerPath = _DBE.SeasonBannerPath.Replace(oldPath, newPath)
-        If _DBE.SeasonFanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonFanartPath) Then _DBE.SeasonFanartPath = _DBE.SeasonFanartPath.Replace(oldPath, newPath)
-        If _DBE.SeasonLandscapePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonLandscapePath) Then _DBE.SeasonLandscapePath = _DBE.SeasonLandscapePath.Replace(oldPath, newPath)
-        If _DBE.SeasonPosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.SeasonPosterPath) Then _DBE.SeasonPosterPath = _DBE.SeasonPosterPath.Replace(oldPath, newPath)
-        If _DBE.ShowBannerPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowBannerPath) Then _DBE.ShowBannerPath = _DBE.ShowBannerPath.Replace(oldPath, newPath)
-        If _DBE.ShowCharacterArtPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowCharacterArtPath) Then _DBE.ShowCharacterArtPath = _DBE.ShowCharacterArtPath.Replace(oldPath, newPath)
-        If _DBE.ShowClearArtPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowClearArtPath) Then _DBE.ShowClearArtPath = _DBE.ShowClearArtPath.Replace(oldPath, newPath)
-        If _DBE.ShowClearLogoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowClearLogoPath) Then _DBE.ShowClearLogoPath = _DBE.ShowClearLogoPath.Replace(oldPath, newPath)
-        If _DBE.ShowEFanartsPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowEFanartsPath) Then _DBE.ShowEFanartsPath = _DBE.ShowEFanartsPath.Replace(oldPath, newPath)
-        If _DBE.ShowFanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowFanartPath) Then _DBE.ShowFanartPath = _DBE.ShowFanartPath.Replace(oldPath, newPath)
-        If _DBE.ShowLandscapePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowLandscapePath) Then _DBE.ShowLandscapePath = _DBE.ShowLandscapePath.Replace(oldPath, newPath)
-        If _DBE.ShowNfoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowNfoPath) Then _DBE.ShowNfoPath = _DBE.ShowNfoPath.Replace(oldPath, newPath)
+        If _DBE.BannerPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.BannerPath) Then _DBE.BannerPath = _DBE.BannerPath.Replace(oldPath, newPath)
+        If _DBE.CharacterArtPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.CharacterArtPath) Then _DBE.CharacterArtPath = _DBE.CharacterArtPath.Replace(oldPath, newPath)
+        If _DBE.ClearArtPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ClearArtPath) Then _DBE.ClearArtPath = _DBE.ClearArtPath.Replace(oldPath, newPath)
+        If _DBE.ClearLogoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ClearLogoPath) Then _DBE.ClearLogoPath = _DBE.ClearLogoPath.Replace(oldPath, newPath)
+        If _DBE.EFanartsPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.EFanartsPath) Then _DBE.EFanartsPath = _DBE.EFanartsPath.Replace(oldPath, newPath)
+        If _DBE.FanartPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.FanartPath) Then _DBE.FanartPath = _DBE.FanartPath.Replace(oldPath, newPath)
+        If _DBE.LandscapePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.LandscapePath) Then _DBE.LandscapePath = _DBE.LandscapePath.Replace(oldPath, newPath)
+        If _DBE.NfoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.NfoPath) Then _DBE.NfoPath = _DBE.NfoPath.Replace(oldPath, newPath)
         If _DBE.ShowPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowPath) Then _DBE.ShowPath = _DBE.ShowPath.Replace(oldPath, newPath)
-        If _DBE.ShowPosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowPosterPath) Then _DBE.ShowPosterPath = _DBE.ShowPosterPath.Replace(oldPath, newPath)
-        If _DBE.ShowThemePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ShowThemePath) Then _DBE.ShowThemePath = _DBE.ShowThemePath.Replace(oldPath, newPath)
-        If _DBE.EpSubtitles IsNot Nothing AndAlso _DBE.EpSubtitles.Count > 0 Then
-            For Each subtitle In _DBE.EpSubtitles
+        If _DBE.PosterPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.PosterPath) Then _DBE.PosterPath = _DBE.PosterPath.Replace(oldPath, newPath)
+        If _DBE.ThemePath IsNot Nothing AndAlso Not String.IsNullOrEmpty(_DBE.ThemePath) Then _DBE.ThemePath = _DBE.ThemePath.Replace(oldPath, newPath)
+        If _DBE.Subtitles IsNot Nothing AndAlso _DBE.Subtitles.Count > 0 Then
+            For Each subtitle In _DBE.Subtitles
                 subtitle.SubsPath = subtitle.SubsPath.Replace(oldPath, newPath)
             Next
         End If

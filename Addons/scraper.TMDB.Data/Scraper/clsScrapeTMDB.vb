@@ -639,13 +639,13 @@ Namespace TMDB
             'Certifications
             If Options.bShowCert Then
                 If Show.ContentRatings IsNot Nothing AndAlso Show.ContentRatings.Results IsNot Nothing AndAlso Show.ContentRatings.Results.Count > 0 Then
-                    For Each cCountry In Show.ContentRatings.Results
-                        If Not String.IsNullOrEmpty(cCountry.Rating) Then
+                    For Each aCountry In Show.ContentRatings.Results
+                        If Not String.IsNullOrEmpty(aCountry.Rating) Then
                             Try
-                                Dim tCountry As String = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower).name
-                                nShow.Certifications.Add(String.Concat(tCountry, ":", cCountry.Rating))
+                                Dim tCountry As String = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = aCountry.Iso_3166_1.ToLower).name
+                                nShow.Certifications.Add(String.Concat(tCountry, ":", aCountry.Rating))
                             Catch ex As Exception
-                                logger.Warn("Unhandled certification language encountered: {0}", cCountry.Iso_3166_1.ToLower)
+                                logger.Warn("Unhandled certification language encountered: {0}", aCountry.Iso_3166_1.ToLower)
                             End Try
                         End If
                     Next
@@ -657,8 +657,8 @@ Namespace TMDB
             'Countries
             If Options.bShowCountry Then
                 If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
-                    For Each aContry As String In Show.OriginCountry
-                        nShow.Countries.Add(aContry)
+                    For Each aCountry As String In Show.OriginCountry
+                        nShow.Countries.Add(aCountry)
                     Next
                 End If
             End If
@@ -779,8 +779,8 @@ Namespace TMDB
             'Studios
             If Options.bShowStudio Then
                 If Show.Networks IsNot Nothing AndAlso Show.Networks.Count > 0 Then
-                    For Each cStudio In Show.Networks
-                        nShow.Studios.Add(cStudio.Name)
+                    For Each aStudio In Show.Networks
+                        nShow.Studios.Add(aStudio.Name)
                     Next
                 End If
             End If
@@ -823,46 +823,73 @@ Namespace TMDB
                 nShow.Votes = CStr(Show.VoteCount)
             End If
 
-            ''Episodes
-            'If withEpisodes Then
-            '    Dim nShowC As New MediaContainers.TVShowContainer
-            '    For Each season As TMDbLib.Objects.TvShows.TvSeason In Show.Seasons
-            '        GetTVSeasonInfo(nShowC, Show.Id, season.SeasonNumber, withEpisodes, Options)
-            '    Next
-            'End If
+            'Episodes
+            If withEpisodes Then
+                For Each aSeason As TMDbLib.Objects.TvShows.TvSeason In Show.Seasons
+                    GetTVSeasonInfo(nShow, Show.Id, aSeason.SeasonNumber, Options, withEpisodes)
+                Next
+            End If
 
             Return True
         End Function
 
-        Public Sub GetTVSeasonInfo(ByRef nShowContainer As MediaContainers.TVShowContainer, ByRef ShowID As Integer, ByRef SeasonNumber As Integer, ByRef withEpisodes As Boolean, ByVal Options As Structures.ScrapeOptions_TV)
-            Dim DefaultSeasonCast As New List(Of MediaContainers.Person)
-            Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = _TMDBApi.GetTvSeason(ShowID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits)
+        Public Sub GetTVSeasonInfo(ByRef nShow As MediaContainers.TVShow, ByRef ShowID As Integer, ByRef SeasonNumber As Integer, ByVal Options As Structures.ScrapeOptions_TV, ByRef withEpisodes As Boolean)
+            Dim nSeason As New MediaContainers.SeasonDetails
+            Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = _TMDBApi.GetTvSeason(ShowID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds)
 
-            ''get default season cast
-            'If SeasonInfo.Credits IsNot Nothing AndAlso SeasonInfo.Credits.Crew IsNot Nothing Then
-            '    For Each aCast As TMDbLib.Objects.TvShows.Cast In SeasonInfo.Credits.Cast
-            '        DefaultSeasonCast.Add(New MediaContainers.Person With {.Name = aCast.Name, _
-            '                                                           .Role = aCast.Character, _
-            '                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
-            '                                                           .TMDB = CStr(aCast.Id)})
-            '    Next
-            'End If
+            nSeason.TMDB = CStr(SeasonInfo.Id)
+            If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
-            For Each nEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
-                nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, nEpisode.EpisodeNumber, Options))
-            Next
+            'Aired
+            If SeasonInfo.AirDate IsNot Nothing Then
+                Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
+                If Not String.IsNullOrEmpty(ScrapedDate) Then
+                    Dim RelDate As Date
+                    If Date.TryParse(ScrapedDate, RelDate) Then
+                        'always save date in same date format not depending on users language setting!
+                        nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
+                    Else
+                        nSeason.Aired = ScrapedDate
+                    End If
+                End If
+            End If
+
+            'Plot
+            If SeasonInfo.Overview IsNot Nothing Then
+                nSeason.Plot = SeasonInfo.Overview
+            End If
+
+            'Season #
+            If CInt(SeasonInfo.SeasonNumber) >= 0 Then
+                nSeason.Season = CInt(SeasonInfo.SeasonNumber)
+            End If
+
+            'Title
+            If SeasonInfo.Name IsNot Nothing Then
+                nSeason.Title = SeasonInfo.Name
+            End If
+
+            nShow.KnownSeasons.Add(nSeason)
+
+            If withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
+                For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
+                    nShow.KnownEpisodes.Add(GetTVEpisodeInfo(aEpisode, Options))
+                    'nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, aEpisode.EpisodeNumber, Options))
+                Next
+            End If
         End Sub
 
         Public Function GetTVEpisodeInfo(ByRef ShowID As Integer, ByVal Aired As String, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
-            Dim Show As TMDbLib.Objects.TvShows.TvShow
+            Dim ShowInfo As TMDbLib.Objects.TvShows.TvShow
 
-            Show = _TMDBApi.GetTvShow(CInt(ShowID))
+            ShowInfo = _TMDBApi.GetTvShow(CInt(ShowID))
 
-            For Each season As TMDbLib.Objects.TvShows.TvSeason In Show.Seasons
-                Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = _TMDBApi.GetTvSeason(ShowID, season.SeasonNumber)
-                For Each episode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes.Where(Function(f) f.AirDate = CDate(Aired))
-                    Return GetTVEpisodeInfo(ShowID, season.SeasonNumber, episode.EpisodeNumber, Options)
+            For Each aSeason As TMDbLib.Objects.TvShows.TvSeason In ShowInfo.Seasons
+                Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = _TMDBApi.GetTvSeason(ShowID, aSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds)
+                For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes.Where(Function(f) f.AirDate = CDate(Aired))
+                    Return GetTVEpisodeInfo(aEpisode, Options)
+                    'Return GetTVEpisodeInfo(ShowID, season.SeasonNumber, episode.EpisodeNumber, Options)
                 Next
             Next
 
@@ -870,12 +897,17 @@ Namespace TMDB
         End Function
 
         Public Function GetTVEpisodeInfo(ByRef ShowID As Integer, ByRef SeasonNumber As Integer, ByRef EpisodeNumber As Integer, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+            Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = _TMDBApi.GetTvEpisode(ShowID, SeasonNumber, EpisodeNumber, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds)
+            Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, Options)
+            Return nEpisode
+        End Function
+
+        Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
-            Dim EpisodeInfo = _TMDBApi.GetTvEpisode(ShowID, SeasonNumber, EpisodeNumber, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds)
 
             nEpisode.TMDB = CStr(EpisodeInfo.Id)
-            If EpisodeInfo.ExternalIds.TvdbId IsNot Nothing Then nEpisode.TVDB = CStr(EpisodeInfo.ExternalIds.TvdbId)
-            If EpisodeInfo.ExternalIds.ImdbId IsNot Nothing Then nEpisode.IMDB = EpisodeInfo.ExternalIds.ImdbId
+            If EpisodeInfo.ExternalIds IsNot Nothing AndAlso EpisodeInfo.ExternalIds.TvdbId IsNot Nothing Then nEpisode.TVDB = CStr(EpisodeInfo.ExternalIds.TvdbId)
+            If EpisodeInfo.ExternalIds IsNot Nothing AndAlso EpisodeInfo.ExternalIds.ImdbId IsNot Nothing Then nEpisode.IMDB = EpisodeInfo.ExternalIds.ImdbId
 
             'Cast (Actors)
             If Options.bEpActors Then
@@ -924,15 +956,15 @@ Namespace TMDB
                 End If
             End If
 
-            ''Guest Stars
-            'If EpisodeInfo.Credits IsNot Nothing AndAlso EpisodeInfo.Credits.GuestStars IsNot Nothing Then
-            '    For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.Credits.GuestStars
-            '        nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
-            '                                                           .Role = aCast.Character, _
-            '                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
-            '                                                           .TMDB = CStr(aCast.Id)})
-            '    Next
-            'End If
+            'Guest Stars
+            If EpisodeInfo.GuestStars IsNot Nothing Then
+                For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.GuestStars
+                    nEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name, _
+                                                                       .Role = aCast.Character, _
+                                                                       .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                       .TMDB = CStr(aCast.Id)})
+                Next
+            End If
 
             'Plot
             If Options.bEpPlot Then

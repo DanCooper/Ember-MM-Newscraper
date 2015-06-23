@@ -29,9 +29,9 @@ Partial Class frmSettingsHolder_TV
         Me.lblApiKey = New System.Windows.Forms.Label()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.chkGetAdultItems = New System.Windows.Forms.CheckBox()
-        Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
@@ -57,6 +57,7 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperShowCert = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowGenre = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowOriginalTitle = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowCreator = New System.Windows.Forms.CheckBox()
         Me.gbScraperFieldsEpisode = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsEpisode = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScraperEpVotes = New System.Windows.Forms.CheckBox()
@@ -74,7 +75,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
-        Me.chkScraperShowCreator = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowCountry = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -179,19 +180,6 @@ Partial Class frmSettingsHolder_TV
         Me.chkGetAdultItems.Text = "Include Adult Items"
         Me.chkGetAdultItems.UseVisualStyleBackColor = True
         '
-        'chkFallBackEng
-        '
-        Me.chkFallBackEng.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkFallBackEng.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkFallBackEng, 2)
-        Me.chkFallBackEng.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFallBackEng.Location = New System.Drawing.Point(3, 52)
-        Me.chkFallBackEng.Name = "chkFallBackEng"
-        Me.chkFallBackEng.Size = New System.Drawing.Size(129, 17)
-        Me.chkFallBackEng.TabIndex = 4
-        Me.chkFallBackEng.Text = "Fall back on english"
-        Me.chkFallBackEng.UseVisualStyleBackColor = True
-        '
         'txtApiKey
         '
         Me.txtApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -213,6 +201,19 @@ Partial Class frmSettingsHolder_TV
         Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
         Me.lblEMMAPI.TabIndex = 12
         Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
+        '
+        'chkFallBackEng
+        '
+        Me.chkFallBackEng.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkFallBackEng.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.chkFallBackEng, 2)
+        Me.chkFallBackEng.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFallBackEng.Location = New System.Drawing.Point(3, 52)
+        Me.chkFallBackEng.Name = "chkFallBackEng"
+        Me.chkFallBackEng.Size = New System.Drawing.Size(129, 17)
+        Me.chkFallBackEng.TabIndex = 4
+        Me.chkFallBackEng.Text = "Fall back on english"
+        Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
         'chkEnabled
         '
@@ -395,6 +396,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowGenre, 0, 2)
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowOriginalTitle, 0, 1)
         Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowCreator, 0, 6)
+        Me.tblScraperFieldsShow.Controls.Add(Me.chkScraperShowCountry, 1, 6)
         Me.tblScraperFieldsShow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsShow.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsShow.Name = "tblScraperFieldsShow"
@@ -541,6 +543,17 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperShowOriginalTitle.TabIndex = 0
         Me.chkScraperShowOriginalTitle.Text = "Original Title"
         Me.chkScraperShowOriginalTitle.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowCreator
+        '
+        Me.chkScraperShowCreator.AutoSize = True
+        Me.chkScraperShowCreator.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowCreator.Location = New System.Drawing.Point(3, 141)
+        Me.chkScraperShowCreator.Name = "chkScraperShowCreator"
+        Me.chkScraperShowCreator.Size = New System.Drawing.Size(64, 17)
+        Me.chkScraperShowCreator.TabIndex = 10
+        Me.chkScraperShowCreator.Text = "Creator"
+        Me.chkScraperShowCreator.UseVisualStyleBackColor = True
         '
         'gbScraperFieldsEpisode
         '
@@ -760,16 +773,16 @@ Partial Class frmSettingsHolder_TV
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'chkScraperShowCreator
+        'chkScraperShowCountry
         '
-        Me.chkScraperShowCreator.AutoSize = True
-        Me.chkScraperShowCreator.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowCreator.Location = New System.Drawing.Point(3, 141)
-        Me.chkScraperShowCreator.Name = "chkScraperShowCreator"
-        Me.chkScraperShowCreator.Size = New System.Drawing.Size(64, 17)
-        Me.chkScraperShowCreator.TabIndex = 10
-        Me.chkScraperShowCreator.Text = "Creator"
-        Me.chkScraperShowCreator.UseVisualStyleBackColor = True
+        Me.chkScraperShowCountry.AutoSize = True
+        Me.chkScraperShowCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowCountry.Location = New System.Drawing.Point(101, 141)
+        Me.chkScraperShowCountry.Name = "chkScraperShowCountry"
+        Me.chkScraperShowCountry.Size = New System.Drawing.Size(67, 17)
+        Me.chkScraperShowCountry.TabIndex = 10
+        Me.chkScraperShowCountry.Text = "Country"
+        Me.chkScraperShowCountry.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder_TV
         '
@@ -875,5 +888,6 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents chkScraperEpGuestStars As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperShowOriginalTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperShowCreator As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScraperShowCountry As System.Windows.Forms.CheckBox
 
 End Class

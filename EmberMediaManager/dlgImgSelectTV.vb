@@ -313,8 +313,8 @@ Public Class dlgImgSelectTV
 
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
-                        Episode.TVEp.Fanart.WebImage.FromFile(Episode.EpFanartPath)
+                    If Not String.IsNullOrEmpty(Episode.FanartPath) Then
+                        Episode.TVEp.Fanart.WebImage.FromFile(Episode.FanartPath)
                     ElseIf ImageResultsContainer.ShowFanart.WebImage.Image IsNot Nothing Then
                         Episode.TVEp.Fanart = ImageResultsContainer.ShowFanart
                     End If
@@ -324,8 +324,8 @@ Public Class dlgImgSelectTV
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
                     If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
                         Episode.TVEp.Poster.WebImage.FromFile(Episode.TVEp.LocalFile)
-                    ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
-                        Episode.TVEp.Poster.WebImage.FromFile(Episode.EpPosterPath)
+                    ElseIf Not String.IsNullOrEmpty(Episode.PosterPath) Then
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.PosterPath)
                     End If
                 End If
                 If Me.bwLoadImages.CancellationPending Then
@@ -994,7 +994,7 @@ Public Class dlgImgSelectTV
                         Return
                     End If
 
-                    If Master.eSettings.TVASBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonBannerPath) Then
+                    If Master.eSettings.TVASBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.BannerPath) Then
                         ImageResultsContainer.SeasonBanner = Me.tmpShowContainer.Show.ImagesContainer.SeasonBanner
                         DefaultImagesContainer.SeasonBanner = Me.tmpShowContainer.Show.ImagesContainer.SeasonBanner
                     End If
@@ -1003,7 +1003,7 @@ Public Class dlgImgSelectTV
                         Return
                     End If
 
-                    If Master.eSettings.TVASFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonFanartPath) Then
+                    If Master.eSettings.TVASFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.FanartPath) Then
                         ImageResultsContainer.SeasonFanart = Me.tmpShowContainer.Show.ImagesContainer.SeasonFanart
                         DefaultImagesContainer.SeasonFanart = Me.tmpShowContainer.Show.ImagesContainer.SeasonFanart
                     End If
@@ -1012,7 +1012,7 @@ Public Class dlgImgSelectTV
                         Return
                     End If
 
-                    If Master.eSettings.TVASLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonLandscapePath) Then
+                    If Master.eSettings.TVASLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.LandscapePath) Then
                         ImageResultsContainer.SeasonLandscape = Me.tmpShowContainer.Show.ImagesContainer.SeasonLandscape
                         DefaultImagesContainer.SeasonLandscape = Me.tmpShowContainer.Show.ImagesContainer.SeasonLandscape
                     End If
@@ -1021,7 +1021,7 @@ Public Class dlgImgSelectTV
                         Return
                     End If
 
-                    If Master.eSettings.TVASPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.SeasonPosterPath) Then
+                    If Master.eSettings.TVASPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(tmpShowContainer.AllSeason.PosterPath) Then
                         ImageResultsContainer.SeasonPoster = Me.tmpShowContainer.Show.ImagesContainer.SeasonPoster
                         DefaultImagesContainer.SeasonPoster = Me.tmpShowContainer.Show.ImagesContainer.SeasonPoster
                     End If
@@ -1034,8 +1034,8 @@ Public Class dlgImgSelectTV
                         Try
                             iSeason = sEpisode.TVEp.Season
                             If iSeason > -1 Then
-                                If Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ImageResultsContainer.ShowPoster.WebImage Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
-                                    ImageResultsContainer.ShowPoster.WebImage.FromFile(sEpisode.ShowPosterPath)
+                                If Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ImageResultsContainer.ShowPoster.WebImage Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.PosterPath) Then
+                                    ImageResultsContainer.ShowPoster.WebImage.FromFile(sEpisode.PosterPath)
                                 End If
 
                                 If Me.bwLoadData.CancellationPending Then
@@ -1043,9 +1043,9 @@ Public Class dlgImgSelectTV
                                     Return
                                 End If
 
-                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso ImageResultsContainer.ShowFanart.WebImage.Image Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
-                                    ImageResultsContainer.ShowFanart.WebImage.FromFile(sEpisode.ShowFanartPath)
-                                    ImageResultsContainer.ShowFanart.LocalFile = sEpisode.ShowFanartPath
+                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso ImageResultsContainer.ShowFanart.WebImage.Image Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.FanartPath) Then
+                                    ImageResultsContainer.ShowFanart.WebImage.FromFile(sEpisode.FanartPath)
+                                    ImageResultsContainer.ShowFanart.LocalFile = sEpisode.FanartPath
                                 End If
 
                                 If Me.bwLoadData.CancellationPending Then
@@ -1056,21 +1056,21 @@ Public Class dlgImgSelectTV
                                 If ImageResultsContainer.SeasonImages.Where(Function(s) s.Season = iSeason).Count = 0 Then
                                     cSI = New MediaContainers.SeasonImagesContainer
                                     cSI.Season = iSeason
-                                    If Master.eSettings.TVSeasonBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonBannerPath) Then
-                                        cSI.Banner.WebImage.FromFile(sEpisode.SeasonBannerPath)
-                                        cSI.Banner.LocalFile = sEpisode.SeasonBannerPath
+                                    If Master.eSettings.TVSeasonBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.BannerPath) Then
+                                        cSI.Banner.WebImage.FromFile(sEpisode.BannerPath)
+                                        cSI.Banner.LocalFile = sEpisode.BannerPath
                                     End If
-                                    If Master.eSettings.TVSeasonFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
-                                        cSI.Fanart.WebImage.FromFile(sEpisode.SeasonFanartPath)
-                                        cSI.Fanart.LocalFile = sEpisode.SeasonFanartPath
+                                    If Master.eSettings.TVSeasonFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.FanartPath) Then
+                                        cSI.Fanart.WebImage.FromFile(sEpisode.FanartPath)
+                                        cSI.Fanart.LocalFile = sEpisode.FanartPath
                                     End If
-                                    If Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonLandscapePath) Then
-                                        cSI.Landscape.WebImage.FromFile(sEpisode.SeasonLandscapePath)
-                                        cSI.Landscape.LocalFile = sEpisode.SeasonLandscapePath
+                                    If Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.LandscapePath) Then
+                                        cSI.Landscape.WebImage.FromFile(sEpisode.LandscapePath)
+                                        cSI.Landscape.LocalFile = sEpisode.LandscapePath
                                     End If
-                                    If Master.eSettings.TVSeasonPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonPosterPath) Then
-                                        cSI.Poster.WebImage.FromFile(sEpisode.SeasonPosterPath)
-                                        cSI.Poster.LocalFile = sEpisode.SeasonPosterPath
+                                    If Master.eSettings.TVSeasonPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.PosterPath) Then
+                                        cSI.Poster.WebImage.FromFile(sEpisode.PosterPath)
+                                        cSI.Poster.LocalFile = sEpisode.PosterPath
                                     End If
                                     ImageResultsContainer.SeasonImages.Add(cSI)
                                 End If

@@ -1070,9 +1070,10 @@ Public Class Enums
         ShowCharacterArt = 12
         ShowClearArt = 13
         ShowClearLogo = 14
-        ShowFanart = 15
-        ShowLandscape = 16
-        ShowPoster = 17
+        ShowEFanarts = 15
+        ShowFanart = 16
+        ShowLandscape = 17
+        ShowPoster = 18
     End Enum
 
     Public Enum ScraperEventType_TV As Integer
@@ -1997,60 +1998,55 @@ Public Class Structures
         Dim Title As String
         Dim Movies As List(Of Structures.DBMovie)
     End Structure
-
     ''' <summary>
     ''' Structure representing a TV show in the database
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBTV
-        Dim ClearShowEFanarts As Boolean
-        Dim DateAdded As Double
-        Dim efList As List(Of String)
-        Dim EpFanartPath As String
-        Dim EpID As Long
+        Dim BannerPath As String
+        Dim CharacterArtPath As String
+        Dim ClearArtPath As String
+        Dim ClearLogoPath As String
+        Dim DateAdded As Long
+        Dim EFanarts As List(Of String)
+        Dim EFanartsPath As String
         Dim EpisodeSorting As Enums.EpisodeSorting
-        Dim EpNeedsSave As Boolean
-        Dim EpNfoPath As String
-        Dim EpPosterPath As String
-        Dim EpSubtitles As List(Of MediaInfo.Subtitle)
+        Dim FanartPath As String
         Dim Filename As String
         Dim FilenameID As Long
+        Dim ID As Long
         Dim ImagesContainer As MediaContainers.ImagesContainer_TV
-        Dim IsLockEp As Boolean
-        Dim IsLockSeason As Boolean
-        Dim IsLockShow As Boolean
-        Dim IsMarkEp As Boolean
-        Dim IsMarkSeason As Boolean
-        Dim IsMarkShow As Boolean
-        Dim IsOnlineEp As Boolean
-        Dim IsOnlineShow As Boolean
+        Dim IsLock As Boolean
+        Dim IsMark As Boolean
+        Dim IsOnline As Boolean
+        Dim LandscapePath As String
+        Dim Language As String
         Dim ListTitle As String
+        Dim NeedsSave As Boolean
+        Dim NfoPath As String
         Dim Ordering As Enums.Ordering
+        Dim PosterPath As String
         Dim RemoveActorThumbs As Boolean
-        Dim SeasonBannerPath As String
-        Dim SeasonFanartPath As String
-        Dim SeasonID As Long
-        Dim SeasonLandscapePath As String
-        Dim SeasonPosterPath As String
-        Dim SeasonTVDB As String
-        Dim ShowBannerPath As String
-        Dim ShowCharacterArtPath As String
-        Dim ShowClearArtPath As String
-        Dim ShowClearLogoPath As String
-        Dim ShowEFanartsPath As String
-        Dim ShowFanartPath As String
+        Dim RemoveBanner As Boolean
+        Dim RemoveCharacterArt As Boolean
+        Dim RemoveClearArt As Boolean
+        Dim RemoveClearLogo As Boolean
+        Dim RemoveDiscArt As Boolean
+        Dim RemoveEFanarts As Boolean
+        Dim RemoveEThumbs As Boolean
+        Dim RemoveFanart As Boolean
+        Dim RemoveLandscape As Boolean
+        Dim RemovePoster As Boolean
+        Dim RemoveTheme As Boolean
+        Dim RemoveTrailer As Boolean
         Dim ShowID As Long
-        Dim ShowLandscapePath As String
-        Dim ShowLanguage As String
-        Dim ShowNeedsSave As Boolean
-        Dim ShowNfoPath As String
         Dim ShowPath As String
-        Dim ShowPosterPath As String
-        Dim ShowThemePath As String
         Dim Source As String
+        Dim Subtitles As List(Of MediaInfo.Subtitle)
         Dim TVEp As MediaContainers.EpisodeDetails
+        Dim TVSeason As MediaContainers.SeasonDetails
         Dim TVShow As MediaContainers.TVShow
-        Dim TVShowContainer As MediaContainers.TVShowContainer
+        Dim ThemePath As String
         Dim VideoSource As String
     End Structure
 
