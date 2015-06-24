@@ -452,7 +452,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Show(_tv, srcDir, destDir)
 
                     If toDB Then
-                        Master.DB.SaveTVShowToDB(_tv, False, BatchMode, toNfo)
+                        Master.DB.SaveTVShowToDB(_tv, False, False, BatchMode, toNfo)
                         Master.DB.SaveTVSeasonToDB(_tv, BatchMode)
                     End If
 
@@ -1720,7 +1720,7 @@ Public Class FileFolderRenamer
             DoRenameSingle_Show(ShowFile, _tmpShow, BatchMode, toNfo, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveTVShowToDB(_tmpShow, BatchMode, False)
+                Master.DB.SaveTVShowToDB(_tmpShow, False, BatchMode, False)
             End If
         End If
     End Sub

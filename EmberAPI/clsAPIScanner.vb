@@ -1086,7 +1086,7 @@ Public Class Scanner
                     tmpTVDB.Ordering = TVContainer.Ordering
                     tmpTVDB.Language = TVContainer.Language
 
-                    Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
+                    Master.DB.SaveTVShowToDB(tmpTVDB, True, False, True)
                 End If
             Else
                 tmpTVDB = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(TVShowPaths.Item(TVContainer.ShowPath.ToLower)))

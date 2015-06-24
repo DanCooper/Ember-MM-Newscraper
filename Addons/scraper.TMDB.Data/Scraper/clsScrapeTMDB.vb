@@ -254,8 +254,10 @@ Namespace TMDB
             End If
 
             nMovie.Scrapersource = "TMDB"
-            If Movie.ImdbId IsNot Nothing Then nMovie.ID = Movie.ImdbId
+
+            'IDs
             nMovie.TMDBID = CStr(Movie.Id)
+            If Movie.ImdbId IsNot Nothing Then nMovie.ID = Movie.ImdbId
 
             If bwTMDB.CancellationPending Or Movie Is Nothing Then Return Nothing
 
@@ -616,9 +618,11 @@ Namespace TMDB
             End If
 
             nShow.Scrapersource = "TMDB"
+
+            'IDs
+            nShow.TMDB = CStr(Show.Id)
             If Show.ExternalIds.TvdbId IsNot Nothing Then nShow.ID = CStr(Show.ExternalIds.TvdbId)
             If Show.ExternalIds.ImdbId IsNot Nothing Then nShow.IMDB = Show.ExternalIds.ImdbId
-            nShow.TMDB = CStr(Show.Id)
 
             If bwTMDB.CancellationPending Or Show Is Nothing Then Return Nothing
 
@@ -905,6 +909,9 @@ Namespace TMDB
         Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
 
+            nEpisode.Scrapersource = "TMDB"
+
+            'IDs
             nEpisode.TMDB = CStr(EpisodeInfo.Id)
             If EpisodeInfo.ExternalIds IsNot Nothing AndAlso EpisodeInfo.ExternalIds.TvdbId IsNot Nothing Then nEpisode.TVDB = CStr(EpisodeInfo.ExternalIds.TvdbId)
             If EpisodeInfo.ExternalIds IsNot Nothing AndAlso EpisodeInfo.ExternalIds.ImdbId IsNot Nothing Then nEpisode.IMDB = EpisodeInfo.ExternalIds.ImdbId
@@ -949,7 +956,7 @@ Namespace TMDB
                 End If
             End If
 
-            'Episode #
+            'Episode # Standard
             If Options.bEpEpisode Then
                 If EpisodeInfo.EpisodeNumber >= 0 Then
                     nEpisode.Episode = EpisodeInfo.EpisodeNumber
@@ -957,13 +964,15 @@ Namespace TMDB
             End If
 
             'Guest Stars
-            If EpisodeInfo.GuestStars IsNot Nothing Then
-                For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.GuestStars
-                    nEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name, _
-                                                                       .Role = aCast.Character, _
-                                                                       .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
-                                                                       .TMDB = CStr(aCast.Id)})
-                Next
+            If Options.bEpGuestStars Then
+                If EpisodeInfo.GuestStars IsNot Nothing Then
+                    For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.GuestStars
+                        nEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name, _
+                                                                           .Role = aCast.Character, _
+                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                           .TMDB = CStr(aCast.Id)})
+                    Next
+                End If
             End If
 
             'Plot
@@ -978,7 +987,7 @@ Namespace TMDB
                 nEpisode.Rating = CStr(EpisodeInfo.VoteAverage)
             End If
 
-            'Season #
+            'Season # Standard
             If Options.bEpSeason Then
                 If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
                     nEpisode.Season = CInt(EpisodeInfo.SeasonNumber)

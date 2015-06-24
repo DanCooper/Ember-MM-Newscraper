@@ -1369,27 +1369,21 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Try
-            Me.SetInfo()
+        Me.SetInfo()
 
-            Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
+        Master.DB.SaveTVShowToDB(Master.currShow, False, True, False, True)
 
-            If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
-
-            If Me.pnlEFImage IsNot Nothing Then
-                For Each Pan In Me.pnlEFImage
-                    CType(Pan.Tag, Images).Dispose()
-                Next
-            End If
-            If Me.pbEFImage IsNot Nothing Then
-                For Each Pan In Me.pbEFImage
-                    CType(Pan.Tag, Images).Dispose()
-                    Pan.Image.Dispose()
-                Next
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        If Me.pnlEFImage IsNot Nothing Then
+            For Each Pan In Me.pnlEFImage
+                CType(Pan.Tag, Images).Dispose()
+            Next
+        End If
+        If Me.pbEFImage IsNot Nothing Then
+            For Each Pan In Me.pbEFImage
+                CType(Pan.Tag, Images).Dispose()
+                Pan.Image.Dispose()
+            Next
+        End If
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()

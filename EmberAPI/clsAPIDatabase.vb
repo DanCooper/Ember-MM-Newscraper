@@ -1087,7 +1087,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="_TVDB">Structures.DBTV container to fill</param>
     Public Sub FillTVShowFromDB(ByRef _TVDB As Structures.DBTV)
-        Dim _tmpTVDB As Structures.DBTV = LoadTVShowFromDB(_TVDB.ShowID)
+        Dim _tmpTVDB As Structures.DBTV = LoadTVShowFromDB(_TVDB.ShowID, False)
 
         _TVDB.EpisodeSorting = _tmpTVDB.EpisodeSorting
         _TVDB.ImagesContainer.ShowBanner = _tmpTVDB.ImagesContainer.ShowBanner
@@ -1676,13 +1676,10 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, Optional ByVal OnlySeason As Integer = -1) As MediaContainers.TVShowContainer
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, Optional ByVal OnlySeason As Integer = -1) As List(Of Structures.DBTV)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Dim _TVShowContainer As New MediaContainers.TVShowContainer
-
-        _TVShowContainer.Show = Master.DB.LoadTVFullShowFromDB(ShowID)
-        _TVShowContainer.AllSeason = Master.DB.LoadTVAllSeasonsFromDB(ShowID)
+        Dim _TVEpisodesList As New List(Of Structures.DBTV)
 
         Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             If OnlySeason = -1 Then
@@ -1695,14 +1692,14 @@ Public Class Database
                     SQLRCount.Read()
                     If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            If OnlySeason = 999 Then
-                                SQLCommand.CommandText = String.Concat("SELECT idEpisode, Lock FROM episode WHERE idShow = ", ShowID, " AND Missing = 0;")
+                            If OnlySeason = -1 Then
+                                SQLCommand.CommandText = String.Concat("SELECT * FROM episode WHERE idShow = ", ShowID, " AND Missing = 0;")
                             Else
-                                SQLCommand.CommandText = String.Concat("SELECT idEpisode, Lock FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                                SQLCommand.CommandText = String.Concat("SELECT * FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, " AND Missing = 0;")
                             End If
                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVShowContainer.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), True))
+                                    _TVEpisodesList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), False))
                                 End While
                             End Using
                         End Using
@@ -1711,7 +1708,7 @@ Public Class Database
             End Using
         End Using
 
-        Return _TVShowContainer
+        Return _TVEpisodesList
     End Function
     ''' <summary>
     ''' Load all the information for a TV Season by ShowID and Season #.
@@ -2002,7 +1999,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
-        Return Master.DB.LoadTVShowFromDB(ShowID)
+        Return Master.DB.LoadTVShowFromDB(ShowID, True)
     End Function
     ''' <summary>
     ''' Load all the information for a TV Show
@@ -2087,8 +2084,8 @@ Public Class Database
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withEpisodes As Boolean) As Structures.DBTV
+        Dim _TVDB As New Structures.DBTV With {.Episodes = New List(Of Structures.DBTV)}
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
@@ -2189,6 +2186,11 @@ Public Class Database
 
         'Seasons
         _TVDB.TVShow.Seasons = LoadAllTVSeasonFromDB(ShowID)
+
+        'Episodes
+        If withEpisodes Then
+            _TVDB.Episodes.AddRange(LoadAllTVEpisodesFromDB(_TVDB.ID))
+        End If
 
         'Check if the path is available and ready to edit
         If Directory.Exists(_TVDB.ShowPath) Then _TVDB.IsOnline = True
@@ -3500,7 +3502,7 @@ Public Class Database
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
         'Copy fileinfo duration over to runtime var for xbmc to pick up episode runtime.
-        NFO.LoadTVEpDuration(_TVEpDB)
+        'NFO.LoadTVEpDuration(_TVEpDB)
 
         'delete so it will remove if there is a "missing" episode entry already. Only "missing" episodes must be deleted.
         Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3826,17 +3828,19 @@ Public Class Database
                         iID += 1
                     Next
                     'external subtitles
-                    For i As Integer = 0 To _TVEpDB.Subtitles.Count - 1
-                        parSubs_EpID.Value = _TVEpDB.ID
-                        parSubs_StreamID.Value = iID
-                        parSubs_Language.Value = _TVEpDB.Subtitles(i).Language
-                        parSubs_LongLanguage.Value = _TVEpDB.Subtitles(i).LongLanguage
-                        parSubs_Type.Value = _TVEpDB.Subtitles(i).SubsType
-                        parSubs_Path.Value = _TVEpDB.Subtitles(i).SubsPath
-                        parSubs_Forced.Value = _TVEpDB.Subtitles(i).SubsForced
-                        SQLcommandTVSubs.ExecuteNonQuery()
-                        iID += 1
-                    Next
+                    If _TVEpDB.Subtitles IsNot Nothing Then
+                        For i As Integer = 0 To _TVEpDB.Subtitles.Count - 1
+                            parSubs_EpID.Value = _TVEpDB.ID
+                            parSubs_StreamID.Value = iID
+                            parSubs_Language.Value = _TVEpDB.Subtitles(i).Language
+                            parSubs_LongLanguage.Value = _TVEpDB.Subtitles(i).LongLanguage
+                            parSubs_Type.Value = _TVEpDB.Subtitles(i).SubsType
+                            parSubs_Path.Value = _TVEpDB.Subtitles(i).SubsPath
+                            parSubs_Forced.Value = _TVEpDB.Subtitles(i).SubsForced
+                            SQLcommandTVSubs.ExecuteNonQuery()
+                            iID += 1
+                        Next
+                    End If
                 End Using
 
                 If WithSeason Then SaveTVSeasonToDB(_TVEpDB, True)
@@ -3939,7 +3943,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Sub SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
+    Public Sub SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -4111,6 +4115,16 @@ Public Class Database
             End If
         End Using
 
+        If Not BatchMode Then SQLtransaction.Commit()
+
+        'save episode informations
+        SQLtransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        If withEpisodes AndAlso _TVShowDB.Episodes IsNot Nothing AndAlso _TVShowDB.Episodes.Count > 0 Then
+            For Each nEpisode As Structures.DBTV In _TVShowDB.Episodes
+                SaveTVEpToDB(nEpisode, If(nEpisode.ID >= 0, False, True), False, True, True)
+            Next
+        End If
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
     ''' <summary>

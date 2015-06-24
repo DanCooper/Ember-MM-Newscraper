@@ -36,6 +36,9 @@ Namespace MediaContainers
         Private _displayepisode As Integer
         Private _displayseason As Integer
         Private _episode As Integer
+        Private _episodeabsolute As Integer
+        Private _episodecombined As Double
+        Private _episodedvd As Double
         Private _fanart As New MediaContainers.Image
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _gueststars As New List(Of Person)
@@ -48,7 +51,10 @@ Namespace MediaContainers
         Private _posterurl As String
         Private _rating As String
         Private _runtime As String
+        Private _scrapersource As String
         Private _season As Integer
+        Private _seasoncombined As Integer
+        Private _seasondvd As Integer
         Private _subepisode As Integer
         Private _title As String
         Private _tmdb As String
@@ -537,6 +543,66 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlIgnore()> _
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property EpisodeAbsolute() As Integer
+            Get
+                Return Me._episodeabsolute
+            End Get
+            Set(ByVal value As Integer)
+                Me._episodeabsolute = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property EpisodeCombined() As Double
+            Get
+                Return Me._episodecombined
+            End Get
+            Set(ByVal value As Double)
+                Me._episodecombined = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property EpisodeDVD() As Double
+            Get
+                Return Me._episodedvd
+            End Get
+            Set(ByVal value As Double)
+                Me._episodedvd = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property SeasonCombined() As Integer
+            Get
+                Return Me._seasoncombined
+            End Get
+            Set(ByVal value As Integer)
+                Me._seasoncombined = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property SeasonDVD() As Integer
+            Get
+                Return Me._seasondvd
+            End Get
+            Set(ByVal value As Integer)
+                Me._seasondvd = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -550,6 +616,9 @@ Namespace MediaContainers
             Me._displayepisode = -1
             Me._displayseason = -1
             Me._episode = -999
+            Me._episodeabsolute = -999
+            Me._episodecombined = -999
+            Me._episodedvd = -999
             Me._fanart = New MediaContainers.Image
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._gueststars.Clear()
@@ -563,6 +632,8 @@ Namespace MediaContainers
             Me._rating = String.Empty
             Me._runtime = String.Empty
             Me._season = -999
+            Me._seasoncombined = -999
+            Me._seasondvd = -999
             Me._subepisode = -999
             Me._tmdb = String.Empty
             Me._tvdb = String.Empty

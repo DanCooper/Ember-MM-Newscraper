@@ -2010,6 +2010,7 @@ Public Class Structures
         Dim DateAdded As Long
         Dim EFanarts As List(Of String)
         Dim EFanartsPath As String
+        Dim Episodes As List(Of DBTV)
         Dim EpisodeSorting As Enums.EpisodeSorting
         Dim FanartPath As String
         Dim Filename As String

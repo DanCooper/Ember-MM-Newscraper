@@ -268,7 +268,7 @@ Public Class TVDB_Data
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDBID) Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDBID, nShow, False, filterOptions, False, Settings)
+                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDBID, nShow, False, filterOptions, False, Settings, withEpisodes)
             ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then

@@ -48,8 +48,19 @@ Namespace TVDBs
 #End Region 'Events
 
 #Region "Methods"
-
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_TV, ByVal IsSearch As Boolean, ByRef Settings As MySettings) As Boolean
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strID">TVDB ID</param>
+        ''' <param name="nShow"></param>
+        ''' <param name="GetPoster"></param>
+        ''' <param name="Options"></param>
+        ''' <param name="IsSearch"></param>
+        ''' <param name="Settings"></param>
+        ''' <param name="withEpisodes"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_TV, ByVal IsSearch As Boolean, ByRef Settings As MySettings, ByVal withEpisodes As Boolean) As Boolean
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
 
             'clear nShow from search results
@@ -150,112 +161,159 @@ Namespace TVDBs
                 nShow.Votes = CStr(Results.Series.RatingCount)
             End If
 
+            'Episodes
+            If withEpisodes Then
+                For Each aEpisode As TVDB.Model.Episode In Results.Series.Episodes
+                    Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(aEpisode, Options)
+                    nEpisode.Actors.AddRange(nShow.Actors)
+                    nShow.KnownEpisodes.Add(nEpisode)
+                Next
+            End If
+
             Return True
         End Function
 
+        Private Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+            Dim nEpisode As New MediaContainers.EpisodeDetails
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
-            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+            'IDs
+            nEpisode.TVDB = CStr(EpisodeInfo.Id)
+            If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nEpisode.IMDB = EpisodeInfo.IMDBId
 
-            Try
-                Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
-                Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
-
-                Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(tvdbID), tvdbMirror).Result
-                If Results Is Nothing Then
-                    Return Nothing
+            'Episode # Absolute
+            If Options.bEpEpisode Then
+                If EpisodeInfo.AbsoluteNumber >= 0 Then
+                    nEpisode.EpisodeAbsolute = EpisodeInfo.AbsoluteNumber
                 End If
+            End If
 
-                If bwTVDB.CancellationPending Then Return Nothing
-
-                If Results.Banners IsNot Nothing Then
-
-                    'Banner Show
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowBanner Then
-                        For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.series)
-                            Dim img As New MediaContainers.Image With {.Height = "140", _
-                                                                       .LongLang = Localization.ISOGetLangByCode2(image.Language), _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = image.Language, _
-                                                                       .ThumbURL = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .URL = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
-                                                                       .Width = "758"}
-                            alContainer.ShowBanners.Add(img)
-                        Next
-                    End If
-
-                    'Banner Season
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.SeasonBanner Then
-                        For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso f.BannerPath.Contains("seasonswide"))
-                            Dim img As New MediaContainers.Image With {.Height = "140", _
-                                                                       .LongLang = Localization.ISOGetLangByCode2(image.Language), _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = image.Language, _
-                                                                       .ThumbURL = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .URL = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
-                                                                       .Width = "758"}
-                            alContainer.SeasonBanners.Add(img)
-                        Next
-                    End If
-
-                    'Fanart Show
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart Then
-                        For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
-                            alContainer.ShowFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
-                                                                          .LongLang = Localization.ISOGetLangByCode2(image.Language), _
-                                                                          .Season = image.Season, _
-                                                                          .ShortLang = image.Language, _
-                                                                          .ThumbURL = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                          .URL = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                          .VoteAverage = CStr(image.Rating), _
-                                                                          .VoteCount = image.RatingCount, _
-                                                                          .Width = StringUtils.StringToSize(image.Dimension).Width.ToString})
-                        Next
-                    End If
-
-                    'Poster Show
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster Then
-                        For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
-                            Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
-                                                                          .LongLang = Localization.ISOGetLangByCode2(image.Language), _
-                                                                          .Season = image.Season, _
-                                                                          .ShortLang = image.Language, _
-                                                                          .ThumbURL = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                          .URL = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                          .VoteAverage = CStr(image.Rating), _
-                                                                          .VoteCount = image.RatingCount, _
-                                                                          .Width = StringUtils.StringToSize(image.Dimension).Width.ToString}
-                            alContainer.ShowPosters.Add(img)
-                        Next
-                    End If
-
-                    'Poster Season
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.SeasonPoster Then
-                        For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso Not f.BannerPath.Contains("seasonswide"))
-                            Dim img As New MediaContainers.Image With {.Height = "578", _
-                                                                       .LongLang = Localization.ISOGetLangByCode2(image.Language), _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = image.Language, _
-                                                                       .ThumbURL = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .URL = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
-                                                                       .Width = "400"}
-                            alContainer.SeasonPosters.Add(img)
-                        Next
-                    End If
-
+            'Episode # Combined
+            If Options.bEpEpisode Then
+                If EpisodeInfo.CombinedEpisodeNumber >= 0 Then
+                    nEpisode.EpisodeCombined = EpisodeInfo.CombinedEpisodeNumber
                 End If
+            End If
 
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            'Episode # DVD
+            If Options.bEpEpisode Then
+                If EpisodeInfo.DVDEpisodeNumber >= 0 Then
+                    nEpisode.EpisodeDVD = EpisodeInfo.DVDEpisodeNumber
+                End If
+            End If
 
-            Return alContainer
+            'Episode # Standard
+            If Options.bEpEpisode Then
+                If EpisodeInfo.Number >= 0 Then
+                    nEpisode.Episode = EpisodeInfo.Number
+                End If
+            End If
+
+            'Season # Combined
+            If Options.bEpSeason Then
+                If CInt(EpisodeInfo.CombinedSeason) >= 0 Then
+                    nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
+                End If
+            End If
+
+            'Season # DVD
+            If Options.bEpSeason Then
+                If CInt(EpisodeInfo.DVDSeason) >= 0 Then
+                    nEpisode.SeasonDVD = EpisodeInfo.DVDSeason
+                End If
+            End If
+
+            'Season # Standard
+            If Options.bEpSeason Then
+                If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
+                    nEpisode.Season = EpisodeInfo.SeasonNumber
+                End If
+            End If
+
+            'Aired
+            If Options.bEpAired Then
+                Dim ScrapedDate As String = CStr(EpisodeInfo.FirstAired)
+                If Not String.IsNullOrEmpty(ScrapedDate) Then
+                    Dim RelDate As Date
+                    If Date.TryParse(ScrapedDate, RelDate) Then
+                        'always save date in same date format not depending on users language setting!
+                        nEpisode.Aired = RelDate.ToString("yyyy-MM-dd")
+                    Else
+                        nEpisode.Aired = ScrapedDate
+                    End If
+                End If
+            End If
+
+            'Credits
+            If Options.bEpCredits Then
+                If EpisodeInfo.Writer IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Writer) Then
+                    Dim CreditsList As New List(Of String)
+                    Dim charsToTrim() As Char = {"|"c, ","c}
+                    CreditsList.AddRange(EpisodeInfo.Writer.Trim(charsToTrim).Split(charsToTrim))
+                    For Each aCredits As String In CreditsList
+                        nEpisode.Credits.Add(aCredits.Trim)
+                    Next
+                End If
+            End If
+
+            'Writer
+            If Options.bEpDirector Then
+                If EpisodeInfo.Director IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Director) Then
+                    Dim DirectorsList As New List(Of String)
+                    Dim charsToTrim() As Char = {"|"c, ","c}
+                    DirectorsList.AddRange(EpisodeInfo.Director.Trim(charsToTrim).Split(charsToTrim))
+                    For Each aDirector As String In DirectorsList
+                        nEpisode.Directors.Add(aDirector.Trim)
+                    Next
+                End If
+            End If
+
+            'Guest Stars
+            If Options.bEpGuestStars Then
+                If EpisodeInfo.GuestStars IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.GuestStars) Then
+                    nEpisode.GuestStars.AddRange(StringToListOfPerson(EpisodeInfo.GuestStars))
+                End If
+            End If
+
+            'Plot
+            If Options.bEpPlot Then
+                If EpisodeInfo.Overview IsNot Nothing Then
+                    nEpisode.Plot = EpisodeInfo.Overview
+                End If
+            End If
+
+            'Rating
+            If Options.bEpRating Then
+                nEpisode.Rating = CStr(EpisodeInfo.Rating)
+            End If
+
+            'Title
+            If Options.bEpTitle Then
+                If EpisodeInfo.Name IsNot Nothing Then
+                    nEpisode.Title = EpisodeInfo.Name
+                End If
+            End If
+
+            'Votes
+            If Options.bEpVotes Then
+                nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
+            End If
+
+            Return nEpisode
+        End Function
+
+        Private Function StringToListOfPerson(ByVal strActors As String) As List(Of MediaContainers.Person)
+            Dim gActors As New List(Of MediaContainers.Person)
+            Dim gRole As String = Master.eLang.GetString(947, "Guest Star")
+
+            Dim GuestStarsList As New List(Of String)
+            Dim charsToTrim() As Char = {"|"c, ","c}
+            GuestStarsList.AddRange(strActors.Trim(charsToTrim).Split(charsToTrim))
+
+            For Each aGuestStar As String In GuestStarsList
+                gActors.Add(New MediaContainers.Person With {.Name = aGuestStar.Trim, .Role = gRole})
+            Next
+
+            Return gActors
         End Function
 
 

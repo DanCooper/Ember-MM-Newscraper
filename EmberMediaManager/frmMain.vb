@@ -3475,7 +3475,7 @@ Public Class frmMain
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
             If Master.GlobalScrapeMod.NFO Then
-                If ModulesManager.Instance.ScrapeData_TV(DBScrapeShow, Args.scrapeType, Args.Options_TV, ScrapeList.Count = 1, True) Then
+                If ModulesManager.Instance.ScrapeData_TV(DBScrapeShow, Args.scrapeType, Args.Options_TV, ScrapeList.Count = 1, Args.withEpisodes) Then
                     Cancelled = True
                 End If
             Else
@@ -5719,7 +5719,7 @@ doCancel:
         If Me.dgvTVShows.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
         Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
-        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions)
+        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions, True)
     End Sub
 
     Private Sub cmnuSeasonRemoveFromDisk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
@@ -7154,7 +7154,7 @@ doCancel:
     Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
         If Me.dgvTVShows.SelectedRows.Count = 1 Then
             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
-            Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions)
+            Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions, True)
         End If
     End Sub
     ''' <summary>
@@ -14391,7 +14391,7 @@ doCancel:
                         Master.currMovie.RemoveTheme = False
                         Master.currMovie.RemoveTrailer = False
                         Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
-                        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions) ', ID)
+                        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions, True) ', ID)
                     Case Windows.Forms.DialogResult.Abort
                         Master.currMovie.RemoveActorThumbs = True
                         Master.currMovie.RemoveBanner = True
@@ -14407,7 +14407,7 @@ doCancel:
                         Master.currMovie.RemoveTrailer = True
                         Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
                         Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
-                        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions) ', ID, True)
+                        Me.ScrapeData_TV(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultTVOptions, True) ', ID, True)
                     Case Else
                         If Me.InfoCleared Then Me.LoadShowInfo(ID)
                 End Select
@@ -14448,7 +14448,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub ScrapeData_TV(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, Optional ByVal Restart As Boolean = False)
+    Private Sub ScrapeData_TV(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean, Optional ByVal Restart As Boolean = False)
         ScrapeList.Clear()
 
         If selected Then
@@ -14574,7 +14574,7 @@ doCancel:
         Application.DoEvents()
         bwTVScraper.WorkerSupportsCancellation = True
         bwTVScraper.WorkerReportsProgress = True
-        bwTVScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options_TV = Options})
+        bwTVScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options_TV = Options, .withEpisodes = withEpisodes})
     End Sub
 
     Private Sub MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
@@ -16755,7 +16755,7 @@ doCancel:
         Return False
     End Function
 
-    Private Function ReloadShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal WithSeasons As Boolean, ByVal WithEpisodes As Boolean) As Boolean
+    Private Function ReloadShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal FromNfo As Boolean, ByVal ToNfo As Boolean, ByVal reloadSeasons As Boolean, ByVal reloadEpisodes As Boolean) As Boolean
         If Not BatchMode Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.tspbLoading.Value = 0
@@ -16823,7 +16823,7 @@ doCancel:
             'assume invalid nfo if no title
             tmpShowDb.NfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.ShowNfo)
 
-            Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
+            Master.DB.SaveTVShowToDB(tmpShowDb, False, False, reloadEpisodes, ToNfo)
 
             Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ID))
             Dim newRow = newTable.Rows.Item(0)
@@ -16853,7 +16853,7 @@ doCancel:
             '    Application.DoEvents()
             'End If
 
-            If WithSeasons Then
+            If reloadSeasons Then
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLCommand.CommandText = String.Concat("SELECT idShow, Season FROM seasons WHERE idShow = ", ID, ";")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
@@ -16869,7 +16869,7 @@ doCancel:
                 End Using
             End If
 
-            If WithEpisodes Then
+            If reloadEpisodes Then
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
@@ -16891,7 +16891,7 @@ doCancel:
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
                                                      Master.eLang.GetString(776, "Remove tv show from library"), _
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                Master.DB.DeleteTVShowFromDB(ID, WithEpisodes)
+                Master.DB.DeleteTVShowFromDB(ID, reloadEpisodes)
                 Return True
             Else
                 Return False
@@ -20905,7 +20905,7 @@ doCancel:
                     Case 0 ' show
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                         ModulesManager.Instance.TVSaveImages()
-                        Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
+                        Master.DB.SaveTVShowToDB(Master.currShow, False, False, False, True)
                     Case Else
                         logger.Warn("Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
                 End Select

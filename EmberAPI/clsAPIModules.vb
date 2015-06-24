@@ -921,7 +921,7 @@ Public Class ModulesManager
             Next
 
             'Merge scraperresults considering global datascraper settings
-            Return NFO.MergeDataScraperResults(oEpisode, ScrapedList, Options)
+            'Return NFO.MergeDataScraperResults(oEpisode, ScrapedList, Options)
         End If
 
         'If Not String.IsNullOrEmpty(TVDBID) AndAlso Not String.IsNullOrEmpty(Lang) Then
@@ -969,7 +969,7 @@ Public Class ModulesManager
             Next
 
             'Merge scraperresults considering global datascraper settings
-            Return NFO.MergeDataScraperResults(oEpisode, ScrapedList, Options)
+            'Return NFO.MergeDataScraperResults(oEpisode, ScrapedList, Options)
         End If
 
         'If Not String.IsNullOrEmpty(TVDBID) AndAlso Not String.IsNullOrEmpty(Lang) Then
@@ -1618,7 +1618,7 @@ Public Class ModulesManager
     End Function
 
     Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Boolean
-        Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID)
+        Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID, False)
         If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1640,7 +1640,7 @@ Public Class ModulesManager
     End Function
 
     Public Function TVScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
-        Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID)
+        Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID, False)
         If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
