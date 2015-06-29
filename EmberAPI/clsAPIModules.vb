@@ -729,7 +729,7 @@ Public Class ModulesManager
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
-            Dim oMovie As New Structures.DBMovie
+            Dim oDBMovie As New Structures.DBMovie
             Dim ScrapedList As New List(Of MediaContainers.Movie)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -792,8 +792,8 @@ Public Class ModulesManager
             End If
 
             'create a copy of DBMovie
-            oMovie.Filename = DBMovie.Filename
-            oMovie.Movie = New MediaContainers.Movie With {.Title = DBMovie.Movie.Title, .OriginalTitle = DBMovie.Movie.OriginalTitle, .Year = DBMovie.Movie.Year, _
+            oDBMovie.Filename = DBMovie.Filename
+            oDBMovie.Movie = New MediaContainers.Movie With {.Title = DBMovie.Movie.Title, .OriginalTitle = DBMovie.Movie.OriginalTitle, .Year = DBMovie.Movie.Year, _
                                                            .ID = DBMovie.Movie.ID, .IMDBID = DBMovie.Movie.IMDBID, .TMDBID = DBMovie.Movie.TMDBID}
 
             If (modules.Count() <= 0) Then
@@ -804,7 +804,7 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
                     Dim nMovie As New MediaContainers.Movie
-                    ret = _externalScraperModule.ProcessorModule.Scraper(oMovie, nMovie, ScrapeType, Options)
+                    ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovie, nMovie, ScrapeType, Options)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
