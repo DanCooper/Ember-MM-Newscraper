@@ -66,11 +66,11 @@ Public Class Database
     ''' add or update actor
     ''' </summary>
     ''' <param name="strActor">actor name</param>
-    ''' <param name="thumbURLs">thumb URL</param>
+    ''' <param name="thumbURL">thumb URL</param>
     ''' <param name="thumb">local thumb path</param>
     ''' <returns><c>ID</c> of actor in actors table</returns>
     ''' <remarks></remarks>
-    Private Function AddActor(ByVal strActor As String, ByVal thumbURLs As String, ByVal thumb As String, ByVal strIMDB As String, ByVal strTMDB As String) As Long
+    Private Function AddActor(ByVal strActor As String, ByVal thumbURL As String, ByVal thumb As String, ByVal strIMDB As String, ByVal strTMDB As String) As Long
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -95,7 +95,7 @@ Public Class Database
                 Dim par_insert_actors_strIMDB As SQLite.SQLiteParameter = SQLcommand_insert_actors.Parameters.Add("par_actors_strIMDB", DbType.String, 0, "strIMDB")
                 Dim par_insert_actors_strTMDB As SQLite.SQLiteParameter = SQLcommand_insert_actors.Parameters.Add("par_actors_strTMDB", DbType.String, 0, "strTMDB")
                 par_insert_actors_strActor.Value = strActor
-                par_insert_actors_strThumb.Value = thumbURLs
+                par_insert_actors_strThumb.Value = thumbURL
                 par_insert_actors_strIMDB.Value = strIMDB
                 par_insert_actors_strTMDB.Value = strTMDB
                 ID = CInt(SQLcommand_insert_actors.ExecuteScalar())
@@ -106,7 +106,7 @@ Public Class Database
                 Dim par_update_actors_strThumb As SQLite.SQLiteParameter = SQLcommand_update_actors.Parameters.Add("par_actors_strThumb", DbType.String, 0, "strThumb")
                 Dim par_update_actors_strIMDB As SQLite.SQLiteParameter = SQLcommand_update_actors.Parameters.Add("par_actors_strIMDB", DbType.String, 0, "strIMDB")
                 Dim par_update_actors_strTMDB As SQLite.SQLiteParameter = SQLcommand_update_actors.Parameters.Add("par_actors_strTMDB", DbType.String, 0, "strTMDB")
-                par_update_actors_strThumb.Value = thumbURLs
+                par_update_actors_strThumb.Value = thumbURL
                 par_update_actors_strIMDB.Value = strIMDB
                 par_update_actors_strTMDB.Value = strTMDB
                 SQLcommand_update_actors.ExecuteNonQuery()
