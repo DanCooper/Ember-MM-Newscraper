@@ -507,6 +507,9 @@ Public Class TMDB_Data
         If Not String.IsNullOrEmpty(nMovie.OriginalTitle) Then
             oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
         End If
+        If Not String.IsNullOrEmpty(nMovie.Year) Then
+            oDBMovie.Movie.Year = nMovie.Year
+        End If
         If Not String.IsNullOrEmpty(nMovie.ID) Then
             oDBMovie.Movie.ID = nMovie.ID
         End If
