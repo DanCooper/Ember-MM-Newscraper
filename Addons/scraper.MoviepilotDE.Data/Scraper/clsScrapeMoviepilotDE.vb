@@ -197,7 +197,7 @@ Namespace MoviepilotDE
                             'get search results
 
 
-                            Dim resPattern As String = "<div class='trackable' data-track-position=.*?<\/span>.<a href=""(?<URL>.*?)"".*?>(?<TITLE>.*?)<\/a>.*?(?<YEAR>\d{4}).*?<\/li>"
+                            Dim resPattern As String = "<div class='trackable' data-target-class='Movie'.*?<\/span>.<a href=""(?<URL>.*?)"".*?>(?<TITLE>.*?)<\/a>.*?(?<YEAR>\d{4}).*?<\/li>"
                             Dim resResult As MatchCollection = Regex.Matches(strSearchResults, resPattern, RegexOptions.Singleline)
 
                             If resResult.Count = 0 Then
@@ -215,7 +215,7 @@ Namespace MoviepilotDE
                                 ' Try to find a search result with same Year
                                 For ctr As Integer = 0 To resResult.Count - 1
                                     If resResult.Item(ctr).Groups(3).Value = strYear Then
-                                        strURL = resResult.Item(ctr).Groups(1).Value.Trim
+                                        strURL = String.Concat("http://www.moviepilot.de", resResult.Item(ctr).Groups(1).Value.Trim)
                                         Return strURL
                                     End If
                                 Next
