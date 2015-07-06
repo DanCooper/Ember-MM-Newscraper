@@ -1657,7 +1657,9 @@ Public Class Scanner
             Next
 
             For Each eSource In Master.TVSources
-                If String.Concat(Args.Folder.ToLower, Path.DirectorySeparatorChar).StartsWith(String.Concat(eSource.Path.ToLower, Path.DirectorySeparatorChar)) Then
+                Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
+                Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
+                If tFolder.StartsWith(tSource) Then
                     bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
                     TVShowPaths.Clear()
