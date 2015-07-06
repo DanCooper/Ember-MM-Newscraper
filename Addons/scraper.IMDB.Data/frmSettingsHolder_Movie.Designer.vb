@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmSettingsHolder
+Partial Class frmSettingsHolder_Movie
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder_Movie))
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()

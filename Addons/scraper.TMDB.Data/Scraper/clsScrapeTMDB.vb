@@ -29,7 +29,6 @@ Namespace TMDB
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _Matches As New List(Of MediaContainers.Movie)
 
 #End Region 'Fields
@@ -53,7 +52,6 @@ Namespace TMDB
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _Matches As New List(Of MediaContainers.MovieSet)
 
 #End Region 'Fields
@@ -77,7 +75,6 @@ Namespace TMDB
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _Matches As New List(Of MediaContainers.TVShow)
 
 #End Region 'Fields

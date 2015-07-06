@@ -31,18 +31,14 @@ Public Class TMDB_Data
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Public Shared _AssemblyName As String
     Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared ConfigOptions_TV As New Structures.ScrapeOptions_TV
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier_Movie_MovieSet
     Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier_TV
-    Public Shared _AssemblyName As String
 
-    ''' <summary>
-    ''' Scraping Here
-    ''' </summary>
-    ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_MovieSet As New sMySettings

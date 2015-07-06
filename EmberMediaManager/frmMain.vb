@@ -4124,19 +4124,19 @@ Public Class frmMain
                     '    End If
                 End If
 
-            '-----
+                '-----
 
-            If bwTVScraper.CancellationPending Then Exit For
+                If bwTVScraper.CancellationPending Then Exit For
 
-            If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , DBScrapeShow)
-                'TVScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
-                'Dim newNfoPath As Structures.DBTV = Master.DB.SaveTVShowToDB(DBScrapeShow, False, False, True)
-                'MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, newNfoPath.NfoPath)
-                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
-                bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
-                bwTVScraper.ReportProgress(-2, dScrapeRow.Item("idShow").ToString)
-            End If
+                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , DBScrapeShow)
+                    'TVScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
+                    'Dim newNfoPath As Structures.DBTV = Master.DB.SaveTVShowToDB(DBScrapeShow, False, False, True)
+                    'MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, newNfoPath.NfoPath)
+                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
+                    bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+                    bwTVScraper.ReportProgress(-2, dScrapeRow.Item("idShow").ToString)
+                End If
             End If
 
             logger.Trace(String.Concat("Ended scraping: ", OldListTitle))

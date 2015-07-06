@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 
-Public Class frmSettingsHolder
+Public Class frmSettingsHolder_Movie
 
 #Region "Events"
 

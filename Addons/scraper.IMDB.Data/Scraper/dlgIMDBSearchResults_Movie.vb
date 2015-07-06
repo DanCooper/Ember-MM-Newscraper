@@ -23,7 +23,7 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgIMDBSearchResults
+Public Class dlgIMDBSearchResults_Movie
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
@@ -33,10 +33,6 @@ Public Class dlgIMDBSearchResults
 
     Private IMDB As New IMDB.Scraper
     Private sHTTP As New HTTP
-    Dim UseOFDBGenre As Boolean
-    Dim UseOFDBOutline As Boolean
-    Dim UseOFDBPlot As Boolean
-    Dim UseOFDBTitle As Boolean
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
 
@@ -81,7 +77,7 @@ Public Class dlgIMDBSearchResults
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal Res As IMDB.SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -232,8 +228,8 @@ Public Class dlgIMDBSearchResults
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
-        AddHandler IMDB.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
-        AddHandler IMDB.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
+        AddHandler IMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
+        AddHandler IMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
         Try
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -327,7 +323,7 @@ Public Class dlgIMDBSearchResults
         End Try
     End Sub
 
-    Private Sub SearchResultsDownloaded(ByVal M As IMDB.MovieSearchResults)
+    Private Sub SearchResultsDownloaded(ByVal M As IMDB.SearchResults_Movie)
         '//
         ' Process the results that IMDB gave us
         '\\

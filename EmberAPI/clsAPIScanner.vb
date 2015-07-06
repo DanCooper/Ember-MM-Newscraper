@@ -606,7 +606,7 @@ Public Class Scanner
         Return False
     End Function
 
-    Public Shared Function GetTVSeasons(ByVal sPath As String, ByVal ShowID As Long, ByVal MinEp As Integer) As List(Of EpisodeItem)
+    Public Shared Function GetTVSeasons(ByVal sPath As String, ByVal ShowID As Long) As List(Of EpisodeItem)
         Dim retEpisodeItemsList As New List(Of EpisodeItem)
 
         For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
@@ -1028,8 +1028,6 @@ Public Class Scanner
     Private Sub LoadTVShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Structures.DBTV
         Dim toNfo As Boolean = False
-        Dim tRes As Object
-        Dim tEp As Integer = -1
 
         If TVContainer.Episodes.Count > 0 Then
             If Not TVShowPaths.ContainsKey(TVContainer.ShowPath.ToLower) Then
@@ -1107,22 +1105,7 @@ Public Class Scanner
                         tmpTVDB.IsLock = False
                         tmpTVDB.IsMark = False
 
-                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLCommand.CommandText = String.Concat("SELECT MIN(Episode) AS MinE FROM episode WHERE idShow = ", tmpTVDB.ShowID, ";")
-                            tRes = SQLCommand.ExecuteScalar
-                            If Not TypeOf tRes Is DBNull Then
-                                tEp = Convert.ToInt32(tRes)
-                                If tEp > -1 Then
-                                    tEp = -1
-                                Else
-                                    tEp += -1
-                                End If
-                            Else
-                                tEp = -1
-                            End If
-                        End Using
-
-                        For Each sEpisode As EpisodeItem In GetTVSeasons(Episode.Filename, tmpTVDB.ShowID, tEp)
+                        For Each sEpisode As EpisodeItem In GetTVSeasons(Episode.Filename, tmpTVDB.ShowID)
                             If sEpisode.byDate Then
 
                                 toNfo = False

@@ -23,6 +23,8 @@ Imports System.Text.RegularExpressions
 
 Namespace MediaContainers
 
+
+    <Serializable()> _
     <XmlRoot("episodedetails")> _
     Public Class EpisodeDetails
 

@@ -847,9 +847,9 @@ Public Class ModulesManager
                 DBTV.PosterPath = String.Empty
                 DBTV.CharacterArtPath = String.Empty
                 DBTV.ThemePath = String.Empty
-                DBTV.TVEp.Clear()
-                DBTV.TVSeason.Clear()
-                DBTV.TVShow.Clear()
+                DBTV.TVEp = New MediaContainers.EpisodeDetails
+                DBTV.TVSeason = New MediaContainers.SeasonDetails
+                DBTV.TVShow = New MediaContainers.TVShow
 
                 Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTV.ShowPath), False)
 

@@ -3843,7 +3843,7 @@ Public Class Database
                     End If
                 End Using
 
-                If WithSeason Then SaveTVSeasonToDB(_TVEpDB, True)
+                'If WithSeason Then SaveTVSeasonToDB(_TVEpDB, True)
             End If
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
@@ -4031,8 +4031,6 @@ Public Class Database
             parOrdering.Value = _TVShowDB.Ordering
             parEpisodeSorting.Value = _TVShowDB.EpisodeSorting
 
-
-
             If IsNew Then
                 If Master.eSettings.TVGeneralMarkNewShows Then
                     parMark.Value = True
@@ -4080,7 +4078,9 @@ Public Class Database
                 Next
 
                 'Images
-                _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.Content_Type.Show)
+                If _TVShowDB.ImagesContainer IsNot Nothing Then
+                    _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.Content_Type.Show)
+                End If
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ShowID)
