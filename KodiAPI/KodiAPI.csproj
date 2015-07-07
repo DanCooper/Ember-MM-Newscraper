@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KodiAPI</RootNamespace>
+    <AssemblyName>KodiAPI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\KodiAPI.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\KodiAPI.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\KodiAPI.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\EmberMM - Debug - x86\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.5.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XBMCRPC\Client.cs" />
+    <Compile Include="XBMCRPC\ConnectionSettings.cs" />
+    <Compile Include="XBMCRPC\IPlatformServices.cs" />
+    <Compile Include="XBMCRPC\ISocket.cs" />
+    <Compile Include="XBMCRPC\ISocketFactory.cs" />
+    <Compile Include="XBMCRPC\Methods\Addons.cs" />
+    <Compile Include="XBMCRPC\Methods\Application.cs" />
+    <Compile Include="XBMCRPC\Methods\AudioLibrary.cs" />
+    <Compile Include="XBMCRPC\Methods\Favourites.cs" />
+    <Compile Include="XBMCRPC\Methods\Files.cs" />
+    <Compile Include="XBMCRPC\Methods\GUI.cs" />
+    <Compile Include="XBMCRPC\Methods\Input.cs" />
+    <Compile Include="XBMCRPC\Methods\JSONRPC.cs" />
+    <Compile Include="XBMCRPC\Methods\Player.cs" />
+    <Compile Include="XBMCRPC\Methods\Playlist.cs" />
+    <Compile Include="XBMCRPC\Methods\Profiles.cs" />
+    <Compile Include="XBMCRPC\Methods\PVR.cs" />
+    <Compile Include="XBMCRPC\Methods\Settings.cs" />
+    <Compile Include="XBMCRPC\Methods\System.cs" />
+    <Compile Include="XBMCRPC\Methods\Textures.cs" />
+    <Compile Include="XBMCRPC\Methods\VideoLibrary.cs" />
+    <Compile Include="XBMCRPC\Methods\XBMC.cs" />
+    <Compile Include="XBMCRPC\NotificationListenerSocketState.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addons\ExecuteAddon_params1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addons\ExecuteAddon_params2.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addons\GetAddonDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addons\GetAddonsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addons\GetAddonsResponse_addons.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addons\GetAddons_enabled2.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Content.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Details.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Details_dependencies.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Details_dependenciesItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Details_extrainfo.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Details_extrainfoItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Fields.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Addon\Types.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Application\GetProperties_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Application\OnVolumeChanged_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Application\Property\Name.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Application\Property\Value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Application\Property\Value_version.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Application\Property\Value_version_tag.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Array\Integer.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Array\String.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\Export_options1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\Export_optionsPath.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbumDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbumsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbumsResponse_albums.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbums_filterArtist.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbums_filterArtistid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbums_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetAlbums_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtistDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtistsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtistsResponse_artists.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtists_filterAlbum.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtists_filterAlbumid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtists_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtists_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetArtists_filterSongid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetGenresResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetGenresResponse_genres.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyAddedAlbumsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyAddedAlbumsResponse_albums.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyAddedSongsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyAddedSongsResponse_songs.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyPlayedAlbumsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyPlayedAlbumsResponse_albums.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyPlayedSongsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetRecentlyPlayedSongsResponse_songs.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongsResponse_songs.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongs_filterAlbum.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongs_filterAlbumid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongs_filterArtist.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongs_filterArtistid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongs_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\GetSongs_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\OnRemove_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\AudioLibrary\OnUpdate_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Details\Album.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Details\Artist.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Details\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Details\Media.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Details\Song.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Fields\Album.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Fields\Artist.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Audio\Fields\Song.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Configuration.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Favourites\GetFavouritesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Favourites\GetFavouritesResponse_favourites.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Favourite\Details\Favourite.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Favourite\Fields\Favourite.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Favourite\Type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\GetDirectoryResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\GetDirectoryResponse_files.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\GetFileDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\GetSourcesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\Media.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\PrepareDownloadResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\PrepareDownloadResponse_mode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Files\PrepareDownloadResponse_protocol.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Global\IncrementDecrement.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Global\Time.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Global\Toggle2.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Global\Weekday.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\ActivateWindow_parameters.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\GetProperties_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\GetStereoscopicModesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\GetStereoscopicModesResponse_stereoscopicmodes.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Property\Name.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Property\Value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Property\Value_currentcontrol.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Property\Value_currentwindow.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Property\Value_skin.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\SetStereoscopicMode_mode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\ShowNotification_image1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Stereoscopy\Mode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Stereoscopy\Mode_mode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\GUI\Window.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Input\Action.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Input\OnInputRequested_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Item\Details\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Item\Fields\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\JSONRPC\IntrospectResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\JSONRPC\Introspect_filter.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\JSONRPC\Introspect_filter_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\JSONRPC\PermissionResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\JSONRPC\VersionResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\JSONRPC\VersionResponse_version.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Library\Details\Genre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Library\Fields\Genre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Fields\All.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Fields\Files.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\AlbumsAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\AlbumsAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\AlbumsOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\AlbumsOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\ArtistsAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\ArtistsAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\ArtistsOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\ArtistsOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\EpisodesAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\EpisodesAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\EpisodesOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\EpisodesOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\Albums.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\Artists.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\Episodes.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\Movies.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\MusicVideos.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\Songs.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\Textures.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Fields\TVShows.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MoviesAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MoviesAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MoviesOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MoviesOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MusicVideosAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MusicVideosAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MusicVideosOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\MusicVideosOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Operators.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\Rule.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\SongsAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\SongsAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\SongsOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\SongsOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TexturesAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TexturesAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TexturesOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TexturesOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TVShowsAnd.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TVShowsAnd_and.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TVShowsOr.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Filter\TVShowsOr_or.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Items\Sources.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Items\SourcesItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Item\All.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Item\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Item\Base_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Item\Base_uniqueid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Item\File.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Item\File_filetype.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Limits.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\LimitsReturned.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Sort.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Sort_method.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\List\Sort_order.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Media\Artwork.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Media\Details\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item2.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item3.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item4.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item5.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item6.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item7.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\ItemType.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item\Type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Audio\Stream.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\GetActivePlayersResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\GetActivePlayersResponseItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\GetItemResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\GetProperties_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\GoTo_to1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Move_direction.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Notifications\Data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Notifications\Player.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\OnPropertyChanged_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\OnSeek_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\OnStop_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Open_item1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Open_item2.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Open_itemChannelid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Open_itemPartymode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Open_options.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Position\Time.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Property\Name.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Property\Value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Property\Value_audiostreams.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Property\Value_subtitles.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Repeat.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Rotate_value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\SeekResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Seek_value1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\SetAudioStream_stream1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\SetRepeat_repeat1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\SetSubtitle_subtitle1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Speed.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Subtitle.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Player\Zoom_zoom1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\Add_item1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\GetItemsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\GetItemsResponse_items.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\GetPlaylistsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\GetPlaylistsResponseItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\GetProperties_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\Insert_item1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\Item1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemAlbumid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemArtistid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemEpisodeid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemFile.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemMovieid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemMusicvideoid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\ItemSongid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\OnAdd_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\OnClear_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\OnRemove_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\Property\Name.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\Property\Value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Playlist\Type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Profiles\Details\Profile.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Profiles\Fields\Profile.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Profiles\GetProfilesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Profiles\GetProfilesResponse_profiles.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Profiles\Password.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Profiles\Password_encryption.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\ChannelGroup\Id1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Channel\Type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Details\Broadcast.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Details\Channel.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Details\ChannelGroup.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Details\Recording.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Details\Timer.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Details\Timer_weekdays.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Fields\Broadcast.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Fields\Channel.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Fields\Recording.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Fields\Timer.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetBroadcastDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetBroadcastsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetBroadcastsResponse_broadcasts.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelGroupDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelGroupDetails_channels.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelGroupsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelGroupsResponse_channelgroups.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetChannelsResponse_channels.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetProperties_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetRecordingDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetRecordingsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetRecordingsResponse_recordings.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetTimerDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetTimersResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\GetTimersResponse_timers.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Property\Name.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Property\Value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\Record_channel1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\PVR\TimerState.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetCategoriesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetCategoriesResponse_categories.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetCategories_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSectionsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSectionsResponse_sections.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSections_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSettingsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSettingsResponse_settings.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSettings_filter1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Settings\GetSettingValueResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Category.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Category_groups.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlBase.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlButton.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlButton_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlCheckmark.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlCheckmark_format.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlCheckmark_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlEdit.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlEdit_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlHeading.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlList.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlList_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlSpinner.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\ControlSpinner_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Group.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Group_settings.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Section.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\Section_categories.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingAction.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingAddon.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingBase.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingBool.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingInt.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingInt_options.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingInt_optionsItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingList.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingNumber.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingPath.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingPath_sources.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingString.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingString_options.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Details\SettingString_optionsItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Level.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Setting\Value\List.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\System\GetProperties_properties.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\System\Property\Name.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\System\Property\Value.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Textures\Details\Size.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Textures\Details\Texture.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Textures\Details\Texture_sizes.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Textures\Fields\Texture.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Textures\GetTexturesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Textures\GetTexturesResponse_textures.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\Export_options1.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\Export_optionsPath.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodeDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodesResponse_episodes.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodes_filterActor.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodes_filterDirector.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodes_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodes_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetEpisodes_filterYear.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetGenresResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetGenresResponse_genres.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetGenres_type.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovieDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovieSetDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovieSetDetails_movies.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovieSetsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovieSetsResponse_sets.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMoviesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMoviesResponse_movies.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterActor.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterCountry.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterDirector.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterSet.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterSetid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterStudio.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterTag.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMovies_filterYear.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideoDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideosResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideosResponse_musicvideos.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterArtist.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterDirector.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterStudio.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterTag.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetMusicVideos_filterYear.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetRecentlyAddedEpisodesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetRecentlyAddedEpisodesResponse_episodes.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetRecentlyAddedMoviesResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetRecentlyAddedMoviesResponse_movies.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetRecentlyAddedMusicVideosResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetRecentlyAddedMusicVideosResponse_musicvideos.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetSeasonDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetSeasonsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetSeasonsResponse_seasons.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShowDetailsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShowsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShowsResponse_tvshows.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShows_filterActor.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShows_filterGenre.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShows_filterGenreid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShows_filterStudio.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShows_filterTag.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\GetTVShows_filterYear.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\OnRemove_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\VideoLibrary\OnUpdate_data.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Cast.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\CastItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Episode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Episode_uniqueid.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\File.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Item.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Media.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Movie.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\MovieSet.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\MusicVideo.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\Season.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Details\TVShow.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\Episode.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\Movie.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\MovieSet.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\MusicVideo.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\Season.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Fields\TVShow.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Resume.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_audio.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_audioItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_subtitle.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_subtitleItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_video.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Video\Streams_videoItem.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\XBMC\GetInfoBooleansResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\XBMC\GetInfoBooleans_booleans.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\XBMC\GetInfoLabelsResponse.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\XBMC\GetInfoLabels_labels.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages\Newtonsoft.Json.5.0.3\Newtonsoft.Json.5.0.3.nupkg" />
+    <None Include="packages\Newtonsoft.Json.5.0.3\Newtonsoft.Json.5.0.3.nuspec" />
+    <None Include="packages\repositories.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net20\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net20\Newtonsoft.Json.xml" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net35\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net35\Newtonsoft.Json.xml" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net40\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net40\Newtonsoft.Json.xml" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net45\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\net45\Newtonsoft.Json.xml" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\netcore45\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\netcore45\Newtonsoft.Json.xml" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\portable-net40+sl4+wp7+win8\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\portable-net40+sl4+wp7+win8\Newtonsoft.Json.xml" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll" />
+    <Content Include="packages\Newtonsoft.Json.5.0.3\lib\portable-net45+wp80+win8\Newtonsoft.Json.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
