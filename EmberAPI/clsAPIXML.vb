@@ -42,6 +42,7 @@ Public Class APIXML
     Public Shared RatingXML As New clsXMLRatings
     Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
     Public Shared FilterXML As New clsXMLFilter
+    Public Shared HostsXML As New clsXMLHosts
 
 #End Region 'Fields
 
@@ -193,6 +194,24 @@ Public Class APIXML
                 objStreamReader.Close()
                 Try
                     File.Copy(filterPathD, filterPath)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            End If
+
+            Dim hostsPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Hosts.xml")
+            Dim xHosts As New XmlSerializer(HostsXML.GetType)
+            If File.Exists(hostsPath) Then
+                objStreamReader = New StreamReader(hostsPath)      
+                HostsXML = CType(xHosts.Deserialize(objStreamReader), clsXMLHosts)
+                objStreamReader.Close()
+            Else
+                Dim hostsPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultHosts.xml")
+                objStreamReader = New StreamReader(hostsPathD)
+                HostsXML = CType(xHosts.Deserialize(objStreamReader), clsXMLHosts)
+                objStreamReader.Close()
+                Try
+                    File.Copy(hostsPathD, hostsPath)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
