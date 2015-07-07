@@ -28,6 +28,7 @@ Namespace Kodi
     Public Class APIKodi
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
         Private _currenthost As New EmberAPI.Host
@@ -36,10 +37,10 @@ Namespace Kodi
         'helper object, needed for communication client (notification, eventhandler support)
         Private platformServices As IPlatformServices = New PlatformServices
         'Private NotificationsEnabled As Boolean
+
 #End Region 'Fields
 
 #Region "Methods"
-
         ''' <summary>
         ''' Initialize Communication Client for ONE Kodi Host
         ''' </summary>
@@ -51,7 +52,6 @@ Namespace Kodi
             _currenthost = host
             Init()
         End Sub
-
         ''' <summary>
         ''' Initialize API class (host)
         ''' </summary>
@@ -247,7 +247,6 @@ Namespace Kodi
                 Return False
             End Try
         End Function
-
         ''' <summary>
         ''' Get movieID at Kodi host for a specific movie
         ''' </summary>
@@ -311,7 +310,6 @@ Namespace Kodi
             logger.Trace(String.Concat("[APIKodi] GetHostMovieIdByFilename: " & _currenthost.name & ": " & Filename & " NOT found in host database!"))
             Return movieID
         End Function
-
         ''' <summary>
         ''' Get all movies from Kodi host
         ''' </summary>
@@ -328,7 +326,8 @@ Namespace Kodi
             Dim response = Await _kodi.VideoLibrary.GetMovies(Video.Fields.Movie.AllFields).ConfigureAwait(False)
             Return response.movies.ToList()
         End Function
-#End Region
+
+#End Region 'Movie API
 
 #Region "TVShow API"
         ''' <summary>
@@ -489,7 +488,6 @@ Namespace Kodi
                 Return False
             End Try
         End Function
-
         ''' <summary>
         ''' Get TVShowID at Kodi host for a specific TVShow
         ''' </summary>
@@ -522,7 +520,6 @@ Namespace Kodi
             logger.Trace(String.Concat("[APIKodi] GetHostTVShowIdByPath: " & _currenthost.name & ": " & TVShowPath & " NOT found in host database!"))
             Return tvshowid
         End Function
-
         ''' <summary>
         ''' Get all tvshows from Kodi host
         ''' </summary>
@@ -539,7 +536,8 @@ Namespace Kodi
             Dim response = Await _kodi.VideoLibrary.GetTVShows(properties:=Video.Fields.TVShow.AllFields).ConfigureAwait(False)
             Return response.tvshows.ToList()
         End Function
-#End Region
+
+#End Region 'TVShow API
 
 #Region "Episode API"
         ''' <summary>
@@ -658,7 +656,6 @@ Namespace Kodi
                 Return False
             End Try
         End Function
-
         ''' <summary>
         ''' Get episodeID at Kodi host for a specific episode
         ''' </summary>
@@ -695,7 +692,6 @@ Namespace Kodi
             logger.Trace(String.Concat("[APIKodi] GetHostEpisodeIdByFilename: " & _currenthost.name & ": " & Filename & " NOT found in host database!"))
             Return episodeID
         End Function
-
         ''' <summary>
         ''' Get all episodes from Kodi host
         ''' </summary>
@@ -712,7 +708,8 @@ Namespace Kodi
             Dim response = Await _kodi.VideoLibrary.GetEpisodes(ShowID, Season, properties:=Video.Fields.Episode.AllFields).ConfigureAwait(False)
             Return response.episodes.ToList()
         End Function
-#End Region
+
+#End Region 'Episode API
 
 #Region "General API"
         ''' <summary>
@@ -737,7 +734,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Scan video library of Kodi host
         ''' </summary>
@@ -760,7 +756,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Get all sources configured in Kodi host
         ''' </summary>
@@ -812,7 +807,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Get JSON RPC version of host
         ''' </summary>
@@ -849,7 +843,6 @@ Namespace Kodi
                 Return ""
             End Try
         End Function
-
         ''' <summary>
         ''' Scan specific directory for new content
         ''' </summary>
@@ -919,7 +912,6 @@ Namespace Kodi
                 Return True
             End If
         End Function
-
         ''' <summary>
         ''' Send message to Kodi which is displayed as notification
         ''' </summary>
@@ -942,7 +934,8 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-#End Region
+
+#End Region 'General API
 
 #Region "Helper functions/methods"
         ''' <summary>
@@ -1025,10 +1018,10 @@ Namespace Kodi
             End If
             Return tmpremotepath
         End Function
-#End Region
+
+#End Region 'Helper functions/methods
 
 #Region "Unused code"
-
         ''' <summary>
         ''' Check host connection
         ''' </summary>
@@ -1056,7 +1049,6 @@ Namespace Kodi
                 Return False
             End Try
         End Function
-
         ''' <summary>
         ''' UnMute Kodi host
         ''' </summary>
@@ -1073,7 +1065,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Mute Kodi host
         ''' </summary>
@@ -1090,7 +1081,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Set volume of Kodi host
         ''' </summary>
@@ -1106,7 +1096,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Get JSON structure of Kodi host
         ''' </summary>
@@ -1123,7 +1112,6 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Get basic Kodi host information
         ''' </summary>
@@ -1162,11 +1150,12 @@ Namespace Kodi
         '    VolumeEnabled = Not props.muted
         'End Function
 
-#End Region
+#End Region 'Unused code
 
 #End Region 'Methods
 
 #Region "Nested Types"
+
         Structure MySettings
             ''' <summary>
             ''' Username for Kodi webservice. Optional. Default is kodi for Kodi hosts ( xbmc for XBMC hosts )
@@ -1201,7 +1190,9 @@ Namespace Kodi
             ''' </history>
             Dim WebPort As Integer
         End Structure
+
 #End Region 'Nested Types
+
     End Class
 
 #Region "Client JSON Communication helper (needed for listening to notification events in Kodi)"
@@ -1209,14 +1200,21 @@ Namespace Kodi
         Implements IPlatformServices
         'following class platformservices is needed for listening to notification events in Kodi
         'found and converted to vb.net from https://github.com/DerPate2010/Xbmc2ndScr
+
 #Region "Fields"
+
         Private _socketfactory As ISocketFactory
+
 #End Region
+
 #Region "Constructors"
+
         Public Sub New()
             SocketFactoryCreate = New SocketFactory()
         End Sub
-#End Region
+
+#End Region 'Constructors
+
 #Region "Methods"
 
         Public Async Function GetRequestStream(request As Net.WebRequest) As Task(Of IO.Stream)
@@ -1234,13 +1232,17 @@ Namespace Kodi
                 Throw ex
             End Try
         End Function
-#End Region
+
+#End Region 'Methods
+
 #Region "Properties"
+
         Public ReadOnly Property SocketFactory As ISocketFactory Implements IPlatformServices.SocketFactory
             Get
                 Return _socketfactory
             End Get
         End Property
+
         Public Property SocketFactoryCreate As ISocketFactory
             Get
                 Return _socketfactory
@@ -1249,47 +1251,75 @@ Namespace Kodi
                 _socketfactory = value
             End Set
         End Property
-#End Region
+
+#End Region 'Properties
+
     End Class
+
     Friend Class SocketFactory
         Implements ISocketFactory
+
 #Region "Fields"
-#End Region
+
+#End Region 'Fields
+
 #Region "Constructors"
-#End Region
+
+#End Region 'Constructors
+
 #Region "Methods"
+
         Public Function GetSocket() As ISocket Implements ISocketFactory.GetSocket
             Return New DummySocket()
         End Function
+
         Public Async Function ResolveHostname(hostname As String) As Task(Of String()) Implements ISocketFactory.ResolveHostname
             Return Await ResolveHostname(hostname).ConfigureAwait(False)
         End Function
-#End Region
+
+#End Region 'Methods
+
 #Region "Properties"
-#End Region
+
+#End Region 'Properties
+
     End Class
+
     Friend Class DummySocket
         Implements ISocket
+
 #Region "Fields"
+
         Private _socket As Net.Sockets.Socket
-#End Region
+
+#End Region 'Fields
+
 #Region "Constructors"
-#End Region
+
+#End Region 'Constructors
+
 #Region "Methods"
+
         Public Sub Dispose() Implements IDisposable.Dispose
         End Sub
+
         Public Async Function ConnectAsync(hostName As String, port As Integer) As Task Implements ISocket.ConnectAsync
             _socket = New Net.Sockets.Socket(Net.Sockets.AddressFamily.InterNetwork, Net.Sockets.SocketType.Stream, Net.Sockets.ProtocolType.Tcp)
             _socket.Connect(hostName, port)
         End Function
+
         Public Function GetInputStream() As IO.Stream Implements ISocket.GetInputStream
             Return New Net.Sockets.NetworkStream(_socket)
         End Function
-#End Region
+
+#End Region 'Methods
+
 #Region "Properties"
-#End Region
+
+#End Region 'Properties
+
     End Class
 
-#End Region
+#End Region 'Client JSON Communication helper (needed for listening to notification events in Kodi)
 
 End Namespace
