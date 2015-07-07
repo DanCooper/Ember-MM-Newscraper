@@ -36,6 +36,7 @@ Public Class KodiInterface
 #End Region 'Delegates
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private WithEvents MainTools As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents TrayTools As New System.Windows.Forms.ToolStripMenuItem
@@ -63,17 +64,13 @@ Public Class KodiInterface
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-
     Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
-
     ''' <summary>
     ''' Subscribe to Eventtypes here
     ''' </summary>
@@ -117,7 +114,6 @@ Public Class KodiInterface
 #End Region 'Properties
 
 #Region "Methods"
-
     ''' <summary>
     ''' Implementation of Realtime Sync, triggered outside of this module i.e after finishing edits of a movie (=Enums.ModuleEventType.Sync_Movie)
     ''' </summary>
@@ -205,8 +201,6 @@ Public Class KodiInterface
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
-
-
     ''' <summary>
     ''' Actions on module startup (Ember startup)
     ''' </summary>
@@ -219,7 +213,6 @@ Public Class KodiInterface
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
-
     ''' <summary>
     ''' Load module settings
     ''' </summary>
@@ -241,7 +234,6 @@ Public Class KodiInterface
             'setting file is missing, should not be happening at all...
         End If
     End Sub
-
     ''' <summary>
     '''  Actions on module startup (Ember startup) and runtime if module is enabled
     ''' </summary>
@@ -307,7 +299,6 @@ Public Class KodiInterface
         SetToolsStripItem_Shows(cmnuSep_Shows)
         SetToolsStripItem_Shows(cmnuHost_Shows)
     End Sub
-
     ''' <summary>
     '''  Actions on module startup (Ember startup) and runtime if module is disabled
     ''' </summary>
@@ -330,9 +321,7 @@ Public Class KodiInterface
         'cmnuShows
         RemoveToolsStripItem_Shows(cmnuSep_Shows)
         RemoveToolsStripItem_Shows(cmnuHost_Shows)
-
     End Sub
-
     ''' <summary>
     ''' Load and fill controls of settings page of module
     ''' </summary>
@@ -365,7 +354,6 @@ Public Class KodiInterface
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
-
     ''' <summary>
     ''' Save module settings
     ''' </summary>
@@ -383,7 +371,6 @@ Public Class KodiInterface
             _setup.Dispose()
         End If
     End Sub
-
     ''' <summary>
     ''' Save module settings
     ''' </summary>
@@ -417,7 +404,6 @@ Public Class KodiInterface
             objStreamReader.Close()
         End If
     End Sub
-
     ''' <summary>
     ''' Update movie details on Host DB
     ''' </summary>
@@ -449,7 +435,6 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
-
     ''' <summary>
     ''' Update episode details on Host DB
     ''' </summary>
@@ -481,7 +466,6 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
-
     ''' <summary>
     ''' Update details of tvshow on Host DB
     ''' </summary>
@@ -513,7 +497,6 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
-
     ''' <summary>
     '''  Scan video library of host
     ''' </summary>
@@ -525,7 +508,7 @@ Public Class KodiInterface
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             For Each host In MySettings.KodiHosts.host.ToList
                 Dim _APIKodi As New Kodi.APIKodi(host)
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), Nothing}))
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
                 Dim response = Await _APIKodi.ScanVideoLibrary()
                 If response = Nothing Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
@@ -537,7 +520,6 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
-
     ''' <summary>
     '''  Clean video library of host
     ''' </summary>
@@ -549,7 +531,7 @@ Public Class KodiInterface
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             For Each host In MySettings.KodiHosts.host.ToList
                 Dim _APIKodi As New Kodi.APIKodi(host)
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), Nothing}))
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
                 Dim response = Await _APIKodi.CleanVideoLibrary()
                 If response = Nothing Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1451, "Cleaning Failed"), Nothing}))
@@ -561,8 +543,6 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
-
-
     ''' <summary>
     ''' Get all video sources configured in host
     ''' </summary>
@@ -582,7 +562,6 @@ Public Class KodiInterface
         End Try
         Return listSources
     End Function
-
     ''' <summary>
     ''' Get JSONRPC version of host
     ''' </summary>
@@ -599,7 +578,6 @@ Public Class KodiInterface
             Return ""
         End Try
     End Function
-
     ''' <summary>
     ''' TODO Do something good whenever user directly hits "Kodi" button in mainbar
     ''' </summary>
@@ -608,7 +586,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Still need to discuss what we'll doing here...
     ''' </remarks>
-    Private Sub mnuMainTools_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MainTools.Click, TrayTools.Click
+    Private Sub mnuMainTools_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) 'Handles MainTools.Click, TrayTools.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected.ContentType
             Case Enums.Content_Type.Movie
@@ -704,13 +682,19 @@ Public Class KodiInterface
 #End Region 'Methods
 
 #Region "Nested Types"
+
     Structure _MySettings
+
 #Region "Fields"
+
         'Kodi Host type already declared in EmberAPI (XML serialization)
         Dim KodiHosts As EmberAPI.clsXMLHosts
         Dim SendNotifications As Boolean
+
 #End Region 'Fields
+
     End Structure
+
 #End Region 'Nested Types
 
 End Class
