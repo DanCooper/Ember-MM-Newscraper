@@ -225,7 +225,7 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember MediaManager", Master.eLang.GetString(9999, "Updated") & ": " & uMovie.Filename).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(9999, "Updated") & ": " & uMovie.Movie.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -295,7 +295,7 @@ Namespace Kodi
                     'kmovie.file ie. "nfs://192.168.2.200/Media_2/Movie/Horror/Chucky 1/Child's Play.1988.HDTV.mkv"
                     'since kmovie.file represents fullpath, compare only last part (filename)
                     If kMovie.file.ToLower.EndsWith(Filename.ToLower) Then
-                        logger.Trace(String.Concat("[APIKodi] GetHostMovieIdByFilename: " & _currenthost.name & ": " & Filename & " found in host database!"))
+                        logger.Trace(String.Concat("[APIKodi] GetHostMovieIdByFilename: " & _currenthost.name & ": " & Filename & " found in host database! [ID:", kMovie.movieid, "]"))
                         movieID = kMovie.movieid
                         Return movieID
                     End If
@@ -463,7 +463,7 @@ Namespace Kodi
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uTVShow.ShowPath, New Bitmap(My.Resources.logo)}))
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember MediaManager", Master.eLang.GetString(9999, "Updated") & ": " & uTVShow.ShowPath).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(9999, "Updated") & ": " & uTVShow.TVShow.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -634,7 +634,7 @@ Namespace Kodi
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uEpisode.Filename, New Bitmap(My.Resources.logo)}))
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember MediaManager", Master.eLang.GetString(9999, "Updated") & ": " & uEpisode.Filename).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(9999, "Updated") & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEp.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -898,10 +898,10 @@ Namespace Kodi
             uPath = GetRemoteFilePath(uPath)
             Dim response = Await _kodi.VideoLibrary.Scan(uPath).ConfigureAwait(False)
             If response.Contains("error") Then
-                logger.Error(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": " & uPath, response))
+                logger.Error(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": " & uPath, " ", response))
                 Return False
             Else
-                logger.Trace(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": " & uPath, response))
+                logger.Trace(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": " & uPath, " ", response))
                 Return True
             End If
         End Function
