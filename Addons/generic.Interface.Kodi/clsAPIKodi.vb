@@ -102,19 +102,20 @@ Namespace Kodi
 
                 If KodiID > -1 Then
 
-                    'string or Nothing(=field won't be updated at host)
-                    Dim mTitle As String = If(Not String.IsNullOrEmpty(uMovie.Movie.Title), uMovie.Movie.Title, Nothing)
-                    Dim mPlot As String = If(Not String.IsNullOrEmpty(uMovie.Movie.Plot), uMovie.Movie.Plot, Nothing)
-                    Dim mMPAA As String = If(Not String.IsNullOrEmpty(uMovie.Movie.MPAA), uMovie.Movie.MPAA, Nothing)
-                    Dim mImdbnumber As String = If(Not String.IsNullOrEmpty(uMovie.Movie.ID), uMovie.Movie.ID, Nothing)
-                    Dim mOriginalTitle As String = If(Not String.IsNullOrEmpty(uMovie.Movie.OriginalTitle), uMovie.Movie.OriginalTitle, Nothing)
-                    Dim mTagline As String = If(Not String.IsNullOrEmpty(uMovie.Movie.Tagline), uMovie.Movie.Tagline, Nothing)
-                    Dim mOutline As String = If(Not String.IsNullOrEmpty(uMovie.Movie.Outline), uMovie.Movie.Outline, Nothing)
-                    Dim mSortTitle As String = If(Not String.IsNullOrEmpty(uMovie.Movie.SortTitle), uMovie.Movie.SortTitle, Nothing)
-                    Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.TrailerPath), GetRemoteFilePath(uMovie.TrailerPath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, Nothing))
-                    Dim mSet As String = If(uMovie.Movie.Sets.Count > 0, uMovie.Movie.Sets.Item(0).Title, Nothing)
+                    'string or string.empty
+                    Dim mDateAdded As String = If(uMovie.Movie.DateAddedSpecified, uMovie.Movie.DateAdded, Nothing)
+                    Dim mImdbnumber As String = uMovie.Movie.ID
                     Dim mLastPlayed As String = If(uMovie.Movie.LastPlayedSpecified, uMovie.Movie.LastPlayed, Nothing)
-                    Dim mdateAdded As String = If(uMovie.Movie.DateAddedSpecified, uMovie.Movie.DateAdded, Nothing)
+                    Dim mMPAA As String = uMovie.Movie.MPAA
+                    Dim mOriginalTitle As String = uMovie.Movie.OriginalTitle
+                    Dim mOutline As String = uMovie.Movie.Outline
+                    Dim mPlot As String = uMovie.Movie.Plot
+                    Dim mSet As String = If(uMovie.Movie.Sets.Count > 0, uMovie.Movie.Sets.Item(0).Title, String.Empty)
+                    Dim mSortTitle As String = uMovie.Movie.SortTitle
+                    Dim mTagline As String = uMovie.Movie.Tagline
+                    Dim mTitle As String = uMovie.Movie.Title
+                    Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.TrailerPath), GetRemoteFilePath(uMovie.TrailerPath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, String.Empty))
+
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(uMovie.Movie.Votes), uMovie.Movie.Votes, Nothing)
                     If Master.eSettings.GeneralDigitGrpSymbolVotes Then
@@ -126,35 +127,37 @@ Namespace Kodi
                         End If
                     End If
 
+                    'integer or 0
+                    Dim mRating As Double = If(uMovie.Movie.RatingSpecified, CType(Double.Parse(uMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRuntime As Integer = If(uMovie.Movie.RuntimeSpecified, CType(uMovie.Movie.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+                    Dim mTop250 As Integer = If(uMovie.Movie.Top250Specified, CType(uMovie.Movie.Top250, Integer), 0)
+                    Dim mYear As Integer = If(uMovie.Movie.YearSpecified, CType(uMovie.Movie.Year, Integer), 0)
+
                     'Nullable(Of Integer)types. Following values can be integer or set to Nothing if not filled (nullable integer type here because otherwise default value would always be "0" which is not correct)
                     Dim mPlaycount As Integer? = If(uMovie.Movie.PlayCountSpecified, CType(uMovie.Movie.PlayCount, Integer?), New Integer?)
-                    Dim mRuntime As Integer? = If(uMovie.Movie.RuntimeSpecified, CType(uMovie.Movie.Runtime, Integer?), New Integer?)
-                    Dim mRating As Double? = If(uMovie.Movie.RatingSpecified, CType(Double.Parse(uMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double?), New Double?)
 
-                    Dim mYear As Integer? = If(uMovie.Movie.YearSpecified, CType(uMovie.Movie.Year, Integer?), New Integer?)
-                    Dim mTop250 As Integer? = If(uMovie.Movie.Top250Specified, CType(uMovie.Movie.Top250, Integer?), New Integer?)
 
                     'arrays
                     'Countries
-                    Dim mCountryList As List(Of String) = If(uMovie.Movie.CountriesSpecified, uMovie.Movie.Countries, Nothing)
+                    Dim mCountryList As List(Of String) = If(uMovie.Movie.CountriesSpecified, uMovie.Movie.Countries, New List(Of String))
 
                     'Directors
-                    Dim mDirectorList As List(Of String) = If(uMovie.Movie.DirectorsSpecified, uMovie.Movie.Directors, Nothing)
+                    Dim mDirectorList As List(Of String) = If(uMovie.Movie.DirectorsSpecified, uMovie.Movie.Directors, New List(Of String))
 
                     'Genres
-                    Dim mGenreList As List(Of String) = If(uMovie.Movie.GenresSpecified, uMovie.Movie.Genres, Nothing)
+                    Dim mGenreList As List(Of String) = If(uMovie.Movie.GenresSpecified, uMovie.Movie.Genres, New List(Of String))
 
                     'Studios
-                    Dim mStudioList As List(Of String) = If(uMovie.Movie.StudiosSpecified, uMovie.Movie.Studios, Nothing)
+                    Dim mStudioList As List(Of String) = If(uMovie.Movie.StudiosSpecified, uMovie.Movie.Studios, New List(Of String))
 
                     'Tags
-                    Dim mTagList As List(Of String) = If(uMovie.Movie.TagsSpecified, uMovie.Movie.Tags, Nothing)
+                    Dim mTagList As List(Of String) = If(uMovie.Movie.TagsSpecified, uMovie.Movie.Tags, New List(Of String))
 
                     'Writers (Credits)
-                    Dim mWriterList As List(Of String) = If(uMovie.Movie.CreditsSpecified, uMovie.Movie.Credits, Nothing)
+                    Dim mWriterList As List(Of String) = If(uMovie.Movie.CreditsSpecified, uMovie.Movie.Credits, New List(Of String))
 
 
-                    'string or null
+                    'string or null/nothing
                     Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.BannerPath), _
                                                   GetRemoteFilePath(uMovie.BannerPath), Nothing)
                     Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ClearArtPath), _
@@ -169,26 +172,17 @@ Namespace Kodi
                                                   GetRemoteFilePath(uMovie.LandscapePath), Nothing)
                     Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.PosterPath), _
                                                   GetRemoteFilePath(uMovie.PosterPath), Nothing)
-                    'can only set ONE image?! Maybe list of of extrafanartpaths?
-                    Dim mExtrafanart As String = If(Not String.IsNullOrEmpty(uMovie.EFanartsPath), _
-                             GetRemoteFilePath(uMovie.EFanartsPath), Nothing)
-                    'can only set ONE image?! Maybe list of extrathumbpaths?
-                    Dim mExtraThumbs As String = If(Not String.IsNullOrEmpty(uMovie.EThumbsPath), _
-                             GetRemoteFilePath(uMovie.EThumbsPath), Nothing)
-
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
                     artwork.banner = mBanner
-                    artwork.fanart = mFanart
-                    artwork.poster = mPoster
-                    'artwork.thumb = mPoster ' not supported in Ember?!
                     artwork.clearart = mClearArt
                     artwork.clearlogo = mClearLogo
                     artwork.discart = mDiscArt
+                    artwork.fanart = mFanart
                     artwork.landscape = mLandscape
-                    artwork.extrafanart = mExtrafanart
-                    artwork.extrathumbs = mExtraThumbs
+                    artwork.poster = mPoster
+                    'artwork.thumb = mPoster ' not supported in Ember?!
 
                     Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiID, _
                                                                         title:=mTitle, _
@@ -371,14 +365,14 @@ Namespace Kodi
                     ' Dim mPlaycount As String = If(uTVShow.TVShow.PlayCountSpecified, uTVShow.TVShow.PlayCount, "0")
                     ' Dim mLastPlayed As String = If(uEpisode.TVEp.LastPlayedSpecified, Web.HttpUtility.JavaScriptStringEncode(uEpisode.TVEp.LastPlayed, True), "null")
 
-                    'string or Nothing(=field won't be updated at host)
-                    Dim mTitle As String = If(Not String.IsNullOrEmpty(uTVShow.TVShow.Title), uTVShow.TVShow.Title, Nothing)
-                    Dim mPlot As String = If(Not String.IsNullOrEmpty(uTVShow.TVShow.Plot), uTVShow.TVShow.Plot, Nothing)
-                    Dim mSortTitle As String = If(Not String.IsNullOrEmpty(uTVShow.TVShow.SortTitle), uTVShow.TVShow.SortTitle, Nothing)
-                    Dim mImdbnumber As String = If(Not String.IsNullOrEmpty(uTVShow.TVShow.IMDB), uTVShow.TVShow.IMDB, Nothing)
-                    Dim mMPAA As String = If(Not String.IsNullOrEmpty(uTVShow.TVShow.MPAA), uTVShow.TVShow.MPAA, Nothing)
-                    Dim mepisodeguide As String = If(uTVShow.TVShow.EpisodeGuideSpecified, uTVShow.TVShow.EpisodeGuide.URL, Nothing)
-                    Dim mPremiered As String = If(uTVShow.TVShow.PremieredSpecified, uTVShow.TVShow.Premiered, Nothing)
+                    'string or string.empty
+                    Dim mEpisodeGuide As String = uTVShow.TVShow.EpisodeGuide.URL
+                    Dim mImdbnumber As String = uTVShow.TVShow.TVDBID
+                    Dim mMPAA As String = uTVShow.TVShow.MPAA
+                    Dim mPlot As String = uTVShow.TVShow.Plot
+                    Dim mPremiered As String = uTVShow.TVShow.Premiered
+                    Dim mSortTitle As String = uTVShow.TVShow.SortTitle
+                    Dim mTitle As String = uTVShow.TVShow.Title
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(uTVShow.TVShow.Votes), uTVShow.TVShow.Votes, Nothing)
@@ -391,37 +385,35 @@ Namespace Kodi
                         End If
                     End If
 
-                    'Nullable(Of Integer)types. Following values can be integer or set to Nothing if not filled (nullable integer type here because otherwise default value would always be "0" which is not correct)
-                    Dim mRuntime As Integer? = If(uTVShow.TVShow.RuntimeSpecified, CType(uTVShow.TVShow.Runtime, Integer?), New Integer?)
-                    Dim mRating As Double? = If(uTVShow.TVShow.RatingSpecified, CType(Double.Parse(uTVShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double?), New Double?)
+                    'integer or 0
+                    Dim mRating As Double = If(uTVShow.TVShow.RatingSpecified, CType(Double.Parse(uTVShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRuntime As Integer = If(uTVShow.TVShow.RuntimeSpecified, CType(uTVShow.TVShow.Runtime, Integer), 0)
 
                     'arrays
                     'Genres
-                    Dim mGenreList As List(Of String) = If(uTVShow.TVShow.GenresSpecified, uTVShow.TVShow.Genres, Nothing)
+                    Dim mGenreList As List(Of String) = If(uTVShow.TVShow.GenresSpecified, uTVShow.TVShow.Genres, New List(Of String))
 
                     'Studios
-                    Dim mStudioList As List(Of String) = If(uTVShow.TVShow.StudiosSpecified, uTVShow.TVShow.Studios, Nothing)
+                    Dim mStudioList As List(Of String) = If(uTVShow.TVShow.StudiosSpecified, uTVShow.TVShow.Studios, New List(Of String))
 
                     'Tags
-                    Dim mTagList As List(Of String) = If(uTVShow.TVShow.Tags.Count > 0, uTVShow.TVShow.Tags, Nothing)
+                    Dim mTagList As List(Of String) = If(uTVShow.TVShow.Tags.Count > 0, uTVShow.TVShow.Tags, New List(Of String))
 
-                    'string or null
+                    'string or null/nothing
                     Dim mBanner As String = If(Not String.IsNullOrEmpty(uTVShow.ShowBannerPath), _
                                                   GetRemoteFilePath(uTVShow.ShowBannerPath), Nothing)
+                    Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.ShowCharacterArtPath), _
+                                               GetRemoteFilePath(uTVShow.ShowCharacterArtPath), Nothing)
                     Dim mClearArt As String = If(Not String.IsNullOrEmpty(uTVShow.ShowClearArtPath), _
                                                 GetRemoteFilePath(uTVShow.ShowClearArtPath), Nothing)
                     Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uTVShow.ShowClearLogoPath), _
                                                 GetRemoteFilePath(uTVShow.ShowClearLogoPath), Nothing)
-                    Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.ShowCharacterArtPath), _
-                                               GetRemoteFilePath(uTVShow.ShowCharacterArtPath), Nothing)
                     Dim mFanart As String = If(Not String.IsNullOrEmpty(uTVShow.ShowFanartPath), _
                                                GetRemoteFilePath(uTVShow.ShowFanartPath), Nothing)
                     Dim mLandscape As String = If(Not String.IsNullOrEmpty(uTVShow.ShowLandscapePath), _
                                               GetRemoteFilePath(uTVShow.ShowLandscapePath), Nothing)
                     Dim mPoster As String = If(Not String.IsNullOrEmpty(uTVShow.ShowPosterPath), _
                                                  GetRemoteFilePath(uTVShow.ShowPosterPath), Nothing)
-                    Dim mExtraFanart As String = If(Not String.IsNullOrEmpty(uTVShow.ShowEFanartsPath), _
-                                 GetRemoteFilePath(uTVShow.ShowEFanartsPath), Nothing)
                     'TODO Missing Artwork:
                     'Dim mExtraThumbs As String = If(Not String.IsNullOrEmpty(uTVShow.ShowEThumbsPath), _
                     '                           Web.HttpUtility.JavaScriptStringEncode(GetRemoteFilePath(uTVShow.ShowEThumbsPath, uTVShow.Source), True), "null")
@@ -433,14 +425,12 @@ Namespace Kodi
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
                     artwork.banner = mBanner
-                    artwork.fanart = mFanart
-                    artwork.poster = mPoster
+                    artwork.characterart = mCharacterArt
                     artwork.clearart = mClearArt
                     artwork.clearlogo = mClearLogo
-                    artwork.characterart = mCharacterArt
+                    artwork.fanart = mFanart
                     artwork.landscape = mLandscape
-                    artwork.extrafanart = mExtraFanart
-
+                    artwork.poster = mPoster
 
                     Dim response = Await _kodi.VideoLibrary.SetTVShowDetails(KodiID, _
                                                                         title:=mTitle, _
@@ -453,7 +443,7 @@ Namespace Kodi
                                                                         premiered:=mPremiered, _
                                                                         votes:=mVotes, _
                                                                         sorttitle:=mSortTitle, _
-                                                                        episodeguide:=mepisodeguide, _
+                                                                        episodeguide:=mEpisodeGuide, _
                                                                         tag:=mTagList, _
                                                                         art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
@@ -576,11 +566,11 @@ Namespace Kodi
                 End If
 
                 If KodiID > -1 Then
-                    'string or Nothing(=field won't be updated at host)
-                    Dim mTitle As String = If(Not String.IsNullOrEmpty(uEpisode.TVEp.Title), uEpisode.TVEp.Title, Nothing)
-                    Dim mPlot As String = If(Not String.IsNullOrEmpty(uEpisode.TVEp.Plot), uEpisode.TVEp.Plot, Nothing)
-                    Dim mdateAdded As String = If(uEpisode.TVEp.DateAddedSpecified, uEpisode.TVEp.DateAdded, Nothing)
-                    Dim mLastPlayed As String = If(uEpisode.TVEp.LastPlayedSpecified, uEpisode.TVEp.LastPlayed, Nothing)
+                    'string or string.empty
+                    Dim mDateAdded As String = uEpisode.TVEp.DateAdded
+                    Dim mLastPlayed As String = uEpisode.TVEp.LastPlayed
+                    Dim mPlot As String = uEpisode.TVEp.Plot
+                    Dim mTitle As String = uEpisode.TVEp.Title
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(uEpisode.TVEp.Votes), uEpisode.TVEp.Votes, Nothing)
@@ -593,16 +583,19 @@ Namespace Kodi
                         End If
                     End If
 
+                    'integer or 0
+                    Dim mRating As Double = If(uEpisode.TVEp.RatingSpecified, CType(Double.Parse(uEpisode.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRuntime As Integer = If(uEpisode.TVEp.RuntimeSpecified, CType(uEpisode.TVEp.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+
                     'Nullable(Of Integer)types. Following values can be integer or set to Nothing if not filled (nullable integer type here because otherwise default value would always be "0" which is not correct)
                     Dim mPlaycount As Integer? = If(uEpisode.TVEp.PlaycountSpecified, CType(uEpisode.TVEp.Playcount, Integer?), New Integer?)
-                    Dim mRuntime As Integer? = If(uEpisode.TVEp.RuntimeSpecified, CType(uEpisode.TVEp.Runtime, Integer?), New Integer?)
-                    Dim mRating As Double? = If(uEpisode.TVEp.RatingSpecified, CType(Double.Parse(uEpisode.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double?), New Double?)
 
                     'arrays
                     'Directors
-                    Dim mDirectorList As List(Of String) = If(uEpisode.TVEp.DirectorSpecified, uEpisode.TVEp.Directors, Nothing)
+                    Dim mDirectorList As List(Of String) = If(uEpisode.TVEp.DirectorSpecified, uEpisode.TVEp.Directors, New List(Of String))
+
                     'Writers (Credits)
-                    Dim mWriterList As List(Of String) = If(uEpisode.TVEp.CreditsSpecified, uEpisode.TVEp.Credits, Nothing)
+                    Dim mWriterList As List(Of String) = If(uEpisode.TVEp.CreditsSpecified, uEpisode.TVEp.Credits, New List(Of String))
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
