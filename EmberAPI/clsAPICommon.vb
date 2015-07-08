@@ -807,8 +807,10 @@ Public Class Enums
         ShowTVShow = 43
         SyncModuleSettings = 44
         Sync_Movie = 45
-        Task = 46
-        TVImageNaming = 47
+        Sync_TVEpisode = 46
+        Sync_TVShow = 47
+        Task = 48
+        TVImageNaming = 49
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer

@@ -76,11 +76,9 @@ Public Class KodiInterface
     ''' </summary>
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Sync_Movie, Enums.ModuleEventType.AfterEdit_TVEpisode})
-            'TODO Expand events here..
-            'Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.AfterEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie, Enums.ModuleEventType.ScraperSingle_Movie, _
-            '                                                           Enums.ModuleEventType.AfterEdit_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode, _
-            '                                                           Enums.ModuleEventType.AfterUpdateDB_TV})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Sync_Movie, _
+                                                                                   Enums.ModuleEventType.Sync_TVEpisode, _
+                                                                                   Enums.ModuleEventType.Sync_TVShow})
         End Get
     End Property
 
@@ -130,7 +128,7 @@ Public Class KodiInterface
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Select Case mType
                 'Movie syncing
-                Case Enums.ModuleEventType.Sync_Movie ', Enums.ModuleEventType.AfterEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie, Enums.ModuleEventType.ScraperSingle_Movie  ',Enums.ModuleEventType.Sync_Movie 
+                Case Enums.ModuleEventType.Sync_Movie
                     If Master.currMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(Master.currMovie, True) Then
                         If Not String.IsNullOrEmpty(Master.currMovie.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.ID) Then
                             Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
@@ -162,7 +160,7 @@ Public Class KodiInterface
                         logger.Warn("[KodiInterface] RunGeneric MovieUpdate: Not online!")
                     End If
                     'Episode syncing
-                Case Enums.ModuleEventType.AfterEdit_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode
+                Case Enums.ModuleEventType.Sync_TVEpisode
                     If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
                         If Not String.IsNullOrEmpty(Master.currShow.EpNfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.EpID.ToString) Then
                             Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
@@ -190,7 +188,7 @@ Public Class KodiInterface
                         logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: Not online!")
                     End If
                     'TODO TVShow syncing
-                Case Enums.ModuleEventType.AfterUpdateDB_TV
+                Case Enums.ModuleEventType.Sync_TVShow
                     If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
                         'TODO
                     End If

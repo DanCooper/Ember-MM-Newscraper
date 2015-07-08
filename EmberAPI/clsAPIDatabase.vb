@@ -3137,6 +3137,8 @@ Public Class Database
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
 
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, _movieDB)
+
         Return _movieDB
     End Function
     ''' <summary>
@@ -3731,6 +3733,8 @@ Public Class Database
             End If
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
+
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, _TVEpDB)
     End Sub
     ''' <summary>
     ''' Stores information for a single season to the database
@@ -3986,6 +3990,8 @@ Public Class Database
         End Using
 
         If Not BatchMode Then SQLtransaction.Commit()
+
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, _TVShowDB)
     End Sub
     ''' <summary>
     ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources

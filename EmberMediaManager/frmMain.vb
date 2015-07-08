@@ -2796,7 +2796,6 @@ Public Class frmMain
                     MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
                     Dim newNfoPath As Structures.DBMovie = Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, True)
                     MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, newNfoPath.NfoPath)
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwMovieScraper.ReportProgress(-2, dScrapeRow.Item("idMovie").ToString)
                 End If
@@ -5086,7 +5085,6 @@ doCancel:
                             Me.FillList(False, True, False)
                             Me.SetControlsEnabled(True)
                         End If
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultMovieOptions)
@@ -6725,7 +6723,6 @@ doCancel:
                     Else
                         Me.FillList(False, True, False)
                     End If
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                 Case Windows.Forms.DialogResult.Retry
                     Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                     Me.MovieScrapeData(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultMovieOptions)
@@ -7124,7 +7121,6 @@ doCancel:
                             Else
                                 Me.FillList(False, True, False)
                             End If
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultMovieOptions)
@@ -13182,7 +13178,6 @@ doCancel:
                         Else
                             Me.FillList(False, True, False)
                         End If
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Master.currMovie.RemoveActorThumbs = False
                         Master.currMovie.RemoveBanner = False
