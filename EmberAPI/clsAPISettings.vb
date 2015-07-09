@@ -4214,12 +4214,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieBannerExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieBannerExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieBannerExtended = value
+        End Set
+    End Property
+
     Public Property MovieClearArtAD() As Boolean
         Get
             Return Settings._XMLSettings.MovieClearArtAD
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieClearArtAD = value
+        End Set
+    End Property
+
+    Public Property MovieClearArtExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieClearArtExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieClearArtExtended = value
         End Set
     End Property
 
@@ -4232,12 +4250,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieClearLogoExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieClearLogoExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieClearLogoExtended = value
+        End Set
+    End Property
+
     Public Property MovieDiscArtAD() As Boolean
         Get
             Return Settings._XMLSettings.MovieDiscArtAD
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieDiscArtAD = value
+        End Set
+    End Property
+
+    Public Property MovieDiscArtExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieDiscArtExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieDiscArtExtended = value
         End Set
     End Property
 
@@ -4274,6 +4310,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieLandscapeAD = value
+        End Set
+    End Property
+
+    Public Property MovieLandscapeExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLandscapeExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLandscapeExtended = value
         End Set
     End Property
 
@@ -4322,42 +4367,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerEden() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieBannerEden
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieBannerEden = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtEden() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieClearArtEden
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieClearArtEden = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoEden() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieClearLogoEden
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieClearLogoEden = value
-        End Set
-    End Property
-
-    Public Property MovieDiscArtEden() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieDiscArtEden
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieDiscArtEden = value
-        End Set
-    End Property
-
     Public Property MovieExtrafanartsEden() As Boolean
         Get
             Return Settings._XMLSettings.MovieExtrafanartsEden
@@ -4382,15 +4391,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieFanartEden = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapeEden() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieLandscapeEden
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLandscapeEden = value
         End Set
     End Property
 
@@ -6182,14 +6182,14 @@ Public Class Settings
         If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
             Master.eSettings.MovieActorThumbsFrodo = True
-            Master.eSettings.MovieBannerAD = True
-            Master.eSettings.MovieClearArtAD = True
-            Master.eSettings.MovieClearLogoAD = True
-            Master.eSettings.MovieDiscArtAD = True
+            Master.eSettings.MovieBannerExtended = True
+            Master.eSettings.MovieClearArtExtended = True
+            Master.eSettings.MovieClearLogoExtended = True
+            Master.eSettings.MovieDiscArtExtended = True
             Master.eSettings.MovieExtrafanartsFrodo = True
             Master.eSettings.MovieExtrathumbsFrodo = True
             Master.eSettings.MovieFanartFrodo = True
-            Master.eSettings.MovieLandscapeAD = True
+            Master.eSettings.MovieLandscapeExtended = True
             Master.eSettings.MovieNFOFrodo = True
             Master.eSettings.MoviePosterFrodo = True
             Master.eSettings.MovieXBMCThemeEnable = True
@@ -6996,22 +6996,22 @@ Public Class Settings
     End Function
 
     Public Function MovieBannerAnyEnabled() As Boolean
-        Return MovieBannerEden OrElse MovieBannerAD OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse _
+        Return MovieBannerAD OrElse MovieBannerExtended OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieBannerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieBannerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieBannerExpertVTS)))
     End Function
 
     Public Function MovieClearArtAnyEnabled() As Boolean
-        Return MovieClearArtEden OrElse MovieClearArtAD OrElse _
+        Return MovieClearArtAD OrElse MovieClearArtExtended OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertVTS)))
     End Function
 
     Public Function MovieClearLogoAnyEnabled() As Boolean
-        Return MovieClearLogoEden OrElse MovieClearLogoAD OrElse _
+        Return MovieClearLogoAD OrElse MovieClearLogoExtended OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearLogoExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertVTS)))
     End Function
 
     Public Function MovieDiscArtAnyEnabled() As Boolean
-        Return MovieDiscArtEden OrElse MovieDiscArtAD OrElse _
+        Return MovieDiscArtAD OrElse MovieDiscArtExtended OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieDiscArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertVTS)))
     End Function
 
@@ -7031,7 +7031,7 @@ Public Class Settings
     End Function
 
     Public Function MovieLandscapeAnyEnabled() As Boolean
-        Return MovieLandscapeEden OrElse MovieLandscapeAD OrElse _
+        Return MovieLandscapeAD OrElse MovieLandscapeExtended OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieLandscapeExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertSingle) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertVTS)))
     End Function
 

@@ -510,14 +510,9 @@ Partial Public Class clsXMLSettings
     '*************** XBMC Eden settings ***************
     Private _movieuseeden As Boolean
     Private _movieactorthumbseden As Boolean
-    Private _moviebannereden As Boolean
-    Private _moviecleararteden As Boolean
-    Private _movieclearlogoeden As Boolean
-    Private _moviediscarteden As Boolean
     Private _movieextrafanartseden As Boolean
     Private _movieextrathumbseden As Boolean
     Private _moviefanarteden As Boolean
-    Private _movielandscapeeden As Boolean
     Private _movienfoeden As Boolean
     Private _moviepostereden As Boolean
     Private _movietrailereden As Boolean
@@ -528,6 +523,13 @@ Partial Public Class clsXMLSettings
     Private _movieclearlogoad As Boolean
     Private _moviediscartad As Boolean
     Private _movielandscapead As Boolean
+
+    '********* XBMC Extended Images settings **********
+    Private _moviebannerextended As Boolean
+    Private _movieclearartextended As Boolean
+    Private _movieclearlogoextended As Boolean
+    Private _moviediscartextended As Boolean
+    Private _movielandscapeextended As Boolean
 
     '************* XBMC optional settings *************
     Private _moviexbmcprotectvtsbdmv As Boolean
@@ -5220,12 +5222,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieBannerExtended() As Boolean
+        Get
+            Return Me._moviebannerextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviebannerextended = value
+        End Set
+    End Property
+
     Public Property MovieClearArtAD() As Boolean
         Get
             Return Me._movieclearartad
         End Get
         Set(ByVal value As Boolean)
             Me._movieclearartad = value
+        End Set
+    End Property
+
+    Public Property MovieClearArtExtended() As Boolean
+        Get
+            Return Me._movieclearartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieclearartextended = value
         End Set
     End Property
 
@@ -5238,12 +5258,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieClearLogoExtended() As Boolean
+        Get
+            Return Me._movieclearlogoextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieclearlogoextended = value
+        End Set
+    End Property
+
     Public Property MovieDiscArtAD() As Boolean
         Get
             Return Me._moviediscartad
         End Get
         Set(ByVal value As Boolean)
             Me._moviediscartad = value
+        End Set
+    End Property
+
+    Public Property MovieDiscArtExtended() As Boolean
+        Get
+            Return Me._moviediscartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviediscartextended = value
         End Set
     End Property
 
@@ -5280,6 +5318,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movielandscapead = value
+        End Set
+    End Property
+
+    Public Property MovieLandscapeExtended() As Boolean
+        Get
+            Return Me._movielandscapeextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movielandscapeextended = value
         End Set
     End Property
 
@@ -5328,42 +5375,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieBannerEden() As Boolean
-        Get
-            Return Me._moviebannereden
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviebannereden = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtEden() As Boolean
-        Get
-            Return Me._moviecleararteden
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviecleararteden = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoEden() As Boolean
-        Get
-            Return Me._movieclearlogoeden
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieclearlogoeden = value
-        End Set
-    End Property
-
-    Public Property MovieDiscArtEden() As Boolean
-        Get
-            Return Me._moviediscarteden
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviediscarteden = value
-        End Set
-    End Property
-
     Public Property MovieExtrafanartsEden() As Boolean
         Get
             Return Me._movieextrafanartseden
@@ -5388,15 +5399,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviefanarteden = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapeEden() As Boolean
-        Get
-            Return Me._movielandscapeeden
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movielandscapeeden = value
         End Set
     End Property
 

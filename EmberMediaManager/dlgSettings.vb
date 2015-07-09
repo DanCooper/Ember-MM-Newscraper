@@ -3095,13 +3095,18 @@ Public Class dlgSettings
 
         Me.chkMovieActorThumbsFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieBannerAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieBannerExtended.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieClearArtAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieClearArtExtended.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieClearLogoAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieClearLogoExtended.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieExtrafanartsFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieExtrathumbsFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieDiscArtAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieDiscArtExtended.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieFanartFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieLandscapeAD.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieLandscapeExtended.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieNFOFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMoviePosterFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieTrailerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
@@ -3111,27 +3116,32 @@ Public Class dlgSettings
         If Not Me.chkMovieUseFrodo.Checked Then
             Me.chkMovieActorThumbsFrodo.Checked = False
             Me.chkMovieBannerAD.Checked = False
+            Me.chkMovieBannerExtended.Checked = False
             Me.chkMovieClearArtAD.Checked = False
+            Me.chkMovieClearArtExtended.Checked = False
             Me.chkMovieClearLogoAD.Checked = False
+            Me.chkMovieClearLogoExtended.Checked = False
             Me.chkMovieDiscArtAD.Checked = False
+            Me.chkMovieDiscArtExtended.Checked = False
             Me.chkMovieExtrafanartsFrodo.Checked = False
             Me.chkMovieExtrathumbsFrodo.Checked = False
             Me.chkMovieFanartFrodo.Checked = False
             Me.chkMovieLandscapeAD.Checked = False
+            Me.chkMovieLandscapeExtended.Checked = False
             Me.chkMovieNFOFrodo.Checked = False
             Me.chkMoviePosterFrodo.Checked = False
             Me.chkMovieTrailerFrodo.Checked = False
             Me.chkMovieXBMCProtectVTSBDMV.Checked = False
         Else
             Me.chkMovieActorThumbsFrodo.Checked = True
-            Me.chkMovieBannerAD.Checked = True
-            Me.chkMovieClearArtAD.Checked = True
-            Me.chkMovieClearLogoAD.Checked = True
-            Me.chkMovieDiscArtAD.Checked = True
+            Me.chkMovieBannerExtended.Checked = True
+            Me.chkMovieClearArtExtended.Checked = True
+            Me.chkMovieClearLogoExtended.Checked = True
+            Me.chkMovieDiscArtExtended.Checked = True
             Me.chkMovieExtrafanartsFrodo.Checked = True
             Me.chkMovieExtrathumbsFrodo.Checked = True
             Me.chkMovieFanartFrodo.Checked = True
-            Me.chkMovieLandscapeAD.Checked = True
+            Me.chkMovieLandscapeExtended.Checked = True
             Me.chkMovieNFOFrodo.Checked = True
             Me.chkMoviePosterFrodo.Checked = True
             Me.chkMovieTrailerFrodo.Checked = True
@@ -4036,6 +4046,13 @@ Public Class dlgSettings
             Me.chkMovieClearLogoAD.Checked = .MovieClearLogoAD
             Me.chkMovieDiscArtAD.Checked = .MovieDiscArtAD
             Me.chkMovieLandscapeAD.Checked = .MovieLandscapeAD
+
+            '********* XBMC Extended Images settings ***********
+            Me.chkMovieBannerExtended.Checked = .MovieBannerExtended
+            Me.chkMovieClearArtExtended.Checked = .MovieClearArtExtended
+            Me.chkMovieClearLogoExtended.Checked = .MovieClearLogoExtended
+            Me.chkMovieDiscArtExtended.Checked = .MovieDiscArtExtended
+            Me.chkMovieLandscapeExtended.Checked = .MovieLandscapeExtended
 
             '************** XBMC TvTunes settings **************
             Me.chkMovieXBMCThemeEnable.Checked = .MovieXBMCThemeEnable
@@ -5814,6 +5831,13 @@ Public Class dlgSettings
             .MovieDiscArtAD = Me.chkMovieDiscArtAD.Checked
             .MovieLandscapeAD = Me.chkMovieLandscapeAD.Checked
 
+            '********* XBMC Extended Images settings ***********
+            .MovieBannerExtended = Me.chkMovieBannerExtended.Checked
+            .MovieClearArtExtended = Me.chkMovieClearArtExtended.Checked
+            .MovieClearLogoExtended = Me.chkMovieClearLogoExtended.Checked
+            .MovieDiscArtExtended = Me.chkMovieDiscArtExtended.Checked
+            .MovieLandscapeExtended = Me.chkMovieLandscapeExtended.Checked
+
             '************** XBMC TvTunes settings **************
             .MovieXBMCThemeCustom = Me.chkMovieXBMCThemeCustom.Checked
             .MovieXBMCThemeCustomPath = Me.txtMovieXBMCThemeCustomPath.Text
@@ -6235,6 +6259,7 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingExpertVTSBanner.Text = strBanner
         Me.lblMovieSourcesFileNamingNMTDefaultsBanner.Text = strBanner
         Me.lblMovieSourcesFileNamingXBMCADBanner.Text = strBanner
+        Me.lblMovieSourcesFileNamingXBMCExtendedBanner.Text = strBanner
         Me.lblTVAllSeasonsBannerExpert.Text = strBanner
         Me.lblTVSeasonBannerExpert.Text = strBanner
         Me.lblTVShowBannerExpert.Text = strBanner
@@ -6270,6 +6295,7 @@ Public Class dlgSettings
         Me.lblMovieClearArtExpertSingle.Text = strClearArt
         Me.lblMovieClearArtExpertVTS.Text = strClearArt
         Me.lblMovieSourcesFileNamingXBMCADClearArt.Text = strClearArt
+        Me.lblMovieSourcesFileNamingXBMCExtendedClearArt.Text = strClearArt
         Me.lblTVShowClearArtExpert.Text = strClearArt
         Me.lblTVSourcesFileNamingXBMCADClearArt.Text = strClearArt
 
@@ -6286,6 +6312,7 @@ Public Class dlgSettings
         Me.lblMovieClearLogoExpertSingle.Text = strClearLogo
         Me.lblMovieClearLogoExpertVTS.Text = strClearLogo
         Me.lblMovieSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
+        Me.lblMovieSourcesFileNamingXBMCExtendedClearLogo.Text = strClearLogo
         Me.lblTVShowClearLogoExpert.Text = strClearLogo
         Me.lblTVSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
 
@@ -6348,6 +6375,7 @@ Public Class dlgSettings
         Me.lblMovieDiscArtExpertSingle.Text = strDiscArt
         Me.lblMovieDiscArtExpertVTS.Text = strDiscArt
         Me.lblMovieSourcesFileNamingXBMCADDiscArt.Text = strDiscArt
+        Me.lblMovieSourcesFileNamingXBMCExtendedDiscArt.Text = strDiscArt
 
         'Display "Image Select" dialog while single scraping
         Dim strDisplayImgDialog As String = Master.eLang.GetString(499, "Display ""Image Select"" dialog while single scraping")
@@ -6419,6 +6447,10 @@ Public Class dlgSettings
         Me.gbMovieSetSourcesFileNamingExpertOpts.Text = strExpertSettings
         Me.gbTVSourcesFileNamingExpertOpts.Text = strExpertSettings
 
+        'Extended Images
+        Dim strExtendedImages As String = Master.eLang.GetString(744, "Extended Images")
+        Me.gbMovieSourcesFileNamingXBMCExtendedOpts.Text = strExtendedImages
+
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
         Me.chkMovieExtrafanartsExpertBDMV.Text = strExtrafanarts
@@ -6450,10 +6482,10 @@ Public Class dlgSettings
         Me.lblMovieSetFanartExpertParent.Text = strFanart
         Me.lblMovieSetFanartExpertSingle.Text = strFanart
         Me.lblMovieSourcesFileNamingBoxeeDefaultsFanart.Text = strFanart
-        Me.lblMovieSourcesFilenamingExpertBDMVFanart.Text = strFanart
-        Me.lblMovieSourcesFilenamingExpertMultiFanart.Text = strFanart
-        Me.lblMovieSourcesFilenamingExpertSingleFanart.Text = strFanart
-        Me.lblMovieSourcesFilenamingExpertVTSFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingExpertBDMVFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingExpertMultiFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingExpertSingleFanart.Text = strFanart
+        Me.lblMovieSourcesFileNamingExpertVTSFanart.Text = strFanart
         Me.lblMovieSourcesFileNamingNMTDefaultsFanart.Text = strFanart
         Me.lblMovieSourcesFileNamingXBMCDefaultsFanart.Text = strFanart
         Me.lblTVAllSeasonsFanartExpert.Text = strFanart
@@ -6509,6 +6541,7 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingExpertSingleLandscape.Text = strLandscape
         Me.lblMovieSourcesFileNamingExpertVTSLandscape.Text = strLandscape
         Me.lblMovieSourcesFileNamingXBMCADLandscape.Text = strLandscape
+        Me.lblMovieSourcesFileNamingXBMCExtendedLandscape.Text = strLandscape
         Me.lblTVAllSeasonsLandscapeExpert.Text = strLandscape
         Me.lblTVSeasonLandscapeExpert.Text = strLandscape
         Me.lblTVShowLandscapeExpert.Text = strLandscape
@@ -7061,7 +7094,6 @@ Public Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
-        Me.gbMovieSourcesFileNamingXBMCTvTunesOpts.Text = Master.eLang.GetString(1076, "Theme Settings")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
         Me.gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
@@ -8526,11 +8558,23 @@ Public Class dlgSettings
 
     Private Sub pbMovieSourcesADInfo_Click(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.Click
         If Master.isWindows Then
-            Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming")
+            Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming"
+                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:Artwork_Downloader"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
+    Private Sub pbMovieSourcesTvTunesInfo_Click(sender As Object, e As EventArgs) Handles pbMovieSourcesTvTunesInfo.Click
+        If Master.isWindows Then
+            Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:TvTunes"
                 Explorer.Start()
             End Using
         End If
@@ -8541,6 +8585,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub pbMovieSourcesADInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.MouseLeave
+        Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub pbMovieSourcesTvTunesInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbMovieSourcesTvTunesInfo.MouseEnter
+        Me.Cursor = Cursors.Hand
+    End Sub
+
+    Private Sub pbMovieSourcesTvTunesInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbMovieSourcesTvTunesInfo.MouseLeave
         Me.Cursor = Cursors.Default
     End Sub
 

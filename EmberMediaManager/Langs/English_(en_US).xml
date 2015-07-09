@@ -742,7 +742,7 @@
   <string id="741">Preferred Language</string>
   <string id="742">Fetch Available Languages</string>
   <string id="743">Show</string>
-  <string id="744"></string>
+  <string id="744">Extended Images</string>
   <string id="745">Any</string>
   <string id="746">Blank</string>
   <string id="747">Graphical</string>
@@ -1165,7 +1165,7 @@
   <string id="1073"></string>
   <string id="1074"></string>
   <string id="1075"></string>
-  <string id="1076">Theme Settings</string>
+  <string id="1076"></string>
   <string id="1077">Select the folder where you wish to store your themes...</string>
   <string id="1078">The theme could not be played. This could due be you don't have the proper player to play the theme type.</string>
   <string id="1079">Error Playing Theme</string>
