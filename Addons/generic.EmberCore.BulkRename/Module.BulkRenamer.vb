@@ -33,8 +33,6 @@ Public Class BulkRenamerModule
 
 #Region "Fields"
 
-    Private WithEvents mnuMainToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
     Private MySettings As New _MySettings
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
@@ -52,6 +50,8 @@ Public Class BulkRenamerModule
     Private WithEvents cmnuRenamerManual_TVEpisode As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuRenamerAuto_TVShow As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuRenamerManual_TVShows As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsRenamer As New System.Windows.Forms.ToolStripMenuItem
 
 #End Region 'Fields
 
@@ -234,52 +234,63 @@ Public Class BulkRenamerModule
 
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
+
+        'mnuMainTools menu
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(mnuMainToolsRenamer)
+
+        'cmnuTrayTools
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(cmnuTrayToolsRenamer)
+
         'cmnuMovies
         RemoveToolsStripItem_Movies(cmnuSep_Movies)
         RemoveToolsStripItem_Movies(cmnuRenamer_Movies)
+
         'cmnuEpisodes
         RemoveToolsStripItem_Episodes(cmnuSep_Episodes)
         RemoveToolsStripItem_Episodes(cmnuRenamer_Episodes)
+
         'cmnuShows
         RemoveToolsStripItem_Shows(cmnuSep_Shows)
         RemoveToolsStripItem_Shows(cmnuRenamer_Shows)
     End Sub
 
     Public Sub RemoveToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Episodes), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Items.Remove(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Items.Remove(value)
     End Sub
 
     Public Sub RemoveToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Movies), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Remove(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Remove(value)
     End Sub
 
     Public Sub RemoveToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Remove(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Remove(value)
     End Sub
 
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
+
+        'mnuMainTools menu
         mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsRenamer)
+
+        'cmnuTrayTools
         cmnuTrayToolsRenamer.Image = New Bitmap(My.Resources.icon)
         cmnuTrayToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
@@ -323,43 +334,43 @@ Public Class BulkRenamerModule
     End Sub
 
     Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
+        If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
-            Exit Sub
+        Else
+            control.DropDownItems.Add(value)
         End If
-        control.DropDownItems.Add(value)
     End Sub
 
     Public Sub SetToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Episodes), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Items.Add(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Items.Add(value)
     End Sub
 
     Public Sub SetToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
     End Sub
 
     Public Sub SetToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        RaiseEvent ModuleEnabledChanged(Me._Name, state, difforder)
+    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
+        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
     End Sub
 
     Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
@@ -392,7 +403,7 @@ Public Class BulkRenamerModule
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings()
-        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
@@ -415,7 +426,6 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
-
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected.ContentType
             Case Enums.Content_Type.Movie
@@ -444,8 +454,8 @@ Public Class BulkRenamerModule
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
     End Sub
 
-    Sub SaveEmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me._enabled = Me._setup.chkEnabled.Checked
+    Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
+        Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.BulkRenamer = Me._setup.chkBulkRenamer.Checked
         MySettings.FoldersPattern_Movies = Me._setup.txtFolderPatternMovies.Text
         MySettings.FoldersPattern_Seasons = Me._setup.txtFolderPatternSeasons.Text
@@ -462,7 +472,7 @@ Public Class BulkRenamerModule
         MySettings.GenericModule = Me._setup.chkGenericModule.Checked
         SaveSettings()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If

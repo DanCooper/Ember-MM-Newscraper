@@ -42,12 +42,12 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        chkEnabled.Text = Master.eLang.GetString(778, "Use trakt.tv as source for ""Playcount""")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkGetShowProgress.Text = Master.eLang.GetString(1388, "Display watched progress for shows (Time consuming!)")
         Me.gbSettingsGeneral.Text = Master.eLang.GetString(38, "General Settings")
-        lblUsername.Text = Master.eLang.GetString(425, "Username")
-        lblPassword.Text = Master.eLang.GetString(426, "Password")
-        chkGetShowProgress.Text = Master.eLang.GetString(1388, "Display watched progress for shows (Time consuming!)")
-        txtPassword.PasswordChar = "*"c
+        Me.lblPassword.Text = Master.eLang.GetString(426, "Password")
+        Me.lblUsername.Text = Master.eLang.GetString(425, "Username")
+        Me.txtPassword.PasswordChar = "*"c
     End Sub
 
 

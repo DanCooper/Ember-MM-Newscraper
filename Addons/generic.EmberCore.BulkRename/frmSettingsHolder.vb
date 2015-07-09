@@ -34,7 +34,7 @@ Public Class frmSettingsHolder
 
 #Region "Events"
 
-    Public Event ModuleEnabledChanged(ByVal State As Boolean, ByVal difforder As Integer)
+    Public Event ModuleEnabledChanged(ByVal State As Boolean)
 
     Public Event ModuleSettingsChanged()
 
@@ -294,7 +294,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 0)
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
 
     Private Sub chkGenericModule_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenericModule.CheckedChanged

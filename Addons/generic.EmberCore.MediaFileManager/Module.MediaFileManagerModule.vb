@@ -278,27 +278,29 @@ Public Class FileManagerExternalModule
     End Sub
 
     Public Sub SetToolsStripItemVisibility(control As System.Windows.Forms.ToolStripItem, value As Boolean)
-        If (control.Owner.InvokeRequired) Then
-            control.Owner.Invoke(New Delegate_SetToolsStripItemVisibility(AddressOf SetToolsStripItemVisibility), New Object() {control, value})
-            Exit Sub
+        If control.Owner IsNot Nothing Then
+            If control.Owner.InvokeRequired Then
+                control.Owner.Invoke(New Delegate_SetToolsStripItemVisibility(AddressOf SetToolsStripItemVisibility), New Object() {control, value})
+            Else
+                control.Visible = value
+            End If
         End If
-        control.Visible = value
     End Sub
 
     Public Sub SetToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
     End Sub
 
     Public Sub SetToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired) Then
+        If ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
-            Exit Sub
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
     End Sub
 
     Private Sub FolderSubMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -486,7 +488,7 @@ Public Class FileManagerExternalModule
         SetToolsStripItemVisibility(cmnuMedia_Shows, True)
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
+    Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         _MySettings.TeraCopy = Me._setup.chkTeraCopyEnable.Checked
         _MySettings.TeraCopyPath = Me._setup.txtTeraCopyPath.Text

@@ -38,8 +38,8 @@ Public Class Trakt_Generic
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
-    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsTrakt As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsTrakt As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Trakt.tv Manager"
     Private MySettings As New _MySettings
@@ -114,43 +114,52 @@ Public Class Trakt_Generic
 
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, MyMenu)
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, MyTrayMenu)
-    End Sub
 
-    Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
-            control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
-            Exit Sub
-        End If
-        control.DropDownItems.Remove(value)
+        'mnuMainTools
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        RemoveToolsStripItem(tsi, mnuMainToolsTrakt)
+
+        'cmnuTrayTools
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        RemoveToolsStripItem(tsi, cmnuTrayToolsTrakt)
     End Sub
 
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
+
+        'mnuMainTools menu
+        mnuMainToolsTrakt.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsTrakt.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, MyMenu)
-        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
+        AddToolsStripItem(tsi, mnuMainToolsTrakt)
+
+        'cmnuTrayTools
+        cmnuTrayToolsTrakt.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsTrakt.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, MyTrayMenu)
+        AddToolsStripItem(tsi, cmnuTrayToolsTrakt)
     End Sub
 
     Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
+        If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
-            Exit Sub
+        Else
+            control.DropDownItems.Add(value)
         End If
-        control.DropDownItems.Add(value)
+    End Sub
+
+    Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+        If control.Owner.InvokeRequired Then
+            control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
+        Else
+            control.DropDownItems.Remove(value)
+        End If
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
         RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
     End Sub
+
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -178,7 +187,7 @@ Public Class Trakt_Generic
         Return SPanel
     End Function
 
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsTrakt.Click, cmnuTrayToolsTrakt.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
         Using dTrakttvManager As New dlgTrakttvManager
@@ -193,7 +202,7 @@ Public Class Trakt_Generic
         MySettings.Password = clsAdvancedSettings.GetSetting("Password", "")
         MySettings.GetShowProgress = clsAdvancedSettings.GetBooleanSetting("GetShowProgress", False)
     End Sub
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
+    Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.Username = Me._setup.txtUsername.Text
         MySettings.Password = Me._setup.txtPassword.Text

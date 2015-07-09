@@ -38,8 +38,8 @@ Public Class Tag_Generic
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
-    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsTag As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsTag As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Tag Manager"
 
@@ -112,38 +112,46 @@ Public Class Tag_Generic
     End Function
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
+
+        'mnuMainTools menu
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, MyMenu)
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, MyTrayMenu)
+        RemoveToolsStripItem(tsi, mnuMainToolsTag)
+
+        'cmnuTrayTools
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        RemoveToolsStripItem(tsi, cmnuTrayToolsTag)
     End Sub
 
     Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
+        If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
-            Exit Sub
+        Else
+            control.DropDownItems.Remove(value)
         End If
-        control.DropDownItems.Remove(value)
     End Sub
 
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(My.Resources._set)
-        MyMenu.Text = Master.eLang.GetString(868, "Tag Manager")
+
+        'mnuMainTools menu
+        mnuMainToolsTag.Image = New Bitmap(My.Resources._set)
+        mnuMainToolsTag.Text = Master.eLang.GetString(868, "Tag Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, MyMenu)
-        MyTrayMenu.Image = New Bitmap(My.Resources._set)
-        MyTrayMenu.Text = Master.eLang.GetString(868, "Tag Manager")
+        AddToolsStripItem(tsi, mnuMainToolsTag)
+
+        'cmnuTrayTools
+        cmnuTrayToolsTag.Image = New Bitmap(My.Resources._set)
+        cmnuTrayToolsTag.Text = Master.eLang.GetString(868, "Tag Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, MyTrayMenu)
+        AddToolsStripItem(tsi, cmnuTrayToolsTag)
     End Sub
 
     Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
+        If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
-            Exit Sub
+        Else
+            control.DropDownItems.Add(value)
         End If
-        control.DropDownItems.Add(value)
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
@@ -173,7 +181,7 @@ Public Class Tag_Generic
         Return SPanel
     End Function
 
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsTag.Click, cmnuTrayToolsTag.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
         Using dTagManager As New dlgTagManager
@@ -186,7 +194,6 @@ Public Class Tag_Generic
     End Sub
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
-
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged

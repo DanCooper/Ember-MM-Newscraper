@@ -31,8 +31,8 @@ Public Class MovieExporterModule
 
 #Region "Fields"
 
-    Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsExporter As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsExporter As New System.Windows.Forms.ToolStripMenuItem
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
@@ -104,38 +104,46 @@ Public Class MovieExporterModule
 
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
+
+        'mnuMainTools
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, MyMenu)
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, MyTrayMenu)
+        RemoveToolsStripItem(tsi, mnuMainToolsExporter)
+
+        'cmnuTrayTools
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        RemoveToolsStripItem(tsi, cmnuTrayToolsExporter)
     End Sub
 
     Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
+        If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
-            Exit Sub
+        Else
+            control.DropDownItems.Remove(value)
         End If
-        control.DropDownItems.Remove(value)
     End Sub
 
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
-        MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = Master.eLang.GetString(336, "Export Movie List")
+
+        'mnuMainTools
+        mnuMainToolsExporter.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, MyMenu)
-        MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = Master.eLang.GetString(336, "Export Movie List")
+        AddToolsStripItem(tsi, mnuMainToolsExporter)
+
+        'cmnuTrayTools
+        cmnuTrayToolsExporter.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, MyTrayMenu)
+        AddToolsStripItem(tsi, cmnuTrayToolsExporter)
     End Sub
 
     Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-        If (control.Owner.InvokeRequired) Then
+        If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
-            Exit Sub
+        Else
+            control.DropDownItems.Add(value)
         End If
-        control.DropDownItems.Add(value)
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
@@ -148,7 +156,6 @@ Public Class MovieExporterModule
 
     Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
-        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
         LoadSettings()
     End Sub
 
@@ -156,7 +163,6 @@ Public Class MovieExporterModule
         Me._setup = New frmSettingsHolder
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
-
 
         _setup.txt_exportmoviepath.Text = MySettings.ExportPath
         _setup.chkExportTVShows.Checked = MySettings.ExportTVShows
@@ -166,7 +172,6 @@ Public Class MovieExporterModule
         _setup.lbl_exportmoviefilter1saved.Text = MySettings.ExportFilter1
         _setup.lbl_exportmoviefilter2saved.Text = MySettings.ExportFilter2
         _setup.lbl_exportmoviefilter3saved.Text = MySettings.ExportFilter3
-
 
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(335, "Movie List Exporter")
@@ -180,7 +185,7 @@ Public Class MovieExporterModule
         Return SPanel
     End Function
 
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsExporter.Click, cmnuTrayToolsExporter.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
         Using dExportMovies As New dlgExportMovies
@@ -230,7 +235,6 @@ Public Class MovieExporterModule
             settings.SetSetting("ExportFilter3", MySettings.ExportFilter3)
             settings.SetSetting("ExportImageQuality", CStr(MySettings.ExportImageQuality))
         End Using
-
     End Sub
 
 
@@ -250,9 +254,11 @@ Public Class MovieExporterModule
         Dim ExportFilter3 As String
         Dim ExportTVShows As Boolean
         Dim ExportImageQuality As Integer
+
 #End Region 'Fields
 
     End Structure
 
 #End Region 'Nested Types
+
 End Class
