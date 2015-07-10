@@ -470,12 +470,11 @@ Public Class NFO
         Dim new_Tagline As Boolean = False
         Dim new_Title As Boolean = False
         Dim new_OriginalTitle As Boolean = False
-        Dim new_Top250 As Boolean = False
         Dim new_Trailer As Boolean = False
         Dim new_Votes As Boolean = False
-        Dim new_Year As Boolean = False
 
         Dim KnownEpisodesIndex As New List(Of KnownEpisode)
+        Dim KnownSeasonsIndex As New List(Of Integer)
 
         ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
         'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
@@ -713,11 +712,18 @@ Public Class NFO
             '        DBTV.Movie.Credits.Clear()
             '    End If
 
+            'Create KnowSeasons index
+            For Each kSeason As MediaContainers.SeasonDetails In scrapedshow.KnownSeasons
+                If Not KnownSeasonsIndex.Contains(kSeason.Season) Then
+                    KnownSeasonsIndex.Add(kSeason.Season)
+                End If
+            Next
+
             'Create KnownEpisodes index (season and episode number)
             If withEpisodes Then
                 For Each kEpisode As MediaContainers.EpisodeDetails In scrapedshow.KnownEpisodes
                     Dim nKnownEpisode As New KnownEpisode With {.Episode = kEpisode.Episode, .Season = kEpisode.Season}
-                    If Not KnownEpisodesIndex.Contains(nKnownEpisode) Then
+                    If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
                         KnownEpisodesIndex.Add(nKnownEpisode)
                     End If
                 Next
@@ -759,6 +765,33 @@ Public Class NFO
             '    End If
         End If
 
+        'Seasons
+        For Each aKnownSeason As Integer In KnownSeasonsIndex
+            'create a list of specified episode informations from all scrapers
+            Dim ScrapedSeasonList As New List(Of MediaContainers.SeasonDetails)
+            For Each nShow As MediaContainers.TVShow In ScrapedList
+                For Each nSeasonDetails As MediaContainers.SeasonDetails In nShow.KnownSeasons.Where(Function(f) f.Season = aKnownSeason)
+                    ScrapedSeasonList.Add(nSeasonDetails)
+                Next
+            Next
+            'check if we have already saved season information for this scraped season
+            Dim lSeasonList = DBTV.Seasons.Where(Function(f) f.TVSeason.Season = aKnownSeason)
+
+            If lSeasonList IsNot Nothing AndAlso lSeasonList.Count > 0 Then
+                For Each nSeason As Structures.DBTV In lSeasonList
+                    MergeDataScraperResults(nSeason, ScrapedSeasonList, Options)
+                Next
+            Else
+                'no existing season found -> add it as "missing" season
+                Dim mSeason As New Structures.DBTV With { _
+                    .ID = -1, _
+                    .ShowID = DBTV.ShowID, _
+                    .TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
+                DBTV.Seasons.Add(MergeDataScraperResults(mSeason, ScrapedSeasonList, Options))
+            End If
+        Next
+
+        'Episodes
         If withEpisodes Then
             For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex
                 'create a list of specified episode informations from all scrapers
@@ -768,7 +801,7 @@ Public Class NFO
                         ScrapedEpisodeList.Add(nEpisodeDetails)
                     Next
                 Next
-                'check if we have a local episode file for this specified episode
+                'check if we have a local episode file for this scraped episode
                 Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.TVEp.Episode = aKnownEpisode.Episode AndAlso f.TVEp.Season = aKnownEpisode.Season)
 
                 If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
@@ -790,6 +823,61 @@ Public Class NFO
         End If
 
         Return DBTV
+    End Function
+
+    Public Shared Function MergeDataScraperResults(ByRef DBTVSeason As Structures.DBTV, ByVal ScrapedList As List(Of MediaContainers.SeasonDetails), ByVal Options As Structures.ScrapeOptions_TV) As Structures.DBTV
+
+        'protects the first scraped result against overwriting
+        Dim new_Aired As Boolean = False
+        Dim new_Plot As Boolean = False
+        Dim new_Season As Boolean = False
+        Dim new_Title As Boolean = False
+
+        For Each scrapedseason In ScrapedList
+
+            'IDs
+            If scrapedseason.TMDBSpecified Then
+                DBTVSeason.TVSeason.TMDB = scrapedseason.TMDB
+            End If
+            If scrapedseason.TVDBSpecified Then
+                DBTVSeason.TVSeason.TVDB = scrapedseason.TVDB
+            End If
+
+            'Season number
+            If scrapedseason.SeasonSpecified AndAlso Not new_Season Then
+                DBTVSeason.TVSeason.Season = scrapedseason.Season
+                new_Season = True
+            End If
+
+            'Aired
+            If (Not DBTVSeason.TVSeason.AiredSpecified OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso Options.bSeasonAired AndAlso _
+                scrapedseason.AiredSpecified AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
+                DBTVSeason.TVSeason.Aired = scrapedseason.Aired
+                new_Aired = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
+                DBTVSeason.TVSeason.Aired = String.Empty
+            End If
+
+            'Plot
+            If (Not DBTVSeason.TVSeason.PlotSpecified OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso Options.bSeasonPlot AndAlso _
+                scrapedseason.PlotSpecified AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
+                DBTVSeason.TVSeason.Plot = scrapedseason.Plot
+                new_Plot = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodePlot AndAlso Not Master.eSettings.TVLockEpisodePlot Then
+                DBTVSeason.TVSeason.Plot = String.Empty
+            End If
+
+            'Title
+            If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso Options.bEpTitle AndAlso _
+                scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
+                DBTVSeason.TVSeason.Title = scrapedseason.Title
+                new_Title = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeTitle AndAlso Not Master.eSettings.TVLockEpisodeTitle Then
+                DBTVSeason.TVSeason.Title = String.Empty
+            End If
+        Next
+
+        Return DBTVSeason
     End Function
     ''' <summary>
     ''' Returns the "merged" result of each data scraper results
@@ -883,7 +971,7 @@ Public Class NFO
             End If
 
             'Aired
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Aired) OrElse Not Master.eSettings.TVScraperEpisodeAired) AndAlso Options.bEpAired AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Aired) OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso Options.bEpAired AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Aired) AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
                 DBTVEpisode.TVEp.Aired = scrapedepisode.Aired
                 new_Aired = True

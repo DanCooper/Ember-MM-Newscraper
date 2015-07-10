@@ -161,14 +161,21 @@ Namespace TVDBs
                 nShow.Votes = CStr(Results.Series.RatingCount)
             End If
 
-            'Episodes
-            If withEpisodes Then
-                For Each aEpisode As TVDB.Model.Episode In Results.Series.Episodes
+            'Seasons and Episodes
+            For Each aEpisode As TVDB.Model.Episode In Results.Series.Episodes
+                'check if we have already saved season information for this scraped season
+                Dim lSeasonList = nShow.KnownSeasons.Where(Function(f) f.Season = aEpisode.SeasonNumber)
+
+                If lSeasonList.Count = 0 Then
+                    nShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {.Season = aEpisode.SeasonNumber, .TVDB = CStr(aEpisode.SeasonId)})
+                End If
+
+                If withEpisodes Then
                     Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(aEpisode, Options)
                     nEpisode.Actors.AddRange(nShow.Actors)
                     nShow.KnownEpisodes.Add(nEpisode)
-                Next
-            End If
+                End If
+            Next
 
             Return True
         End Function

@@ -153,9 +153,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TMDbLib, Version=0.8.2.3, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TMDbLib, Version=0.8.2.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TMDbLib.0.8.2.3-alpha\lib\net45\TMDbLib.dll</HintPath>
+      <HintPath>..\packages\TMDbLib.0.8.2.4-alpha\lib\net45\TMDbLib.dll</HintPath>
     </Reference>
     <Reference Include="TVDB, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

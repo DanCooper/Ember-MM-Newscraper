@@ -1622,6 +1622,8 @@ Public Class Functions
         filterOptions.bEpSeason = Options.bEpSeason AndAlso Options2.bEpSeason
         filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
         filterOptions.bEpVotes = Options.bEpVotes AndAlso Options2.bEpVotes
+        filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
+        filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
         filterOptions.bShowCert = Options.bShowCert AndAlso Options2.bShowCert
         filterOptions.bShowCountry = Options.bShowCountry AndAlso Options2.bShowCountry
@@ -2040,6 +2042,7 @@ Public Class Structures
         Dim RemovePoster As Boolean
         Dim RemoveTheme As Boolean
         Dim RemoveTrailer As Boolean
+        Dim Seasons As List(Of DBTV)
         Dim ShowID As Long
         Dim ShowPath As String
         Dim Source As String
@@ -2180,6 +2183,8 @@ Public Class Structures
         Dim bEpSeason As Boolean
         Dim bEpTitle As Boolean
         Dim bEpVotes As Boolean
+        Dim bSeasonAired As Boolean
+        Dim bSeasonPlot As Boolean
         Dim bShowActors As Boolean
         Dim bShowCert As Boolean
         Dim bShowCountry As Boolean

@@ -1337,6 +1337,31 @@ Public Class Database
         Return ViewList
     End Function
     ''' <summary>
+    ''' Load excluded directories from the DB. This populates the Master.ExcludeDirs list
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub LoadExcludeDirsFromDB()
+        Master.ExcludeDirs.Clear()
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "SELECT Dirname FROM ExcludeDir;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                            Dim eDir As String = String.Empty
+                            eDir = SQLreader("Dirname").ToString
+                            Master.ExcludeDirs.Add(eDir)
+                        Catch ex As Exception
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                        End Try
+                    End While
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
     ''' Load all the information for a movie.
     ''' </summary>
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
@@ -1640,6 +1665,34 @@ Public Class Database
         End Try
         Return _moviesetDB
     End Function
+    ''' <summary>
+    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub LoadMovieSourcesFromDB()
+        Master.MovieSources.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                        Dim msource As New Structures.MovieSource
+                        msource.id = SQLreader("ID").ToString
+                        msource.Name = SQLreader("Name").ToString
+                        msource.Path = SQLreader("Path").ToString
+                        msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
+                        msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
+                        msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                        msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
+                        msource.GetYear = Convert.ToBoolean(SQLreader("GetYear"))
+                        Master.MovieSources.Add(msource)
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                End While
+            End Using
+        End Using
+    End Sub
 
     ''' <summary>
     ''' Load all the information for a movietag.
@@ -1710,6 +1763,33 @@ Public Class Database
 
         Return _TVEpisodesList
     End Function
+
+    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long) As List(Of Structures.DBTV)
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
+        Dim _TVSeasonsList As New List(Of Structures.DBTV)
+
+        Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLCount.CommandText = String.Concat("SELECT COUNT(idSeason) AS eCount FROM seasons WHERE idShow = ", ShowID, ";")
+            Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
+                If SQLRCount.HasRows Then
+                    SQLRCount.Read()
+                    If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand.CommandText = String.Concat("SELECT * FROM seasons WHERE idShow = ", ShowID, ";")
+                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                While SQLReader.Read
+                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False))
+                                End While
+                            End Using
+                        End Using
+                    End If
+                End If
+            End Using
+        End Using
+
+        Return _TVSeasonsList
+    End Function
     ''' <summary>
     ''' Load all the information for a TV Season by ShowID and Season #.
     ''' </summary>
@@ -1717,9 +1797,9 @@ Public Class Database
     ''' <returns>MediaContainers.SeasonDetails object</returns>
     ''' <remarks></remarks>
     Public Function LoadAllTVSeasonFromDB(ByVal ShowID As Long) As MediaContainers.Seasons
-        Dim _SeasonList As New MediaContainers.Seasons
-
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
+        Dim _SeasonList As New MediaContainers.Seasons
 
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("SELECT * FROM seasons WHERE idShow = ", ShowID, " ORDER BY Season;")
@@ -2185,6 +2265,7 @@ Public Class Database
         If Not String.IsNullOrEmpty(_TVDB.PosterPath) Then _TVDB.ImagesContainer.ShowPoster.WebImage.FromFile(_TVDB.PosterPath)
 
         'Seasons
+        _TVDB.Seasons = LoadAllTVSeasonsFromDB(ShowID)
         _TVDB.TVShow.Seasons = LoadAllTVSeasonFromDB(ShowID)
 
         'Episodes
@@ -2197,6 +2278,33 @@ Public Class Database
 
         Return _TVDB
     End Function
+    ''' <summary>
+    ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub LoadTVSourcesFromDB()
+        Master.TVSources.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                        Dim tvsource As New Structures.TVSource
+                        tvsource.id = SQLreader("ID").ToString
+                        tvsource.Name = SQLreader("Name").ToString
+                        tvsource.Path = SQLreader("Path").ToString
+                        tvsource.Language = SQLreader("Language").ToString
+                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                        tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
+                        tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
+                        Master.TVSources.Add(tvsource)
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                    End Try
+                End While
+            End Using
+        End Using
+    End Sub
 
     Private Sub bwPatchDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPatchDB.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -4126,86 +4234,6 @@ Public Class Database
             Next
         End If
         If Not BatchMode Then SQLtransaction.Commit()
-    End Sub
-    ''' <summary>
-    ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub LoadTVSourcesFromDB()
-        Master.TVSources.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                        Dim tvsource As New Structures.TVSource
-                        tvsource.id = SQLreader("ID").ToString
-                        tvsource.Name = SQLreader("Name").ToString
-                        tvsource.Path = SQLreader("Path").ToString
-                        tvsource.Language = SQLreader("Language").ToString
-                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
-                        tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
-                        tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
-                        Master.TVSources.Add(tvsource)
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                    End Try
-                End While
-            End Using
-        End Using
-    End Sub
-    ''' <summary>
-    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub LoadMovieSourcesFromDB()
-        Master.MovieSources.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                        Dim msource As New Structures.MovieSource
-                        msource.id = SQLreader("ID").ToString
-                        msource.Name = SQLreader("Name").ToString
-                        msource.Path = SQLreader("Path").ToString
-                        msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
-                        msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
-                        msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
-                        msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
-                        msource.GetYear = Convert.ToBoolean(SQLreader("GetYear"))
-                        Master.MovieSources.Add(msource)
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                    End Try
-                End While
-            End Using
-        End Using
-    End Sub
-    ''' <summary>
-    ''' Load excluded directories from the DB. This populates the Master.ExcludeDirs list
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub LoadExcludeDirsFromDB()
-        Master.ExcludeDirs.Clear()
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT Dirname FROM ExcludeDir;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                            Dim eDir As String = String.Empty
-                            eDir = SQLreader("Dirname").ToString
-                            Master.ExcludeDirs.Add(eDir)
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                        End Try
-                    End While
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
     ''' <summary>
     ''' Retrieve movie paths.

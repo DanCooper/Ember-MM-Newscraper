@@ -824,12 +824,10 @@ Namespace TMDB
                 nShow.Votes = CStr(Show.VoteCount)
             End If
 
-            'Episodes
-            If withEpisodes Then
-                For Each aSeason As TMDbLib.Objects.TvShows.TvSeason In Show.Seasons
-                    GetTVSeasonInfo(nShow, Show.Id, aSeason.SeasonNumber, Options, withEpisodes)
-                Next
-            End If
+            'Seasons and Episodes
+            For Each aSeason As TMDbLib.Objects.TvShows.TvSeason In Show.Seasons
+                GetTVSeasonInfo(nShow, Show.Id, aSeason.SeasonNumber, Options, withEpisodes)
+            Next
 
             Return True
         End Function
