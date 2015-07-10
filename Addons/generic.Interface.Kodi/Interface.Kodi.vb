@@ -140,6 +140,10 @@ Public Class KodiInterface
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
                                     'run task
                                     Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, MySettings.SendNotifications))
+                                    'Update EmberDB Playcount value if configured by user
+                                    If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                                        Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBMovie.ID, "movie"))
+                                    End If
                                     'Synchronously waiting for an async method... not good and no ideal solution here. The asynchronous code of KodiAPI works best if it doesn’t get synchronously blocked - so for now I moved notifcation in Ember in async APIKodi to avoid waiting here for the task to finish. 
                                     'solution for now until Ember v1.5 (in future better use await and change all methods/functions to async code, all the way up in Ember (like msavazzi prepared)) 
                                     'TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
@@ -171,6 +175,10 @@ Public Class KodiInterface
                                     Dim _APIKodi As New Kodi.APIKodi(host)
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVEp.Title, New Bitmap(My.Resources.logo)}))
                                     Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateEpisodeInfo(tDBTV.EpID, MySettings.SendNotifications))
+                                    'Update EmberDB Playcount value if configured by user
+                                    If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                                        Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBTV.EpID, "movie"))
+                                    End If
                                     ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                     'If result.Result = True Then
                                     '    logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEp.Title)
@@ -243,6 +251,8 @@ Public Class KodiInterface
     ''' Used at module startup(=Ember startup) to load Kodi Hosts and also set other module settings
     Sub LoadSettings()
         MySettings.SendNotifications = clsAdvancedSettings.GetBooleanSetting("HostNotifications", False)
+        MySettings.SyncPlayCount = clsAdvancedSettings.GetBooleanSetting("SyncPlayCount", False)
+        MySettings.SyncPlayCountHost = clsAdvancedSettings.GetSetting("SyncPlayCountHost", "")
         'load XML configuration of hosts
         Dim hostsPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Hosts.xml")
         Dim tmphosts As New EmberAPI.clsXMLHosts
@@ -361,14 +371,22 @@ Public Class KodiInterface
 
         'consider user settings
         Me._setup.chkNotification.Checked = MySettings.SendNotifications
+        Me._setup.chkPlayCount.Checked = MySettings.SyncPlayCount
         Me._setup.xmlHosts = MySettings.KodiHosts
         Me._setup.lbHosts.Items.Clear()
+        If MySettings.SyncPlayCount = False Then
+            Me._setup.cbPlayCountHost.Enabled = False
+        Else
+            Me._setup.cbPlayCountHost.Enabled = True
+        End If
+        Me._setup.cbPlayCountHost.Items.Clear()
         If Not MySettings.KodiHosts Is Nothing Then
             For Each host In MySettings.KodiHosts.host
                 Me._setup.lbHosts.Items.Add(host.name)
+                Me._setup.cbPlayCountHost.Items.Add(host.name)
             Next
         End If
-
+        Me._setup.cbPlayCountHost.SelectedIndex = Me._setup.cbPlayCountHost.FindStringExact(MySettings.SyncPlayCountHost)
         SPanel.Name = Me._Name
         SPanel.Text = "Kodi Interface"
         SPanel.Prefix = "Kodi_"
@@ -390,6 +408,8 @@ Public Class KodiInterface
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.SendNotifications = Me._setup.chkNotification.Checked
+        MySettings.SyncPlayCountHost = _setup.cbPlayCountHost.SelectedItem.ToString()
+        MySettings.SyncPlayCount = _setup.chkPlayCount.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -408,6 +428,8 @@ Public Class KodiInterface
         'module settings will be saved
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("HostNotifications", MySettings.SendNotifications)
+            If _setup.cbPlayCountHost.SelectedIndex >= 0 Then settings.SetSetting("SyncPlayCountHost", MySettings.SyncPlayCountHost)
+            settings.SetBooleanSetting("SyncPlayCount", MySettings.SyncPlayCount)
         End Using
         'XML host configuration will be saved/updated
         Dim aPath As String = ""
@@ -451,6 +473,14 @@ Public Class KodiInterface
                         Else
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
                         End If
+                        'Update EmberDB Playcount value if configured by user
+                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                            If Await _APIKodi.SyncPlaycount(Master.currMovie.ID, "movie") Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                            Else
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                            End If
+                        End If
                     Else
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                     End If
@@ -481,6 +511,14 @@ Public Class KodiInterface
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
                         Else
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVEp.Title, Nothing}))
+                        End If
+                        'Update EmberDB Playcount value if configured by user
+                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                            If Await _APIKodi.SyncPlaycount(Master.currShow.EpID, "episode") Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                            Else
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                            End If
                         End If
                     Next
                 Else
@@ -714,11 +752,11 @@ Public Class KodiInterface
     Structure _MySettings
 
 #Region "Fields"
-
         'Kodi Host type already declared in EmberAPI (XML serialization)
         Dim KodiHosts As EmberAPI.clsXMLHosts
         Dim SendNotifications As Boolean
-
+        Dim SyncPlayCountHost As String
+        Dim SyncPlayCount As Boolean
 #End Region 'Fields
 
     End Structure

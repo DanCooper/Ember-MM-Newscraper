@@ -34,6 +34,8 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
+        Me.cbPlayCountHost = New System.Windows.Forms.ComboBox()
+        Me.chkPlayCount = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.gbSettingsGeneral.SuspendLayout()
@@ -66,7 +68,9 @@ Partial Class frmSettingsHolder
         'gbSettingsGeneral
         '
         Me.gbSettingsGeneral.AutoSize = True
+        Me.gbSettingsGeneral.Controls.Add(Me.cbPlayCountHost)
         Me.gbSettingsGeneral.Controls.Add(Me.chkNotification)
+        Me.gbSettingsGeneral.Controls.Add(Me.chkPlayCount)
         Me.gbSettingsGeneral.Controls.Add(Me.btnEditHost)
         Me.gbSettingsGeneral.Controls.Add(Me.btnRemoveHost)
         Me.gbSettingsGeneral.Controls.Add(Me.lbHosts)
@@ -178,6 +182,26 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'cbPlayCountHost
+        '
+        Me.cbPlayCountHost.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPlayCountHost.FormattingEnabled = True
+        Me.cbPlayCountHost.Location = New System.Drawing.Point(336, 67)
+        Me.cbPlayCountHost.Name = "cbPlayCountHost"
+        Me.cbPlayCountHost.Size = New System.Drawing.Size(121, 21)
+        Me.cbPlayCountHost.TabIndex = 86
+        '
+        'chkPlayCount
+        '
+        Me.chkPlayCount.AutoSize = True
+        Me.chkPlayCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPlayCount.Location = New System.Drawing.Point(318, 44)
+        Me.chkPlayCount.Name = "chkPlayCount"
+        Me.chkPlayCount.Size = New System.Drawing.Size(152, 17)
+        Me.chkPlayCount.TabIndex = 85
+        Me.chkPlayCount.Text = "Retrieve PlayCount from:"
+        Me.chkPlayCount.UseVisualStyleBackColor = True
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -219,4 +243,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnRemoveHost As System.Windows.Forms.Button
     Friend WithEvents lbHosts As System.Windows.Forms.ListBox
     Friend WithEvents btnAddHost As System.Windows.Forms.Button
+    Friend WithEvents cbPlayCountHost As System.Windows.Forms.ComboBox
+    Friend WithEvents chkPlayCount As System.Windows.Forms.CheckBox
 End Class

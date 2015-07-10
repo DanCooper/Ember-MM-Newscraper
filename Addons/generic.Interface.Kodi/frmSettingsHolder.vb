@@ -82,9 +82,11 @@ Public Class frmSettingsHolder
     ''' Instead of reloading XML Kodi settings we will use "xmlHosts" as it's always up to date
     ''' </remarks>
     Private Sub ReloadKodiHosts()
+        Me.cbPlayCountHost.Items.Clear()
         Me.lbHosts.Items.Clear()
         For Each host In Me.xmlHosts.host
             Me.lbHosts.Items.Add(host.name)
+            Me.cbPlayCountHost.Items.Add(host.name)
         Next
     End Sub
 
@@ -247,9 +249,23 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+
+    ''' <summary>
+    '''  Setting "Sync Playcount" enabled/disabled
+    ''' </summary>
+    ''' <param name="sender">"Sync Playcount"-checkbox in Form</param>
+    ''' <remarks>
+    ''' 2015/07/08 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub chkPlayCount_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlayCount.CheckedChanged
+        cbPlayCountHost.Enabled = chkPlayCount.Checked
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"
 #End Region 'Nested Types
+
 
 End Class

@@ -205,7 +205,7 @@ Partial Class dlgHost
         Me.txtWebPort.Name = "txtWebPort"
         Me.txtWebPort.Size = New System.Drawing.Size(100, 20)
         Me.txtWebPort.TabIndex = 3
-        Me.txtWebPort.Text = "8090"
+        Me.txtWebPort.Text = "80"
         '
         'txtHostIP
         '
