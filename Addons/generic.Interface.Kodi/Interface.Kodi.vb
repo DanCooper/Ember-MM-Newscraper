@@ -47,12 +47,18 @@ Public Class KodiInterface
     Private cmnuKodi_Movies As New System.Windows.Forms.ToolStripMenuItem
     Private cmnuKodi_Episodes As New System.Windows.Forms.ToolStripMenuItem
     Private cmnuKodi_Shows As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuKodi_Sets As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuKodi_Seasons As New System.Windows.Forms.ToolStripMenuItem
     Private cmnuSep_Movies As New System.Windows.Forms.ToolStripSeparator
     Private cmnuSep_Episodes As New System.Windows.Forms.ToolStripSeparator
     Private cmnuSep_Shows As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Sets As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Seasons As New System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmnuKodiSync_Movie As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuKodiSync_TVEpisode As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuKodiSync_TVShow As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuKodiSync_TVSeason As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuKodiSync_Movieset As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuTrayToolsKodi As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuTrayToolsKodiCleanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmnuTrayToolsKodiScanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
@@ -224,6 +230,38 @@ Public Class KodiInterface
                     Else
                         logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: Not online!")
                     End If
+                    'TODO Movieset syncing
+                    'Case Enums.ModuleEventType.Sync_Movieset
+                    '    If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
+                    '        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No Remote MoviesetPath configured!")
+                    '    Else
+                    '        Dim tDBMovieset As EmberAPI.Structures.DBMovieSet = DirectCast(_refparam, EmberAPI.Structures.DBMovieSet)
+                    '        If tDBMovieset.Movies.Count > 0 Then
+                    '            If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.ID) Then
+                    '                For Each host In MySettings.KodiHosts.host.ToList
+                    '                    'only update movie if realtimesync of host is enabled
+                    '                    If MySettings.KodiHosts.host(0).realtimesync = True Then
+                    '                        Dim _APIKodi As New Kodi.APIKodi(host)
+                    '                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                    '                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSet(tDBMovieset.ID, MySettings.Moviesetartpath, MySettings.SendNotifications))
+                    '                        ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
+                    '                        'If result.Result = True Then
+                    '                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
+                    '                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                    '                        'Else
+                    '                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
+                    '                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                    '                        'End If
+                    '                    End If
+                    '                Next
+                    '            Else
+                    '                logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: Please Scrape In Ember First!")
+                    '                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                    '            End If
+                    '        Else
+                    '            logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No movies in set!")
+                    '        End If
+                    '    End If
             End Select
         Else
             logger.Warn("[KodiInterface] RunGeneric: No Host Configured!")
@@ -253,6 +291,7 @@ Public Class KodiInterface
         MySettings.SendNotifications = clsAdvancedSettings.GetBooleanSetting("HostNotifications", False)
         MySettings.SyncPlayCount = clsAdvancedSettings.GetBooleanSetting("SyncPlayCount", False)
         MySettings.SyncPlayCountHost = clsAdvancedSettings.GetSetting("SyncPlayCountHost", "")
+        MySettings.Moviesetartpath = clsAdvancedSettings.GetSetting("Moviesetartpath", "")
         'load XML configuration of hosts
         Dim hostsPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Hosts.xml")
         Dim tmphosts As New EmberAPI.clsXMLHosts
@@ -330,6 +369,28 @@ Public Class KodiInterface
 
         SetToolsStripItem_Shows(cmnuSep_Shows)
         SetToolsStripItem_Shows(cmnuKodi_Shows)
+
+        'cmnuSeasons
+        cmnuKodi_Seasons.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_Seasons.Text = "Kodi"
+        cmnuKodi_Seasons.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodiSync_TVSeason.Image = New Bitmap(My.Resources.menuSync)
+        cmnuKodiSync_TVSeason.Text = Master.eLang.GetString(1446, "Sync")
+        cmnuKodi_Seasons.DropDownItems.Add(cmnuKodiSync_TVSeason)
+
+        SetToolsStripItem_Seasons(cmnuSep_Seasons)
+        SetToolsStripItem_Seasons(cmnuKodi_Seasons)
+
+        'cmnuSets
+        cmnuKodi_Sets.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_Sets.Text = "Kodi"
+        cmnuKodi_Sets.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodiSync_Movieset.Image = New Bitmap(My.Resources.menuSync)
+        cmnuKodiSync_Movieset.Text = Master.eLang.GetString(1446, "Sync")
+        cmnuKodi_Sets.DropDownItems.Add(cmnuKodiSync_Movieset)
+
+        SetToolsStripItem_Sets(cmnuSep_Sets)
+        SetToolsStripItem_Sets(cmnuKodi_Sets)
     End Sub
     ''' <summary>
     '''  Actions on module startup (Ember startup) and runtime if module is disabled
@@ -357,6 +418,12 @@ Public Class KodiInterface
         'cmnuShows
         RemoveToolsStripItem_Shows(cmnuSep_Shows)
         RemoveToolsStripItem_Shows(cmnuKodi_Shows)
+        'cmnuSeasons
+        RemoveToolsStripItem_Seasons(cmnuSep_Seasons)
+        RemoveToolsStripItem_Seasons(cmnuKodi_Seasons)
+        'cmnuSets
+        RemoveToolsStripItem_Sets(cmnuSep_Sets)
+        RemoveToolsStripItem_Sets(cmnuKodi_Sets)
     End Sub
     ''' <summary>
     ''' Load and fill controls of settings page of module
@@ -370,6 +437,7 @@ Public Class KodiInterface
         Me._setup.chkEnabled.Checked = Me._enabled
 
         'consider user settings
+        Me._setup.txtmoviesetartpath.Text = MySettings.Moviesetartpath
         Me._setup.chkNotification.Checked = MySettings.SendNotifications
         Me._setup.chkPlayCount.Checked = MySettings.SyncPlayCount
         Me._setup.xmlHosts = MySettings.KodiHosts
@@ -408,6 +476,7 @@ Public Class KodiInterface
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.SendNotifications = Me._setup.chkNotification.Checked
+        MySettings.Moviesetartpath = Me._setup.txtmoviesetartpath.Text
         MySettings.SyncPlayCountHost = _setup.cbPlayCountHost.SelectedItem.ToString()
         MySettings.SyncPlayCount = _setup.chkPlayCount.Checked
         SaveSettings()
@@ -428,8 +497,9 @@ Public Class KodiInterface
         'module settings will be saved
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("HostNotifications", MySettings.SendNotifications)
-            If _setup.cbPlayCountHost.SelectedIndex >= 0 Then settings.SetSetting("SyncPlayCountHost", MySettings.SyncPlayCountHost)
+            settings.SetSetting("SyncPlayCountHost", MySettings.SyncPlayCountHost)
             settings.SetBooleanSetting("SyncPlayCount", MySettings.SyncPlayCount)
+            settings.SetSetting("Moviesetartpath", MySettings.Moviesetartpath)
         End Using
         'XML host configuration will be saved/updated
         Dim aPath As String = ""
@@ -561,6 +631,83 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
+
+    ''' <summary>
+    ''' Update season details on Host DB
+    ''' </summary>
+    ''' <param name="sender">context menu "Sync TVSeason"</param>
+    ''' <remarks>
+    ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
+    ''' Update details of season in Kodi DB
+    ''' </remarks>
+    Private Async Sub cmnuKodiSync_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVSeason.Click
+        If MySettings.KodiHosts.host.ToList.Count > 0 Then
+            If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+                Cursor.Current = Cursors.WaitCursor
+                If Not String.IsNullOrEmpty(Master.currShow.EpNfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.EpID.ToString) Then
+                    For Each host In MySettings.KodiHosts.host.ToList
+                        Dim _APIKodi As New Kodi.APIKodi(host)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
+                        If Await _APIKodi.UpdateEpisodeInfo(Master.currShow.EpID, MySettings.SendNotifications) Then
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
+                        Else
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVEp.Title, Nothing}))
+                        End If
+                        'Update EmberDB Playcount value if configured by user
+                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                            If Await _APIKodi.SyncPlaycount(Master.currShow.EpID, "episode") Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                            Else
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                            End If
+                        End If
+                    Next
+                Else
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                End If
+                Cursor.Current = Cursors.Default
+            End If
+        Else
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Update movieset details on Host DB
+    ''' </summary>
+    ''' <param name="sender">context menu "Sync Movieset"</param>
+    ''' <remarks>
+    ''' 2015/06/27 Cocotus - First implementation
+    ''' Update details of movieset in Kodi DB
+    ''' </remarks>
+    Private Async Sub cmnuKodiSync_Movieset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_Movieset.Click
+        If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
+            logger.Warn("[KodiInterface] cmnuKodiSync_Movieset_Click: No Remote MoviesetPath configured!")
+            Exit Sub
+        End If
+        If MySettings.KodiHosts.host.ToList.Count > 0 Then
+            If Master.currMovieSet.Movies.Count > 0 Then
+                Cursor.Current = Cursors.WaitCursor
+                If Not String.IsNullOrEmpty(Master.currMovieSet.ID.ToString) Then
+                    For Each host In MySettings.KodiHosts.host.ToList
+                        Dim _APIKodi As New Kodi.APIKodi(host)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                        If Await _APIKodi.UpdateMovieSet(Master.currMovieSet.ID, MySettings.Moviesetartpath, MySettings.SendNotifications) Then
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                        Else
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovieSet.MovieSet.Title, Nothing}))
+                        End If
+                    Next
+                Else
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                End If
+                Cursor.Current = Cursors.Default
+            End If
+        Else
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+        End If
+    End Sub
+
     ''' <summary>
     '''  Scan video library of host
     ''' </summary>
@@ -713,6 +860,20 @@ Public Class KodiInterface
         End If
     End Sub
 
+    Public Sub RemoveToolsStripItem_Seasons(value As System.Windows.Forms.ToolStripItem)
+        If ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Seasons), New Object() {value})
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList.Items.Remove(value)
+        End If
+    End Sub
+    Public Sub RemoveToolsStripItem_Sets(value As System.Windows.Forms.ToolStripItem)
+        If ModulesManager.Instance.RuntimeObjects.MenuMovieSetList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.MenuMovieSetList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Sets), New Object() {value})
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuMovieSetList.Items.Remove(value)
+        End If
+    End Sub
     Public Sub SetToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
         If ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired Then
             ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Episodes), New Object() {value})
@@ -737,6 +898,22 @@ Public Class KodiInterface
         End If
     End Sub
 
+    Public Sub SetToolsStripItem_Seasons(value As System.Windows.Forms.ToolStripItem)
+        If ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Seasons), New Object() {value})
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList.Items.Add(value)
+        End If
+    End Sub
+
+    Public Sub SetToolsStripItem_Sets(value As System.Windows.Forms.ToolStripItem)
+        If ModulesManager.Instance.RuntimeObjects.MenuMovieSetList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.MenuMovieSetList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Sets), New Object() {value})
+        Else
+            ModulesManager.Instance.RuntimeObjects.MenuMovieSetList.Items.Add(value)
+        End If
+    End Sub
+
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -757,6 +934,7 @@ Public Class KodiInterface
         Dim SendNotifications As Boolean
         Dim SyncPlayCountHost As String
         Dim SyncPlayCount As Boolean
+        Dim Moviesetartpath As String
 #End Region 'Fields
 
     End Structure

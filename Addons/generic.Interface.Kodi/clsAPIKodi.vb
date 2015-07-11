@@ -67,6 +67,155 @@ Namespace Kodi
             _kodi = New Client(platformServices, _currenthost.address, _currenthost.port, _currenthost.username, _currenthost.password)
         End Sub
 
+#Region "Movieset API"
+        ''' <summary>
+        ''' Update movieset details at Kodi
+        ''' </summary>
+        ''' <param name="EmbermoviesetID">ID of specific movieset (EmberDB)</param>
+        ''' <param name="SendHostNotification">Send notification to host</param>
+        ''' <returns>true=Update successfull, false=error or movieset not found in KodiDB</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation, main code by DanCooper
+        ''' updates all movieset fields which are filled/set in Ember (also paths of images)
+        ''' </remarks>
+        Public Async Function UpdateMovieSet(ByVal EmbermoviesetID As Long, ByVal MovieSetArtworkPath As String, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+            Dim uMovieset As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(EmbermoviesetID)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] UpdateMovieSet: No client initialized! Abort!")
+                    Return False
+                End If
+                ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
+
+                'search movieset ID in Kodi DB
+                Dim KodiMovieset = Await GetHostMovieset(uMovieset).ConfigureAwait(False)
+                Dim KodiID As Integer = -1
+                If Not KodiMovieset Is Nothing Then
+                    KodiID = KodiMovieset.setid
+                End If
+
+                'movieset isn't in database of host -> scan directory
+                If KodiID = -1 Then
+                    logger.Warn("[APIKodi] UpdateMovieSet: " & _currenthost.name & ": " & uMovieset.MovieSet.Title & ": Not found in database, abort process...")
+                    'what to do in this case?
+                End If
+
+                If KodiID > -1 Then
+                    'string or string.empty
+                    Dim mTitle As String = uMovieset.MovieSet.Title
+
+                    'string or null/nothing
+                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovieset.BannerPath), _
+                                                  GetRemoteFilePath(uMovieset.BannerPath, MovieSetArtworkPath), Nothing)
+                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovieset.ClearArtPath), _
+                                                  GetRemoteFilePath(uMovieset.ClearArtPath, MovieSetArtworkPath), Nothing)
+                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovieset.ClearLogoPath), _
+                                                  GetRemoteFilePath(uMovieset.ClearLogoPath, MovieSetArtworkPath), Nothing)
+                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovieset.DiscArtPath), _
+                                                  GetRemoteFilePath(uMovieset.DiscArtPath, MovieSetArtworkPath), Nothing)
+                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovieset.FanartPath), _
+                                                 GetRemoteFilePath(uMovieset.FanartPath, MovieSetArtworkPath), Nothing)
+                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovieset.LandscapePath), _
+                                                  GetRemoteFilePath(uMovieset.LandscapePath, MovieSetArtworkPath), Nothing)
+                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovieset.PosterPath), _
+                                                  GetRemoteFilePath(uMovieset.PosterPath, MovieSetArtworkPath), Nothing)
+
+                    'all image paths will be set in artwork object
+                    Dim artwork As New Media.Artwork.Set
+                    artwork.banner = mBanner
+                    artwork.clearart = mClearArt
+                    artwork.clearlogo = mClearLogo
+                    artwork.discart = mDiscArt
+                    artwork.fanart = mFanart
+                    artwork.landscape = mLandscape
+                    artwork.poster = mPoster
+
+                    Dim response = Await _kodi.VideoLibrary.SetMovieSetDetails(KodiID, _
+                                                                        title:=mTitle, _
+                                                                        art:=artwork).ConfigureAwait(False)
+
+
+                    If response.Contains("error") Then
+                        logger.Error("[APIKodi] UpdateMovieSet: " & _currenthost.name & ": " & response)
+                        ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
+                        Return False
+                    Else
+                        logger.Trace("[APIKodi] UpdateMovieSet: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": " & uMovieset.MovieSet.Title)
+                        ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
+                        'Send message to Kodi?
+                        If SendHostNotification = True Then
+                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uMovieset.MovieSet.Title).ConfigureAwait(False)
+                        End If
+                        Return True
+                    End If
+                Else
+                    logger.Trace("[APIKodi] UpdateMovieSet: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uMovieset.MovieSet.Title)
+                    '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uMovie.Filename, Nothing}))
+                    Return False
+                End If
+
+            Catch ex As Exception
+                ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return False
+            End Try
+        End Function
+
+        ''' <summary>
+        ''' Get Movieset container at Kodi host for a specific movieset
+        ''' </summary>
+        ''' <param name="EmberMovieset">ID of specific movieset (EmberDB)</param>
+        ''' <returns>movieset container of host, Nothing: error</returns>
+        ''' <remarks>
+        ''' 2015/06/28 Cocotus - First implementation
+        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
+        ''' </remarks>
+        Public Async Function GetHostMovieset(ByVal EmberMovieset As Structures.DBMovieSet) As Task(Of XBMCRPC.Video.Details.MovieSet)
+            'get a list of all sets saved in Kodi DB
+            Dim kMoviesets As List(Of Video.Details.MovieSet) = Await GetAllMoviesets().ConfigureAwait(False)
+            'compare title of remote and local set to identify set
+            If Not kMoviesets Is Nothing Then
+                For Each kset In kMoviesets
+                    If kset.title.ToLower = EmberMovieset.MovieSet.Title.ToLower Then
+                        logger.Trace(String.Concat("[APIKodi] GetHostMovieset: " & _currenthost.name & ": " & EmberMovieset.MovieSet.Title & " found in host database!"))
+                        Return kset
+                    End If
+                    'if movieset wasn't found try to search for correct movieset by comparing included movies of set
+                    'should not be hppening, because whenever title of set is changed in Ember, movies in set will be updated and synced with correct settitle
+                    'For Each movie In EmberMovieset.Movies
+                    '    'search movie ID in Kodi DB
+                    '    Dim KodiMovie = Await GetHostMovieByFilename(movie.Filename).ConfigureAwait(False)
+                    '    If Not KodiMovie Is Nothing AndAlso KodiMovie.setid > 0 Then
+                    '        Dim response = Await _kodi.VideoLibrary.GetMovieSetDetails(KodiMovie.setid, XBMCRPC.Video.Fields.MovieSet.AllFields).ConfigureAwait(False)
+                    '        If Not response Is Nothing Then
+                    '            logger.Trace(String.Concat("[APIKodi] GetHostMovieset: " & _currenthost.name & ": " & EmberMovieset.MovieSet.Title & " found in host database!"))
+                    '            Return response.setdetails
+                    '        End If
+                    '    End If
+                    'Next
+                Next
+            End If
+            logger.Trace(String.Concat("[APIKodi] GetHostMovieset: " & _currenthost.name & ": " & EmberMovieset.MovieSet.Title & " NOT found in host database!"))
+            Return Nothing
+        End Function
+        ''' <summary>
+        ''' Get all moviesets from Kodi host
+        ''' </summary>
+        ''' <returns>list of kodi moviesets, Nothing: error</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
+        ''' </remarks>
+        Public Async Function GetAllMoviesets() As Task(Of List(Of Video.Details.MovieSet))
+            If _kodi Is Nothing Then
+                logger.Warn("[APIKodi] GetAllMoviesets: No client initialized! Abort!")
+                Return Nothing
+            End If
+            Dim response = Await _kodi.VideoLibrary.GetMovieSets(Video.Fields.MovieSet.AllFields).ConfigureAwait(False)
+            Return response.sets.ToList()
+        End Function
+#End Region
+
 #Region "Movie API"
         ''' <summary>
         ''' Update movie details at Kodi
@@ -122,6 +271,9 @@ Namespace Kodi
                     Dim mTagline As String = uMovie.Movie.Tagline
                     Dim mTitle As String = uMovie.Movie.Title
                     Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.TrailerPath), GetRemoteFilePath(uMovie.TrailerPath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, String.Empty))
+                    If mTrailer Is Nothing Then
+                        mTrailer = String.Empty
+                    End If
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(uMovie.Movie.Votes), uMovie.Movie.Votes, Nothing)
@@ -251,6 +403,7 @@ Namespace Kodi
         ''' <summary>
         ''' Get movie container at Kodi host for a specific movie
         ''' </summary>
+        ''' <param name="Filename">Filename of movie</param>
         ''' <returns>movie of host, Nothing: error</returns>
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
@@ -1019,6 +1172,9 @@ Namespace Kodi
             End Select
 
             uPath = GetRemoteFilePath(uPath)
+            If uPath Is Nothing Then
+                Return False
+            End If
             Dim response = Await _kodi.VideoLibrary.Scan(uPath).ConfigureAwait(False)
             If response.Contains("error") Then
                 logger.Error(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": " & uPath, " ", response))
@@ -1065,20 +1221,21 @@ Namespace Kodi
         ''' For now its necessary that last fragment in remotesource is also part of localfilepath, so I can build the remotepath for the local file
         ''' this means root path won't work for now, i.e remotesource: "Z:\", but this will work: "Z:\Movies"
         ''' </remarks>
-        Function GetRemoteFilePath(ByVal localpath As String) As String
-            Dim remotesource As String = ""
+        Function GetRemoteFilePath(ByVal localpath As String, Optional ByVal remotesource As String = "") As String
             logger.Trace(String.Concat("[APIKodi] GetRemoteFilePath: Localpath: " & localpath))
-            For Each kodisource In _currenthost.source
-                If localpath.StartsWith(kodisource.applicationpath) Then
-                    logger.Trace(String.Concat("[APIKodi] GetRemoteFilePath: Found KodiSource: " & kodisource.remotepath))
-                    remotesource = kodisource.remotepath
-                    Exit For
-                End If
-            Next
+            If remotesource = "" Then
+                For Each kodisource In _currenthost.source
+                    If localpath.StartsWith(kodisource.applicationpath) Then
+                        logger.Trace(String.Concat("[APIKodi] GetRemoteFilePath: Found KodiSource: " & kodisource.remotepath))
+                        remotesource = kodisource.remotepath
+                        Exit For
+                    End If
+                Next
+            End If
 
             If remotesource = String.Empty Then
                 logger.Warn("[APIKodi] GetRemoteFilePath: KodiSource NOT Found! Abort!")
-                Return ""
+                Return Nothing
             End If
 
             'if no seperator is specified use pathseperator of current system (=Windows)
@@ -1107,7 +1264,8 @@ Namespace Kodi
                 'example: matchfolder: Media_1
                 matchfolder = pathsplitsremote(pathsplitsremote.Count - 1)
             Else
-                logger.Warn(String.Concat("[APIKodi] GetRemoteFilePath: Wrong Remotepathseparator: " & remotepathseparator))
+                logger.Warn(String.Concat("[APIKodi] GetRemoteFilePath: Wrong Remotepathseparator, Abort process: " & remotepathseparator))
+                Return Nothing
             End If
 
             If matchfolder <> "" Then

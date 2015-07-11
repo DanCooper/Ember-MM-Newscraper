@@ -26,7 +26,9 @@ Partial Class frmSettingsHolder
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.gbSettingsGeneral = New System.Windows.Forms.GroupBox()
+        Me.cbPlayCountHost = New System.Windows.Forms.ComboBox()
         Me.chkNotification = New System.Windows.Forms.CheckBox()
+        Me.chkPlayCount = New System.Windows.Forms.CheckBox()
         Me.btnEditHost = New System.Windows.Forms.Button()
         Me.btnRemoveHost = New System.Windows.Forms.Button()
         Me.lbHosts = New System.Windows.Forms.ListBox()
@@ -34,8 +36,8 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
-        Me.cbPlayCountHost = New System.Windows.Forms.ComboBox()
-        Me.chkPlayCount = New System.Windows.Forms.CheckBox()
+        Me.txtmoviesetartpath = New System.Windows.Forms.TextBox()
+        Me.lblmoviesetartpath = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.gbSettingsGeneral.SuspendLayout()
@@ -68,6 +70,8 @@ Partial Class frmSettingsHolder
         'gbSettingsGeneral
         '
         Me.gbSettingsGeneral.AutoSize = True
+        Me.gbSettingsGeneral.Controls.Add(Me.lblmoviesetartpath)
+        Me.gbSettingsGeneral.Controls.Add(Me.txtmoviesetartpath)
         Me.gbSettingsGeneral.Controls.Add(Me.cbPlayCountHost)
         Me.gbSettingsGeneral.Controls.Add(Me.chkNotification)
         Me.gbSettingsGeneral.Controls.Add(Me.chkPlayCount)
@@ -83,6 +87,15 @@ Partial Class frmSettingsHolder
         Me.gbSettingsGeneral.TabStop = False
         Me.gbSettingsGeneral.Text = "General Settings"
         '
+        'cbPlayCountHost
+        '
+        Me.cbPlayCountHost.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPlayCountHost.FormattingEnabled = True
+        Me.cbPlayCountHost.Location = New System.Drawing.Point(336, 67)
+        Me.cbPlayCountHost.Name = "cbPlayCountHost"
+        Me.cbPlayCountHost.Size = New System.Drawing.Size(121, 21)
+        Me.cbPlayCountHost.TabIndex = 86
+        '
         'chkNotification
         '
         Me.chkNotification.AutoSize = True
@@ -93,6 +106,17 @@ Partial Class frmSettingsHolder
         Me.chkNotification.TabIndex = 15
         Me.chkNotification.Text = "Send Notifications"
         Me.chkNotification.UseVisualStyleBackColor = True
+        '
+        'chkPlayCount
+        '
+        Me.chkPlayCount.AutoSize = True
+        Me.chkPlayCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPlayCount.Location = New System.Drawing.Point(318, 44)
+        Me.chkPlayCount.Name = "chkPlayCount"
+        Me.chkPlayCount.Size = New System.Drawing.Size(152, 17)
+        Me.chkPlayCount.TabIndex = 85
+        Me.chkPlayCount.Text = "Retrieve PlayCount from:"
+        Me.chkPlayCount.UseVisualStyleBackColor = True
         '
         'btnEditHost
         '
@@ -182,25 +206,21 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'cbPlayCountHost
+        'txtmoviesetartpath
         '
-        Me.cbPlayCountHost.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbPlayCountHost.FormattingEnabled = True
-        Me.cbPlayCountHost.Location = New System.Drawing.Point(336, 67)
-        Me.cbPlayCountHost.Name = "cbPlayCountHost"
-        Me.cbPlayCountHost.Size = New System.Drawing.Size(121, 21)
-        Me.cbPlayCountHost.TabIndex = 86
+        Me.txtmoviesetartpath.Location = New System.Drawing.Point(318, 126)
+        Me.txtmoviesetartpath.Name = "txtmoviesetartpath"
+        Me.txtmoviesetartpath.Size = New System.Drawing.Size(316, 22)
+        Me.txtmoviesetartpath.TabIndex = 87
         '
-        'chkPlayCount
+        'lblmoviesetartpath
         '
-        Me.chkPlayCount.AutoSize = True
-        Me.chkPlayCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlayCount.Location = New System.Drawing.Point(318, 44)
-        Me.chkPlayCount.Name = "chkPlayCount"
-        Me.chkPlayCount.Size = New System.Drawing.Size(152, 17)
-        Me.chkPlayCount.TabIndex = 85
-        Me.chkPlayCount.Text = "Retrieve PlayCount from:"
-        Me.chkPlayCount.UseVisualStyleBackColor = True
+        Me.lblmoviesetartpath.AutoSize = True
+        Me.lblmoviesetartpath.Location = New System.Drawing.Point(315, 110)
+        Me.lblmoviesetartpath.Name = "lblmoviesetartpath"
+        Me.lblmoviesetartpath.Size = New System.Drawing.Size(163, 13)
+        Me.lblmoviesetartpath.TabIndex = 88
+        Me.lblmoviesetartpath.Text = "Kodi MovieSet Artwork Folder:"
         '
         'frmSettingsHolder
         '
@@ -245,4 +265,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnAddHost As System.Windows.Forms.Button
     Friend WithEvents cbPlayCountHost As System.Windows.Forms.ComboBox
     Friend WithEvents chkPlayCount As System.Windows.Forms.CheckBox
+    Friend WithEvents lblmoviesetartpath As System.Windows.Forms.Label
+    Friend WithEvents txtmoviesetartpath As System.Windows.Forms.TextBox
 End Class
