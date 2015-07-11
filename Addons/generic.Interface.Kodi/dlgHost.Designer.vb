@@ -58,9 +58,9 @@ Partial Class dlgHost
         '
         'btnHostPopulateSources
         '
-        Me.btnHostPopulateSources.Location = New System.Drawing.Point(566, 314)
+        Me.btnHostPopulateSources.Location = New System.Drawing.Point(566, 292)
         Me.btnHostPopulateSources.Name = "btnHostPopulateSources"
-        Me.btnHostPopulateSources.Size = New System.Drawing.Size(75, 23)
+        Me.btnHostPopulateSources.Size = New System.Drawing.Size(87, 45)
         Me.btnHostPopulateSources.TabIndex = 2
         Me.btnHostPopulateSources.Text = "Populate Sources"
         Me.btnHostPopulateSources.UseVisualStyleBackColor = True

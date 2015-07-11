@@ -141,26 +141,36 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(tDBMovie.NfoPath) Then
                             For Each host In MySettings.KodiHosts.host.ToList
                                 'only update movie if realtimesync of host is enabled
-                                If MySettings.KodiHosts.host(0).realtimesync = True Then
-                                    Dim _APIKodi As New Kodi.APIKodi(host)
-                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
-                                    'run task
-                                    Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, MySettings.SendNotifications))
-                                    'Update EmberDB Playcount value if configured by user
-                                    If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                                        Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBMovie.ID, "movie"))
+                                If host.realtimesync = True Then
+                                    'check if at least one source is type = movie, otherwise don't use this host!
+                                    Dim Sourceok As Boolean = False
+                                    For Each source In host.source
+                                        If source.type = "movie" Then
+                                            Sourceok = True
+                                            Exit For
+                                        End If
+                                    Next
+                                    If Sourceok = True Then
+                                        Dim _APIKodi As New Kodi.APIKodi(host)
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                                        'run task
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, MySettings.SendNotifications))
+                                        'Update EmberDB Playcount value if configured by user
+                                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                                            Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBMovie.ID, "movie"))
+                                        End If
+                                        'Synchronously waiting for an async method... not good and no ideal solution here. The asynchronous code of KodiAPI works best if it doesn’t get synchronously blocked - so for now I moved notifcation in Ember in async APIKodi to avoid waiting here for the task to finish. 
+                                        'solution for now until Ember v1.5 (in future better use await and change all methods/functions to async code, all the way up in Ember (like msavazzi prepared)) 
+                                        'TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
+                                        'result.Wait()
+                                        'If result.Result = True Then
+                                        '    logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                                        'Else
+                                        '    logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", host.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                                        'End If
                                     End If
-                                    'Synchronously waiting for an async method... not good and no ideal solution here. The asynchronous code of KodiAPI works best if it doesn’t get synchronously blocked - so for now I moved notifcation in Ember in async APIKodi to avoid waiting here for the task to finish. 
-                                    'solution for now until Ember v1.5 (in future better use await and change all methods/functions to async code, all the way up in Ember (like msavazzi prepared)) 
-                                    'TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
-                                    'result.Wait()
-                                    'If result.Result = True Then
-                                    '    logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title)
-                                    '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
-                                    'Else
-                                    '    logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title)
-                                    '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", host.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
-                                    'End If
                                 End If
                             Next
                         Else
@@ -177,22 +187,32 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(tDBTV.EpNfoPath) Then
                             For Each host In MySettings.KodiHosts.host.ToList
                                 'only update movie if realtimesync of host is enabled
-                                If MySettings.KodiHosts.host(0).realtimesync = True Then
-                                    Dim _APIKodi As New Kodi.APIKodi(host)
-                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVEp.Title, New Bitmap(My.Resources.logo)}))
-                                    Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateEpisodeInfo(tDBTV.EpID, MySettings.SendNotifications))
-                                    'Update EmberDB Playcount value if configured by user
-                                    If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                                        Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBTV.EpID, "movie"))
+                                If host.realtimesync = True Then
+                                    'check if at least one source is type = movie, otherwise don't use this host!
+                                    Dim Sourceok As Boolean = False
+                                    For Each source In host.source
+                                        If source.type = "tvshow" Then
+                                            Sourceok = True
+                                            Exit For
+                                        End If
+                                    Next
+                                    If Sourceok = True Then
+                                        Dim _APIKodi As New Kodi.APIKodi(host)
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVEp.Title, New Bitmap(My.Resources.logo)}))
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateEpisodeInfo(tDBTV.EpID, MySettings.SendNotifications))
+                                        'Update EmberDB Playcount value if configured by user
+                                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                                            Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBTV.EpID, "movie"))
+                                        End If
+                                        ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
+                                        'If result.Result = True Then
+                                        '    logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEp.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEp.Title, New Bitmap(My.Resources.logo)}))
+                                        'Else
+                                        '    logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEp.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEp.Title, Nothing}))
+                                        'End If
                                     End If
-                                    ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
-                                    'If result.Result = True Then
-                                    '    logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEp.Title)
-                                    '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEp.Title, New Bitmap(My.Resources.logo)}))
-                                    'Else
-                                    '    logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEp.Title)
-                                    '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEp.Title, Nothing}))
-                                    'End If
                                 End If
                             Next
                         Else
@@ -209,18 +229,28 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(tDBTV.ShowNfoPath) Then
                             For Each host In MySettings.KodiHosts.host.ToList
                                 'only update movie if realtimesync of host is enabled
-                                If MySettings.KodiHosts.host(0).realtimesync = True Then
-                                    Dim _APIKodi As New Kodi.APIKodi(host)
-                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
-                                    Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateTVShowInfo(tDBTV.ShowID, MySettings.SendNotifications))
-                                    ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
-                                    'If result.Result = True Then
-                                    '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
-                                    '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
-                                    'Else
-                                    '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
-                                    '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
-                                    'End If
+                                If host.realtimesync = True Then
+                                    'check if at least one source is type = movie, otherwise don't use this host!
+                                    Dim Sourceok As Boolean = False
+                                    For Each source In host.source
+                                        If source.type = "tvshow" Then
+                                            Sourceok = True
+                                            Exit For
+                                        End If
+                                    Next
+                                    If Sourceok = True Then
+                                        Dim _APIKodi As New Kodi.APIKodi(host)
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateTVShowInfo(tDBTV.ShowID, MySettings.SendNotifications))
+                                        ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
+                                        'If result.Result = True Then
+                                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                                        'Else
+                                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                        'End If
+                                    End If
                                 End If
                             Next
                         Else
@@ -230,38 +260,76 @@ Public Class KodiInterface
                     Else
                         logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: Not online!")
                     End If
+                    'TODO TVSeason syncing
+                Case Enums.ModuleEventType.Sync_TVShow 'Enums.ModuleEventType.Sync_TVSeason
+                    Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
+                    If tDBTV.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(tDBTV, True) Then
+                        If Not String.IsNullOrEmpty(tDBTV.SeasonID.ToString) Then
+                            For Each host In MySettings.KodiHosts.host.ToList
+                                'only update movie if realtimesync of host is enabled
+                                If host.realtimesync = True Then
+                                    'check if at least one source is type = movie, otherwise don't use this host!
+                                    Dim Sourceok As Boolean = False
+                                    For Each source In host.source
+                                        If source.type = "tvshow" Then
+                                            Sourceok = True
+                                            Exit For
+                                        End If
+                                    Next
+                                    If Sourceok = True Then
+                                        Dim _APIKodi As New Kodi.APIKodi(host)
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVEp.Season, New Bitmap(My.Resources.logo)}))
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateSeasonInfo(tDBTV.SeasonID, MySettings.SendNotifications))
+                                        ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
+                                        'If result.Result = True Then
+                                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                                        'Else
+                                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                        'End If
+                                    End If
+                                End If
+                            Next
+                        Else
+                            logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: Please Scrape In Ember First!")
+                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        End If
+                    Else
+                        logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: Not online!")
+                    End If
                     'TODO Movieset syncing
-                    'Case Enums.ModuleEventType.Sync_Movieset
-                    '    If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
-                    '        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No Remote MoviesetPath configured!")
-                    '    Else
-                    '        Dim tDBMovieset As EmberAPI.Structures.DBMovieSet = DirectCast(_refparam, EmberAPI.Structures.DBMovieSet)
-                    '        If tDBMovieset.Movies.Count > 0 Then
-                    '            If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.ID) Then
-                    '                For Each host In MySettings.KodiHosts.host.ToList
-                    '                    'only update movie if realtimesync of host is enabled
-                    '                    If MySettings.KodiHosts.host(0).realtimesync = True Then
-                    '                        Dim _APIKodi As New Kodi.APIKodi(host)
-                    '                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                    '                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSet(tDBMovieset.ID, MySettings.Moviesetartpath, MySettings.SendNotifications))
-                    '                        ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
-                    '                        'If result.Result = True Then
-                    '                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
-                    '                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
-                    '                        'Else
-                    '                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
-                    '                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
-                    '                        'End If
-                    '                    End If
-                    '                Next
-                    '            Else
-                    '                logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: Please Scrape In Ember First!")
-                    '                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
-                    '            End If
-                    '        Else
-                    '            logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No movies in set!")
-                    '        End If
-                    '    End If
+                Case Enums.ModuleEventType.Sync_Movie 'Enums.ModuleEventType.Sync_Movieset
+                    If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
+                        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No Remote MoviesetPath configured!")
+                    Else
+                        Dim tDBMovieset As EmberAPI.Structures.DBMovieSet = DirectCast(_refparam, EmberAPI.Structures.DBMovieSet)
+                        If tDBMovieset.Movies.Count > 0 Then
+                            If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.ID) Then
+                                For Each host In MySettings.KodiHosts.host.ToList
+                                    'only update movie if realtimesync of host is enabled
+                                    If host.realtimesync = True Then
+                                        Dim _APIKodi As New Kodi.APIKodi(host)
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, MySettings.Moviesetartpath, MySettings.SendNotifications))
+                                        ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
+                                        'If result.Result = True Then
+                                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                                        'Else
+                                        '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
+                                        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                        'End If
+                                    End If
+                                Next
+                            Else
+                                logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: Please Scrape In Ember First!")
+                                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                            End If
+                        Else
+                            logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No movies in set!")
+                        End If
+                    End If
             End Select
         Else
             logger.Warn("[KodiInterface] RunGeneric: No Host Configured!")
@@ -536,19 +604,29 @@ Public Class KodiInterface
                 Cursor.Current = Cursors.WaitCursor
                 For Each host In MySettings.KodiHosts.host.ToList
                     If Not String.IsNullOrEmpty(Master.currMovie.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.ID) Then
-                        Dim _APIKodi As New Kodi.APIKodi(host)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
-                        If Await _APIKodi.UpdateMovieInfo(Master.currMovie.ID, MySettings.SendNotifications) Then
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
-                        Else
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
-                        End If
-                        'Update EmberDB Playcount value if configured by user
-                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                            If Await _APIKodi.SyncPlaycount(Master.currMovie.ID, "movie") Then
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                        'check if at least one source is type = movie, otherwise don't use this host!
+                        Dim Sourceok As Boolean = False
+                        For Each source In host.source
+                            If source.type = "movie" Then
+                                Sourceok = True
+                                Exit For
+                            End If
+                        Next
+                        If Sourceok = True Then
+                            Dim _APIKodi As New Kodi.APIKodi(host)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                            If Await _APIKodi.UpdateMovieInfo(Master.currMovie.ID, MySettings.SendNotifications) Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
                             Else
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                            End If
+                            'Update EmberDB Playcount value if configured by user
+                            If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                                If Await _APIKodi.SyncPlaycount(Master.currMovie.ID, "movie") Then
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                                Else
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                                End If
                             End If
                         End If
                     Else
@@ -575,19 +653,29 @@ Public Class KodiInterface
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currShow.EpNfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.EpID.ToString) Then
                     For Each host In MySettings.KodiHosts.host.ToList
-                        Dim _APIKodi As New Kodi.APIKodi(host)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
-                        If Await _APIKodi.UpdateEpisodeInfo(Master.currShow.EpID, MySettings.SendNotifications) Then
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
-                        Else
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVEp.Title, Nothing}))
-                        End If
-                        'Update EmberDB Playcount value if configured by user
-                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                            If Await _APIKodi.SyncPlaycount(Master.currShow.EpID, "episode") Then
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                        'check if at least one source is type = tvshow, otherwise don't use this host!
+                        Dim Sourceok As Boolean = False
+                        For Each source In host.source
+                            If source.type = "tvshow" Then
+                                Sourceok = True
+                                Exit For
+                            End If
+                        Next
+                        If Sourceok = True Then
+                            Dim _APIKodi As New Kodi.APIKodi(host)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
+                            If Await _APIKodi.UpdateEpisodeInfo(Master.currShow.EpID, MySettings.SendNotifications) Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
                             Else
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVEp.Title, Nothing}))
+                            End If
+                            'Update EmberDB Playcount value if configured by user
+                            If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
+                                If Await _APIKodi.SyncPlaycount(Master.currShow.EpID, "episode") Then
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                                Else
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                                End If
                             End If
                         End If
                     Next
@@ -614,12 +702,22 @@ Public Class KodiInterface
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.TVShow.ID) Then
                     For Each host In MySettings.KodiHosts.host.ToList
-                        Dim _APIKodi As New Kodi.APIKodi(host)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVShow.Title, New Bitmap(My.Resources.logo)}))
-                        If Await _APIKodi.UpdateTVShowInfo(Master.currShow.ShowID, MySettings.SendNotifications) Then
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVShow.Title, New Bitmap(My.Resources.logo)}))
-                        Else
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVShow.Title, Nothing}))
+                        'check if at least one source is type = tvshow, otherwise don't use this host!
+                        Dim Sourceok As Boolean = False
+                        For Each source In host.source
+                            If source.type = "tvshow" Then
+                                Sourceok = True
+                                Exit For
+                            End If
+                        Next
+                        If Sourceok = True Then
+                            Dim _APIKodi As New Kodi.APIKodi(host)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                            If Await _APIKodi.UpdateTVShowInfo(Master.currShow.ShowID, MySettings.SendNotifications) Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                            Else
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVShow.Title, Nothing}))
+                            End If
                         End If
                     Next
                 Else
@@ -637,28 +735,30 @@ Public Class KodiInterface
     ''' </summary>
     ''' <param name="sender">context menu "Sync TVSeason"</param>
     ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
+    ''' 2015/06/27 Cocotus - First implementation
     ''' Update details of season in Kodi DB
     ''' </remarks>
     Private Async Sub cmnuKodiSync_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVSeason.Click
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            If Master.currShow.IsOnlineEp OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+            If Master.currShow.isOnlineShow OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
                 Cursor.Current = Cursors.WaitCursor
-                If Not String.IsNullOrEmpty(Master.currShow.EpNfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.EpID.ToString) Then
+                If Not String.IsNullOrEmpty(Master.currShow.SeasonID.ToString) Then
                     For Each host In MySettings.KodiHosts.host.ToList
-                        Dim _APIKodi As New Kodi.APIKodi(host)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
-                        If Await _APIKodi.UpdateEpisodeInfo(Master.currShow.EpID, MySettings.SendNotifications) Then
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVEp.Title, New Bitmap(My.Resources.logo)}))
-                        Else
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVEp.Title, Nothing}))
-                        End If
-                        'Update EmberDB Playcount value if configured by user
-                        If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                            If Await _APIKodi.SyncPlaycount(Master.currShow.EpID, "episode") Then
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                        'check if at least one source is type = tvshow, otherwise don't use this host!
+                        Dim Sourceok As Boolean = False
+                        For Each source In host.source
+                            If source.type = "tvshow" Then
+                                Sourceok = True
+                                Exit For
+                            End If
+                        Next
+                        If Sourceok = True Then
+                            Dim _APIKodi As New Kodi.APIKodi(host)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currShow.TVEp.Season, New Bitmap(My.Resources.logo)}))
+                            If Await _APIKodi.UpdateSeasonInfo(Master.currShow.SeasonID, MySettings.SendNotifications) Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currShow.TVEp.Season, New Bitmap(My.Resources.logo)}))
                             Else
-                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1452, "Playcount") & " " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovie.Movie.Title, Nothing}))
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currShow.TVEp.Season, Nothing}))
                             End If
                         End If
                     Next
@@ -692,7 +792,7 @@ Public Class KodiInterface
                     For Each host In MySettings.KodiHosts.host.ToList
                         Dim _APIKodi As New Kodi.APIKodi(host)
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                        If Await _APIKodi.UpdateMovieSet(Master.currMovieSet.ID, MySettings.Moviesetartpath, MySettings.SendNotifications) Then
+                        If Await _APIKodi.UpdateMovieSetInfo(Master.currMovieSet.ID, MySettings.Moviesetartpath, MySettings.SendNotifications) Then
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
                         Else
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovieSet.MovieSet.Title, Nothing}))
