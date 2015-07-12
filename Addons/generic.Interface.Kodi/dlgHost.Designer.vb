@@ -61,7 +61,7 @@ Partial Class dlgHost
         Me.btnHostPopulateSources.Location = New System.Drawing.Point(566, 292)
         Me.btnHostPopulateSources.Name = "btnHostPopulateSources"
         Me.btnHostPopulateSources.Size = New System.Drawing.Size(87, 45)
-        Me.btnHostPopulateSources.TabIndex = 2
+        Me.btnHostPopulateSources.TabIndex = 8
         Me.btnHostPopulateSources.Text = "Populate Sources"
         Me.btnHostPopulateSources.UseVisualStyleBackColor = True
         '
@@ -128,7 +128,7 @@ Partial Class dlgHost
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPassword.Size = New System.Drawing.Size(100, 20)
-        Me.txtPassword.TabIndex = 3
+        Me.txtPassword.TabIndex = 4
         Me.txtPassword.Text = "kodi"
         '
         'lblHostPassword
@@ -150,7 +150,7 @@ Partial Class dlgHost
         Me.chkHostRealTimeSync.Location = New System.Drawing.Point(437, 61)
         Me.chkHostRealTimeSync.Name = "chkHostRealTimeSync"
         Me.chkHostRealTimeSync.Size = New System.Drawing.Size(189, 17)
-        Me.chkHostRealTimeSync.TabIndex = 16
+        Me.chkHostRealTimeSync.TabIndex = 5
         Me.chkHostRealTimeSync.Text = "Enable Real Time synchronization "
         Me.chkHostRealTimeSync.UseVisualStyleBackColor = True
         '
@@ -204,7 +204,7 @@ Partial Class dlgHost
         Me.txtWebPort.Location = New System.Drawing.Point(257, 32)
         Me.txtWebPort.Name = "txtWebPort"
         Me.txtWebPort.Size = New System.Drawing.Size(100, 20)
-        Me.txtWebPort.TabIndex = 3
+        Me.txtWebPort.TabIndex = 2
         Me.txtWebPort.Text = "80"
         '
         'txtHostIP
@@ -214,7 +214,7 @@ Partial Class dlgHost
         Me.txtHostIP.Location = New System.Drawing.Point(64, 32)
         Me.txtHostIP.Name = "txtHostIP"
         Me.txtHostIP.Size = New System.Drawing.Size(100, 20)
-        Me.txtHostIP.TabIndex = 3
+        Me.txtHostIP.TabIndex = 1
         Me.txtHostIP.Text = "localhost"
         '
         'lblHostLabel
@@ -235,7 +235,7 @@ Partial Class dlgHost
         Me.txtLabel.Location = New System.Drawing.Point(64, 3)
         Me.txtLabel.Name = "txtLabel"
         Me.txtLabel.Size = New System.Drawing.Size(293, 20)
-        Me.txtLabel.TabIndex = 4
+        Me.txtLabel.TabIndex = 0
         '
         'gbHostSourceType
         '
@@ -255,7 +255,7 @@ Partial Class dlgHost
         Me.rbHostLinux.Location = New System.Drawing.Point(14, 37)
         Me.rbHostLinux.Name = "rbHostLinux"
         Me.rbHostLinux.Size = New System.Drawing.Size(261, 19)
-        Me.rbHostLinux.TabIndex = 1
+        Me.rbHostLinux.TabIndex = 7
         Me.rbHostLinux.Text = "Windows UNC/Linux/MacOS X/Openelec"
         Me.rbHostLinux.UseVisualStyleBackColor = True
         '
@@ -266,7 +266,7 @@ Partial Class dlgHost
         Me.rbHostWindows.Location = New System.Drawing.Point(14, 15)
         Me.rbHostWindows.Name = "rbHostWindows"
         Me.rbHostWindows.Size = New System.Drawing.Size(261, 23)
-        Me.rbHostWindows.TabIndex = 0
+        Me.rbHostWindows.TabIndex = 6
         Me.rbHostWindows.TabStop = True
         Me.rbHostWindows.Text = "Windows Drive Letter (X:\)"
         Me.rbHostWindows.UseVisualStyleBackColor = True
@@ -351,7 +351,7 @@ Partial Class dlgHost
         Me.btnOK.Location = New System.Drawing.Point(497, 384)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
-        Me.btnOK.TabIndex = 17
+        Me.btnOK.TabIndex = 9
         Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
@@ -361,7 +361,7 @@ Partial Class dlgHost
         Me.btnCancel.Location = New System.Drawing.Point(578, 384)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
-        Me.btnCancel.TabIndex = 18
+        Me.btnCancel.TabIndex = 10
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '

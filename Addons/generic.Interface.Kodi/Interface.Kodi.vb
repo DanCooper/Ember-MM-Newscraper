@@ -545,8 +545,8 @@ Public Class KodiInterface
         Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.SendNotifications = Me._setup.chkNotification.Checked
         MySettings.Moviesetartpath = Me._setup.txtmoviesetartpath.Text
-        MySettings.SyncPlayCountHost = _setup.cbPlayCountHost.SelectedItem.ToString()
         MySettings.SyncPlayCount = _setup.chkPlayCount.Checked
+        MySettings.SyncPlayCountHost = If(Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing, Me._setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -565,9 +565,9 @@ Public Class KodiInterface
         'module settings will be saved
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("HostNotifications", MySettings.SendNotifications)
-            settings.SetSetting("SyncPlayCountHost", MySettings.SyncPlayCountHost)
             settings.SetBooleanSetting("SyncPlayCount", MySettings.SyncPlayCount)
             settings.SetSetting("Moviesetartpath", MySettings.Moviesetartpath)
+            settings.SetSetting("SyncPlayCountHost", MySettings.SyncPlayCountHost)
         End Using
         'XML host configuration will be saved/updated
         Dim aPath As String = ""
