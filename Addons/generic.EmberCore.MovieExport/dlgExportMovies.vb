@@ -294,6 +294,22 @@ Public Class dlgExportMovies
                         Dim _audBitrate As String = String.Empty
                         'cocotus end
 
+                        '2015/07/08 cocotus, Added missing fields
+                        Dim _vidAspect As String = String.Empty
+                        Dim _vidDuration As String = String.Empty
+                        Dim _vidHeight As String = String.Empty
+                        Dim _vidLanguage As String = String.Empty
+                        Dim _vidLongLanguage As String = String.Empty
+                        Dim _vidScantype As String = String.Empty
+                        Dim _vidStereoMode As String = String.Empty
+                        Dim _vidWidth As String = String.Empty
+                        Dim _audChannels As String = String.Empty
+                        Dim _audLanguage As String = String.Empty
+                        Dim _audLongLanguage As String = String.Empty
+                        Dim _subtitleLanguage As String = String.Empty
+                        Dim _subtitleLongLanguage As String = String.Empty
+                        Dim _subtitleType As String = String.Empty
+
                         Dim _audDetails As String = String.Empty
                         If _curMovie.Movie.FileInfo IsNot Nothing Then
                             If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
@@ -313,7 +329,30 @@ Public Class dlgExportMovies
                                 If Not String.IsNullOrEmpty(tVid.MultiViewLayout) Then
                                     _vidMultiViewLayout = tVid.MultiViewLayout
                                 End If
-                                'cocotus end
+                                If Not String.IsNullOrEmpty(tVid.Aspect) Then
+                                    _vidAspect = tVid.Aspect
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.Duration) Then
+                                    _vidDuration = tVid.Duration
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.Height) Then
+                                    _vidHeight = tVid.Height
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.Language) Then
+                                    _vidLanguage = tVid.Language
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.LongLanguage) Then
+                                    _vidLongLanguage = tVid.LongLanguage
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.Scantype) Then
+                                    _vidScantype = tVid.Scantype
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.StereoMode) Then
+                                    _vidStereoMode = tVid.StereoMode
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.Width) Then
+                                    _vidWidth = tVid.Width
+                                End If
 
                                 _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
                                 _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
@@ -327,9 +366,36 @@ Public Class dlgExportMovies
                                     _audBitrate = tAud.Bitrate
                                 End If
                                 'cocotus end
-
+                                If Not String.IsNullOrEmpty(tAud.Channels) Then
+                                    _audChannels = tAud.Channels
+                                End If
+                                If Not String.IsNullOrEmpty(tAud.Language) Then
+                                    _audLanguage = tAud.Language
+                                End If
+                                If Not String.IsNullOrEmpty(tAud.LongLanguage) Then
+                                    _audLongLanguage = tAud.LongLanguage
+                                End If
                                 _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels)).ToUpper
                             End If
+
+                            If _curMovie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
+                                Dim subtitleinfo As MediaInfo.Subtitle
+                                For c = 0 To _curMovie.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
+                                    subtitleinfo = _curMovie.Movie.FileInfo.StreamDetails.Subtitle(c)
+                                    If Not subtitleinfo Is Nothing Then
+                                        If Not String.IsNullOrEmpty(subtitleinfo.Language) Then
+                                            _subtitleLanguage = _subtitleLanguage & ";" & subtitleinfo.Language
+                                        End If
+                                        If Not String.IsNullOrEmpty(subtitleinfo.LongLanguage) Then
+                                            _subtitleLongLanguage = _subtitleLongLanguage & ";" & subtitleinfo.LongLanguage
+                                        End If
+                                        If Not String.IsNullOrEmpty(subtitleinfo.SubsType) Then
+                                            _subtitleType = _subtitleType & ";" & subtitleinfo.SubsType
+                                        End If
+                                    End If
+                                Next
+                            End If
+
                         End If
 
                         'now check if we need to include this movie
@@ -414,6 +480,27 @@ Public Class dlgExportMovies
                         row = row.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(_curMovie.Movie.VideoSource))
                         'row = row.Replace("<$WATCHED>", StringUtils.HtmlEncode(_curMovie.Movie.Watched))
                         'cocotus end
+
+                        '2015/07/08 cocotus, Added missing fields
+                        row = row.Replace("<$TMDBID>", StringUtils.HtmlEncode(_curMovie.Movie.TMDBID))
+                        row = row.Replace("<$TAGS>", If(_curMovie.Movie.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", _curMovie.Movie.Tags.ToArray))), ""))
+                        row = row.Replace("<$LASTPLAYED>", If(_curMovie.Movie.LastPlayedSpecified, StringUtils.HtmlEncode(_curMovie.Movie.LastPlayed), ""))
+                        row = row.Replace("<$VIDEOASPECT>", _vidAspect)
+                        row = row.Replace("<$VIDEODURATION>", _vidDuration)
+                        row = row.Replace("<$VIDEOHEIGHT>", _vidHeight)
+                        row = row.Replace("<$VIDEOLANGUAGE>", _vidLanguage)
+                        row = row.Replace("<$VIDEOLONGLANGUAGE>", _vidLongLanguage)
+                        row = row.Replace("<$VIDEOSCANTYPE>", _vidScantype)
+                        row = row.Replace("<$VIDEOSTEREOMODE>", _vidStereoMode)
+                        row = row.Replace("<$VIDEOWIDTH>", _vidWidth)
+                        row = row.Replace("<$AUDIOCHANNELS>", _audChannels)
+                        row = row.Replace("<$AUDIOLANGUAGE>", _audLanguage)
+                        row = row.Replace("<$AUDIOLONGLANGUAGE>", _audLongLanguage)
+                        row = row.Replace("<$SUBTITLELANGUAGE>", _subtitleLanguage)
+                        row = row.Replace("<$SUBTITLELONGLANGUAGE>", _subtitleLongLanguage)
+                        row = row.Replace("<$SUBTITLETYPE>", _subtitleType)
+
+
                         row = GetAVImages(_curMovie, row)
                         HTMLBody.Append(row)
                         counter += 1

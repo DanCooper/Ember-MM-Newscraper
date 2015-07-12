@@ -61,6 +61,8 @@ Public Class frmSettingsHolder
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
         Me.chkNotification.Text = Master.eLang.GetString(1441, "Send Notifications")
+        Me.chkPlayCount.Text = Master.eLang.GetString(1454, "Retrieve PlayCount from") & ":"
+        Me.lblmoviesetartpath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder") & ":"
     End Sub
 
     ''' <summary>
@@ -82,9 +84,11 @@ Public Class frmSettingsHolder
     ''' Instead of reloading XML Kodi settings we will use "xmlHosts" as it's always up to date
     ''' </remarks>
     Private Sub ReloadKodiHosts()
+        Me.cbPlayCountHost.Items.Clear()
         Me.lbHosts.Items.Clear()
         For Each host In Me.xmlHosts.host
             Me.lbHosts.Items.Add(host.name)
+            Me.cbPlayCountHost.Items.Add(host.name)
         Next
     End Sub
 
@@ -247,9 +251,34 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    ''' <summary>
+    '''  Setting "Sync Playcount" enabled/disabled
+    ''' </summary>
+    ''' <param name="sender">"Sync Playcount"-checkbox in Form</param>
+    ''' <remarks>
+    ''' 2015/07/08 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub chkPlayCount_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlayCount.CheckedChanged
+        cbPlayCountHost.Enabled = chkPlayCount.Checked
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    ''' <summary>
+    '''  Setting "Kodi MovieSet Artwork Folder" changed
+    ''' </summary>
+    ''' <param name="sender">"Kodi MovieSet Artwork Folder"-textbox in Form</param>
+    ''' <remarks>
+    ''' 2015/07/08 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub txtmoviesetartpath_TextChanged(sender As Object, e As EventArgs) Handles txtmoviesetartpath.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"
 #End Region 'Nested Types
+
+
 
 End Class
