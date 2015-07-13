@@ -388,7 +388,7 @@ Public Class FileManagerExternalModule
                             Dim mShow As New Structures.DBTV
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
-                                mShow = Master.DB.LoadTVShowFromDB(tShowID)
+                                mShow = Master.DB.LoadTVShowFromDB(tShowID, False)
                                 If Directory.Exists(mShow.ShowPath) Then
                                     If _MySettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(mShow.ShowPath)

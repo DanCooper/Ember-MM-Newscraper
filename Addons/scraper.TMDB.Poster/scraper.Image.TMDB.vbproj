@@ -125,9 +125,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TMDbLib, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TMDbLib, Version=0.8.2.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\TMDbLib.0.8.2-alpha\lib\net45\TMDbLib.dll</HintPath>
+      <HintPath>..\..\packages\TMDbLib.0.8.2.4-alpha\lib\net45\TMDbLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

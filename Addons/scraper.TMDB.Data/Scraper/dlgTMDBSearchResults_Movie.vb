@@ -142,16 +142,12 @@ Public Class dlgTMDBSearchResults_Movie
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
 
-        Try
-            Me.pbPoster.Image = Res.Result
+        Me.pbPoster.Image = Res.Result
             If Not _PosterCache.ContainsKey(Res.IMDBId) Then
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        Finally
-            pnlPicStatus.Visible = False
-        End Try
+
+        pnlPicStatus.Visible = False
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -219,15 +215,11 @@ Public Class dlgTMDBSearchResults_Movie
         AddHandler TMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
         AddHandler TMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
-        Try
-            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-            Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                Me.pnlTop.BackgroundImage = iBackground
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+            Me.pnlTop.BackgroundImage = iBackground
+        End Using
     End Sub
 
     Private Sub dlgTMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -236,12 +228,7 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Try
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
@@ -249,73 +236,65 @@ Public Class dlgTMDBSearchResults_Movie
         Me.pnlLoading.Visible = False
         Me.OK_Button.Enabled = True
 
-        Try
-            If bSuccess Then
-                Me.ControlsVisible(True)
-                Me.lblTitle.Text = _nMovie.Title
-                Me.lblTagline.Text = _nMovie.Tagline
-                Me.lblYear.Text = _nMovie.Year
-                Me.lblDirector.Text = _nMovie.Director
-                Me.lblGenre.Text = _nMovie.Genre
-                Me.txtPlot.Text = StringUtils.ShortenOutline(_nMovie.Plot, 410)
-                Me.lblTMDBID.Text = _nMovie.TMDBID
+        If bSuccess Then
+            Me.ControlsVisible(True)
+            Me.lblTitle.Text = _nMovie.Title
+            Me.lblTagline.Text = _nMovie.Tagline
+            Me.lblYear.Text = _nMovie.Year
+            Me.lblDirector.Text = _nMovie.Director
+            Me.lblGenre.Text = _nMovie.Genre
+            Me.txtPlot.Text = StringUtils.ShortenOutline(_nMovie.Plot, 410)
+            Me.lblTMDBID.Text = _nMovie.TMDBID
 
-                If _PosterCache.ContainsKey(_nMovie.TMDBID) Then
-                    'just set it
-                    Me.pbPoster.Image = _PosterCache(_nMovie.TMDBID)
-                Else
-                    'go download it, if available
-                    If Not String.IsNullOrEmpty(sPoster) Then
-                        If Me.bwDownloadPic.IsBusy Then
-                            Me.bwDownloadPic.CancelAsync()
-                        End If
-                        pnlPicStatus.Visible = True
-                        Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                        Me.bwDownloadPic.WorkerSupportsCancellation = True
-                        Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _nMovie.TMDBID})
-                    End If
-
-                End If
-
-                'store clone of tmpmovie
-                If Not _InfoCache.ContainsKey(_nMovie.TMDBID) Then
-                    _InfoCache.Add(_nMovie.TMDBID, GetMovieClone(_nMovie))
-                End If
-
-
-                Me.btnVerify.Enabled = False
+            If _PosterCache.ContainsKey(_nMovie.TMDBID) Then
+                'just set it
+                Me.pbPoster.Image = _PosterCache(_nMovie.TMDBID)
             Else
-                If Me.chkManual.Checked Then
-                    MessageBox.Show(Master.eLang.GetString(935, "Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    Me.btnVerify.Enabled = True
+                'go download it, if available
+                If Not String.IsNullOrEmpty(sPoster) Then
+                    If Me.bwDownloadPic.IsBusy Then
+                        Me.bwDownloadPic.CancelAsync()
+                    End If
+                    pnlPicStatus.Visible = True
+                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                    Me.bwDownloadPic.WorkerSupportsCancellation = True
+                    Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _nMovie.TMDBID})
                 End If
+
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+
+            'store clone of tmpmovie
+            If Not _InfoCache.ContainsKey(_nMovie.TMDBID) Then
+                _InfoCache.Add(_nMovie.TMDBID, GetMovieClone(_nMovie))
+            End If
+
+
+            Me.btnVerify.Enabled = False
+        Else
+            If Me.chkManual.Checked Then
+                MessageBox.Show(Master.eLang.GetString(935, "Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                Me.btnVerify.Enabled = True
+            End If
+        End If
     End Sub
 
     Private Sub SearchResultsDownloaded(ByVal M As TMDB.SearchResults_Movie)
-        Try
-            Me.tvResults.Nodes.Clear()
-            Me.ClearInfo()
-            If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
-                For Each Movie As MediaContainers.Movie In M.Matches
-                    Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
-                Next
-                Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
+        Me.tvResults.Nodes.Clear()
+        Me.ClearInfo()
+        If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
+            For Each Movie As MediaContainers.Movie In M.Matches
+                Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
+            Next
+            Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
 
-                Me._prevnode = -2
+            Me._prevnode = -2
 
-                Me.tvResults.Focus()
-            Else
-                Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
-            End If
-            Me.pnlLoading.Visible = False
-            chkManual.Enabled = True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Me.tvResults.Focus()
+        Else
+            Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
+        End If
+        Me.pnlLoading.Visible = False
+        chkManual.Enabled = True
     End Sub
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions_Movie
@@ -386,32 +365,27 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
-        Try
-            Me.tmrWait.Stop()
-            Me.tmrLoad.Stop()
+        Me.tmrWait.Stop()
+        Me.tmrLoad.Stop()
 
-            Me.ClearInfo()
-            Me.OK_Button.Enabled = False
+        Me.ClearInfo()
+        Me.OK_Button.Enabled = False
 
-            If Me.tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-                Me._currnode = Me.tvResults.SelectedNode.Index
+        If Me.tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
+            Me._currnode = Me.tvResults.SelectedNode.Index
 
-                'check if this movie is in the cache already
-                If _InfoCache.ContainsKey(Me.tvResults.SelectedNode.Tag.ToString) Then
-                    _nMovie = GetMovieClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
-                    SearchMovieInfoDownloaded(String.Empty, True)
-                    Return
-                End If
-
-                Me.pnlLoading.Visible = True
-                Me.tmrWait.Start()
-            Else
-                Me.pnlLoading.Visible = False
+            'check if this movie is in the cache already
+            If _InfoCache.ContainsKey(Me.tvResults.SelectedNode.Tag.ToString) Then
+                _nMovie = GetMovieClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
+                SearchMovieInfoDownloaded(String.Empty, True)
+                Return
             End If
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            Me.pnlLoading.Visible = True
+            Me.tmrWait.Start()
+        Else
+            Me.pnlLoading.Visible = False
+        End If
     End Sub
 
     Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles tvResults.GotFocus
@@ -438,16 +412,12 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
-        Try
-            Using mem As New IO.MemoryStream()
+       Using mem As New IO.MemoryStream()
                 Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
                 mem.Seek(0, IO.SeekOrigin.Begin)
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
             End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
 
         Return Nothing
     End Function

@@ -528,7 +528,7 @@ Public Class dlgOfflineHolder
             Dim aUrlList As New List(Of Trailers)
             Dim efList As New List(Of String)
             Dim etList As New List(Of String)
-            Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
             Try
                 chkUseFanart.Checked = False
@@ -1488,7 +1488,7 @@ Public Class dlgOfflineHolder
         Dim aUrlList As New List(Of Trailers)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
         sMovie = tMovie
 
@@ -1614,7 +1614,7 @@ Public Class dlgOfflineHolder
         Dim aUrlList As New List(Of Trailers)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim aContainer As New MediaContainers.ImagesContainer_Movie_MovieSet
+        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
         sMovie = tMovie
 

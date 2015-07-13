@@ -37,7 +37,7 @@ Public Class dlgTrailerSelect
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
     Private sPath As String
-    Private nList As New List(Of Trailers)
+    Private nList As New List(Of MediaContainers.Trailer)
     Private _noDownload As Boolean
     Private _withPlayer As Boolean
 
@@ -87,7 +87,7 @@ Public Class dlgTrailerSelect
         Me.Activate()
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Trailers), ByVal OnlyToNFO As Boolean, Optional ByVal _isNew As Boolean = False, Optional ByVal WithPlayer As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of MediaContainers.Trailer), ByVal OnlyToNFO As Boolean, Optional ByVal _isNew As Boolean = False, Optional ByVal WithPlayer As Boolean = False) As DialogResult
         Me._noDownload = OnlyToNFO
         Me._withPlayer = WithPlayer
 
@@ -118,21 +118,23 @@ Public Class dlgTrailerSelect
         MyBase.Finalize()
     End Sub
 
-    Private Sub AddTrailersToList(ByVal tList As List(Of Trailers))
+    Private Sub AddTrailersToList(ByVal tList As List(Of MediaContainers.Trailer))
         Dim ID As Integer = Me.lvTrailers.Items.Count + 1
-        Dim nList As List(Of Trailers) = tList
+        Dim nList As List(Of MediaContainers.Trailer) = tList
 
-        Dim str(7) As String
+        Dim str(10) As String
         For Each aUrl In nList
             Dim itm As ListViewItem
             str(0) = ID.ToString
             str(1) = aUrl.VideoURL.ToString
             str(2) = aUrl.WebURL.ToString
-            str(3) = aUrl.Description.ToString
+            str(3) = aUrl.Title.ToString
             str(4) = aUrl.Duration.ToString
             str(5) = aUrl.Quality.ToString
-            str(6) = aUrl.Source.ToString
-            str(7) = aUrl.Extention.ToString
+            str(6) = aUrl.Type.ToString
+            str(7) = aUrl.Source.ToString
+            str(8) = aUrl.Scraper.ToString
+            str(9) = aUrl.WebTrailer.Extention.ToString
             itm = New ListViewItem(str)
             lvTrailers.Items.Add(itm)
             ID = ID + 1
@@ -154,7 +156,7 @@ Public Class dlgTrailerSelect
             If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(Me.txtLocalTrailer.Text)) AndAlso File.Exists(Me.txtLocalTrailer.Text) Then
                 If CloseDialog Then
                     If Me._noDownload Then
-                        Results.URL = Me.txtLocalTrailer.Text
+                        Results.WebURL = Me.txtLocalTrailer.Text
                     Else
                         Results.WebTrailer.FromFile(Me.txtLocalTrailer.Text)
                     End If
@@ -176,7 +178,7 @@ Public Class dlgTrailerSelect
                 sFormat = dFormats.ShowDialog(Me.txtManualTrailerLink.Text)
             End Using
             If Me._noDownload Then
-                Results.URL = sFormat.VideoURL
+                Results.WebURL = sFormat.VideoURL
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -202,7 +204,7 @@ Public Class dlgTrailerSelect
             didCancel = True
         ElseIf StringUtils.isValidURL(Me.txtManualTrailerLink.Text) Then
             If Me._noDownload Then
-                Results.URL = Me.txtManualTrailerLink.Text
+                Results.WebURL = Me.txtManualTrailerLink.Text
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -215,7 +217,7 @@ Public Class dlgTrailerSelect
         Else
             If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                 If Me._noDownload Then
-                    Results.URL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Results.WebURL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -238,7 +240,7 @@ Public Class dlgTrailerSelect
                     sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
                 End Using
                 If Me._noDownload Then
-                    Results.URL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Results.WebURL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -253,7 +255,7 @@ Public Class dlgTrailerSelect
                 End If
             Else
                 If Me._noDownload Then
-                    Results.URL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Results.WebURL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -333,7 +335,7 @@ Public Class dlgTrailerSelect
 
     Private Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
         Dim ID As Integer = Me.lvTrailers.Items.Count + 1
-        Dim nList As New List(Of Trailers)
+        Dim nList As New List(Of MediaContainers.Trailer)
 
         nList = YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
         AddTrailersToList(nList)
@@ -396,7 +398,7 @@ Public Class dlgTrailerSelect
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             Results.WebTrailer.FromWeb(Args.Parameter)
-            Results.URL = Args.Parameter.VideoURL
+            Results.WebURL = Args.Parameter.VideoURL
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -544,7 +546,7 @@ Public Class dlgTrailerSelect
         Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
         Me.colDescription.Text = Master.eLang.GetString(979, "Description")
         Me.colDuration.Text = Master.eLang.GetString(609, "Duration")
-        Me.colQuality.Text = Master.eLang.GetString(1138, "Quality")
+        Me.colVideoQuality.Text = Master.eLang.GetString(1138, "Quality")
         Me.colSource.Text = Master.eLang.GetString(1173, "Source")
         Me.btnPlayInBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         Me.btnPlayLocalTrailer.Text = Master.eLang.GetString(919, "Preview Trailer")
@@ -593,7 +595,7 @@ Public Class dlgTrailerSelect
 
     Private Sub TrailerAddToPlayer(ByVal Trailer As String)
         If _withPlayer Then
-            If pnlTrailerPreview.Controls.Item(1).Tag.ToString = "vPlayer" Then
+            If pnlTrailerPreview.Controls.Item(1).Tag IsNot Nothing AndAlso pnlTrailerPreview.Controls.Item(1).Tag.ToString = "vPlayer" Then
                 pnlTrailerPreview.Controls.RemoveAt(1)
             End If
             Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel, Trailer})

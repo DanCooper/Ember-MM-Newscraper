@@ -126,11 +126,23 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scraper\clsScrapeIMDB.vb" />
-    <Compile Include="Scraper\dlgIMDBSearchResults.Designer.vb">
-      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder_TV.Designer.vb">
+      <DependentUpon>frmSettingsHolder_TV.vb</DependentUpon>
     </Compile>
-    <Compile Include="Scraper\dlgIMDBSearchResults.vb">
+    <Compile Include="frmSettingsHolder_TV.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Scraper\clsScrapeIMDB.vb" />
+    <Compile Include="Scraper\dlgIMDBSearchResults_TV.Designer.vb">
+      <DependentUpon>dlgIMDBSearchResults_TV.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Scraper\dlgIMDBSearchResults_TV.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Scraper\dlgIMDBSearchResults_Movie.Designer.vb">
+      <DependentUpon>dlgIMDBSearchResults_Movie.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Scraper\dlgIMDBSearchResults_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -148,21 +160,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsHolder_Movie.Designer.vb">
+      <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder.vb">
+    <Compile Include="frmSettingsHolder_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IMDB_Data.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Scraper\dlgIMDBSearchResults.resx">
-      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsHolder_TV.resx">
+      <DependentUpon>frmSettingsHolder_TV.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="Scraper\dlgIMDBSearchResults_TV.resx">
+      <DependentUpon>dlgIMDBSearchResults_TV.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scraper\dlgIMDBSearchResults_Movie.resx">
+      <DependentUpon>dlgIMDBSearchResults_Movie.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSettingsHolder_Movie.resx">
+      <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

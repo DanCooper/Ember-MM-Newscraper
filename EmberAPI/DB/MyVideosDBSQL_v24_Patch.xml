@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v24_to_v25">
+    <command type="DB">
+      <description>add strAired/strPlot to seasons</description>
+      <execute>
+        ALTER TABLE seasons ADD COLUMN strTMDB text;
+        ALTER TABLE seasons ADD COLUMN strAired text;
+        ALTER TABLE seasons ADD COLUMN strPlot text;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

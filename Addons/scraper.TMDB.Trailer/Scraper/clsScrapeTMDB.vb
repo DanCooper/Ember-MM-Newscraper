@@ -80,32 +80,69 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetTrailers(ByVal tmdbID As String) As List(Of Trailers)
-            Dim alTrailers As New List(Of Trailers)
-            Dim trailers As TMDbLib.Objects.Movies.Trailers
-            Dim tLink As String
-            Dim tName As String
-            Dim tQualitiy As String
+        Public Function GetTrailers(ByVal tmdbID As String) As List(Of MediaContainers.Trailer)
+            Dim alTrailers As New List(Of MediaContainers.Trailer)
+            Dim trailers As TMDbLib.Objects.General.ResultContainer(Of TMDbLib.Objects.General.Video)
 
             If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
 
-            trailers = _TMDBApi.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Trailers).Trailers
-            If trailers.Youtube Is Nothing OrElse trailers.Youtube.Count = 0 AndAlso _MySettings.FallBackEng Then
-                trailers = _TMDBApiE.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Trailers).Trailers
-                If trailers.Youtube Is Nothing OrElse trailers.Youtube.Count = 0 Then
+            trailers = _TMDBApi.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos).Videos
+            If trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _MySettings.FallBackEng Then
+                trailers = _TMDBApiE.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos).Videos
+                If trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
                     Return alTrailers
                 End If
             End If
-            If trailers IsNot Nothing AndAlso trailers.Youtube IsNot Nothing Then
-                For Each YTb As TMDbLib.Objects.Movies.Youtube In trailers.Youtube
-                    tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.Source)
-                    tName = GetYouTubeTitle(tLink)
-                    tQualitiy = YTb.Size
-                    alTrailers.Add(New Trailers With {.VideoURL = tLink, .WebURL = tLink, .Description = tName, .Source = "TMDB"})
+            If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
+                For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
+                    Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
+                    Dim tName As String = If(Not String.IsNullOrEmpty(Video.Name), Video.Name, GetYouTubeTitle(tLink))
+                    alTrailers.Add(New MediaContainers.Trailer With { _
+                                   .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)), _
+                                   .Quality = GetVideoQuality(Video.Size), _
+                                   .Scraper = "TMDB", _
+                                   .ShortLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1), _
+                                   .Source = Video.Site, _
+                                   .Title = tName, _
+                                   .Type = GetVideoType(Video.Type), _
+                                   .VideoURL = tLink, _
+                                   .WebURL = tLink})
                 Next
             End If
 
             Return alTrailers
+        End Function
+
+        Private Function GetVideoQuality(ByRef Size As Integer) As Enums.TrailerVideoQuality
+            If Size = 0 Then Return Enums.TrailerVideoQuality.Any
+
+            Select Case Size
+                Case 1080
+                    Return Enums.TrailerVideoQuality.HD1080p
+                Case 720
+                    Return Enums.TrailerVideoQuality.HD720p
+                Case 480
+                    Return Enums.TrailerVideoQuality.HQ480p
+            End Select
+
+            Return Enums.TrailerVideoQuality.Any
+        End Function
+
+        Private Function GetVideoType(ByRef Type As String) As Enums.TrailerType
+            If String.IsNullOrEmpty(Type) Then Return Enums.TrailerType.Any
+
+            Select Case Type.ToLower
+                Case "clip"
+                    Return Enums.TrailerType.Clip
+                Case "featurette"
+                    Return Enums.TrailerType.Featurette
+                Case "teaser"
+                    Return Enums.TrailerType.Teaser
+                Case "trailer"
+                    Return Enums.TrailerType.Trailer
+            End Select
+
+            Return Enums.TrailerType.Any
         End Function
 
         Public Shared Function GetYouTubeTitle(ByVal sURL As String) As String

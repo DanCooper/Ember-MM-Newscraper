@@ -185,7 +185,6 @@ Public Class dlgTVDBSearchResults
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
         Me.Close()
     End Sub
 
@@ -223,7 +222,6 @@ Public Class dlgTVDBSearchResults
 
     Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            AddHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
@@ -303,7 +301,6 @@ Public Class dlgTVDBSearchResults
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
                 Me.Close()
             End If
         ElseIf Me.chkManual.Checked AndAlso Me._manualresult IsNot Nothing Then
@@ -318,7 +315,6 @@ Public Class dlgTVDBSearchResults
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
                 Me.Close()
             End If
         End If
@@ -408,7 +404,6 @@ Public Class dlgTVDBSearchResults
 
             Case Enums.ScraperEventType_TV.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                RemoveHandler ModulesManager.Instance.ScraperEvent_TV_old, AddressOf TVScraperEvent
                 Me.Close()
         End Select
     End Sub

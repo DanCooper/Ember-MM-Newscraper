@@ -37,7 +37,7 @@ Public Class Master
     Public Shared currShow As New Structures.DBTV
     Public Shared DefaultMovieOptions As New Structures.ScrapeOptions_Movie
     Public Shared DefaultMovieSetOptions As New Structures.ScrapeOptions_MovieSet
-    Public Shared DefaultTVOptions As New Structures.TVScrapeOptions
+    Public Shared DefaultTVOptions As New Structures.ScrapeOptions_TV
     'Public Shared eAdvancedSettings As New AdvancedSettings
     Public Shared eLang As New Localization
     'Public Shared logger As Logger = LogManager.GetCurrentClassLogger()

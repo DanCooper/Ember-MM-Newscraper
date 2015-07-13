@@ -36,7 +36,7 @@ Partial Class dlgTrailerSelect
         Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colQuality = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colVideoQuality = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
@@ -60,6 +60,8 @@ Partial Class dlgTrailerSelect
         Me.btnPlayInBrowser = New System.Windows.Forms.Button()
         Me.pblBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.colScraper = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colVideoType = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
@@ -148,7 +150,7 @@ Partial Class dlgTrailerSelect
         '
         'lvTrailers
         '
-        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colQuality, Me.colSource, Me.colExtension})
+        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colVideoQuality, Me.colVideoType, Me.colSource, Me.colScraper, Me.colExtension})
         Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvTrailers.Location = New System.Drawing.Point(6, 19)
         Me.lvTrailers.Name = "lvTrailers"
@@ -176,15 +178,15 @@ Partial Class dlgTrailerSelect
         'colDescription
         '
         Me.colDescription.Text = "Description"
-        Me.colDescription.Width = 270
+        Me.colDescription.Width = 180
         '
         'colDuration
         '
         Me.colDuration.Text = "Duration"
         '
-        'colQuality
+        'colVideoQuality
         '
-        Me.colQuality.Text = "Quality"
+        Me.colVideoQuality.Text = "Quality"
         '
         'colSource
         '
@@ -193,7 +195,7 @@ Partial Class dlgTrailerSelect
         '
         'colExtension
         '
-        Me.colExtension.Text = "Typ"
+        Me.colExtension.Text = "Ext"
         Me.colExtension.Width = 50
         '
         'gbYouTubeSearch
@@ -418,6 +420,14 @@ Partial Class dlgTrailerSelect
         Me.tblBottom.Size = New System.Drawing.Size(1001, 29)
         Me.tblBottom.TabIndex = 0
         '
+        'colScraper
+        '
+        Me.colScraper.Text = "Scraper"
+        '
+        'colVideoType
+        '
+        Me.colVideoType.Text = "Type"
+        '
         'dlgTrailerSelect
         '
         Me.AcceptButton = Me.OK_Button
@@ -481,7 +491,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents colWebURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colDescription As System.Windows.Forms.ColumnHeader
     Friend WithEvents colDuration As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colQuality As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colVideoQuality As System.Windows.Forms.ColumnHeader
     Friend WithEvents colSource As System.Windows.Forms.ColumnHeader
     Friend WithEvents colNumber As System.Windows.Forms.ColumnHeader
     Friend WithEvents colExtension As System.Windows.Forms.ColumnHeader
@@ -491,5 +501,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents lblTrailerPreviewNoPlayer As System.Windows.Forms.Label
     Friend WithEvents pblBottom As System.Windows.Forms.Panel
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents colScraper As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colVideoType As System.Windows.Forms.ColumnHeader
 
 End Class

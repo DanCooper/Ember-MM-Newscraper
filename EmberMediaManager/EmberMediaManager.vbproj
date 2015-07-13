@@ -127,9 +127,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net45\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -153,9 +153,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TMDbLib, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TMDbLib, Version=0.8.2.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TMDbLib.0.8.2-alpha\lib\net45\TMDbLib.dll</HintPath>
+      <HintPath>..\packages\TMDbLib.0.8.2.4-alpha\lib\net45\TMDbLib.dll</HintPath>
     </Reference>
     <Reference Include="TVDB, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -338,6 +338,12 @@
     <Compile Include="dlgTrailerSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgImgSelectTV.Designer.vb">
+      <DependentUpon>dlgImgSelectTV.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgImgSelectTV.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgTVRegExProfiles.Designer.vb">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
     </Compile>
@@ -481,6 +487,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTrailerSelect.resx">
       <DependentUpon>dlgTrailerSelect.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgImgSelectTV.resx">
+      <DependentUpon>dlgImgSelectTV.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVRegExProfiles.resx">

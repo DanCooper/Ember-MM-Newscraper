@@ -33,7 +33,7 @@ Namespace Apple
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private originaltitle As String
-        Private _trailerlist As New List(Of Trailers)
+        Private _trailerlist As New List(Of MediaContainers.Trailer)
         Private imdbid As String
 
 #End Region 'Fields
@@ -51,11 +51,11 @@ Namespace Apple
 
 #Region "Properties"
 
-        Public Property TrailerList() As List(Of Trailers)
+        Public Property TrailerList() As List(Of MediaContainers.Trailer)
             Get
                 Return _trailerlist
             End Get
-            Set(ByVal value As List(Of Trailers))
+            Set(ByVal value As List(Of MediaContainers.Trailer))
                 _trailerlist = value
             End Set
         End Property
@@ -65,7 +65,7 @@ Namespace Apple
 #Region "Methods"
 
         Private Sub Clear()
-            _trailerlist = New List(Of Trailers)
+            _trailerlist = New List(Of MediaContainers.Trailer)
         End Sub
 
 
@@ -225,7 +225,7 @@ Namespace Apple
                         If Not zResult Is Nothing AndAlso zResult.Count > 0 Then
                             For ctr As Integer = 0 To zResult.Count - 1
                                 ' Step 4: Add scraped trailer to global list
-                                _trailerlist.Add(New Trailers With {.VideoURL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
+                                _trailerlist.Add(New MediaContainers.Trailer With {.VideoURL = zResult.Item(ctr).Groups(1).Value, .Title = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
                             Next
 
                             For Each trailer In _trailerlist
@@ -258,7 +258,7 @@ Namespace Apple
                                             trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                     End Select
                                     'set trailer extension
-                                    trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                    trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                 End If
                             Next
                         End If

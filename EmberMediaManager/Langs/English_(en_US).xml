@@ -742,7 +742,7 @@
   <string id="741">Preferred Language</string>
   <string id="742">Fetch Available Languages</string>
   <string id="743">Show</string>
-  <string id="744">Extended Images</string>
+  <string id="744">Creator(s)</string>
   <string id="745">Any</string>
   <string id="746">Blank</string>
   <string id="747">Graphical</string>
@@ -759,7 +759,7 @@
   <string id="758">Searching theTVDB:</string>
   <string id="759">Select Images:</string>
   <string id="760">Downloading Show Zip:</string>
-  <string id="761">Verifying TV Show:</string>
+  <string id="761">Verifying TV Show Details:</string>
   <string id="762">Verifying TV Episode:</string>
   <string id="763">Search String</string>
   <string id="764">Source Name</string>
@@ -820,7 +820,7 @@
   <string id="819">TV RegEx Profiles</string>
   <string id="820">RegEx Profile</string>
   <string id="821">You have manually entered an IMDB ID but have not verified it is correct.</string>
-  <string id="822"></string>
+  <string id="822">Extended Images</string>
   <string id="823">Continue without verification?</string>
   <string id="824">Video Source:</string>
   <string id="825">Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.</string>

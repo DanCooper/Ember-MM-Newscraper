@@ -23,6 +23,8 @@ Imports System.Text.RegularExpressions
 
 Namespace MediaContainers
 
+
+    <Serializable()> _
     <XmlRoot("episodedetails")> _
     Public Class EpisodeDetails
 
@@ -36,18 +38,25 @@ Namespace MediaContainers
         Private _displayepisode As Integer
         Private _displayseason As Integer
         Private _episode As Integer
-        Private _fanart As New Images
+        Private _episodeabsolute As Integer
+        Private _episodecombined As Double
+        Private _episodedvd As Double
+        Private _fanart As New MediaContainers.Image
         Private _fileInfo As New MediaInfo.Fileinfo
+        Private _gueststars As New List(Of Person)
         Private _imdb As String
         Private _lastplayed As String
         Private _localfile As String
         Private _playcount As String
         Private _plot As String
-        Private _poster As New Images
+        Private _poster As New MediaContainers.Image
         Private _posterurl As String
         Private _rating As String
         Private _runtime As String
+        Private _scrapersource As String
         Private _season As Integer
+        Private _seasoncombined As Integer
+        Private _seasondvd As Integer
         Private _subepisode As Integer
         Private _title As String
         Private _tmdb As String
@@ -257,10 +266,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -388,6 +397,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("gueststars")> _
+        Public Property GuestStars() As List(Of Person)
+            Get
+                Return Me._gueststars
+            End Get
+            Set(ByVal Value As List(Of Person))
+                Me._gueststars = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property GuestStarsSpecified() As Boolean
+            Get
+                Return Me._gueststars.Count > 0
+            End Get
+        End Property
+
         <XmlElement("fileinfo")> _
         Public Property FileInfo() As MediaInfo.Fileinfo
             Get
@@ -412,11 +438,11 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public Property Poster() As Images
+        Public Property Poster() As MediaContainers.Image
             Get
                 Return Me._poster
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As MediaContainers.Image)
                 Me._poster = value
             End Set
         End Property
@@ -442,11 +468,11 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public Property Fanart() As Images
+        Public Property Fanart() As MediaContainers.Image
             Get
                 Return Me._fanart
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As MediaContainers.Image)
                 Me._fanart = value
             End Set
         End Property
@@ -519,6 +545,66 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlIgnore()> _
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property EpisodeAbsolute() As Integer
+            Get
+                Return Me._episodeabsolute
+            End Get
+            Set(ByVal value As Integer)
+                Me._episodeabsolute = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property EpisodeCombined() As Double
+            Get
+                Return Me._episodecombined
+            End Get
+            Set(ByVal value As Double)
+                Me._episodecombined = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property EpisodeDVD() As Double
+            Get
+                Return Me._episodedvd
+            End Get
+            Set(ByVal value As Double)
+                Me._episodedvd = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property SeasonCombined() As Integer
+            Get
+                Return Me._seasoncombined
+            End Get
+            Set(ByVal value As Integer)
+                Me._seasoncombined = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property SeasonDVD() As Integer
+            Get
+                Return Me._seasondvd
+            End Get
+            Set(ByVal value As Integer)
+                Me._seasondvd = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -532,18 +618,24 @@ Namespace MediaContainers
             Me._displayepisode = -1
             Me._displayseason = -1
             Me._episode = -999
-            Me._fanart = New Images
+            Me._episodeabsolute = -999
+            Me._episodecombined = -999
+            Me._episodedvd = -999
+            Me._fanart = New MediaContainers.Image
             Me._fileInfo = New MediaInfo.Fileinfo
+            Me._gueststars.Clear()
             Me._imdb = String.Empty
             Me._lastplayed = String.Empty
             Me._localfile = String.Empty
             Me._playcount = String.Empty
             Me._plot = String.Empty
-            Me._poster = New Images
+            Me._poster = New MediaContainers.Image
             Me._posterurl = String.Empty
             Me._rating = String.Empty
             Me._runtime = String.Empty
             Me._season = -999
+            Me._seasoncombined = -999
+            Me._seasondvd = -999
             Me._subepisode = -999
             Me._tmdb = String.Empty
             Me._tvdb = String.Empty
@@ -606,7 +698,7 @@ Namespace MediaContainers
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clean()
+            Me.Clear()
         End Sub
 
 #End Region 'Constructors
@@ -627,7 +719,7 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub Clean()
+        Public Sub Clear()
             Me._url = String.Empty
         End Sub
 
@@ -1182,10 +1274,10 @@ Namespace MediaContainers
         <XmlElement("tagline")> _
         Public Property Tagline() As String
             Get
-                Return Me._tagline
+                Return Me._tagline.Trim
             End Get
             Set(ByVal value As String)
-                Me._tagline = value
+                Me._tagline = value.Trim
             End Set
         End Property
 
@@ -1209,10 +1301,10 @@ Namespace MediaContainers
         <XmlElement("outline")> _
         Public Property Outline() As String
             Get
-                Return Me._outline
+                Return Me._outline.Trim
             End Get
             Set(ByVal value As String)
-                Me._outline = value
+                Me._outline = value.Trim
             End Set
         End Property
 
@@ -1226,10 +1318,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -1900,10 +1992,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -2116,6 +2208,199 @@ Namespace MediaContainers
     End Class
 
     <Serializable()> _
+    <XmlRoot("seasondetails")> _
+    Public Class SeasonDetails
+
+#Region "Fields"
+
+        Private _aired As String
+        Private _plot As String
+        Private _season As Integer
+        Private _title As String
+        Private _tmdb As String
+        Private _tvdb As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("aired")> _
+        Public Property Aired() As String
+            Get
+                Return Me._aired
+            End Get
+            Set(ByVal value As String)
+                Me._aired = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property AiredSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._aired)
+            End Get
+        End Property
+
+        <XmlElement("title")> _
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("season")> _
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SeasonSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._season.ToString)
+            End Get
+        End Property
+
+        <XmlElement("plot")> _
+        Public Property Plot() As String
+            Get
+                Return Me._plot.Trim
+            End Get
+            Set(ByVal value As String)
+                Me._plot = value.Trim
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PlotSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._plot)
+            End Get
+        End Property
+
+        <XmlElement("tvdb")> _
+        Public Property TVDB() As String
+            Get
+                Return Me._tvdb
+            End Get
+            Set(ByVal value As String)
+                Me._tvdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TVDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tvdb)
+            End Get
+        End Property
+
+        <XmlElement("tmdb")> _
+        Public Property TMDB() As String
+            Get
+                Return Me._tmdb
+            End Get
+            Set(ByVal value As String)
+                Me._tmdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdb)
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._aired = String.Empty
+            Me._plot = String.Empty
+            Me._season = -999
+            Me._tmdb = String.Empty
+            Me._tvdb = String.Empty
+            Me._title = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
+    <XmlRoot("seasons")> _
+    Public Class Seasons
+
+#Region "Fields"
+
+        Private _seasons As New List(Of SeasonDetails)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("seasondetails")> _
+        Public Property Seasons() As List(Of SeasonDetails)
+            Get
+                Return Me._seasons
+            End Get
+            Set(ByVal value As List(Of SeasonDetails))
+                Me._seasons = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SeasonsSpecified() As Boolean
+            Get
+                Return Me._seasons.Count > 0
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._seasons.Clear()
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()> _
     Public Class SetContainer
 
 #Region "Fields"
@@ -2199,6 +2484,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     <XmlRoot("tvshow")> _
     Public Class TVShow
 
@@ -2206,16 +2492,24 @@ Namespace MediaContainers
 
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
+        Private _certifications As New List(Of String)
+        Private _countries As New List(Of String)
+        Private _creators As New List(Of String)
         Private _directors As New List(Of String)
         Private _episodeguide As New EpisodeGuide
         Private _genres As New List(Of String)
         Private _id As String
         Private _imdb As String
+        Private _knownepisodes As New List(Of MediaContainers.EpisodeDetails)
+        Private _knownseasons As New List(Of MediaContainers.SeasonDetails)
         Private _mpaa As String
+        Private _originaltitle As String
         Private _plot As String
         Private _premiered As String
         Private _rating As String
         Private _runtime As String
+        Private _scrapersource As String
+        Private _seasons As New Seasons
         Private _sorttitle As String
         Private _status As String
         Private _studio As String
@@ -2228,6 +2522,13 @@ Namespace MediaContainers
 #End Region 'Fields
 
 #Region "Constructors"
+
+        Public Sub New(ByVal sTVDBID As String, ByVal sTitle As String, ByVal sPremiered As String)
+            Me.Clear()
+            Me._id = sTVDBID
+            Me._title = sTitle
+            Me._premiered = sPremiered
+        End Sub
 
         Public Sub New()
             Me.Clear()
@@ -2251,6 +2552,23 @@ Namespace MediaContainers
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("originaltitle")> _
+        Public Property OriginalTitle() As String
+            Get
+                Return Me._originaltitle
+            End Get
+            Set(ByVal value As String)
+                Me._originaltitle = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property OriginalTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._originaltitle)
             End Get
         End Property
 
@@ -2461,6 +2779,72 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Certification() As String
+            Get
+                Return String.Join(" / ", _certifications.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _certifications.Clear()
+                AddCertification(value)
+            End Set
+        End Property
+
+        <XmlElement("certification")> _
+        Public Property Certifications() As List(Of String)
+            Get
+                Return _certifications
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _certifications.Clear()
+                Else
+                    _certifications = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CertificationsSpecified() As Boolean
+            Get
+                Return Me._certifications.Count > 0
+            End Get
+        End Property
+
+        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")> _
+        <XmlIgnore()> _
+        Public Property Country() As String
+            Get
+                Return String.Join(" / ", _countries.ToArray)
+            End Get
+            Set(ByVal value As String)
+                _countries.Clear()
+                AddCountry(value)
+            End Set
+        End Property
+
+        <XmlElement("country")> _
+        Public Property Countries() As List(Of String)
+            Get
+                Return _countries
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _countries.Clear()
+                Else
+                    _countries = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CountriesSpecified() As Boolean
+            Get
+                Return Me._countries.Count > 0
+            End Get
+        End Property
+
         <XmlElement("premiered")> _
         Public Property Premiered() As String
             Get
@@ -2527,10 +2911,10 @@ Namespace MediaContainers
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
-                Return Me._plot
+                Return Me._plot.Trim
             End Get
             Set(ByVal value As String)
-                Me._plot = value
+                Me._plot = value.Trim
             End Set
         End Property
 
@@ -2599,9 +2983,112 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
+            End Set
+        End Property
+
+        <XmlElement("creator")> _
+        Public Property Creators() As List(Of String)
+            Get
+                Return _creators
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _creators.Clear()
+                Else
+                    _creators = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CreatedBySpecified() As Boolean
+            Get
+                Return _creators.Count > 0
+            End Get
+        End Property
+
+        <XmlElement("seasons")> _
+        Public Property Seasons() As Seasons
+            Get
+                Return Me._seasons
+            End Get
+            Set(ByVal value As Seasons)
+                Me._seasons = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SeasonsSpecified() As Boolean
+            Get
+                Return Me._seasons.Seasons.Count > 0
+            End Get
+        End Property
+
+        Public Property KnownEpisodes() As List(Of MediaContainers.EpisodeDetails)
+            Get
+                Return Me._knownepisodes
+            End Get
+            Set(ByVal value As List(Of MediaContainers.EpisodeDetails))
+                Me._knownepisodes = value
+            End Set
+        End Property
+
+        Public Property KnownSeasons() As List(Of MediaContainers.SeasonDetails)
+            Get
+                Return Me._knownseasons
+            End Get
+            Set(ByVal value As List(Of MediaContainers.SeasonDetails))
+                Me._knownseasons = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
+
+        Public Sub AddCertification(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
+                For Each certification As String In values
+                    certification = certification.Trim
+                    If Not _certifications.Contains(certification) Then
+                        _certifications.Add(certification)
+                    End If
+                Next
+            Else
+                If Not _certifications.Contains(value) Then
+                    _certifications.Add(value.Trim)
+                End If
+            End If
+        End Sub
+
+        Public Sub AddCountry(ByVal value As String)
+            If String.IsNullOrEmpty(value) Then Return
+
+            If value.Contains(" / ") Then
+                Dim values As String() = Regex.Split(value, " / ")
+                For Each country As String In values
+                    country = country.Trim
+                    If Not _countries.Contains(country) Then
+                        _countries.Add(country)
+                    End If
+                Next
+            Else
+                value = value.Trim
+                If Not _countries.Contains(value) Then
+                    _countries.Add(value.Trim)
+                End If
+            End If
+        End Sub
 
         Public Sub AddGenre(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
@@ -2640,26 +3127,34 @@ Namespace MediaContainers
         End Sub
 
         Public Sub Clear()
-            _title = String.Empty
-            _id = String.Empty
+            _actors.Clear()
             _boxeeTvDb = String.Empty
-            _rating = String.Empty
-            _plot = String.Empty
-            _runtime = String.Empty
-            _imdb = String.Empty
-            _mpaa = String.Empty
+            _certifications.Clear()
+            _countries.Clear()
+            _creators.Clear()
+            _directors.Clear()
+            _episodeguide.URL = String.Empty
             _genres.Clear()
+            _id = String.Empty
+            _imdb = String.Empty
+            _knownepisodes.Clear()
+            _knownseasons.Clear()
+            _mpaa = String.Empty
+            _originaltitle = String.Empty
+            _plot = String.Empty
             _premiered = String.Empty
+            _rating = String.Empty
+            _runtime = String.Empty
+            _scrapersource = String.Empty
+            _seasons.Clear()
             _sorttitle = String.Empty
             _status = String.Empty
             _studio = String.Empty
+            _studios.Clear()
+            _tags.Clear()
+            _title = String.Empty
             _tmdb = String.Empty
             _votes = String.Empty
-            _actors.Clear()
-            _episodeguide.URL = String.Empty
-            _tags.Clear()
-            _directors.Clear()
-            _studios.Clear()
         End Sub
 
         Public Sub BlankId()
@@ -2668,6 +3163,199 @@ Namespace MediaContainers
 
         Public Sub BlankBoxeeId()
             Me._boxeeTvDb = Nothing
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class TVShowContainer
+
+#Region "Fields"
+
+        Private _allseason As Structures.DBTV
+        Private _episodes As New List(Of Structures.DBTV)
+        Private _fanarts As New List(Of MediaContainers.Image)
+        Private _knownepisodes As New List(Of MediaContainers.EpisodeDetails)
+        Private _knownseasons As New List(Of MediaContainers.SeasonDetails)
+        Private _posters As New List(Of MediaContainers.Image)
+        Private _seasonposters As New List(Of MediaContainers.Image)
+        Private _seasonbanners As New List(Of MediaContainers.Image)
+        Private _seasonlandscapes As New List(Of MediaContainers.Image)
+        Private _show As Structures.DBTV
+        Private _showbanners As New List(Of MediaContainers.Image)
+        Private _showcharacterarts As New List(Of MediaContainers.Image)
+        Private _showcleararts As New List(Of MediaContainers.Image)
+        Private _showclearlogos As New List(Of MediaContainers.Image)
+        Private _showlandscapes As New List(Of MediaContainers.Image)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property AllSeason() As Structures.DBTV
+            Get
+                Return Me._allseason
+            End Get
+            Set(ByVal value As Structures.DBTV)
+                Me._allseason = value
+            End Set
+        End Property
+
+        Public Property Episodes() As List(Of Structures.DBTV)
+            Get
+                Return Me._episodes
+            End Get
+            Set(ByVal value As List(Of Structures.DBTV))
+                Me._episodes = value
+            End Set
+        End Property
+
+        Public Property Fanarts() As List(Of MediaContainers.Image)
+            Get
+                Return Me._fanarts
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._fanarts = value
+            End Set
+        End Property
+
+        Public Property KnownEpisodes() As List(Of MediaContainers.EpisodeDetails)
+            Get
+                Return Me._knownepisodes
+            End Get
+            Set(ByVal value As List(Of MediaContainers.EpisodeDetails))
+                Me._knownepisodes = value
+            End Set
+        End Property
+
+        Public Property KnownSeasons() As List(Of MediaContainers.SeasonDetails)
+            Get
+                Return Me._knownseasons
+            End Get
+            Set(ByVal value As List(Of MediaContainers.SeasonDetails))
+                Me._knownseasons = value
+            End Set
+        End Property
+
+        Public Property Posters() As List(Of MediaContainers.Image)
+            Get
+                Return Me._posters
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._posters = value
+            End Set
+        End Property
+
+        Public Property SeasonPosters() As List(Of MediaContainers.Image)
+            Get
+                Return Me._seasonposters
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._seasonposters = value
+            End Set
+        End Property
+
+        Public Property SeasonBanners() As List(Of MediaContainers.Image)
+            Get
+                Return Me._seasonbanners
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._seasonbanners = value
+            End Set
+        End Property
+
+        Public Property SeasonLandscapes() As List(Of MediaContainers.Image)
+            Get
+                Return Me._seasonlandscapes
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._seasonlandscapes = value
+            End Set
+        End Property
+
+        Public Property Show() As Structures.DBTV
+            Get
+                Return Me._show
+            End Get
+            Set(ByVal value As Structures.DBTV)
+                Me._show = value
+            End Set
+        End Property
+
+        Public Property ShowBanners() As List(Of MediaContainers.Image)
+            Get
+                Return Me._showbanners
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._showbanners = value
+            End Set
+        End Property
+
+        Public Property ShowCharacterArts() As List(Of MediaContainers.Image)
+            Get
+                Return Me._showcharacterarts
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._showcharacterarts = value
+            End Set
+        End Property
+
+        Public Property ShowClearArts() As List(Of MediaContainers.Image)
+            Get
+                Return Me._showcleararts
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._showcleararts = value
+            End Set
+        End Property
+
+        Public Property ShowClearLogos() As List(Of MediaContainers.Image)
+            Get
+                Return Me._showclearlogos
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._showclearlogos = value
+            End Set
+        End Property
+
+        Public Property ShowLandscapes() As List(Of MediaContainers.Image)
+            Get
+                Return Me._showlandscapes
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Image))
+                Me._showlandscapes = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._show = New Structures.DBTV
+            Me._allseason = New Structures.DBTV
+            Me._episodes = New List(Of Structures.DBTV)
+            Me._fanarts = New List(Of MediaContainers.Image)
+            Me._knownepisodes = New List(Of EpisodeDetails)
+            Me._knownseasons = New List(Of SeasonDetails)
+            Me._posters = New List(Of MediaContainers.Image)
+            Me._showbanners = New List(Of MediaContainers.Image)
+            Me._showcharacterarts = New List(Of MediaContainers.Image)
+            Me._showcleararts = New List(Of MediaContainers.Image)
+            Me._showclearlogos = New List(Of MediaContainers.Image)
+            Me._showlandscapes = New List(Of MediaContainers.Image)
+            Me._seasonposters = New List(Of MediaContainers.Image)
+            Me._seasonbanners = New List(Of MediaContainers.Image)
+            Me._seasonlandscapes = New List(Of MediaContainers.Image)
         End Sub
 
 #End Region 'Methods
@@ -3013,7 +3701,412 @@ Namespace MediaContainers
 
     End Class
 
-    Public Class ImagesContainer_Movie_MovieSet
+    Public Class ImagesContainer_TV
+
+#Region "Fields"
+
+        Private _extrafanarts As New List(Of Image)
+        Private _extrathumbs As New List(Of Image)
+        Private _seasonbanner As New Image
+        Private _seasonfanart As New Image
+        Private _seasonimages As New List(Of SeasonImagesContainer)
+        Private _seasonlandscape As New Image
+        Private _seasonposter As New Image
+        Private _showbanner As New Image
+        Private _showcharacterart As New Image
+        Private _showclearart As New Image
+        Private _showclearlogo As New Image
+        Private _showfanart As New Image
+        Private _showlandscape As New Image
+        Private _showposter As New Image
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property ExtraFanarts() As List(Of Image)
+            Get
+                Return Me._extrafanarts
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._extrafanarts = value
+            End Set
+        End Property
+
+        Public Property ExtraThumbs() As List(Of Image)
+            Get
+                Return Me._extrathumbs
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._extrathumbs = value
+            End Set
+        End Property
+
+        Public Property SeasonBanner() As Image
+            Get
+                Return Me._seasonbanner
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonbanner = value
+            End Set
+        End Property
+
+        Public Property SeasonFanart() As Image
+            Get
+                Return Me._seasonfanart
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonfanart = value
+            End Set
+        End Property
+
+        Public Property SeasonImages() As List(Of SeasonImagesContainer)
+            Get
+                Return Me._seasonimages
+            End Get
+            Set(ByVal value As List(Of SeasonImagesContainer))
+                Me._seasonimages = value
+            End Set
+        End Property
+
+        Public Property SeasonLandscape() As Image
+            Get
+                Return Me._seasonlandscape
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonlandscape = value
+            End Set
+        End Property
+
+        Public Property SeasonPoster() As Image
+            Get
+                Return Me._seasonposter
+            End Get
+            Set(ByVal value As Image)
+                Me._seasonposter = value
+            End Set
+        End Property
+
+        Public Property ShowBanner() As Image
+            Get
+                Return Me._showbanner
+            End Get
+            Set(ByVal value As Image)
+                Me._showbanner = value
+            End Set
+        End Property
+
+        Public Property ShowCharacterArt() As Image
+            Get
+                Return Me._showcharacterart
+            End Get
+            Set(ByVal value As Image)
+                Me._showcharacterart = value
+            End Set
+        End Property
+
+        Public Property ShowClearArt() As Image
+            Get
+                Return Me._showclearart
+            End Get
+            Set(ByVal value As Image)
+                Me._showclearart = value
+            End Set
+        End Property
+
+        Public Property ShowClearLogo() As Image
+            Get
+                Return Me._showclearlogo
+            End Get
+            Set(ByVal value As Image)
+                Me._showclearlogo = value
+            End Set
+        End Property
+
+        Public Property ShowFanart() As Image
+            Get
+                Return Me._showfanart
+            End Get
+            Set(ByVal value As Image)
+                Me._showfanart = value
+            End Set
+        End Property
+
+        Public Property ShowLandscape() As Image
+            Get
+                Return Me._showlandscape
+            End Get
+            Set(ByVal value As Image)
+                Me._showlandscape = value
+            End Set
+        End Property
+
+        Public Property ShowPoster() As Image
+            Get
+                Return Me._showposter
+            End Get
+            Set(ByVal value As Image)
+                Me._showposter = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._extrafanarts.Clear()
+            Me._extrathumbs.Clear()
+            Me._seasonbanner = New MediaContainers.Image
+            Me._seasonfanart = New MediaContainers.Image
+            Me._seasonimages.Clear()
+            Me._seasonlandscape = New MediaContainers.Image
+            Me._seasonposter = New MediaContainers.Image
+            Me._showbanner = New MediaContainers.Image
+            Me._showcharacterart = New MediaContainers.Image
+            Me._showclearart = New MediaContainers.Image
+            Me._showclearlogo = New MediaContainers.Image
+            Me._showfanart = New MediaContainers.Image
+            Me._showlandscape = New MediaContainers.Image
+            Me._showposter = New MediaContainers.Image
+        End Sub
+
+        Public Sub SaveAllImages(ByRef DBTV As Structures.DBTV, ByRef Type As Enums.Content_Type)
+            With DBTV.ImagesContainer
+
+                Select Case Type
+                    Case Enums.Content_Type.Season
+                        'Season Banner
+                        If .SeasonBanner.WebImage.Image IsNot Nothing Then
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.BannerPath = .SeasonBanner.WebImage.SaveAsTVASBanner(DBTV)
+                            Else
+                                DBTV.BannerPath = .SeasonBanner.WebImage.SaveAsTVSeasonBanner(DBTV)
+                            End If
+                        Else
+                            If DBTV.TVSeason.Season = 999 Then
+                                .SeasonBanner.WebImage.DeleteTVASBanner(DBTV)
+                                DBTV.BannerPath = String.Empty
+                            Else
+                                .SeasonBanner.WebImage.DeleteTVSeasonBanner(DBTV)
+                                DBTV.BannerPath = String.Empty
+                            End If
+                        End If
+                        'Season Fanart
+                        If .SeasonFanart.WebImage.Image IsNot Nothing Then
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.FanartPath = .SeasonFanart.WebImage.SaveAsTVASFanart(DBTV)
+                            Else
+                                DBTV.FanartPath = .SeasonFanart.WebImage.SaveAsTVSeasonFanart(DBTV)
+                            End If
+                        Else
+                            If DBTV.TVSeason.Season = 999 Then
+                                .SeasonFanart.WebImage.DeleteTVASFanart(DBTV)
+                                DBTV.FanartPath = String.Empty
+                            Else
+                                .SeasonFanart.WebImage.DeleteTVSeasonFanart(DBTV)
+                                DBTV.FanartPath = String.Empty
+                            End If
+                        End If
+                        'Season Landscape
+                        If .SeasonLandscape.WebImage.Image IsNot Nothing Then
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.LandscapePath = .SeasonLandscape.WebImage.SaveAsTVASLandscape(DBTV)
+                            Else
+                                DBTV.LandscapePath = .SeasonLandscape.WebImage.SaveAsTVSeasonLandscape(DBTV)
+                            End If
+                        Else
+                            If DBTV.TVSeason.Season = 999 Then
+                                .SeasonLandscape.WebImage.DeleteTVASLandscape(DBTV)
+                                DBTV.LandscapePath = String.Empty
+                            Else
+                                .SeasonLandscape.WebImage.DeleteTVSeasonLandscape(DBTV)
+                                DBTV.LandscapePath = String.Empty
+                            End If
+                        End If
+                        'Season Poster
+                        If .SeasonPoster.WebImage.Image IsNot Nothing Then
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.PosterPath = .SeasonPoster.WebImage.SaveAsTVASPoster(DBTV)
+                            Else
+                                DBTV.PosterPath = .SeasonPoster.WebImage.SaveAsTVSeasonPoster(DBTV)
+                            End If
+                        Else
+                            If DBTV.TVSeason.Season = 999 Then
+                                .SeasonPoster.WebImage.DeleteTVASPoster(DBTV)
+                                DBTV.PosterPath = String.Empty
+                            Else
+                                .SeasonPoster.WebImage.DeleteTVSeasonPoster(DBTV)
+                                DBTV.PosterPath = String.Empty
+                            End If
+                        End If
+
+                    Case Enums.Content_Type.Show
+                        'Show Banner
+                        If .ShowBanner.WebImage.Image IsNot Nothing Then
+                            DBTV.BannerPath = .ShowBanner.WebImage.SaveAsTVShowBanner(DBTV)
+                        Else
+                            .ShowBanner.WebImage.DeleteTVShowBanner(DBTV)
+                            DBTV.BannerPath = String.Empty
+                        End If
+                        'Show CharacterArt
+                        If .ShowCharacterArt.WebImage.Image IsNot Nothing Then
+                            DBTV.CharacterArtPath = .ShowCharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
+                        Else
+                            .ShowCharacterArt.WebImage.DeleteTVShowCharacterArt(DBTV)
+                            DBTV.CharacterArtPath = String.Empty
+                        End If
+                        'Show ClearArt
+                        If .ShowClearArt.WebImage.Image IsNot Nothing Then
+                            DBTV.ClearArtPath = .ShowClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
+                        Else
+                            .ShowClearArt.WebImage.DeleteTVShowClearArt(DBTV)
+                            DBTV.ClearArtPath = String.Empty
+                        End If
+                        'Show ClearLogo
+                        If .ShowClearLogo.WebImage.Image IsNot Nothing Then
+                            DBTV.ClearLogoPath = .ShowClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
+                        Else
+                            .ShowClearLogo.WebImage.DeleteTVShowClearLogo(DBTV)
+                            DBTV.ClearLogoPath = String.Empty
+                        End If
+                        'Show Fanart
+                        If .ShowFanart.WebImage.Image IsNot Nothing Then
+                            DBTV.FanartPath = .ShowFanart.WebImage.SaveAsTVShowFanart(DBTV)
+                        Else
+                            .ShowFanart.WebImage.DeleteTVShowFanart(DBTV)
+                            DBTV.FanartPath = String.Empty
+                        End If
+                        'Show Landscape
+                        If .ShowLandscape.WebImage.Image IsNot Nothing Then
+                            DBTV.LandscapePath = .ShowLandscape.WebImage.SaveAsTVShowLandscape(DBTV)
+                        Else
+                            .ShowLandscape.WebImage.DeleteTVShowLandscape(DBTV)
+                            DBTV.LandscapePath = String.Empty
+                        End If
+                        'Show Poster
+                        If .ShowPoster.WebImage.Image IsNot Nothing Then
+                            DBTV.PosterPath = .ShowPoster.WebImage.SaveAsTVShowPoster(DBTV)
+                        Else
+                            .ShowPoster.WebImage.DeleteTVShowPoster(DBTV)
+                            DBTV.PosterPath = String.Empty
+                        End If
+                End Select
+            End With
+        End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+#End Region 'Nested Types
+
+    End Class
+
+    <Serializable()> _
+    Public Class SeasonImagesContainer
+
+#Region "Fields"
+
+        Private _alreadysaved As Boolean
+        Private _banner As MediaContainers.Image
+        Private _fanart As MediaContainers.Image
+        Private _landscape As MediaContainers.Image
+        Private _poster As MediaContainers.Image
+        Private _season As Integer
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property AlreadySaved() As Boolean
+            Get
+                Return Me._alreadysaved
+            End Get
+            Set(ByVal value As Boolean)
+                Me._alreadysaved = value
+            End Set
+        End Property
+
+        Public Property Banner() As MediaContainers.Image
+            Get
+                Return Me._banner
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._banner = value
+            End Set
+        End Property
+
+        Public Property Fanart() As MediaContainers.Image
+            Get
+                Return Me._fanart
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._fanart = value
+            End Set
+        End Property
+
+        Public Property Landscape() As MediaContainers.Image
+            Get
+                Return Me._landscape
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._landscape = value
+            End Set
+        End Property
+
+        Public Property Poster() As MediaContainers.Image
+            Get
+                Return Me._poster
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._poster = value
+            End Set
+        End Property
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._alreadysaved = False
+            Me._banner = New MediaContainers.Image
+            Me._fanart = New MediaContainers.Image
+            Me._landscape = New MediaContainers.Image
+            Me._poster = New MediaContainers.Image
+            Me._season = -1
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class SearchResultsContainer_Movie_MovieSet
 
 #Region "Fields"
 
@@ -3209,15 +4302,15 @@ Namespace MediaContainers
             Dim PrefLanguage As String
             Dim PrefLanguageOnly As Boolean
 
-#End Region
+#End Region 'Fields
 
         End Structure
 
-#End Region
+#End Region 'Nested Types
 
     End Class
 
-    Public Class ImagesContainer_TV
+    Public Class SearchResultsContainer_TV
 
 #Region "Fields"
 
@@ -3467,11 +4560,11 @@ Namespace MediaContainers
             Dim PrefLanguage As String
             Dim PrefLanguageOnly As Boolean
 
-#End Region
+#End Region 'Fields
 
         End Structure
 
-#End Region
+#End Region 'Nested Types
 
     End Class
 
@@ -3606,6 +4699,24 @@ Namespace MediaContainers
 
     Public Class [Trailer]
 
+#Region "Fields"
+
+        Private _audiourl As String
+        Private _duration As String
+        Private _isDash As Boolean
+        Private _longlang As String
+        Private _quality As Enums.TrailerVideoQuality
+        Private _scraper As String
+        Private _shortlang As String
+        Private _source As String
+        Private _title As String
+        Private _type As Enums.TrailerType
+        Private _videourl As String
+        Private _webtrailer As New Trailers
+        Private _weburl As String
+
+#End Region 'Fields
+
 #Region "Constructors"
 
         Public Sub New()
@@ -3615,20 +4726,162 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
-        Public Property Quality As String
-        Public Property URL As String ' path to image (local or url)
-        Public Property WebTrailer As Trailers
-        Public Property ShortLang As String
-        Public Property LongLang As String
+        ''' <summary>
+        ''' download audio URL of the trailer
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property AudioURL() As String
+            Get
+                Return _audiourl
+            End Get
+            Set(ByVal value As String)
+                _audiourl = value
+            End Set
+        End Property
+
+        Public Property Duration() As String
+            Get
+                Return Me._duration
+            End Get
+            Set(ByVal value As String)
+                Me._duration = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' If is a Dash video, we need also an audio URL to merge video and audio
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property isDash() As Boolean
+            Get
+                Return _isDash
+            End Get
+            Set(ByVal value As Boolean)
+                _isDash = value
+            End Set
+        End Property
+
+        Public Property LongLang() As String
+            Get
+                Return Me._longlang
+            End Get
+            Set(ByVal value As String)
+                Me._longlang = value
+            End Set
+        End Property
+
+        Public Property Quality() As Enums.TrailerVideoQuality
+            Get
+                Return Me._quality
+            End Get
+            Set(ByVal value As Enums.TrailerVideoQuality)
+                Me._quality = value
+            End Set
+        End Property
+
+        Public Property Scraper() As String
+            Get
+                Return Me._scraper
+            End Get
+            Set(ByVal value As String)
+                Me._scraper = value
+            End Set
+        End Property
+
+        Public Property ShortLang() As String
+            Get
+                Return Me._shortlang
+            End Get
+            Set(ByVal value As String)
+                Me._shortlang = value
+            End Set
+        End Property
+
+        Public Property Source() As String
+            Get
+                Return Me._source
+            End Get
+            Set(ByVal value As String)
+                Me._source = value
+            End Set
+        End Property
+
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
+        Public Property Type() As Enums.TrailerType
+            Get
+                Return Me._type
+            End Get
+            Set(ByVal value As Enums.TrailerType)
+                Me._type = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' download video URL of the trailer
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property VideoURL() As String
+            Get
+                Return _videourl
+            End Get
+            Set(ByVal value As String)
+                _videourl = value
+            End Set
+        End Property
+
+        Public Property WebTrailer() As Trailers
+            Get
+                Return Me._webtrailer
+            End Get
+            Set(ByVal value As Trailers)
+                Me._webtrailer = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' website URL of the trailer for preview in browser
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property WebURL() As String
+            Get
+                Return _weburl
+            End Get
+            Set(ByVal value As String)
+                _weburl = value
+            End Set
+        End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._URL = String.Empty
-            Me._Quality = String.Empty
-            Me._WebTrailer = New Trailers
+            Me._audiourl = String.Empty
+            Me._duration = String.Empty
+            Me._isDash = False
+            Me._longlang = String.Empty
+            Me._quality = Enums.TrailerVideoQuality.Any
+            Me._scraper = String.Empty
+            Me._shortlang = String.Empty
+            Me._source = String.Empty
+            Me._title = String.Empty
+            Me._type = Enums.TrailerType.Any
+            Me._videourl = String.Empty
+            Me._webtrailer = New Trailers
+            Me._weburl = String.Empty
         End Sub
 
 #End Region 'Methods

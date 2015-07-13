@@ -30,7 +30,7 @@ Namespace Davestrailerpage
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private originaltitle As String
-        Private _trailerlist As New List(Of Trailers)
+        Private _trailerlist As New List(Of MediaContainers.Trailer)
         Private imdbid As String
 
 #End Region 'Fields
@@ -48,11 +48,11 @@ Namespace Davestrailerpage
 
 #Region "Properties"
 
-        Public Property TrailerList() As List(Of Trailers)
+        Public Property TrailerList() As List(Of MediaContainers.Trailer)
             Get
                 Return _trailerlist
             End Get
-            Set(ByVal value As List(Of Trailers))
+            Set(ByVal value As List(Of MediaContainers.Trailer))
                 _trailerlist = value
             End Set
         End Property
@@ -62,7 +62,7 @@ Namespace Davestrailerpage
 #Region "Methods"
 
         Private Sub Clear()
-            _trailerlist = New List(Of Trailers)
+            _trailerlist = New List(Of MediaContainers.Trailer)
         End Sub
 
 
@@ -235,14 +235,14 @@ Namespace Davestrailerpage
                                             trailerURLResults = Regex.Matches(strtrailersection, trailerlinkPattern, RegexOptions.Singleline)
                                             If Not trailerURLResults Is Nothing AndAlso trailerURLResults.Count > 0 Then
                                                 For Each trailerlink As Match In trailerURLResults
-                                                    Dim trailer As New Trailers
+                                                    Dim trailer As New MediaContainers.Trailer
                                                     'trailer description
-                                                    trailer.Description = trailerresult.Groups(1).Value
+                                                    trailer.Title = trailerresult.Groups(1).Value
                                                     'trailer URLs
                                                     trailer.VideoURL = trailerlink.Groups(1).Value
                                                     trailer.WebURL = trailerlink.Groups(1).Value
                                                     'trailer extension
-                                                    trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                                    trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                                     'trailer source
                                                     trailer.Source = "Davestrailer"
                                                     '..and most important: trailer quality
@@ -276,14 +276,14 @@ Namespace Davestrailerpage
                                         For Each trailerlink As Match In trailerURLResults
 
                                             If trailerlink.Groups(1).Value.ToLower.Contains(".mov") OrElse trailerlink.Groups(1).Value.ToLower.Contains(".mp4") OrElse trailerlink.Groups(1).Value.ToLower.Contains(".flv") Then
-                                                Dim trailer As New Trailers
+                                                Dim trailer As New MediaContainers.Trailer
                                                 'trailer description
-                                                trailer.Description = trailerlink.Groups(2).Value
+                                                trailer.Title = trailerlink.Groups(2).Value
                                                 'trailer URLs
                                                 trailer.VideoURL = trailerlink.Groups(1).Value
                                                 trailer.WebURL = trailerlink.Groups(1).Value
                                                 'trailer extension
-                                                trailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                                trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
                                                 'trailer source
                                                 trailer.Source = "Davestrailer"
                                                 '..and most important: trailer quality

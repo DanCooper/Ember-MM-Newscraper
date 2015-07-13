@@ -357,19 +357,19 @@ Public Class dlgTVImageSelect
 
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    If Not String.IsNullOrEmpty(Episode.EpFanartPath) Then
-                        Episode.TVEp.Fanart.FromFile(Episode.EpFanartPath)
+                    If Not String.IsNullOrEmpty(Episode.FanartPath) Then
+                        Episode.TVEp.Fanart.WebImage.FromFile(Episode.FanartPath)
                     ElseIf Scraper.TVDBImages.ShowFanart.WebImage.Image IsNot Nothing Then
-                        Episode.TVEp.Fanart = Scraper.TVDBImages.ShowFanart.WebImage
+                        Episode.TVEp.Fanart = Scraper.TVDBImages.ShowFanart
                     End If
                 End If
 
                 'Poster
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
                     If Not String.IsNullOrEmpty(Episode.TVEp.LocalFile) Then
-                        Episode.TVEp.Poster.FromFile(Episode.TVEp.LocalFile)
-                    ElseIf Not String.IsNullOrEmpty(Episode.EpPosterPath) Then
-                        Episode.TVEp.Poster.FromFile(Episode.EpPosterPath)
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.TVEp.LocalFile)
+                    ElseIf Not String.IsNullOrEmpty(Episode.PosterPath) Then
+                        Episode.TVEp.Poster.WebImage.FromFile(Episode.PosterPath)
                     End If
                 End If
                 If Me.bwLoadImages.CancellationPending Then
@@ -493,14 +493,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowBannerAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowBanner.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowBanner.LocalFile) Then
                     Scraper.TVDBImages.ShowBanner.WebImage.FromFile(Scraper.TVDBImages.ShowBanner.LocalFile)
-                    Master.currShow.ShowBannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
+                    Master.currShow.BannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowBanner.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowBanner.LocalFile) Then
                     Scraper.TVDBImages.ShowBanner.WebImage.Clear()
                     Scraper.TVDBImages.ShowBanner.WebImage.FromWeb(Scraper.TVDBImages.ShowBanner.URL)
                     If Scraper.TVDBImages.ShowBanner.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowBanner.LocalFile).FullName)
                         Scraper.TVDBImages.ShowBanner.WebImage.Save(Scraper.TVDBImages.ShowBanner.LocalFile)
-                        Master.currShow.ShowBannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
+                        Master.currShow.BannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
                     End If
                 End If
             End If
@@ -509,14 +509,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowCharacterArtAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowCharacterArt.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowCharacterArt.LocalFile) Then
                     Scraper.TVDBImages.ShowCharacterArt.WebImage.FromFile(Scraper.TVDBImages.ShowCharacterArt.LocalFile)
-                    Master.currShow.ShowCharacterArtPath = Scraper.TVDBImages.ShowCharacterArt.LocalFile
+                    Master.currShow.CharacterArtPath = Scraper.TVDBImages.ShowCharacterArt.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowCharacterArt.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowCharacterArt.LocalFile) Then
                     Scraper.TVDBImages.ShowCharacterArt.WebImage.Clear()
                     Scraper.TVDBImages.ShowCharacterArt.WebImage.FromWeb(Scraper.TVDBImages.ShowCharacterArt.URL)
                     If Scraper.TVDBImages.ShowCharacterArt.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowCharacterArt.LocalFile).FullName)
                         Scraper.TVDBImages.ShowCharacterArt.WebImage.Save(Scraper.TVDBImages.ShowCharacterArt.LocalFile)
-                        Master.currShow.ShowCharacterArtPath = Scraper.TVDBImages.ShowCharacterArt.LocalFile
+                        Master.currShow.CharacterArtPath = Scraper.TVDBImages.ShowCharacterArt.LocalFile
                     End If
                 End If
             End If
@@ -525,14 +525,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowClearArtAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearArt.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowClearArt.LocalFile) Then
                     Scraper.TVDBImages.ShowClearArt.WebImage.FromFile(Scraper.TVDBImages.ShowClearArt.LocalFile)
-                    Master.currShow.ShowClearArtPath = Scraper.TVDBImages.ShowClearArt.LocalFile
+                    Master.currShow.ClearArtPath = Scraper.TVDBImages.ShowClearArt.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearArt.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearArt.LocalFile) Then
                     Scraper.TVDBImages.ShowClearArt.WebImage.Clear()
                     Scraper.TVDBImages.ShowClearArt.WebImage.FromWeb(Scraper.TVDBImages.ShowClearArt.URL)
                     If Scraper.TVDBImages.ShowClearArt.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowClearArt.LocalFile).FullName)
                         Scraper.TVDBImages.ShowClearArt.WebImage.Save(Scraper.TVDBImages.ShowClearArt.LocalFile)
-                        Master.currShow.ShowClearArtPath = Scraper.TVDBImages.ShowClearArt.LocalFile
+                        Master.currShow.ClearArtPath = Scraper.TVDBImages.ShowClearArt.LocalFile
                     End If
                 End If
             End If
@@ -541,14 +541,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowClearLogoAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearLogo.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowClearLogo.LocalFile) Then
                     Scraper.TVDBImages.ShowClearLogo.WebImage.FromFile(Scraper.TVDBImages.ShowClearLogo.LocalFile)
-                    Master.currShow.ShowClearLogoPath = Scraper.TVDBImages.ShowClearLogo.LocalFile
+                    Master.currShow.ClearLogoPath = Scraper.TVDBImages.ShowClearLogo.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearLogo.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowClearLogo.LocalFile) Then
                     Scraper.TVDBImages.ShowClearLogo.WebImage.Clear()
                     Scraper.TVDBImages.ShowClearLogo.WebImage.FromWeb(Scraper.TVDBImages.ShowClearLogo.URL)
                     If Scraper.TVDBImages.ShowClearLogo.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowClearLogo.LocalFile).FullName)
                         Scraper.TVDBImages.ShowClearLogo.WebImage.Save(Scraper.TVDBImages.ShowClearLogo.LocalFile)
-                        Master.currShow.ShowClearLogoPath = Scraper.TVDBImages.ShowClearLogo.LocalFile
+                        Master.currShow.ClearLogoPath = Scraper.TVDBImages.ShowClearLogo.LocalFile
                     End If
                 End If
             End If
@@ -557,14 +557,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowFanartAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
                     Scraper.TVDBImages.ShowFanart.WebImage.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
-                    Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
+                    Master.currShow.FanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
                     Scraper.TVDBImages.ShowFanart.WebImage.Clear()
                     Scraper.TVDBImages.ShowFanart.WebImage.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
                     If Scraper.TVDBImages.ShowFanart.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
                         Scraper.TVDBImages.ShowFanart.WebImage.Save(Scraper.TVDBImages.ShowFanart.LocalFile)
-                        Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
+                        Master.currShow.FanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
                     End If
                 End If
             End If
@@ -573,14 +573,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowLandscapeAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowLandscape.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowLandscape.LocalFile) Then
                     Scraper.TVDBImages.ShowLandscape.WebImage.FromFile(Scraper.TVDBImages.ShowLandscape.LocalFile)
-                    Master.currShow.ShowLandscapePath = Scraper.TVDBImages.ShowLandscape.LocalFile
+                    Master.currShow.LandscapePath = Scraper.TVDBImages.ShowLandscape.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowLandscape.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowLandscape.LocalFile) Then
                     Scraper.TVDBImages.ShowLandscape.WebImage.Clear()
                     Scraper.TVDBImages.ShowLandscape.WebImage.FromWeb(Scraper.TVDBImages.ShowLandscape.URL)
                     If Scraper.TVDBImages.ShowLandscape.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowLandscape.LocalFile).FullName)
                         Scraper.TVDBImages.ShowLandscape.WebImage.Save(Scraper.TVDBImages.ShowLandscape.LocalFile)
-                        Master.currShow.ShowLandscapePath = Scraper.TVDBImages.ShowLandscape.LocalFile
+                        Master.currShow.LandscapePath = Scraper.TVDBImages.ShowLandscape.LocalFile
                     End If
                 End If
             End If
@@ -589,14 +589,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVShowPosterAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowPoster.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowPoster.LocalFile) Then
                     Scraper.TVDBImages.ShowPoster.WebImage.FromFile(Scraper.TVDBImages.ShowPoster.LocalFile)
-                    Master.currShow.ShowPosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
+                    Master.currShow.PosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowPoster.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowPoster.LocalFile) Then
                     Scraper.TVDBImages.ShowPoster.WebImage.Clear()
                     Scraper.TVDBImages.ShowPoster.WebImage.FromWeb(Scraper.TVDBImages.ShowPoster.URL)
                     If Scraper.TVDBImages.ShowPoster.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowPoster.LocalFile).FullName)
                         Scraper.TVDBImages.ShowPoster.WebImage.Save(Scraper.TVDBImages.ShowPoster.LocalFile)
-                        Master.currShow.ShowPosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
+                        Master.currShow.PosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
                     End If
                 End If
             End If
@@ -605,14 +605,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVASBannerAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsBanner.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsBanner.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsBanner.WebImage.FromFile(Scraper.TVDBImages.AllSeasonsBanner.LocalFile)
-                    Master.currShow.SeasonBannerPath = Scraper.TVDBImages.AllSeasonsBanner.LocalFile
+                    Master.currShow.BannerPath = Scraper.TVDBImages.AllSeasonsBanner.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsBanner.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsBanner.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsBanner.WebImage.Clear()
                     Scraper.TVDBImages.AllSeasonsBanner.WebImage.FromWeb(Scraper.TVDBImages.AllSeasonsBanner.URL)
                     If Scraper.TVDBImages.AllSeasonsBanner.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsBanner.LocalFile).FullName)
                         Scraper.TVDBImages.AllSeasonsBanner.WebImage.Save(Scraper.TVDBImages.AllSeasonsBanner.LocalFile)
-                        Master.currShow.SeasonBannerPath = Scraper.TVDBImages.AllSeasonsBanner.LocalFile
+                        Master.currShow.BannerPath = Scraper.TVDBImages.AllSeasonsBanner.LocalFile
                     End If
                 End If
             End If
@@ -621,14 +621,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVASFanartAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsFanart.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsFanart.WebImage.FromFile(Scraper.TVDBImages.AllSeasonsFanart.LocalFile)
-                    Master.currShow.SeasonFanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
+                    Master.currShow.FanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsFanart.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsFanart.WebImage.Clear()
                     Scraper.TVDBImages.AllSeasonsFanart.WebImage.FromWeb(Scraper.TVDBImages.AllSeasonsFanart.URL)
                     If Scraper.TVDBImages.AllSeasonsFanart.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsFanart.LocalFile).FullName)
                         Scraper.TVDBImages.AllSeasonsFanart.WebImage.Save(Scraper.TVDBImages.AllSeasonsFanart.LocalFile)
-                        Master.currShow.SeasonFanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
+                        Master.currShow.FanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
                     End If
                 End If
             End If
@@ -637,14 +637,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVASLandscapeAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsLandscape.WebImage.FromFile(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile)
-                    Master.currShow.SeasonLandscapePath = Scraper.TVDBImages.AllSeasonsLandscape.LocalFile
+                    Master.currShow.LandscapePath = Scraper.TVDBImages.AllSeasonsLandscape.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsLandscape.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsLandscape.WebImage.Clear()
                     Scraper.TVDBImages.AllSeasonsLandscape.WebImage.FromWeb(Scraper.TVDBImages.AllSeasonsLandscape.URL)
                     If Scraper.TVDBImages.AllSeasonsLandscape.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile).FullName)
                         Scraper.TVDBImages.AllSeasonsLandscape.WebImage.Save(Scraper.TVDBImages.AllSeasonsLandscape.LocalFile)
-                        Master.currShow.SeasonLandscapePath = Scraper.TVDBImages.AllSeasonsLandscape.LocalFile
+                        Master.currShow.LandscapePath = Scraper.TVDBImages.AllSeasonsLandscape.LocalFile
                     End If
                 End If
             End If
@@ -653,14 +653,14 @@ Public Class dlgTVImageSelect
             If Master.eSettings.TVASPosterAnyEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsPoster.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsPoster.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsPoster.WebImage.FromFile(Scraper.TVDBImages.AllSeasonsPoster.LocalFile)
-                    Master.currShow.SeasonPosterPath = Scraper.TVDBImages.AllSeasonsPoster.LocalFile
+                    Master.currShow.PosterPath = Scraper.TVDBImages.AllSeasonsPoster.LocalFile
                 ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsPoster.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsPoster.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsPoster.WebImage.Clear()
                     Scraper.TVDBImages.AllSeasonsPoster.WebImage.FromWeb(Scraper.TVDBImages.AllSeasonsPoster.URL)
                     If Scraper.TVDBImages.AllSeasonsPoster.WebImage.Image IsNot Nothing Then
                         Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.AllSeasonsPoster.LocalFile).FullName)
                         Scraper.TVDBImages.AllSeasonsPoster.WebImage.Save(Scraper.TVDBImages.AllSeasonsPoster.LocalFile)
-                        Master.currShow.SeasonPosterPath = Scraper.TVDBImages.AllSeasonsPoster.LocalFile
+                        Master.currShow.PosterPath = Scraper.TVDBImages.AllSeasonsPoster.LocalFile
                     End If
                 End If
             End If
@@ -1013,99 +1013,99 @@ Public Class dlgTVImageSelect
                 Scraper.TVDBImages.ShowPoster.WebImage = CType(Me.pbCurrent.Tag, Images)
             Case Enums.ImageType_TV.All
                 If _withcurrent Then
-                    If Master.eSettings.TVShowBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowBannerPath) Then
-                        Scraper.TVDBImages.ShowBanner.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowBannerPath)
-                        Scraper.TVDBImages.ShowBanner.LocalFile = Scraper.tmpTVDBShow.Show.ShowBannerPath
+                    If Master.eSettings.TVShowBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.BannerPath) Then
+                        Scraper.TVDBImages.ShowBanner.WebImage.FromFile(Scraper.tmpTVDBShow.Show.BannerPath)
+                        Scraper.TVDBImages.ShowBanner.LocalFile = Scraper.tmpTVDBShow.Show.BannerPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowCharacterArtPath) Then
-                        Scraper.TVDBImages.ShowCharacterArt.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowCharacterArtPath)
-                        Scraper.TVDBImages.ShowCharacterArt.LocalFile = Scraper.tmpTVDBShow.Show.ShowCharacterArtPath
+                    If Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.CharacterArtPath) Then
+                        Scraper.TVDBImages.ShowCharacterArt.WebImage.FromFile(Scraper.tmpTVDBShow.Show.CharacterArtPath)
+                        Scraper.TVDBImages.ShowCharacterArt.LocalFile = Scraper.tmpTVDBShow.Show.CharacterArtPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVShowClearArtAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowClearArtPath) Then
-                        Scraper.TVDBImages.ShowClearArt.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowClearArtPath)
-                        Scraper.TVDBImages.ShowClearArt.LocalFile = Scraper.tmpTVDBShow.Show.ShowClearArtPath
+                    If Master.eSettings.TVShowClearArtAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ClearArtPath) Then
+                        Scraper.TVDBImages.ShowClearArt.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ClearArtPath)
+                        Scraper.TVDBImages.ShowClearArt.LocalFile = Scraper.tmpTVDBShow.Show.ClearArtPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVShowClearLogoAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowClearLogoPath) Then
-                        Scraper.TVDBImages.ShowClearLogo.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowClearLogoPath)
-                        Scraper.TVDBImages.ShowClearLogo.LocalFile = Scraper.tmpTVDBShow.Show.ShowClearLogoPath
+                    If Master.eSettings.TVShowClearLogoAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ClearLogoPath) Then
+                        Scraper.TVDBImages.ShowClearLogo.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ClearLogoPath)
+                        Scraper.TVDBImages.ShowClearLogo.LocalFile = Scraper.tmpTVDBShow.Show.ClearLogoPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVShowFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowFanartPath) Then
-                        Scraper.TVDBImages.ShowFanart.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowFanartPath)
-                        Scraper.TVDBImages.ShowFanart.LocalFile = Scraper.tmpTVDBShow.Show.ShowFanartPath
+                    If Master.eSettings.TVShowFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.FanartPath) Then
+                        Scraper.TVDBImages.ShowFanart.WebImage.FromFile(Scraper.tmpTVDBShow.Show.FanartPath)
+                        Scraper.TVDBImages.ShowFanart.LocalFile = Scraper.tmpTVDBShow.Show.FanartPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVShowLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowLandscapePath) Then
-                        Scraper.TVDBImages.ShowLandscape.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowLandscapePath)
-                        Scraper.TVDBImages.ShowLandscape.LocalFile = Scraper.tmpTVDBShow.Show.ShowLandscapePath
+                    If Master.eSettings.TVShowLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.LandscapePath) Then
+                        Scraper.TVDBImages.ShowLandscape.WebImage.FromFile(Scraper.tmpTVDBShow.Show.LandscapePath)
+                        Scraper.TVDBImages.ShowLandscape.LocalFile = Scraper.tmpTVDBShow.Show.LandscapePath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVShowPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.ShowPosterPath) Then
-                        Scraper.TVDBImages.ShowPoster.WebImage.FromFile(Scraper.tmpTVDBShow.Show.ShowPosterPath)
-                        Scraper.TVDBImages.ShowPoster.LocalFile = Scraper.tmpTVDBShow.Show.ShowPosterPath
+                    If Master.eSettings.TVShowPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.Show.PosterPath) Then
+                        Scraper.TVDBImages.ShowPoster.WebImage.FromFile(Scraper.tmpTVDBShow.Show.PosterPath)
+                        Scraper.TVDBImages.ShowPoster.LocalFile = Scraper.tmpTVDBShow.Show.PosterPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVASBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonBannerPath) Then
-                        Scraper.TVDBImages.AllSeasonsBanner.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonBannerPath)
-                        Scraper.TVDBImages.AllSeasonsBanner.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonBannerPath
+                    If Master.eSettings.TVASBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.BannerPath) Then
+                        Scraper.TVDBImages.AllSeasonsBanner.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.BannerPath)
+                        Scraper.TVDBImages.AllSeasonsBanner.LocalFile = Scraper.tmpTVDBShow.AllSeason.BannerPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVASFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonFanartPath) Then
-                        Scraper.TVDBImages.AllSeasonsFanart.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonFanartPath)
-                        Scraper.TVDBImages.AllSeasonsFanart.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonFanartPath
+                    If Master.eSettings.TVASFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.FanartPath) Then
+                        Scraper.TVDBImages.AllSeasonsFanart.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.FanartPath)
+                        Scraper.TVDBImages.AllSeasonsFanart.LocalFile = Scraper.tmpTVDBShow.AllSeason.FanartPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVASLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonLandscapePath) Then
-                        Scraper.TVDBImages.AllSeasonsLandscape.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonLandscapePath)
-                        Scraper.TVDBImages.AllSeasonsLandscape.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonLandscapePath
+                    If Master.eSettings.TVASLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.LandscapePath) Then
+                        Scraper.TVDBImages.AllSeasonsLandscape.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.LandscapePath)
+                        Scraper.TVDBImages.AllSeasonsLandscape.LocalFile = Scraper.tmpTVDBShow.AllSeason.LandscapePath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
                         Return
                     End If
 
-                    If Master.eSettings.TVASPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath) Then
-                        Scraper.TVDBImages.AllSeasonsPoster.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath)
-                        Scraper.TVDBImages.AllSeasonsPoster.LocalFile = Scraper.tmpTVDBShow.AllSeason.SeasonPosterPath
+                    If Master.eSettings.TVASPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(Scraper.tmpTVDBShow.AllSeason.PosterPath) Then
+                        Scraper.TVDBImages.AllSeasonsPoster.WebImage.FromFile(Scraper.tmpTVDBShow.AllSeason.PosterPath)
+                        Scraper.TVDBImages.AllSeasonsPoster.LocalFile = Scraper.tmpTVDBShow.AllSeason.PosterPath
                     End If
                     If Me.bwLoadData.CancellationPending Then
                         e.Cancel = True
@@ -1116,8 +1116,8 @@ Public Class dlgTVImageSelect
                         Try
                             iSeason = sEpisode.TVEp.Season
                             If iSeason > -1 Then
-                                If Master.eSettings.TVEpisodePosterAnyEnabled AndAlso Scraper.TVDBImages.ShowPoster.WebImage Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.ShowPosterPath) Then
-                                    Scraper.TVDBImages.ShowPoster.WebImage.FromFile(sEpisode.ShowPosterPath)
+                                If Master.eSettings.TVEpisodePosterAnyEnabled AndAlso Scraper.TVDBImages.ShowPoster.WebImage Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.PosterPath) Then
+                                    Scraper.TVDBImages.ShowPoster.WebImage.FromFile(sEpisode.PosterPath)
                                 End If
 
                                 If Me.bwLoadData.CancellationPending Then
@@ -1125,9 +1125,9 @@ Public Class dlgTVImageSelect
                                     Return
                                 End If
 
-                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Scraper.TVDBImages.ShowFanart.WebImage.Image Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
-                                    Scraper.TVDBImages.ShowFanart.WebImage.FromFile(sEpisode.ShowFanartPath)
-                                    Scraper.TVDBImages.ShowFanart.LocalFile = sEpisode.ShowFanartPath
+                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Scraper.TVDBImages.ShowFanart.WebImage.Image Is Nothing AndAlso Not String.IsNullOrEmpty(sEpisode.FanartPath) Then
+                                    Scraper.TVDBImages.ShowFanart.WebImage.FromFile(sEpisode.FanartPath)
+                                    Scraper.TVDBImages.ShowFanart.LocalFile = sEpisode.FanartPath
                                 End If
 
                                 If Me.bwLoadData.CancellationPending Then
@@ -1138,21 +1138,21 @@ Public Class dlgTVImageSelect
                                 If Scraper.TVDBImages.SeasonImageList.Where(Function(s) s.Season = iSeason).Count = 0 Then
                                     cSI = New Scraper.TVDBSeasonImage
                                     cSI.Season = iSeason
-                                    If Master.eSettings.TVSeasonBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonBannerPath) Then
-                                        cSI.Banner.WebImage.FromFile(sEpisode.SeasonBannerPath)
-                                        cSI.Banner.LocalFile = sEpisode.SeasonBannerPath
+                                    If Master.eSettings.TVSeasonBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.BannerPath) Then
+                                        cSI.Banner.WebImage.FromFile(sEpisode.BannerPath)
+                                        cSI.Banner.LocalFile = sEpisode.BannerPath
                                     End If
-                                    If Master.eSettings.TVSeasonFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
-                                        cSI.Fanart.WebImage.FromFile(sEpisode.SeasonFanartPath)
-                                        cSI.Fanart.LocalFile = sEpisode.SeasonFanartPath
+                                    If Master.eSettings.TVSeasonFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.FanartPath) Then
+                                        cSI.Fanart.WebImage.FromFile(sEpisode.FanartPath)
+                                        cSI.Fanart.LocalFile = sEpisode.FanartPath
                                     End If
-                                    If Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonLandscapePath) Then
-                                        cSI.Landscape.WebImage.FromFile(sEpisode.SeasonLandscapePath)
-                                        cSI.Landscape.LocalFile = sEpisode.SeasonLandscapePath
+                                    If Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.LandscapePath) Then
+                                        cSI.Landscape.WebImage.FromFile(sEpisode.LandscapePath)
+                                        cSI.Landscape.LocalFile = sEpisode.LandscapePath
                                     End If
-                                    If Master.eSettings.TVSeasonPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.SeasonPosterPath) Then
-                                        cSI.Poster.WebImage.FromFile(sEpisode.SeasonPosterPath)
-                                        cSI.Poster.LocalFile = sEpisode.SeasonPosterPath
+                                    If Master.eSettings.TVSeasonPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.PosterPath) Then
+                                        cSI.Poster.WebImage.FromFile(sEpisode.PosterPath)
+                                        cSI.Poster.LocalFile = sEpisode.PosterPath
                                     End If
                                     Scraper.TVDBImages.SeasonImageList.Add(cSI)
                                 End If
@@ -1332,14 +1332,14 @@ Public Class dlgTVImageSelect
             For Each Epi As Structures.DBTV In Scraper.tmpTVDBShow.Episodes
                 If Not File.Exists(Epi.TVEp.LocalFile) Then
                     If Not String.IsNullOrEmpty(Epi.TVEp.PosterURL) Then
-                        Epi.TVEp.Poster.FromWeb(Epi.TVEp.PosterURL)
-                        If Epi.TVEp.Poster.Image IsNot Nothing Then
+                        Epi.TVEp.Poster.WebImage.FromWeb(Epi.TVEp.PosterURL)
+                        If Epi.TVEp.Poster.WebImage.Image IsNot Nothing Then
                             Directory.CreateDirectory(Directory.GetParent(Epi.TVEp.LocalFile).FullName)
-                            Epi.TVEp.Poster.Save(Epi.TVEp.LocalFile)
+                            Epi.TVEp.Poster.WebImage.Save(Epi.TVEp.LocalFile)
                         End If
                     End If
                 Else
-                    Epi.TVEp.Poster.FromFile(Epi.TVEp.LocalFile)
+                    Epi.TVEp.Poster.WebImage.FromFile(Epi.TVEp.LocalFile)
                 End If
 
                 If Me.bwLoadImages.CancellationPending Then

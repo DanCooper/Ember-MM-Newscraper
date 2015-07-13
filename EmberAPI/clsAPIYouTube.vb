@@ -450,9 +450,9 @@ Namespace YouTube
         ''' <param name="mName"><c>String</c> to search for</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of Trailers)
+        Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of MediaContainers.Trailer)
             Dim tHTTP As New HTTP
-            Dim tList As New List(Of Trailers)
+            Dim tList As New List(Of MediaContainers.Trailer)
             Dim tLength As String = String.Empty
             Dim tLink As String = String.Empty
             Dim tName As String = String.Empty
@@ -471,7 +471,7 @@ Namespace YouTube
                 tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
                 tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                 If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                    tList.Add(New Trailers With {.VideoURL = tLink, .WebURL = tLink, .Description = tName, .Duration = tLength, .Source = "YouTube"})
+                    tList.Add(New MediaContainers.Trailer With {.VideoURL = tLink, .WebURL = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
                 End If
             Next
 

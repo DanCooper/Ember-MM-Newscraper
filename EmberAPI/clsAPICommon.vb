@@ -995,6 +995,17 @@ Public Class Enums
         UNKNOWN = 6
     End Enum
     ''' <summary>
+    ''' Enum representing the trailer type options
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TrailerType As Integer
+        Any = 0
+        Clip = 1
+        Featurette = 2
+        Teaser = 3
+        Trailer = 4
+    End Enum
+    ''' <summary>
     ''' Enum representing the trailer codec options
     ''' </summary>
     ''' <remarks></remarks>
@@ -1061,9 +1072,10 @@ Public Class Enums
         ShowCharacterArt = 12
         ShowClearArt = 13
         ShowClearLogo = 14
-        ShowFanart = 15
-        ShowLandscape = 16
-        ShowPoster = 17
+        ShowEFanarts = 15
+        ShowFanart = 16
+        ShowLandscape = 17
+        ShowPoster = 18
     End Enum
 
     Public Enum ScraperEventType_TV As Integer
@@ -1079,14 +1091,6 @@ Public Class Enums
         Verifying = 9
         Cancelled = 10
         SaveAuto = 11
-    End Enum
-
-    Public Enum TVScraperUpdateTime As Integer
-        Week = 0
-        BiWeekly = 1
-        Month = 2
-        Never = 3
-        Always = 4
     End Enum
 
 #End Region 'Enumerations
@@ -1296,9 +1300,11 @@ Public Class Functions
             .bEpTitle = Master.eSettings.TVScraperEpisodeTitle
             .bEpVotes = Master.eSettings.TVScraperEpisodeVotes
             .bShowActors = Master.eSettings.TVScraperShowActors
+            .bShowCert = Master.eSettings.TVScraperShowCert
             .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
             .bShowGenre = Master.eSettings.TVScraperShowGenre
             .bShowMPAA = Master.eSettings.TVScraperShowMPAA
+            .bShowOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
             .bShowPlot = Master.eSettings.TVScraperShowPlot
             .bShowPremiered = Master.eSettings.TVScraperShowPremiered
             .bShowRating = Master.eSettings.TVScraperShowRating
@@ -1604,8 +1610,8 @@ Public Class Functions
     ''' <param name="Options2">Secondary Structures.TVScrapeOptions</param>
     ''' <returns>Structures.TVScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.TVScrapeOptions, ByVal Options2 As Structures.TVScrapeOptions) As Structures.TVScrapeOptions
-        Dim filterOptions As New Structures.TVScrapeOptions
+    Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_TV, ByVal Options2 As Structures.ScrapeOptions_TV) As Structures.ScrapeOptions_TV
+        Dim filterOptions As New Structures.ScrapeOptions_TV
         filterOptions.bEpActors = Options.bEpActors AndAlso Options2.bEpActors
         filterOptions.bEpAired = Options.bEpAired AndAlso Options2.bEpAired
         filterOptions.bEpCredits = Options.bEpCredits AndAlso Options2.bEpCredits
@@ -1618,10 +1624,16 @@ Public Class Functions
         filterOptions.bEpSeason = Options.bEpSeason AndAlso Options2.bEpSeason
         filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
         filterOptions.bEpVotes = Options.bEpVotes AndAlso Options2.bEpVotes
+        filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
+        filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
+        filterOptions.bShowCert = Options.bShowCert AndAlso Options2.bShowCert
+        filterOptions.bShowCountry = Options.bShowCountry AndAlso Options2.bShowCountry
+        filterOptions.bShowCreator = Options.bShowCreator AndAlso Options2.bShowCreator
         filterOptions.bShowEpisodeGuide = Options.bShowEpisodeGuide AndAlso Options2.bShowEpisodeGuide
         filterOptions.bShowGenre = Options.bShowGenre AndAlso Options2.bShowGenre
         filterOptions.bShowMPAA = Options.bShowMPAA AndAlso Options2.bShowMPAA
+        filterOptions.bShowOriginalTitle = Options.bShowOriginalTitle AndAlso Options2.bShowOriginalTitle
         filterOptions.bShowPlot = Options.bShowPlot AndAlso Options2.bShowPlot
         filterOptions.bShowPremiered = Options.bShowPremiered AndAlso Options2.bShowPremiered
         filterOptions.bShowRating = Options.bShowRating AndAlso Options2.bShowRating
@@ -1990,58 +2002,57 @@ Public Class Structures
         Dim Title As String
         Dim Movies As List(Of Structures.DBMovie)
     End Structure
-
     ''' <summary>
     ''' Structure representing a TV show in the database
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBTV
-        Dim ClearShowEFanarts As Boolean
-        Dim DateAdded As Double
-        Dim efList As List(Of String)
-        Dim EpFanartPath As String
-        Dim EpID As Long
+        Dim BannerPath As String
+        Dim CharacterArtPath As String
+        Dim ClearArtPath As String
+        Dim ClearLogoPath As String
+        Dim DateAdded As Long
+        Dim EFanarts As List(Of String)
+        Dim EFanartsPath As String
+        Dim Episodes As List(Of DBTV)
         Dim EpisodeSorting As Enums.EpisodeSorting
-        Dim EpNeedsSave As Boolean
-        Dim EpNfoPath As String
-        Dim EpPosterPath As String
-        Dim EpSubtitles As List(Of MediaInfo.Subtitle)
+        Dim FanartPath As String
         Dim Filename As String
         Dim FilenameID As Long
-        Dim IsLockEp As Boolean
-        Dim IsLockSeason As Boolean
-        Dim IsLockShow As Boolean
-        Dim IsMarkEp As Boolean
-        Dim IsMarkSeason As Boolean
-        Dim IsMarkShow As Boolean
-        Dim IsOnlineEp As Boolean
-        Dim isOnlineShow As Boolean
+        Dim ID As Long
+        Dim ImagesContainer As MediaContainers.ImagesContainer_TV
+        Dim IsLock As Boolean
+        Dim IsMark As Boolean
+        Dim IsOnline As Boolean
+        Dim LandscapePath As String
+        Dim Language As String
         Dim ListTitle As String
+        Dim NeedsSave As Boolean
+        Dim NfoPath As String
         Dim Ordering As Enums.Ordering
+        Dim PosterPath As String
         Dim RemoveActorThumbs As Boolean
-        Dim SeasonBannerPath As String
-        Dim SeasonFanartPath As String
-        Dim SeasonID As Long
-        Dim SeasonLandscapePath As String
-        Dim SeasonPosterPath As String
-        Dim SeasonTVDB As String
-        Dim ShowBannerPath As String
-        Dim ShowCharacterArtPath As String
-        Dim ShowClearArtPath As String
-        Dim ShowClearLogoPath As String
-        Dim ShowEFanartsPath As String
-        Dim ShowFanartPath As String
+        Dim RemoveBanner As Boolean
+        Dim RemoveCharacterArt As Boolean
+        Dim RemoveClearArt As Boolean
+        Dim RemoveClearLogo As Boolean
+        Dim RemoveDiscArt As Boolean
+        Dim RemoveEFanarts As Boolean
+        Dim RemoveEThumbs As Boolean
+        Dim RemoveFanart As Boolean
+        Dim RemoveLandscape As Boolean
+        Dim RemovePoster As Boolean
+        Dim RemoveTheme As Boolean
+        Dim RemoveTrailer As Boolean
+        Dim Seasons As List(Of DBTV)
         Dim ShowID As Long
-        Dim ShowLandscapePath As String
-        Dim ShowLanguage As String
-        Dim ShowNeedsSave As Boolean
-        Dim ShowNfoPath As String
         Dim ShowPath As String
-        Dim ShowPosterPath As String
-        Dim ShowThemePath As String
         Dim Source As String
+        Dim Subtitles As List(Of MediaInfo.Subtitle)
         Dim TVEp As MediaContainers.EpisodeDetails
+        Dim TVSeason As MediaContainers.SeasonDetails
         Dim TVShow As MediaContainers.TVShow
+        Dim ThemePath As String
         Dim VideoSource As String
     End Structure
 
@@ -2059,7 +2070,7 @@ Public Class Structures
         Dim iEpisode As Integer
         Dim ImageType As Enums.ImageType_TV
         Dim iSeason As Integer
-        Dim Options As Structures.TVScrapeOptions
+        Dim Options As Structures.ScrapeOptions_TV
         Dim ShowLang As String
         Dim SourceLang As String
         Dim ShowID As Integer
@@ -2157,20 +2168,11 @@ Public Class Structures
         Dim bPlot As Boolean
         Dim bTitle As Boolean
     End Structure
-
-    Public Structure SettingsResult
-        Dim DidCancel As Boolean
-        Dim NeedsRefresh_Movie As Boolean
-        Dim NeedsRefresh_MovieSet As Boolean
-        Dim NeedsRefresh_TV As Boolean
-        Dim NeedsUpdate As Boolean
-        Dim NeedsRestart As Boolean
-    End Structure
     ''' <summary>
     ''' Structure representing possible scrape options for TV shows
     ''' </summary>
     ''' <remarks></remarks>
-    Public Structure TVScrapeOptions
+    Public Structure ScrapeOptions_TV
         Dim bEpActors As Boolean
         Dim bEpAired As Boolean
         Dim bEpCredits As Boolean
@@ -2183,10 +2185,16 @@ Public Class Structures
         Dim bEpSeason As Boolean
         Dim bEpTitle As Boolean
         Dim bEpVotes As Boolean
+        Dim bSeasonAired As Boolean
+        Dim bSeasonPlot As Boolean
         Dim bShowActors As Boolean
+        Dim bShowCert As Boolean
+        Dim bShowCountry As Boolean
+        Dim bShowCreator As Boolean
         Dim bShowEpisodeGuide As Boolean
         Dim bShowGenre As Boolean
         Dim bShowMPAA As Boolean
+        Dim bShowOriginalTitle As Boolean
         Dim bShowPlot As Boolean
         Dim bShowPremiered As Boolean
         Dim bShowRating As Boolean
@@ -2195,6 +2203,15 @@ Public Class Structures
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean
         Dim bShowVotes As Boolean
+    End Structure
+
+    Public Structure SettingsResult
+        Dim DidCancel As Boolean
+        Dim NeedsRefresh_Movie As Boolean
+        Dim NeedsRefresh_MovieSet As Boolean
+        Dim NeedsRefresh_TV As Boolean
+        Dim NeedsUpdate As Boolean
+        Dim NeedsRestart As Boolean
     End Structure
 
     Public Structure ModulesMenus

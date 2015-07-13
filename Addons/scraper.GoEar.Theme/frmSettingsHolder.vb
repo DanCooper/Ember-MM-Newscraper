@@ -64,7 +64,7 @@ Public Class frmSettingsHolder
 
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Theme_Movie.FirstOrDefault(Function(p) p.AssemblyName = GoEar_Theme._AssemblyName).ModuleOrder
-        If ModulesManager.Instance.externalScrapersModules_Theme_Movie.Count > 0 Then
+        If ModulesManager.Instance.externalScrapersModules_Theme_Movie.Count > 1 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalScrapersModules_Theme_Movie.Count - 1)
             btnUp.Enabled = (order > 0)
         Else

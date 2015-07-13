@@ -33,17 +33,9 @@ Public Class Trailers
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Private _audiourl As String
     Private _ext As String
-    Private _description As String
-    Private _isDash As Boolean
     Private _isEdit As Boolean
-    Private _duration As String
-    Private _quality As Enums.TrailerVideoQuality
-    Private _source As String
     Private _toRemove As Boolean
-    Private _videourl As String
-    Private _weburl As String
 
     Private _ms As MemoryStream
     Private Ret As Byte()
@@ -60,20 +52,6 @@ Public Class Trailers
 
 #Region "Properties"
     ''' <summary>
-    ''' download audio URL of the trailer
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property AudioURL() As String
-        Get
-            Return _audiourl
-        End Get
-        Set(ByVal value As String)
-            _audiourl = value
-        End Set
-    End Property
-    ''' <summary>
     ''' trailer extention
     ''' </summary>
     ''' <value></value>
@@ -87,34 +65,6 @@ Public Class Trailers
             _ext = value
         End Set
     End Property
-    ''' <summary>
-    ''' description or title of the trailer
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property Description() As String
-        Get
-            Return _description
-        End Get
-        Set(ByVal value As String)
-            _description = value
-        End Set
-    End Property
-    ''' <summary>
-    ''' If is a Dash video, we need also an audio URL to merge video and audio
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property isDash() As Boolean
-        Get
-            Return _isDash
-        End Get
-        Set(ByVal value As Boolean)
-            _isDash = value
-        End Set
-    End Property
 
     Public Property isEdit() As Boolean
         Get
@@ -122,48 +72,6 @@ Public Class Trailers
         End Get
         Set(ByVal value As Boolean)
             _isEdit = value
-        End Set
-    End Property
-    ''' <summary>
-    ''' lenght of the trailer
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property Duration() As String
-        Get
-            Return _duration
-        End Get
-        Set(ByVal value As String)
-            _duration = value
-        End Set
-    End Property
-    ''' <summary>
-    ''' resolution/quality of the trailer
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property Quality() As Enums.TrailerVideoQuality
-        Get
-            Return _quality
-        End Get
-        Set(ByVal value As Enums.TrailerVideoQuality)
-            _quality = value
-        End Set
-    End Property
-    ''' <summary>
-    ''' trailer source (YouTube, IMDB, Apple, TMDB...)
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property Source() As String
-        Get
-            Return _source
-        End Get
-        Set(ByVal value As String)
-            _source = value
         End Set
     End Property
     ''' <summary>
@@ -178,34 +86,6 @@ Public Class Trailers
         End Get
         Set(ByVal value As Boolean)
             _toRemove = value
-        End Set
-    End Property
-    ''' <summary>
-    ''' download video URL of the trailer
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property VideoURL() As String
-        Get
-            Return _videourl
-        End Get
-        Set(ByVal value As String)
-            _videourl = value
-        End Set
-    End Property
-    ''' <summary>
-    ''' website URL of the trailer for preview in browser
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property WebURL() As String
-        Get
-            Return _weburl
-        End Get
-        Set(ByVal value As String)
-            _weburl = value
         End Set
     End Property
 
@@ -224,18 +104,9 @@ Public Class Trailers
             Me.Dispose(True)
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
-
-        _audiourl = String.Empty
         _ext = String.Empty
-        _description = String.Empty
-        _isDash = False
         _isEdit = False
-        _duration = String.Empty
-        _quality = Enums.TrailerVideoQuality.UNKNOWN
-        _source = String.Empty
         _toRemove = False
-        _videourl = String.Empty
-        _weburl = String.Empty
     End Sub
 
     Public Sub Cancel()
@@ -306,7 +177,6 @@ Public Class Trailers
                     Me._ms.Flush()
 
                     Me._ext = Path.GetExtension(sPath)
-                    Me._videourl = sPath
                 End Using
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
@@ -377,7 +247,6 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    Me._videourl = sTrailerLinksContainer.VideoURL
                     logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
                 Else
                     logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
@@ -395,7 +264,7 @@ Public Class Trailers
     ''' </summary>
     ''' <param name="sTrailer">Trailer container</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sTrailer As Trailers)
+    Public Sub FromWeb(ByVal sTrailer As MediaContainers.Trailer)
         Dim WebPage As New HTTP
         Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
         Dim tURL As String = String.Empty
@@ -437,7 +306,7 @@ Public Class Trailers
                 ffmpeg.Close()
             End Using
 
-            If Not String.IsNullOrEmpty(tTrailerVideo) AndAlso File.Exists(tTrailerOutput) Then
+            If Not String.IsNullOrEmpty(tTrailerOutput) AndAlso File.Exists(tTrailerOutput) Then
                 Me.FromFile(tTrailerOutput)
             End If
         Else
@@ -455,7 +324,6 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    Me._videourl = sTrailer.VideoURL
                     logger.Debug("Trailer downloaded: " & sTrailer.VideoURL)
                 Else
                     logger.Warn("Trailer NOT downloaded: " & sTrailer.VideoURL)
@@ -489,7 +357,6 @@ Public Class Trailers
                 retSave = WebPage.ms.ToArray
                 Me._ms.Write(retSave, 0, retSave.Length)
                 Me._ext = Path.GetExtension(tTrailer)
-                Me._videourl = sURL
                 logger.Debug("Trailer downloaded: " & sURL)
             Else
                 logger.Warn("Trailer NOT downloaded: " & sURL)
@@ -504,7 +371,7 @@ Public Class Trailers
     ''' configured preferred trailer format. Return that URL in the <paramref name="tUrl"/>
     ''' parameter, and returns <c>True</c>.
     ''' </summary>
-    ''' <param name="UrlList"><c>List</c> of <c>Trailer</c>s</param>
+    ''' <param name="TrailerList"><c>List</c> of <c>MediaContainers.Trailer</c>s</param>
     ''' <returns><c>True</c> if an appropriate trailer was found. The URL for the trailer is returned in
     ''' <paramref name="tUrl"/>. <c>False</c> otherwise</returns>
     ''' <remarks>
@@ -512,14 +379,14 @@ Public Class Trailers
     ''' Note: Only one trailerresult will be used for downloading
     ''' 2014/09/26 Cocotus - Modified this method a bit: Now trailer module order set by user will be considered, also do some filtering here (trailerdescription must contain string "trailer" or else the trailer wont be used (no more making ofs...))
     ''' </remarks>
-    Public Shared Function GetPreferredTrailer(ByRef UrlList As List(Of Trailers), ByRef trlResult As MediaContainers.Trailer) As Boolean
-        If UrlList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTrailer(ByRef TrailerList As List(Of MediaContainers.Trailer), ByRef trlResult As MediaContainers.Trailer) As Boolean
+        If TrailerList.Count = 0 Then Return False
         Dim tLink As String = String.Empty
 
         Try
 
             'Check 1 Youtube/IMDB handling: At this point trailers from Youtube and IMDB don't have quality property set, so let's analyze the quality of given trailer and set correct trailerurl/quality of each trailerlink in list
-            For Each aUrl As Trailers In UrlList
+            For Each aUrl As MediaContainers.Trailer In TrailerList
                 If Regex.IsMatch(aUrl.VideoURL, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                     Dim YT As New YouTube.Scraper
                     Dim Trailer As YouTube.VideoLinkItem
@@ -811,21 +678,21 @@ Public Class Trailers
                         End Select
                     End If
                     'set trailer extension
-                    aUrl.Extention = Path.GetExtension(aUrl.VideoURL)
-                    Dim tmpInvalidChar As Integer = aUrl.Extention.IndexOf("?")
+                    aUrl.WebTrailer.Extention = Path.GetExtension(aUrl.VideoURL)
+                    Dim tmpInvalidChar As Integer = aUrl.WebTrailer.Extention.IndexOf("?")
                     If tmpInvalidChar > -1 Then
-                        Dim correctextension As String = aUrl.Extention
-                        aUrl.Extention = correctextension.Remove(tmpInvalidChar)
+                        Dim correctextension As String = aUrl.WebTrailer.Extention
+                        aUrl.WebTrailer.Extention = correctextension.Remove(tmpInvalidChar)
                     End If
                 End If
             Next
 
             'At this point every trailer in UrlList will have correct quality property set - we can now decide which trailer to use
-            Dim lsttrailerresults As New List(Of Trailers)
-            lsttrailerresults.AddRange(UrlList)
+            Dim lsttrailerresults As New List(Of MediaContainers.Trailer)
+            lsttrailerresults.AddRange(TrailerList)
             'Check 2: Clean Up -> first remove all movies which don't have preferred quality and check if there's at least one left!
             For i = lsttrailerresults.Count - 1 To 0 Step -1
-                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefVideoQual) OrElse lsttrailerresults(i).Description.ToLower.Contains("trailer") = False Then
+                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefVideoQual) OrElse lsttrailerresults(i).Title.ToLower.Contains("trailer") = False Then
                     lsttrailerresults.RemoveAt(i)
                 End If
             Next
@@ -833,7 +700,7 @@ Public Class Trailers
             'Check 3: If there isnt any preferred trailer left after step 1, create list of MinPref-trailers
             If lsttrailerresults.Count < 1 Then
                 lsttrailerresults.Clear()
-                lsttrailerresults.AddRange(UrlList)
+                lsttrailerresults.AddRange(TrailerList)
                 'Defaultvalue: all trailers with equal/better quality than 480p
                 Dim tqualities As String = "HD720pHD1080pHQ480p"
                 Select Case Master.eSettings.MovieTrailerMinVideoQual
@@ -855,16 +722,16 @@ Public Class Trailers
                 'Build up alternative list
                 For i = lsttrailerresults.Count - 1 To 0 Step -1
                     'Clean Up -> first remove all movies which don't have min quality and check if theres at least one left!
-                    If tqualities.Contains(lsttrailerresults(i).Quality.ToString) = False OrElse lsttrailerresults(i).Description.ToLower.Contains("trailer") = False Then
+                    If tqualities.Contains(lsttrailerresults(i).Quality.ToString) = False OrElse lsttrailerresults(i).Title.ToLower.Contains("trailer") = False Then
                         lsttrailerresults.RemoveAt(i)
                     End If
                 Next
             End If
-            UrlList.Clear()
-            UrlList.AddRange(lsttrailerresults)
+            TrailerList.Clear()
+            TrailerList.AddRange(lsttrailerresults)
             tLink = String.Empty
 
-            For Each aUrl As Trailers In UrlList
+            For Each aUrl As MediaContainers.Trailer In TrailerList
 
                 If aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual Then
                     tLink = aUrl.VideoURL

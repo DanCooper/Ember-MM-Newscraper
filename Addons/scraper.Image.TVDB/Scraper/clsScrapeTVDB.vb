@@ -47,17 +47,18 @@ Namespace TVDBs
 
 #Region "Methods"
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.ImagesContainer_TV
-            Dim alContainer As New MediaContainers.ImagesContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
-                Dim tvdbAPI = New TVDB.Web.WebInterface("353783CE455412FD")
+                Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
                 Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
 
                 Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(tvdbID), tvdbMirror).Result
                 If Results Is Nothing Then
                     Return Nothing
                 End If
+
                 If bwTVDB.CancellationPending Then Return Nothing
 
                 If Results.Banners IsNot Nothing Then
@@ -141,6 +142,42 @@ Namespace TVDBs
                         Next
                     End If
 
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return alContainer
+        End Function
+
+        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+
+            Try
+                Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
+                Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
+
+                Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(tvdbID), tvdbMirror).Result
+                If Results Is Nothing Then
+                    Return Nothing
+                End If
+
+                If bwTVDB.CancellationPending Then Return Nothing
+
+                'Poster
+                If Results.Series.Episodes IsNot Nothing Then
+                    For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.CombinedEpisodeNumber = iEpisode)
+                        Dim img As New MediaContainers.Image With {.Height = CStr(tEpisode.ThumbHeight), _
+                                                                   .LongLang = Localization.ISOGetLangByCode2(tEpisode.Language), _
+                                                                   .Season = tEpisode.SeasonNumber, _
+                                                                   .ShortLang = tEpisode.Language, _
+                                                                   .ThumbURL = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(tvdbMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty), _
+                                                                   .URL = String.Concat(tvdbMirror.Address, "/banners/", tEpisode.PictureFilename), _
+                                                                   .Width = CStr(tEpisode.ThumbWidth)}
+
+                        alContainer.EpisodePosters.Add(img)
+                    Next
                 End If
 
             Catch ex As Exception

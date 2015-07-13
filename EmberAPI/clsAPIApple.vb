@@ -35,7 +35,7 @@ Namespace Apple
 
         Private _VideoLinks As VideoLinkItemCollection
 
-        Private _TrailerLinks As List(Of Trailers)
+        Private _TrailerLinks As List(Of MediaContainers.Trailer)
 
 #End Region 'Fields
 
@@ -59,10 +59,10 @@ Namespace Apple
             End Get
         End Property
 
-        Public ReadOnly Property TrailerLinks() As List(Of Trailers)
+        Public ReadOnly Property TrailerLinks() As List(Of MediaContainers.Trailer)
             Get
                 If _TrailerLinks Is Nothing Then
-                    _TrailerLinks = New List(Of Trailers)
+                    _TrailerLinks = New List(Of MediaContainers.Trailer)
                 End If
                 Return _TrailerLinks
             End Get
@@ -81,8 +81,8 @@ Namespace Apple
             End Try
         End Sub
 
-        Private Function GetTrailerLinks(ByVal url As String, ByVal doProgress As Boolean) As List(Of Trailers)
-            Dim TrailerLinks As New List(Of Trailers)
+        Private Function GetTrailerLinks(ByVal url As String, ByVal doProgress As Boolean) As List(Of MediaContainers.Trailer)
+            Dim TrailerLinks As New List(Of MediaContainers.Trailer)
 
             Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
             Dim DownloadURL As String = "http://trailers.apple.com/trailers/"
@@ -114,7 +114,7 @@ Namespace Apple
                         Dim zResult As MatchCollection = Regex.Matches(sHtml, zPattern, RegexOptions.Singleline)
 
                         For ctr As Integer = 0 To zResult.Count - 1
-                            TrailerLinks.Add(New Trailers With {.VideoURL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
+                            TrailerLinks.Add(New MediaContainers.Trailer With {.VideoURL = zResult.Item(ctr).Groups(1).Value, .Title = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
                         Next
 
                         For Each trailer In TrailerLinks

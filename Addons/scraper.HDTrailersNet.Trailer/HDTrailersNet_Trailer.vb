@@ -144,7 +144,7 @@ Public Class HDTrailersNet_Trailer
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         Dim tTitle As String = String.Empty
@@ -158,7 +158,7 @@ Public Class HDTrailersNet_Trailer
         Dim tHDTrailersNetTrailer As New HDTrailersNet.Scraper(tTitle, DBMovie.Movie.Title)
 
         If tHDTrailersNetTrailer.TrailerList.Count > 0 Then
-            URLList = tHDTrailersNetTrailer.TrailerList
+            TrailerList = tHDTrailersNetTrailer.TrailerList
         End If
 
         logger.Trace("Finished scrape", New StackTrace().ToString())

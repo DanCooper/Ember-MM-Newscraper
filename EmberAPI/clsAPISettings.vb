@@ -452,6 +452,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVImagesDisplayImageSelect() As Boolean
+        Get
+            Return Settings._XMLSettings.TVImagesDisplayImageSelect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesDisplayImageSelect = value
+        End Set
+    End Property
+
     Public Property MovieDisplayYear() As Boolean
         Get
             Return Settings._XMLSettings.MovieDisplayYear
@@ -532,6 +541,51 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVLockEpisodeLanguageV = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeActors() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeActors
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeActors = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeAired() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeAired
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeAired = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeCredits() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeCredits
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeCredits = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeDirector() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeDirector
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeDirector = value
+        End Set
+    End Property
+
+    Public Property TVLockEpisodeGuestStars() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeGuestStars
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeGuestStars = value
         End Set
     End Property
 
@@ -1049,6 +1103,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperCleanFields() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperCleanFields
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperCleanFields = value
+        End Set
+    End Property
+
     Public Property MovieScraperCleanPlotOutline() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCleanPlotOutline
@@ -1325,6 +1388,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieScraperCertFSK = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCertFSK() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCertFSK
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCertFSK = value
         End Set
     End Property
     Public Property MovieLockStudio() As Boolean
@@ -2069,6 +2141,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieScraperCertOnlyValue = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCertOnlyValue() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCertOnlyValue
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCertOnlyValue = value
         End Set
     End Property
 
@@ -3107,6 +3188,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeGuestStarsToActors() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeGuestStarsToActors
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperEpisodeGuestStarsToActors = value
+        End Set
+    End Property
+
     Public Property TVScraperEpisodePlot() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperEpisodePlot
@@ -3170,6 +3260,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperShowCountry() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCountry
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCountry = value
+        End Set
+    End Property
+
     Public Property TVScraperShowEpiGuideURL() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperShowEpiGuideURL
@@ -3194,6 +3293,33 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowMPAA = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowOriginalTitle() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowOriginalTitle
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowOriginalTitle = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCert() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCert = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCertLang() As String
+        Get
+            Return Settings._XMLSettings.TVScraperShowCertLang
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.TVScraperShowCertLang = value
         End Set
     End Property
 
@@ -3503,6 +3629,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockShowOriginalTitle() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowOriginalTitle
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowOriginalTitle = value
+        End Set
+    End Property
+
     Public Property TVLockShowPlot() As Boolean
         Get
             Return Settings._XMLSettings.TVLockShowPlot
@@ -3557,6 +3692,51 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockShowMPAA() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowMPAA
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowMPAA = value
+        End Set
+    End Property
+
+    Public Property TVLockShowPremiered() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowPremiered
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowPremiered = value
+        End Set
+    End Property
+
+    Public Property TVLockShowActors() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowActors
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowActors = value
+        End Set
+    End Property
+
+    Public Property TVLockShowCountry() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowCountry
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowCountry = value
+        End Set
+    End Property
+
+    Public Property TVLockShowCert() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowCert
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowCert = value
+        End Set
+    End Property
+
     Public Property TVLockShowVotes() As Boolean
         Get
             Return Settings._XMLSettings.TVLockShowVotes
@@ -3590,15 +3770,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowProperCase = value
-        End Set
-    End Property
-
-    Public Property TVScraperRatingRegion() As String
-        Get
-            Return Settings._XMLSettings.TVScraperRatingRegion
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.TVScraperRatingRegion = value
         End Set
     End Property
 
@@ -3872,15 +4043,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVScraperUpdateTime() As Enums.TVScraperUpdateTime
-        Get
-            Return Settings._XMLSettings.TVScraperUpdateTime
-        End Get
-        Set(ByVal value As Enums.TVScraperUpdateTime)
-            Settings._XMLSettings.TVScraperUpdateTime = value
-        End Set
-    End Property
-
     Public Property MovieTrailerEnable() As Boolean
         Get
             Return Settings._XMLSettings.MovieTrailerEnable
@@ -3908,12 +4070,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperShowCertForMPAA() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCertForMPAA
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCertForMPAA = value
+        End Set
+    End Property
+
     Public Property MovieScraperCertForMPAAFallback() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCertForMPAAFallback
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieScraperCertForMPAAFallback = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCertForMPAAFallback() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCertForMPAAFallback
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCertForMPAAFallback = value
         End Set
     End Property
 
@@ -6007,10 +6187,10 @@ Public Class Settings
 
     Public Property TVShowMissingClearLogo() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowmissingclearlogo
+            Return Settings._XMLSettings.TVShowMissingClearLogo
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowmissingclearlogo = value
+            Settings._XMLSettings.TVShowMissingClearLogo = value
         End Set
     End Property
 
@@ -6627,10 +6807,16 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
+        Me.TVImagesDisplayImageSelect = True
         Me.TVImagesGetBlankImages = False
         Me.TVImagesGetEnglishImages = False
         Me.TVImagesPrefLanguage = "en"
         Me.TVImagesPrefLanguageOnly = False
+        Me.TVLockEpisodeActors = False
+        Me.TVLockEpisodeAired = False
+        Me.TVLockEpisodeCredits = False
+        Me.TVLockEpisodeDirector = False
+        Me.TVLockEpisodeGuestStars = False
         Me.TVLockEpisodeLanguageA = False
         Me.TVLockEpisodeLanguageV = False
         Me.TVLockEpisodePlot = False
@@ -6638,8 +6824,14 @@ Public Class Settings
         Me.TVLockEpisodeRuntime = False
         Me.TVLockEpisodeTitle = False
         Me.TVLockEpisodeVotes = False
+        Me.TVLockShowActors = False
+        Me.TVLockShowCert = False
+        Me.TVLockShowCountry = False
         Me.TVLockShowGenre = False
+        Me.TVLockShowMPAA = False
+        Me.TVLockShowOriginalTitle = False
         Me.TVLockShowPlot = False
+        Me.TVLockShowPremiered = False
         Me.TVLockShowRating = False
         Me.TVLockShowRuntime = False
         Me.TVLockShowStatus = False
@@ -6649,6 +6841,7 @@ Public Class Settings
         Me.TVMetadataPerFileType = New List(Of MetadataPerType)
         Me.TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         Me.TVScanOrderModify = False
+        Me.TVScraperCleanFields = False
         Me.TVScraperDurationRuntimeFormat = "<m>"
         Me.TVScraperEpisodeActors = True
         Me.TVScraperEpisodeAired = True
@@ -6656,6 +6849,7 @@ Public Class Settings
         Me.TVScraperEpisodeDirector = True
         Me.TVScraperEpisodeEpisode = True
         Me.TVScraperEpisodeGuestStars = True
+        Me.TVScraperEpisodeGuestStarsToActors = False
         Me.TVScraperEpisodePlot = True
         Me.TVScraperEpisodeRating = True
         Me.TVScraperEpisodeRuntime = True
@@ -6664,12 +6858,19 @@ Public Class Settings
         Me.TVScraperEpisodeVotes = True
         Me.TVScraperMetaDataScan = True
         Me.TVScraperOptionsOrdering = Enums.Ordering.Standard
-        Me.TVScraperRatingRegion = "usa"
         Me.TVScraperShowActors = True
+        Me.TVScraperShowCert = False
+        Me.TVScraperShowCertForMPAA = False
+        Me.TVScraperShowCertForMPAAFallback = False
+        Me.TVScraperShowCertFSK = False
+        Me.TVScraperShowCertLang = String.Empty
+        Me.TVScraperShowCertOnlyValue = False
+        Me.TVScraperShowCountry = True
         Me.TVScraperShowEpiGuideURL = False
         Me.TVScraperShowGenre = True
         Me.TVScraperShowMPAA = True
         Me.TVScraperShowMPAANotRated = String.Empty
+        Me.TVScraperShowOriginalTitle = True
         Me.TVScraperShowPlot = True
         Me.TVScraperShowPremiered = True
         Me.TVScraperShowRating = True
@@ -6678,7 +6879,6 @@ Public Class Settings
         Me.TVScraperShowStudio = True
         Me.TVScraperShowTitle = True
         Me.TVScraperShowVotes = True
-        Me.TVScraperUpdateTime = Enums.TVScraperUpdateTime.Always
         Me.TVScraperUseMDDuration = True
         Me.TVScraperUseSRuntimeForEp = True
         Me.TVSeasonBannerHeight = 0

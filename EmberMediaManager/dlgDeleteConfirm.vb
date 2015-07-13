@@ -217,12 +217,12 @@ Public Class dlgDeleteConfirm
                         For Each ShowID As Long In ItemsToDelete.Keys
                             hadError = False
 
-                            tShow = Master.DB.LoadTVShowFromDB(ShowID)
+                            tShow = Master.DB.LoadTVShowFromDB(ShowID, False)
 
                             ItemParentNode = .Nodes.Add(ShowID.ToString, tShow.TVShow.Title)
                             ItemParentNode.ImageKey = "MOVIE"
                             ItemParentNode.SelectedImageKey = "MOVIE"
-                            ItemParentNode.Tag = tShow.ShowID
+                            ItemParentNode.Tag = tShow.ID
 
                             Try
                                 AddFolderNode(ItemParentNode, New IO.DirectoryInfo(tShow.ShowPath))
@@ -238,7 +238,7 @@ Public Class dlgDeleteConfirm
                                 hadError = False
 
                                 tSeason = Master.DB.LoadTVSeasonFromDB(Season.Value, Convert.ToInt32(Season.Key), True)
-                                ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShow.Title, tSeason.TVEp.Season))
+                                ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShow.Title, tSeason.TVSeason.Season))
                                 ItemParentNode.ImageKey = "MOVIE"
                                 ItemParentNode.SelectedImageKey = "MOVIE"
                                 ItemParentNode.Tag = Season

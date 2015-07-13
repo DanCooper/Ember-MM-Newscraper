@@ -143,7 +143,7 @@ Public Class dlgBulkRenamer_TV
                                         EpisodeFile = New FileFolderRenamer.FileRename
                                         _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
-                                        If Not _currShow.EpID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
+                                        If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                             Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
                                             EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
                                             FFRenamer.AddEpisode(EpisodeFile)
