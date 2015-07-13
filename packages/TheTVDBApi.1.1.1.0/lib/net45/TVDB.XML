@@ -1,0 +1,2408 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TVDB</name>
+    </assembly>
+    <members>
+        <member name="T:TVDB.Interfaces.IXmlSerializer">
+            <summary>
+            Deserializes an object from the received XML.
+            </summary>
+        </member>
+        <member name="M:TVDB.Interfaces.IXmlSerializer.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes the provided XML node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+        </member>
+        <member name="T:TVDB.Model.Actor">
+            <summary>
+            An Actor.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.IdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Actor.Id"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.ImagePathName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Actor.ImagePath"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.NameName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Actor.Name"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.RoleName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Actor.Role"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.SortOrderName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Actor.SortOrder"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.id">
+            <summary>
+            Id of the actor.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.imagePath">
+            <summary>
+            Path of the actors image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.name">
+            <summary>
+            Real name of the actor.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.role">
+            <summary>
+            Role the actor is playing.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Actor.sortOrder">
+            <summary>
+            Number the actors are sorted.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Actor.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Model.Actor"/> class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Actor.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes the provided xml node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:System.Xml.XmlNode"/> is null.</exception>
+            <example> This example shows how to use the deserialize method.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Xml document that contains all actors.
+            		/// </summary>
+            		private XmlDocument actorsDoc = null;
+            		
+            		/// <summary>
+            		/// Initializes a new instance of the DocuClass class.
+            		/// </summary>
+            		public DocuClass(string extractionPath)
+            		{
+            			// load actors xml.
+            			this.actorsDoc = new XmlDocument();
+            			this.actorsDoc.Load(System.IO.Path.Combine(this.extractionPath, "actors.xml"));
+            		}
+            		
+            		/// <summary>
+            		/// Deserializes all actors of the series.
+            		/// </summary>
+            		public List&lt;Actor&gt; DeserializeActors()
+            		{
+            			List&lt;Actor&gt; actors = new List&lt;Actor&gt;();
+            			
+            			// load the xml docs second child.
+            			XmlNode actorsNode = this.actorsDoc.ChildNodes[1];
+            
+            			// deserialize all actors.
+            			foreach (XmlNode currentNode in actorsNode)
+            			{
+            				if (currentNode.Name.Equals("Actor", StringComparison.OrdinalIgnoreCase))
+            				{
+            					Actor deserializes = new Actor();
+            					deserializes.Deserialize(currentNode);
+            
+            					actors.Add(deserializes);
+            				}
+            			}
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Model.Actor.CompareTo(TVDB.Model.Actor)">
+            <summary>
+            Compares the <see cref="P:TVDB.Model.Actor.SortOrder"/> property of the provided actor and this.
+            </summary>
+            <param name="other">Actor to compare.</param>
+            <returns>Sort indicator.</returns>
+        </member>
+        <member name="M:TVDB.Model.Actor.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:TVDB.Model.Actor.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">Name of the property that changed its value.</param>
+        </member>
+        <member name="E:TVDB.Model.Actor.PropertyChanged">
+            <summary>
+            Occurs when a property changes its value.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Actor.Id">
+            <summary>
+            Gets or sets the id of the actor.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Actor.ImagePath">
+            <summary>
+            Gets or sets the path of the actors image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Actor.Name">
+            <summary>
+            Gets or sets the real name of the actor.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Actor.Role">
+            <summary>
+            Gets or sets the role the actor is playing.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Actor.SortOrder">
+            <summary>
+            Gets or sets the number the actors are sorted.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.BannerTyp">
+            <summary>
+            Types of a banner
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.BannerTyp.fanart">
+            <summary>
+            A Fanart.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.BannerTyp.poster">
+            <summary>
+            Original poster.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.BannerTyp.season">
+            <summary>
+            Season image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.BannerTyp.series">
+            <summary>
+            Series image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.BannerTyp.unknown">
+            <summary>
+            Default value.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.Banner">
+            <summary>
+            Image of a series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.IdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Id"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.BannerPathName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.BannerPath"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.TypeName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Type"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.DimensionName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Dimension"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.ColorName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Color"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.LanguageName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Language"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.RatingName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Rating"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.RatingCountName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.RatingCount"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.SeriesNameName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.SeriesName"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.ThumbnailPathName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.ThumbnailPath"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.VignettePathName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.VignettePath"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.SeasonName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Banner.Season"/> propety.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.id">
+            <summary>
+            Id of the banner.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.bannerPath">
+            <summary>
+            Path of the image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.type">
+            <summary>
+            Type of the banner.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.dimension">
+            <summary>
+            Dimension of the image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.colors">
+            <summary>
+            Colors of the banner.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.language">
+            <summary>
+            Language of the banner image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.rating">
+            <summary>
+            Rating fo the banner.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.ratingCount">
+            <summary>
+            Number of ratings.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.seriesName">
+            <summary>
+            Series name.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.thumbnailPath">
+            <summary>
+            Path to the thumbnail of the image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.vignettePath">
+            <summary>
+            Path to the vignette image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Banner.season">
+            <summary>
+            The season of the banner.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Banner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Model.Banner"/> class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Banner.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes a banner xml node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:System.Xml.XmlNode"/> is null.</exception>
+            <example>This example shows how to use the deserialize method.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Xml document that contains all banners.
+            		/// </summary>
+            		private XmlDocument bannersDoc = null;
+            		
+            		/// <summary>
+            		/// Initializes a new instance of the DocuClass class.
+            		/// </summary>
+            		public DocuClass(string extractionPath)
+            		{
+            			// load actors xml.
+            			this.bannersDoc = new XmlDocument();
+            			this.bannersDoc.Load(System.IO.Path.Combine(this.extractionPath, "banners.xml"));
+            		}
+            		
+            		/// <summary>
+            		/// Deserializes all banners of the series.
+            		/// </summary>
+            		public List&lt;Banner&gt; DeserializeBanners()
+            		{
+            			List&lt;Banner&gt; banners = new List&lt;Banner&gt;();
+            			
+            			// load the xml docs second child.
+            			XmlNode bannersNode = this.bannersDoc.ChildNodes[1];
+            
+            			// deserialize all banners.
+            			foreach (XmlNode currentNode in bannersNode.ChildNodes)
+            			{
+            				if (currentNode.Name.Equals("Banner", StringComparison.OrdinalIgnoreCase))
+            				{
+            					Banner deserialized = new Banner();
+            					deserialized.Deserialize(currentNode);
+            
+            					banners.Add(deserialized);
+            				}
+            			}
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Model.Banner.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:TVDB.Model.Banner.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">Name fo the property that changed its value.</param>
+        </member>
+        <member name="E:TVDB.Model.Banner.PropertyChanged">
+            <summary>
+            Occures when a property changed its value
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Id">
+            <summary>
+            Gets or sets the Id of the banner.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.BannerPath">
+            <summary>
+            Gets or sets the Path of the image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Type">
+            <summary>
+            Gets or sets the Type of the banner.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Dimension">
+            <summary>
+            Gets or sets the Dimension of the image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Color">
+            <summary>
+            Gets or sets the Colors of the banner.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Language">
+            <summary>
+            Gets or sets the Language of the banner image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Rating">
+            <summary>
+            Gets or sets the Rating fo the banner.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.RatingCount">
+            <summary>
+            Gets or sets the Number of ratings.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.SeriesName">
+            <summary>
+            Gets or sets the Series name.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.ThumbnailPath">
+            <summary>
+            Gets or sets the Path to the thumbnail of the image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.VignettePath">
+            <summary>
+            Gets or sets the Path to the vignette image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Banner.Season">
+            <summary>
+            Gets or sets the season.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.Episode">
+            <summary>
+            An episode of a serie.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.SeriesElement">
+            <summary>
+            Base for the elements of a series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.IdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.SeriesElement.Id"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.NameName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.SeriesElement.Name"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.LanguageName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.SeriesElement.Language"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.OverviewName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.SeriesElement.Overview"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.FirstAiredName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.SeriesElement.FirstAired"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.IMDBIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.SeriesElement.IMDBId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.id">
+            <summary>
+            Id of the element.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.name">
+            <summary>
+            Name of the element.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.language">
+            <summary>
+            Language of the element.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.overview">
+            <summary>
+            The overview of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.firstAired">
+            <summary>
+            Date the series was first aired.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesElement.imdbId">
+            <summary>
+            IMDB ID fo the series.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.SeriesElement.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:TVDB.Model.SeriesElement.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">Name of the property that changed its value.</param>
+        </member>
+        <member name="M:TVDB.Model.SeriesElement.PrepareText(System.String)">
+            <summary>
+            Removes all "|" inside the provided text.
+            </summary>
+            <param name="text">Text to prepare.</param>
+            <returns>Clean text.</returns>
+        </member>
+        <member name="E:TVDB.Model.SeriesElement.PropertyChanged">
+            <summary>
+            Occurs when a property changes its value.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesElement.Id">
+            <summary>
+            Gets or sets the id of the element.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesElement.Name">
+            <summary>
+            Gets or sets the name of the element.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesElement.Language">
+            <summary>
+            Gets or sets the language of the element.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesElement.Overview">
+            <summary>
+            Gets or sets the overview of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesElement.FirstAired">
+            <summary>
+            Gets or sets the date the series was first aired.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesElement.IMDBId">
+            <summary>
+            Gets or sets the IMDB ID fo the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.CombinedEpisodeNumberName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.CombinedEpisodeNumber"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.CombinedSeasonName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.CombinedSeason"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.DVDChapterName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.DVDChapter"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.DVDDiscIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.DVDDiscId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.DVDEpisodeNumberName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.DVDEpisodeNumber"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.DVDSeasonName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.DVDSeason"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.DirectorName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.Director"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.EpImageFlagName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.EpImageFlag"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.NumberName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.Number"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.GuestStarsName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.GuestStars"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.ProductionCodeName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.ProductionCode"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.RatingName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.Rating"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.SeasonNumberName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.SeasonNumber"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.WriterName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.Writer"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.AbsoluteNumberName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.AbsoluteNumber"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.PictureFilenameName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.PictureFilename"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.LastUpdatedName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.LastUpdated"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.SeasonIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.SeasonId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.SeriesIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.SeriesId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.RatingCountName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.RatingCount"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.ThumbaddedName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.Thumbadded"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.ThumbHeightName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.ThumbHeight"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.ThumbWidthName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.ThumbWidth"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.IsTMSExportName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.IsTMSExport"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.IsTMSReviewBlurryName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.IsTMSReviewBlurry"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.TMSReviewByIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.TMSReviewById"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.IsTMSReviewDarkName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.IsTMSReviewDark"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.TMSReviewDateName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.TMSReviewDate"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.TMSReviewLogoIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.TMSReviewLogoId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.TMSReviewOtherName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.TMSReviewOther"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.IsTMSReviewUnsureName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Episode.IsTMSReviewUnsure"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.combinedEpisodeNumber">
+            <summary>
+            The combined episde number.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.combinedSeason">
+            <summary>
+            The combined season number.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.dvdChapter">
+            <summary>
+            Chapter number of the dvd.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.dvdDiskId">
+            <summary>
+            Id of the dvd disk.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.dvdEpisodeNumber">
+            <summary>
+            The episode number on the dvd.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.dvdSeason">
+            <summary>
+            Season number of the dvd.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.director">
+            <summary>
+            The director fo the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.epImageFlag">
+            <summary>
+            The ep image flag.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.number">
+            <summary>
+            The number of the episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.guestStars">
+            <summary>
+            Names of any guest stars that appeared in this episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.productionCode">
+            <summary>
+            The production code of the episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.rating">
+            <summary>
+            Rating of the episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.seasonNumber">
+            <summary>
+            Number of the season the episode belongs to.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.writer">
+            <summary>
+            Name of the writer of the episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.absoluteNumber">
+            <summary>
+            Absolute number of the episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.pictureFilename">
+            <summary>
+            Path and name of the picture.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.lastUpdated">
+            <summary>
+            Id of the last update.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.seasonId">
+            <summary>
+            Id of the season.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.seriesId">
+            <summary>
+            Id of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.ratingCount">
+            <summary>
+            The rating count of the episode.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.thumbadded">
+            <summary>
+            Thumbadded id.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.thumbHeight">
+            <summary>
+            The height of the thumbimage.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.thumbWidth">
+            <summary>
+            Width of the thumb image.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.isTMSExport">
+            <summary>
+            Value inidcating whether the episode is a tms export or not.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.isTMSReviewBlurry">
+            <summary>
+            Value indicating whether the tms review is blurry or not.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.tmsReviewById">
+            <summary>
+            Id of the user who made the tms review.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.isTMSReviewDark">
+            <summary>
+            Value indicating whether the tms review is dark or not.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.tmsReviewDate">
+            <summary>
+            Date the tms review was made.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.tmsReviewLogoId">
+            <summary>
+            Id of the tms review logo.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.tmsReviewOther">
+            <summary>
+            Tms review other.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.isTMSReviewUnsure">
+            <summary>
+            Value indicating whether the tms review is unsure or not.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.airsAfterSeason">
+            <summary>
+            Airs after season name.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.airsBeforeSeason">
+            <summary>
+            Number of the season this episode airs before.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Episode.airsBeforeEpisode">
+            <summary>
+            Number or episode this one airs before.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Episode.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Model.Episode"/> class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Episode.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes the provided xml node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:System.Xml.XmlNode"/> is null.</exception>
+            <example>This example shows how to use the deserialize method.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Xml document that contains all details of a series.
+            		/// </summary>
+            		private XmlDocument languageDoc = null;
+            		
+            		/// <summary>
+            		/// Initializes a new instance of the DocuClass class.
+            		/// </summary>
+            		public DocuClass(string extractionPath)
+            		{
+            			// load series xml.
+            			this.languageDoc = new XmlDocument();
+            			this.languageDoc.Load(System.IO.Path.Combine(this.extractionPath, string.Format("{0}.xml", this.Language)));
+            		}
+            		
+            		/// <summary>
+            		/// Deserializes the series.
+            		/// </summary>
+            		public Series DeserializeSeries()
+            		{
+            			Series series = new Series();
+            			
+            			// load the xml docs second child.
+            			XmlNode dataNode = this.languageDoc.ChildNodes[1];
+            
+            			// deserialize all episodes and series details.
+            			foreach (XmlNode currentNode in dataNode.ChildNodes)
+            			{
+            				if (currentNode.Name.Equals("Episode", StringComparison.OrdinalIgnoreCase))
+            				{
+            					Episode deserialized = new Episode();
+            					deserialized.Deserialize(currentNode);
+            
+            					series.AddEpisode(deserialized);
+            					continue;
+            				}
+            				else if (currentNode.Name.Equals("Series", StringComparison.OrdinalIgnoreCase))
+            				{
+            					series.Deserialize(currentNode);
+            					continue;
+            				}
+            			}
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Model.Episode.Initialize">
+            <summary>
+            Initializes the properties of the <see cref="T:TVDB.Model.Episode"/>.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.CombinedEpisodeNumber">
+            <summary>
+            Gets or sets the combined episde number.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.CombinedSeason">
+            <summary>
+            Gets or sets the combined season number.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.DVDChapter">
+            <summary>
+            Gets or sets the chapter number of the dvd.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.DVDDiscId">
+            <summary>
+            Gets or sets the id of the dvd disk.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.DVDEpisodeNumber">
+            <summary>
+            Gets or sets the episode number on the dvd.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.DVDSeason">
+            <summary>
+            Gets or sets the season number of the dvd.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.Director">
+            <summary>
+            Gets or sets the director fo the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.EpImageFlag">
+            <summary>
+            Gets or sets the ep image flag.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.Number">
+            <summary>
+            Gets or sets the number of the episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.GuestStars">
+            <summary>
+            Gets or sets the names of any guest stars that appeared in this episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.ProductionCode">
+            <summary>
+            Gets or sets the production code of the episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.Rating">
+            <summary>
+            Gets or sets the rating of the episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.SeasonNumber">
+            <summary>
+            Gets or sets the number of the season the episode belongs to.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.Writer">
+            <summary>
+            Gets or sets the name of the writer of the episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.AbsoluteNumber">
+            <summary>
+            Gets or sets the absolute number of the episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.PictureFilename">
+            <summary>
+            Gets or sets the path and name of the picture.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.LastUpdated">
+            <summary>
+            Gets or sets the id of the last update.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.SeasonId">
+            <summary>
+            Gets or sets the id of the season..
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.SeriesId">
+            <summary>
+            Gets or sets the id of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.RatingCount">
+            <summary>
+            Gets or sets the rating count of the episode.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.Thumbadded">
+            <summary>
+            Gets or sets the thumbadded id.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.ThumbHeight">
+            <summary>
+            Gets or sets the height of the thumbimage.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.ThumbWidth">
+            <summary>
+            Gets or sets the width of the thumb image.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.IsTMSExport">
+            <summary>
+            Gets or sets a value inidcating whether the episode is a tms export or not.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.IsTMSReviewBlurry">
+            <summary>
+            Gets or sets a value indicating whether the tms review is blurry or not.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.TMSReviewById">
+            <summary>
+            Gets or sets the id of the user who made the tms review.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.IsTMSReviewDark">
+            <summary>
+            Gets or sets a value indicating whether the tms review is dark or not.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.TMSReviewDate">
+            <summary>
+            Gets or sets the date the tms review was made.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.TMSReviewLogoId">
+            <summary>
+            Gets or sets the id of the tms review logo.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.TMSReviewOther">
+            <summary>
+            Gets or sets the tms review other value.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.IsTMSReviewUnsure">
+            <summary>
+            Gets or sets a value indicating whether the tms review is unsure or not.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.AirsAfterSeason">
+            <summary>
+            Gets or sets the name of the season this episode airs after.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.AirsBeforeSeason">
+            <summary>
+            Gets or sets the number of hte season this episode airs before.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Episode.AirsBeforeEpisode">
+            <summary>
+            Gets or sets the number of episode this one airs before.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.Language">
+            <summary>
+            Defines the language of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Language.IdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Language.Id"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Language.NameName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Language.Name"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Language.AbbreviationName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Language.Abbreviation"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Language.id">
+            <summary>
+            Id of the language.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Language.name">
+            <summary>
+            The name of the language.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Language.abbreviation">
+            <summary>
+            The abbreviation of the language.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Language.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Model.Language"/> class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Language.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes the provided xml node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:System.Xml.XmlNode"/> is null.</exception>
+            <example>This example shows how to use the deserialize method.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Xml document that contains all banners.
+            		/// </summary>
+            		private XmlDocument languageDoc = null;
+            		
+            		/// <summary>
+            		/// Initializes a new instance of the DocuClass class.
+            		/// </summary>
+            		public DocuClass(string extractionPath)
+            		{
+            			// load actors xml.
+            			this.languageDoc = new XmlDocument();
+            			this.languageDoc.Load(System.IO.Path.Combine(this.extractionPath, "languages.xml"));
+            		}
+            		
+            		/// <summary>
+            		/// Deserializes all languages that are available.
+            		/// </summary>
+            		public List&lt;Language&gt; DeserializeLanguages()
+            		{
+            			List&lt;Language&gt; languages = new List&lt;Language&gt;();
+            			
+            			// load the xml docs second child.
+            			XmlNode languageNode = this.languageDoc.ChildNodes[1];
+            	
+            			// deserialize all languages.
+            			foreach (XmlNode currentNode in languageNode.ChildNodes)
+            			{
+            				Language deserialized = new Language();
+            				deserialized.Deserialize(currentNode);
+            
+            				languages.Add(deserialized);
+            			}
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Model.Language.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:TVDB.Model.Language.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">Name fo the property which changed its value.</param>
+        </member>
+        <member name="P:TVDB.Model.Language.Id">
+            <summary>
+            Gets or sets the id of the language.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Language.Name">
+            <summary>
+            Gets or sets the name of the language.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Language.Abbreviation">
+            <summary>
+            Gets or sets the abbreviation of the language.
+            </summary>
+        </member>
+        <member name="E:TVDB.Model.Language.PropertyChanged">
+            <summary>
+            Occures when a property changed its value.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.Mirror">
+            <summary>
+            A mirror to load the data.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.IdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Mirror.Id"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.AddressName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Mirror.Address"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.ContainsXmlFileName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Mirror.ContainsXmlFile"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.ContainsBannerFileName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Mirror.ContainsBannerFile"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.ContainsZipFileName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Mirror.ContainsZipFile"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.id">
+            <summary>
+            Id of the mirror.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.address">
+            <summary>
+            Address of the mirror.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.containsXmlFile">
+            <summary>
+            Value indicating whether the mirror provides xml files.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.containsBannerFile">
+            <summary>
+            Value indicating whether the mirror provieds banner file.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Mirror.containsZipFile">
+            <summary>
+            Value indicating whether the mirror provides zip file.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Mirror.#ctor">
+            <summary>
+            Initializes a enw isntance of the <see cref="T:TVDB.Model.Mirror"/> class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Mirror.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes the provided xml node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:System.Xml.XmlNode"/> is null.</exception>
+            <example>This example shows how to use the deserialize method.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Xml document that contains all banners.
+            		/// </summary>
+            		private XmlDocument mirrorDoc = null;
+            		
+            		/// <summary>
+            		/// Initializes a new instance of the DocuClass class.
+            		/// </summary>
+            		public DocuClass(string extractionPath)
+            		{
+            			// load actors xml.
+            			this.mirrorDoc = new XmlDocument();
+            			this.mirrorDoc.Load(System.IO.Path.Combine(this.extractionPath, "mirrors.xml"));
+            		}
+            		
+            		/// <summary>
+            		/// Deserializes all mirrors that are available.
+            		/// </summary>
+            		public List&lt;Mirror&gt; DeserializeMirrors()
+            		{
+            			List&lt;Mirror&gt; mirrors = new List&lt;Mirror&gt;();
+            			
+            			// load the xml docs second child.
+            			XmlNode mirrorNode = this.mirrorDoc.ChildNodes[1];
+            	
+            			// deserialize all mirrors.
+            			foreach (XmlNode currentNode in mirrorNode.ChildNodes)
+            			{
+            				Mirror deserialized = new Mirror();
+            				deserialized.Deserialize(currentNode);
+            
+            				if (this.defaultMirror == null)
+            				{
+            					if (deserialized.ContainsBannerFile &amp;&amp; 
+            						deserialized.ContainsXmlFile &amp;&amp; 
+            						deserialized.ContainsZipFile)
+            					{
+            						this.defaultMirror = deserialized;
+            					}
+            				}
+            
+            				receivedMirrors.Add(deserialized);
+            			}
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Model.Mirror.CompareTo(TVDB.Model.Mirror)">
+            <summary>
+            Compares the <see cref="P:TVDB.Model.Mirror.Id"/> of the provided Mirror with this one.
+            </summary>
+            <param name="other">Mirror object to compare.</param>
+            <returns>
+            0: Ids are euqal.
+            -1: Provided id is smaller than this one.
+            1: Provided id is greater than this one.
+            </returns>
+        </member>
+        <member name="M:TVDB.Model.Mirror.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:TVDB.Model.Mirror.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">Name fo the property which changed its value.</param>
+        </member>
+        <member name="M:TVDB.Model.Mirror.ConvertTypeMask(System.Int32)">
+            <summary>
+            Converts the provided typemask into the bool values.
+            </summary>
+            <param name="typemask">Typemask value to convert.</param>
+        </member>
+        <member name="P:TVDB.Model.Mirror.Id">
+            <summary>
+            Gets or sets the id of the mirror.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Mirror.Address">
+            <summary>
+            Gets or sets the address of the mirror.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Mirror.ContainsXmlFile">
+            <summary>
+            Gets or sets a value indicating whether the mirror provides xml files.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Mirror.ContainsBannerFile">
+            <summary>
+            Gets or sets a value indicating whether the mirror provieds banner file.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Mirror.ContainsZipFile">
+            <summary>
+            Gets or sets a value indicating whether the mirror provides zip file.
+            </summary>
+        </member>
+        <member name="E:TVDB.Model.Mirror.PropertyChanged">
+            <summary>
+            Occurs when a property changed its value.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.Series">
+            <summary>
+            A Series with all details and episodes.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.BannerName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Banner"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.Zap2ItIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Zap2ItId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.HasEpisodesName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.HasEpisodes"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.EpisodesName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Episodes"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.SeriesIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.SeriesId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.ActortsName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Actorts"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.AirsDayOfWeelName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.AirsDayOfWeel"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.AirsTimeName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.AirsTime"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.ContentRatingName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.ContentRating"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.GenreName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Genre"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.NetworkName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Network"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.NetworkIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.NetworkId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.RatingCountName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.RatingCount"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.RatingName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Rating"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.RuntimeName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Runtime"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.StatusName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Status"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.AddedDateName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.AddedDate"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.AddedByUserIdName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.AddedByUserId"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.FanArtName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.FanArt"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.LastUpdatedName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.LastUpdated"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.PosterName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.Poster"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.TMSWantedName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.TMSWanted"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.ActorCollectionName">
+            <summary>
+            Name of the <see cref="P:TVDB.Model.Series.ActorCollection"/> property.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.bannerPath">
+            <summary>
+            Path of the banner for the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.zap2ItId">
+            <summary>
+            Zap2It id of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.hasEpisodes">
+            <summary>
+            Value indicating whether the series has episodes assigend or not.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.episodes">
+            <summary>
+            Collection of all assigned episodes.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.seriesId">
+            <summary>
+            Series ID.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.actors">
+            <summary>
+            All actors of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.airsDayOfWeek">
+            <summary>
+            Day the series is aired.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.airsTime">
+            <summary>
+            Time the series is aired.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.contentRating">
+            <summary>
+            The content rating of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.genre">
+            <summary>
+            The genre of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.network">
+            <summary>
+            The network name that aires the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.networkId">
+            <summary>
+            Id of the network.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.ratingCount">
+            <summary>
+            Count of rates.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.rating">
+            <summary>
+            Rating fo the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.runtime">
+            <summary>
+            Runtime of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.status">
+            <summary>
+            Status of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.addedDate">
+            <summary>
+            Date the series was added to the system.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.addedByUserId">
+            <summary>
+            Id of the user who added the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.fanArt">
+            <summary>
+            Path of the fan art.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.lastUpdated">
+            <summary>
+            Last updated id.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.poster">
+            <summary>
+            Path of the poster.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.tmsWanted">
+            <summary>
+            Value indicating whether the tms is wanted for the series or not.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.Series.actorsCollection">
+            <summary>
+            Collection of the actors of the series.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Series.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Model.Series"/> class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.Series.Deserialize(System.Xml.XmlNode)">
+            <summary>
+            Deserializes the provided xml node.
+            </summary>
+            <param name="node">Node to deserialize.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:System.Xml.XmlNode"/> is null.</exception>
+            <example>This example shows how to use the deserialize method.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Xml document that contains all details of a series.
+            		/// </summary>
+            		private XmlDocument languageDoc = null;
+            		
+            		/// <summary>
+            		/// Initializes a new instance of the DocuClass class.
+            		/// </summary>
+            		public DocuClass(string extractionPath)
+            		{
+            			// load series xml.
+            			this.languageDoc = new XmlDocument();
+            			this.languageDoc.Load(System.IO.Path.Combine(this.extractionPath, string.Format("{0}.xml", this.Language)));
+            		}
+            		
+            		/// <summary>
+            		/// Deserializes all actors of the series.
+            		/// </summary>
+            		public Series DeserializeSeries()
+            		{
+            			Series series = new Series();
+            			
+            			// load the xml docs second child.
+            			XmlNode dataNode = this.languageDoc.ChildNodes[1];
+            
+            			// deserialize all episodes and series details.
+            			foreach (XmlNode currentNode in dataNode.ChildNodes)
+            			{
+            				if (currentNode.Name.Equals("Episode", StringComparison.OrdinalIgnoreCase))
+            				{
+            					Episode deserialized = new Episode();
+            					deserialized.Deserialize(currentNode);
+            
+            					series.AddEpisode(deserialized);
+            					continue;
+            				}
+            				else if (currentNode.Name.Equals("Series", StringComparison.OrdinalIgnoreCase))
+            				{
+            					series.Deserialize(currentNode);
+            					continue;
+            				}
+            			}
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Model.Series.AddEpisode(TVDB.Model.Episode)">
+            <summary>
+            Adds the provided episode to the series.
+            </summary>
+            <param name="toAdd">Episode to add.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided <see cref="T:TVDB.Model.Episode"/> is null.</exception>
+        </member>
+        <member name="M:TVDB.Model.Series.Initialize">
+            <summary>
+            Initializes the properties.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Banner">
+            <summary>
+            Gets or sets the path of the banner for the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Zap2ItId">
+            <summary>
+            Gets or sets the Zap2It id of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.HasEpisodes">
+            <summary>
+            Gets or sets a value indicating whether the series has episodes assigend or not.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Episodes">
+            <summary>
+            Gets or sets a collection of all assigned episodes.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.SeriesId">
+            <summary>
+            Gets or sets the series id.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Actorts">
+            <summary>
+            Gets or sets all actors of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.AirsDayOfWeel">
+            <summary>
+            Gets or sets the day the series is aired.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.AirsTime">
+            <summary>
+            Gets or sets the time the series is aired.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.ContentRating">
+            <summary>
+            Gets or sets the content rating of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Genre">
+            <summary>
+            Gets or sets the genre of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Network">
+            <summary>
+            Gets or sets the network name that aires the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.NetworkId">
+            <summary>
+            Gets or sets the id of the network.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.RatingCount">
+            <summary>
+            Gets or sets the count of rates.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Rating">
+            <summary>
+            Gets or sets the rating fo the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Runtime">
+            <summary>
+            Gets or sets the runtime of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Status">
+            <summary>
+            Gets or sets the status of the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.AddedDate">
+            <summary>
+            Gets or sets the date the series was added to the system.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.AddedByUserId">
+            <summary>
+            Gets or sets the id of the user who added the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.FanArt">
+            <summary>
+            Gets or sets the path of the fan art.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.LastUpdated">
+            <summary>
+            Gets or sets the last updated id.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.Poster">
+            <summary>
+            Gets or sets the path of the poster.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.TMSWanted">
+            <summary>
+            Gets or sets a value indicating whether the tms is wanted for the series or not.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.Series.ActorCollection">
+            <summary>
+            Gets or sets a collection of the actors of the series.
+            </summary>
+        </member>
+        <member name="T:TVDB.Model.SeriesDetails">
+            <summary>
+            Contains all details for the requested series like Actors, Banners and all episodes of the series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.actorsDoc">
+            <summary>
+            Xml document that contains all actors.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.bannersDoc">
+            <summary>
+            Xml document that contains all banners.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.languageDoc">
+            <summary>
+            Xml document that contains all details of a series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.language">
+            <summary>
+            The Language.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.actors">
+            <summary>
+            The Actors.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.series">
+            <summary>
+            The Series.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.banners">
+            <summary>
+            The Banners.
+            </summary>
+        </member>
+        <member name="F:TVDB.Model.SeriesDetails.extractionPath">
+            <summary>
+            Path of the extracted files.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.SeriesDetails.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Model.SeriesDetails"/> class.
+            </summary>
+            <param name="extractionPath">Path of the extracted files.</param>
+            <param name="language">Language of the series.</param>
+            <exception cref="T:System.IO.DirectoryNotFoundException">Occurs when the provided extraction path doesn't exists.</exception>
+            <exception cref="T:System.ArgumentNullException">Occurs when to provided language is null or empty.</exception>
+        </member>
+        <member name="M:TVDB.Model.SeriesDetails.Dispose">
+            <summary>
+            Releases all resources of the class.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.SeriesDetails.DeserializeActors">
+            <summary>
+            Deserializes all actors of the series.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.SeriesDetails.DeserializeBanners">
+            <summary>
+            Deserializes all banners of the series.
+            </summary>
+        </member>
+        <member name="M:TVDB.Model.SeriesDetails.DeserializeSeries">
+            <summary>
+            Deserializes the series.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesDetails.Language">
+            <summary>
+            Gets or sets the Language property.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesDetails.Actors">
+            <summary>
+            Gets or sets the Actors property.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesDetails.Series">
+            <summary>
+            Gets or sets the Series property.
+            </summary>
+        </member>
+        <member name="P:TVDB.Model.SeriesDetails.Banners">
+            <summary>
+            Gets or sets the Banners property.
+            </summary>
+        </member>
+        <member name="T:TVDB.Web.ITvDb">
+            <summary>
+            Interface which defines all methods needed to communicate with the XML api from TheTVDB.com.
+            </summary>
+            <seealso cref="T:TVDB.Web.WebInterface"/>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetFullSeriesById(System.Int32,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets all details of the series.
+            </summary>
+            <param name="id">Id of the series.</param>
+            <param name="languageAbbreviation">The language abbreviation.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>All details of the series.</returns>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetFullSeriesById(System.Int32,TVDB.Model.Mirror)">
+            <summary>
+            Gets all details of the series.
+            </summary>
+            <param name="id">Id of the series.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>All details of the series.</returns>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetLanguages">
+            <summary>
+            Gets a list of all available languages.
+            </summary>
+            <returns>Collection of all available languages.</returns>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetLanguages(TVDB.Model.Mirror)">
+            <summary>
+            Gets a list of all available languages.
+            </summary>
+            <param name="mirror">Mirror to use.</param>
+            <returns>Collection of all available languages.</returns>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetMirrors">
+            <summary>
+            Get all available mirrors.
+            </summary>
+            <returns>A Collection of mirrors.</returns>
+            <exception cref="T:System.Exception">Occurs when the main source of the TheTVDB seems to be offline.</exception>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetSeriesByName(System.String,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets all series that match with the provided name.
+            </summary>
+            <param name="name">Name of the series.</param>
+            <param name="languageAbbreviation">Abbreviation of the language to search the series.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>List of series that matches the provided name.</returns>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetSeriesByName(System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets all series that match with the provided name.
+            </summary>
+            <param name="name">Name of the series.</param>
+            <param name="mirror">The mirror to use.</param>
+            <remarks>
+            When calling this method a default language, which is English will be used to find all series that match the name.
+            </remarks>
+            <returns>List of series that matches the provided name.</returns>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetSeriesByRemoteId(System.String,System.String,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets the series by either its imdb or zap2it id.
+            </summary>
+            <param name="imdbId">IMDB id</param>
+            <param name="zap2Id">Zap2It id</param>
+            <param name="languageAbbreviation">The language abbreviation.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>The Series belonging to the provided id.</returns>
+            <remarks>
+            It is not allowed to provide both imdb and zap2it id, this will lead to a null value as return value.
+            </remarks>
+        </member>
+        <member name="M:TVDB.Web.ITvDb.GetSeriesByRemoteId(System.String,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets the series by either its imdb or zap2it id.
+            </summary>
+            <param name="imdbId">IMDB id</param>
+            <param name="zap2Id">Zap2It id</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>The Series belonging to the provided id.</returns>
+            <remarks>
+            It is not allowed to provide both imdb and zap2it id, this will lead to a null value as return value.
+            </remarks>
+        </member>
+        <member name="T:TVDB.Web.WebInterface">
+            <summary>
+            Communication with the XML interface of the TVDB.
+            </summary>
+        </member>
+        <member name="F:TVDB.Web.WebInterface.APIKey">
+            <summary>
+            Api key for the application.
+            </summary>
+        </member>
+        <member name="F:TVDB.Web.WebInterface.defaultMirror">
+            <summary>
+            Default mirror site to connect to the api.
+            </summary>
+        </member>
+        <member name="F:TVDB.Web.WebInterface.client">
+            <summary>
+            WebClient to download the file.
+            </summary>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:TVDB.Web.WebInterface"/> class from being created.
+            </summary>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Web.WebInterface"/> class, using the provided API key.
+            </summary>
+            <param name="apiKey">API key obtained from TheTVDB.com to access the XML api.</param>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TVDB.Web.WebInterface"/> class.
+            </summary>
+            <param name="apiKey">API key obtained from TheTVDB.com to access the XML api.</param>
+            <param name="fileDirectory">Directory where all loaded files will be stored.</param>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetMirrors">
+            <summary>
+            Get all available mirrors.
+            </summary>
+            <returns>A Collection of mirrors.</returns>
+            <exception cref="T:System.Exception">Occurs when the main source of the TheTVDB seems to be offline.</exception>
+            <example>Shows how to request all available mirrors.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets all mirrors that are available.
+            		/// </summary>
+            		public List&lt;Mirror&gt; GetAllMirrors()
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&lt;Mirror&gt; mirrors = await instance.GetMirrors();
+            
+            			return mirrors
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetLanguages">
+            <summary>
+            Gets a list of all available languages.
+            </summary>
+            <returns>Collection of all available languages.</returns>
+            <example>Shows how to get all languages.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets all mirrors that are available.
+            		/// </summary>
+            		public List&#60;Language&#62; GetAllLanguages(Mirror mirror)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&#60;Language&#62; languages = await instance.GetLanguages(mirror);
+            
+            			return languages
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetLanguages(TVDB.Model.Mirror)">
+            <summary>
+            Gets a list of all available languages.
+            </summary>
+            <param name="mirror">Mirror to use.</param>
+            <returns>Collection of all available languages.</returns>
+            <example>Shows how to get all languages.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets all mirrors that are available.
+            		/// </summary>
+            		public List&#60;Language&#62; GetAllLanguages(Mirror mirror)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&#60;Language&#62; languages = await instance.GetLanguages(mirror);
+            
+            			return languages
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetSeriesByName(System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets all series that match with the provided name.
+            </summary>
+            <param name="name">Name of the series.</param>
+            <param name="mirror">The mirror to use.</param>
+            <remarks>
+            When calling this method a default language, which is english will be used to find all series that match the name.
+            </remarks>
+            <returns>List of series that matches the provided name.</returns>
+            <example>Shows how to get a series by name.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets series by name.
+            		/// </summary>
+            		public List&#60;Series&#62; GetSeries(string name, Mirror mirror, Language language)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&#60;Series&#62; series = await instance.GetSeriesByName(name, language.Abbreviation, mirror);
+            
+            			return series;
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetSeriesByName(System.String,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets all series that match with the provided name.
+            </summary>
+            <param name="name">Name of the series.</param>
+            <param name="languageAbbreviation">Abbreviation of the language to search the series.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>List of series that matches the provided name.</returns>
+            <example>Shows how to get a series by name.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets series by name.
+            		/// </summary>
+            		public List&#60;Series&#62; GetSeries(string name, Mirror mirror, Language language)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&#60;Series&#62; series = await instance.GetSeriesByName(name, language.Abbreviation, mirror);
+            
+            			return series;
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetSeriesByRemoteId(System.String,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets the series by either its imdb or zap2it id.
+            </summary>
+            <param name="imdbId">IMDB id</param>
+            <param name="zap2Id">Zap2It id</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>The Series belonging to the provided id.</returns>
+            <remarks>
+            It is not allowed to provide both imdb and zap2it id, this will lead to a null value as return value.
+            </remarks>
+            <example>Shows how the get a series by imdb and zap2 Id.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets series by id.
+            		/// </summary>
+            		public List&#60;Series&#62; GetSeries(string imdbId, string zap2Id, Mirror mirror, Language language)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&#60;Series&#62; series = await instance.GetSeriesByRemoteId(imdbId, zap2Id, language.Abbreviation, mirror);
+            
+            			return series;
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetSeriesByRemoteId(System.String,System.String,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets the series by either its imdb or zap2it id.
+            </summary>
+            <param name="imdbId">IMDB id</param>
+            <param name="zap2Id">Zap2It id</param>
+            <param name="languageAbbreviation">The language abbreviation.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>The Series belonging to the provided id.</returns>
+            <remarks>
+            It is not allowed to provide both imdb and zap2it id, this will lead to a null value as return value.
+            </remarks>
+            <example>Shows how the get a series by imdb and zap2 Id.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets series by id.
+            		/// </summary>
+            		public List&#60;Series&#62; GetSeries(string imdbId, string zap2Id, Mirror mirror, Language language)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			List&#60;Series&#62; series = await instance.GetSeriesByRemoteId(imdbId, zap2Id, language.Abbreviation, mirror);
+            
+            			return series;
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetFullSeriesById(System.Int32,TVDB.Model.Mirror)">
+            <summary>
+            Gets all details of the series.
+            </summary>
+            <param name="id">Id of the series.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>All details of the series.</returns>
+            <example>Shows how the get all details of a series by its id.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets all details of a series.
+            		/// </summary>
+            		public SeriesDetails GetSeries(int id, Mirror mirror, Language language)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			SeriesDetails details = await instance.GetFullSeriesById(id, language.Abbreviation, mirror);
+            
+            			return details;
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:TVDB.Web.WebInterface.GetFullSeriesById(System.Int32,System.String,TVDB.Model.Mirror)">
+            <summary>
+            Gets all details of the series.
+            </summary>
+            <param name="id">Id of the series.</param>
+            <param name="languageAbbreviation">The language abbreviation.</param>
+            <param name="mirror">The mirror to use.</param>
+            <returns>All details of the series.</returns>
+            <example>Shows how the get all details of a series by its id.
+            <code>
+            namespace Docunamespace
+            {
+            	/// <summary>
+            	/// Class for the docu.
+            	/// </summary>
+            	class DocuClass
+            	{
+            		/// <summary>
+            		/// Gets all details of a series.
+            		/// </summary>
+            		public SeriesDetails GetSeries(int id, Mirror mirror, Language language)
+            		{
+            			string apiKey = "ABCD12345";
+            			TVDB.Web.ITvDb instance = new TVDB.Web.WebInterface(apiKey);
+            			SeriesDetails details = await instance.GetFullSeriesById(id, language.Abbreviation, mirror);
+            
+            			return details;
+            		}
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:TVDB.Web.WebInterface.loadedSeriesPath">
+            <summary>
+            Path of the full series zip file.
+            </summary>
+        </member>
+        <member name="P:TVDB.Web.WebInterface.FileDirectory">
+            <summary>
+            Directory for writing zip and extracted files
+            </summary>
+        </member>
+    </members>
+</doc>

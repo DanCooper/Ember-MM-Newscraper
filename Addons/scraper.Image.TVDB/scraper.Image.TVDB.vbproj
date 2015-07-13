@@ -105,8 +105,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="TVDB">
-      <HintPath>..\..\packages\TheTVDBApi.1.1.0.0\lib\TVDB.dll</HintPath>
+    <Reference Include="TVDB, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\TheTVDBApi.1.1.1.0\lib\net45\TVDB.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
