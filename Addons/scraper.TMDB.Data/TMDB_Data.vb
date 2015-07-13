@@ -622,10 +622,10 @@ Public Class TMDB_Data
         LoadSettings_MovieSet()
 
         Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.ApiKey = _MySettings_Movie.APIKey
-        Settings.FallBackEng = _MySettings_Movie.FallBackEng
-        Settings.GetAdultItems = _MySettings_Movie.GetAdultItems
-        Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
+        Settings.ApiKey = _MySettings_MovieSet.APIKey
+        Settings.FallBackEng = _MySettings_MovieSet.FallBackEng
+        Settings.GetAdultItems = _MySettings_MovieSet.GetAdultItems
+        Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
 
         Dim _scraper As New TMDB.Scraper(Settings)
 
