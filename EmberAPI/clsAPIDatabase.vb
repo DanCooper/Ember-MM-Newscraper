@@ -2794,9 +2794,6 @@ Public Class Database
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <returns>Structures.DBMovie object</returns>
     Public Function SaveMovieToDB(ByVal _movieDB As Structures.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBMovie
-        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
-        'TODO Break this method into smaller chunks. Too important to be this complex
-
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3373,115 +3370,111 @@ Public Class Database
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Structures.DBMovieSet object</returns>
     Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieSet
-        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
-        'TODO Break this method into smaller chunks. Too important to be this complex
-        Try
-            If _moviesetDB.ID = -1 Then IsNew = True
+        If _moviesetDB.ID = -1 Then IsNew = True
 
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                If IsNew Then
-                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "ListTitle, NfoPath, ", _
-                     "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
-                Else
-                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "idSet, ListTitle, NfoPath, ", _
-                     "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
-                    Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "idSet")
-                    parMovieSetID.Value = _moviesetDB.ID
-                End If
-                Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
-                Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
-                Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
-                Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
-                Dim parSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
-                Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
-                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
-                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
-                Dim parSortMethod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortMethod", DbType.Int16, 0, "SortMethod")
-
-                ' First let's save it to NFO, even because we will need the NFO path
-                'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
-                'Why do we need IMDB to save to NFO?
-                If ToNfo Then NFO.SaveMovieSetToNFO(_moviesetDB)
-
-                parNfoPath.Value = _moviesetDB.NfoPath
-
-                parNew.Value = IsNew
-                parMark.Value = _moviesetDB.IsMark
-                parLock.Value = _moviesetDB.IsLock
-                parSortMethod.Value = _moviesetDB.SortMethod
-
-                parListTitle.Value = _moviesetDB.ListTitle
-                parSetName.Value = _moviesetDB.MovieSet.Title
-                parTMDBColID.Value = _moviesetDB.MovieSet.ID
-                parPlot.Value = _moviesetDB.MovieSet.Plot
-
-                If IsNew Then
-                    Using rdrMovieSet As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        If rdrMovieSet.Read Then
-                            _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
-                        Else
-                            logger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
-                            _moviesetDB.ListTitle = "SETERROR"
-                            Return _moviesetDB
-                        End If
-                    End Using
-                Else
-                    SQLcommand.ExecuteNonQuery()
-                End If
-            End Using
-
-            'Images
-            Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, " AND media_type = 'set';")
-                SQLcommand_art.ExecuteNonQuery()
-            End Using
-            If Not String.IsNullOrEmpty(_moviesetDB.BannerPath) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.BannerPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ClearArtPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearLogoPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.DiscArtPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.FanartPath) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.FanartPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.LandscapePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.LandscapePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.PosterPath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.PosterPath)
-
-            If withMovies Then
-                Dim MoviesInSet As New List(Of MovieInSet)
-
-                'get all movies linked to this MovieSet
-                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
-                                                           "WHERE SetID = ", _moviesetDB.ID, ";")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        While SQLreader.Read
-                            Dim movie As New Structures.DBMovie
-                            Dim movieToSave As New MovieInSet
-                            If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
-                            movieToSave.DBMovie = movie
-                            If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then movieToSave.Order = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), 0)
-                            MoviesInSet.Add(movieToSave)
-                        End While
-                    End Using
-                End Using
-
-                'write new movie NFOs
-                If MoviesInSet.Count > 0 Then
-                    For Each tMovie In MoviesInSet
-                        tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.ID)
-                        Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
-                    Next
-                End If
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            If IsNew Then
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
+                 "ListTitle, NfoPath, ", _
+                 "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+            Else
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
+                 "idSet, ListTitle, NfoPath, ", _
+                 "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "idSet")
+                parMovieSetID.Value = _moviesetDB.ID
             End If
+            Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
+            Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
+            Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
+            Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
+            Dim parSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
+            Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
+            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
+            Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
+            Dim parSortMethod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortMethod", DbType.Int16, 0, "SortMethod")
 
-            If Not BatchMode Then SQLtransaction.Commit()
+            ' First let's save it to NFO, even because we will need the NFO path
+            'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
+            'Why do we need IMDB to save to NFO?
+            If ToNfo Then NFO.SaveMovieSetToNFO(_moviesetDB)
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            parNfoPath.Value = _moviesetDB.NfoPath
+
+            parNew.Value = IsNew
+            parMark.Value = _moviesetDB.IsMark
+            parLock.Value = _moviesetDB.IsLock
+            parSortMethod.Value = _moviesetDB.SortMethod
+
+            parListTitle.Value = _moviesetDB.ListTitle
+            parSetName.Value = _moviesetDB.MovieSet.Title
+            parTMDBColID.Value = _moviesetDB.MovieSet.ID
+            parPlot.Value = _moviesetDB.MovieSet.Plot
+
+            If IsNew Then
+                Using rdrMovieSet As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If rdrMovieSet.Read Then
+                        _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
+                    Else
+                        logger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
+                        _moviesetDB.ListTitle = "SETERROR"
+                        Return _moviesetDB
+                    End If
+                End Using
+            Else
+                SQLcommand.ExecuteNonQuery()
+            End If
+        End Using
+
+        'Images
+        Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, " AND media_type = 'set';")
+            SQLcommand_art.ExecuteNonQuery()
+        End Using
+        If Not String.IsNullOrEmpty(_moviesetDB.BannerPath) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.BannerPath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ClearArtPath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearLogoPath)
+        If Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.DiscArtPath)
+        If Not String.IsNullOrEmpty(_moviesetDB.FanartPath) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.FanartPath)
+        If Not String.IsNullOrEmpty(_moviesetDB.LandscapePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.LandscapePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.PosterPath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.PosterPath)
+
+        If withMovies Then
+            Dim MoviesInSet As New List(Of MovieInSet)
+
+            'get all movies linked to this MovieSet
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
+                                                       "WHERE SetID = ", _moviesetDB.ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Dim movie As New Structures.DBMovie
+                        Dim movieToSave As New MovieInSet
+                        If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        movieToSave.DBMovie = movie
+                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then movieToSave.Order = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), 0)
+                        MoviesInSet.Add(movieToSave)
+                    End While
+                End Using
+            End Using
+
+            'write new movie NFOs
+            If MoviesInSet.Count > 0 Then
+                For Each tMovie In MoviesInSet
+                    tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.ID)
+                    Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
+                Next
+            End If
+        End If
+
+        If Not BatchMode Then SQLtransaction.Commit()
+
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, _moviesetDB)
+
         Return _moviesetDB
     End Function
 
@@ -3603,7 +3596,7 @@ Public Class Database
     ''' <param name="WithSeason">If <c>True</c>, also save season information</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Sub SaveTVEpToDB(ByVal _TVEpDB As Structures.DBTV, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
+    Public Function SaveTVEpToDB(ByVal _TVEpDB As Structures.DBTV, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBTV
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -3804,7 +3797,8 @@ Public Class Database
                     Else
                         logger.Error("Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
                         _TVEpDB.ID = -1
-                        Exit Sub
+                        Return _TVEpDB
+                        Exit Function
                     End If
                 End Using
             Else
@@ -3959,14 +3953,16 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
 
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, _TVEpDB)
-    End Sub
+
+        Return _TVEpDB
+    End Function
     ''' <summary>
     ''' Stores information for a single season to the database
     ''' </summary>
     ''' <param name="_TVSeasonDB">Structures.DBTV representing the season to be stored.</param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, Optional ByVal BatchMode As Boolean = False)
+    Public Function SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, Optional ByVal BatchMode As Boolean = False) As Structures.DBTV
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4001,7 +3997,7 @@ Public Class Database
                 Dim par_seasons_strPlot As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
                 par_seasons_idShow.Value = _TVSeasonDB.ShowID
                 par_seasons_Season.Value = _TVSeasonDB.TVSeason.Season
-                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVSeason.Season)
                 par_seasons_Lock.Value = _TVSeasonDB.IsLock
                 par_seasons_Mark.Value = _TVSeasonDB.IsMark
                 par_seasons_New.Value = True
@@ -4021,7 +4017,7 @@ Public Class Database
                 Dim par_seasons_strTVDB As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strTVDB", DbType.String, 0, "strTVDB")
                 Dim par_seasons_strAired As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strAired", DbType.String, 0, "strAired")
                 Dim par_seasons_strPlot As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
-                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVSeason.Season)
                 par_seasons_Lock.Value = _TVSeasonDB.IsLock
                 par_seasons_Mark.Value = _TVSeasonDB.IsMark
                 par_seasons_New.Value = False
@@ -4047,7 +4043,11 @@ Public Class Database
         If Not String.IsNullOrEmpty(_TVSeasonDB.PosterPath) Then SetArtForItem(_TVSeasonDB.ID, "season", "poster", _TVSeasonDB.PosterPath)
 
         If Not BatchMode Then SQLtransaction.Commit()
-    End Sub
+
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, _TVSeasonDB)
+
+        Return _TVSeasonDB
+    End Function
     ''' <summary>
     ''' Saves all show information from a Structures.DBTV object to the database
     ''' </summary>
@@ -4055,7 +4055,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Sub SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
+    Public Function SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBTV
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -4155,7 +4155,8 @@ Public Class Database
                     Else
                         logger.Error("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
                         _TVShowDB.ShowID = -1
-                        Exit Sub
+                        Return _TVShowDB
+                        Exit Function
                     End If
                 End Using
             Else
@@ -4240,7 +4241,9 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
 
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, _TVShowDB)
-    End Sub
+
+        Return _TVShowDB
+    End Function
     ''' <summary>
     ''' Retrieve movie paths.
     ''' </summary>

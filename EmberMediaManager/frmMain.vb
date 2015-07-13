@@ -4132,7 +4132,6 @@ Public Class frmMain
                     'TVScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
                     'Dim newNfoPath As Structures.DBTV = Master.DB.SaveTVShowToDB(DBScrapeShow, False, False, True)
                     'MovieScraperEvent(Enums.ScraperEventType_Movie.NFOItem, newNfoPath.NfoPath)
-                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, DBScrapeMovie)
                     bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                     bwTVScraper.ReportProgress(-2, dScrapeRow.Item("idShow").ToString)
                 End If
@@ -14371,7 +14370,6 @@ doCancel:
                         Else
                             Me.FillList(False, True, False)
                         End If
-                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Master.currMovie.RemoveActorThumbs = False
                         Master.currMovie.RemoveBanner = False
