@@ -131,7 +131,7 @@ Public Class KodiInterface
     ''' - RunGeneric is a synched function, so we can't use Await in conjunction with async KodiAPI here (which is preferred). For Ember 1.5 I suggest to change RunGeneric to Public Async Function
     ''' - As soon as RunGeneric is Async, switch all API calling subs/function in here to async to so we can use await and enable result notification in Ember (see commented code below)
     ''' </remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Structures.DBMovieSet) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
 
         'check if at least one host is configured, else skip
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
@@ -220,7 +220,7 @@ Public Class KodiInterface
                     'Episode syncing
                 Case Enums.ModuleEventType.Sync_TVEpisode
                     Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(tDBTV, True) Then
+                    If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTV, True) Then
                         If Not String.IsNullOrEmpty(tDBTV.NfoPath) Then
                             For Each host In MySettings.KodiHosts.host.ToList
                                 'only update movie if realtimesync of host is enabled
@@ -263,7 +263,7 @@ Public Class KodiInterface
                     'TVSeason syncing
                 Case Enums.ModuleEventType.Sync_TVSeason
                     Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(tDBTV, True) Then
+                    If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBTV, True) Then
                         If Not String.IsNullOrEmpty(tDBTV.ID.ToString) Then
                             For Each host In MySettings.KodiHosts.host.ToList
                                 'only update movie if realtimesync of host is enabled
@@ -302,7 +302,7 @@ Public Class KodiInterface
                     'TVShow syncing
                 Case Enums.ModuleEventType.Sync_TVShow
                     Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
-                    If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(tDBTV, True) Then
+                    If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBTV, True) Then
                         If Not String.IsNullOrEmpty(tDBTV.NfoPath) Then
                             For Each host In MySettings.KodiHosts.host.ToList
                                 'only update movie if realtimesync of host is enabled
@@ -691,7 +691,7 @@ Public Class KodiInterface
     ''' </remarks>
     Private Async Sub cmnuKodiSync_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVEpisode.Click
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+            If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(Master.currShow, True) Then
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currShow.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.ID.ToString) Then
                     For Each host In MySettings.KodiHosts.host.ToList
@@ -740,7 +740,7 @@ Public Class KodiInterface
     ''' </remarks>
     Private Async Sub cmnuKodiSync_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVSeason.Click
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+            If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(Master.currShow, True) Then
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currShow.ID.ToString) Then
                     For Each host In MySettings.KodiHosts.host.ToList
@@ -781,7 +781,7 @@ Public Class KodiInterface
     ''' </remarks>
     Private Async Sub cmnuKodiSync_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVShow.Click
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+            If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(Master.currShow, True) Then
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currShow.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.TVShow.ID) Then
                     For Each host In MySettings.KodiHosts.host.ToList

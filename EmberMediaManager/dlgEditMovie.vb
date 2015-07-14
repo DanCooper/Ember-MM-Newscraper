@@ -37,6 +37,8 @@ Public Class dlgEditMovie
     Friend WithEvents bwEThumbs As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
+    Private tmpDBMovie As New Structures.DBMovie
+
     Private CachePath As String = String.Empty
     Private fResults As New Containers.ImgResult
     Private isAborting As Boolean = False
@@ -85,6 +87,16 @@ Public Class dlgEditMovie
 
 #End Region 'Fields
 
+#Region "Properties"
+
+    Public ReadOnly Property Result As Structures.DBMovie
+        Get
+            Return tmpDBMovie
+        End Get
+    End Property
+
+#End Region 'Properties
+
 #Region "Methods"
 
     Public Sub New()
@@ -94,6 +106,11 @@ Public Class dlgEditMovie
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
     End Sub
+
+    Public Overloads Function ShowDialog(ByVal DBMovie As Structures.DBMovie) As DialogResult
+        Me.tmpDBMovie = DBMovie
+        Return MyBase.ShowDialog()
+    End Function
 
     Private Sub AddETImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrathumb As ExtraImages)
         Try
@@ -257,9 +274,9 @@ Public Class dlgEditMovie
     Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'Dim aUrlList As New List(Of Themes)
         'Dim tURL As String = String.Empty
-        'If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+        'If Not ModulesManager.Instance.ScrapeTheme_Movie(Me.tmpDBMovie, aUrlList) Then
         '    Using dThemeSelect As New dlgThemeSelect()
-        '        MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
+        '        MovieTheme = dThemeSelect.ShowDialog(Me.tmpDBMovie, aUrlList)
         '    End Using
         'End If
 
@@ -276,7 +293,7 @@ Public Class dlgEditMovie
 
         Try
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Me.tmpDBMovie, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
                 tURL = dlgTrlS.Results.WebURL
             End If
 
@@ -308,8 +325,8 @@ Public Class dlgEditMovie
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
-            If dlgManualEdit.ShowDialog(Master.currMovie.NfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.NfoPath, Master.currMovie.IsSingle)
+            If dlgManualEdit.ShowDialog(Me.tmpDBMovie.NfoPath) = Windows.Forms.DialogResult.OK Then
+                Me.tmpDBMovie.Movie = NFO.LoadMovieFromNFO(Me.tmpDBMovie.NfoPath, Me.tmpDBMovie.IsSingle)
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
@@ -353,8 +370,8 @@ Public Class dlgEditMovie
 
             Dim tPath As String = String.Empty
 
-            If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
-                tPath = String.Concat("""", Master.currMovie.ThemePath, """")
+            If Not String.IsNullOrEmpty(Me.tmpDBMovie.ThemePath) Then
+                tPath = String.Concat("""", Me.tmpDBMovie.ThemePath, """")
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
@@ -490,10 +507,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aContainer, True) Then
                 If aContainer.Banners.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Banner, aContainer.Banners, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.Banner, aContainer.Banners, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -519,7 +536,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
@@ -566,10 +583,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aContainer, True) Then
                 If aContainer.ClearArts.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearArt, aContainer.ClearArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.ClearArt, aContainer.ClearArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -595,7 +612,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
@@ -642,10 +659,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aContainer, True) Then
                 If aContainer.ClearLogos.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.ClearLogo, aContainer.ClearLogos, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.ClearLogo, aContainer.ClearLogos, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -671,7 +688,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
@@ -718,10 +735,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aContainer, True) Then
                 If aContainer.DiscArts.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.DiscArt, aContainer.DiscArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.DiscArt, aContainer.DiscArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -747,7 +764,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
@@ -824,13 +841,13 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aContainer, True) Then
                 If aContainer.Fanarts.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Fanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.Fanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
                         pResults = dlgImgS.Results
-                        Master.currMovie.etList = dlgImgS.etList
-                        Master.currMovie.efList = dlgImgS.efList
+                        Me.tmpDBMovie.etList = dlgImgS.etList
+                        Me.tmpDBMovie.efList = dlgImgS.efList
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
@@ -857,7 +874,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
@@ -904,10 +921,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aContainer, True) Then
                 If aContainer.Landscapes.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Landscape, aContainer.Landscapes, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.Landscape, aContainer.Landscapes, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -933,7 +950,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMovieLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
@@ -980,10 +997,10 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aContainer, True) Then
+            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aContainer, True) Then
                 If aContainer.Posters.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Poster, aContainer.Posters, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ImageType_Movie.Poster, aContainer.Posters, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -1009,7 +1026,7 @@ Public Class dlgEditMovie
     Private Sub btnSetMoviePosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
@@ -1035,7 +1052,7 @@ Public Class dlgEditMovie
     '    Try
     '        Me.ThemeStop()
     '        dlgTheS = New dlgThemeSelect()
-    '        If dlgTheS.ShowDialog(Master.currMovie, tList) = Windows.Forms.DialogResult.OK Then
+    '        If dlgTheS.ShowDialog(Me.tmpDBMovie, tList) = Windows.Forms.DialogResult.OK Then
     '            tResults = dlgTheS.Results
     '            MovieTheme = dlgTheS.WebTheme
     '            ThemeAddToPlayer(MovieTheme)
@@ -1051,10 +1068,10 @@ Public Class dlgEditMovie
 
         Try
             Me.ThemeStop()
-            If Not ModulesManager.Instance.ScrapeTheme_Movie(Master.currMovie, aUrlList) Then
+            If Not ModulesManager.Instance.ScrapeTheme_Movie(Me.tmpDBMovie, aUrlList) Then
                 If aUrlList.Count > 0 Then
                     dlgThmS = New dlgThemeSelect()
-                    If dlgThmS.ShowDialog(Master.currMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
+                    If dlgThmS.ShowDialog(Me.tmpDBMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
                         MovieTheme = dlgThmS.Results.WebTheme
                         MovieTheme.isEdit = True
                         ThemeAddToPlayer(MovieTheme)
@@ -1073,7 +1090,7 @@ Public Class dlgEditMovie
         Try
             Me.ThemeStop()
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(1285, "Themes") + "|*.mp3;*.wav"
                 .FilterIndex = 0
             End With
@@ -1096,7 +1113,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Me.tmpDBMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults
                 TrailerPlaylistAdd(MovieTrailer)
@@ -1113,7 +1130,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Me.tmpDBMovie, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
                 MovieTrailer = dlgTrlS.Results
                 TrailerPlaylistAdd(MovieTrailer)
             End If
@@ -1126,7 +1143,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(1195, "Trailers") + "|*.mp4;*.avi"
                 .FilterIndex = 0
             End With
@@ -1143,7 +1160,7 @@ Public Class dlgEditMovie
 
     Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
         Using dStudio As New dlgStudioSelect
-            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie)
+            Dim tStudio As String = dStudio.ShowDialog(Me.tmpDBMovie)
             If Not String.IsNullOrEmpty(tStudio) Then
                 Me.txtStudio.Text = tStudio
             End If
@@ -1481,8 +1498,8 @@ Public Class dlgEditMovie
 
         Try
             ' load local Extrathumbs
-            If Not Master.currMovie.RemoveEThumbs Then
-                For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+            If Not Me.tmpDBMovie.RemoveEThumbs Then
+                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EThumbs)
                     If Directory.Exists(a) Then
                         ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
                         If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -1504,9 +1521,9 @@ Public Class dlgEditMovie
             End If
 
             ' load scraped Extrathumbs
-            If Not Master.currMovie.etList Is Nothing Then
+            If Not Me.tmpDBMovie.etList Is Nothing Then
                 If Not ET_i >= ET_max Then
-                    For Each thumb As String In Master.currMovie.etList
+                    For Each thumb As String In Me.tmpDBMovie.etList
                         Dim ETImage As New Images
                         If Not String.IsNullOrEmpty(thumb) Then
                             ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
@@ -1555,8 +1572,8 @@ Public Class dlgEditMovie
 
         Try
             ' load local Extrafanarts
-            If Not Master.currMovie.RemoveEFanarts Then
-                For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+            If Not Me.tmpDBMovie.RemoveEFanarts Then
+                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EFanarts)
                     If Directory.Exists(a) Then
                         EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
                         If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -1578,9 +1595,9 @@ Public Class dlgEditMovie
             End If
 
             ' load scraped Extrafanarts
-            If Not Master.currMovie.efList Is Nothing Then
+            If Not Me.tmpDBMovie.efList Is Nothing Then
                 If Not EF_i >= EF_max Then
-                    For Each fanart As String In Master.currMovie.efList
+                    For Each fanart As String In Me.tmpDBMovie.efList
                         Dim EFImage As New Images
                         If Not String.IsNullOrEmpty(fanart) Then
                             EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
@@ -1651,7 +1668,7 @@ Public Class dlgEditMovie
         Me.TrailerStop()
         Me.CleanUp()
 
-        Master.currMovie = Master.DB.LoadMovieFromDB(Master.currMovie.ID)
+        Me.tmpDBMovie = Master.DB.LoadMovieFromDB(Me.tmpDBMovie.ID)
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -1734,7 +1751,7 @@ Public Class dlgEditMovie
             If iIndex >= 0 Then
                 Dim tPath As String = Me.EThumbsList.Item(iIndex).Path
                 If Me.EThumbsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
-                    Master.currMovie.etList.RemoveAll(Function(Str) Str = tPath)
+                    Me.tmpDBMovie.etList.RemoveAll(Function(Str) Str = tPath)
                     EThumbsList.Remove(EThumbsList.Item(iIndex))
                 Else
                     etDeleteList.Add(Me.EThumbsList.Item(iIndex).Path)
@@ -1756,7 +1773,7 @@ Public Class dlgEditMovie
             If iIndex >= 0 Then
                 Dim tPath As String = Me.EFanartsList.Item(iIndex).Path
                 If Me.EFanartsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
-                    Master.currMovie.efList.RemoveAll(Function(Str) Str = tPath)
+                    Me.tmpDBMovie.efList.RemoveAll(Function(Str) Str = tPath)
                     EFanartsList.Remove(EFanartsList.Item(iIndex))
                 Else
                     efDeleteList.Add(Me.EFanartsList.Item(iIndex).Path)
@@ -1830,77 +1847,72 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        If Master.currMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(Master.currMovie, True) Then
-            Try
-                Me.pbMovieBanner.AllowDrop = True
-                Me.pbMovieClearArt.AllowDrop = True
-                Me.pbMovieClearLogo.AllowDrop = True
-                Me.pbMovieDiscArt.AllowDrop = True
-                Me.pbMovieFanart.AllowDrop = True
-                Me.pbMovieLandscape.AllowDrop = True
-                Me.pbMoviePoster.AllowDrop = True
+        Try
+            Me.pbMovieBanner.AllowDrop = True
+            Me.pbMovieClearArt.AllowDrop = True
+            Me.pbMovieClearLogo.AllowDrop = True
+            Me.pbMovieDiscArt.AllowDrop = True
+            Me.pbMovieFanart.AllowDrop = True
+            Me.pbMovieLandscape.AllowDrop = True
+            Me.pbMoviePoster.AllowDrop = True
 
-                Me.SetUp()
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Master.currMovie)
-                Me.lvwActorSorter = New ListViewColumnSorter()
-                Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-                'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-                'Me.lvEThumbs.ListViewItemSorter = Me.lvwEThumbsSorter
-                'Me.lvwEFanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-                'Me.lvEFanarts.ListViewItemSorter = Me.lvwEFanartsSorter
+            Me.SetUp()
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Me.tmpDBMovie)
+            Me.lvwActorSorter = New ListViewColumnSorter()
+            Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
+            'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'Me.lvEThumbs.ListViewItemSorter = Me.lvwEThumbsSorter
+            'Me.lvwEFanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'Me.lvEFanarts.ListViewItemSorter = Me.lvwEFanartsSorter
 
-                Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-                Using g As Graphics = Graphics.FromImage(iBackground)
-                    g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                    Me.pnlTop.BackgroundImage = iBackground
-                End Using
+            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
 
-                Dim dFileInfoEdit As New dlgFileInfo
-                dFileInfoEdit.TopLevel = False
-                dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
-                dFileInfoEdit.BackColor = Color.White
-                dFileInfoEdit.Cancel_Button.Visible = False
-                Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
-                Dim oldwidth As Integer = dFileInfoEdit.Width
-                dFileInfoEdit.Width = pnlFileInfo.Width
-                dFileInfoEdit.Height = pnlFileInfo.Height
-                dFileInfoEdit.Show(False)
+            Dim dFileInfoEdit As New dlgFileInfo
+            dFileInfoEdit.TopLevel = False
+            dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
+            dFileInfoEdit.BackColor = Color.White
+            dFileInfoEdit.Cancel_Button.Visible = False
+            Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+            Dim oldwidth As Integer = dFileInfoEdit.Width
+            dFileInfoEdit.Width = pnlFileInfo.Width
+            dFileInfoEdit.Height = pnlFileInfo.Height
+            dFileInfoEdit.Show(False)
 
-                Me.LoadGenres()
-                Me.LoadRatings()
+            Me.LoadGenres()
+            Me.LoadRatings()
 
-                Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
-                pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
-                If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-                    tcEditMovie.TabPages.Remove(tpFrameExtraction)
-                End If
+            Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
+            pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
+            If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
+                tcEditMovie.TabPages.Remove(tpFrameExtraction)
+            End If
 
-                Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
-                pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
-                If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
-                    AnyThemePlayerEnabled = True
-                    pnlThemePreviewNoPlayer.Visible = False
-                End If
+            Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
+            pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
+            If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
+                AnyThemePlayerEnabled = True
+                pnlThemePreviewNoPlayer.Visible = False
+            End If
 
-                Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
-                pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
-                If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
-                    AnyTrailerPlayerEnabled = True
-                    pnlTrailerPreviewNoPlayer.Visible = False
-                End If
+            Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
+            pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
+            If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
+                AnyTrailerPlayerEnabled = True
+                pnlTrailerPreviewNoPlayer.Visible = False
+            End If
 
-                Me.FillInfo()
+            Me.FillInfo()
 
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-        Else
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Close()
-        End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -1934,14 +1946,14 @@ Public Class dlgEditMovie
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
-                If String.IsNullOrEmpty(Master.currMovie.NfoPath) Then
+                If String.IsNullOrEmpty(Me.tmpDBMovie.NfoPath) Then
                     .btnManual.Enabled = False
                 End If
 
-                Me.chkMark.Checked = Master.currMovie.IsMark
+                Me.chkMark.Checked = Me.tmpDBMovie.IsMark
                 'cocotus, 2013/02 Playcount/Watched state support added
                 'When Edit Movie-Page is loaded, checkbox will be unchecked of playcount=0 or not set at all... 
-                If Master.currMovie.Movie.PlayCount = "" Or Master.currMovie.Movie.PlayCount = "0" Then
+                If Me.tmpDBMovie.Movie.PlayCount = "" Or Me.tmpDBMovie.Movie.PlayCount = "0" Then
                     Me.chkWatched.Checked = False
                 Else
                     'Playcount <> Empty and not 0 -> Tag filled -> Checked!
@@ -1949,110 +1961,110 @@ Public Class dlgEditMovie
                 End If
                 'cocotus end
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
-                    .txtTitle.Text = Master.currMovie.Movie.Title
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Title) Then
+                    .txtTitle.Text = Me.tmpDBMovie.Movie.Title
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) Then
-                    .txtOriginalTitle.Text = Master.currMovie.Movie.OriginalTitle
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.OriginalTitle) Then
+                    .txtOriginalTitle.Text = Me.tmpDBMovie.Movie.OriginalTitle
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then
-                    .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.SortTitle) Then
+                    .txtSortTitle.Text = Me.tmpDBMovie.Movie.SortTitle
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Tagline) Then
-                    .txtTagline.Text = Master.currMovie.Movie.Tagline
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Tagline) Then
+                    .txtTagline.Text = Me.tmpDBMovie.Movie.Tagline
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                    .mtxtYear.Text = Master.currMovie.Movie.Year
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Year) Then
+                    .mtxtYear.Text = Me.tmpDBMovie.Movie.Year
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                    .txtVotes.Text = Master.currMovie.Movie.Votes
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Votes) Then
+                    .txtVotes.Text = Me.tmpDBMovie.Movie.Votes
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Outline) Then
-                    .txtOutline.Text = Master.currMovie.Movie.Outline
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Outline) Then
+                    .txtOutline.Text = Me.tmpDBMovie.Movie.Outline
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Plot) Then
-                    .txtPlot.Text = Master.currMovie.Movie.Plot
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Plot) Then
+                    .txtPlot.Text = Me.tmpDBMovie.Movie.Plot
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) Then
-                    .txtTop250.Text = Master.currMovie.Movie.Top250
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Top250) Then
+                    .txtTop250.Text = Me.tmpDBMovie.Movie.Top250
                 End If
 
-                If Master.currMovie.Movie.Countries.Count > 0 Then
-                    .txtCountry.Text = Master.currMovie.Movie.Country
+                If Me.tmpDBMovie.Movie.Countries.Count > 0 Then
+                    .txtCountry.Text = Me.tmpDBMovie.Movie.Country
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
-                    .txtRuntime.Text = Master.currMovie.Movie.Runtime
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Runtime) Then
+                    .txtRuntime.Text = Me.tmpDBMovie.Movie.Runtime
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.ReleaseDate) Then
-                    .txtReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.ReleaseDate) Then
+                    .txtReleaseDate.Text = Me.tmpDBMovie.Movie.ReleaseDate
                 End If
 
-                If Master.currMovie.Movie.Directors.Count > 0 Then
-                    .txtDirector.Text = Master.currMovie.Movie.Director
+                If Me.tmpDBMovie.Movie.Directors.Count > 0 Then
+                    .txtDirector.Text = Me.tmpDBMovie.Movie.Director
                 End If
 
-                If Master.currMovie.Movie.Credits.Count > 0 Then
-                    .txtCredits.Text = Master.currMovie.Movie.OldCredits
+                If Me.tmpDBMovie.Movie.Credits.Count > 0 Then
+                    .txtCredits.Text = Me.tmpDBMovie.Movie.OldCredits
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.VideoSource) Then
-                    .txtVideoSource.Text = Master.currMovie.VideoSource
-                ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
-                    .txtVideoSource.Text = Master.currMovie.Movie.VideoSource
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.VideoSource) Then
+                    .txtVideoSource.Text = Me.tmpDBMovie.VideoSource
+                ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.VideoSource) Then
+                    .txtVideoSource.Text = Me.tmpDBMovie.Movie.VideoSource
                 End If
 
-                If Master.currMovie.Movie.Certifications.Count > 0 Then
-                    .txtCerts.Text = Master.currMovie.Movie.Certification
+                If Me.tmpDBMovie.Movie.Certifications.Count > 0 Then
+                    .txtCerts.Text = Me.tmpDBMovie.Movie.Certification
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.LastPlayed) Then
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.LastPlayed) Then
                     Dim timecode As Double = 0
-                    Double.TryParse(Master.currMovie.Movie.LastPlayed, timecode)
+                    Double.TryParse(Me.tmpDBMovie.Movie.LastPlayed, timecode)
                     If timecode > 0 Then
                         .txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
                     Else
-                        .txtLastPlayed.Text = Master.currMovie.Movie.LastPlayed
+                        .txtLastPlayed.Text = Me.tmpDBMovie.Movie.LastPlayed
                     End If
                 End If
 
                 Me.SelectMPAA()
 
-                If String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
+                If String.IsNullOrEmpty(Me.tmpDBMovie.ThemePath) Then
                     '.btnPlayTheme.Enabled = False
                 End If
 
                 '.btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Trailer) Then
-                    .txtTrailer.Text = Master.currMovie.Movie.Trailer
+                If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.Trailer) Then
+                    .txtTrailer.Text = Me.tmpDBMovie.Movie.Trailer
                     .btnPlayTrailer.Enabled = True
                 Else
                     .btnPlayTrailer.Enabled = False
                 End If
 
-                .btnDLTrailer.Enabled = Master.DefaultMovieOptions.bTrailer
+                .btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bTrailer
 
-                If Master.currMovie.Movie.Studios.Count > 0 Then
-                    .txtStudio.Text = Master.currMovie.Movie.Studio
+                If Me.tmpDBMovie.Movie.Studios.Count > 0 Then
+                    .txtStudio.Text = Me.tmpDBMovie.Movie.Studio
                 End If
 
                 For i As Integer = 0 To .clbGenre.Items.Count - 1
                     .clbGenre.SetItemChecked(i, False)
                 Next
-                If Master.currMovie.Movie.Genres.Count > 0 Then
-                    For g As Integer = 0 To Master.currMovie.Movie.Genres.Count - 1
-                        If .clbGenre.FindString(Master.currMovie.Movie.Genres(g).Trim) > 0 Then
-                            .clbGenre.SetItemChecked(.clbGenre.FindString(Master.currMovie.Movie.Genres(g).Trim), True)
+                If Me.tmpDBMovie.Movie.Genres.Count > 0 Then
+                    For g As Integer = 0 To Me.tmpDBMovie.Movie.Genres.Count - 1
+                        If .clbGenre.FindString(Me.tmpDBMovie.Movie.Genres(g).Trim) > 0 Then
+                            .clbGenre.SetItemChecked(.clbGenre.FindString(Me.tmpDBMovie.Movie.Genres(g).Trim), True)
                         End If
                     Next
 
@@ -2065,27 +2077,27 @@ Public Class dlgEditMovie
 
                 Dim lvItem As ListViewItem
                 .lvActors.Items.Clear()
-                For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
+                For Each imdbAct As MediaContainers.Person In Me.tmpDBMovie.Movie.Actors
                     lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
                     lvItem.SubItems.Add(imdbAct.Name)
                     lvItem.SubItems.Add(imdbAct.Role)
                     lvItem.SubItems.Add(imdbAct.ThumbURL)
                 Next
 
-                If Not Master.currMovie.Filename = String.Empty AndAlso Master.currMovie.Movie.VideoSource = "" Then
-                    Dim vSource As String = APIXML.GetVideoSource(Master.currMovie.Filename, False)
+                If Not Me.tmpDBMovie.Filename = String.Empty AndAlso Me.tmpDBMovie.Movie.VideoSource = "" Then
+                    Dim vSource As String = APIXML.GetVideoSource(Me.tmpDBMovie.Filename, False)
                     If Not String.IsNullOrEmpty(vSource) Then
-                        Master.currMovie.VideoSource = vSource
-                        Master.currMovie.Movie.VideoSource = Master.currMovie.VideoSource
-                    ElseIf String.IsNullOrEmpty(Master.currMovie.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                        Master.currMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(Master.currMovie.Filename)), String.Empty, "*EmberAPP")
-                        Master.currMovie.Movie.VideoSource = Master.currMovie.VideoSource
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.VideoSource) Then
-                        Master.currMovie.VideoSource = Master.currMovie.Movie.VideoSource
+                        Me.tmpDBMovie.VideoSource = vSource
+                        Me.tmpDBMovie.Movie.VideoSource = Me.tmpDBMovie.VideoSource
+                    ElseIf String.IsNullOrEmpty(Me.tmpDBMovie.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                        Me.tmpDBMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(Me.tmpDBMovie.Filename)), String.Empty, "*EmberAPP")
+                        Me.tmpDBMovie.Movie.VideoSource = Me.tmpDBMovie.VideoSource
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.VideoSource) Then
+                        Me.tmpDBMovie.VideoSource = Me.tmpDBMovie.Movie.VideoSource
                     End If
                 End If
 
-                Dim tRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
+                Dim tRating As Single = NumUtils.ConvertToSingle(Me.tmpDBMovie.Movie.Rating)
                 .tmpRating = tRating.ToString
                 .pbStar1.Tag = tRating
                 .pbStar2.Tag = tRating
@@ -2100,7 +2112,7 @@ Public Class dlgEditMovie
                 If tRating > 0 Then .BuildStars(tRating)
 
                 If DoAll Then
-                    Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
+                    Dim pExt As String = Path.GetExtension(Me.tmpDBMovie.Filename).ToLower
                     If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                     pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
                     pExt = ".disc" Then
@@ -2195,10 +2207,10 @@ Public Class dlgEditMovie
                         tcEditMovie.TabPages.Remove(tpTheme)
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.BannerPath) AndAlso Master.currMovie.BannerPath.Substring(0, 1) = ":" Then
-                        MovieBanner.FromWeb(Master.currMovie.BannerPath.Substring(1, Master.currMovie.BannerPath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.BannerPath) Then
-                        MovieBanner.FromFile(Master.currMovie.BannerPath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.BannerPath) AndAlso Me.tmpDBMovie.BannerPath.Substring(0, 1) = ":" Then
+                        MovieBanner.FromWeb(Me.tmpDBMovie.BannerPath.Substring(1, Me.tmpDBMovie.BannerPath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.BannerPath) Then
+                        MovieBanner.FromFile(Me.tmpDBMovie.BannerPath)
                     End If
                     If MovieBanner.Image IsNot Nothing Then
                         .pbMovieBanner.Image = MovieBanner.Image
@@ -2207,10 +2219,10 @@ Public Class dlgEditMovie
                         .lblMovieBannerSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.ClearArtPath) AndAlso Master.currMovie.ClearArtPath.Substring(0, 1) = ":" Then
-                        MovieClearArt.FromWeb(Master.currMovie.ClearArtPath.Substring(1, Master.currMovie.ClearArtPath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.ClearArtPath) Then
-                        MovieClearArt.FromFile(Master.currMovie.ClearArtPath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.ClearArtPath) AndAlso Me.tmpDBMovie.ClearArtPath.Substring(0, 1) = ":" Then
+                        MovieClearArt.FromWeb(Me.tmpDBMovie.ClearArtPath.Substring(1, Me.tmpDBMovie.ClearArtPath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.ClearArtPath) Then
+                        MovieClearArt.FromFile(Me.tmpDBMovie.ClearArtPath)
                     End If
                     If MovieClearArt.Image IsNot Nothing Then
                         .pbMovieClearArt.Image = MovieClearArt.Image
@@ -2219,10 +2231,10 @@ Public Class dlgEditMovie
                         .lblMovieClearArtSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.ClearLogoPath) AndAlso Master.currMovie.ClearLogoPath.Substring(0, 1) = ":" Then
-                        MovieClearLogo.FromWeb(Master.currMovie.ClearLogoPath.Substring(1, Master.currMovie.ClearLogoPath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.ClearLogoPath) Then
-                        MovieClearLogo.FromFile(Master.currMovie.ClearLogoPath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.ClearLogoPath) AndAlso Me.tmpDBMovie.ClearLogoPath.Substring(0, 1) = ":" Then
+                        MovieClearLogo.FromWeb(Me.tmpDBMovie.ClearLogoPath.Substring(1, Me.tmpDBMovie.ClearLogoPath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.ClearLogoPath) Then
+                        MovieClearLogo.FromFile(Me.tmpDBMovie.ClearLogoPath)
                     End If
                     If MovieClearLogo.Image IsNot Nothing Then
                         .pbMovieClearLogo.Image = MovieClearLogo.Image
@@ -2231,10 +2243,10 @@ Public Class dlgEditMovie
                         .lblMovieClearLogoSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.DiscArtPath) AndAlso Master.currMovie.DiscArtPath.Substring(0, 1) = ":" Then
-                        MovieDiscArt.FromWeb(Master.currMovie.DiscArtPath.Substring(1, Master.currMovie.DiscArtPath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.DiscArtPath) Then
-                        MovieDiscArt.FromFile(Master.currMovie.DiscArtPath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.DiscArtPath) AndAlso Me.tmpDBMovie.DiscArtPath.Substring(0, 1) = ":" Then
+                        MovieDiscArt.FromWeb(Me.tmpDBMovie.DiscArtPath.Substring(1, Me.tmpDBMovie.DiscArtPath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.DiscArtPath) Then
+                        MovieDiscArt.FromFile(Me.tmpDBMovie.DiscArtPath)
                     End If
                     If MovieDiscArt.Image IsNot Nothing Then
                         .pbMovieDiscArt.Image = MovieDiscArt.Image
@@ -2243,10 +2255,10 @@ Public Class dlgEditMovie
                         .lblMovieDiscArtSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.FanartPath) AndAlso Master.currMovie.FanartPath.Substring(0, 1) = ":" Then
-                        MovieFanart.FromWeb(Master.currMovie.FanartPath.Substring(1, Master.currMovie.FanartPath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.FanartPath) Then
-                        MovieFanart.FromFile(Master.currMovie.FanartPath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.FanartPath) AndAlso Me.tmpDBMovie.FanartPath.Substring(0, 1) = ":" Then
+                        MovieFanart.FromWeb(Me.tmpDBMovie.FanartPath.Substring(1, Me.tmpDBMovie.FanartPath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.FanartPath) Then
+                        MovieFanart.FromFile(Me.tmpDBMovie.FanartPath)
                     End If
                     If MovieFanart.Image IsNot Nothing Then
                         .pbMovieFanart.Image = MovieFanart.Image
@@ -2255,10 +2267,10 @@ Public Class dlgEditMovie
                         .lblMovieFanartSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.LandscapePath) AndAlso Master.currMovie.LandscapePath.Substring(0, 1) = ":" Then
-                        MovieLandscape.FromWeb(Master.currMovie.LandscapePath.Substring(1, Master.currMovie.LandscapePath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.LandscapePath) Then
-                        MovieLandscape.FromFile(Master.currMovie.LandscapePath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.LandscapePath) AndAlso Me.tmpDBMovie.LandscapePath.Substring(0, 1) = ":" Then
+                        MovieLandscape.FromWeb(Me.tmpDBMovie.LandscapePath.Substring(1, Me.tmpDBMovie.LandscapePath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.LandscapePath) Then
+                        MovieLandscape.FromFile(Me.tmpDBMovie.LandscapePath)
                     End If
                     If MovieLandscape.Image IsNot Nothing Then
                         .pbMovieLandscape.Image = MovieLandscape.Image
@@ -2267,10 +2279,10 @@ Public Class dlgEditMovie
                         .lblMovieLandscapeSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.PosterPath) AndAlso Master.currMovie.PosterPath.Substring(0, 1) = ":" Then
-                        MoviePoster.FromWeb(Master.currMovie.PosterPath.Substring(1, Master.currMovie.PosterPath.Length - 1))
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.PosterPath) Then
-                        MoviePoster.FromFile(Master.currMovie.PosterPath)
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.PosterPath) AndAlso Me.tmpDBMovie.PosterPath.Substring(0, 1) = ":" Then
+                        MoviePoster.FromWeb(Me.tmpDBMovie.PosterPath.Substring(1, Me.tmpDBMovie.PosterPath.Length - 1))
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.PosterPath) Then
+                        MoviePoster.FromFile(Me.tmpDBMovie.PosterPath)
                     End If
                     If MoviePoster.Image IsNot Nothing Then
                         .pbMoviePoster.Image = MoviePoster.Image
@@ -2279,25 +2291,25 @@ Public Class dlgEditMovie
                         .lblMoviePosterSize.Visible = True
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) AndAlso Master.currMovie.ThemePath.Substring(0, 1) = ":" Then
-                        MovieTheme.FromWeb(Master.currMovie.ThemePath.Substring(1, Master.currMovie.ThemePath.Length - 1))
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.ThemePath) AndAlso Me.tmpDBMovie.ThemePath.Substring(0, 1) = ":" Then
+                        MovieTheme.FromWeb(Me.tmpDBMovie.ThemePath.Substring(1, Me.tmpDBMovie.ThemePath.Length - 1))
                         ThemeAddToPlayer(MovieTheme)
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
-                        MovieTheme.FromFile(Master.currMovie.ThemePath)
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.ThemePath) Then
+                        MovieTheme.FromFile(Me.tmpDBMovie.ThemePath)
                         ThemeAddToPlayer(MovieTheme)
                     End If
 
-                    If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
-                        MovieTrailer.WebTrailer.FromWeb(Master.currMovie.TrailerPath.Substring(1, Master.currMovie.TrailerPath.Length - 1))
+                    If Not String.IsNullOrEmpty(Me.tmpDBMovie.TrailerPath) AndAlso Me.tmpDBMovie.TrailerPath.Substring(0, 1) = ":" Then
+                        MovieTrailer.WebTrailer.FromWeb(Me.tmpDBMovie.TrailerPath.Substring(1, Me.tmpDBMovie.TrailerPath.Length - 1))
                         TrailerPlaylistAdd(MovieTrailer)
-                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
-                        MovieTrailer.WebTrailer.FromFile(Master.currMovie.TrailerPath)
+                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBMovie.TrailerPath) Then
+                        MovieTrailer.WebTrailer.FromFile(Me.tmpDBMovie.TrailerPath)
                         TrailerPlaylistAdd(MovieTrailer)
                     End If
 
-                    If Path.GetExtension(Master.currMovie.Filename).ToLower = ".disc" Then
+                    If Path.GetExtension(Me.tmpDBMovie.Filename).ToLower = ".disc" Then
                         Dim DiscStub As New MediaStub.DiscStub
-                        DiscStub = MediaStub.LoadDiscStub(Master.currMovie.Filename)
+                        DiscStub = MediaStub.LoadDiscStub(Me.tmpDBMovie.Filename)
                         .txtMediaStubTitle.Text = DiscStub.Title
                         .txtMediaStubMessage.Text = DiscStub.Message
                     End If
@@ -2389,10 +2401,8 @@ Public Class dlgEditMovie
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.SetInfo()
-
-        Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
-
         Me.CleanUp()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -2862,14 +2872,14 @@ Public Class dlgEditMovie
 
     Private Sub SaveEThumbsList()
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EThumbs)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
             Next
 
             For Each eThumb As ExtraImages In EThumbsList
-                Master.currMovie.EThumbsPath = eThumb.Image.SaveAsMovieExtrathumb(Master.currMovie)
+                Me.tmpDBMovie.EThumbsPath = eThumb.Image.SaveAsMovieExtrathumb(Me.tmpDBMovie)
             Next
 
         Catch ex As Exception
@@ -2879,14 +2889,14 @@ Public Class dlgEditMovie
 
     Private Sub SaveEFanartsList()
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EFanarts)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
             Next
 
             For Each eFanart As ExtraImages In EFanartsList
-                Master.currMovie.EFanartsPath = eFanart.Image.SaveAsMovieExtrafanart(Master.currMovie, eFanart.Name)
+                Me.tmpDBMovie.EFanartsPath = eFanart.Image.SaveAsMovieExtrafanart(Me.tmpDBMovie, eFanart.Name)
             Next
 
         Catch ex As Exception
@@ -2896,12 +2906,12 @@ Public Class dlgEditMovie
 
     Private Sub SelectMPAA()
         Try
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
+            If Not String.IsNullOrEmpty(Me.tmpDBMovie.Movie.MPAA) Then
                 If Master.eSettings.MovieScraperCertOnlyValue Then
                     Dim sItem As String = String.Empty
                     For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
                         sItem = Me.lbMPAA.Items(i).ToString
-                        If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = Master.currMovie.Movie.MPAA Then
+                        If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = Me.tmpDBMovie.Movie.MPAA Then
                             Me.lbMPAA.SelectedIndex = i
                             Me.lbMPAA.TopIndex = i
                             Exit For
@@ -2910,7 +2920,7 @@ Public Class dlgEditMovie
                 Else
                     Dim i As Integer = 0
                     For ctr As Integer = 0 To Me.lbMPAA.Items.Count - 1
-                        If Master.currMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                        If Me.tmpDBMovie.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                             i = ctr
                             Exit For
                         End If
@@ -2922,11 +2932,11 @@ Public Class dlgEditMovie
                     Dim strMPAADesc As String = String.Empty
                     If i > 0 Then
                         strMPAA = Me.lbMPAA.Items.Item(i).ToString
-                        strMPAADesc = Master.currMovie.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
+                        strMPAADesc = Me.tmpDBMovie.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
                         Me.txtMPAA.Text = strMPAA
                         Me.txtMPAADesc.Text = strMPAADesc
                     Else
-                        Me.txtMPAA.Text = Master.currMovie.Movie.MPAA
+                        Me.txtMPAA.Text = Me.tmpDBMovie.Movie.MPAA
                     End If
                 End If
             End If
@@ -2950,69 +2960,53 @@ Public Class dlgEditMovie
                 Me.btnRescrape.Enabled = False
                 Me.btnChangeMovie.Enabled = False
 
-                Master.currMovie.IsMark = Me.chkMark.Checked
+                Me.tmpDBMovie.IsMark = Me.chkMark.Checked
 
-                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                    Master.currMovie.Movie.Title = .txtTitle.Text.Trim
 
-                    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
-                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_Movie(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
-                    Else
-                        Master.currMovie.ListTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
-                    End If
-                End If
-
-                Master.currMovie.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
 
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
-                    Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
+                    Me.tmpDBMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
                 Else
-                    Master.currMovie.Movie.SortTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
+                    Me.tmpDBMovie.Movie.SortTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
                 End If
 
-                Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim
-                Master.currMovie.Movie.Year = .mtxtYear.Text.Trim
-                Master.currMovie.Movie.Votes = .txtVotes.Text.Trim
-                Master.currMovie.Movie.Outline = .txtOutline.Text.Trim
-                Master.currMovie.Movie.Plot = .txtPlot.Text.Trim
-                Master.currMovie.Movie.Top250 = .txtTop250.Text.Trim
-                Master.currMovie.Movie.Country = .txtCountry.Text.Trim
-                Master.currMovie.Movie.Director = .txtDirector.Text.Trim
-
-                Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
-                Master.currMovie.Movie.MPAA = String.Concat(.txtMPAA.Text, " ", .txtMPAADesc.Text).Trim
-
-                Master.currMovie.VideoSource = .txtVideoSource.Text.Trim
-                Master.currMovie.Movie.VideoSource = .txtVideoSource.Text.Trim
+                Me.tmpDBMovie.Movie.Tagline = .txtTagline.Text.Trim
+                Me.tmpDBMovie.Movie.Year = .mtxtYear.Text.Trim
+                Me.tmpDBMovie.Movie.Votes = .txtVotes.Text.Trim
+                Me.tmpDBMovie.Movie.Outline = .txtOutline.Text.Trim
+                Me.tmpDBMovie.Movie.Plot = .txtPlot.Text.Trim
+                Me.tmpDBMovie.Movie.Top250 = .txtTop250.Text.Trim
+                Me.tmpDBMovie.Movie.Country = .txtCountry.Text.Trim
+                Me.tmpDBMovie.Movie.Director = .txtDirector.Text.Trim
+                Me.tmpDBMovie.Movie.Title = .txtTitle.Text.Trim
+                Me.tmpDBMovie.Movie.Certification = .txtCerts.Text.Trim
+                Me.tmpDBMovie.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
+                Me.tmpDBMovie.Movie.MPAA = String.Concat(.txtMPAA.Text, " ", .txtMPAADesc.Text).Trim
+                Me.tmpDBMovie.Movie.Runtime = .txtRuntime.Text.Trim
+                Me.tmpDBMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
+                Me.tmpDBMovie.Movie.OldCredits = .txtCredits.Text.Trim
+                Me.tmpDBMovie.Movie.Studio = .txtStudio.Text.Trim
+                Me.tmpDBMovie.VideoSource = .txtVideoSource.Text.Trim
+                Me.tmpDBMovie.Movie.VideoSource = .txtVideoSource.Text.Trim
+                Me.tmpDBMovie.Movie.Trailer = .txtTrailer.Text.Trim
+                Me.tmpDBMovie.ListTitle = StringUtils.ListTitle_Movie(.txtTitle.Text, .mtxtYear.Text)
 
                 If Not .tmpRating.Trim = String.Empty AndAlso .tmpRating.Trim <> "0" Then
-                    Master.currMovie.Movie.Rating = .tmpRating
+                    Me.tmpDBMovie.Movie.Rating = .tmpRating
                 Else
-                    Master.currMovie.Movie.Rating = String.Empty
-                End If
-
-                Master.currMovie.Movie.Runtime = .txtRuntime.Text.Trim
-                Master.currMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
-                Master.currMovie.Movie.OldCredits = .txtCredits.Text.Trim
-                Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
-
-                If Master.eSettings.MovieScraperXBMCTrailerFormat Then
-                    Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                    Master.currMovie.Movie.Trailer = Master.currMovie.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                Else
-                    Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
+                    Me.tmpDBMovie.Movie.Rating = String.Empty
                 End If
 
                 'cocotus, 2013/02 Playcount/Watched state support added
                 'if watched-checkbox is checked -> save Playcount=1 in nfo
                 If chkWatched.Checked Then
                     'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If String.IsNullOrEmpty(Master.currMovie.Movie.PlayCount) Or Master.currMovie.Movie.PlayCount = "0" Then
-                        Master.currMovie.Movie.PlayCount = "1"
-                        Master.currMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                    If String.IsNullOrEmpty(Me.tmpDBMovie.Movie.PlayCount) Or Me.tmpDBMovie.Movie.PlayCount = "0" Then
+                        Me.tmpDBMovie.Movie.PlayCount = "1"
+                        Me.tmpDBMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
                                 fs.Close()
@@ -3021,13 +3015,13 @@ Public Class dlgEditMovie
                     End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If Integer.TryParse(Master.currMovie.Movie.PlayCount, 0) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
-                        Master.currMovie.Movie.PlayCount = ""
-                        Master.currMovie.Movie.LastPlayed = ""
+                    If Integer.TryParse(Me.tmpDBMovie.Movie.PlayCount, 0) AndAlso CInt(Me.tmpDBMovie.Movie.PlayCount) > 0 Then
+                        Me.tmpDBMovie.Movie.PlayCount = ""
+                        Me.tmpDBMovie.Movie.LastPlayed = ""
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.WatchedFile)
                             If File.Exists(a) Then
                                 File.Delete(a)
                             End If
@@ -3039,17 +3033,17 @@ Public Class dlgEditMovie
                 If .clbGenre.CheckedItems.Count > 0 Then
 
                     If .clbGenre.CheckedIndices.Contains(0) Then
-                        Master.currMovie.Movie.Genre = String.Empty
+                        Me.tmpDBMovie.Movie.Genre = String.Empty
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
                         Dim iChecked = From iCheck In .clbGenre.CheckedItems
                         strGenre = String.Join(" / ", iChecked.ToArray)
-                        Master.currMovie.Movie.Genre = strGenre.Trim
+                        Me.tmpDBMovie.Movie.Genre = strGenre.Trim
                     End If
                 End If
 
-                Master.currMovie.Movie.Actors.Clear()
+                Me.tmpDBMovie.Movie.Actors.Clear()
 
                 If .lvActors.Items.Count > 0 Then
                     Dim iOrder As Integer = 0
@@ -3061,12 +3055,12 @@ Public Class dlgEditMovie
                         addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
                         addActor.Order = iOrder
                         iOrder += 1
-                        Master.currMovie.Movie.Actors.Add(addActor)
+                        Me.tmpDBMovie.Movie.Actors.Add(addActor)
                     Next
                 End If
 
-                If Master.currMovie.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
+                If Me.tmpDBMovie.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -3074,48 +3068,48 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Master.currMovie.RemoveBanner Then
-                    .MovieBanner.DeleteMovieBanner(Master.currMovie)
+                If Me.tmpDBMovie.RemoveBanner Then
+                    .MovieBanner.DeleteMovieBanner(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveClearArt Then
-                    .MovieClearArt.DeleteMovieClearArt(Master.currMovie)
+                If Me.tmpDBMovie.RemoveClearArt Then
+                    .MovieClearArt.DeleteMovieClearArt(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveClearLogo Then
-                    .MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
+                If Me.tmpDBMovie.RemoveClearLogo Then
+                    .MovieClearLogo.DeleteMovieClearLogo(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveDiscArt Then
-                    .MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
+                If Me.tmpDBMovie.RemoveDiscArt Then
+                    .MovieDiscArt.DeleteMovieDiscArt(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveFanart Then
-                    .MovieFanart.DeleteMovieFanart(Master.currMovie)
+                If Me.tmpDBMovie.RemoveFanart Then
+                    .MovieFanart.DeleteMovieFanart(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveLandscape Then
-                    .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
+                If Me.tmpDBMovie.RemoveLandscape Then
+                    .MovieLandscape.DeleteMovieLandscape(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemovePoster Then
-                    .MoviePoster.DeleteMoviePoster(Master.currMovie)
+                If Me.tmpDBMovie.RemovePoster Then
+                    .MoviePoster.DeleteMoviePoster(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveTheme Then
-                    .MovieTheme.DeleteMovieTheme(Master.currMovie)
+                If Me.tmpDBMovie.RemoveTheme Then
+                    .MovieTheme.DeleteMovieTheme(Me.tmpDBMovie)
                 End If
 
-                If Master.currMovie.RemoveTrailer Then
-                    .MovieTrailer.WebTrailer.DeleteMovieTrailer(Master.currMovie)
+                If Me.tmpDBMovie.RemoveTrailer Then
+                    .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
                 End If
 
                 If Master.GlobalScrapeMod.ActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
+                    For Each act As MediaContainers.Person In Me.tmpDBMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.ThumbURL)
                         If img.Image IsNot Nothing Then
-                            act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                            act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(Me.tmpDBMovie.Filename).FullName, Me.tmpDBMovie)
                         Else
                             act.ThumbPath = String.Empty
                         End If
@@ -3123,92 +3117,92 @@ Public Class dlgEditMovie
                 End If
 
                 If .MovieBanner.Image IsNot Nothing Then
-                    Dim fPath As String = .MovieBanner.SaveAsMovieBanner(Master.currMovie)
-                    Master.currMovie.BannerPath = fPath
+                    Dim fPath As String = .MovieBanner.SaveAsMovieBanner(Me.tmpDBMovie)
+                    Me.tmpDBMovie.BannerPath = fPath
                 Else
-                    .MovieBanner.DeleteMovieBanner(Master.currMovie)
-                    Master.currMovie.BannerPath = String.Empty
+                    .MovieBanner.DeleteMovieBanner(Me.tmpDBMovie)
+                    Me.tmpDBMovie.BannerPath = String.Empty
                 End If
 
                 If .MovieClearArt.Image IsNot Nothing Then
-                    Dim fPath As String = .MovieClearArt.SaveAsMovieClearArt(Master.currMovie)
-                    Master.currMovie.ClearArtPath = fPath
+                    Dim fPath As String = .MovieClearArt.SaveAsMovieClearArt(Me.tmpDBMovie)
+                    Me.tmpDBMovie.ClearArtPath = fPath
                 Else
-                    .MovieClearArt.DeleteMovieClearArt(Master.currMovie)
-                    Master.currMovie.ClearArtPath = String.Empty
+                    .MovieClearArt.DeleteMovieClearArt(Me.tmpDBMovie)
+                    Me.tmpDBMovie.ClearArtPath = String.Empty
                 End If
 
                 If .MovieClearLogo.Image IsNot Nothing Then
-                    Dim fPath As String = .MovieClearLogo.SaveAsMovieClearLogo(Master.currMovie)
-                    Master.currMovie.ClearLogoPath = fPath
+                    Dim fPath As String = .MovieClearLogo.SaveAsMovieClearLogo(Me.tmpDBMovie)
+                    Me.tmpDBMovie.ClearLogoPath = fPath
                 Else
-                    .MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
-                    Master.currMovie.ClearLogoPath = String.Empty
+                    .MovieClearLogo.DeleteMovieClearLogo(Me.tmpDBMovie)
+                    Me.tmpDBMovie.ClearLogoPath = String.Empty
                 End If
 
                 If .MovieDiscArt.Image IsNot Nothing Then
-                    Dim fPath As String = .MovieDiscArt.SaveAsMovieDiscArt(Master.currMovie)
-                    Master.currMovie.DiscArtPath = fPath
+                    Dim fPath As String = .MovieDiscArt.SaveAsMovieDiscArt(Me.tmpDBMovie)
+                    Me.tmpDBMovie.DiscArtPath = fPath
                 Else
-                    .MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
-                    Master.currMovie.DiscArtPath = String.Empty
+                    .MovieDiscArt.DeleteMovieDiscArt(Me.tmpDBMovie)
+                    Me.tmpDBMovie.DiscArtPath = String.Empty
                 End If
 
                 If .MovieFanart.Image IsNot Nothing Then
-                    Dim fPath As String = .MovieFanart.SaveAsMovieFanart(Master.currMovie)
-                    Master.currMovie.FanartPath = fPath
+                    Dim fPath As String = .MovieFanart.SaveAsMovieFanart(Me.tmpDBMovie)
+                    Me.tmpDBMovie.FanartPath = fPath
                 Else
-                    .MovieFanart.DeleteMovieFanart(Master.currMovie)
-                    Master.currMovie.FanartPath = String.Empty
+                    .MovieFanart.DeleteMovieFanart(Me.tmpDBMovie)
+                    Me.tmpDBMovie.FanartPath = String.Empty
                 End If
 
                 If .MovieLandscape.Image IsNot Nothing Then
-                    Dim fPath As String = .MovieLandscape.SaveAsMovieLandscape(Master.currMovie)
-                    Master.currMovie.LandscapePath = fPath
+                    Dim fPath As String = .MovieLandscape.SaveAsMovieLandscape(Me.tmpDBMovie)
+                    Me.tmpDBMovie.LandscapePath = fPath
                 Else
-                    .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
-                    Master.currMovie.LandscapePath = String.Empty
+                    .MovieLandscape.DeleteMovieLandscape(Me.tmpDBMovie)
+                    Me.tmpDBMovie.LandscapePath = String.Empty
                 End If
 
                 If .MoviePoster.Image IsNot Nothing Then
-                    Dim pPath As String = .MoviePoster.SaveAsMoviePoster(Master.currMovie)
-                    Master.currMovie.PosterPath = pPath
+                    Dim pPath As String = .MoviePoster.SaveAsMoviePoster(Me.tmpDBMovie)
+                    Me.tmpDBMovie.PosterPath = pPath
                 Else
-                    .MoviePoster.DeleteMoviePoster(Master.currMovie)
-                    Master.currMovie.PosterPath = String.Empty
+                    .MoviePoster.DeleteMoviePoster(Me.tmpDBMovie)
+                    Me.tmpDBMovie.PosterPath = String.Empty
                 End If
 
                 If Not String.IsNullOrEmpty(.MovieTheme.Extention) AndAlso Not MovieTheme.toRemove Then 'TODO: proper check, extention check is only a woraround
-                    Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Master.currMovie)
-                    Master.currMovie.ThemePath = tPath
+                    Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Me.tmpDBMovie)
+                    Me.tmpDBMovie.ThemePath = tPath
                 Else
-                    .MovieTheme.DeleteMovieTheme(Master.currMovie)
-                    Master.currMovie.ThemePath = String.Empty
+                    .MovieTheme.DeleteMovieTheme(Me.tmpDBMovie)
+                    Me.tmpDBMovie.ThemePath = String.Empty
                 End If
 
                 If Not String.IsNullOrEmpty(.MovieTrailer.WebTrailer.Extention) AndAlso Not MovieTrailer.WebTrailer.toRemove Then 'TODO: proper check, extention check is only a woraround
                     If Master.eSettings.MovieTrailerDeleteExisting Then
-                        .MovieTrailer.WebTrailer.DeleteMovieTrailer(Master.currMovie)
+                        .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
                     End If
-                    Dim tPath As String = .MovieTrailer.WebTrailer.SaveAsMovieTrailer(Master.currMovie)
-                    Master.currMovie.TrailerPath = tPath
+                    Dim tPath As String = .MovieTrailer.WebTrailer.SaveAsMovieTrailer(Me.tmpDBMovie)
+                    Me.tmpDBMovie.TrailerPath = tPath
                 Else
-                    .MovieTrailer.WebTrailer.DeleteMovieTrailer(Master.currMovie)
-                    Master.currMovie.TrailerPath = String.Empty
+                    .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
+                    Me.tmpDBMovie.TrailerPath = String.Empty
                 End If
 
-                If Path.GetExtension(Master.currMovie.Filename) = ".disc" Then
-                    Dim StubFile As String = Master.currMovie.Filename
+                If Path.GetExtension(Me.tmpDBMovie.Filename) = ".disc" Then
+                    Dim StubFile As String = Me.tmpDBMovie.Filename
                     Dim Title As String = Me.txtMediaStubTitle.Text
                     Dim Message As String = Me.txtMediaStubMessage.Text
                     MediaStub.SaveDiscStub(StubFile, Title, Message)
                 End If
 
-                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
-                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
+                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then Me.tmpDBMovie.Movie.Thumb = pResults.Posters
+                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Me.tmpDBMovie.Movie.Fanart = pResults.Fanart
 
                 Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
-                For Each Subtitle In Master.currMovie.Subtitles
+                For Each Subtitle In Me.tmpDBMovie.Subtitles
                     If Subtitle.toRemove Then
                         removeSubtitles.Add(Subtitle)
                     End If
@@ -3217,7 +3211,7 @@ Public Class dlgEditMovie
                     If File.Exists(Subtitle.SubsPath) Then
                         File.Delete(Subtitle.SubsPath)
                     End If
-                    Master.currMovie.Subtitles.Remove(Subtitle)
+                    Me.tmpDBMovie.Subtitles.Remove(Subtitle)
                 Next
 
                 .SaveEThumbsList()
@@ -3231,10 +3225,10 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SetUp()
-        Dim mTitle As String = Master.currMovie.Movie.Title
+        Dim mTitle As String = Me.tmpDBMovie.Movie.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
-        Me.tsFilename.Text = Master.currMovie.Filename
+        Me.tsFilename.Text = Me.tmpDBMovie.Filename
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
@@ -3433,12 +3427,12 @@ Public Class dlgEditMovie
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 Dim tmpFileInfo As New MediaInfo.Fileinfo
-                tmpFileInfo.StreamDetails.Subtitle.AddRange(Master.currMovie.Subtitles)
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(Me.tmpDBMovie.Subtitles)
                 Using dEditStream As New dlgFIStreamEditor
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                            Master.currMovie.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                            Me.tmpDBMovie.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
                         End If
                         'NeedToRefresh = True
                         LoadSubtitles()
@@ -3455,7 +3449,7 @@ Public Class dlgEditMovie
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    Master.currMovie.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
+                    Me.tmpDBMovie.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
                 End If
                 'NeedToRefresh = True
                 LoadSubtitles()
@@ -3472,7 +3466,7 @@ Public Class dlgEditMovie
         lvSubtitles.Groups.Clear()
         lvSubtitles.Items.Clear()
         Try
-            If Master.currMovie.Subtitles.Count > 0 Then
+            If Me.tmpDBMovie.Subtitles.Count > 0 Then
                 g = New ListViewGroup
                 g.Header = Master.eLang.GetString(597, "Subtitle Stream")
                 lvSubtitles.Groups.Add(g)
@@ -3491,8 +3485,8 @@ Public Class dlgEditMovie
                 g.Items.Add(i)
                 lvSubtitles.Items.Add(i)
                 Dim s As MediaInfo.Subtitle
-                For c = 0 To Master.currMovie.Subtitles.Count - 1
-                    s = Master.currMovie.Subtitles(c)
+                For c = 0 To Me.tmpDBMovie.Subtitles.Count - 1
+                    s = Me.tmpDBMovie.Subtitles(c)
                     If Not s Is Nothing Then
                         i = New ListViewItem
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")

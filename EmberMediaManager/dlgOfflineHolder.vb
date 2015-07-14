@@ -537,7 +537,7 @@ Public Class dlgOfflineHolder
                 'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                 Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
 
-                If Not ModulesManager.Instance.ScrapeData_Movie(ScrapedMovie, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultMovieOptions, False) Then
+                If Not ModulesManager.Instance.ScrapeData_Movie(ScrapedMovie, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie, False) Then
                     If rbTypeMovieTitle.Checked Then
                         Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", ScrapedMovie.Movie.Title)
                     End If
@@ -1499,7 +1499,7 @@ Public Class dlgOfflineHolder
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
 
-            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultMovieOptions, False) Then
+            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then
                     Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", sMovie.Movie.Title)
                 End If
@@ -1625,7 +1625,7 @@ Public Class dlgOfflineHolder
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
 
-            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultMovieOptions, False) Then
+            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then
                     Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", sMovie.Movie.Title)
                 End If

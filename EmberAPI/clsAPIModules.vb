@@ -71,11 +71,8 @@ Public Class ModulesManager
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-
     Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
-
     Event ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
-
     Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
 
 #End Region 'Events
@@ -811,7 +808,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_TV(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean, ByVal withEpisodes As Boolean) As Boolean
-        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
+        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
             Dim oShow As New Structures.DBTV
@@ -1101,7 +1098,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal showMessage As Boolean) As Boolean
-        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(DBTV, showMessage) Then
+        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
 
@@ -1222,8 +1219,8 @@ Public Class ModulesManager
                         TrailerList.AddRange(aList)
                     End If
                 Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-        End Try
+                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 If ret.breakChain Then Exit For
             Next
@@ -1240,7 +1237,7 @@ Public Class ModulesManager
     ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
     ''' <returns></returns>
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing, Optional ByRef DBTV As Structures.DBTV = Nothing) As Boolean
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Structures.DBMovie = Nothing, Optional ByRef DBTV As Structures.DBTV = Nothing, Optional ByRef DBMovieSet As Structures.DBMovieSet = Nothing) As Boolean
         Dim ret As Interfaces.ModuleResult
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1255,7 +1252,7 @@ Public Class ModulesManager
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
                         logger.Trace("Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
-                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie, DBTV)
+                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie, DBTV, DBMovieSet)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
@@ -1597,7 +1594,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
         Dim testDBTV As Structures.DBTV = Master.currShow
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
                 Application.DoEvents()
@@ -1619,7 +1616,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Boolean
         Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID, False)
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
                 Application.DoEvents()
@@ -1641,7 +1638,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
         Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID, False)
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
                 Application.DoEvents()
@@ -1760,7 +1757,7 @@ Public Class ModulesManager
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
         Dim testDBTV As Structures.DBTV = Master.currShow
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(testDBTV, True) Then
+        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
             Dim epDetails As New MediaContainers.EpisodeDetails
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)

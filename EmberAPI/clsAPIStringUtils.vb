@@ -465,6 +465,26 @@ Public Class StringUtils
 
         Return TVShowName.Trim
     End Function
+
+    Public Shared Function ListTitle_Movie(ByVal MovieTitle As String, ByVal MovieYear As String) As String
+        Dim ListTitle As String = MovieTitle
+        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
+            ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_Movie(MovieTitle.Trim), MovieYear.Trim)
+        Else
+            ListTitle = StringUtils.SortTokens_Movie(MovieTitle.Trim)
+        End If
+        Return ListTitle
+    End Function
+
+    Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal MovieYear As String) As String
+        Dim ListTitle As String = TVShowTitle
+        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
+            ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_Movie(TVShowTitle.Trim), MovieYear.Trim)
+        Else
+            ListTitle = StringUtils.SortTokens_Movie(TVShowTitle.Trim)
+        End If
+        Return ListTitle
+    End Function
     ''' <summary>
     ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
     ''' sort tokens (<c>Master.eSettings.MovieSortTokens"</c>) then remove it from the front

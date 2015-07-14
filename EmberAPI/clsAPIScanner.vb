@@ -1120,7 +1120,7 @@ Public Class Scanner
                                     End If
                                 Else
                                     If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
-                                        tmpTVDB.TVEp = ModulesManager.Instance.ScrapeData_TV_GetSingleEpisode(tmpTVDB.TVEp, tmpTVDB.TVShow.ID, sEpisode.Aired, tmpTVDB.Language, tmpTVDB.Ordering, Master.DefaultTVOptions)
+                                        tmpTVDB.TVEp = ModulesManager.Instance.ScrapeData_TV_GetSingleEpisode(tmpTVDB.TVEp, tmpTVDB.TVShow.ID, sEpisode.Aired, tmpTVDB.Language, tmpTVDB.Ordering, Master.DefaultOptions_TV)
 
                                         If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                             toNfo = True
@@ -1210,7 +1210,7 @@ Public Class Scanner
                                     End If
                                 Else
                                     If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
-                                        tmpTVDB.TVEp = ModulesManager.Instance.ScrapeData_TV_GetSingleEpisode(tmpTVDB.TVEp, tmpTVDB.TVShow.ID, sEpisode.Season, i, tmpTVDB.Language, tmpTVDB.Ordering, Master.DefaultTVOptions)
+                                        tmpTVDB.TVEp = ModulesManager.Instance.ScrapeData_TV_GetSingleEpisode(tmpTVDB.TVEp, tmpTVDB.TVShow.ID, sEpisode.Season, i, tmpTVDB.Language, tmpTVDB.Ordering, Master.DefaultOptions_TV)
 
                                         If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
                                             toNfo = True

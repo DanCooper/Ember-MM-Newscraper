@@ -305,22 +305,6 @@ Namespace FileUtils
             End Try
         End Sub
 
-        Public Shared Function CheckOnlineStatus_Episode(ByRef dbTV As Structures.DBTV, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(dbTV.Filename)
-                If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbTV.Filename), String.Empty, _
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
-                Else
-                    Return False
-                End If
-            End While
-            dbTV.IsOnline = True
-            Return True
-        End Function
-
         Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Structures.DBMovie, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbMovie.Filename)
                 If showMessage Then
@@ -337,7 +321,23 @@ Namespace FileUtils
             Return True
         End Function
 
-        Public Shared Function CheckOnlineStatus_Show(ByRef dbTV As Structures.DBTV, ByVal showMessage As Boolean) As Boolean
+        Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Structures.DBTV, ByVal showMessage As Boolean) As Boolean
+            While Not File.Exists(dbTV.Filename)
+                If showMessage Then
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
+                                                     Environment.NewLine, Environment.NewLine, _
+                                                     dbTV.Filename), String.Empty, _
+                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                Else
+                    Return False
+                End If
+            End While
+            dbTV.IsOnline = True
+            Return True
+        End Function
+
+        Public Shared Function CheckOnlineStatus_TVShow(ByRef dbTV As Structures.DBTV, ByVal showMessage As Boolean) As Boolean
             While Not Directory.Exists(dbTV.ShowPath)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _

@@ -719,156 +719,131 @@ Public Class Enums
         ''' <remarks></remarks>
         AfterEdit_Movie = 0
         ''' <summary>
+        ''' Called after edit movieset, movie is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        AfterEdit_MovieSet = 1
+        ''' <summary>
         ''' Called after edit episode, episode is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_TVEpisode = 1
+        AfterEdit_TVEpisode = 2
         ''' <summary>
         ''' Called after edit season, season is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_TVSeason = 2
+        AfterEdit_TVSeason = 3
         ''' <summary>
         ''' Called after edit show, show is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        AfterEdit_TVShow = 3
+        AfterEdit_TVShow = 4
         ''' <summary>
         ''' Called after update DB process
         ''' </summary>
         ''' <remarks></remarks>
-        AfterUpdateDB_TV = 4
+        AfterUpdateDB_TV = 5
         ''' <summary>
         ''' Called after update DB process
         ''' </summary>
         ''' <remarks></remarks>
-        AfterUpdateDB_Movie = 5
+        AfterUpdateDB_Movie = 6
         ''' <summary>
         ''' Called when Manual editing or reading from nfo
         ''' </summary>
         ''' <remarks></remarks>
-        BeforeEdit_Movie = 6
+        BeforeEdit_Movie = 7
         ''' <summary>
         ''' Command Line Module Call
         ''' </summary>
         ''' <remarks></remarks>
-        CommandLine = 7
-        FrameExtrator_Movie = 8
-        FrameExtrator_TVEpisode = 9
-        Generic = 10
-        MediaPlayer_Audio = 11
-        MediaPlayer_Video = 12
-        MediaPlayerPlay_Audio = 13
-        MediaPlayerPlay_Video = 14
-        MediaPlayerPlaylistAdd_Audio = 15
-        MediaPlayerPlaylistAdd_Video = 16
-        MediaPlayerPlaylistClear_Audio = 17
-        MediaPlayerPlaylistClear_Video = 18
-        MediaPlayerStop_Audio = 19
-        MediaPlayerStop_Video = 20
-        MovieImageNaming = 21
-        Notification = 22
-        OnBannerSave_Movie = 23
-        OnClearArtSave_Movie = 24
-        OnClearLogoSave_Movie = 25
-        OnDiscArtSave_Movie = 26
-        OnFanartDelete_Movie = 27
-        OnFanartSave_Movie = 28
-        OnLandscapeSave_Movie = 29
-        OnNFORead_TVShow = 30
-        OnNFOSave_Movie = 31
-        OnNFOSave_TVShow = 32
-        OnPosterDelete_Movie = 33
-        OnPosterSave_Movie = 34
-        OnThemeSave_Movie = 35
-        OnTrailerSave_Movie = 36
-        RandomFrameExtrator = 37
+        CommandLine = 8
+        FrameExtrator_Movie = 9
+        FrameExtrator_TVEpisode = 10
+        Generic = 11
+        MediaPlayer_Audio = 12
+        MediaPlayer_Video = 13
+        MediaPlayerPlay_Audio = 14
+        MediaPlayerPlay_Video = 15
+        MediaPlayerPlaylistAdd_Audio = 16
+        MediaPlayerPlaylistAdd_Video = 17
+        MediaPlayerPlaylistClear_Audio = 18
+        MediaPlayerPlaylistClear_Video = 19
+        MediaPlayerStop_Audio = 20
+        MediaPlayerStop_Video = 21
+        MovieImageNaming = 22
+        Notification = 23
+        OnBannerSave_Movie = 24
+        OnClearArtSave_Movie = 25
+        OnClearLogoSave_Movie = 26
+        OnDiscArtSave_Movie = 27
+        OnFanartDelete_Movie = 28
+        OnFanartSave_Movie = 29
+        OnLandscapeSave_Movie = 30
+        OnNFORead_TVShow = 31
+        OnNFOSave_Movie = 32
+        OnNFOSave_TVShow = 33
+        OnPosterDelete_Movie = 34
+        OnPosterSave_Movie = 35
+        OnThemeSave_Movie = 36
+        OnTrailerSave_Movie = 37
+        RandomFrameExtrator = 38
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 38
+        ScraperMulti_Movie = 39
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 39
+        ScraperMulti_TVEpisode = 40
         ''' <summary>
         ''' Called when single scraper finishs, movie is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 40
+        ScraperSingle_Movie = 41
         ''' <summary>
         ''' Called when single scraper finishs, episode is already saved to DB
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 41
-        ShowMovie = 42
-        ShowTVShow = 43
-        SyncModuleSettings = 44
-        Sync_Movie = 45
-        Sync_MovieSet = 46
-        Sync_TVEpisode = 47
-        Sync_TVSeason = 48
-        Sync_TVShow = 49
-        Task = 50
-        TVImageNaming = 51
+        ScraperSingle_TVEpisode = 42
+        ShowMovie = 43
+        ShowTVShow = 44
+        SyncModuleSettings = 45
+        Sync_Movie = 46
+        Sync_MovieSet = 47
+        Sync_TVEpisode = 48
+        Sync_TVSeason = 49
+        Sync_TVShow = 50
+        Task = 51
+        TVImageNaming = 52
     End Enum
 
     Public Enum ScraperEventType_Movie As Integer
         BannerItem = 0
-        Certification = 1
-        ClearArtItem = 2
-        ClearLogoItem = 3
-        Country = 4
-        Credits = 5
-        Director = 6
-        DiscArtItem = 7
-        EFanartsItem = 8
-        EThumbsItem = 9
-        FanartItem = 10
-        Genre = 11
-        IMDBID = 12
-        LandscapeItem = 13
-        DateModified = 14
-        ListTitle = 15
-        MPAA = 16
-        MoviePath = 17
-        NFOItem = 18
-        OriginalTitle = 19
-        Outline = 20
-        Playcount = 21
-        Plot = 22
-        PosterItem = 23
-        Rating = 24
-        ReleaseDate = 25
-        Runtime = 26
-        MovieSet = 27
-        SortTitle = 28
-        Studio = 29
-        TMDBColID = 30
-        TMDBID = 31
-        Tagline = 32
-        ThemeItem = 33
-        Title = 34
-        Top250 = 35
-        Trailer = 36
-        TrailerItem = 37
-        Votes = 38
-        Year = 39
+        ClearArtItem = 1
+        ClearLogoItem = 2
+        DiscArtItem = 3
+        EFanartsItem = 4
+        EThumbsItem = 5
+        FanartItem = 6
+        LandscapeItem = 7
+        NFOItem = 8
+        PosterItem = 9
+        ThemeItem = 10
+        TrailerItem = 11
     End Enum
 
     Public Enum ScraperEventType_MovieSet As Integer
         NFOItem = 0
         PosterItem = 1
         FanartItem = 2
-        ListTitle = 6
-        BannerItem = 7
-        LandscapeItem = 8
-        ClearArtItem = 10
-        ClearLogoItem = 11
-        DiscArtItem = 12
-        Title = 13
+        BannerItem = 3
+        LandscapeItem = 4
+        ClearArtItem = 5
+        ClearLogoItem = 6
+        DiscArtItem = 7
     End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
@@ -1081,18 +1056,16 @@ Public Class Enums
     End Enum
 
     Public Enum ScraperEventType_TV As Integer
-        Progress = 0
-        SearchResultsDownloaded = 1
-        StartingDownload = 2
-        ShowDownloaded = 3
-        SavingStarted = 4
-        ScraperDone = 5
-        LoadingEpisodes = 6
-        Searching = 7
-        SelectImages = 8
-        Verifying = 9
-        Cancelled = 10
-        SaveAuto = 11
+        BannerItem = 0
+        CharacterArtItem = 1
+        ClearArtItem = 2
+        ClearLogoItem = 3
+        EFanartsItem = 4
+        FanartItem = 5
+        LandscapeItem = 6
+        NFOItem = 7
+        PosterItem = 8
+        ThemeItem = 9
     End Enum
 
 #End Region 'Enumerations
@@ -1255,7 +1228,7 @@ Public Class Functions
     ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
         'TODO need proper unit test
-        With Master.DefaultMovieOptions
+        With Master.DefaultOptions_Movie
             'TODO Dekker500 - These seem to be missing Add fields to Master!!!???
             '.bLanguageA = Master.eSettings.FieldLanguageA
             '.bLanguageV = Master.eSettings.FieldLanguageV
@@ -1283,12 +1256,12 @@ Public Class Functions
             .bYear = Master.eSettings.MovieScraperYear
         End With
 
-        With Master.DefaultMovieSetOptions
+        With Master.DefaultOptions_MovieSet
             .bPlot = Master.eSettings.MovieSetScraperPlot
             .bTitle = Master.eSettings.MovieSetScraperTitle
         End With
 
-        With Master.DefaultTVOptions
+        With Master.DefaultOptions_TV
             .bEpActors = Master.eSettings.TVScraperEpisodeActors
             .bEpAired = Master.eSettings.TVScraperEpisodeAired
             .bEpCredits = Master.eSettings.TVScraperEpisodeCredits

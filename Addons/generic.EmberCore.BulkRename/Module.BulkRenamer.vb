@@ -108,24 +108,18 @@ Public Class BulkRenamerModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Structures.DBMovieSet) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.AfterEdit_Movie
                 If MySettings.RenameEdit_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                    Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
-                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
-                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
-                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
-                    FileFolderRenamer.RenameSingle_Movie(tDBMovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, BatchMode, ToNFO, ShowErrors, True)
+                    FileFolderRenamer.RenameSingle_Movie(_dbmovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If MySettings.RenameMulti_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                    'Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
                     FileFolderRenamer.RenameSingle_Movie(_dbmovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_Movie
                 If MySettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                    'Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
                     FileFolderRenamer.RenameSingle_Movie(_dbmovie, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False, True)
                 End If
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
@@ -148,12 +142,10 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
                     FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_TVEpisode
                 If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    'Dim tDBTV As EmberAPI.Structures.DBTV = DirectCast(_refparam, EmberAPI.Structures.DBTV)
                     FileFolderRenamer.RenameSingle_Episode(_dbtv, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False, True)
                 End If
         End Select
@@ -161,7 +153,7 @@ Public Class BulkRenamerModule
     End Function
 
     Private Sub cmnuRenamerAuto_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVEpisode.Click
-        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(Master.currShow, True) Then
             Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
@@ -172,7 +164,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub cmnuRenamerManual_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVEpisode.Click
-        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(Master.currShow, True) Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListEpisodes.Item(0, indX).Value)
             Using dRenameManual As New dlgRenameManual_TVEpisode
@@ -209,7 +201,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub cmnuRenamerAuto_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVShow.Click
-        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(Master.currShow, True) Then
             Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
@@ -220,7 +212,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub cmnuRenamerManual_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVShows.Click
-        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Show(Master.currShow, True) Then
+        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(Master.currShow, True) Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListShows.Item(0, indX).Value)
             Using dRenameManual As New dlgRenameManual_TVShow

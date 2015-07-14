@@ -28,6 +28,8 @@ Public Class dlgEditEpisode
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Private tmpDBTVEpisode As New Structures.DBTV
+
     Private ActorThumbsHasChanged As Boolean = False
     Private EpisodeFanart As New Images With {.IsEdit = True}
     Private lvwActorSorter As ListViewColumnSorter
@@ -36,6 +38,16 @@ Public Class dlgEditEpisode
     Private tmpRating As String
 
 #End Region 'Fields
+
+#Region "Properties"
+
+    Public ReadOnly Property Result As Structures.DBTV
+        Get
+            Return tmpDBTVEpisode
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Methods"
 
@@ -46,6 +58,11 @@ Public Class dlgEditEpisode
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
     End Sub
+
+    Public Overloads Function ShowDialog(ByVal DBTVEpisode As Structures.DBTV) As DialogResult
+        Me.tmpDBTVEpisode = DBTVEpisode
+        Return MyBase.ShowDialog()
+    End Function
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
         If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
@@ -96,8 +113,8 @@ Public Class dlgEditEpisode
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
-            If dlgManualEdit.ShowDialog(Master.currShow.NfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currShow.TVEp = NFO.LoadTVEpFromNFO(Master.currShow.NfoPath, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode)
+            If dlgManualEdit.ShowDialog(Me.tmpDBTVEpisode.NfoPath) = Windows.Forms.DialogResult.OK Then
+                Me.tmpDBTVEpisode.TVEp = NFO.LoadTVEpFromNFO(Me.tmpDBTVEpisode.NfoPath, Me.tmpDBTVEpisode.TVEp.Season, Me.tmpDBTVEpisode.TVEp.Episode)
                 Me.FillInfo()
             End If
         Catch ex As Exception
@@ -126,7 +143,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
-        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodeFanart, MediaContainers.Image))
+        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodeFanart, MediaContainers.Image))
 
         'If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
         '    EpisodeFanart = tImage
@@ -139,7 +156,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterScrape.Click
-        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodePoster, MediaContainers.Image))
+        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Me.tmpDBTVEpisode.TVEp.Season, Me.tmpDBTVEpisode.TVEp.Episode, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodePoster, MediaContainers.Image))
 
         'If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
         '    EpisodePoster = tImage
@@ -435,7 +452,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Episode(Master.currShow, True) Then
+        If Me.tmpDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(Me.tmpDBTVEpisode, True) Then
             If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
             If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
                 tcEditEpisode.TabPages.Remove(tpEpisodePoster)
@@ -507,32 +524,32 @@ Public Class dlgEditEpisode
 
     Private Sub FillInfo()
         With Me
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Aired) Then .txtAired.Text = Master.currShow.TVEp.Aired
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.OldCredits) Then .txtCredits.Text = Master.currShow.TVEp.OldCredits
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Director) Then .txtDirector.Text = Master.currShow.TVEp.Director
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString) Then .txtEpisode.Text = Master.currShow.TVEp.Episode.ToString
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Plot) Then .txtPlot.Text = Master.currShow.TVEp.Plot
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Runtime) Then .txtRuntime.Text = Master.currShow.TVEp.Runtime
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString) Then .txtSeason.Text = Master.currShow.TVEp.Season.ToString
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then .txtTitle.Text = Master.currShow.TVEp.Title
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Votes) Then .txtVotes.Text = Master.currShow.TVEp.Votes
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Aired) Then .txtAired.Text = Me.tmpDBTVEpisode.TVEp.Aired
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.OldCredits) Then .txtCredits.Text = Me.tmpDBTVEpisode.TVEp.OldCredits
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Director) Then .txtDirector.Text = Me.tmpDBTVEpisode.TVEp.Director
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Episode.ToString) Then .txtEpisode.Text = Me.tmpDBTVEpisode.TVEp.Episode.ToString
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Plot) Then .txtPlot.Text = Me.tmpDBTVEpisode.TVEp.Plot
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Runtime) Then .txtRuntime.Text = Me.tmpDBTVEpisode.TVEp.Runtime
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Season.ToString) Then .txtSeason.Text = Me.tmpDBTVEpisode.TVEp.Season.ToString
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Title) Then .txtTitle.Text = Me.tmpDBTVEpisode.TVEp.Title
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Votes) Then .txtVotes.Text = Me.tmpDBTVEpisode.TVEp.Votes
 
-            If Not String.IsNullOrEmpty(Master.currShow.VideoSource) Then
-                .txtVideoSource.Text = Master.currShow.VideoSource
-            ElseIf Not String.IsNullOrEmpty(Master.currShow.TVEp.VideoSource) Then
-                .txtVideoSource.Text = Master.currShow.TVEp.VideoSource
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.VideoSource) Then
+                .txtVideoSource.Text = Me.tmpDBTVEpisode.VideoSource
+            ElseIf Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.VideoSource) Then
+                .txtVideoSource.Text = Me.tmpDBTVEpisode.TVEp.VideoSource
             End If
 
             Dim lvItem As ListViewItem
             .lvActors.Items.Clear()
-            For Each imdbAct As MediaContainers.Person In Master.currShow.TVEp.Actors
+            For Each imdbAct As MediaContainers.Person In Me.tmpDBTVEpisode.TVEp.Actors
                 lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
                 lvItem.SubItems.Add(imdbAct.Name)
                 lvItem.SubItems.Add(imdbAct.Role)
                 lvItem.SubItems.Add(imdbAct.ThumbURL)
             Next
 
-            Dim tRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEp.Rating)
+            Dim tRating As Single = NumUtils.ConvertToSingle(Me.tmpDBTVEpisode.TVEp.Rating)
             .tmpRating = tRating.ToString
             .pbStar1.Tag = tRating
             .pbStar2.Tag = tRating
@@ -546,23 +563,23 @@ Public Class dlgEditEpisode
             .pbStar10.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
-            If Master.currShow.TVEp.Playcount = "" Or Master.currShow.TVEp.Playcount = "0" Then
+            If Me.tmpDBTVEpisode.TVEp.Playcount = "" Or Me.tmpDBTVEpisode.TVEp.Playcount = "0" Then
                 Me.chkWatched.Checked = False
             Else
                 'Playcount <> Empty and not 0 -> Tag filled -> Checked!
                 Me.chkWatched.Checked = True
             End If
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.LastPlayed) Then
+            If Not String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.LastPlayed) Then
                 Dim timecode As Double = 0
-                Double.TryParse(Master.currShow.TVEp.LastPlayed, timecode)
+                Double.TryParse(Me.tmpDBTVEpisode.TVEp.LastPlayed, timecode)
                 If timecode > 0 Then
                     .txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
                 Else
-                    .txtLastPlayed.Text = Master.currShow.TVEp.LastPlayed
+                    .txtLastPlayed.Text = Me.tmpDBTVEpisode.TVEp.LastPlayed
                 End If
             End If
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                EpisodeFanart.FromFile(Master.currShow.FanartPath)
+                EpisodeFanart.FromFile(Me.tmpDBTVEpisode.FanartPath)
                 If EpisodeFanart.Image IsNot Nothing Then
                     .pbEpisodeFanart.Image = EpisodeFanart.Image
                     .pbEpisodeFanart.Tag = EpisodeFanart
@@ -573,7 +590,7 @@ Public Class dlgEditEpisode
             End If
 
             If Master.eSettings.TVEpisodePosterAnyEnabled Then
-                EpisodePoster.FromFile(Master.currShow.PosterPath)
+                EpisodePoster.FromFile(Me.tmpDBTVEpisode.PosterPath)
                 If EpisodePoster.Image IsNot Nothing Then
                     .pbEpisodePoster.Image = EpisodePoster.Image
                     .pbEpisodePoster.Tag = EpisodePoster
@@ -616,11 +633,7 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
         Me.SetInfo()
-
-        Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
-
         Me.CleanUp()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -947,20 +960,20 @@ Public Class dlgEditEpisode
 
     Private Sub SetInfo()
         With Me
-            Master.currShow.TVEp.Aired = .txtAired.Text.Trim
-            Master.currShow.TVEp.OldCredits = .txtCredits.Text.Trim
-            Master.currShow.TVEp.Director = .txtDirector.Text.Trim
-            Master.currShow.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
-            Master.currShow.TVEp.Plot = .txtPlot.Text.Trim
-            Master.currShow.TVEp.Rating = .tmpRating
-            Master.currShow.TVEp.Runtime = .txtRuntime.Text.Trim
-            Master.currShow.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
-            Master.currShow.TVEp.Title = .txtTitle.Text.Trim
-            Master.currShow.TVEp.Votes = .txtVotes.Text.Trim
-            Master.currShow.TVEp.VideoSource = .txtVideoSource.Text.Trim
-            Master.currShow.VideoSource = .txtVideoSource.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.Aired = .txtAired.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.OldCredits = .txtCredits.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.Director = .txtDirector.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
+            Me.tmpDBTVEpisode.TVEp.Plot = .txtPlot.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.Rating = .tmpRating
+            Me.tmpDBTVEpisode.TVEp.Runtime = .txtRuntime.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.Season = Convert.ToInt32(.txtSeason.Text.Trim)
+            Me.tmpDBTVEpisode.TVEp.Title = .txtTitle.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.Votes = .txtVotes.Text.Trim
+            Me.tmpDBTVEpisode.TVEp.VideoSource = .txtVideoSource.Text.Trim
+            Me.tmpDBTVEpisode.VideoSource = .txtVideoSource.Text.Trim
 
-            Master.currShow.TVEp.Actors.Clear()
+            Me.tmpDBTVEpisode.TVEp.Actors.Clear()
 
             If .lvActors.Items.Count > 0 Then
                 Dim iOrder As Integer = 0
@@ -972,15 +985,15 @@ Public Class dlgEditEpisode
                     addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
                     addActor.Order = iOrder
                     iOrder += 1
-                    Master.currShow.TVEp.Actors.Add(addActor)
+                    Me.tmpDBTVEpisode.TVEp.Actors.Add(addActor)
                 Next
             End If
 
             If chkWatched.Checked Then
                 'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
-                    Master.currShow.TVEp.Playcount = "1"
-                    Master.currShow.TVEp.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                If String.IsNullOrEmpty(Me.tmpDBTVEpisode.TVEp.Playcount) Or Me.tmpDBTVEpisode.TVEp.Playcount = "0" Then
+                    Me.tmpDBTVEpisode.TVEp.Playcount = "1"
+                    Me.tmpDBTVEpisode.TVEp.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 End If
 
                 'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -993,9 +1006,9 @@ Public Class dlgEditEpisode
                 'End If
             Else
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                If Integer.TryParse(Master.currShow.TVEp.Playcount, 0) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
-                    Master.currShow.TVEp.Playcount = ""
-                    Master.currShow.TVEp.LastPlayed = ""
+                If Integer.TryParse(Me.tmpDBTVEpisode.TVEp.Playcount, 0) AndAlso CInt(Me.tmpDBTVEpisode.TVEp.Playcount) > 0 Then
+                    Me.tmpDBTVEpisode.TVEp.Playcount = ""
+                    Me.tmpDBTVEpisode.TVEp.LastPlayed = ""
                 End If
 
                 'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -1007,8 +1020,8 @@ Public Class dlgEditEpisode
                 'End If
             End If
 
-            If Master.currShow.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                For Each a In FileUtils.GetFilenameList.TVEpisode(Master.currShow.Filename, Enums.ModType_TV.ActorThumbs)
+            If Me.tmpDBTVEpisode.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
+                For Each a In FileUtils.GetFilenameList.TVEpisode(Me.tmpDBTVEpisode.Filename, Enums.ModType_TV.ActorThumbs)
                     Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                     If Directory.Exists(tmpPath) Then
                         FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -1018,11 +1031,11 @@ Public Class dlgEditEpisode
 
             'Actor Thumbs
             If ActorThumbsHasChanged Then
-                For Each act As MediaContainers.Person In Master.currShow.TVEp.Actors
+                For Each act As MediaContainers.Person In Me.tmpDBTVEpisode.TVEp.Actors
                     Dim img As New Images
                     img.FromWeb(act.ThumbURL)
                     If img.Image IsNot Nothing Then
-                        act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Master.currShow)
+                        act.ThumbPath = img.SaveAsTVEpisodeActorThumb(act, Me.tmpDBTVEpisode)
                     Else
                         act.ThumbPath = String.Empty
                     End If
@@ -1031,22 +1044,22 @@ Public Class dlgEditEpisode
 
             'Episode Fanart
             If .EpisodeFanart.Image IsNot Nothing Then
-                Master.currShow.FanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
+                Me.tmpDBTVEpisode.FanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Me.tmpDBTVEpisode)
             Else
-                .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
-                Master.currShow.FanartPath = String.Empty
+                .EpisodeFanart.DeleteTVEpisodeFanart(Me.tmpDBTVEpisode)
+                Me.tmpDBTVEpisode.FanartPath = String.Empty
             End If
 
             'Episode Poster
             If .EpisodePoster.Image IsNot Nothing Then
-                Master.currShow.PosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
+                Me.tmpDBTVEpisode.PosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Me.tmpDBTVEpisode)
             Else
-                .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
-                Master.currShow.PosterPath = String.Empty
+                .EpisodePoster.DeleteTVEpisodePosters(Me.tmpDBTVEpisode)
+                Me.tmpDBTVEpisode.PosterPath = String.Empty
             End If
 
             Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
-            For Each Subtitle In Master.currShow.Subtitles
+            For Each Subtitle In Me.tmpDBTVEpisode.Subtitles
                 If Subtitle.toRemove Then
                     removeSubtitles.Add(Subtitle)
                 End If
@@ -1055,17 +1068,17 @@ Public Class dlgEditEpisode
                 If File.Exists(Subtitle.SubsPath) Then
                     File.Delete(Subtitle.SubsPath)
                 End If
-                Master.currShow.Subtitles.Remove(Subtitle)
+                Me.tmpDBTVEpisode.Subtitles.Remove(Subtitle)
             Next
         End With
     End Sub
 
     Private Sub SetUp()
         Dim mTitle As String = String.Empty
-        mTitle = Master.currShow.TVEp.Title
+        mTitle = Me.tmpDBTVEpisode.TVEp.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
-        Me.tsFilename.Text = Master.currShow.Filename
+        Me.tsFilename.Text = Me.tmpDBTVEpisode.Filename
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
@@ -1129,7 +1142,7 @@ Public Class dlgEditEpisode
     Private Sub btnSetEpisodePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePoster.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBTVEpisode.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
@@ -1173,7 +1186,7 @@ Public Class dlgEditEpisode
     Private Sub btnSetEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanart.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBTVEpisode.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
@@ -1273,12 +1286,12 @@ Public Class dlgEditEpisode
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 Dim tmpFileInfo As New MediaInfo.Fileinfo
-                tmpFileInfo.StreamDetails.Subtitle.AddRange(Master.currShow.Subtitles)
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(Me.tmpDBTVEpisode.Subtitles)
                 Using dEditStream As New dlgFIStreamEditor
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                            Master.currShow.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                            Me.tmpDBTVEpisode.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
                         End If
                         'NeedToRefresh = True
                         LoadSubtitles()
@@ -1295,7 +1308,7 @@ Public Class dlgEditEpisode
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    Master.currShow.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
+                    Me.tmpDBTVEpisode.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
                 End If
                 'NeedToRefresh = True
                 LoadSubtitles()
@@ -1312,7 +1325,7 @@ Public Class dlgEditEpisode
         lvSubtitles.Groups.Clear()
         lvSubtitles.Items.Clear()
         Try
-            If Master.currShow.Subtitles.Count > 0 Then
+            If Me.tmpDBTVEpisode.Subtitles.Count > 0 Then
                 g = New ListViewGroup
                 g.Header = Master.eLang.GetString(597, "Subtitle Stream")
                 lvSubtitles.Groups.Add(g)
@@ -1331,8 +1344,8 @@ Public Class dlgEditEpisode
                 g.Items.Add(i)
                 lvSubtitles.Items.Add(i)
                 Dim s As MediaInfo.Subtitle
-                For c = 0 To Master.currShow.Subtitles.Count - 1
-                    s = Master.currShow.Subtitles(c)
+                For c = 0 To Me.tmpDBTVEpisode.Subtitles.Count - 1
+                    s = Me.tmpDBTVEpisode.Subtitles(c)
                     If Not s Is Nothing Then
                         i = New ListViewItem
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
@@ -1358,6 +1371,5 @@ Public Class dlgEditEpisode
     End Sub
 
 #End Region 'Methods
-
 
 End Class

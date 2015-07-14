@@ -1064,59 +1064,43 @@ Public Class Database
         sqlDA.Fill(dTable)
     End Sub
     ''' <summary>
-    ''' Retrieve a TV Show's information for a particular season.
+    ''' Adds TVSeason informations to a Structures.DBTV
     ''' </summary>
     ''' <param name="_TVDB">Structure in which to return the information. NOTE: _TVDB.ShowID must be valid.</param>
     ''' <param name="iSeason"></param>
     ''' <remarks></remarks>
     Public Sub FillTVSeasonFromDB(ByRef _TVDB As Structures.DBTV, ByVal iSeason As Integer)
-        Dim _tmpTVDB As New Structures.DBTV
-        _tmpTVDB = LoadTVSeasonFromDB(_TVDB.ShowID, iSeason, False)
+        Dim _tmpTVDBSeason As Structures.DBTV = LoadTVSeasonFromDB(_TVDB.ShowID, iSeason, False)
 
-        _TVDB.IsLock = _tmpTVDB.IsLock
-        _TVDB.IsMark = _tmpTVDB.IsMark
-        _TVDB.BannerPath = _tmpTVDB.BannerPath
-        _TVDB.FanartPath = _tmpTVDB.FanartPath
-        _TVDB.ID = _tmpTVDB.ID
-        _TVDB.LandscapePath = _tmpTVDB.LandscapePath
-        _TVDB.PosterPath = _tmpTVDB.PosterPath
+        _TVDB.IsLock = _tmpTVDBSeason.IsLock
+        _TVDB.IsMark = _tmpTVDBSeason.IsMark
+        _TVDB.BannerPath = _tmpTVDBSeason.BannerPath
+        _TVDB.FanartPath = _tmpTVDBSeason.FanartPath
+        _TVDB.ID = _tmpTVDBSeason.ID
+        _TVDB.LandscapePath = _tmpTVDBSeason.LandscapePath
+        _TVDB.PosterPath = _tmpTVDBSeason.PosterPath
     End Sub
 
     ''' <summary>
-    ''' Load all the information for a TV Show.
+    ''' Adds TVShow informations to a Structures.DBTV
     ''' </summary>
     ''' <param name="_TVDB">Structures.DBTV container to fill</param>
     Public Sub FillTVShowFromDB(ByRef _TVDB As Structures.DBTV)
-        Dim _tmpTVDB As Structures.DBTV = LoadTVShowFromDB(_TVDB.ShowID, False)
+        Dim _tmpTVDBShow As Structures.DBTV = LoadTVShowFromDB(_TVDB.ShowID, False)
 
-        _TVDB.EpisodeSorting = _tmpTVDB.EpisodeSorting
-        _TVDB.ImagesContainer.ShowBanner = _tmpTVDB.ImagesContainer.ShowBanner
-        _TVDB.ImagesContainer.ShowCharacterArt = _tmpTVDB.ImagesContainer.ShowCharacterArt
-        _TVDB.ImagesContainer.ShowClearArt = _tmpTVDB.ImagesContainer.ShowClearArt
-        _TVDB.ImagesContainer.ShowClearLogo = _tmpTVDB.ImagesContainer.ShowClearLogo
-        _TVDB.ImagesContainer.ShowFanart = _tmpTVDB.ImagesContainer.ShowFanart
-        _TVDB.ImagesContainer.ShowLandscape = _tmpTVDB.ImagesContainer.ShowLandscape
-        _TVDB.ImagesContainer.ShowPoster = _tmpTVDB.ImagesContainer.ShowPoster
-        _TVDB.IsLock = _tmpTVDB.IsLock
-        _TVDB.IsMark = _tmpTVDB.IsMark
-        _TVDB.IsOnline = _tmpTVDB.IsOnline
-        _TVDB.ListTitle = _tmpTVDB.ListTitle
-        _TVDB.Ordering = _tmpTVDB.Ordering
-        _TVDB.BannerPath = _tmpTVDB.BannerPath
-        _TVDB.CharacterArtPath = _tmpTVDB.CharacterArtPath
-        _TVDB.ClearArtPath = _tmpTVDB.ClearArtPath
-        _TVDB.ClearLogoPath = _tmpTVDB.ClearLogoPath
-        _TVDB.EFanartsPath = _tmpTVDB.EFanartsPath
-        _TVDB.FanartPath = _tmpTVDB.FanartPath
-        _TVDB.LandscapePath = _tmpTVDB.LandscapePath
-        _TVDB.Language = _tmpTVDB.Language
-        _TVDB.NeedsSave = _tmpTVDB.NeedsSave
-        _TVDB.NfoPath = _tmpTVDB.NfoPath
-        _TVDB.ShowPath = _tmpTVDB.ShowPath
-        _TVDB.PosterPath = _tmpTVDB.PosterPath
-        _TVDB.ThemePath = _tmpTVDB.ThemePath
-        _TVDB.Source = _tmpTVDB.Source
-        _TVDB.TVShow = _tmpTVDB.TVShow
+        _TVDB.EpisodeSorting = _tmpTVDBShow.EpisodeSorting
+        _TVDB.ImagesContainer.ShowBanner = _tmpTVDBShow.ImagesContainer.ShowBanner
+        _TVDB.ImagesContainer.ShowCharacterArt = _tmpTVDBShow.ImagesContainer.ShowCharacterArt
+        _TVDB.ImagesContainer.ShowClearArt = _tmpTVDBShow.ImagesContainer.ShowClearArt
+        _TVDB.ImagesContainer.ShowClearLogo = _tmpTVDBShow.ImagesContainer.ShowClearLogo
+        _TVDB.ImagesContainer.ShowFanart = _tmpTVDBShow.ImagesContainer.ShowFanart
+        _TVDB.ImagesContainer.ShowLandscape = _tmpTVDBShow.ImagesContainer.ShowLandscape
+        _TVDB.ImagesContainer.ShowPoster = _tmpTVDBShow.ImagesContainer.ShowPoster
+        _TVDB.Ordering = _tmpTVDBShow.Ordering
+        _TVDB.Language = _tmpTVDBShow.Language
+        _TVDB.ShowPath = _tmpTVDBShow.ShowPath
+        _TVDB.Source = _tmpTVDBShow.Source
+        _TVDB.TVShow = _tmpTVDBShow.TVShow
     End Sub
 
     Public Function GetTVShowEpisodeSorting(ByVal ShowID As Long) As Enums.EpisodeSorting
@@ -1882,6 +1866,8 @@ Public Class Database
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _TVDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
                     _TVDB.NeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
+                    _TVDB.ShowID = Convert.ToInt64(SQLreader("idShow"))
+                    _TVDB.ShowPath = LoadTVShowPathFromDB(Convert.ToInt64(SQLreader("idShow")))
                     _TVDB.TVEp = New MediaContainers.EpisodeDetails
                     With _TVDB.TVEp
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
@@ -2019,7 +2005,7 @@ Public Class Database
 
         If _TVDB.ShowID > -1 AndAlso WithShow Then
             FillTVShowFromDB(_TVDB)
-            FillTVSeasonFromDB(_TVDB, _TVDB.TVEp.Season)
+            'FillTVSeasonFromDB(_TVDB, _TVDB.TVEp.Season)
         End If
 
         'Check if the file is available and ready to edit
@@ -2277,6 +2263,22 @@ Public Class Database
         If Directory.Exists(_TVDB.ShowPath) Then _TVDB.IsOnline = True
 
         Return _TVDB
+    End Function
+
+    Public Function LoadTVShowPathFromDB(ByVal ShowID As Long) As String
+        Dim ShowPath As String = String.Empty
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT TVShowPath FROM tvshow WHERE idShow = ", ShowID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    SQLreader.Read()
+                    ShowPath = SQLreader("TVShowPath").ToString
+                End If
+            End Using
+        End Using
+
+        Return ShowPath
     End Function
     ''' <summary>
     ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
@@ -2931,6 +2933,12 @@ Public Class Database
                     par_movie_iLastPlayed.Value = Nothing 'need to be NOTHING instead of String.Empty
                 End Try
             End Try
+
+            'Trailer URL
+            If Master.eSettings.MovieScraperXBMCTrailerFormat Then
+                _movieDB.Movie.Trailer = _movieDB.Movie.Trailer.Trim.Replace("http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                _movieDB.Movie.Trailer = _movieDB.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+            End If
 
             ' First let's save it to NFO, even because we will need the NFO path
             If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
