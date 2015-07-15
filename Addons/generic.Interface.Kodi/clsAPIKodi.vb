@@ -22,6 +22,7 @@
 Imports NLog
 Imports EmberAPI
 Imports XBMCRPC
+Imports System.IO
 
 Namespace Kodi
 
@@ -110,13 +111,13 @@ Namespace Kodi
                 If KodiID > -1 Then
                     'string or null/nothing
                     Dim mBanner As String = If(Not String.IsNullOrEmpty(uSeason.BannerPath), _
-                                                  GetRemoteFilePath(uSeason.BannerPath), Nothing)
+                                                  GetRemoteFilePath2(uSeason.BannerPath), Nothing)
                     Dim mFanart As String = If(Not String.IsNullOrEmpty(uSeason.FanartPath), _
-                                                 GetRemoteFilePath(uSeason.FanartPath), Nothing)
+                                                 GetRemoteFilePath2(uSeason.FanartPath), Nothing)
                     Dim mLandscape As String = If(Not String.IsNullOrEmpty(uSeason.LandscapePath), _
-                                                  GetRemoteFilePath(uSeason.LandscapePath), Nothing)
+                                                  GetRemoteFilePath2(uSeason.LandscapePath), Nothing)
                     Dim mPoster As String = If(Not String.IsNullOrEmpty(uSeason.PosterPath), _
-                                                  GetRemoteFilePath(uSeason.PosterPath), Nothing)
+                                                  GetRemoteFilePath2(uSeason.PosterPath), Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -381,9 +382,9 @@ Namespace Kodi
                 ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                 'search movie ID in Kodi DB
-                Dim KodiMovie = Await GetHostMovieByFilename(uMovie.Filename).ConfigureAwait(False)
                 Dim KodiID As Integer = -1
-                If Not KodiMovie Is Nothing Then
+                Dim KodiMovie = Await GetHostMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
+                If KodiMovie IsNot Nothing Then
                     KodiID = KodiMovie.movieid
                 End If
 
@@ -393,8 +394,8 @@ Namespace Kodi
                     Await ScanVideoPath(EmbermovieID, "movie").ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiMovie = Await GetHostMovieByFilename(uMovie.Filename).ConfigureAwait(False)
-                    If Not KodiMovie Is Nothing Then
+                    KodiMovie = Await GetHostMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
+                    If KodiMovie IsNot Nothing Then
                         KodiID = KodiMovie.movieid
                     End If
                 End If
@@ -413,7 +414,7 @@ Namespace Kodi
                     Dim mSortTitle As String = uMovie.Movie.SortTitle
                     Dim mTagline As String = uMovie.Movie.Tagline
                     Dim mTitle As String = uMovie.Movie.Title
-                    Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.TrailerPath), GetRemoteFilePath(uMovie.TrailerPath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, String.Empty))
+                    Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.TrailerPath), GetRemoteFilePath2(uMovie.TrailerPath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, String.Empty))
                     If mTrailer Is Nothing Then
                         mTrailer = String.Empty
                     End If
@@ -461,19 +462,19 @@ Namespace Kodi
 
                     'string or null/nothing
                     Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.BannerPath), _
-                                                  GetRemoteFilePath(uMovie.BannerPath), Nothing)
+                                                  GetRemoteFilePath2(uMovie.BannerPath), Nothing)
                     Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ClearArtPath), _
-                                                  GetRemoteFilePath(uMovie.ClearArtPath), Nothing)
+                                                  GetRemoteFilePath2(uMovie.ClearArtPath), Nothing)
                     Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ClearLogoPath), _
-                                                  GetRemoteFilePath(uMovie.ClearLogoPath), Nothing)
+                                                  GetRemoteFilePath2(uMovie.ClearLogoPath), Nothing)
                     Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.DiscArtPath), _
-                                                  GetRemoteFilePath(uMovie.DiscArtPath), Nothing)
+                                                  GetRemoteFilePath2(uMovie.DiscArtPath), Nothing)
                     Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.FanartPath), _
-                                                 GetRemoteFilePath(uMovie.FanartPath), Nothing)
+                                                 GetRemoteFilePath2(uMovie.FanartPath), Nothing)
                     Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.LandscapePath), _
-                                                  GetRemoteFilePath(uMovie.LandscapePath), Nothing)
+                                                  GetRemoteFilePath2(uMovie.LandscapePath), Nothing)
                     Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.PosterPath), _
-                                                  GetRemoteFilePath(uMovie.PosterPath), Nothing)
+                                                  GetRemoteFilePath2(uMovie.PosterPath), Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -525,6 +526,10 @@ Namespace Kodi
                     Else
                         logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": " & uMovie.Filename)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
+
+                        'Remove old textures (cache)
+                        Dim resTextures = Await RemoveTextures(Directory.GetParent(uMovie.NfoPath).FullName)
+
                         'Send message to Kodi?
                         If SendHostNotification = True Then
                             Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uMovie.Movie.Title).ConfigureAwait(False)
@@ -562,32 +567,36 @@ Namespace Kodi
 
                 'if no seperator is specified use pathseperator of current system (=Windows)
                 Dim remotepathseparator = _currenthost.remotepathseparator
-                If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = IO.Path.DirectorySeparatorChar
+                If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = Path.DirectorySeparatorChar
                 'first strip driveletter (since it will probably not be identical between Kodi and Ember (i.e. mapped drive))
-                Filename = Filename.Replace(IO.Directory.GetDirectoryRoot(Filename), "")
+                Filename = Filename.Replace(Directory.GetDirectoryRoot(Filename), "")
                 'result i.e:  Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
                 'now replace DirectorySeparatorChar for comparison
-                Filename = Filename.Replace(IO.Path.DirectorySeparatorChar, remotepathseparator)
+                Filename = Filename.Replace(Path.DirectorySeparatorChar, remotepathseparator)
                 'result i.e:  Media_1/Movie/Horror/Europa Report/BDMV/STREAM/00000.m2ts
 
-            ElseIf FileUtils.Common.isVideoTS(Filename) Then
+            ElseIf FileUtils.Common.isVideoTS(Filename) OrElse Path.GetFileNameWithoutExtension(Filename).ToLower = "video_ts" Then
                 'i.e.  E:\Media_1\Movie\Action\Crow\VIDEO_TS\VIDEO_TS.IFO
                 'since Filename is always VIDEO_TS.IFO (filename isn't unique) for every DVD we need special handling here...
                 'idea: compare path to VIDEO_TS folder, i.e:  Media_1/Movie/Action/Crow/VIDEO_TS/VIDEO_TS.IFO
 
                 'if no seperator is specified use pathseperator of current system (=Windows)
                 Dim remotepathseparator = _currenthost.remotepathseparator
-                If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = IO.Path.DirectorySeparatorChar
+                If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = Path.DirectorySeparatorChar
                 'first strip driveletter (since it will probably not be identical between Kodi and Ember (i.e. mapped drive))
-                Filename = Filename.Replace(IO.Directory.GetDirectoryRoot(Filename), "")
+                Filename = Filename.Replace(Directory.GetDirectoryRoot(Filename), "")
                 'result i.e:  Media_1\Movie\Action\Crow\VIDEO_TS\VIDEO_TS.IFO
                 'now replace DirectorySeparatorChar for comparison
-                Filename = Filename.Replace(IO.Path.DirectorySeparatorChar, remotepathseparator)
+                Filename = Filename.Replace(Path.DirectorySeparatorChar, remotepathseparator)
                 'result i.e:  Media_1/Movie/Action/Crow/VIDEO_TS/VIDEO_TS.IFO
             Else
-                'only need filename to compare (not full path!)
-                'i.e Filename: Child's Play.1988.HDTV.mkv
-                Filename = IO.Path.GetFileName(Filename)
+                'check if is a VIDEO_TS.IFO withou VIDEO_TS parent folder
+                If Path.GetFileNameWithoutExtension(Filename).ToLower = "video_ts" Then
+                Else
+                    'only need filename to compare (not full path!)
+                    'i.e Filename: Child's Play.1988.HDTV.mkv
+                    Filename = Path.GetFileName(Filename)
+                End If
             End If
 
             'get a list of all movies saved in Kodi DB
@@ -609,6 +618,38 @@ Namespace Kodi
             Return Nothing
         End Function
         ''' <summary>
+        ''' Get movie container at Kodi host for a specific movie
+        ''' </summary>
+        ''' <param name="Filename">Filename of movie</param>
+        ''' <returns>movie of host, Nothing: error</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' We assume that filename/path to video is unique and can be used to find correct videofile in Host DB
+        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
+        ''' </remarks>
+        Public Async Function GetHostMovieByPath(ByVal LocalPath As String) As Task(Of XBMCRPC.Video.Details.Movie)
+            Dim movieID As Integer = -1
+
+            Dim RemotePath As String = GetRemoteFilePath2(LocalPath)
+
+            'get a list of all movies saved in Kodi DB
+            Dim kMovies As VideoLibrary.GetMoviesResponse = Await SearchMovie(RemotePath).ConfigureAwait(False)
+
+            If kMovies.movies IsNot Nothing Then
+                If kMovies.movies.Count = 1 Then
+                    logger.Trace(String.Concat("[APIKodi] GetHostMovieByFilename: " & _currenthost.name & ": " & LocalPath & " found in host database! [ID:", kMovies.movies.Item(0).movieid, "]"))
+                    Return kMovies.movies.Item(0)
+                ElseIf kMovies.movies.Count > 1 Then
+                    'should not be possible
+                    logger.Warn(String.Concat("[APIKodi] GetHostMovieByFilename: " & _currenthost.name & ": " & LocalPath & " MORE THAN ONE movie found in host database! [ID:", kMovies.movies.Item(0).movieid, "]"))
+                    Return kMovies.movies.Item(0)
+                End If
+            End If
+
+            logger.Trace(String.Concat("[APIKodi] GetHostMovieByFilename: " & _currenthost.name & ": " & LocalPath & " NOT found in host database!"))
+            Return Nothing
+        End Function
+        ''' <summary>
         ''' Get all movies from Kodi host
         ''' </summary>
         ''' <returns>list of kodi movies, Nothing: error</returns>
@@ -622,7 +663,38 @@ Namespace Kodi
                 Return Nothing
             End If
             Dim response = Await _kodi.VideoLibrary.GetMovies(Video.Fields.Movie.AllFields).ConfigureAwait(False)
-            Return response.movies.ToList()
+            Return response.movies.ToList
+        End Function
+        ''' <summary>
+        ''' Search a movie in Kodi by movie path
+        ''' </summary>
+        ''' <param name="MoviePath"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Async Function SearchMovie(ByVal RemotePath As String) As Task(Of VideoLibrary.GetMoviesResponse)
+            If _kodi Is Nothing Then
+                logger.Warn("[APIKodi] GetAllMovies: No client initialized! Abort!")
+                Return Nothing
+            End If
+
+            If Not String.IsNullOrEmpty(RemotePath) Then
+                Try
+                    Dim filter As New XBMCRPC.List.Filter.MoviesOr With {.or = New List(Of Object)}
+                    Dim filterRule As New XBMCRPC.List.Filter.Rule.Movies
+                    filterRule.field = List.Filter.Fields.Movies.path
+                    filterRule.Operator = List.Filter.Operators.startswith
+                    filterRule.value = RemotePath
+                    filter.or.Add(filterRule)
+
+                    Dim response = Await _kodi.VideoLibrary.GetMovies(filter, Video.Fields.Movie.AllFields).ConfigureAwait(False)
+                    Return response
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            Else
+                Return Nothing
+            End If
         End Function
 
 #End Region 'Movie API
@@ -712,19 +784,19 @@ Namespace Kodi
 
                     'string or null/nothing
                     Dim mBanner As String = If(Not String.IsNullOrEmpty(uTVShow.BannerPath), _
-                                                  GetRemoteFilePath(uTVShow.BannerPath), Nothing)
+                                                  GetRemoteFilePath2(uTVShow.BannerPath), Nothing)
                     Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.CharacterArtPath), _
-                                               GetRemoteFilePath(uTVShow.CharacterArtPath), Nothing)
+                                               GetRemoteFilePath2(uTVShow.CharacterArtPath), Nothing)
                     Dim mClearArt As String = If(Not String.IsNullOrEmpty(uTVShow.ClearArtPath), _
-                                                GetRemoteFilePath(uTVShow.ClearArtPath), Nothing)
+                                                GetRemoteFilePath2(uTVShow.ClearArtPath), Nothing)
                     Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uTVShow.ClearLogoPath), _
-                                                GetRemoteFilePath(uTVShow.ClearLogoPath), Nothing)
+                                                GetRemoteFilePath2(uTVShow.ClearLogoPath), Nothing)
                     Dim mFanart As String = If(Not String.IsNullOrEmpty(uTVShow.FanartPath), _
-                                               GetRemoteFilePath(uTVShow.FanartPath), Nothing)
+                                               GetRemoteFilePath2(uTVShow.FanartPath), Nothing)
                     Dim mLandscape As String = If(Not String.IsNullOrEmpty(uTVShow.LandscapePath), _
-                                              GetRemoteFilePath(uTVShow.LandscapePath), Nothing)
+                                              GetRemoteFilePath2(uTVShow.LandscapePath), Nothing)
                     Dim mPoster As String = If(Not String.IsNullOrEmpty(uTVShow.PosterPath), _
-                                                 GetRemoteFilePath(uTVShow.PosterPath), Nothing)
+                                                 GetRemoteFilePath2(uTVShow.PosterPath), Nothing)
                     'TODO Missing Artwork:
                     'Dim mExtraThumbs As String = If(Not String.IsNullOrEmpty(uTVShow.ShowEThumbsPath), _
                     '                           Web.HttpUtility.JavaScriptStringEncode(GetRemoteFilePath(uTVShow.ShowEThumbsPath, uTVShow.Source), True), "null")
@@ -804,7 +876,7 @@ Namespace Kodi
             'compare path of remote and local path to identify tvshow
             If Not kTVShows Is Nothing Then
                 'only need directoryname of show to compare (not full path!)
-                TVShowPath = IO.Path.GetFileNameWithoutExtension(TVShowPath)
+                TVShowPath = Path.GetFileNameWithoutExtension(TVShowPath)
                 'add last seperator, because file property of kTVShow always end with backslash
                 If TVShowPath.EndsWith(_currenthost.remotepathseparator) = False Then
                     TVShowPath = TVShowPath & _currenthost.remotepathseparator
@@ -919,9 +991,9 @@ Namespace Kodi
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
                     artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.FanartPath), _
-                                                  GetRemoteFilePath(uEpisode.FanartPath), Nothing)
+                                                  GetRemoteFilePath2(uEpisode.FanartPath), Nothing)
                     artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.PosterPath), _
-                                                  GetRemoteFilePath(uEpisode.PosterPath), Nothing)
+                                                  GetRemoteFilePath2(uEpisode.PosterPath), Nothing)
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
                     Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiID, _
@@ -995,7 +1067,7 @@ Namespace Kodi
 
 
             'only need filename to compare (not full path!)
-            Filename = IO.Path.GetFileName(Filename)
+            Filename = Path.GetFileName(Filename)
             'compare filenames of remote and local filenames to identify episode
             If Not kEpisodes Is Nothing Then
                 For Each kEpisode In kEpisodes
@@ -1053,14 +1125,14 @@ Namespace Kodi
                         Dim uMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(EmbervideofileID)
 
                         'search movie ID in Kodi DB
-                        Dim KodiMovie = Await GetHostMovieByFilename(uMovie.Filename).ConfigureAwait(False)
+                        Dim KodiMovie = Await GetHostMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
                         If KodiMovie Is Nothing Then
                             'movie isn't in database of host -> scan directory
                             logger.Warn("[APIKodi] GetPlayCount: " & _currenthost.name & ": " & uMovie.Filename & ": Not found in database, scan directory...")
                             Await ScanVideoPath(EmbervideofileID, "movie").ConfigureAwait(False)
                             'wait a bit before trying going on, as scan might take a while on Kodi...
                             Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                            KodiMovie = Await GetHostMovieByFilename(uMovie.Filename).ConfigureAwait(False)
+                            KodiMovie = Await GetHostMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
                         End If
                         'if host information retrieved, update playcount/lastplayed in EmberDB
                         If Not KodiMovie Is Nothing Then
@@ -1278,23 +1350,27 @@ Namespace Kodi
                         'filename must point to m2ts file! 
                         'Ember-Filepath i.e.  E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
                         'for adding new Bluray rips scan the root folder of movie, i.e: E:\Media_1\Movie\Horror\Europa Report\
-                        uPath = IO.Directory.GetParent(IO.Directory.GetParent(IO.Directory.GetParent(uMovie.Filename).FullName).FullName).FullName
+                        uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uMovie.Filename).FullName).FullName).FullName
                     ElseIf FileUtils.Common.isVideoTS(uMovie.Filename) Then
                         'filename must point to IFO file!
                         'Ember-Filepath i.e.  E:\Media_1\Movie\Action\Crow\VIDEO_TS\VIDEO_TS.IFO
                         'for adding new DVDs scan the root folder of movie, i.e:  E:\Media_1\Movie\Action\Crow\
-                        uPath = IO.Directory.GetParent(IO.Directory.GetParent(uMovie.Filename).FullName).FullName
+                        uPath = Directory.GetParent(Directory.GetParent(uMovie.Filename).FullName).FullName
                     Else
-                        uPath = IO.Directory.GetParent(uMovie.Filename).FullName
+                        If Path.GetFileNameWithoutExtension(uMovie.Filename).ToLower = "video_ts" Then
+                            uPath = Directory.GetParent(Directory.GetParent(uMovie.Filename).FullName).FullName
+                        Else
+                            uPath = Directory.GetParent(uMovie.Filename).FullName
+                        End If
                     End If
                 Case "tvshow"
                     Dim uShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbervideofileID, False)
                     If FileUtils.Common.isBDRip(uShow.ShowPath) Then
                         'needs some testing?!
-                        uPath = IO.Directory.GetParent(IO.Directory.GetParent(IO.Directory.GetParent(uShow.ShowPath).FullName).FullName).FullName
+                        uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uShow.ShowPath).FullName).FullName).FullName
                     ElseIf FileUtils.Common.isVideoTS(uShow.ShowPath) Then
                         'needs some testing?!
-                        uPath = IO.Directory.GetParent(IO.Directory.GetParent(uShow.ShowPath).FullName).FullName
+                        uPath = Directory.GetParent(Directory.GetParent(uShow.ShowPath).FullName).FullName
                     Else
                         uPath = uShow.ShowPath
                     End If
@@ -1302,19 +1378,19 @@ Namespace Kodi
                     Dim uEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(EmbervideofileID, False)
                     If FileUtils.Common.isBDRip(uEpisode.Filename) Then
                         'needs some testing?!
-                        uPath = IO.Directory.GetParent(IO.Directory.GetParent(IO.Directory.GetParent(uEpisode.Filename).FullName).FullName).FullName
+                        uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uEpisode.Filename).FullName).FullName).FullName
                     ElseIf FileUtils.Common.isVideoTS(uEpisode.Filename) Then
                         'needs some testing?!
-                        uPath = IO.Directory.GetParent(IO.Directory.GetParent(uEpisode.Filename).FullName).FullName
+                        uPath = Directory.GetParent(Directory.GetParent(uEpisode.Filename).FullName).FullName
                     Else
-                        uPath = IO.Directory.GetParent(uEpisode.Filename).FullName
+                        uPath = Directory.GetParent(uEpisode.Filename).FullName
                     End If
                 Case Else
                     logger.Warn("[APIKodi] ScanVideoPath: " & _currenthost.name & ": No videotype specified, Abort!")
                     Return False
             End Select
 
-            uPath = GetRemoteFilePath(uPath)
+            uPath = GetRemoteFilePath2(uPath)
             If uPath Is Nothing Then
                 Return False
             End If
@@ -1350,6 +1426,59 @@ Namespace Kodi
             End Try
         End Function
 
+        Public Async Function GetTextures(ByVal MoviePath As String) As Task(Of XBMCRPC.Textures.GetTexturesResponse)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] SendMessage: No client initialized! Abort!")
+                    Return Nothing
+                End If
+
+                Dim filter As New XBMCRPC.List.Filter.TexturesOr With {.or = New List(Of Object)}
+                Dim filterRule As New XBMCRPC.List.Filter.Rule.Textures
+                filterRule.field = List.Filter.Fields.Textures.url
+                filterRule.Operator = List.Filter.Operators.startswith
+                filterRule.value = MoviePath
+                filter.or.Add(filterRule)
+
+                Dim response As XBMCRPC.Textures.GetTexturesResponse = Await _kodi.Textures.GetTextures(filter, XBMCRPC.Textures.Fields.Texture.AllFields)
+                Return response
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
+        End Function
+
+        Public Async Function RemoveTexture(ByVal ID As Integer) As Task(Of String)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] SendMessage: No client initialized! Abort!")
+                    Return Nothing
+                End If
+                Dim response = Await _kodi.Textures.RemoveTexture(ID)
+                Return response
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
+        End Function
+
+        Public Async Function RemoveTextures(ByVal MoviePath As String) As Task(Of Boolean)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] SendMessage: No client initialized! Abort!")
+                    Return False
+                End If
+                Dim TexturesResponce = Await GetTextures(GetRemoteFilePath2(MoviePath))
+                For Each tTexture In TexturesResponce.textures
+                    Await RemoveTexture(tTexture.textureid)
+                Next
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return False
+            End Try
+            Return True
+        End Function
+
 #End Region 'General API
 
 #Region "Helper functions/methods"
@@ -1383,20 +1512,21 @@ Namespace Kodi
 
             'if no seperator is specified use pathseperator of current system (=Windows)
             Dim remotepathseparator = _currenthost.remotepathseparator
-            If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = IO.Path.DirectorySeparatorChar
+            If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = Path.DirectorySeparatorChar
 
             'example remotesources: 
             'nfs://192.168.2.200/Media_1/
             'nfs://192.168.0.2/mnt/share/media/Video/Media_1/, 
             'sftp://name:password@192.168.0.2:22/home/media/Media_1/
+            'smb://PC/Share/
             '
             'example localpath:  
             'E:\MyMovies\Media_1\Movie\Action\11.14 - Elevenfourteen\poster.jpg
 
             'first strip driveletter (since it will probably not be identical between Kodi and Ember (i.e. mapped drive))
-            Dim tmpremotepath As String = localpath.Replace(IO.Directory.GetDirectoryRoot(localpath), "")
+            Dim tmpremotepath As String = localpath.Replace(Directory.GetDirectoryRoot(localpath), "")
             'result: MyMovies\Media_1\Movie\Action\11.14 - Elevenfourteen\poster.jpg
-            tmpremotepath = tmpremotepath.Replace(IO.Path.DirectorySeparatorChar, remotepathseparator)
+            tmpremotepath = tmpremotepath.Replace(Path.DirectorySeparatorChar, remotepathseparator)
             'result: MyMovies/Media_1/Movie/Action/11.14 - Elevenfourteen/poster.jpg
 
             'split remotesource at each seperator and check last part, as this part is used to identify correct source
@@ -1435,7 +1565,47 @@ Namespace Kodi
             End If
             Return tmpremotepath
         End Function
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="LocalPath"></param>
+        ''' <returns></returns>
+        ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong or lower case)</remarks>
+        Function GetRemoteFilePath2(ByVal LocalPath As String) As String
+            Dim RemotePath As String = String.Empty
+            Dim RemoteIsUNC As Boolean = False
 
+            For Each Source In _currenthost.source
+                Dim tLocalSource As String = String.Empty
+                'add a directory separator at the end of the path to distinguish between)
+                'D:\Movies
+                'D:\Movies Shared
+                '(needed for "LocalPath.ToLower.StartsWith(tLocalSource)"
+                If Source.applicationpath.Contains(Path.DirectorySeparatorChar) Then
+                    tLocalSource = If(Source.applicationpath.EndsWith(Path.DirectorySeparatorChar), Source.applicationpath, String.Concat(Source.applicationpath, Path.DirectorySeparatorChar)).Trim
+                ElseIf Source.applicationpath.Contains(Path.AltDirectorySeparatorChar) Then
+                    tLocalSource = If(Source.applicationpath.EndsWith(Path.AltDirectorySeparatorChar), Source.applicationpath, String.Concat(Source.applicationpath, Path.AltDirectorySeparatorChar)).Trim
+                End If
+                If LocalPath.ToLower.StartsWith(tLocalSource.ToLower) Then
+                    Dim tRemoteSource As String = String.Empty
+                    If Source.remotepath.Contains(Path.DirectorySeparatorChar) Then
+                        tRemoteSource = If(Source.remotepath.EndsWith(Path.DirectorySeparatorChar), Source.remotepath, String.Concat(Source.remotepath, Path.DirectorySeparatorChar)).Trim
+                    ElseIf Source.remotepath.Contains(Path.AltDirectorySeparatorChar) Then
+                        tRemoteSource = If(Source.remotepath.EndsWith(Path.AltDirectorySeparatorChar), Source.remotepath, String.Concat(Source.remotepath, Path.AltDirectorySeparatorChar)).Trim
+                        RemoteIsUNC = True
+                    End If
+                    RemotePath = LocalPath.Replace(tLocalSource, tRemoteSource)
+                    If RemoteIsUNC Then
+                        RemotePath = RemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    Else
+                        RemotePath = RemotePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+                    End If
+                    Exit For
+                End If
+            Next
+
+            Return RemotePath
+        End Function
 #End Region 'Helper functions/methods
 
 #Region "Unused code"
@@ -1634,7 +1804,7 @@ Namespace Kodi
 
 #Region "Methods"
 
-        Public Async Function GetRequestStream(request As Net.WebRequest) As Task(Of IO.Stream)
+        Public Async Function GetRequestStream(request As Net.WebRequest) As Task(Of Stream)
             Try
                 Return Await request.GetRequestStreamAsync().ConfigureAwait(False)
             Catch ex As Exception
@@ -1725,7 +1895,7 @@ Namespace Kodi
             _socket.Connect(hostName, port)
         End Function
 
-        Public Function GetInputStream() As IO.Stream Implements ISocket.GetInputStream
+        Public Function GetInputStream() As Stream Implements ISocket.GetInputStream
             Return New Net.Sockets.NetworkStream(_socket)
         End Function
 
