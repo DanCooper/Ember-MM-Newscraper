@@ -278,7 +278,7 @@ Public Class dlgTrailerSelect
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseLocalTrailer.Click
         Try
             With ofdTrailer
-                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tMovie.Filename).FullName
                 .Filter = String.Concat("Supported Trailer Formats|*", Functions.ListToStringWithSeparator(Master.eSettings.FileSystemValidExts.ToArray(), ";*"))
                 .FilterIndex = 0
             End With
@@ -361,7 +361,7 @@ Public Class dlgTrailerSelect
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If Not ModulesManager.Instance.ScrapeTrailer_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Trailer, nList) Then
+            If Not ModulesManager.Instance.ScrapeTrailer_Movie(Me.tMovie, Enums.ScraperCapabilities_Movie_MovieSet.Trailer, nList) Then
                 Args.bType = True
             Else
                 Args.bType = False

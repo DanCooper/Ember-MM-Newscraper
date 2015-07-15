@@ -668,72 +668,6 @@ Public Class frmMain
         End Try
     End Sub
 
-    Public Sub SetMovieListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
-        Try
-            Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item("idMovie")) = iID Select drvRow
-
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT Mark, SortTitle FROM movie WHERE idMovie = ", iID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    SQLreader.Read()
-                    DirectCast(dRow(0), DataRow).Item("Mark") = Convert.ToBoolean(SQLreader("Mark"))
-                    If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item("SortTitle") = SQLreader("SortTitle").ToString
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Public Sub SetMovieSetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
-        Try
-            Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item("idSet")) = iID Select drvRow
-
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT Mark FROM sets WHERE idSet = ", iID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    SQLreader.Read()
-                    DirectCast(dRow(0), DataRow).Item("Mark") = Convert.ToBoolean(SQLreader("Mark"))
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Public Sub SetShowListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
-        Try
-            Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item("idShow")) = iID Select drvRow
-
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT Ordering FROM tvshow WHERE idShow = ", iID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    SQLreader.Read()
-                    DirectCast(dRow(0), DataRow).Item("Ordering") = Convert.ToInt32(SQLreader("Ordering"))
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Public Sub SetEpisodeListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
-        Try
-            Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item("idEpisode")) = iID Select drvRow
-
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT Mark, Title FROM episode WHERE idEpisode = ", iID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    SQLreader.Read()
-                    DirectCast(dRow(0), DataRow).Item("Mark") = Convert.ToBoolean(SQLreader("mark"))
-                    If Not DBNull.Value.Equals(SQLreader("Title")) Then DirectCast(dRow(0), DataRow).Item("Title") = SQLreader("Title").ToString
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
     Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpAbout.Click
         Using dAbout As New dlgAbout
             dAbout.ShowDialog()
@@ -2101,7 +2035,7 @@ Public Class frmMain
         Else
             Me.FillList(False, True, False)
             If Me.dgvMovies.SelectedRows.Count > 0 Then
-                Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
+                Me.SelectRow_Movie(Me.dgvMovies.SelectedRows(0).Index)
             Else
                 Me.ClearInfo()
             End If
@@ -2779,11 +2713,6 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_Movie(CLng(e.UserState))
-            If Me.dgvMovies.SelectedRows.Count > 0 AndAlso Me.dgvMovies.SelectedRows(0).Cells("idMovie").Value.ToString = e.UserState.ToString Then
-                If Me.dgvMovies.CurrentCell Is Me.dgvMovies.SelectedRows(0).Cells("ListTitle") Then
-                    Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
-                End If
-            End If
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -2810,7 +2739,7 @@ Public Class frmMain
             Me.SetControlsEnabled(True)
         Else
             If Me.dgvMovieSets.SelectedRows.Count > 0 Then
-                Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
+                Me.SelectRow_MovieSet(Me.dgvMovieSets.SelectedRows(0).Index)
             Else
                 Me.ClearInfo()
             End If
@@ -3351,11 +3280,6 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_MovieSet(CLng(e.UserState))
-            If Me.dgvMovieSets.SelectedRows.Count > 0 AndAlso Me.dgvMovieSets.SelectedRows(0).Cells("idSet").Value.ToString = e.UserState.ToString Then
-                If Me.dgvMovieSets.CurrentCell Is Me.dgvMovieSets.SelectedRows(0).Cells("ListTitle") Then
-                    Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
-                End If
-            End If
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -3383,7 +3307,7 @@ Public Class frmMain
         Else
             Me.FillList(False, True, False)
             If Me.dgvTVShows.SelectedRows.Count > 0 Then
-                Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+                Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
             Else
                 Me.ClearInfo()
             End If
@@ -4110,11 +4034,6 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVShow(CLng(e.UserState))
-            If Me.dgvTVShows.SelectedRows.Count > 0 AndAlso Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value.ToString = e.UserState.ToString Then
-                If Me.dgvTVShows.CurrentCell Is Me.dgvTVShows.SelectedRows(0).Cells("ListTitle") Then
-                    Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
-                End If
-            End If
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -4221,7 +4140,7 @@ doCancel:
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
                 Try
                     If Me.dgvMovies.SelectedRows(0).Cells("idMovie").Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                        Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
+                        Me.SelectRow_Movie(Me.dgvMovies.SelectedRows(0).Index)
                     End If
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -5661,12 +5580,7 @@ doCancel:
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
-            Me.SetEpisodeListItemAfterEdit(ID, indX)
-            If Me.ReloadTVEpisode(ID) Then
-                Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
-            End If
-
-            'Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value))
+            RefreshRow_TVEpisode(ID)
         End If
 
         Me.SetControlsEnabled(True)
@@ -6595,10 +6509,7 @@ doCancel:
         Using dEditMeta As New dlgFileInfo
             Select Case dEditMeta.ShowDialog(False)
                 Case Windows.Forms.DialogResult.OK
-                    Me.SetMovieListItemAfterEdit(ID, indX)
-                    If Me.ReloadMovie(ID) Then
-                        Me.FillList(True, False, False)
-                    End If
+                    Me.RefreshRow_Movie(ID)
             End Select
         End Using
     End Sub
@@ -8135,7 +8046,7 @@ doCancel:
                     If Not Me.currList = 2 Then
                         Me.currList = 2
                         Me.prevEpRow = -1
-                        Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+                        Me.SelectRow_TVEpisode(Me.dgvTVEpisodes.SelectedRows(0).Index)
                     End If
                 End If
             Else
@@ -8565,7 +8476,7 @@ doCancel:
                     If Not Me.currList = 1 Then
                         Me.currList = 1
                         Me.prevSeasonRow = -1
-                        Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+                        Me.SelectRow_TVSeason(Me.dgvTVSeasons.SelectedRows(0).Index)
                     End If
                 End If
             Else
@@ -8902,7 +8813,7 @@ doCancel:
                     If Not Me.currList = 0 Then
                         Me.currList = 0
                         Me.prevShowRow = -1
-                        Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+                        Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
                     End If
                 End If
             Else
@@ -12108,7 +12019,6 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_Movie
                 Try
-                    Me.SetMovieListItemAfterEdit(Convert.ToInt16(_params(0)), Convert.ToInt16(_params(1)))
                     If Me.ReloadMovie(Convert.ToInt16(_params(0))) Then
                         Me.FillList(True, True, False)
                     End If
@@ -14328,7 +14238,7 @@ doCancel:
     End Sub
 
     ''' <summary>
-    '''Open IMDB-Page of selected movie(s) in defaultbrowser
+    ''' Open IMDB-Page of selected movie(s) in defaultbrowser
     ''' </summary>
     ''' <param name="sender">Browse to... menuitem</param>
     ''' <param name="e"></param>
@@ -14346,10 +14256,10 @@ doCancel:
                 End If
 
                 If doOpen Then
-                    Dim tmpstring As String = ""
+                    Dim tmpstring As String = String.Empty
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then    '  If Not String.IsNullOrEmpty(Master.currMovie.Movie.ID) Then
-                            tmpstring = sRow.Cells("Imdb").Value.ToString.Replace("tt", "")
+                        If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then
+                            tmpstring = sRow.Cells("Imdb").Value.ToString.Replace("tt", String.Empty)
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
                                 Functions.Launch(My.Resources.urlIMDB & "/title/tt" & tmpstring)
                             Else
@@ -14442,6 +14352,7 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
@@ -14449,20 +14360,20 @@ doCancel:
                         Dim etList As New List(Of String)
                         Dim newImage As New Images
 
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aContainer, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aContainer, True) Then
                             If aContainer.Banners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType_Movie.Banner, aContainer.Banners, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBMovie, Enums.ImageType_Movie.Banner, aContainer.Banners, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
                                         pResults.WebImage.FromWeb(pResults.URL)
                                         newImage = pResults.WebImage
                                         newImage.IsEdit = True
-                                        newImage.SaveAsMovieBanner(Master.currMovie)
+                                        tmpDBMovie.BannerPath = newImage.SaveAsMovieBanner(tmpDBMovie)
+                                        Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -14495,8 +14406,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetBanner(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -14523,10 +14433,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowBanner(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14540,6 +14447,7 @@ doCancel:
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
                             Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
                             Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -14551,9 +14459,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASBanner(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonBanner)
@@ -14561,9 +14467,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonBanner(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -14613,10 +14517,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowCharacterArt(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14671,8 +14572,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieClearArt(Master.currMovie)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -14705,8 +14605,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetClearArt(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -14733,10 +14632,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearArt(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14791,8 +14687,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieClearLogo(Master.currMovie)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -14825,8 +14720,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetClearLogo(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -14853,10 +14747,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearLogo(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14911,8 +14802,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieDiscArt(Master.currMovie)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -14945,8 +14835,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetDiscArt(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -15019,8 +14908,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieFanart(Master.currMovie)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -15053,8 +14941,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetFanart(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -15081,10 +14968,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowFanart(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -15098,6 +14982,7 @@ doCancel:
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
                             Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
                             Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -15109,9 +14994,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASFanart(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonFanart, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonFanart)
@@ -15119,9 +15002,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonFanart(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             End If
 
@@ -15149,9 +15030,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodeFanart(Master.currShow)
-                                If Me.ReloadTVEpisode(EpisodeID) Then
-                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
-                                End If
+                                Me.RefreshRow_TVEpisode(EpisodeID)
                             End If
                             Me.SetControlsEnabled(True)
                         End If
@@ -15198,8 +15077,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieLandscape(Master.currMovie)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -15232,8 +15110,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetLandscape(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -15260,10 +15137,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowLandscape(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -15277,6 +15151,7 @@ doCancel:
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
                             Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
                             Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -15288,9 +15163,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASLandscape(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonLandscape)
@@ -15298,9 +15171,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonLandscape(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -15352,8 +15223,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMoviePoster(Master.currMovie)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovie(ID, False, False, True)
+                                        Me.RefreshRow_Movie(ID)
                                     End If
                                 End If
                             Else
@@ -15386,8 +15256,7 @@ doCancel:
                                         newImage.IsEdit = True
                                         newImage.SaveAsMovieSetPoster(Master.currMovieSet)
                                         Cursor = Cursors.Default
-                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
-                                        Me.ReloadMovieSet(ID, False, False, False)
+                                        Me.RefreshRow_MovieSet(ID)
                                     End If
                                 End If
                             Else
@@ -15414,10 +15283,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowPoster(Master.currShow)
-                                Me.SetShowListItemAfterEdit(ShowID, indX)
-                                If Me.ReloadTVShow(ShowID, False, True, False, False, False) Then
-                                    Me.FillList(False, False, True)
-                                End If
+                                Me.RefreshRow_TVShow(ShowID)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -15431,6 +15297,7 @@ doCancel:
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
                             Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
                             Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
                             Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
@@ -15442,9 +15309,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASPoster(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.ImageType_TV.SeasonPoster, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.SeasonPoster)
@@ -15452,9 +15317,7 @@ doCancel:
                                     newImage = tImage.WebImage
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonPoster(Master.currShow)
-                                    If Me.ReloadTVSeason(ShowID, Season, False) Then
-                                        Me.FillSeasons(ShowID)
-                                    End If
+                                    Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             End If
                             Me.SetControlsEnabled(True)
@@ -15481,9 +15344,7 @@ doCancel:
                                 newImage = tImage.WebImage
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodePoster(Master.currShow)
-                                If Me.ReloadTVEpisode(EpisodeID) Then
-                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
-                                End If
+                                Me.RefreshRow_TVEpisode(EpisodeID)
                             End If
                             Me.SetControlsEnabled(True)
                         End If
@@ -15889,6 +15750,10 @@ doCancel:
                 DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
             End If
         End If
+
+        If Me.dgvMovies.SelectedRows.Count > 0 AndAlso CInt(Me.dgvMovies.SelectedRows(0).Cells("idMovie").Value) = MovieID Then
+            Me.SelectRow_Movie(Me.dgvMovies.SelectedRows(0).Index)
+        End If
     End Sub
     ''' <summary>
     ''' Refresh a single MovieSet row with informations from DB
@@ -15910,6 +15775,10 @@ doCancel:
             Else
                 DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
             End If
+        End If
+
+        If Me.dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(Me.dgvMovieSets.SelectedRows(0).Cells("idSet").Value) = MovieSetID Then
+            Me.SelectRow_MovieSet(Me.dgvMovieSets.SelectedRows(0).Index)
         End If
     End Sub
     ''' <summary>
@@ -15945,6 +15814,10 @@ doCancel:
                 DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
             End If
         End If
+
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID Then
+            Me.SelectRow_TVEpisode(Me.dgvTVEpisodes.SelectedRows(0).Index)
+        End If
     End Sub
     ''' <summary>
     ''' Refresh a single TVSeason row with informations from DB
@@ -15968,6 +15841,9 @@ doCancel:
             End If
         End If
 
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID Then
+            Me.SelectRow_TVSeason(Me.dgvTVSeasons.SelectedRows(0).Index)
+        End If
     End Sub
     ''' <summary>
     ''' Refresh a single TVShow row with informations from DB
@@ -15989,6 +15865,10 @@ doCancel:
             Else
                 DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
             End If
+        End If
+
+        If Me.dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVShows.SelectedRows(0).Cells("idShoe").Value) = ShowID Then
+            Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
         End If
     End Sub
     ''' <summary>
@@ -17034,30 +16914,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SelectEpisodeRow(ByVal iRow As Integer)
-        While tmrKeyBuffer.Enabled
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-
-        If Me.dgvTVEpisodes.Rows.Count >= iRow Then
-            If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
-                Me.ClearInfo()
-                Me.ShowNoInfo(True, 2)
-
-                Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
-                Me.FillScreenInfoWith_TVEpisode()
-
-                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
-                    Me.cmnuEpisode.Enabled = True
-                End If
-            Else
-                Me.LoadInfo_TVEpisode(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value))
-            End If
-        End If
-    End Sub
-
     Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
         Functions.SetScraperMod(Enums.ModType_Movie.All, True)
         ScrapeData_Movie(True, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie)
@@ -17355,7 +17211,7 @@ doCancel:
     ''' </summary>
     ''' <param name="iRow"><c>Integer</c> row which is currently selected</param>
     ''' <remarks></remarks>
-    Private Sub SelectMovieRow(ByVal iRow As Integer)
+    Private Sub SelectRow_Movie(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -17386,7 +17242,7 @@ doCancel:
     ''' </summary>
     ''' <param name="iRow"><c>Integer</c> row which is currently selected</param>
     ''' <remarks></remarks>
-    Private Sub SelectMovieSetRow(ByVal iRow As Integer)
+    Private Sub SelectRow_MovieSet(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -17411,12 +17267,36 @@ doCancel:
             End If
         End If
     End Sub
+
+    Private Sub SelectRow_TVEpisode(ByVal iRow As Integer)
+        While tmrKeyBuffer.Enabled
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        If Me.dgvTVEpisodes.Rows.Count >= iRow Then
+            If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
+                String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
+                Me.ClearInfo()
+                Me.ShowNoInfo(True, 2)
+
+                Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
+                Me.FillScreenInfoWith_TVEpisode()
+
+                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                    Me.cmnuEpisode.Enabled = True
+                End If
+            Else
+                Me.LoadInfo_TVEpisode(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value))
+            End If
+        End If
+    End Sub
     ''' <summary>
     ''' Updates the media info panels (right side of disiplay) when the TV Season selector changes (left side of display)
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' <remarks></remarks>
-    Private Sub SelectSeasonRow(ByVal iRow As Integer)
+    Private Sub SelectRow_TVSeason(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -17449,7 +17329,7 @@ doCancel:
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' <remarks></remarks>
-    Private Sub SelectShowRow(ByVal iRow As Integer)
+    Private Sub SelectRow_TVShow(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -20164,7 +20044,7 @@ doCancel:
                 Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells("Title").Value.ToString)
             End If
 
-            Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
+            Me.SelectRow_TVEpisode(Me.dgvTVEpisodes.SelectedRows(0).Index)
         End If
     End Sub
 
@@ -20180,7 +20060,7 @@ doCancel:
                 Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
             End If
 
-            Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+            Me.SelectRow_TVSeason(Me.dgvTVSeasons.SelectedRows(0).Index)
         End If
     End Sub
 
@@ -20196,7 +20076,7 @@ doCancel:
                 Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells("TVShowPath").Value.ToString)
             End If
 
-            Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+            Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
         End If
     End Sub
 
@@ -20212,7 +20092,7 @@ doCancel:
                 Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
             End If
 
-            Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
+            Me.SelectRow_Movie(Me.dgvMovies.SelectedRows(0).Index)
         End If
     End Sub
 
@@ -20228,7 +20108,7 @@ doCancel:
                 Me.SetStatus(Me.dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
             End If
 
-            Me.SelectMovieSetRow(Me.dgvMovieSets.SelectedRows(0).Index)
+            Me.SelectRow_MovieSet(Me.dgvMovieSets.SelectedRows(0).Index)
         End If
     End Sub
 

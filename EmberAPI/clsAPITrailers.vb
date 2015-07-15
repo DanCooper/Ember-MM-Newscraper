@@ -833,7 +833,7 @@ Public Class Trailers
             Dim fExt As String = Path.GetExtension(Me._ext)
             '2014/09/26 before saving current trailer, check if we should delete existing trailer(s) - do this only if new trailer to save exists!
             If Master.eSettings.MovieTrailerDeleteExisting AndAlso fExt <> "" Then
-                DeleteMovieTrailer(Master.currMovie)
+                DeleteMovieTrailer(mMovie)
             End If
 
 
