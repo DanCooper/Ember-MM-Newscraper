@@ -875,7 +875,7 @@ Public Class dlgImgSelectTV
 
 
     Private Sub bwLoadData_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadData.DoWork
-        Dim cSI As MediaContainers.SeasonImagesContainer
+        Dim SIC As MediaContainers.SeasonImagesContainer
         Dim iProgress As Integer = 1
         Dim iSeason As Integer = -1
 
@@ -896,25 +896,25 @@ Public Class dlgImgSelectTV
             Case Enums.ImageType_TV.AllSeasonsPoster
                 ImageResultsContainer.SeasonPoster = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.SeasonPoster
-                cSI = New MediaContainers.SeasonImagesContainer
-                cSI.Season = Me._season
-                cSI.Poster = CType(Me.pbCurrent.Tag, MediaContainers.Image)
-                ImageResultsContainer.SeasonImages.Add(cSI)
+                SIC = New MediaContainers.SeasonImagesContainer
+                SIC.Season = Me._season
+                SIC.Poster = CType(Me.pbCurrent.Tag, MediaContainers.Image)
+                ImageResultsContainer.SeasonImages.Add(SIC)
             Case Enums.ImageType_TV.SeasonBanner
-                cSI = New MediaContainers.SeasonImagesContainer
-                cSI.Season = Me._season
-                cSI.Banner = CType(Me.pbCurrent.Tag, MediaContainers.Image)
-                ImageResultsContainer.SeasonImages.Add(cSI)
+                SIC = New MediaContainers.SeasonImagesContainer
+                SIC.Season = Me._season
+                SIC.Banner = CType(Me.pbCurrent.Tag, MediaContainers.Image)
+                ImageResultsContainer.SeasonImages.Add(SIC)
             Case Enums.ImageType_TV.SeasonFanart
-                cSI = New MediaContainers.SeasonImagesContainer
-                cSI.Season = Me._season
-                cSI.Fanart = CType(Me.pbCurrent.Tag, MediaContainers.Image)
-                ImageResultsContainer.SeasonImages.Add(cSI)
+                SIC = New MediaContainers.SeasonImagesContainer
+                SIC.Season = Me._season
+                SIC.Fanart = CType(Me.pbCurrent.Tag, MediaContainers.Image)
+                ImageResultsContainer.SeasonImages.Add(SIC)
             Case Enums.ImageType_TV.SeasonLandscape
-                cSI = New MediaContainers.SeasonImagesContainer
-                cSI.Season = Me._season
-                cSI.Landscape = CType(Me.pbCurrent.Tag, MediaContainers.Image)
-                ImageResultsContainer.SeasonImages.Add(cSI)
+                SIC = New MediaContainers.SeasonImagesContainer
+                SIC.Season = Me._season
+                SIC.Landscape = CType(Me.pbCurrent.Tag, MediaContainers.Image)
+                ImageResultsContainer.SeasonImages.Add(SIC)
             Case Enums.ImageType_TV.ShowBanner
                 ImageResultsContainer.ShowBanner = CType(Me.pbCurrent.Tag, MediaContainers.Image)
             Case Enums.ImageType_TV.ShowCharacterArt
@@ -1030,6 +1030,33 @@ Public Class dlgImgSelectTV
                         Return
                     End If
 
+                    For Each sSeason As Structures.DBTV In tmpShowContainer.Show.Seasons
+                        SIC = New MediaContainers.SeasonImagesContainer
+                        SIC.Season = sSeason.TVSeason.Season
+                        If Master.eSettings.TVSeasonBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(sSeason.BannerPath) Then
+                            SIC.Banner.WebImage.FromFile(sSeason.BannerPath)
+                            SIC.Banner.LocalFile = sSeason.BannerPath
+                        End If
+                        If Master.eSettings.TVSeasonFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(sSeason.FanartPath) Then
+                            SIC.Fanart.WebImage.FromFile(sSeason.FanartPath)
+                            SIC.Fanart.LocalFile = sSeason.FanartPath
+                        End If
+                        If Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(sSeason.LandscapePath) Then
+                            SIC.Landscape.WebImage.FromFile(sSeason.LandscapePath)
+                            SIC.Landscape.LocalFile = sSeason.LandscapePath
+                        End If
+                        If Master.eSettings.TVSeasonPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(sSeason.PosterPath) Then
+                            SIC.Poster.WebImage.FromFile(sSeason.PosterPath)
+                            SIC.Poster.LocalFile = sSeason.PosterPath
+                        End If
+                        ImageResultsContainer.SeasonImages.Add(SIC)
+                        DefaultImagesContainer.SeasonImages.Add(SIC)
+                        If Me.bwLoadData.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    Next
+
                     For Each sEpisode As Structures.DBTV In tmpShowContainer.Episodes
                         Try
                             iSeason = sEpisode.TVEp.Season
@@ -1054,25 +1081,25 @@ Public Class dlgImgSelectTV
                                 End If
 
                                 If ImageResultsContainer.SeasonImages.Where(Function(s) s.Season = iSeason).Count = 0 Then
-                                    cSI = New MediaContainers.SeasonImagesContainer
-                                    cSI.Season = iSeason
+                                    SIC = New MediaContainers.SeasonImagesContainer
+                                    SIC.Season = iSeason
                                     If Master.eSettings.TVSeasonBannerAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.BannerPath) Then
-                                        cSI.Banner.WebImage.FromFile(sEpisode.BannerPath)
-                                        cSI.Banner.LocalFile = sEpisode.BannerPath
+                                        SIC.Banner.WebImage.FromFile(sEpisode.BannerPath)
+                                        SIC.Banner.LocalFile = sEpisode.BannerPath
                                     End If
                                     If Master.eSettings.TVSeasonFanartAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.FanartPath) Then
-                                        cSI.Fanart.WebImage.FromFile(sEpisode.FanartPath)
-                                        cSI.Fanart.LocalFile = sEpisode.FanartPath
+                                        SIC.Fanart.WebImage.FromFile(sEpisode.FanartPath)
+                                        SIC.Fanart.LocalFile = sEpisode.FanartPath
                                     End If
                                     If Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.LandscapePath) Then
-                                        cSI.Landscape.WebImage.FromFile(sEpisode.LandscapePath)
-                                        cSI.Landscape.LocalFile = sEpisode.LandscapePath
+                                        SIC.Landscape.WebImage.FromFile(sEpisode.LandscapePath)
+                                        SIC.Landscape.LocalFile = sEpisode.LandscapePath
                                     End If
                                     If Master.eSettings.TVSeasonPosterAnyEnabled AndAlso Not String.IsNullOrEmpty(sEpisode.PosterPath) Then
-                                        cSI.Poster.WebImage.FromFile(sEpisode.PosterPath)
-                                        cSI.Poster.LocalFile = sEpisode.PosterPath
+                                        SIC.Poster.WebImage.FromFile(sEpisode.PosterPath)
+                                        SIC.Poster.LocalFile = sEpisode.PosterPath
                                     End If
-                                    ImageResultsContainer.SeasonImages.Add(cSI)
+                                    ImageResultsContainer.SeasonImages.Add(SIC)
                                 End If
 
                                 If Me.bwLoadData.CancellationPending Then
@@ -1092,9 +1119,9 @@ Public Class dlgImgSelectTV
                             iSeason = sEpisode.TVEp.Season
 
                             If ImageResultsContainer.SeasonImages.Where(Function(s) s.Season = iSeason).Count = 0 Then
-                                cSI = New MediaContainers.SeasonImagesContainer
-                                cSI.Season = iSeason
-                                ImageResultsContainer.SeasonImages.Add(cSI)
+                                SIC = New MediaContainers.SeasonImagesContainer
+                                SIC.Season = iSeason
+                                ImageResultsContainer.SeasonImages.Add(SIC)
                             End If
 
                             If Me.bwLoadData.CancellationPending Then
