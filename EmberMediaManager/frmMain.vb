@@ -9385,7 +9385,7 @@ doCancel:
                         DBTVShow = dEditTVShow.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVShow, Nothing, Nothing, False, Nothing, DBTVShow)
                         Master.DB.SaveTVShowToDB(DBTVShow, False, False, False, True)
-                        RefreshRow_Movie(DBTVShow.ID)
+                        RefreshRow_TVShow(DBTVShow.ID)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                         Me.ScrapeData_Movie(True, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultOptions_Movie)
