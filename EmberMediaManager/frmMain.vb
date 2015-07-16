@@ -15867,7 +15867,7 @@ doCancel:
             End If
         End If
 
-        If Me.dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVShows.SelectedRows(0).Cells("idShoe").Value) = ShowID Then
+        If Me.dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID Then
             Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
         End If
     End Sub
