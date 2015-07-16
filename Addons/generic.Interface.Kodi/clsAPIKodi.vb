@@ -209,6 +209,7 @@ Namespace Kodi
         ''' at the moment the movie to update on host is identified by searching and comparing filename of movie(special handling for DVDs/Blurays), meaning there might be problems when filename is appearing more than once in movie library
         ''' </remarks>
         Public Async Function UpdateMovieInfo(ByVal EmbermovieID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+            Dim isNew As Boolean = False
             Dim uMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(EmbermovieID)
             Try
                 If _kodi Is Nothing Then
@@ -235,6 +236,7 @@ Namespace Kodi
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
                     If KodiMovie IsNot Nothing Then
+                        isNew = True
                         KodiID = KodiMovie.movieid
                     End If
                 End If
@@ -363,7 +365,7 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": """ & uMovie.Filename, """")
+                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uMovie.Filename, """")
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache)
@@ -371,7 +373,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uMovie.Movie.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovie.Movie.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -462,6 +464,7 @@ Namespace Kodi
         ''' updates all movieset fields which are filled/set in Ember (also paths of images)
         ''' </remarks>
         Public Async Function UpdateMovieSetInfo(ByVal EmbermoviesetID As Long, ByVal MovieSetArtworkPath As String, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+            Dim isNew As Boolean = False
             Dim uMovieset As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(EmbermoviesetID)
             Try
                 If _kodi Is Nothing Then
@@ -523,7 +526,7 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateMovieSetInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": """ & uMovieset.MovieSet.Title, """")
+                        logger.Trace("[APIKodi] UpdateMovieSetInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uMovieset.MovieSet.Title, """")
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this MovieSet
@@ -531,7 +534,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uMovieset.MovieSet.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovieset.MovieSet.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -639,6 +642,7 @@ Namespace Kodi
         ''' at the moment episode on host is identified by searching and comparing filename of episode
         ''' </remarks>
         Public Async Function UpdateTVEpisodeInfo(ByVal EmberepisodeID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+            Dim isNew As Boolean = False
             Dim uEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(EmberepisodeID, True)
 
             Try
@@ -664,6 +668,7 @@ Namespace Kodi
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
                     If Not KodiEpsiode Is Nothing Then
+                        isNew = True
                         KodiID = KodiEpsiode.episodeid
                     End If
                 End If
@@ -733,7 +738,7 @@ Namespace Kodi
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uEpisode.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": """ & uEpisode.Filename, """")
+                        logger.Trace("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uEpisode.Filename, """")
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uEpisode.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Epsiode
@@ -741,7 +746,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEp.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEp.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -822,6 +827,7 @@ Namespace Kodi
         ''' updates all movieset fields which are filled/set in Ember (also paths of images)
         ''' </remarks>
         Public Async Function UpdateTVSeasonInfo(ByVal EmberseasonID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+            Dim isNew As Boolean = False
             Dim uSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True)
             Try
                 If _kodi Is Nothing Then
@@ -846,6 +852,7 @@ Namespace Kodi
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiSeason = Await GetHostTVSeason(uSeason).ConfigureAwait(False)
                     If Not KodiSeason Is Nothing Then
+                        isNew = True
                         KodiID = KodiSeason.seasonid
                     End If
                 End If
@@ -876,7 +883,7 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": " & uSeason.TVEp.Season)
+                        logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVEp.Season)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Season
@@ -884,7 +891,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uSeason.TVEp.Season).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVEp.Season).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -990,6 +997,7 @@ Namespace Kodi
         ''' at the moment TVShow on host is identified by searching and comparing path of TVShow
         ''' </remarks>
         Public Async Function UpdateTVShowInfo(ByVal EmbershowID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+            Dim isNew As Boolean = False
             Dim uTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbershowID, False)
             Try
 
@@ -1015,6 +1023,7 @@ Namespace Kodi
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiTVShow = Await SearchTVShowByPath(uTVShow.ShowPath).ConfigureAwait(False)
                     If Not KodiTVShow Is Nothing Then
+                        isNew = True
                         KodiID = KodiTVShow.tvshowid
                     End If
                 End If
@@ -1120,7 +1129,7 @@ Namespace Kodi
                         '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uTVShow.ShowPath, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1408, "Updated") & ": """ & uTVShow.ShowPath, """")
+                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uTVShow.ShowPath, """")
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uTVShow.ShowPath, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Show (exkl. all season and episode images)
@@ -1128,7 +1137,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", Master.eLang.GetString(1408, "Updated") & ": " & uTVShow.TVShow.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uTVShow.TVShow.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
