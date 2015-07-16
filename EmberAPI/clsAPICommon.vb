@@ -1995,7 +1995,7 @@ Public Class Structures
         Dim Filename As String
         Dim FilenameID As Long
         Dim ID As Long
-        Dim ImagesContainer As MediaContainers.ImagesContainer_TV
+        Dim ImagesContainer As MediaContainers.ImagesContainer
         Dim IsLock As Boolean
         Dim IsMark As Boolean
         Dim IsOnline As Boolean

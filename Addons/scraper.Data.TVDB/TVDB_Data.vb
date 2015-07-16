@@ -246,7 +246,7 @@ Public Class TVDB_Data
         End If
     End Sub
     ''' <summary>
-    '''  Scrape MovieDetails from TMDB
+    '''  Scrape TVShowDetails from TMDB
     ''' </summary>
     ''' <param name="oDBTV">TV Show to be scraped. DBTV as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param>
     ''' <param name="nShow">New scraped TV Show data</param>

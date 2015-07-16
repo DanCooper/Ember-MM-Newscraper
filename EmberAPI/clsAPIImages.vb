@@ -289,7 +289,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the path is extracted. It is parsed from the individual episode path</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVEpisodePosters(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVEpisodePoster(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
         Try
@@ -2944,19 +2944,36 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVASFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVASFanart(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVASFanartPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = ImageList.First
+
+        If Not SeasonImageList.Count = 0 Then
+            If Master.eSettings.TVASFanartPrefSize = Enums.TVPosterSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = SeasonImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVASFanartPrefSize AndAlso f.Season = 999)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVASFanartPrefSizeOnly AndAlso Not Master.eSettings.TVASFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
         End If
 
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVASFanartPrefSize)
-        End If
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TVASFanartPrefSize = Enums.TVPosterSize.Any Then
+                imgResult = ShowImageList.First
+            End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVASFanartPrefSizeOnly AndAlso Not Master.eSettings.TVASFanartPrefSize = Enums.TVBannerSize.Any Then
-            imgResult = ImageList.First
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVASFanartPrefSize)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVASFanartPrefSizeOnly AndAlso Not Master.eSettings.TVASFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = ShowImageList.First
+            End If
         End If
 
         If imgResult IsNot Nothing Then
@@ -3019,6 +3036,66 @@ Public Class Images
             Return False
         End If
     End Function
+
+    Public Shared Function GetPreferredTVEpisodeFanart(ByRef EpisodeImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iEpisode As Integer, ByVal iSeason As Integer) As Boolean
+        If EpisodeImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
+
+        If Not EpisodeImageList.Count = 0 Then
+            If Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = EpisodeImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = EpisodeImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = 999)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodeFanartPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = EpisodeImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = 999)
+            End If
+        End If
+
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = ShowImageList.First
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodeFanartPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = ShowImageList.First
+            End If
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredTVEpisodePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iEpisode As Integer, ByVal iSeason As Integer) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        If Master.eSettings.TVEpisodePosterPrefSize = Enums.TVPosterSize.Any Then
+            imgResult = ImageList.First(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVEpisodePosterPrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = iSeason)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodePosterPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodePosterPrefSize = Enums.TVPosterSize.Any Then
+            imgResult = ImageList.First(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     ''' <summary>
     ''' Select the single most preferred Banner image
     ''' </summary>
@@ -3048,19 +3125,35 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVSeasonFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVSeasonFanart(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
-            imgResult = ImageList.First
+        If Not SeasonImageList.Count = 0 Then
+            If Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = iSeason)
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = SeasonImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize AndAlso f.Season = iSeason)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonFanartPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = iSeason)
+            End If
         End If
 
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize)
-        End If
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = ShowImageList.First
+            End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonFanartPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
-            imgResult = ImageList.First
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.Find(Function(f) f.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonFanartPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                imgResult = ShowImageList.First
+            End If
         End If
 
         If imgResult IsNot Nothing Then

@@ -2711,6 +2711,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodePosterPrefSizeOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodePosterPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodePosterPrefSizeOnly = value
+        End Set
+    End Property
+
     Public Property TVSeasonBannerPrefSizeOnly() As Boolean
         Get
             Return Settings._XMLSettings.TVSeasonBannerPrefSizeOnly
@@ -6795,6 +6804,7 @@ Public Class Settings
         Me.TVEpisodePosterHeight = 0
         Me.TVEpisodePosterOverwrite = True
         Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any
+        Me.TVEpisodePosterPrefSizeOnly = False
         Me.TVEpisodePosterResize = False
         Me.TVEpisodePosterWidth = 0
         Me.TVEpisodeProperCase = True

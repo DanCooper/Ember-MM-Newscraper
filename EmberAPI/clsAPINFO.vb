@@ -785,7 +785,9 @@ Public Class NFO
                 'no existing season found -> add it as "missing" season
                 Dim mSeason As New Structures.DBTV With { _
                     .ID = -1, _
+                    .ImagesContainer = New MediaContainers.ImagesContainer, _
                     .ShowID = DBTV.ShowID, _
+                    .ShowPath = DBTV.ShowPath, _
                     .TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
                 DBTV.Seasons.Add(MergeDataScraperResults(mSeason, ScrapedSeasonList, Options))
             End If
@@ -813,6 +815,7 @@ Public Class NFO
                     Dim mEpisode As New Structures.DBTV With { _
                         .FilenameID = -1, _
                         .ID = -1, _
+                        .ImagesContainer = New MediaContainers.ImagesContainer, _
                         .ShowID = DBTV.ShowID, _
                         .ShowPath = DBTV.ShowPath, _
                         .Source = DBTV.Source, _

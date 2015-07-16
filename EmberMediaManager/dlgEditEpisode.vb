@@ -1054,7 +1054,7 @@ Public Class dlgEditEpisode
             If .EpisodePoster.Image IsNot Nothing Then
                 Me.tmpDBTVEpisode.PosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Me.tmpDBTVEpisode)
             Else
-                .EpisodePoster.DeleteTVEpisodePosters(Me.tmpDBTVEpisode)
+                .EpisodePoster.DeleteTVEpisodePoster(Me.tmpDBTVEpisode)
                 Me.tmpDBTVEpisode.PosterPath = String.Empty
             End If
 

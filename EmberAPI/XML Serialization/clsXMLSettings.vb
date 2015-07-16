@@ -3594,6 +3594,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVEpisodePosterPrefSizeOnly() As Boolean
+        Get
+            Return Me._tvepisodeposterprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeposterprefsizeonly = value
+        End Set
+    End Property
+
     Public Property TVSeasonBannerPrefSizeOnly() As Boolean
         Get
             Return Me._tvseasonbannerprefsizeonly
