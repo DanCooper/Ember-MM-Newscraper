@@ -469,7 +469,7 @@ Public Class IMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
+    Public Function Scraper_GetSingleEpisode(ByRef oDBTVEpisode As Structures.DBTV, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
         logger.Trace("Started TMDB Scraper")
 
         'LoadSettings_TV()
@@ -553,7 +553,7 @@ Public Class IMDB_Data
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie.Filename, filterOptions) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings_Movie.FallBackWorldwide, _MySettings_Movie.ForceTitleLanguage, _MySettings_Movie.CountryAbbreviation)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
-                        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)
+                        Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.DoSearch, False, False)
                     Else
                         nMovie = Nothing
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -593,7 +593,7 @@ Public Class IMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_TV(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper
+    Function Scraper_TV(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("Started IMDB Scraper")
 
         LoadSettings_TV()
@@ -636,7 +636,7 @@ Public Class IMDB_Data
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, filterOptions) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetTVShowInfo(nShow.IMDB, nShow, False, filterOptions, False, withEpisodes)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
-                        Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, False, False)
+                        Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.DoSearch, False, False)
                     Else
                         nShow = Nothing
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}

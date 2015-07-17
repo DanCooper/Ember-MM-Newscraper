@@ -205,21 +205,16 @@ Public Class Interfaces
         ''' <param name="Options"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As ModuleResult
+        Function Scraper_TVShow(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As ModuleResult
         ''' <summary>
         ''' Get single episode information by season and episode number
         ''' </summary>
-        ''' <param name="oEpisode"></param>
+        ''' <param name="oDBTVEpisode"></param>
         ''' <param name="nEpisode"></param>
-        ''' <param name="TVDBID"></param>
-        ''' <param name="Season"></param>
-        ''' <param name="Episode"></param>
-        ''' <param name="Lang"></param>
-        ''' <param name="Ordering"></param>
         ''' <param name="Options"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As ModuleResult
+        Function Scraper_TVEpisode(ByRef oDBTVEpisode As Structures.DBTV, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal Options As Structures.ScrapeOptions_TV) As ModuleResult
         ''' <summary>
         ''' Get single episode information by episode Aired date
         ''' </summary>

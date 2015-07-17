@@ -1627,7 +1627,7 @@ Public Class Functions
     ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
     ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
     ''' <remarks></remarks>
-    Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType_Movie, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
+    Public Shared Sub SetScraperMod_Movie_MovieSet(ByVal MType As Enums.ModType_Movie, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
                 .ActorThumbs = False
@@ -1697,6 +1697,83 @@ Public Class Functions
                 Case Enums.ModType_Movie.Trailer
                     .Trailer = MValue
                 Case Enums.ModType_Movie.Theme
+                    .Theme = MValue
+            End Select
+
+        End With
+    End Sub
+    ''' <summary>
+    ''' Sets the Master.GlobalScrapeMod to the given MValue
+    ''' </summary>
+    ''' <param name="MType">The Enums.ModType that should be changed. Note that this could be All.</param>
+    ''' <param name="MValue">The <c>Boolean</c> value that you wish to change the ModType to.</param>
+    ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
+    ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
+    ''' <remarks></remarks>
+    Public Shared Sub SetScraperMod_TV(ByVal MType As Enums.ModType_TV, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
+        With Master.GlobalScrapeMod
+            If DoClear Then
+                .ActorThumbs = False
+                .Banner = False
+                .CharacterArt = False
+                .ClearArt = False
+                .ClearLogo = False
+                .DiscArt = False
+                .DoSearch = False
+                .EFanarts = False
+                .EThumbs = False
+                .Fanart = False
+                .Landscape = False
+                .Meta = False
+                .NFO = False
+                .Poster = False
+                .Trailer = False
+                .Theme = False
+            End If
+
+            Select Case MType
+                Case Enums.ModType_TV.All
+                    '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
+                    .ActorThumbs = MValue
+                    .Banner = MValue
+                    .CharacterArt = MValue
+                    .ClearArt = MValue
+                    .ClearLogo = MValue
+                    .DiscArt = MValue
+                    .EFanarts = MValue
+                    .EThumbs = MValue
+                    .Fanart = MValue
+                    .Landscape = MValue
+                    .Meta = MValue
+                    .NFO = MValue
+                    .Poster = MValue
+                    .Trailer = MValue
+                    .Theme = MValue
+                Case Enums.ModType_TV.ActorThumbs
+                    .ActorThumbs = MValue
+                Case Enums.ModType_TV.AllSeasonsBanner, Enums.ModType_TV.SeasonBanner, Enums.ModType_TV.ShowBanner
+                    .Banner = MValue
+                Case Enums.ModType_TV.ShowCharacterArt
+                    .CharacterArt = MValue
+                Case Enums.ModType_TV.ShowClearArt
+                    .ClearArt = MValue
+                Case Enums.ModType_TV.ShowClearLogo
+                    .ClearLogo = MValue
+                Case Enums.ModType_TV.DoSearch
+                    .DoSearch = MValue
+                Case Enums.ModType_TV.ShowEFanarts
+                    .EFanarts = MValue
+                Case Enums.ModType_TV.AllSeasonsFanart, Enums.ModType_TV.EpisodeFanart, Enums.ModType_TV.SeasonFanart, Enums.ModType_TV.ShowFanart
+                    .Fanart = MValue
+                Case Enums.ModType_TV.AllSeasonsLandscape, Enums.ModType_TV.SeasonLandscape, Enums.ModType_TV.ShowLandscape
+                    .Landscape = MValue
+                Case Enums.ModType_TV.EpisodeMeta
+                    .Meta = MValue
+                Case Enums.ModType_TV.EpisodeNfo, Enums.ModType_TV.ShowNfo
+                    .NFO = MValue
+                Case Enums.ModType_TV.AllSeasonsPoster, Enums.ModType_TV.EpisodePoster, Enums.ModType_TV.SeasonPoster, Enums.ModType_TV.ShowPoster
+                    .Poster = MValue
+                Case Enums.ModType_TV.ShowTheme
                     .Theme = MValue
             End Select
 

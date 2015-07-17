@@ -1210,31 +1210,33 @@ Public Class Scanner
                                     End If
                                 Else
                                     If Not String.IsNullOrEmpty(tmpTVDB.TVShow.ID) AndAlso tmpTVDB.ShowID >= 0 Then
-                                        tmpTVDB.TVEp = ModulesManager.Instance.ScrapeData_TV_GetSingleEpisode(tmpTVDB.TVEp, tmpTVDB.TVShow.ID, sEpisode.Season, i, tmpTVDB.Language, tmpTVDB.Ordering, Master.DefaultOptions_TV)
+                                        If ModulesManager.Instance.ScrapeData_TVEpisode(tmpTVDB, Master.DefaultOptions_TV, False) Then
+                                            If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
+                                                toNfo = True
 
-                                        If Not String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
-                                            toNfo = True
-
-                                            'if we had info for it (based on title) and mediainfo scanning is enabled
-                                            If Master.eSettings.TVScraperMetaDataScan Then
-                                                MediaInfo.UpdateTVMediaInfo(tmpTVDB)
-                                            End If
-                                        End If
-
-                                        If String.IsNullOrEmpty(tmpTVDB.PosterPath) Then
-                                            If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
-                                                tmpTVDB.TVEp.Poster.WebImage.FromFile(tmpTVDB.TVEp.LocalFile)
-                                                If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
-                                                    tmpTVDB.PosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
-                                                End If
-                                            ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
-                                                tmpTVDB.TVEp.Poster.WebImage.FromWeb(tmpTVDB.TVEp.PosterURL)
-                                                If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
-                                                    Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
-                                                    tmpTVDB.TVEp.Poster.WebImage.Save(tmpTVDB.TVEp.LocalFile)
-                                                    tmpTVDB.PosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
+                                                'if we had info for it (based on title) and mediainfo scanning is enabled
+                                                If Master.eSettings.TVScraperMetaDataScan Then
+                                                    MediaInfo.UpdateTVMediaInfo(tmpTVDB)
                                                 End If
                                             End If
+
+                                            If String.IsNullOrEmpty(tmpTVDB.PosterPath) Then
+                                                If Not String.IsNullOrEmpty(tmpTVDB.TVEp.LocalFile) AndAlso File.Exists(tmpTVDB.TVEp.LocalFile) Then
+                                                    tmpTVDB.TVEp.Poster.WebImage.FromFile(tmpTVDB.TVEp.LocalFile)
+                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
+                                                        tmpTVDB.PosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
+                                                    End If
+                                                ElseIf Not String.IsNullOrEmpty(tmpTVDB.TVEp.PosterURL) Then
+                                                    tmpTVDB.TVEp.Poster.WebImage.FromWeb(tmpTVDB.TVEp.PosterURL)
+                                                    If Not IsNothing(tmpTVDB.TVEp.Poster.WebImage.Image) Then
+                                                        Directory.CreateDirectory(Directory.GetParent(tmpTVDB.TVEp.LocalFile).FullName)
+                                                        tmpTVDB.TVEp.Poster.WebImage.Save(tmpTVDB.TVEp.LocalFile)
+                                                        tmpTVDB.PosterPath = tmpTVDB.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(tmpTVDB)
+                                                    End If
+                                                End If
+                                            End If
+                                        Else
+                                            tmpTVDB.TVEp = New MediaContainers.EpisodeDetails 'TODO: check
                                         End If
                                     Else
                                         tmpTVDB.TVEp = New MediaContainers.EpisodeDetails

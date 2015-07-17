@@ -3824,6 +3824,7 @@ Public Class dlgSettings
             Me.chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             Me.chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
+            Me.chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
             If .TVImagesPrefLanguageOnly Then
                 Me.chkTVImagesPrefLanguageOnly.Checked = True
                 Me.chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
@@ -5640,6 +5641,7 @@ Public Class dlgSettings
             .TVGeneralSeasonListSorting.AddRange(Me.TVGeneralSeasonListSorting)
             .TVGeneralShowListSorting.Clear()
             .TVGeneralShowListSorting.AddRange(Me.TVGeneralShowListSorting)
+            .TVImagesDisplayImageSelect = Me.chkTVImagesDisplayImageSelect.Checked
             .TVImagesGetBlankImages = Me.chkTVImagesGetBlankImages.Checked
             .TVImagesGetEnglishImages = Me.chkTVImagesGetEnglishImages.Checked
             .TVImagesPrefLanguage = Me.cbTVImagesPrefLanguage.Text
@@ -8763,6 +8765,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVImagesGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesGetBlankImages.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVImagesDisplayImageSelect_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesDisplayImageSelect.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVImagesNotSaveURLToNfo_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesNotSaveURLToNfo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

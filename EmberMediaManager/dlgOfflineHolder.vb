@@ -535,7 +535,7 @@ Public Class dlgOfflineHolder
                 Me.CleanUp()
                 fPath = String.Empty
                 'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
+                Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.All, True, True)
 
                 If Not ModulesManager.Instance.ScrapeData_Movie(ScrapedMovie, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie, False) Then
                     If rbTypeMovieTitle.Checked Then
@@ -1147,7 +1147,7 @@ Public Class dlgOfflineHolder
                     Master.currMovie.RemovePoster = False
                     Master.currMovie.RemoveTheme = False
                     Master.currMovie.RemoveTrailer = False
-                    Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
+                    Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.All, True, True)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
                 Case Windows.Forms.DialogResult.Abort
                     Master.currMovie.RemoveActorThumbs = False
@@ -1162,8 +1162,8 @@ Public Class dlgOfflineHolder
                     Master.currMovie.RemovePoster = False
                     Master.currMovie.RemoveTheme = False
                     Master.currMovie.RemoveTrailer = False
-                    Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
-                    Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
+                    Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.DoSearch, True)
+                    Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.All, True, False)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
                 Case Else
                     'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
@@ -1497,7 +1497,7 @@ Public Class dlgOfflineHolder
             Me.CleanUp()
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
+            Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.All, True, True)
 
             If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then
@@ -1623,7 +1623,7 @@ Public Class dlgOfflineHolder
             Me.CleanUp()
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
+            Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.All, True, True)
 
             If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then

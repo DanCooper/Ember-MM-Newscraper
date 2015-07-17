@@ -760,7 +760,7 @@
   <string id="759">Select Images:</string>
   <string id="760">Downloading Show Zip:</string>
   <string id="761">Verifying TV Show Details:</string>
-  <string id="762">Verifying TV Episode:</string>
+  <string id="762">Verifying TV Episode Details:</string>
   <string id="763">Search String</string>
   <string id="764">Source Name</string>
   <string id="765">Map Media Source by File Extension</string>
@@ -881,7 +881,7 @@
   <string id="880">Parent Folder</string>
   <string id="881">Added</string>
   <string id="882">Use MPAA as Fallback for FSK Rating</string>
-  <string id="883"></string>
+  <string id="883">Episode Scraped</string>
   <string id="884">IMDB Mirror:</string>
   <string id="885"></string>
   <string id="886">Downloading {0}</string>
