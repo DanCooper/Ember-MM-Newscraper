@@ -3169,199 +3169,6 @@ Namespace MediaContainers
 
     End Class
 
-    Public Class TVShowContainer
-
-#Region "Fields"
-
-        Private _allseason As Structures.DBTV
-        Private _episodes As New List(Of Structures.DBTV)
-        Private _fanarts As New List(Of MediaContainers.Image)
-        Private _knownepisodes As New List(Of MediaContainers.EpisodeDetails)
-        Private _knownseasons As New List(Of MediaContainers.SeasonDetails)
-        Private _posters As New List(Of MediaContainers.Image)
-        Private _seasonposters As New List(Of MediaContainers.Image)
-        Private _seasonbanners As New List(Of MediaContainers.Image)
-        Private _seasonlandscapes As New List(Of MediaContainers.Image)
-        Private _show As Structures.DBTV
-        Private _showbanners As New List(Of MediaContainers.Image)
-        Private _showcharacterarts As New List(Of MediaContainers.Image)
-        Private _showcleararts As New List(Of MediaContainers.Image)
-        Private _showclearlogos As New List(Of MediaContainers.Image)
-        Private _showlandscapes As New List(Of MediaContainers.Image)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property AllSeason() As Structures.DBTV
-            Get
-                Return Me._allseason
-            End Get
-            Set(ByVal value As Structures.DBTV)
-                Me._allseason = value
-            End Set
-        End Property
-
-        Public Property Episodes() As List(Of Structures.DBTV)
-            Get
-                Return Me._episodes
-            End Get
-            Set(ByVal value As List(Of Structures.DBTV))
-                Me._episodes = value
-            End Set
-        End Property
-
-        Public Property Fanarts() As List(Of MediaContainers.Image)
-            Get
-                Return Me._fanarts
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._fanarts = value
-            End Set
-        End Property
-
-        Public Property KnownEpisodes() As List(Of MediaContainers.EpisodeDetails)
-            Get
-                Return Me._knownepisodes
-            End Get
-            Set(ByVal value As List(Of MediaContainers.EpisodeDetails))
-                Me._knownepisodes = value
-            End Set
-        End Property
-
-        Public Property KnownSeasons() As List(Of MediaContainers.SeasonDetails)
-            Get
-                Return Me._knownseasons
-            End Get
-            Set(ByVal value As List(Of MediaContainers.SeasonDetails))
-                Me._knownseasons = value
-            End Set
-        End Property
-
-        Public Property Posters() As List(Of MediaContainers.Image)
-            Get
-                Return Me._posters
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._posters = value
-            End Set
-        End Property
-
-        Public Property SeasonPosters() As List(Of MediaContainers.Image)
-            Get
-                Return Me._seasonposters
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._seasonposters = value
-            End Set
-        End Property
-
-        Public Property SeasonBanners() As List(Of MediaContainers.Image)
-            Get
-                Return Me._seasonbanners
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._seasonbanners = value
-            End Set
-        End Property
-
-        Public Property SeasonLandscapes() As List(Of MediaContainers.Image)
-            Get
-                Return Me._seasonlandscapes
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._seasonlandscapes = value
-            End Set
-        End Property
-
-        Public Property Show() As Structures.DBTV
-            Get
-                Return Me._show
-            End Get
-            Set(ByVal value As Structures.DBTV)
-                Me._show = value
-            End Set
-        End Property
-
-        Public Property ShowBanners() As List(Of MediaContainers.Image)
-            Get
-                Return Me._showbanners
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._showbanners = value
-            End Set
-        End Property
-
-        Public Property ShowCharacterArts() As List(Of MediaContainers.Image)
-            Get
-                Return Me._showcharacterarts
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._showcharacterarts = value
-            End Set
-        End Property
-
-        Public Property ShowClearArts() As List(Of MediaContainers.Image)
-            Get
-                Return Me._showcleararts
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._showcleararts = value
-            End Set
-        End Property
-
-        Public Property ShowClearLogos() As List(Of MediaContainers.Image)
-            Get
-                Return Me._showclearlogos
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._showclearlogos = value
-            End Set
-        End Property
-
-        Public Property ShowLandscapes() As List(Of MediaContainers.Image)
-            Get
-                Return Me._showlandscapes
-            End Get
-            Set(ByVal value As List(Of MediaContainers.Image))
-                Me._showlandscapes = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._show = New Structures.DBTV
-            Me._allseason = New Structures.DBTV
-            Me._episodes = New List(Of Structures.DBTV)
-            Me._fanarts = New List(Of MediaContainers.Image)
-            Me._knownepisodes = New List(Of EpisodeDetails)
-            Me._knownseasons = New List(Of SeasonDetails)
-            Me._posters = New List(Of MediaContainers.Image)
-            Me._showbanners = New List(Of MediaContainers.Image)
-            Me._showcharacterarts = New List(Of MediaContainers.Image)
-            Me._showcleararts = New List(Of MediaContainers.Image)
-            Me._showclearlogos = New List(Of MediaContainers.Image)
-            Me._showlandscapes = New List(Of MediaContainers.Image)
-            Me._seasonposters = New List(Of MediaContainers.Image)
-            Me._seasonbanners = New List(Of MediaContainers.Image)
-            Me._seasonlandscapes = New List(Of MediaContainers.Image)
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
     Public Class [Image]
         Implements IComparable(Of [Image])
 
@@ -3712,6 +3519,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class ImagesContainer
 
 #Region "Fields"
@@ -3863,7 +3671,7 @@ Namespace MediaContainers
                         End If
                         'Episode Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
-                            DBTV.PosterPath = .Fanart.WebImage.SaveAsTVEpisodePoster(DBTV)
+                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
@@ -3906,9 +3714,9 @@ Namespace MediaContainers
                         ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
                             .Fanart.WebImage.FromWeb(.Fanart.URL)
                             If DBTV.TVSeason.Season = 999 Then
-                                DBTV.FanartPath = .Banner.WebImage.SaveAsTVASFanart(DBTV)
+                                DBTV.FanartPath = .Fanart.WebImage.SaveAsTVASFanart(DBTV)
                             Else
-                                DBTV.FanartPath = .Banner.WebImage.SaveAsTVSeasonFanart(DBTV)
+                                DBTV.FanartPath = .Fanart.WebImage.SaveAsTVSeasonFanart(DBTV)
                             End If
                         Else
                             If DBTV.TVSeason.Season = 999 Then
@@ -3952,9 +3760,9 @@ Namespace MediaContainers
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
                             If DBTV.TVSeason.Season = 999 Then
-                                DBTV.PosterPath = .Banner.WebImage.SaveAsTVASPoster(DBTV)
+                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVASPoster(DBTV)
                             Else
-                                DBTV.PosterPath = .Banner.WebImage.SaveAsTVSeasonPoster(DBTV)
+                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVSeasonPoster(DBTV)
                             End If
                         Else
                             If DBTV.TVSeason.Season = 999 Then
@@ -4155,6 +3963,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class SearchResultsContainer_Movie_MovieSet
 
 #Region "Fields"
@@ -4359,6 +4168,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class SearchResultsContainer_TV
 
 #Region "Fields"
