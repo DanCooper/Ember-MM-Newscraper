@@ -220,7 +220,7 @@ Namespace Kodi
 
                 'search movie ID in Kodi DB
                 Dim KodiID As Integer = -1
-                Dim KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
+                Dim KodiMovie As XBMCRPC.Video.Details.Movie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
                 If KodiMovie Is Nothing Then
                     KodiMovie = Await SearchMovieByFilename(uMovie.Filename).ConfigureAwait(False)
                 End If
@@ -474,7 +474,7 @@ Namespace Kodi
                 ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                 'search movieset ID in Kodi DB
-                Dim KodiMovieset = Await SearchMovieSetByDetails(uMovieset).ConfigureAwait(False)
+                Dim KodiMovieset As XBMCRPC.Video.Details.MovieSet = Await SearchMovieSetByDetails(uMovieset).ConfigureAwait(False)
                 Dim KodiID As Integer = -1
                 If Not KodiMovieset Is Nothing Then
                     KodiID = KodiMovieset.setid
@@ -530,7 +530,7 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this MovieSet
-                        Dim resTextures = Await RemoveTextures(Directory.GetParent(MovieSetArtworkPath).FullName)
+                        Dim resTextures = Await RemoveTextures(MovieSetArtworkPath)
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
@@ -654,7 +654,7 @@ Namespace Kodi
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uEpisode.Filename, New Bitmap(My.Resources.logo)}))
 
                 'search ID in Kodi DB
-                Dim KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
+                Dim KodiEpsiode As XBMCRPC.Video.Details.Episode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
                 Dim KodiID As Integer = -1
                 If Not KodiEpsiode Is Nothing Then
                     KodiID = KodiEpsiode.episodeid
@@ -765,56 +765,46 @@ Namespace Kodi
 #End Region 'TVEpisode API
 
 #Region "TVSeason API"
-        ''' <summary>
-        ''' Get TVSeason container at Kodi host for a specific TVSeason
-        ''' </summary>
-        ''' <param name="EmberSeason">TVcontainer including season information (EmberDB)</param>
-        ''' <returns>TVSeason object of host, Nothing: error</returns>
-        ''' <remarks>
-        ''' 2015/06/28 Cocotus - First implementation
-        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
-        ''' </remarks>
-        Public Async Function GetHostTVSeason(ByVal EmberSeason As Structures.DBTV) As Task(Of XBMCRPC.Video.Details.Season)
-            Dim tvshowid As Integer = -1
 
-            Dim KodiTVShow = Await SearchTVShowByPath(EmberSeason.ShowPath).ConfigureAwait(False)
-            If Not KodiTVShow Is Nothing Then
-                'get a list of all seasons saved in Kodi DB
-                Dim kTVSeasons As List(Of Video.Details.Season) = Await GetAllTVSeasons(KodiTVShow.tvshowid).ConfigureAwait(False)
-                If Not kTVSeasons Is Nothing Then
-                    For Each kTVSeason In kTVSeasons
-                        'compare season number of remote and local season to identify season
-                        If kTVSeason.season = EmberSeason.TVEp.Season Then
-                            logger.Trace(String.Concat("[APIKodi] GetHostTVSeason: " & _currenthost.name & ": """ & EmberSeason.TVShow.Title & """ found in host database!"))
-                            Return kTVSeason
-                        End If
-                    Next
-                End If
+        Public Async Function GetAllTVSeasonsByShowID(ByVal ShowID As Integer) As Task(Of VideoLibrary.GetSeasonsResponse)
+            If _kodi Is Nothing Then
+                logger.Warn("[APIKodi] GetAllMovieSets: No client initialized! Abort!")
+                Return Nothing
             End If
-            logger.Trace(String.Concat("[APIKodi] GetHostTVSeason: " & _currenthost.name & ": """ & EmberSeason.TVShow.Title & """ NOT found in host database!"))
-            Return Nothing
+
+            Try
+                Dim response = Await _kodi.VideoLibrary.GetSeasons(ShowID, Video.Fields.Season.AllFields).ConfigureAwait(False)
+                Return response
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
         End Function
 
-        ''' <summary>
-        ''' Get all tvseasons for a show from Kodi host
-        ''' </summary>
-        ''' <param name="ShowID">ID of specific show (KodiDB)</param>
-        ''' <returns>list of kodi tv seasons, Nothing: error</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
-        ''' </remarks>
-        Public Async Function GetAllTVSeasons(ByVal ShowID As Integer) As Task(Of List(Of Video.Details.Season))
-            If _kodi Is Nothing Then
-                logger.Warn("[APIKodi] GetAllTVSeasons: No client initialized! Abort!")
+        Public Async Function SearchTVSeasonByDetails(ByVal LocalPath_TVShow As String, ByVal Season As Integer) As Task(Of XBMCRPC.Video.Details.Season)
+            Dim KodiTVShow = Await SearchTVShowByPath(LocalPath_TVShow).ConfigureAwait(False)
+            Dim ShowID As Integer = -1
+            If Not KodiTVShow Is Nothing Then
+                ShowID = KodiTVShow.tvshowid
+            End If
+            If ShowID < 1 Then
+                logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.name & ": """ & LocalPath_TVShow & """ NOT found in host database!"))
                 Return Nothing
             End If
-            If ShowID < 0 Then
-                logger.Warn("[APIKodi] GetAllTVSeasons: No ShowID provided! Abort!")
-                Return Nothing
+
+            'get a list of all seasons saved in Kodi DB by ShowID
+            Dim kTVSeasons As VideoLibrary.GetSeasonsResponse = Await GetAllTVSeasonsByShowID(ShowID).ConfigureAwait(False)
+
+            If kTVSeasons.seasons IsNot Nothing Then
+                Dim result = kTVSeasons.seasons.FirstOrDefault(Function(f) f.season = If(Season = 999, -1, Season))
+                If result IsNot Nothing Then
+                    logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.name & ": """ & LocalPath_TVShow & """ found in host database! [ID:", result.seasonid, "]"))
+                    Return result
+                End If
             End If
-            Dim response = Await _kodi.VideoLibrary.GetSeasons(ShowID, properties:=Video.Fields.Season.AllFields).ConfigureAwait(False)
-            Return response.seasons.ToList()
+
+            logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.name & ": """ & LocalPath_TVShow & """ NOT found in host database!"))
+            Return Nothing
         End Function
         ''' <summary>
         ''' Update season details at Kodi
@@ -829,6 +819,7 @@ Namespace Kodi
         Public Async Function UpdateTVSeasonInfo(ByVal EmberseasonID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
             Dim uSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True)
+
             Try
                 If _kodi Is Nothing Then
                     logger.Warn("[APIKodi] UpdateTVSeasonInfo: No client initialized! Abort!")
@@ -837,7 +828,7 @@ Namespace Kodi
                 ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                 'search season ID in Kodi DB
-                Dim KodiSeason = Await GetHostTVSeason(uSeason).ConfigureAwait(False)
+                Dim KodiSeason As XBMCRPC.Video.Details.Season = Await SearchTVSeasonByDetails(uSeason.ShowPath, uSeason.TVSeason.Season).ConfigureAwait(False)
                 Dim KodiID As Integer = -1
                 If Not KodiSeason Is Nothing Then
                     KodiID = KodiSeason.seasonid
@@ -850,7 +841,7 @@ Namespace Kodi
                     Await ScanVideoPath(EmberseasonID, Enums.Content_Type.Show).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiSeason = Await GetHostTVSeason(uSeason).ConfigureAwait(False)
+                    KodiSeason = Await SearchTVSeasonByDetails(uSeason.ShowPath, uSeason.TVSeason.Season).ConfigureAwait(False)
                     If Not KodiSeason Is Nothing Then
                         isNew = True
                         KodiID = KodiSeason.seasonid
@@ -883,20 +874,20 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVEp.Season)
+                        logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVSeason.Season)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Season
-                        Dim resTextures = Await RemoveTextures(Directory.GetParent(uSeason.ShowPath).FullName)
+                        Dim resTextures = Await RemoveTextures(uSeason.ShowPath)
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVEp.Season).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVSeason.Season).ConfigureAwait(False)
                         End If
                         Return True
                     End If
                 Else
-                    logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uSeason.TVEp.Season)
+                    logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uSeason.TVSeason.Season)
                     '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uMovie.Filename, Nothing}))
                     Return False
                 End If
@@ -1009,7 +1000,7 @@ Namespace Kodi
                 ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uTVShow.ShowPath, New Bitmap(My.Resources.logo)}))
 
                 'search ID in Kodi DB
-                Dim KodiTVShow = Await SearchTVShowByPath(uTVShow.ShowPath).ConfigureAwait(False)
+                Dim KodiTVShow As XBMCRPC.Video.Details.TVShow = Await SearchTVShowByPath(uTVShow.ShowPath).ConfigureAwait(False)
                 Dim KodiID As Integer = -1
                 If Not KodiTVShow Is Nothing Then
                     KodiID = KodiTVShow.tvshowid
