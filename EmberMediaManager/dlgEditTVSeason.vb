@@ -61,24 +61,28 @@ Public Class dlgEditTVSeason
         Me.pbSeasonBanner.Image = Nothing
         Me.pbSeasonBanner.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Banner = New MediaContainers.Image
+        Me.tmpDBTVSeason.BannerPath = String.Empty
     End Sub
 
     Private Sub btnRemoveSeasonFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonFanart.Click
         Me.pbSeasonFanart.Image = Nothing
         Me.pbSeasonFanart.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Fanart = New MediaContainers.Image
+        Me.tmpDBTVSeason.FanartPath = String.Empty
     End Sub
 
     Private Sub btnRemoveSeasonLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonLandscape.Click
         Me.pbSeasonLandscape.Image = Nothing
         Me.pbSeasonLandscape.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Landscape = New MediaContainers.Image
+        Me.tmpDBTVSeason.LandscapePath = String.Empty
     End Sub
 
     Private Sub btnRemoveSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonPoster.Click
         Me.pbSeasonPoster.Image = Nothing
         Me.pbSeasonPoster.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Poster = New MediaContainers.Image
+        Me.tmpDBTVSeason.PosterPath = String.Empty
     End Sub
 
     Private Sub btnSetSeasonBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerDL.Click

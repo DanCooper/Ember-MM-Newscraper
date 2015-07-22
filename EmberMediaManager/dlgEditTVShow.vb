@@ -171,6 +171,7 @@ Public Class dlgEditTVShow
         Me.pbShowBanner.Image = Nothing
         Me.pbShowBanner.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.Banner = New MediaContainers.Image
+        Me.tmpDBTVShow.BannerPath = String.Empty
 
         Me.lblShowBannerSize.Text = String.Empty
         Me.lblShowBannerSize.Visible = False
@@ -180,6 +181,7 @@ Public Class dlgEditTVShow
         Me.pbShowCharacterArt.Image = Nothing
         Me.pbShowCharacterArt.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.CharacterArt = New MediaContainers.Image
+        Me.tmpDBTVShow.CharacterArtPath = String.Empty
 
         Me.lblShowCharacterArtSize.Text = String.Empty
         Me.lblShowCharacterArtSize.Visible = False
@@ -189,6 +191,7 @@ Public Class dlgEditTVShow
         Me.pbShowClearArt.Image = Nothing
         Me.pbShowClearArt.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.ClearArt = New MediaContainers.Image
+        Me.tmpDBTVShow.ClearArtPath = String.Empty
 
         Me.lblShowClearArtSize.Text = String.Empty
         Me.lblShowClearArtSize.Visible = False
@@ -198,6 +201,7 @@ Public Class dlgEditTVShow
         Me.pbShowClearLogo.Image = Nothing
         Me.pbShowClearLogo.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.ClearLogo = New MediaContainers.Image
+        Me.tmpDBTVShow.ClearLogoPath = String.Empty
 
         Me.lblShowClearLogoSize.Text = String.Empty
         Me.lblShowClearLogoSize.Visible = False
@@ -207,6 +211,7 @@ Public Class dlgEditTVShow
         Me.pbShowFanart.Image = Nothing
         Me.pbShowFanart.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.Fanart = New MediaContainers.Image
+        Me.tmpDBTVShow.FanartPath = String.Empty
 
         Me.lblShowFanartSize.Text = String.Empty
         Me.lblShowFanartSize.Visible = False
@@ -216,6 +221,7 @@ Public Class dlgEditTVShow
         Me.pbShowLandscape.Image = Nothing
         Me.pbShowLandscape.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.Landscape = New MediaContainers.Image
+        Me.tmpDBTVShow.LandscapePath = String.Empty
 
         Me.lblShowLandscapeSize.Text = String.Empty
         Me.lblShowLandscapeSize.Visible = False
@@ -225,6 +231,7 @@ Public Class dlgEditTVShow
         Me.pbShowPoster.Image = Nothing
         Me.pbShowPoster.Tag = Nothing
         Me.tmpDBTVShow.ImagesContainer.Poster = New MediaContainers.Image
+        Me.tmpDBTVShow.PosterPath = String.Empty
 
         Me.lblShowPosterSize.Text = String.Empty
         Me.lblShowPosterSize.Visible = False
