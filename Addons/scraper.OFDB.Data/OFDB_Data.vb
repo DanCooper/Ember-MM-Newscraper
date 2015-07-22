@@ -30,7 +30,7 @@ Public Class OFDB_Data
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.ScrapeOptions_Movie
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     Private _Name As String = "OFDB_Data"
@@ -183,7 +183,7 @@ Public Class OFDB_Data
             Return New Interfaces.ModuleResult With {.breakChain = False}
         End If
 
-        If Master.GlobalScrapeMod.NFO Then
+        If Master.GlobalScrapeMod.MainNFO Then
             _scraper.GetMovieInfo(oDBMovie.Movie.ID, nMovie, filterOptions)
         End If
 

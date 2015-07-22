@@ -365,7 +365,7 @@ Public Class Interfaces
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-        Function Scraper(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV) As Interfaces.ModuleResult
 
 #End Region 'Methods
 

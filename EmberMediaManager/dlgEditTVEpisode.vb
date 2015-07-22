@@ -1021,7 +1021,7 @@ Public Class dlgEditTVEpisode
             End If
 
             If Me.tmpDBTVEpisode.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                For Each a In FileUtils.GetFilenameList.TVEpisode(Me.tmpDBTVEpisode.Filename, Enums.ModType_TV.ActorThumbs)
+                For Each a In FileUtils.GetFilenameList.TVEpisode(Me.tmpDBTVEpisode.Filename, Enums.ModType.EpisodeActorThumbs)
                     Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                     If Directory.Exists(tmpPath) Then
                         FileUtils.Delete.DeleteDirectory(tmpPath)

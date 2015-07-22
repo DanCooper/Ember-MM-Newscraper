@@ -30,8 +30,8 @@ Public Class TelevisionTunes_Theme
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier_Movie_MovieSet
-    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier_Movie_MovieSet
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -176,22 +176,22 @@ Public Class TelevisionTunes_Theme
     End Function
 
     Sub LoadSettings_Movie()
-        ConfigScrapeModifier_Movie.Theme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.Movie)
     End Sub
 
     Sub LoadSettings_TV()
-        ConfigScrapeModifier_TV.Theme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.TV)
     End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_Movie.Theme, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_Movie.MainTheme, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
     Sub SaveSettings_TV()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_TV.Theme, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_TV.MainTheme, , , Enums.Content_Type.TV)
         End Using
     End Sub
 

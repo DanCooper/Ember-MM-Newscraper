@@ -38,8 +38,8 @@ Public Class IMDB_Data
     Public Shared _AssemblyName As String
     Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared ConfigOptions_TV As New Structures.ScrapeOptions_TV
-    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier_Movie_MovieSet
-    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier_TV
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
 
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_TV As New sMySettings
@@ -267,8 +267,7 @@ Public Class IMDB_Data
         ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
 
         ConfigScrapeModifier_Movie.DoSearch = True
-        ConfigScrapeModifier_Movie.Meta = True
-        ConfigScrapeModifier_Movie.NFO = True
+        ConfigScrapeModifier_Movie.MainNFO = True
 
         _MySettings_Movie.CountryAbbreviation = clsAdvancedSettings.GetBooleanSetting("CountryAbbreviation", False)
         _MySettings_Movie.FallBackWorldwide = clsAdvancedSettings.GetBooleanSetting("FallBackWorldwide", False)
@@ -309,8 +308,7 @@ Public Class IMDB_Data
         ConfigOptions_TV.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.TVShow)
 
         ConfigScrapeModifier_TV.DoSearch = True
-        ConfigScrapeModifier_TV.EpisodeMeta = True
-        ConfigScrapeModifier_TV.ShowNFO = True
+        ConfigScrapeModifier_TV.MainNFO = True
     End Sub
 
     Sub SaveSettings_Movie()
@@ -527,7 +525,7 @@ Public Class IMDB_Data
 
         Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
 
-        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
                 _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, filterOptions.bFullCrew, False, filterOptions, False, _MySettings_Movie.FallBackWorldwide, _MySettings_Movie.ForceTitleLanguage, _MySettings_Movie.CountryAbbreviation)
@@ -600,7 +598,7 @@ Public Class IMDB_Data
 
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)
 
-        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.IMDB) Then
                 'IMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 _scraper.GetTVShowInfo(oDBTV.TVShow.IMDB, nShow, False, filterOptions, False, withEpisodes)

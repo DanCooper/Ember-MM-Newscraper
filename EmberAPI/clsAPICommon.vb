@@ -613,61 +613,63 @@ Public Class Enums
         TVSeason = 7
         TVShow = 8
     End Enum
-    ''' <summary>
-    ''' Enum representing possible scrape data types
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ModType_Movie As Integer
-        NFO = 0
-        Poster = 1
-        Fanart = 2
-        EThumbs = 3
-        Trailer = 4
-        Meta = 5
-        All = 6
-        DoSearch = 7
-        ActorThumbs = 8
-        EFanarts = 9
-        Banner = 10
-        DiscArt = 11
-        ClearLogo = 12
-        ClearArt = 13
-        Landscape = 14
-        WatchedFile = 15
-        CharacterArt = 16
-        Theme = 17
-        Subtitle = 18
+    Public Enum ModType As Integer
+        All = 0
+        AllSeasonsBanner = 1
+        AllSeasonsFanart = 2
+        AllSeasonsLandscape = 3
+        AllSeasonsPoster = 4
+        DoSearch = 5
+        EpisodeActorThumbs = 6
+        EpisodeFanart = 7
+        EpisodePoster = 8
+        EpisodeMeta = 9
+        EpisodeNFO = 10
+        MainActorThumbs = 11
+        MainBanner = 12
+        MainCharacterArt = 13
+        MainClearArt = 14
+        MainClearLogo = 15
+        MainDiscArt = 16
+        MainEFanarts = 17
+        MainEThumbs = 18
+        MainFanart = 19
+        MainLandscape = 20
+        MainMeta = 21
+        MainNFO = 22
+        MainPoster = 23
+        MainTheme = 24
+        MainTrailer = 25
+        SeasonBanner = 26
+        SeasonFanart = 27
+        SeasonLandscape = 28
+        SeasonPoster = 29
+        withEpisodes = 30
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum ModType_TV As Integer
-        All = 0
-        DoSearch = 1
-        ActorThumbs = 2
-        AllSeasonsBanner = 3
-        AllSeasonsFanart = 4
-        AllSeasonsLandscape = 5
-        AllSeasonsPoster = 6
-        EpisodeFanart = 7
-        EpisodeMeta = 8
-        EpisodeNfo = 9
-        EpisodePoster = 10
-        SeasonBanner = 11
-        SeasonFanart = 12
-        SeasonLandscape = 13
-        SeasonPoster = 14
-        ShowBanner = 15
-        ShowCharacterArt = 16
-        ShowClearArt = 17
-        ShowClearLogo = 18
-        ShowEFanarts = 19
-        ShowFanart = 20
-        ShowLandscape = 21
-        ShowNfo = 22
-        ShowPoster = 23
-        ShowTheme = 24
+    Public Enum ModType_Movie As Integer
+        MainNFO = 0
+        MainPoster = 1
+        MainFanart = 2
+        MainEThumbs = 3
+        MainTrailer = 4
+        MainMeta = 5
+        All = 6
+        DoSearch = 7
+        MainActorThumbs = 8
+        MainEFanarts = 9
+        MainBanner = 10
+        MainDiscArt = 11
+        MainClearLogo = 12
+        MainClearArt = 13
+        MainLandscape = 14
+        WatchedFile = 15
+        MainCharacterArt = 16
+        MainTheme = 17
+        Subtitle = 18
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -1425,17 +1427,6 @@ Public Class Functions
         Return String.Empty
     End Function
     ''' <summary>
-    ''' Determine whether user has specified a subset of the scrapable items (Master.GlobalScrapeMod).
-    ''' </summary>
-    ''' <returns><c>True</c> if at least one modifier has been selected, <c>False</c>if no item has been selected.</returns>
-    Public Shared Function HasModifier() As Boolean
-        With Master.GlobalScrapeMod
-            If .EThumbs OrElse .EFanarts OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
-        End With
-
-        Return False
-    End Function
-    ''' <summary>
     ''' Determine whether the supplied path is already defined as a TV Show season subdirectory
     ''' </summary>
     ''' <param name="sPath">The path to look for</param>
@@ -1508,26 +1499,6 @@ Public Class Functions
             Loop While BlockSize > 0
             Return mStream.ToArray
         End Using
-    End Function
-    ''' <summary>
-    ''' Determine the Structures.ScrapeModifier options that are in common between the two parameters
-    ''' </summary>
-    ''' <param name="Options">Base Structures.ScrapeModifier</param>
-    ''' <param name="Options2">Secondary Structures.ScrapeModifier</param>
-    ''' <returns>Structures.ScrapeModifier representing the AndAlso union of the two parameters</returns>
-    ''' <remarks></remarks>
-    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier_Movie_MovieSet, ByVal Options2 As Structures.ScrapeModifier_Movie_MovieSet) As Structures.ScrapeModifier_Movie_MovieSet
-        Dim filterModifier As New Structures.ScrapeModifier_Movie_MovieSet
-        filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        filterModifier.EThumbs = Options.EThumbs AndAlso Options2.EThumbs
-        filterModifier.EFanarts = Options.EFanarts AndAlso Options2.EFanarts
-        filterModifier.Fanart = Options.Fanart AndAlso Options2.Fanart
-        filterModifier.Meta = Options.Meta AndAlso Options2.Meta
-        filterModifier.NFO = Options.NFO AndAlso Options2.NFO
-        filterModifier.Poster = Options.Poster AndAlso Options2.Poster
-        filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
-        filterModifier.ActorThumbs = Options.ActorThumbs AndAlso Options2.ActorThumbs
-        Return filterModifier
     End Function
     ''' <summary>
     ''' Determine the Structures.MovieScrapeOptions options that are in common between the two parameters
@@ -1619,6 +1590,138 @@ Public Class Functions
         filterOptions.bShowVotes = Options.bShowVotes AndAlso Options2.bShowVotes
         Return filterOptions
     End Function
+
+    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
+        Dim filterModifier As New Structures.ScrapeModifier
+        filterModifier.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
+        filterModifier.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
+        filterModifier.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
+        filterModifier.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
+        filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
+        filterModifier.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
+        filterModifier.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
+        filterModifier.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
+        filterModifier.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
+        filterModifier.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
+        filterModifier.MainActorThumbs = Options.MainActorThumbs AndAlso Options2.MainActorThumbs
+        filterModifier.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
+        filterModifier.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
+        filterModifier.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
+        filterModifier.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
+        filterModifier.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
+        filterModifier.MainEFanarts = Options.MainEFanarts AndAlso Options2.MainEFanarts
+        filterModifier.MainEThumbs = Options.MainEThumbs AndAlso Options2.MainEThumbs
+        filterModifier.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
+        filterModifier.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
+        filterModifier.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
+        filterModifier.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
+        filterModifier.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
+        filterModifier.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
+        filterModifier.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
+        filterModifier.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
+        filterModifier.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
+        filterModifier.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
+        filterModifier.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
+        Return filterModifier
+    End Function
+
+    Public Shared Sub SetScrapeModifier(ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal MType As Enums.ModType, ByVal MValue As Boolean)
+        With ScrapeModifier
+            Select Case MType
+                Case Enums.ModType.All
+                    .AllSeasonsBanner = MValue
+                    .AllSeasonsFanart = MValue
+                    .AllSeasonsLandscape = MValue
+                    .AllSeasonsPoster = MValue
+                    '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
+                    .EpisodeActorThumbs = MValue
+                    .EpisodeFanart = MValue
+                    .EpisodeMeta = MValue
+                    .EpisodeNFO = MValue
+                    .EpisodePoster = MValue
+                    .MainActorThumbs = MValue
+                    .MainBanner = MValue
+                    .MainCharacterArt = MValue
+                    .MainClearArt = MValue
+                    .MainClearLogo = MValue
+                    .MainDiscArt = MValue
+                    .MainEFanarts = MValue
+                    .MainEThumbs = MValue
+                    .MainFanart = MValue
+                    .MainLandscape = MValue
+                    .MainMeta = MValue
+                    .MainNFO = MValue
+                    .MainPoster = MValue
+                    .MainTrailer = MValue
+                    .MainTheme = MValue
+                    .SeasonBanner = MValue
+                    .SeasonFanart = MValue
+                    .SeasonLandscape = MValue
+                    .SeasonPoster = MValue
+                    '.withEpisodes should not be set here
+                Case Enums.ModType.AllSeasonsBanner
+                    .AllSeasonsBanner = MValue
+                Case Enums.ModType.AllSeasonsFanart
+                    .AllSeasonsFanart = MValue
+                Case Enums.ModType.AllSeasonsLandscape
+                    .AllSeasonsLandscape = MValue
+                Case Enums.ModType.AllSeasonsPoster
+                    .AllSeasonsPoster = MValue
+                Case Enums.ModType.DoSearch
+                    .DoSearch = MValue
+                Case Enums.ModType.EpisodeActorThumbs
+                    .EpisodeActorThumbs = MValue
+                Case Enums.ModType.EpisodeFanart
+                    .EpisodeFanart = MValue
+                Case Enums.ModType.EpisodeMeta
+                    .EpisodeMeta = MValue
+                Case Enums.ModType.EpisodeNFO
+                    .EpisodeNFO = MValue
+                Case Enums.ModType.EpisodePoster
+                    .EpisodePoster = MValue
+                Case Enums.ModType.MainActorThumbs
+                    .MainActorThumbs = MValue
+                Case Enums.ModType.MainBanner
+                    .MainBanner = MValue
+                Case Enums.ModType.MainCharacterArt
+                    .MainCharacterArt = MValue
+                Case Enums.ModType.MainClearArt
+                    .MainClearArt = MValue
+                Case Enums.ModType.MainClearLogo
+                    .MainClearLogo = MValue
+                Case Enums.ModType.MainDiscArt
+                    .MainDiscArt = MValue
+                Case Enums.ModType.MainEFanarts
+                    .MainEFanarts = MValue
+                Case Enums.ModType.MainEThumbs
+                    .MainEThumbs = MValue
+                Case Enums.ModType.MainFanart
+                    .MainFanart = MValue
+                Case Enums.ModType.MainLandscape
+                    .MainLandscape = MValue
+                Case Enums.ModType.MainMeta
+                    .MainMeta = MValue
+                Case Enums.ModType.MainNFO
+                    .MainNFO = MValue
+                Case Enums.ModType.MainPoster
+                    .MainPoster = MValue
+                Case Enums.ModType.MainTrailer
+                    .MainTrailer = MValue
+                Case Enums.ModType.MainTheme
+                    .MainTheme = MValue
+                Case Enums.ModType.SeasonBanner
+                    .SeasonBanner = MValue
+                Case Enums.ModType.SeasonFanart
+                    .SeasonFanart = MValue
+                Case Enums.ModType.SeasonLandscape
+                    .SeasonLandscape = MValue
+                Case Enums.ModType.SeasonPoster
+                    .SeasonPoster = MValue
+                Case Enums.ModType.withEpisodes
+                    .withEpisodes = MValue
+            End Select
+        End With
+    End Sub
     ''' <summary>
     ''' Sets the Master.GlobalScrapeMod to the given MValue
     ''' </summary>
@@ -1630,74 +1733,74 @@ Public Class Functions
     Public Shared Sub SetScraperMod_Movie_MovieSet(ByVal MType As Enums.ModType_Movie, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
-                .ActorThumbs = False
-                .Banner = False
-                .CharacterArt = False
-                .ClearArt = False
-                .ClearLogo = False
-                .DiscArt = False
+                .MainActorThumbs = False
+                .MainBanner = False
+                .MainCharacterArt = False
+                .MainClearArt = False
+                .MainClearLogo = False
+                .MainDiscArt = False
                 .DoSearch = False
-                .EFanarts = False
-                .EThumbs = False
-                .Fanart = False
-                .Landscape = False
-                .Meta = False
-                .NFO = False
-                .Poster = False
-                .Trailer = False
-                .Theme = False
+                .MainEFanarts = False
+                .MainEThumbs = False
+                .MainFanart = False
+                .MainLandscape = False
+                .MainMeta = False
+                .MainNFO = False
+                .MainPoster = False
+                .MainTrailer = False
+                .MainTheme = False
             End If
 
             Select Case MType
                 Case Enums.ModType_Movie.All
                     '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
-                    .ActorThumbs = MValue
-                    .Banner = MValue
-                    .CharacterArt = MValue
-                    .ClearArt = MValue
-                    .ClearLogo = MValue
-                    .DiscArt = MValue
-                    .EFanarts = MValue
-                    .EThumbs = MValue
-                    .Fanart = MValue
-                    .Landscape = MValue
-                    .Meta = MValue
-                    .NFO = MValue
-                    .Poster = MValue
-                    .Trailer = MValue
-                    .Theme = MValue
-                Case Enums.ModType_Movie.ActorThumbs
-                    .ActorThumbs = MValue
-                Case Enums.ModType_Movie.Banner
-                    .Banner = MValue
-                Case Enums.ModType_Movie.CharacterArt
-                    .CharacterArt = MValue
-                Case Enums.ModType_Movie.ClearArt
-                    .ClearArt = MValue
-                Case Enums.ModType_Movie.ClearLogo
-                    .ClearLogo = MValue
-                Case Enums.ModType_Movie.DiscArt
-                    .DiscArt = MValue
+                    .MainActorThumbs = MValue
+                    .MainBanner = MValue
+                    .MainCharacterArt = MValue
+                    .MainClearArt = MValue
+                    .MainClearLogo = MValue
+                    .MainDiscArt = MValue
+                    .MainEFanarts = MValue
+                    .MainEThumbs = MValue
+                    .MainFanart = MValue
+                    .MainLandscape = MValue
+                    .MainMeta = MValue
+                    .MainNFO = MValue
+                    .MainPoster = MValue
+                    .MainTrailer = MValue
+                    .MainTheme = MValue
+                Case Enums.ModType_Movie.MainActorThumbs
+                    .MainActorThumbs = MValue
+                Case Enums.ModType_Movie.MainBanner
+                    .MainBanner = MValue
+                Case Enums.ModType_Movie.MainCharacterArt
+                    .MainCharacterArt = MValue
+                Case Enums.ModType_Movie.MainClearArt
+                    .MainClearArt = MValue
+                Case Enums.ModType_Movie.MainClearLogo
+                    .MainClearLogo = MValue
+                Case Enums.ModType_Movie.MainDiscArt
+                    .MainDiscArt = MValue
                 Case Enums.ModType_Movie.DoSearch
                     .DoSearch = MValue
-                Case Enums.ModType_Movie.EFanarts
-                    .EFanarts = MValue
-                Case Enums.ModType_Movie.EThumbs
-                    .EThumbs = MValue
-                Case Enums.ModType_Movie.Fanart
-                    .Fanart = MValue
-                Case Enums.ModType_Movie.Landscape
-                    .Landscape = MValue
-                Case Enums.ModType_Movie.Meta
-                    .Meta = MValue
-                Case Enums.ModType_Movie.NFO
-                    .NFO = MValue
-                Case Enums.ModType_Movie.Poster
-                    .Poster = MValue
-                Case Enums.ModType_Movie.Trailer
-                    .Trailer = MValue
-                Case Enums.ModType_Movie.Theme
-                    .Theme = MValue
+                Case Enums.ModType_Movie.MainEFanarts
+                    .MainEFanarts = MValue
+                Case Enums.ModType_Movie.MainEThumbs
+                    .MainEThumbs = MValue
+                Case Enums.ModType_Movie.MainFanart
+                    .MainFanart = MValue
+                Case Enums.ModType_Movie.MainLandscape
+                    .MainLandscape = MValue
+                Case Enums.ModType_Movie.MainMeta
+                    .MainMeta = MValue
+                Case Enums.ModType_Movie.MainNFO
+                    .MainNFO = MValue
+                Case Enums.ModType_Movie.MainPoster
+                    .MainPoster = MValue
+                Case Enums.ModType_Movie.MainTrailer
+                    .MainTrailer = MValue
+                Case Enums.ModType_Movie.MainTheme
+                    .MainTheme = MValue
             End Select
 
         End With
@@ -1710,71 +1813,71 @@ Public Class Functions
     ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
     ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
     ''' <remarks></remarks>
-    Public Shared Sub SetScraperMod_TV(ByVal MType As Enums.ModType_TV, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
+    Public Shared Sub SetScraperMod_TV(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
-                .ActorThumbs = False
-                .Banner = False
-                .CharacterArt = False
-                .ClearArt = False
-                .ClearLogo = False
-                .DiscArt = False
+                .MainActorThumbs = False
+                .MainBanner = False
+                .MainCharacterArt = False
+                .MainClearArt = False
+                .MainClearLogo = False
+                .MainDiscArt = False
                 .DoSearch = False
-                .EFanarts = False
-                .EThumbs = False
-                .Fanart = False
-                .Landscape = False
-                .Meta = False
-                .NFO = False
-                .Poster = False
-                .Trailer = False
-                .Theme = False
+                .MainEFanarts = False
+                .MainEThumbs = False
+                .MainFanart = False
+                .MainLandscape = False
+                .MainMeta = False
+                .MainNFO = False
+                .MainPoster = False
+                .MainTrailer = False
+                .MainTheme = False
             End If
 
             Select Case MType
-                Case Enums.ModType_TV.All
+                Case Enums.ModType.All
                     '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
-                    .ActorThumbs = MValue
-                    .Banner = MValue
-                    .CharacterArt = MValue
-                    .ClearArt = MValue
-                    .ClearLogo = MValue
-                    .DiscArt = MValue
-                    .EFanarts = MValue
-                    .EThumbs = MValue
-                    .Fanart = MValue
-                    .Landscape = MValue
-                    .Meta = MValue
-                    .NFO = MValue
-                    .Poster = MValue
-                    .Trailer = MValue
-                    .Theme = MValue
-                Case Enums.ModType_TV.ActorThumbs
-                    .ActorThumbs = MValue
-                Case Enums.ModType_TV.AllSeasonsBanner, Enums.ModType_TV.SeasonBanner, Enums.ModType_TV.ShowBanner
-                    .Banner = MValue
-                Case Enums.ModType_TV.ShowCharacterArt
-                    .CharacterArt = MValue
-                Case Enums.ModType_TV.ShowClearArt
-                    .ClearArt = MValue
-                Case Enums.ModType_TV.ShowClearLogo
-                    .ClearLogo = MValue
-                Case Enums.ModType_TV.DoSearch
+                    .MainActorThumbs = MValue
+                    .MainBanner = MValue
+                    .MainCharacterArt = MValue
+                    .MainClearArt = MValue
+                    .MainClearLogo = MValue
+                    .MainDiscArt = MValue
+                    .MainEFanarts = MValue
+                    .MainEThumbs = MValue
+                    .MainFanart = MValue
+                    .MainLandscape = MValue
+                    .MainMeta = MValue
+                    .MainNFO = MValue
+                    .MainPoster = MValue
+                    .MainTrailer = MValue
+                    .MainTheme = MValue
+                Case Enums.ModType.MainActorThumbs
+                    .MainActorThumbs = MValue
+                Case Enums.ModType.AllSeasonsBanner, Enums.ModType.SeasonBanner, Enums.ModType.MainBanner
+                    .MainBanner = MValue
+                Case Enums.ModType.MainCharacterArt
+                    .MainCharacterArt = MValue
+                Case Enums.ModType.MainClearArt
+                    .MainClearArt = MValue
+                Case Enums.ModType.MainClearLogo
+                    .MainClearLogo = MValue
+                Case Enums.ModType.DoSearch
                     .DoSearch = MValue
-                Case Enums.ModType_TV.ShowEFanarts
-                    .EFanarts = MValue
-                Case Enums.ModType_TV.AllSeasonsFanart, Enums.ModType_TV.EpisodeFanart, Enums.ModType_TV.SeasonFanart, Enums.ModType_TV.ShowFanart
-                    .Fanart = MValue
-                Case Enums.ModType_TV.AllSeasonsLandscape, Enums.ModType_TV.SeasonLandscape, Enums.ModType_TV.ShowLandscape
-                    .Landscape = MValue
-                Case Enums.ModType_TV.EpisodeMeta
-                    .Meta = MValue
-                Case Enums.ModType_TV.EpisodeNfo, Enums.ModType_TV.ShowNfo
-                    .NFO = MValue
-                Case Enums.ModType_TV.AllSeasonsPoster, Enums.ModType_TV.EpisodePoster, Enums.ModType_TV.SeasonPoster, Enums.ModType_TV.ShowPoster
-                    .Poster = MValue
-                Case Enums.ModType_TV.ShowTheme
-                    .Theme = MValue
+                Case Enums.ModType.MainEFanarts
+                    .MainEFanarts = MValue
+                Case Enums.ModType.AllSeasonsFanart, Enums.ModType.EpisodeFanart, Enums.ModType.SeasonFanart, Enums.ModType.MainFanart
+                    .MainFanart = MValue
+                Case Enums.ModType.AllSeasonsLandscape, Enums.ModType.SeasonLandscape, Enums.ModType.MainLandscape
+                    .MainLandscape = MValue
+                Case Enums.ModType.EpisodeMeta
+                    .MainMeta = MValue
+                Case Enums.ModType.EpisodeNFO, Enums.ModType.MainNFO
+                    .MainNFO = MValue
+                Case Enums.ModType.AllSeasonsPoster, Enums.ModType.EpisodePoster, Enums.ModType.SeasonPoster, Enums.ModType.MainPoster
+                    .MainPoster = MValue
+                Case Enums.ModType.MainTheme
+                    .MainTheme = MValue
             End Select
 
         End With
@@ -2132,50 +2235,36 @@ Public Class Structures
         Dim ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
     End Structure
 
-    Public Structure ScrapeModifier_Movie_MovieSet
-        Dim DoSearch As Boolean
-        Dim EThumbs As Boolean
-        Dim EFanarts As Boolean
-        Dim Fanart As Boolean
-        Dim Meta As Boolean
-        Dim NFO As Boolean
-        Dim Poster As Boolean
-        Dim Trailer As Boolean
-        Dim ActorThumbs As Boolean
-        Dim Banner As Boolean
-        Dim CharacterArt As Boolean
-        Dim ClearArt As Boolean
-        Dim ClearLogo As Boolean
-        Dim DiscArt As Boolean
-        Dim Landscape As Boolean
-        Dim Theme As Boolean
-    End Structure
-
-    Public Structure ScrapeModifier_TV
+    Public Structure ScrapeModifier
         Dim AllSeasonsBanner As Boolean
         Dim AllSeasonsFanart As Boolean
         Dim AllSeasonsLandscape As Boolean
         Dim AllSeasonsPoster As Boolean
         Dim DoSearch As Boolean
+        Dim EpisodeActorThumbs As Boolean
         Dim EpisodeFanart As Boolean
         Dim EpisodePoster As Boolean
         Dim EpisodeMeta As Boolean
         Dim EpisodeNFO As Boolean
+        Dim MainActorThumbs As Boolean
+        Dim MainBanner As Boolean
+        Dim MainCharacterArt As Boolean
+        Dim MainClearArt As Boolean
+        Dim MainClearLogo As Boolean
+        Dim MainDiscArt As Boolean
+        Dim MainEFanarts As Boolean
+        Dim MainEThumbs As Boolean
+        Dim MainFanart As Boolean
+        Dim MainLandscape As Boolean
+        Dim MainMeta As Boolean
+        Dim MainNFO As Boolean
+        Dim MainPoster As Boolean
+        Dim MainTheme As Boolean
+        Dim MainTrailer As Boolean
         Dim SeasonBanner As Boolean
         Dim SeasonFanart As Boolean
         Dim SeasonLandscape As Boolean
         Dim SeasonPoster As Boolean
-        Dim ShowActorThumbs As Boolean
-        Dim ShowBanner As Boolean
-        Dim ShowCharacterArt As Boolean
-        Dim ShowClearArt As Boolean
-        Dim ShowClearLogo As Boolean
-        Dim ShowEFanarts As Boolean
-        Dim ShowFanart As Boolean
-        Dim ShowLandscape As Boolean
-        Dim ShowNFO As Boolean
-        Dim ShowPoster As Boolean
-        Dim ShowTheme As Boolean
         Dim withEpisodes As Boolean
     End Structure
     ''' <summary>

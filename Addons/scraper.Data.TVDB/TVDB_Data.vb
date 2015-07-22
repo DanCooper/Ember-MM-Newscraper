@@ -30,7 +30,7 @@ Public Class TVDB_Data
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions_TV
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_TV
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -183,7 +183,7 @@ Public Class TVDB_Data
         _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.EpisodeMeta = True
-        ConfigScrapeModifier.ShowNFO = True
+        ConfigScrapeModifier.MainNFO = True
     End Sub
 
     Sub SaveSettings()
@@ -265,7 +265,7 @@ Public Class TVDB_Data
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
 
-        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, False, filterOptions, False, withEpisodes)

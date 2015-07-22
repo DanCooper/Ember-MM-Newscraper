@@ -33,7 +33,7 @@ Public Class Davestrailerpage_Trailer
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     Private _Name As String = "Davestrailerpage_Trailer"
@@ -126,12 +126,12 @@ Public Class Davestrailerpage_Trailer
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.Trailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigScrapeModifier.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.MainTrailer)
         End Using
     End Sub
 

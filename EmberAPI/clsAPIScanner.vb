@@ -122,18 +122,18 @@ Public Class Scanner
 
             'secondly add files from special folders to filelists
             If Movie.isSingle Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.ActorThumbs)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainActorThumbs)
                     Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
                     If Directory.Exists(parDir) Then
                         atList.AddRange(Directory.GetFiles(parDir))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EFanarts)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainEFanarts)
                     If Directory.Exists(a) Then
                         efList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.EThumbs)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainEThumbs)
                     If Directory.Exists(a) Then
                         etList.AddRange(Directory.GetFiles(a))
                     End If
@@ -143,7 +143,7 @@ Public Class Scanner
                         sList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainTheme)
                     If Directory.Exists(Directory.GetParent(a).FullName) Then
                         tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                     End If
@@ -157,7 +157,7 @@ Public Class Scanner
 
             'banner
             If String.IsNullOrEmpty(Movie.Banner) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Banner)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainBanner)
                     Movie.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Banner) Then Exit For
                 Next
@@ -165,7 +165,7 @@ Public Class Scanner
 
             'clearart
             If String.IsNullOrEmpty(Movie.ClearArt) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.ClearArt)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainClearArt)
                     Movie.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.ClearArt) Then Exit For
                 Next
@@ -173,7 +173,7 @@ Public Class Scanner
 
             'clearlogo
             If String.IsNullOrEmpty(Movie.ClearLogo) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.ClearLogo)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainClearLogo)
                     Movie.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.ClearLogo) Then Exit For
                 Next
@@ -181,7 +181,7 @@ Public Class Scanner
 
             'discart
             If String.IsNullOrEmpty(Movie.DiscArt) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.DiscArt)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainDiscArt)
                     Movie.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.DiscArt) Then Exit For
                 Next
@@ -203,7 +203,7 @@ Public Class Scanner
 
             'fanart
             If String.IsNullOrEmpty(Movie.Fanart) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Fanart)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainFanart)
                     Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
                 Next
@@ -211,7 +211,7 @@ Public Class Scanner
 
             'landscape
             If String.IsNullOrEmpty(Movie.Landscape) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Landscape)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainLandscape)
                     Movie.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Landscape) Then Exit For
                 Next
@@ -219,7 +219,7 @@ Public Class Scanner
 
             'nfo
             If String.IsNullOrEmpty(Movie.Nfo) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.NFO)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainNFO)
                     Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
                 Next
@@ -227,7 +227,7 @@ Public Class Scanner
 
             'poster
             If String.IsNullOrEmpty(Movie.Poster) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Poster)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainPoster)
                     Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
                 Next
@@ -245,7 +245,7 @@ Public Class Scanner
 
             'theme
             If String.IsNullOrEmpty(Movie.Theme) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Theme)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainTheme)
                     For Each t As String In Master.eSettings.FileSystemValidThemeExts
                         Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
                         If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
@@ -256,7 +256,7 @@ Public Class Scanner
 
             'trailer
             If String.IsNullOrEmpty(Movie.Trailer) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.Trailer)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType_Movie.MainTrailer)
                     For Each t As String In Master.eSettings.FileSystemValidExts
                         Movie.Trailer = fList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
                         If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
@@ -291,7 +291,7 @@ Public Class Scanner
 
             'banner
             If String.IsNullOrEmpty(MovieSet.Banner) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.Banner)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainBanner)
                     MovieSet.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.Banner) Then Exit For
                 Next
@@ -299,7 +299,7 @@ Public Class Scanner
 
             'clearart
             If String.IsNullOrEmpty(MovieSet.ClearArt) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.ClearArt)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainClearArt)
                     MovieSet.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.ClearArt) Then Exit For
                 Next
@@ -307,7 +307,7 @@ Public Class Scanner
 
             'clearlogo
             If String.IsNullOrEmpty(MovieSet.ClearLogo) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.ClearLogo)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainClearLogo)
                     MovieSet.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.ClearLogo) Then Exit For
                 Next
@@ -315,7 +315,7 @@ Public Class Scanner
 
             'discart
             If String.IsNullOrEmpty(MovieSet.DiscArt) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.DiscArt)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainDiscArt)
                     MovieSet.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.DiscArt) Then Exit For
                 Next
@@ -323,7 +323,7 @@ Public Class Scanner
 
             'fanart
             If String.IsNullOrEmpty(MovieSet.Fanart) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.Fanart)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainFanart)
                     MovieSet.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.Fanart) Then Exit For
                 Next
@@ -331,7 +331,7 @@ Public Class Scanner
 
             'landscape
             If String.IsNullOrEmpty(MovieSet.Landscape) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.Landscape)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainLandscape)
                     MovieSet.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.Landscape) Then Exit For
                 Next
@@ -339,7 +339,7 @@ Public Class Scanner
 
             'poster
             If String.IsNullOrEmpty(MovieSet.Poster) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.Poster)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainPoster)
                     MovieSet.Poster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.Poster) Then Exit For
                 Next
@@ -347,7 +347,7 @@ Public Class Scanner
 
             'nfo
             If String.IsNullOrEmpty(MovieSet.Nfo) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.NFO)
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType_Movie.MainNFO)
                     MovieSet.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(MovieSet.Nfo) Then Exit For
                 Next
@@ -373,7 +373,7 @@ Public Class Scanner
             End Try
 
             ''episode actor thumbs
-            'For Each a In FileUtils.GetFilenameList.TVEpisode(Episode.Filename, Enums.ModType_TV.ActorThumbs)
+            'For Each a In FileUtils.GetFilenameList.TVEpisode(Episode.Filename, Enums.ModType.ActorThumbs)
             '    Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             '    If Directory.Exists(parDir) Then
             '        Episode.ActorThumbs.AddRange(Directory.GetFiles(parDir))
@@ -382,7 +382,7 @@ Public Class Scanner
 
             'episode fanart
             If String.IsNullOrEmpty(Episode.FanartPath) Then
-                For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType_TV.EpisodeFanart)
+                For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType.EpisodeFanart)
                     Episode.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Episode.FanartPath) Then Exit For
                 Next
@@ -390,7 +390,7 @@ Public Class Scanner
 
             'episode poster
             If String.IsNullOrEmpty(Episode.PosterPath) Then
-                For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType_TV.EpisodePoster)
+                For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType.EpisodePoster)
                     Episode.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Episode.PosterPath) Then Exit For
                 Next
@@ -398,7 +398,7 @@ Public Class Scanner
 
             'episode NFO
             If String.IsNullOrEmpty(Episode.NfoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType_TV.EpisodeNfo)
+                For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType.EpisodeNfo)
                     Episode.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Episode.NfoPath) Then Exit For
                 Next
@@ -468,12 +468,12 @@ Public Class Scanner
             If String.IsNullOrEmpty(TVDB.BannerPath) Then
                 'all-seasons
                 If Season = 999 Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsBanner)
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsBanner)
                         TVDB.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.BannerPath) Then Exit For
                     Next
                 Else
-                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonBanner)
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonBanner)
                         TVDB.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.BannerPath) Then Exit For
                     Next
@@ -484,12 +484,12 @@ Public Class Scanner
             If String.IsNullOrEmpty(TVDB.FanartPath) Then
                 'all-seasons
                 If Season = 999 Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsFanart)
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsFanart)
                         TVDB.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.FanartPath) Then Exit For
                     Next
                 Else
-                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonFanart)
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonFanart)
                         TVDB.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.FanartPath) Then Exit For
                     Next
@@ -500,12 +500,12 @@ Public Class Scanner
             If String.IsNullOrEmpty(TVDB.LandscapePath) Then
                 'all-seasons
                 If Season = 999 Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsLandscape)
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsLandscape)
                         TVDB.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.LandscapePath) Then Exit For
                     Next
                 Else
-                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonLandscape)
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonLandscape)
                         TVDB.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.LandscapePath) Then Exit For
                     Next
@@ -516,12 +516,12 @@ Public Class Scanner
             If String.IsNullOrEmpty(TVDB.PosterPath) Then
                 'all-seasons
                 If Season = 999 Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsPoster)
+                    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsPoster)
                         TVDB.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.PosterPath) Then Exit For
                     Next
                 Else
-                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType_TV.SeasonPoster)
+                    For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonPoster)
                         TVDB.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                         If Not String.IsNullOrEmpty(TVDB.PosterPath) Then Exit For
                     Next
@@ -703,7 +703,7 @@ Public Class Scanner
             Try
                 fList.AddRange(Directory.GetFiles(tShow.ShowPath))
 
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowEFanarts)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainEFanarts)
                     If Directory.Exists(a) Then
                         efList.AddRange(Directory.GetFiles(a))
                     End If
@@ -712,7 +712,7 @@ Public Class Scanner
             End Try
 
             ''show actor thumbs
-            'For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ActorThumbs)
+            'For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.ActorThumbs)
             '    Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             '    If Directory.Exists(parDir) Then
             '        tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
@@ -721,7 +721,7 @@ Public Class Scanner
 
             ''all-season banner
             'If String.IsNullOrEmpty(tShow.AllSeasonsBanner) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsBanner)
+            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsBanner)
             '        tShow.AllSeasonsBanner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             '        If Not String.IsNullOrEmpty(tShow.AllSeasonsBanner) Then Exit For
             '    Next
@@ -729,7 +729,7 @@ Public Class Scanner
 
             ''all-season fanart
             'If String.IsNullOrEmpty(tShow.AllSeasonsFanart) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsFanart)
+            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsFanart)
             '        tShow.AllSeasonsFanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             '        If Not String.IsNullOrEmpty(tShow.AllSeasonsFanart) Then Exit For
             '    Next
@@ -737,7 +737,7 @@ Public Class Scanner
 
             ''all-season landscape
             'If String.IsNullOrEmpty(tShow.AllSeasonsLandscape) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsLandscape)
+            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsLandscape)
             '        tShow.AllSeasonsLandscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             '        If Not String.IsNullOrEmpty(tShow.AllSeasonsLandscape) Then Exit For
             '    Next
@@ -745,7 +745,7 @@ Public Class Scanner
 
             ''all-season poster
             'If String.IsNullOrEmpty(tShow.AllSeasonsPoster) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.AllSeasonsPoster)
+            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsPoster)
             '        tShow.AllSeasonsPoster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             '        If Not String.IsNullOrEmpty(tShow.AllSeasonsPoster) Then Exit For
             '    Next
@@ -753,7 +753,7 @@ Public Class Scanner
 
             'show banner
             If String.IsNullOrEmpty(tShow.BannerPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowBanner)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainBanner)
                     tShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.BannerPath) Then Exit For
                 Next
@@ -761,7 +761,7 @@ Public Class Scanner
 
             'show characterart
             If String.IsNullOrEmpty(tShow.CharacterArtPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowCharacterArt)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainCharacterArt)
                     tShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.CharacterArtPath) Then Exit For
                 Next
@@ -769,7 +769,7 @@ Public Class Scanner
 
             'show clearart
             If String.IsNullOrEmpty(tShow.ClearArtPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowClearArt)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainClearArt)
                     tShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.ClearArtPath) Then Exit For
                 Next
@@ -777,7 +777,7 @@ Public Class Scanner
 
             'show clearlogo
             If String.IsNullOrEmpty(tShow.ClearLogoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowClearLogo)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainClearLogo)
                     tShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.ClearLogoPath) Then Exit For
                 Next
@@ -792,7 +792,7 @@ Public Class Scanner
 
             'show fanart
             If String.IsNullOrEmpty(tShow.FanartPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowFanart)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainFanart)
                     tShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.FanartPath) Then Exit For
                 Next
@@ -800,7 +800,7 @@ Public Class Scanner
 
             'show landscape
             If String.IsNullOrEmpty(tShow.LandscapePath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowLandscape)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainLandscape)
                     tShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.LandscapePath) Then Exit For
                 Next
@@ -808,7 +808,7 @@ Public Class Scanner
 
             'show NFO
             If String.IsNullOrEmpty(tShow.NfoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowNfo)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainNFO)
                     tShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.NfoPath) Then Exit For
                 Next
@@ -816,7 +816,7 @@ Public Class Scanner
 
             'show poster
             If String.IsNullOrEmpty(tShow.PosterPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowPoster)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainPoster)
                     tShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.PosterPath) Then Exit For
                 Next
@@ -824,7 +824,7 @@ Public Class Scanner
 
             'show theme
             If String.IsNullOrEmpty(tShow.ThemePath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType_TV.ShowTheme)
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainTheme)
                     tShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.ThemePath) Then Exit For
                 Next

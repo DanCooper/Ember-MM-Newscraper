@@ -35,9 +35,9 @@ Public Class TMDB_Data
     Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared ConfigOptions_TV As New Structures.ScrapeOptions_TV
-    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier_Movie_MovieSet
-    Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier_Movie_MovieSet
-    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier_TV
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
 
     Private strPrivateAPIKey As String = String.Empty
     Private _MySettings_Movie As New sMySettings
@@ -352,8 +352,8 @@ Public Class TMDB_Data
         _MySettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.DoSearch = True
-        ConfigScrapeModifier_Movie.Meta = True
-        ConfigScrapeModifier_Movie.NFO = True
+        ConfigScrapeModifier_Movie.MainMeta = True
+        ConfigScrapeModifier_Movie.MainNFO = True
     End Sub
 
     Sub LoadSettings_MovieSet()
@@ -366,8 +366,8 @@ Public Class TMDB_Data
         _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_Movie.DoSearch = True
-        ConfigScrapeModifier_Movie.Meta = False
-        ConfigScrapeModifier_Movie.NFO = True
+        ConfigScrapeModifier_Movie.MainMeta = False
+        ConfigScrapeModifier_Movie.MainNFO = True
     End Sub
 
     Sub LoadSettings_TV()
@@ -404,8 +404,7 @@ Public Class TMDB_Data
         _MySettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings_TV.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.DoSearch = True
-        ConfigScrapeModifier_TV.EpisodeMeta = True
-        ConfigScrapeModifier_TV.ShowNFO = True
+        ConfigScrapeModifier_TV.MainNFO = True
     End Sub
 
     Sub SaveSettings_Movie()
@@ -415,7 +414,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoCollectionID", ConfigOptions_Movie.bCollectionID, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.MainFanart, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA, , , Enums.Content_Type.Movie)
@@ -424,7 +423,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoOtherCrews", ConfigOptions_Movie.bOtherCrew, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoOutline", ConfigOptions_Movie.bOutline, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoPlot", ConfigOptions_Movie.bPlot, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.MainPoster, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoProducers", ConfigOptions_Movie.bProducers, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoRating", ConfigOptions_Movie.bRating, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoRelease", ConfigOptions_Movie.bRelease, , , Enums.Content_Type.Movie)
@@ -659,7 +658,7 @@ Public Class TMDB_Data
         Dim _scraper As New TMDB.Scraper(Settings)
         Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
 
-        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
                 _scraper.GetMovieInfo(oDBMovie.Movie.ID, nMovie, filterOptions.bFullCrew, False, filterOptions, False)
@@ -740,7 +739,7 @@ Public Class TMDB_Data
         Dim OldTitle As String = DBMovieSet.ListTitle
         Dim filterOptions As Structures.ScrapeOptions_MovieSet = Functions.MovieSetScrapeOptionsAndAlso(Options, ConfigOptions_MovieSet)
 
-        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
                 _scraper.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, filterOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
@@ -813,7 +812,7 @@ Public Class TMDB_Data
                             End If
                             DBMovieSet.MovieSet.ID = Master.tmpMovieSet.ID
                         End If
-                        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) AndAlso Master.GlobalScrapeMod.NFO Then
+                        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) AndAlso Master.GlobalScrapeMod.MainNFO Then
                             _scraper.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, filterOptions, False)
                         End If
                     Else
@@ -853,7 +852,7 @@ Public Class TMDB_Data
         Dim _scraper As New TMDB.Scraper(Settings)
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)
 
-        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then
                 'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, filterOptions, False, withEpisodes)
@@ -931,7 +930,12 @@ Public Class TMDB_Data
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions_TV)
 
         If oDBTVEpisode.Ordering = Enums.Ordering.Standard Then
-            nEpisode = _scraper.GetTVEpisodeInfo(CInt(_scraper.GetTMDBbyTVDB(oDBTVEpisode.TVShow.TVDB)), oDBTVEpisode.TVEp.Season, oDBTVEpisode.TVEp.Episode, filterOptions)
+            If String.IsNullOrEmpty(oDBTVEpisode.TVShow.TMDB) AndAlso Not String.IsNullOrEmpty(oDBTVEpisode.TVShow.TVDB) Then
+                oDBTVEpisode.TVShow.TMDB = _scraper.GetTMDBbyTVDB(oDBTVEpisode.TVShow.TVDB)
+            End If
+            If Not String.IsNullOrEmpty(oDBTVEpisode.TVShow.TMDB) Then
+                nEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TMDB), oDBTVEpisode.TVEp.Season, oDBTVEpisode.TVEp.Episode, filterOptions)
+            End If
         End If
 
         logger.Trace("Finished TMDB Scraper")

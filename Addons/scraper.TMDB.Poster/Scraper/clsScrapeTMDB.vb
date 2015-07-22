@@ -121,7 +121,7 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tmdbID As String, ByVal Type As Enums.ScraperCapabilities_TV, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tmdbID As String, ByVal ScraperModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
             Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -137,8 +137,8 @@ Namespace TMDB
                     Return Nothing
                 End If
 
-                'Fanart
-                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                'Fanart Show / AllSeasons / Season / Episode
+                If (ScraperModifier.AllSeasonsFanart OrElse ScraperModifier.EpisodeFanart OrElse ScraperModifier.MainFanart OrElse ScraperModifier.SeasonFanart) AndAlso Results.Backdrops IsNot Nothing Then
                     For Each image In Results.Backdrops
                         Dim tmpImage As New MediaContainers.Image With { _
                             .Height = image.Height.ToString, _
@@ -155,8 +155,8 @@ Namespace TMDB
                     Next
                 End If
 
-                'Poster
-                If (Type = Enums.ScraperCapabilities_TV.All OrElse Type = Enums.ScraperCapabilities_TV.ShowPoster) AndAlso Results.Posters IsNot Nothing Then
+                'Poster Show / AllSeasons
+                If (ScraperModifier.AllSeasonsPoster OrElse ScraperModifier.MainPoster) AndAlso Results.Posters IsNot Nothing Then
                     For Each image In Results.Posters
                         Dim tmpImage As New MediaContainers.Image With { _
                                 .Height = image.Height.ToString, _

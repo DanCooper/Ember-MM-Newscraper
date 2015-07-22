@@ -30,7 +30,7 @@ Public Class GoEar_Theme
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -122,12 +122,12 @@ Public Class GoEar_Theme
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.Theme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True)
+        ConfigScrapeModifier.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier.Theme)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier.MainTheme)
         End Using
     End Sub
 

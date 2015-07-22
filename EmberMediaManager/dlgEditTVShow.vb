@@ -1312,7 +1312,7 @@ Public Class dlgEditTVShow
         Dim EF_i As Integer = 0
         Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
 
-        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType_TV.ShowEFanarts)
+        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType.MainEFanarts)
             If Directory.Exists(a) Then
                 EF_lFI.AddRange(Directory.GetFiles(a))
             End If
@@ -1861,7 +1861,7 @@ Public Class dlgEditTVShow
 
     Private Sub SaveEFanartsList()
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType_TV.ShowEFanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType.MainEFanarts)
                 If Not String.IsNullOrEmpty(a) Then
                     If Me.tmpDBTVShow.RemoveEFanarts AndAlso Not hasClearedEF Then
                         FileUtils.Delete.DeleteDirectory(a)
@@ -1991,7 +1991,7 @@ Public Class dlgEditTVShow
                 End If
 
                 If Me.tmpDBTVShow.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType_TV.ActorThumbs)
+                    For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType.MainActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)

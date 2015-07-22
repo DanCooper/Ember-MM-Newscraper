@@ -100,51 +100,51 @@ Public Class CommandLine
                 Case "-cleanvideodb"
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
                 Case "-fullask"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, CustomScrapeModifier}))
                 Case "-fullauto"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, CustomScrapeModifier}))
                 Case "-fullskip"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.FullSkip, CustomScrapeModifier}))
                 Case "-missask"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MissAsk, CustomScrapeModifier}))
                 Case "-missauto"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MissAuto, CustomScrapeModifier}))
                 Case "-missskip"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MissSkip, CustomScrapeModifier}))
                 Case "-newask"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.NewAsk, CustomScrapeModifier}))
                 Case "-newauto"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, CustomScrapeModifier}))
                 Case "-newskip"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.NewSkip, CustomScrapeModifier}))
                 Case "-markask"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk, CustomScrapeModifier}))
                 Case "-markauto"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, CustomScrapeModifier}))
                 Case "-markskip"
-                    Dim CustomScrapeModifier As New Structures.ScrapeModifier_Movie_MovieSet
+                    Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType_Movie_MovieSet_TV.MarkSkip, CustomScrapeModifier}))
                 Case "-file"
@@ -260,57 +260,57 @@ Public Class CommandLine
         Next
     End Sub
 
-    Private Function SetScraperMod(ByVal Args() As String, ByVal iStartPos As Integer, ByRef ScrapeModifier As Structures.ScrapeModifier_Movie_MovieSet) As Integer
+    Private Function SetScraperMod(ByVal Args() As String, ByVal iStartPos As Integer, ByRef ScrapeModifier As Structures.ScrapeModifier) As Integer
         Dim iEndPos As Integer = iStartPos
 
         For i As Integer = iStartPos + 1 To Args.Count - 1
             Select Case Args(i).ToLower
                 Case "-all"
-                    ScrapeModifier.ActorThumbs = True
-                    ScrapeModifier.Banner = True
-                    ScrapeModifier.CharacterArt = True
-                    ScrapeModifier.ClearArt = True
-                    ScrapeModifier.ClearLogo = True
-                    ScrapeModifier.DiscArt = True
-                    ScrapeModifier.EFanarts = True
-                    ScrapeModifier.EThumbs = True
-                    ScrapeModifier.Fanart = True
-                    ScrapeModifier.Landscape = True
-                    ScrapeModifier.Meta = True
-                    ScrapeModifier.NFO = True
-                    ScrapeModifier.Poster = True
-                    ScrapeModifier.Theme = True
-                    ScrapeModifier.Trailer = True
+                    ScrapeModifier.MainActorThumbs = True
+                    ScrapeModifier.MainBanner = True
+                    ScrapeModifier.MainCharacterArt = True
+                    ScrapeModifier.MainClearArt = True
+                    ScrapeModifier.MainClearLogo = True
+                    ScrapeModifier.MainDiscArt = True
+                    ScrapeModifier.MainEFanarts = True
+                    ScrapeModifier.MainEThumbs = True
+                    ScrapeModifier.MainFanart = True
+                    ScrapeModifier.MainLandscape = True
+                    ScrapeModifier.MainMeta = True
+                    ScrapeModifier.MainNFO = True
+                    ScrapeModifier.MainPoster = True
+                    ScrapeModifier.MainTheme = True
+                    ScrapeModifier.MainTrailer = True
                 Case "-actorthumbs"
-                    ScrapeModifier.ActorThumbs = True
+                    ScrapeModifier.MainActorThumbs = True
                 Case "-banner"
-                    ScrapeModifier.Banner = True
+                    ScrapeModifier.MainBanner = True
                 Case "-characterart"
-                    ScrapeModifier.CharacterArt = True
+                    ScrapeModifier.MainCharacterArt = True
                 Case "-clearart"
-                    ScrapeModifier.ClearArt = True
+                    ScrapeModifier.MainClearArt = True
                 Case "-clearlogo"
-                    ScrapeModifier.ClearLogo = True
+                    ScrapeModifier.MainClearLogo = True
                 Case "-discart"
-                    ScrapeModifier.DiscArt = True
+                    ScrapeModifier.MainDiscArt = True
                 Case "-efanarts"
-                    ScrapeModifier.EFanarts = True
+                    ScrapeModifier.MainEFanarts = True
                 Case "-ethumbs"
-                    ScrapeModifier.EThumbs = True
+                    ScrapeModifier.MainEThumbs = True
                 Case "-fanart"
-                    ScrapeModifier.Fanart = True
+                    ScrapeModifier.MainFanart = True
                 Case "-landscape"
-                    ScrapeModifier.Landscape = True
+                    ScrapeModifier.MainLandscape = True
                 Case "-meta"
-                    ScrapeModifier.Meta = True
+                    ScrapeModifier.MainMeta = True
                 Case "-nfo"
-                    ScrapeModifier.NFO = True
+                    ScrapeModifier.MainNFO = True
                 Case "-poster"
-                    ScrapeModifier.Poster = True
+                    ScrapeModifier.MainPoster = True
                 Case "-theme"
-                    ScrapeModifier.Theme = True
+                    ScrapeModifier.MainTheme = True
                 Case "-trailer"
-                    ScrapeModifier.Trailer = True
+                    ScrapeModifier.MainTrailer = True
                 Case Else
                     Return i - 1
             End Select

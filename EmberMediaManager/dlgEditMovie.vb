@@ -1499,7 +1499,7 @@ Public Class dlgEditMovie
         Try
             ' load local Extrathumbs
             If Not Me.tmpDBMovie.RemoveEThumbs Then
-                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.MainEThumbs)
                     If Directory.Exists(a) Then
                         ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
                         If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -1573,7 +1573,7 @@ Public Class dlgEditMovie
         Try
             ' load local Extrafanarts
             If Not Me.tmpDBMovie.RemoveEFanarts Then
-                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.MainEFanarts)
                     If Directory.Exists(a) Then
                         EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
                         If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -2872,7 +2872,7 @@ Public Class dlgEditMovie
 
     Private Sub SaveEThumbsList()
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.MainEThumbs)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -2889,7 +2889,7 @@ Public Class dlgEditMovie
 
     Private Sub SaveEFanartsList()
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.EFanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.MainEFanarts)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -3060,7 +3060,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Me.tmpDBMovie.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.ActorThumbs)
+                    For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType_Movie.MainActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -3104,7 +3104,7 @@ Public Class dlgEditMovie
                     .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
                 End If
 
-                If Master.GlobalScrapeMod.ActorThumbs OrElse ActorThumbsHasChanged Then
+                If Master.GlobalScrapeMod.MainActorThumbs OrElse ActorThumbsHasChanged Then
                     For Each act As MediaContainers.Person In Me.tmpDBMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.ThumbURL)

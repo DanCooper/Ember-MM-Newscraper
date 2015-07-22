@@ -42,7 +42,7 @@ Public Class Master
     Public Shared eLang As New Localization
     'Public Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Shared eSettings As New Settings
-    Public Shared GlobalScrapeMod As New Structures.ScrapeModifier_Movie_MovieSet
+    Public Shared GlobalScrapeMod As New Structures.ScrapeModifier
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
     Public Shared is32Bit As Boolean
     'Public Shared MediaJobLog As New MediaLog

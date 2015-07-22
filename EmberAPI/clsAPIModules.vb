@@ -1102,7 +1102,7 @@ Public Class ModulesManager
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ScraperCapabilities_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -1116,32 +1116,32 @@ Public Class ModulesManager
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Image_TV In modules
                     logger.Trace("Scraping tv show images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                    If Type = Enums.ScraperCapabilities_TV.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
-                        AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                        Try
-                            Dim aContainer As New MediaContainers.SearchResultsContainer_TV
-                            ret = _externalScraperModule.ProcessorModule.Scraper(DBTV, Type, aContainer)
-                            If aContainer IsNot Nothing Then
-                                ImagesContainer.EpisodeFanarts.AddRange(aContainer.EpisodeFanarts)
-                                ImagesContainer.EpisodePosters.AddRange(aContainer.EpisodePosters)
-                                ImagesContainer.SeasonBanners.AddRange(aContainer.SeasonBanners)
-                                ImagesContainer.SeasonFanarts.AddRange(aContainer.SeasonFanarts)
-                                ImagesContainer.SeasonLandscapes.AddRange(aContainer.SeasonLandscapes)
-                                ImagesContainer.SeasonPosters.AddRange(aContainer.SeasonPosters)
-                                ImagesContainer.ShowBanners.AddRange(aContainer.ShowBanners)
-                                ImagesContainer.ShowCharacterArts.AddRange(aContainer.ShowCharacterArts)
-                                ImagesContainer.ShowClearArts.AddRange(aContainer.ShowClearArts)
-                                ImagesContainer.ShowClearLogos.AddRange(aContainer.ShowClearLogos)
-                                ImagesContainer.ShowFanarts.AddRange(aContainer.ShowFanarts)
-                                ImagesContainer.ShowLandscapes.AddRange(aContainer.ShowLandscapes)
-                                ImagesContainer.ShowPosters.AddRange(aContainer.ShowPosters)
-                            End If
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & "Error scraping tv show images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                        End Try
-                        RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                        If ret.breakChain Then Exit For
-                    End If
+                    'If Type = Enums.ScraperCapabilities_TV.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
+                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+                    Try
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_TV
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBTV, ScrapeModifier, aContainer)
+                        If aContainer IsNot Nothing Then
+                            ImagesContainer.EpisodeFanarts.AddRange(aContainer.EpisodeFanarts)
+                            ImagesContainer.EpisodePosters.AddRange(aContainer.EpisodePosters)
+                            ImagesContainer.SeasonBanners.AddRange(aContainer.SeasonBanners)
+                            ImagesContainer.SeasonFanarts.AddRange(aContainer.SeasonFanarts)
+                            ImagesContainer.SeasonLandscapes.AddRange(aContainer.SeasonLandscapes)
+                            ImagesContainer.SeasonPosters.AddRange(aContainer.SeasonPosters)
+                            ImagesContainer.ShowBanners.AddRange(aContainer.ShowBanners)
+                            ImagesContainer.ShowCharacterArts.AddRange(aContainer.ShowCharacterArts)
+                            ImagesContainer.ShowClearArts.AddRange(aContainer.ShowClearArts)
+                            ImagesContainer.ShowClearLogos.AddRange(aContainer.ShowClearLogos)
+                            ImagesContainer.ShowFanarts.AddRange(aContainer.ShowFanarts)
+                            ImagesContainer.ShowLandscapes.AddRange(aContainer.ShowLandscapes)
+                            ImagesContainer.ShowPosters.AddRange(aContainer.ShowPosters)
+                        End If
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping tv show images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    End Try
+                    RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+                    If ret.breakChain Then Exit For
+                    'End If
                 Next
 
                 'sorting
