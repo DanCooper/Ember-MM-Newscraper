@@ -425,8 +425,8 @@ Public Class TMDB_Image
         Dim _scraper As New TMDB.Scraper
 
         If String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-            If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
-                DBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(DBTV.TVShow.ID, Settings)
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
+                DBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(DBTV.TVShow.TVDB, Settings)
             End If
         End If
 

@@ -23,7 +23,7 @@ Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgEditEpisode
+Public Class dlgEditTVEpisode
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()

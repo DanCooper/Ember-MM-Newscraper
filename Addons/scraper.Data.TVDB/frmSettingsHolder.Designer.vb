@@ -58,7 +58,7 @@ Partial Class frmSettingsHolder
         Me.chkScraperEpPlot = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpAired = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpRating = New System.Windows.Forms.CheckBox()
-        Me.gbTMDB = New System.Windows.Forms.GroupBox()
+        Me.gbTVDB = New System.Windows.Forms.GroupBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.gbLanguage = New System.Windows.Forms.GroupBox()
         Me.lblTVLanguagePreferred = New System.Windows.Forms.Label()
@@ -79,7 +79,7 @@ Partial Class frmSettingsHolder
         Me.tblScraperFieldsShow.SuspendLayout()
         Me.gbScraperFieldsEpisode.SuspendLayout()
         Me.tblScraperFieldsEpisode.SuspendLayout()
-        Me.gbTMDB.SuspendLayout()
+        Me.gbTVDB.SuspendLayout()
         Me.gbLanguage.SuspendLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbModuleLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -142,7 +142,7 @@ Partial Class frmSettingsHolder
         'pnlSettings
         '
         Me.pnlSettings.Controls.Add(Me.gbScraperFields)
-        Me.pnlSettings.Controls.Add(Me.gbTMDB)
+        Me.pnlSettings.Controls.Add(Me.gbTVDB)
         Me.pnlSettings.Controls.Add(Me.lblModuleInfo)
         Me.pnlSettings.Controls.Add(Me.pbModuleLogo)
         Me.pnlSettings.Controls.Add(Me.Panel1)
@@ -525,21 +525,21 @@ Partial Class frmSettingsHolder
         '
         'gbTMDB
         '
-        Me.gbTMDB.Controls.Add(Me.lblEMMAPI)
-        Me.gbTMDB.Controls.Add(Me.gbLanguage)
-        Me.gbTMDB.Controls.Add(Me.btnUnlockAPI)
-        Me.gbTMDB.Controls.Add(Me.lblTVDBMirror)
-        Me.gbTMDB.Controls.Add(Me.txtTVDBMirror)
-        Me.gbTMDB.Controls.Add(Me.pbTVDB)
-        Me.gbTMDB.Controls.Add(Me.lblTVDBApiKey)
-        Me.gbTMDB.Controls.Add(Me.txtApiKey)
-        Me.gbTMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTMDB.Location = New System.Drawing.Point(11, 31)
-        Me.gbTMDB.Name = "gbTMDB"
-        Me.gbTMDB.Size = New System.Drawing.Size(603, 119)
-        Me.gbTMDB.TabIndex = 97
-        Me.gbTMDB.TabStop = False
-        Me.gbTMDB.Text = "TMDB"
+        Me.gbTVDB.Controls.Add(Me.lblEMMAPI)
+        Me.gbTVDB.Controls.Add(Me.gbLanguage)
+        Me.gbTVDB.Controls.Add(Me.btnUnlockAPI)
+        Me.gbTVDB.Controls.Add(Me.lblTVDBMirror)
+        Me.gbTVDB.Controls.Add(Me.txtTVDBMirror)
+        Me.gbTVDB.Controls.Add(Me.pbTVDB)
+        Me.gbTVDB.Controls.Add(Me.lblTVDBApiKey)
+        Me.gbTVDB.Controls.Add(Me.txtApiKey)
+        Me.gbTVDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVDB.Location = New System.Drawing.Point(11, 31)
+        Me.gbTVDB.Name = "gbTMDB"
+        Me.gbTVDB.Size = New System.Drawing.Size(603, 119)
+        Me.gbTVDB.TabIndex = 97
+        Me.gbTVDB.TabStop = False
+        Me.gbTVDB.Text = "TMDB"
         '
         'lblEMMAPI
         '
@@ -692,8 +692,8 @@ Partial Class frmSettingsHolder
         Me.gbScraperFieldsEpisode.PerformLayout()
         Me.tblScraperFieldsEpisode.ResumeLayout(False)
         Me.tblScraperFieldsEpisode.PerformLayout()
-        Me.gbTMDB.ResumeLayout(False)
-        Me.gbTMDB.PerformLayout()
+        Me.gbTVDB.ResumeLayout(False)
+        Me.gbTVDB.PerformLayout()
         Me.gbLanguage.ResumeLayout(False)
         Me.gbLanguage.PerformLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).EndInit()
@@ -709,7 +709,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents lblScrapeOrder As System.Windows.Forms.Label
     Friend WithEvents lblModuleInfo As System.Windows.Forms.Label
     Friend WithEvents pbModuleLogo As System.Windows.Forms.PictureBox
-    Friend WithEvents gbTMDB As System.Windows.Forms.GroupBox
+    Friend WithEvents gbTVDB As System.Windows.Forms.GroupBox
     Friend WithEvents pbTVDB As System.Windows.Forms.PictureBox
     Friend WithEvents lblTVDBApiKey As System.Windows.Forms.Label
     Friend WithEvents txtApiKey As System.Windows.Forms.TextBox

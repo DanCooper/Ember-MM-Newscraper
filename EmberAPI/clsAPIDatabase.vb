@@ -1080,21 +1080,30 @@ Public Class Database
         _TVDB.LandscapePath = _tmpTVDBSeason.LandscapePath
         _TVDB.PosterPath = _tmpTVDBSeason.PosterPath
     End Sub
-
     ''' <summary>
     ''' Adds TVShow informations to a Structures.DBTV
     ''' </summary>
-    ''' <param name="_TVDB">Structures.DBTV container to fill</param>
-    Public Sub FillTVShowFromDB(ByRef _TVDB As Structures.DBTV)
-        Dim _tmpTVDBShow As Structures.DBTV = LoadTVShowFromDB(_TVDB.ShowID, False)
+    ''' <param name="_TVDB">Structures.DBTV container to fill with TVShow informations</param>
+    ''' <param name="_TVDBShow">Optional the TVShow informations to add to _TVDB</param>
+    ''' <remarks></remarks>
+    Public Function FillTVShowFromDB(ByVal _TVDB As Structures.DBTV, Optional _TVDBShow As Structures.DBTV = Nothing) As Structures.DBTV
+        Dim _tmpTVDBShow As New Structures.DBTV
+
+        If _TVDBShow.TVShow Is Nothing Then
+            _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False)
+        Else
+            _tmpTVDBShow = _TVDBShow
+        End If
 
         _TVDB.EpisodeSorting = _tmpTVDBShow.EpisodeSorting
         _TVDB.Ordering = _tmpTVDBShow.Ordering
         _TVDB.Language = _tmpTVDBShow.Language
+        _TVDB.ShowID = _tmpTVDBShow.ShowID
         _TVDB.ShowPath = _tmpTVDBShow.ShowPath
         _TVDB.Source = _tmpTVDBShow.Source
         _TVDB.TVShow = _tmpTVDBShow.TVShow
-    End Sub
+        Return _TVDB
+    End Function
 
     Public Function GetTVShowEpisodeSorting(ByVal ShowID As Long) As Enums.EpisodeSorting
         Dim sEpisodeSorting As Enums.EpisodeSorting = Enums.EpisodeSorting.Episode
@@ -1281,15 +1290,15 @@ Public Class Database
         Dim ContentType As String = String.Empty
 
         Select Case Type
-            Case Enums.Content_Type.Episode
+            Case Enums.Content_Type.TVEpisode
                 ContentType = "episode-"
             Case Enums.Content_Type.Movie
                 ContentType = "movie-"
             Case Enums.Content_Type.MovieSet
                 ContentType = "sets-"
-            Case Enums.Content_Type.Season
+            Case Enums.Content_Type.TVSeason
                 ContentType = "seasons-"
-            Case Enums.Content_Type.Show
+            Case Enums.Content_Type.TVShow
                 ContentType = "tvshow-"
         End Select
 
@@ -1706,7 +1715,7 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, Optional ByVal OnlySeason As Integer = -1) As List(Of Structures.DBTV)
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal withImages As Boolean = True, Optional ByVal OnlySeason As Integer = -1) As List(Of Structures.DBTV)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVEpisodesList As New List(Of Structures.DBTV)
@@ -1729,7 +1738,7 @@ Public Class Database
                             End If
                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVEpisodesList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), False))
+                                    _TVEpisodesList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), withShow, withImages))
                                 End While
                             End Using
                         End Using
@@ -1741,7 +1750,7 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
-    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long) As List(Of Structures.DBTV)
+    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, ByVal withImages As Boolean) As List(Of Structures.DBTV)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVSeasonsList As New List(Of Structures.DBTV)
@@ -1756,7 +1765,7 @@ Public Class Database
                             SQLCommand.CommandText = String.Concat("SELECT * FROM seasons WHERE idShow = ", ShowID, ";")
                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False))
+                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False, withImages))
                                 End While
                             End Using
                         End Using
@@ -1773,7 +1782,7 @@ Public Class Database
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <returns>MediaContainers.SeasonDetails object</returns>
     ''' <remarks></remarks>
-    Public Function LoadAllTVSeasonFromDB(ByVal ShowID As Long) As MediaContainers.Seasons
+    Public Function LoadAllTVSeasonsDetailsFromDB(ByVal ShowID As Long) As MediaContainers.Seasons
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _SeasonList As New MediaContainers.Seasons
@@ -1832,16 +1841,16 @@ Public Class Database
     ''' <summary>
     ''' Load all the information for a TV Episode
     ''' </summary>
-    ''' <param name="EpID">Episode ID</param>
+    ''' <param name="EpisodeID">Episode ID</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVEpFromDB(ByVal EpID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
+    Public Function LoadTVEpFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV With {.ImagesContainer = New MediaContainers.ImagesContainer}
         Dim PathID As Long = -1
 
-        _TVDB.ID = EpID
+        _TVDB.ID = EpisodeID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT * FROM episode WHERE idEpisode = ", EpID, ";")
+            SQLcommand.CommandText = String.Concat("SELECT * FROM episode WHERE idEpisode = ", EpisodeID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     SQLreader.Read()
@@ -2008,9 +2017,8 @@ Public Class Database
             If Not String.IsNullOrEmpty(_TVDB.PosterPath) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.PosterPath)
         End If
 
-        If withShow AndAlso _TVDB.ShowID > -1 Then
-            FillTVShowFromDB(_TVDB)
-            'FillTVSeasonFromDB(_TVDB, _TVDB.TVEp.Season)
+        If withShow Then
+            _TVDB = Master.DB.FillTVShowFromDB(_TVDB)
         End If
 
         'Check if the file is available and ready to edit
@@ -2024,14 +2032,14 @@ Public Class Database
     ''' <param name="sPath">Full episode path</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVEpFromDB(ByVal sPath As String, ByVal WithShow As Boolean) As Structures.DBTV
+    Public Function LoadTVEpFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEpPaths WHERE TVEpPath = ", sPath, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), WithShow)
+                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), withShow, withImages)
                 Else
-                    Return New Structures.DBTV With {.ID = -1} ' No Movie Found
+                    Return New Structures.DBTV With {.ID = -1}
                 End If
             End Using
         End Using
@@ -2047,15 +2055,15 @@ Public Class Database
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Structures.DBTV object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal WithShow As Boolean) As Structures.DBTV
+    Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", iShowID, iSeason, iEpisode)
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), WithShow)
+                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, withImages)
                 Else
-                    Return New Structures.DBTV With {.ID = -1} ' No Movie Found
+                    Return New Structures.DBTV With {.ID = -1}
                 End If
             End Using
         End Using
@@ -2070,7 +2078,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
-        Return Master.DB.LoadTVShowFromDB(ShowID, True)
+        Return Master.DB.LoadTVShowFromDB(ShowID, True, True)
     End Function
     ''' <summary>
     ''' Load all the information for a TV Season
@@ -2124,9 +2132,37 @@ Public Class Database
             If Not String.IsNullOrEmpty(_TVDB.PosterPath) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.PosterPath)
         End If
 
-        If withShow AndAlso _TVDB.ShowID > -1 Then
-            FillTVShowFromDB(_TVDB)
+        If withShow Then
+            _TVDB = Master.DB.FillTVShowFromDB(_TVDB)
         End If
+
+        Return _TVDB
+    End Function
+    ''' <summary>
+    ''' Load all the information for a TV Show
+    ''' </summary>
+    ''' <param name="ShowID">Show ID</param>
+    ''' <param name="iSeason">Season number</param>
+    ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
+    ''' <returns>Structures.DBTV object</returns>
+    ''' <remarks></remarks>
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Structures.DBTV
+        Dim _TVDB As New Structures.DBTV With {.ImagesContainer = New MediaContainers.ImagesContainer}
+
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
+        _TVDB.ShowID = ShowID
+        If WithShow Then FillTVShowFromDB(_TVDB)
+
+        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
+                If SQLReader.HasRows Then
+                    SQLReader.Read()
+                    _TVDB = LoadTVSeasonFromDB(CInt(SQLReader("idSeason")), WithShow)
+                End If
+            End Using
+        End Using
 
         Return _TVDB
     End Function
@@ -2171,7 +2207,7 @@ Public Class Database
                     _TVDB.TVShow = New MediaContainers.TVShow
                     With _TVDB.TVShow
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
-                        If Not DBNull.Value.Equals(SQLreader("TVDB")) Then .ID = SQLreader("TVDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TVDB")) Then .TVDB = SQLreader("TVDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("EpisodeGuide")) Then .EpisodeGuide.URL = SQLreader("EpisodeGuide").ToString
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("Genre")) Then .Genre = SQLreader("Genre").ToString
@@ -2238,44 +2274,21 @@ Public Class Database
         End If
 
         'Seasons
-        _TVDB.Seasons = LoadAllTVSeasonsFromDB(ShowID)
-        _TVDB.TVShow.Seasons = LoadAllTVSeasonFromDB(ShowID)
+        'If withSeasons Then
+        _TVDB.Seasons = LoadAllTVSeasonsFromDB(_TVDB.ID, withImages)
+        _TVDB.TVShow.Seasons = LoadAllTVSeasonsDetailsFromDB(_TVDB.ID)
+        'End If
 
         'Episodes
         If withEpisodes Then
-            _TVDB.Episodes.AddRange(LoadAllTVEpisodesFromDB(_TVDB.ID))
+            For Each tEpisode As Structures.DBTV In LoadAllTVEpisodesFromDB(_TVDB.ID, False)
+                tEpisode = Master.DB.FillTVShowFromDB(tEpisode, _TVDB)
+                _TVDB.Episodes.Add(tEpisode)
+            Next
         End If
 
         'Check if the path is available and ready to edit
         If Directory.Exists(_TVDB.ShowPath) Then _TVDB.IsOnline = True
-
-        Return _TVDB
-    End Function
-    ''' <summary>
-    ''' Load all the information for a TV Show
-    ''' </summary>
-    ''' <param name="ShowID">Show ID</param>
-    ''' <param name="iSeason">Season number</param>
-    ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <returns>Structures.DBTV object</returns>
-    ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV With {.ImagesContainer = New MediaContainers.ImagesContainer}
-
-        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
-
-        _TVDB.ShowID = ShowID
-        If WithShow Then FillTVShowFromDB(_TVDB)
-
-        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
-            Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
-                If SQLReader.HasRows Then
-                    SQLReader.Read()
-                    _TVDB = LoadTVSeasonFromDB(CInt(SQLReader("idSeason")), WithShow)
-                End If
-            End Using
-        End Using
 
         Return _TVDB
     End Function
@@ -3836,10 +3849,10 @@ Public Class Database
                     SQLcommand_actorlinkepisode.ExecuteNonQuery()
                 End Using
                 AddCast(_TVEpDB.ID, "episode", "episode", _TVEpDB.TVEp.Actors)
-                
+
                 'Images
                 If _TVEpDB.ImagesContainer IsNot Nothing Then
-                    _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.Content_Type.Episode)
+                    _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.Content_Type.TVEpisode)
                 End If
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3979,7 +3992,9 @@ Public Class Database
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, _TVEpDB)
+        If _TVEpDB.FilenameID > -1 Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, _TVEpDB)
+        End If
 
         Return _TVEpDB
     End Function
@@ -4059,7 +4074,7 @@ Public Class Database
 
         'Images
         If _TVSeasonDB.ImagesContainer IsNot Nothing Then
-            _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.Content_Type.Season)
+            _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.Content_Type.TVSeason)
         End If
 
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4104,7 +4119,7 @@ Public Class Database
                  "EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, strIMDB, strTMDB", _
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                 Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
-                parTVShowID.Value = _TVShowDB.ShowID
+                parTVShowID.Value = _TVShowDB.ID
             End If
 
             Dim parTVShowPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowPath", DbType.String, 0, "TVShowPath")
@@ -4137,7 +4152,7 @@ Public Class Database
             Dim par_strTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
 
             With _TVShowDB.TVShow
-                parTVDB.Value = .ID
+                parTVDB.Value = .TVDB
                 parTitle.Value = .Title
                 parSortTitle.Value = .SortTitle
                 parEpisodeGuide.Value = .EpisodeGuide.URL
@@ -4180,10 +4195,12 @@ Public Class Database
                 End If
                 Using rdrTVShow As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If rdrTVShow.Read Then
-                        _TVShowDB.ShowID = Convert.ToInt64(rdrTVShow(0))
+                        _TVShowDB.ID = Convert.ToInt64(rdrTVShow(0))
+                        _TVShowDB.ShowID = _TVShowDB.ID
                     Else
                         logger.Error("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
-                        _TVShowDB.ShowID = -1
+                        _TVShowDB.ID = -1
+                        _TVShowDB.ShowID = _TVShowDB.ID
                         Return _TVShowDB
                         Exit Function
                     End If
@@ -4192,66 +4209,66 @@ Public Class Database
                 SQLcommand.ExecuteNonQuery()
             End If
 
-            If Not _TVShowDB.ShowID = -1 Then
+            If Not _TVShowDB.ID = -1 Then
 
                 'Actors
                 Using SQLcommand_actorlinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_actorlinktvshow.CommandText = String.Format("DELETE FROM actorlinktvshow WHERE idShow = {0};", _TVShowDB.ShowID)
+                    SQLcommand_actorlinktvshow.CommandText = String.Format("DELETE FROM actorlinktvshow WHERE idShow = {0};", _TVShowDB.ID)
                     SQLcommand_actorlinktvshow.ExecuteNonQuery()
                 End Using
-                AddCast(_TVShowDB.ShowID, "tvshow", "show", _TVShowDB.TVShow.Actors)
+                AddCast(_TVShowDB.ID, "tvshow", "show", _TVShowDB.TVShow.Actors)
 
                 'Directors
                 Using SQLcommand_directorlinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_directorlinktvshow.CommandText = String.Format("DELETE FROM directorlinktvshow WHERE idShow = {0};", _TVShowDB.ShowID)
+                    SQLcommand_directorlinktvshow.CommandText = String.Format("DELETE FROM directorlinktvshow WHERE idShow = {0};", _TVShowDB.ID)
                     SQLcommand_directorlinktvshow.ExecuteNonQuery()
                 End Using
                 For Each director As String In _TVShowDB.TVShow.Directors
-                    AddDirectorToTvShow(_TVShowDB.ShowID, AddActor(director, "", "", "", ""))
+                    AddDirectorToTvShow(_TVShowDB.ID, AddActor(director, "", "", "", ""))
                 Next
 
                 'Genres
                 Using SQLcommand_genrelinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_genrelinktvshow.CommandText = String.Format("DELETE FROM genrelinktvshow WHERE idShow = {0};", _TVShowDB.ShowID)
+                    SQLcommand_genrelinktvshow.CommandText = String.Format("DELETE FROM genrelinktvshow WHERE idShow = {0};", _TVShowDB.ID)
                     SQLcommand_genrelinktvshow.ExecuteNonQuery()
                 End Using
                 For Each genre As String In _TVShowDB.TVShow.Genres
-                    AddGenreToTvShow(_TVShowDB.ShowID, AddGenre(genre))
+                    AddGenreToTvShow(_TVShowDB.ID, AddGenre(genre))
                 Next
 
                 'Images
                 If _TVShowDB.ImagesContainer IsNot Nothing Then
-                    _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.Content_Type.Show)
+                    _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.Content_Type.TVShow)
                 End If
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ShowID)
+                    SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_TVShowDB.BannerPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "banner", _TVShowDB.BannerPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.CharacterArtPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "characterart", _TVShowDB.CharacterArtPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.ClearArtPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearart", _TVShowDB.ClearArtPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.ClearLogoPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "clearlogo", _TVShowDB.ClearLogoPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.FanartPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "fanart", _TVShowDB.FanartPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.LandscapePath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "landscape", _TVShowDB.LandscapePath)
-                If Not String.IsNullOrEmpty(_TVShowDB.PosterPath) Then SetArtForItem(_TVShowDB.ShowID, "tvshow", "poster", _TVShowDB.PosterPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.BannerPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "banner", _TVShowDB.BannerPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.CharacterArtPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "characterart", _TVShowDB.CharacterArtPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ClearArtPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearart", _TVShowDB.ClearArtPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ClearLogoPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearlogo", _TVShowDB.ClearLogoPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.FanartPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "fanart", _TVShowDB.FanartPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.LandscapePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "landscape", _TVShowDB.LandscapePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.PosterPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "poster", _TVShowDB.PosterPath)
 
                 'Studios
                 Using SQLcommand_studiolinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_studiolinktvshow.CommandText = String.Format("DELETE FROM studiolinktvshow WHERE idShow = {0};", _TVShowDB.ShowID)
+                    SQLcommand_studiolinktvshow.CommandText = String.Format("DELETE FROM studiolinktvshow WHERE idShow = {0};", _TVShowDB.ID)
                     SQLcommand_studiolinktvshow.ExecuteNonQuery()
                 End Using
                 For Each studio As String In _TVShowDB.TVShow.Studios
-                    AddStudioToTvShow(_TVShowDB.ShowID, AddStudio(studio))
+                    AddStudioToTvShow(_TVShowDB.ID, AddStudio(studio))
                 Next
 
                 'Tags
                 Using SQLcommand_taglinks As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_taglinks.CommandText = String.Format("DELETE FROM taglinks WHERE idMedia = {0} AND media_type = 'tvshow';", _TVShowDB.ShowID)
+                    SQLcommand_taglinks.CommandText = String.Format("DELETE FROM taglinks WHERE idMedia = {0} AND media_type = 'tvshow';", _TVShowDB.ID)
                     SQLcommand_taglinks.ExecuteNonQuery()
                 End Using
                 For Each tag As String In _TVShowDB.TVShow.Tags
-                    AddTagToItem(_TVShowDB.ShowID, AddTag(tag), "tvshow")
+                    AddTagToItem(_TVShowDB.ID, AddTag(tag), "tvshow")
                 Next
 
             End If

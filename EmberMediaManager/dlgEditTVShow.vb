@@ -23,7 +23,7 @@ Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
 
-Public Class dlgEditShow
+Public Class dlgEditTVShow
 
 #Region "Fields"
 
@@ -170,7 +170,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowBanner.Click
         Me.pbShowBanner.Image = Nothing
         Me.pbShowBanner.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.Banner.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.Banner = New MediaContainers.Image
 
         Me.lblShowBannerSize.Text = String.Empty
         Me.lblShowBannerSize.Visible = False
@@ -179,7 +179,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowCharacterArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowCharacterArt.Click
         Me.pbShowCharacterArt.Image = Nothing
         Me.pbShowCharacterArt.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.CharacterArt.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.CharacterArt = New MediaContainers.Image
 
         Me.lblShowCharacterArtSize.Text = String.Empty
         Me.lblShowCharacterArtSize.Visible = False
@@ -188,7 +188,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearArt.Click
         Me.pbShowClearArt.Image = Nothing
         Me.pbShowClearArt.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.ClearArt.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.ClearArt = New MediaContainers.Image
 
         Me.lblShowClearArtSize.Text = String.Empty
         Me.lblShowClearArtSize.Visible = False
@@ -197,7 +197,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearLogo.Click
         Me.pbShowClearLogo.Image = Nothing
         Me.pbShowClearLogo.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.ClearLogo.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.ClearLogo = New MediaContainers.Image
 
         Me.lblShowClearLogoSize.Text = String.Empty
         Me.lblShowClearLogoSize.Visible = False
@@ -206,7 +206,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowFanart.Click
         Me.pbShowFanart.Image = Nothing
         Me.pbShowFanart.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.Fanart = New MediaContainers.Image
 
         Me.lblShowFanartSize.Text = String.Empty
         Me.lblShowFanartSize.Visible = False
@@ -215,7 +215,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowLandscape.Click
         Me.pbShowLandscape.Image = Nothing
         Me.pbShowLandscape.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.Landscape.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.Landscape = New MediaContainers.Image
 
         Me.lblShowLandscapeSize.Text = String.Empty
         Me.lblShowLandscapeSize.Visible = False
@@ -224,7 +224,7 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowPoster.Click
         Me.pbShowPoster.Image = Nothing
         Me.pbShowPoster.Tag = Nothing
-        Me.tmpDBTVShow.ImagesContainer.Poster.WebImage.Dispose()
+        Me.tmpDBTVShow.ImagesContainer.Poster = New MediaContainers.Image
 
         Me.lblShowPosterSize.Text = String.Empty
         Me.lblShowPosterSize.Visible = False
@@ -235,7 +235,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowBanner, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Banner, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowBanner, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Banner, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Banner = tImage
@@ -293,7 +293,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.CharacterArt, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowCharacterArt, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.CharacterArt, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.CharacterArt = tImage
@@ -371,7 +371,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowClearArt, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.ClearArt, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowClearArt, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.ClearArt, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.ClearArt = tImage
@@ -429,7 +429,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowClearLogo, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.ClearLogo, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowClearLogo, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.ClearLogo, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.ClearLogo = tImage
@@ -487,7 +487,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowFanart, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Fanart, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowFanart, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Fanart, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Fanart = tImage
@@ -525,7 +525,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowLandscape, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Landscape, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowLandscape, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Landscape, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Landscape = tImage
@@ -603,7 +603,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetShowPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.ID, Enums.ImageType_TV.ShowPoster, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Poster, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ImageType_TV.ShowPoster, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Poster, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Poster = tImage

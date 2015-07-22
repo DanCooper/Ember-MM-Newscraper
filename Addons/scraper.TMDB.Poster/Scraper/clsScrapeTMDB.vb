@@ -200,15 +200,17 @@ Namespace TMDB
                 If Results.Stills IsNot Nothing Then
                     For Each image In Results.Stills
                         Dim tmpImage As New MediaContainers.Image With { _
-                                .Height = image.Height.ToString, _
-                                .Likes = 0, _
-                                .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
-                                .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                                .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
-                                .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
-                                .VoteAverage = image.VoteAverage.ToString, _
-                                .VoteCount = image.VoteCount, _
-                                .Width = image.Width.ToString}
+                            .Episode = iEpisode, _
+                            .Height = image.Height.ToString, _
+                            .Likes = 0, _
+                            .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                            .Season = iSeason, _
+                            .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
+                            .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
+                            .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
+                            .VoteAverage = image.VoteAverage.ToString, _
+                            .VoteCount = image.VoteCount, _
+                            .Width = image.Width.ToString}
 
                         alContainer.EpisodePosters.Add(tmpImage)
                     Next

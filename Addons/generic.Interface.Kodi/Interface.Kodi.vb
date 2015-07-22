@@ -278,7 +278,7 @@ Public Class KodiInterface
                                     Next
                                     If Sourceok = True Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVEp.Season, New Bitmap(My.Resources.logo)}))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVSeason.Season, New Bitmap(My.Resources.logo)}))
                                         Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateTVSeasonInfo(tDBTV.ID, MySettings.SendNotifications))
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
@@ -783,7 +783,7 @@ Public Class KodiInterface
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             If Master.currShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(Master.currShow, True) Then
                 Cursor.Current = Cursors.WaitCursor
-                If Not String.IsNullOrEmpty(Master.currShow.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.TVShow.ID) Then
+                If Not String.IsNullOrEmpty(Master.currShow.NfoPath) AndAlso Not String.IsNullOrEmpty(Master.currShow.TVShow.TVDB) Then
                     For Each host In MySettings.KodiHosts.host.ToList
                         'check if at least one source is type = tvshow, otherwise don't use this host!
                         Dim Sourceok As Boolean = False

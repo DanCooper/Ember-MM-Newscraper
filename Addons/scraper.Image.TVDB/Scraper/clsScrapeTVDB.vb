@@ -168,13 +168,15 @@ Namespace TVDBs
                 'Poster
                 If Results.Series.Episodes IsNot Nothing Then
                     For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.CombinedEpisodeNumber = iEpisode)
-                        Dim img As New MediaContainers.Image With {.Height = CStr(tEpisode.ThumbHeight), _
-                                                                   .LongLang = Localization.ISOGetLangByCode2(tEpisode.Language), _
-                                                                   .Season = tEpisode.SeasonNumber, _
-                                                                   .ShortLang = tEpisode.Language, _
-                                                                   .ThumbURL = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(tvdbMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty), _
-                                                                   .URL = String.Concat(tvdbMirror.Address, "/banners/", tEpisode.PictureFilename), _
-                                                                   .Width = CStr(tEpisode.ThumbWidth)}
+                        Dim img As New MediaContainers.Image With { _
+                            .Episode = tEpisode.Number, _
+                            .Height = CStr(tEpisode.ThumbHeight), _
+                            .LongLang = Localization.ISOGetLangByCode2(tEpisode.Language), _
+                            .Season = tEpisode.SeasonNumber, _
+                            .ShortLang = tEpisode.Language, _
+                            .ThumbURL = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(tvdbMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty), _
+                            .URL = String.Concat(tvdbMirror.Address, "/banners/", tEpisode.PictureFilename), _
+                            .Width = CStr(tEpisode.ThumbWidth)}
 
                         alContainer.EpisodePosters.Add(img)
                     Next

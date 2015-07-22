@@ -52,7 +52,7 @@ Public Class FanartTV_Image
     Private _setup_Movie As frmSettingsHolder_Movie
     Private _setup_MovieSet As frmSettingsHolder_MovieSet
     Private _setup_TV As frmSettingsHolder_TV
-    Private _scraper As New Scraper
+    Private _scraper As New FanartTVs.Scraper
 
 #End Region 'Fields
 
@@ -426,10 +426,10 @@ Public Class FanartTV_Image
         ConfigScrapeModifier_TV.ShowCharacterArt = clsAdvancedSettings.GetBooleanSetting("DoShowCharacterArt", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowClearArt = clsAdvancedSettings.GetBooleanSetting("DoShowClearArt", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowClearLogo = clsAdvancedSettings.GetBooleanSetting("DoShowClearLogo", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.ShowEFanarts = ConfigScrapeModifier_TV.ShowFanart
         ConfigScrapeModifier_TV.ShowFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowLandscape = clsAdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.Content_Type.TV)
         ConfigScrapeModifier_TV.ShowPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.Content_Type.TV)
-        ConfigScrapeModifier_TV.EFanarts = ConfigScrapeModifier_TV.ShowFanart
     End Sub
 
     Sub SaveSettings_Movie()
@@ -599,8 +599,8 @@ Public Class FanartTV_Image
         Settings.ClearArtOnlyHD = _MySettings_TV.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_TV.ClearLogoOnlyHD
 
-        If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
-            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+        If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
+            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, Type, Settings)
         Else
             logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
         End If

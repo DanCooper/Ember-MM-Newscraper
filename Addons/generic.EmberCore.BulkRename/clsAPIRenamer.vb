@@ -1158,8 +1158,8 @@ Public Class FileFolderRenamer
             If _tmpTVShow.TVShow.Genre IsNot Nothing Then
                 ShowFile.Genre = _tmpTVShow.TVShow.Genre
             End If
-            If _tmpTVShow.TVShow.TVDBID IsNot Nothing Then
-                ShowFile.TVDBID = _tmpTVShow.TVShow.TVDBID
+            If _tmpTVShow.TVShow.TVDB IsNot Nothing Then
+                ShowFile.TVDBID = _tmpTVShow.TVShow.TVDB
             End If
             If _tmpTVShow.ListTitle IsNot Nothing Then
                 ShowFile.ListTitle = _tmpTVShow.ListTitle

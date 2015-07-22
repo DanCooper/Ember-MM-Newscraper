@@ -170,7 +170,7 @@ Public Class frmSettingsHolder
     Private Sub LoadContentTypes()
         Dim items As New Dictionary(Of String, Enums.Content_Type)
         items.Add(Master.eLang.GetString(1379, "Movie"), Enums.Content_Type.Movie)
-        items.Add(Master.eLang.GetString(700, "TV Show"), Enums.Content_Type.Show)
+        items.Add(Master.eLang.GetString(700, "TV Show"), Enums.Content_Type.TVShow)
         Me.cbType.DataSource = items.ToList
         Me.cbType.DisplayMember = "Key"
         Me.cbType.ValueMember = "Value"

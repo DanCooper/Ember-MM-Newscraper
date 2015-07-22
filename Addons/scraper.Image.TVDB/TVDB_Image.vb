@@ -36,7 +36,7 @@ Public Class TVDB_Image
     Private _Name As String = "TVDB_Image"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
-    Private _scraper As New Scraper
+    Private _scraper As New TVDBs.Scraper
     Private strPrivateAPIKey As String = String.Empty
 
 #End Region 'Fields
@@ -207,14 +207,14 @@ Public Class TVDB_Image
         Settings.ApiKey = _MySettings.ApiKey
 
         If Not Type = Enums.ScraperCapabilities_TV.EpisodePoster Then
-            If Not String.IsNullOrEmpty(DBTV.TVShow.ID) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.ID, Type, Settings)
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, Type, Settings)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
         Else
-            If Not String.IsNullOrEmpty(DBTV.TVShow.ID) AndAlso DBTV.TVEp IsNot Nothing Then
-                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.ID, DBTV.TVEp.Season, DBTV.TVEp.Episode, Settings)
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) AndAlso DBTV.TVEp IsNot Nothing Then
+                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEp.Season, DBTV.TVEp.Episode, Settings)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If

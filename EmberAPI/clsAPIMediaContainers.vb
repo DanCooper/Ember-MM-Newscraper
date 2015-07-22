@@ -617,10 +617,10 @@ Namespace MediaContainers
             Me._directors.Clear()
             Me._displayepisode = -1
             Me._displayseason = -1
-            Me._episode = -999
-            Me._episodeabsolute = -999
-            Me._episodecombined = -999
-            Me._episodedvd = -999
+            Me._episode = -1
+            Me._episodeabsolute = -1
+            Me._episodecombined = -1
+            Me._episodedvd = -1
             Me._fanart = New MediaContainers.Image
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._gueststars.Clear()
@@ -633,10 +633,10 @@ Namespace MediaContainers
             Me._posterurl = String.Empty
             Me._rating = String.Empty
             Me._runtime = String.Empty
-            Me._season = -999
-            Me._seasoncombined = -999
-            Me._seasondvd = -999
-            Me._subepisode = -999
+            Me._season = -1
+            Me._seasoncombined = -1
+            Me._seasondvd = -1
+            Me._subepisode = -1
             Me._tmdb = String.Empty
             Me._tvdb = String.Empty
             Me._title = String.Empty
@@ -2033,6 +2033,7 @@ Namespace MediaContainers
         Private _thumbpath As String
         Private _thumburl As String
         Private _tmdb As String
+        Private _tvdb As String
 
 #End Region 'Fields
 
@@ -2182,6 +2183,23 @@ Namespace MediaContainers
         Public ReadOnly Property TMDBSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._tmdb)
+            End Get
+        End Property
+
+        <XmlElement("tvdbid")> _
+        Public Property TVDB() As String
+            Get
+                Return Me._tvdb
+            End Get
+            Set(ByVal Value As String)
+                Me._tvdb = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TVDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tvdb)
             End Get
         End Property
 
@@ -2341,7 +2359,7 @@ Namespace MediaContainers
         Public Sub Clear()
             Me._aired = String.Empty
             Me._plot = String.Empty
-            Me._season = -999
+            Me._season = -1
             Me._tmdb = String.Empty
             Me._tvdb = String.Empty
             Me._title = String.Empty
@@ -2498,7 +2516,6 @@ Namespace MediaContainers
         Private _directors As New List(Of String)
         Private _episodeguide As New EpisodeGuide
         Private _genres As New List(Of String)
-        Private _id As String
         Private _imdb As String
         Private _knownepisodes As New List(Of MediaContainers.EpisodeDetails)
         Private _knownseasons As New List(Of MediaContainers.SeasonDetails)
@@ -2517,6 +2534,7 @@ Namespace MediaContainers
         Private _tags As New List(Of String)
         Private _title As String
         Private _tmdb As String
+        Private _tvdb As String
         Private _votes As String
 
 #End Region 'Fields
@@ -2525,7 +2543,7 @@ Namespace MediaContainers
 
         Public Sub New(ByVal sTVDBID As String, ByVal sTitle As String, ByVal sPremiered As String)
             Me.Clear()
-            Me._id = sTVDBID
+            Me._tvdb = sTVDBID
             Me._title = sTitle
             Me._premiered = sPremiered
         End Sub
@@ -2590,19 +2608,19 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("id")> _
-        Public Property ID() As String
+        Public Property TVDB() As String
             Get
-                Return Me._id.Trim
+                Return Me._tvdb.Trim
             End Get
             Set(ByVal value As String)
-                If Integer.TryParse(value, 0) Then Me._id = value.Trim
+                If Integer.TryParse(value, 0) Then Me._tvdb = value.Trim
             End Set
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property IDSpecified() As Boolean
+        Public ReadOnly Property TVDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._id)
+                Return Not String.IsNullOrEmpty(Me._tvdb)
             End Get
         End Property
 
@@ -2974,16 +2992,6 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public Property TVDBID() As String
-            Get
-                Return Me._id.Trim
-            End Get
-            Set(ByVal value As String)
-                Me._id = value.Trim
-            End Set
-        End Property
-
-        <XmlIgnore()> _
         Public Property Scrapersource() As String
             Get
                 Return Me._scrapersource
@@ -3031,6 +3039,7 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlIgnore()> _
         Public Property KnownEpisodes() As List(Of MediaContainers.EpisodeDetails)
             Get
                 Return Me._knownepisodes
@@ -3040,6 +3049,14 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property KnownEpisodesSpecified() As Boolean
+            Get
+                Return Me._knownepisodes.Count > 0
+            End Get
+        End Property
+
+        <XmlIgnore()> _
         Public Property KnownSeasons() As List(Of MediaContainers.SeasonDetails)
             Get
                 Return Me._knownseasons
@@ -3047,6 +3064,13 @@ Namespace MediaContainers
             Set(ByVal value As List(Of MediaContainers.SeasonDetails))
                 Me._knownseasons = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property KnownSeasonsSpecified() As Boolean
+            Get
+                Return Me._knownseasons.Count > 0
+            End Get
         End Property
 
 #End Region 'Properties
@@ -3135,7 +3159,7 @@ Namespace MediaContainers
             _directors.Clear()
             _episodeguide.URL = String.Empty
             _genres.Clear()
-            _id = String.Empty
+            _tvdb = String.Empty
             _imdb = String.Empty
             _knownepisodes.Clear()
             _knownseasons.Clear()
@@ -3158,7 +3182,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            Me._id = Nothing
+            Me._tvdb = Nothing
         End Sub
 
         Public Sub BlankBoxeeId()
@@ -3658,29 +3682,38 @@ Namespace MediaContainers
             With DBTV.ImagesContainer
 
                 Select Case Type
-                    Case Enums.Content_Type.Episode
+                    Case Enums.Content_Type.TVEpisode
+
                         'Episode Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
                             DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
                             .Fanart.WebImage.FromWeb(.Fanart.URL)
                             DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.FanartPath) Then
+                            .Fanart.WebImage.FromFile(DBTV.FanartPath)
+                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
                         Else
                             .Fanart.WebImage.DeleteTVEpisodeFanart(DBTV)
                             DBTV.FanartPath = String.Empty
                         End If
+
                         'Episode Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.PosterPath) Then
+                            .Poster.WebImage.FromFile(DBTV.PosterPath)
+                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
                         Else
                             .Poster.WebImage.DeleteTVEpisodePoster(DBTV)
                             DBTV.PosterPath = String.Empty
                         End If
 
-                    Case Enums.Content_Type.Season
+                    Case Enums.Content_Type.TVSeason
+
                         'Season Banner
                         If .Banner.WebImage.Image IsNot Nothing Then
                             If DBTV.TVSeason.Season = 999 Then
@@ -3695,6 +3728,13 @@ Namespace MediaContainers
                             Else
                                 DBTV.BannerPath = .Banner.WebImage.SaveAsTVSeasonBanner(DBTV)
                             End If
+                        ElseIf Not String.IsNullOrEmpty(DBTV.BannerPath) Then
+                            .Banner.WebImage.FromFile(DBTV.BannerPath)
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVASBanner(DBTV)
+                            Else
+                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVSeasonBanner(DBTV)
+                            End If
                         Else
                             If DBTV.TVSeason.Season = 999 Then
                                 .Banner.WebImage.DeleteTVASBanner(DBTV)
@@ -3704,6 +3744,7 @@ Namespace MediaContainers
                                 DBTV.BannerPath = String.Empty
                             End If
                         End If
+
                         'Season Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
                             If DBTV.TVSeason.Season = 999 Then
@@ -3718,6 +3759,13 @@ Namespace MediaContainers
                             Else
                                 DBTV.FanartPath = .Fanart.WebImage.SaveAsTVSeasonFanart(DBTV)
                             End If
+                        ElseIf Not String.IsNullOrEmpty(DBTV.FanartPath) Then
+                            .Banner.WebImage.FromFile(DBTV.FanartPath)
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.FanartPath = .Banner.WebImage.SaveAsTVASFanart(DBTV)
+                            Else
+                                DBTV.FanartPath = .Banner.WebImage.SaveAsTVSeasonFanart(DBTV)
+                            End If
                         Else
                             If DBTV.TVSeason.Season = 999 Then
                                 .Fanart.WebImage.DeleteTVASFanart(DBTV)
@@ -3727,6 +3775,7 @@ Namespace MediaContainers
                                 DBTV.FanartPath = String.Empty
                             End If
                         End If
+
                         'Season Landscape
                         If .Landscape.WebImage.Image IsNot Nothing Then
                             If DBTV.TVSeason.Season = 999 Then
@@ -3741,6 +3790,13 @@ Namespace MediaContainers
                             Else
                                 DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBTV)
                             End If
+                        ElseIf Not String.IsNullOrEmpty(DBTV.LandscapePath) Then
+                            .Landscape.WebImage.FromFile(DBTV.LandscapePath)
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVASLandscape(DBTV)
+                            Else
+                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBTV)
+                            End If
                         Else
                             If DBTV.TVSeason.Season = 999 Then
                                 .Landscape.WebImage.DeleteTVASLandscape(DBTV)
@@ -3750,6 +3806,7 @@ Namespace MediaContainers
                                 DBTV.LandscapePath = String.Empty
                             End If
                         End If
+
                         'Season Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
                             If DBTV.TVSeason.Season = 999 Then
@@ -3759,6 +3816,13 @@ Namespace MediaContainers
                             End If
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
+                            If DBTV.TVSeason.Season = 999 Then
+                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVASPoster(DBTV)
+                            Else
+                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVSeasonPoster(DBTV)
+                            End If
+                        ElseIf Not String.IsNullOrEmpty(DBTV.PosterPath) Then
+                            .Poster.WebImage.FromFile(DBTV.PosterPath)
                             If DBTV.TVSeason.Season = 999 Then
                                 DBTV.PosterPath = .Poster.WebImage.SaveAsTVASPoster(DBTV)
                             Else
@@ -3774,72 +3838,100 @@ Namespace MediaContainers
                             End If
                         End If
 
-                    Case Enums.Content_Type.Show
+                    Case Enums.Content_Type.TVShow
+
                         'Show Banner
                         If .Banner.WebImage.Image IsNot Nothing Then
                             DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
                             .Banner.WebImage.FromWeb(.Banner.URL)
                             DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.BannerPath) Then
+                            .Banner.WebImage.FromFile(DBTV.BannerPath)
+                            DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
                         Else
                             .Banner.WebImage.DeleteTVShowBanner(DBTV)
                             DBTV.BannerPath = String.Empty
                         End If
+
                         'Show CharacterArt
                         If .CharacterArt.WebImage.Image IsNot Nothing Then
                             DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.CharacterArt.URL) Then
                             .CharacterArt.WebImage.FromWeb(.CharacterArt.URL)
                             DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.CharacterArtPath) Then
+                            .CharacterArt.WebImage.FromFile(DBTV.CharacterArtPath)
+                            DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
                         Else
                             .CharacterArt.WebImage.DeleteTVShowCharacterArt(DBTV)
                             DBTV.CharacterArtPath = String.Empty
                         End If
+
                         'Show ClearArt
                         If .ClearArt.WebImage.Image IsNot Nothing Then
                             DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.ClearArt.URL) Then
                             .ClearArt.WebImage.FromWeb(.ClearArt.URL)
                             DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.ClearArtPath) Then
+                            .ClearArt.WebImage.FromFile(DBTV.ClearArtPath)
+                            DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
                         Else
                             .ClearArt.WebImage.DeleteTVShowClearArt(DBTV)
                             DBTV.ClearArtPath = String.Empty
                         End If
+
                         'Show ClearLogo
                         If .ClearLogo.WebImage.Image IsNot Nothing Then
                             DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.ClearLogo.URL) Then
                             .ClearLogo.WebImage.FromWeb(.ClearLogo.URL)
                             DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.ClearLogoPath) Then
+                            .ClearLogo.WebImage.FromFile(DBTV.ClearLogoPath)
+                            DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
                         Else
                             .ClearLogo.WebImage.DeleteTVShowClearLogo(DBTV)
                             DBTV.ClearLogoPath = String.Empty
                         End If
+
                         'Show Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
                             DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
                             .Fanart.WebImage.FromWeb(.Fanart.URL)
                             DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.FanartPath) Then
+                            .Fanart.WebImage.FromFile(DBTV.FanartPath)
+                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
                         Else
                             .Fanart.WebImage.DeleteTVShowFanart(DBTV)
                             DBTV.FanartPath = String.Empty
                         End If
+
                         'Show Landscape
                         If .Landscape.WebImage.Image IsNot Nothing Then
                             DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
                             .Landscape.WebImage.FromWeb(.Landscape.URL)
                             DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.LandscapePath) Then
+                            .Landscape.WebImage.FromFile(DBTV.LandscapePath)
+                            DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
                         Else
                             .Landscape.WebImage.DeleteTVShowLandscape(DBTV)
                             DBTV.LandscapePath = String.Empty
                         End If
+
                         'Show Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
+                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBTV.PosterPath) Then
+                            .Poster.WebImage.FromFile(DBTV.PosterPath)
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
                         Else
                             .Poster.WebImage.DeleteTVShowPoster(DBTV)

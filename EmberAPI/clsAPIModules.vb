@@ -859,7 +859,7 @@ Public Class ModulesManager
             oShow.Language = DBTV.Language
             oShow.ShowID = DBTV.ShowID
             oShow.ShowPath = DBTV.ShowPath
-            oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .ID = DBTV.TVShow.ID, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
+            oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .TVDB = DBTV.TVShow.TVDB, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
             If (modules.Count() <= 0) Then
                 logger.Warn("No tv show scrapers are defined")
@@ -911,7 +911,7 @@ Public Class ModulesManager
                                                                      .Title = DBTV.TVEp.Title, .TMDB = DBTV.TVEp.TMDB, _
                                                                      .TVDB = DBTV.TVEp.TVDB}
             oEpisode.TVShow = New MediaContainers.TVShow With {.OriginalTitle = DBTV.TVShow.OriginalTitle, .Title = DBTV.TVShow.Title, _
-                                                               .ID = DBTV.TVShow.ID, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
+                                                               .TVDB = DBTV.TVShow.TVDB, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
             If (modules.Count() <= 0) Then
                 logger.Warn("No tv show scrapers are defined")

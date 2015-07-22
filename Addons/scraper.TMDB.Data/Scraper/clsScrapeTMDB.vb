@@ -618,7 +618,7 @@ Namespace TMDB
 
             'IDs
             nShow.TMDB = CStr(Show.Id)
-            If Show.ExternalIds.TvdbId IsNot Nothing Then nShow.ID = CStr(Show.ExternalIds.TvdbId)
+            If Show.ExternalIds.TvdbId IsNot Nothing Then nShow.TVDB = CStr(Show.ExternalIds.TvdbId)
             If Show.ExternalIds.ImdbId IsNot Nothing Then nShow.IMDB = Show.ExternalIds.ImdbId
 
             If bwTMDB.CancellationPending Or Show Is Nothing Then Return Nothing

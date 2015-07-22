@@ -609,9 +609,9 @@ Public Class Enums
         MovieSet = 3
         TV = 4
         Music = 5
-        Episode = 6
-        Season = 7
-        Show = 8
+        TVEpisode = 6
+        TVSeason = 7
+        TVShow = 8
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
@@ -2157,11 +2157,10 @@ Public Class Structures
         Dim AllSeasonsLandscape As Boolean
         Dim AllSeasonsPoster As Boolean
         Dim DoSearch As Boolean
-        Dim EFanarts As Boolean
         Dim EpisodeFanart As Boolean
         Dim EpisodePoster As Boolean
-        Dim Meta As Boolean
-        Dim NFO As Boolean
+        Dim EpisodeMeta As Boolean
+        Dim EpisodeNFO As Boolean
         Dim SeasonBanner As Boolean
         Dim SeasonFanart As Boolean
         Dim SeasonLandscape As Boolean
@@ -2174,8 +2173,10 @@ Public Class Structures
         Dim ShowEFanarts As Boolean
         Dim ShowFanart As Boolean
         Dim ShowLandscape As Boolean
+        Dim ShowNFO As Boolean
         Dim ShowPoster As Boolean
         Dim ShowTheme As Boolean
+        Dim withEpisodes As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing posible scrape fields for movies

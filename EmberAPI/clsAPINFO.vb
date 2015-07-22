@@ -484,8 +484,8 @@ Public Class NFO
         For Each scrapedshow In ScrapedList
 
             'IDs
-            If Not String.IsNullOrEmpty(scrapedshow.ID) Then
-                DBTV.TVShow.ID = scrapedshow.ID
+            If Not String.IsNullOrEmpty(scrapedshow.TVDB) Then
+                DBTV.TVShow.TVDB = scrapedshow.TVDB
             End If
             If Not String.IsNullOrEmpty(scrapedshow.IMDB) Then
                 DBTV.TVShow.IMDB = scrapedshow.IMDB
@@ -795,6 +795,11 @@ Public Class NFO
 
         'Episodes
         If withEpisodes Then
+            'update the tvshow information for each local episode
+            For Each lEpisode In DBTV.Episodes
+                lEpisode = Master.DB.FillTVShowFromDB(lEpisode, DBTV)
+            Next
+
             For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex
                 'create a list of specified episode informations from all scrapers
                 Dim ScrapedEpisodeList As New List(Of MediaContainers.EpisodeDetails)
@@ -816,10 +821,8 @@ Public Class NFO
                         .FilenameID = -1, _
                         .ID = -1, _
                         .ImagesContainer = New MediaContainers.ImagesContainer, _
-                        .ShowID = DBTV.ShowID, _
-                        .ShowPath = DBTV.ShowPath, _
-                        .Source = DBTV.Source, _
                         .TVEp = New MediaContainers.EpisodeDetails With {.Episode = aKnownEpisode.Episode, .Season = aKnownEpisode.Season}}
+                    mEpisode = Master.DB.FillTVShowFromDB(mEpisode, DBTV)
                     DBTV.Episodes.Add(MergeDataScraperResults(mEpisode, ScrapedEpisodeList, Options))
                 End If
             Next
@@ -2015,7 +2018,7 @@ Public Class NFO
             'Boxee support
             If Master.eSettings.TVUseBoxee Then
                 If xmlShow.BoxeeTvDbSpecified() Then
-                    xmlShow.ID = xmlShow.BoxeeTvDb
+                    xmlShow.TVDB = xmlShow.BoxeeTvDb
                     xmlShow.BlankBoxeeId()
                 End If
             End If
@@ -2289,8 +2292,8 @@ Public Class NFO
 
                 'Boxee support
                 If Master.eSettings.TVUseBoxee Then
-                    If tvShowToSave.TVShow.IDSpecified() Then
-                        tvShowToSave.TVShow.BoxeeTvDb = tvShowToSave.TVShow.ID
+                    If tvShowToSave.TVShow.TVDBSpecified() Then
+                        tvShowToSave.TVShow.BoxeeTvDb = tvShowToSave.TVShow.TVDB
                         tvShowToSave.TVShow.BlankId()
                     End If
                 End If

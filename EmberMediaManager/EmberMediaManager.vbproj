@@ -200,10 +200,10 @@
     <Compile Include="dlgDVDProfilerSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditEpisode.Designer.vb">
-      <DependentUpon>dlgEditEpisode.vb</DependentUpon>
+    <Compile Include="dlgEditTVEpisode.Designer.vb">
+      <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditEpisode.vb">
+    <Compile Include="dlgEditTVEpisode.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgEditMovieSet.Designer.vb">
@@ -218,16 +218,16 @@
     <Compile Include="dlgEditMovie.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditSeason.Designer.vb">
-      <DependentUpon>dlgEditSeason.vb</DependentUpon>
+    <Compile Include="dlgEditTVSeason.Designer.vb">
+      <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditSeason.vb">
+    <Compile Include="dlgEditTVSeason.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditShow.Designer.vb">
-      <DependentUpon>dlgEditShow.vb</DependentUpon>
+    <Compile Include="dlgEditTVShow.Designer.vb">
+      <DependentUpon>dlgEditTVShow.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditShow.vb">
+    <Compile Include="dlgEditTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgErrorViewer.Designer.vb">
@@ -416,8 +416,8 @@
     <EmbeddedResource Include="dlgDVDProfilerSelect.resx">
       <DependentUpon>dlgDVDProfilerSelect.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditEpisode.resx">
-      <DependentUpon>dlgEditEpisode.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEditTVEpisode.resx">
+      <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditMovieSet.resx">
       <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
@@ -425,11 +425,11 @@
     <EmbeddedResource Include="dlgEditMovie.resx">
       <DependentUpon>dlgEditMovie.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditSeason.resx">
-      <DependentUpon>dlgEditSeason.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEditTVSeason.resx">
+      <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditShow.resx">
-      <DependentUpon>dlgEditShow.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEditTVShow.resx">
+      <DependentUpon>dlgEditTVShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgErrorViewer.resx">
       <DependentUpon>dlgErrorViewer.vb</DependentUpon>

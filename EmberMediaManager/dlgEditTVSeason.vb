@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
-Public Class dlgEditSeason
+Public Class dlgEditTVSeason
 
 #Region "Fields"
 
@@ -60,25 +60,25 @@ Public Class dlgEditSeason
     Private Sub btnRemoveSeasonBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonBanner.Click
         Me.pbSeasonBanner.Image = Nothing
         Me.pbSeasonBanner.Tag = Nothing
-        Me.tmpDBTVSeason.ImagesContainer.Banner.WebImage.Dispose()
+        Me.tmpDBTVSeason.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveSeasonFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonFanart.Click
         Me.pbSeasonFanart.Image = Nothing
         Me.pbSeasonFanart.Tag = Nothing
-        Me.tmpDBTVSeason.ImagesContainer.Fanart.WebImage.Dispose()
+        Me.tmpDBTVSeason.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveSeasonLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonLandscape.Click
         Me.pbSeasonLandscape.Image = Nothing
         Me.pbSeasonLandscape.Tag = Nothing
-        Me.tmpDBTVSeason.ImagesContainer.Landscape.WebImage.Dispose()
+        Me.tmpDBTVSeason.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonPoster.Click
         Me.pbSeasonPoster.Image = Nothing
         Me.pbSeasonPoster.Tag = Nothing
-        Me.tmpDBTVSeason.ImagesContainer.Poster.WebImage.Dispose()
+        Me.tmpDBTVSeason.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
     Private Sub btnSetSeasonBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerDL.Click
@@ -98,7 +98,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.ID, Enums.ImageType_TV.SeasonBanner, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Banner, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.TVDB, Enums.ImageType_TV.SeasonBanner, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Banner, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVSeason.ImagesContainer.Banner = tImage
@@ -148,7 +148,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonFanartScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.ID, Enums.ImageType_TV.SeasonFanart, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Fanart, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.TVDB, Enums.ImageType_TV.SeasonFanart, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Fanart, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVSeason.ImagesContainer.Fanart = tImage
@@ -198,7 +198,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonLandscapeScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.ID, Enums.ImageType_TV.SeasonLandscape, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Landscape, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.TVDB, Enums.ImageType_TV.SeasonLandscape, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Landscape, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVSeason.ImagesContainer.Landscape = tImage
@@ -248,7 +248,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonPosterScrape.Click
-        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.ID, Enums.ImageType_TV.SeasonPoster, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Poster, MediaContainers.Image))
+        Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVSeason.TVShow.Title, Convert.ToInt32(Me.tmpDBTVSeason.ShowID), Me.tmpDBTVSeason.TVShow.TVDB, Enums.ImageType_TV.SeasonPoster, Me.tmpDBTVSeason.TVSeason.Season, 0, Me.tmpDBTVSeason.Language, Me.tmpDBTVSeason.Ordering, CType(Me.tmpDBTVSeason.ImagesContainer.Poster, MediaContainers.Image))
 
         If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBTVSeason.ImagesContainer.Poster = tImage
