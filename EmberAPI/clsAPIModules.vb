@@ -807,7 +807,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean, ByVal withEpisodes As Boolean) As Boolean
+    Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -869,7 +869,7 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     Dim nShow As New MediaContainers.TVShow
-                    ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeType, Options, withEpisodes)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeModifier, ScrapeType, Options)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
@@ -881,7 +881,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeType, Options, withEpisodes)
+                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeType, Options, ScrapeModifier.withEpisodes)
             End If
             Return ret.Cancelled
         Else
@@ -939,54 +939,6 @@ Public Class ModulesManager
         Else
             Return True 'Cancelled
         End If
-    End Function
-
-    Public Function ScrapeData_TV_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
-        Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
-        Dim epDetails As New MediaContainers.EpisodeDetails
-        Dim ScrapedList As New List(Of MediaContainers.EpisodeDetails)
-
-        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
-            Application.DoEvents()
-        End While
-
-        If (modules.Count() <= 0) Then
-            logger.Warn("No tv show episode scrapers are defined")
-        Else
-            For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-                logger.Trace("Scraping show episode data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-
-                Dim nEpisode As New MediaContainers.EpisodeDetails
-                ret = _externalScraperModule.ProcessorModule.GetSingleEpisode(oEpisode, nEpisode, TVDBID, Aired, Lang, Ordering, Options)
-
-                If ret.Cancelled Then Return Nothing
-
-                If nEpisode IsNot Nothing Then
-                    ScrapedList.Add(nEpisode)
-                End If
-                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                If ret.breakChain Then Exit For
-            Next
-
-            'Merge scraperresults considering global datascraper settings
-            'Return NFO.MergeDataScraperResults(oEpisode, ScrapedList, Options)
-        End If
-
-        'If Not String.IsNullOrEmpty(TVDBID) AndAlso Not String.IsNullOrEmpty(Lang) Then
-        '    Dim ret As Interfaces.ModuleResult
-        '    For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-        '        AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-        '        ret = _externalScraperModule.ProcessorModule.GetSingleEpisode(ShowID, TVDBID, Season, Episode, Lang, Ordering, Options, epDetails)
-        '        RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-        '        If ret.breakChain Then Exit For
-        '    Next
-
-        '    'Merge scraperresults considering global datascraper settings
-        '    Return NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeType, Options)
-        'End If
-        Return epDetails
     End Function
     ''' <summary>
     ''' Request that enabled movie image scrapers perform their functions on the supplied movie
@@ -1098,7 +1050,7 @@ Public Class ModulesManager
     ''' Request that enabled tv image scrapers perform their functions on the supplied movie
     ''' </summary>
     ''' <param name="DBTV">TV Show to be scraped. Scraper will directly manipulate this structure</param>
-    ''' <param name="Type">What kind of image is being scraped (poster, fanart, etc)</param>
+    ''' <param name="ScrapeModifier">What kind of image is being scraped (poster, fanart, etc)</param>
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
@@ -1608,50 +1560,6 @@ Public Class ModulesManager
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                 Try
                     'ret = _externalScraperModule.ProcessorModule.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Aired, Lang, Ordering, Options)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
-                If ret.breakChain Then Exit For
-            Next
-            Return ret.Cancelled
-        Else
-            Return True 'Cancelled
-        End If
-    End Function
-
-    Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As Boolean
-        Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID, False)
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(testDBTV, True) Then
-            Dim ret As Interfaces.ModuleResult
-            While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
-                Application.DoEvents()
-            End While
-            For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled)
-                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                Try
-                    'ret = _externalScraperModule.ProcessorModule.Scraper(ShowID, ShowTitle, TVDBID, ShowLang, SourceLang, Ordering, Options, ScrapeType, WithCurrent)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
-                If ret.breakChain Then Exit For
-            Next
-            Return ret.Cancelled
-        Else
-            Return True 'Cancelled
-        End If
-    End Function
-
-    Public Function TVScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
-        Dim testDBTV As Structures.DBTV = Master.DB.LoadTVShowFromDB(ShowID, False)
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(testDBTV, True) Then
-            Dim ret As Interfaces.ModuleResult
-            While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
-                Application.DoEvents()
-            End While
-            For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled)
-                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                Try
-                    'ret = _externalScraperModule.ProcessorModule.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, Options)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try

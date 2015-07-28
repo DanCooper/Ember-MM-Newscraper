@@ -2837,7 +2837,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVScraperEpisodeEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeEpisode.CheckedChanged
+    Private Sub chkTVScraperSaveDisplaySeasonEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperUseDisplaySeasonEpisode.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2854,10 +2854,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVScraperEpisodeRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeRuntime.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeSeason.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -3853,12 +3849,10 @@ Public Class dlgSettings
             Me.chkTVScraperEpisodeAired.Checked = .TVScraperEpisodeAired
             Me.chkTVScraperEpisodeCredits.Checked = .TVScraperEpisodeCredits
             Me.chkTVScraperEpisodeDirector.Checked = .TVScraperEpisodeDirector
-            Me.chkTVScraperEpisodeEpisode.Checked = .TVScraperEpisodeEpisode
             Me.chkTVScraperEpisodeGuestStars.Checked = .TVScraperEpisodeGuestStars
             Me.chkTVScraperEpisodePlot.Checked = .TVScraperEpisodePlot
             Me.chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
             Me.chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
-            Me.chkTVScraperEpisodeSeason.Checked = .TVScraperEpisodeSeason
             Me.chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
             Me.chkTVScraperEpisodeVotes.Checked = .TVScraperEpisodeVotes
             Me.chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
@@ -3881,6 +3875,7 @@ Public Class dlgSettings
             Me.chkTVScraperShowStudio.Checked = .TVScraperShowStudio
             Me.chkTVScraperShowTitle.Checked = .TVScraperShowTitle
             Me.chkTVScraperShowVotes.Checked = .TVScraperShowVotes
+            Me.chkTVScraperUseDisplaySeasonEpisode.Checked = .TVScraperUseDisplaySeasonEpisode
             Me.chkTVScraperUseMDDuration.Checked = .TVScraperUseMDDuration
             Me.chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
             Me.chkTVSeasonBannerOverwrite.Checked = .TVSeasonBannerOverwrite
@@ -5673,12 +5668,10 @@ Public Class dlgSettings
             .TVScraperEpisodeAired = Me.chkTVScraperEpisodeAired.Checked
             .TVScraperEpisodeCredits = Me.chkTVScraperEpisodeCredits.Checked
             .TVScraperEpisodeDirector = Me.chkTVScraperEpisodeDirector.Checked
-            .TVScraperEpisodeEpisode = Me.chkTVScraperEpisodeEpisode.Checked
             .TVScraperEpisodeGuestStars = Me.chkTVScraperEpisodeGuestStars.Checked
             .TVScraperEpisodePlot = Me.chkTVScraperEpisodePlot.Checked
             .TVScraperEpisodeRating = Me.chkTVScraperEpisodeRating.Checked
             .TVScraperEpisodeRuntime = Me.chkTVScraperEpisodeRuntime.Checked
-            .TVScraperEpisodeSeason = Me.chkTVScraperEpisodeSeason.Checked
             .TVScraperEpisodeTitle = Me.chkTVScraperEpisodeTitle.Checked
             .TVScraperEpisodeVotes = Me.chkTVScraperEpisodeVotes.Checked
             .TVScraperMetaDataScan = Me.chkTVScraperMetaDataScan.Checked
@@ -5709,6 +5702,7 @@ Public Class dlgSettings
             .TVScraperShowStudio = Me.chkTVScraperShowStudio.Checked
             .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
             .TVScraperShowVotes = Me.chkTVScraperShowVotes.Checked
+            .TVScraperUseDisplaySeasonEpisode = Me.chkTVScraperUseDisplaySeasonEpisode.Checked
             .TVScraperUseMDDuration = Me.chkTVScraperUseMDDuration.Checked
             .TVScraperUseSRuntimeForEp = Me.chkTVScraperUseSRuntimeForEp.Checked
             .TVSeasonBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonBannerHeight.Text), Convert.ToInt32(Me.txtTVSeasonBannerHeight.Text), 0)
@@ -6478,7 +6472,6 @@ Public Class dlgSettings
 
         'Episode #
         Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
-        Me.lblTVScraperGlobalEpisode.Text = strEpisodeNR
 
         'Episode List Sorting
         Dim strEpisodeListSorting As String = Master.eLang.GetString(494, "Episode List Sorting")
@@ -6925,7 +6918,6 @@ Public Class dlgSettings
 
         'Season #
         Dim strSeasonNR As String = Master.eLang.GetString(659, "Season #")
-        Me.lblTVScraperGlobalSeason.Text = strSeasonNR
 
         'Season Landscape
         Dim strSeasonLandscape As String = Master.eLang.GetString(1018, "Season Landscape")

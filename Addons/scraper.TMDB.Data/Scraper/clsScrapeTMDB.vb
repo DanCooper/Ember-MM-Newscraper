@@ -911,6 +911,16 @@ Namespace TMDB
             If EpisodeInfo.ExternalIds IsNot Nothing AndAlso EpisodeInfo.ExternalIds.TvdbId IsNot Nothing Then nEpisode.TVDB = CStr(EpisodeInfo.ExternalIds.TvdbId)
             If EpisodeInfo.ExternalIds IsNot Nothing AndAlso EpisodeInfo.ExternalIds.ImdbId IsNot Nothing Then nEpisode.IMDB = EpisodeInfo.ExternalIds.ImdbId
 
+            'Episode # Standard
+            If EpisodeInfo.EpisodeNumber >= 0 Then
+                nEpisode.Episode = EpisodeInfo.EpisodeNumber
+            End If
+
+            'Season # Standard
+            If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
+                nEpisode.Season = CInt(EpisodeInfo.SeasonNumber)
+            End If
+
             'Cast (Actors)
             If Options.bEpActors Then
                 If EpisodeInfo.Credits IsNot Nothing AndAlso EpisodeInfo.Credits.Cast IsNot Nothing Then
@@ -951,13 +961,6 @@ Namespace TMDB
                 End If
             End If
 
-            'Episode # Standard
-            If Options.bEpEpisode Then
-                If EpisodeInfo.EpisodeNumber >= 0 Then
-                    nEpisode.Episode = EpisodeInfo.EpisodeNumber
-                End If
-            End If
-
             'Guest Stars
             If Options.bEpGuestStars Then
                 If EpisodeInfo.GuestStars IsNot Nothing Then
@@ -980,13 +983,6 @@ Namespace TMDB
             'Rating
             If Options.bEpRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.VoteAverage)
-            End If
-
-            'Season # Standard
-            If Options.bEpSeason Then
-                If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
-                    nEpisode.Season = CInt(EpisodeInfo.SeasonNumber)
-                End If
             End If
 
             'Title

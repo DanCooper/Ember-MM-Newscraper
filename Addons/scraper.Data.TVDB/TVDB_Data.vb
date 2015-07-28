@@ -111,11 +111,9 @@ Public Class TVDB_Data
         _setup.chkScraperEpAired.Checked = ConfigOptions.bEpAired
         _setup.chkScraperEpCredits.Checked = ConfigOptions.bEpCredits
         _setup.chkScraperEpDirector.Checked = ConfigOptions.bEpDirector
-        _setup.chkScraperEpEpisode.Checked = ConfigOptions.bEpEpisode
         _setup.chkScraperEpGuestStars.Checked = ConfigOptions.bEpGuestStars
         _setup.chkScraperEpPlot.Checked = ConfigOptions.bEpPlot
         _setup.chkScraperEpRating.Checked = ConfigOptions.bEpRating
-        _setup.chkScraperEpSeason.Checked = ConfigOptions.bEpSeason
         _setup.chkScraperEpTitle.Checked = ConfigOptions.bEpTitle
         _setup.chkScraperEpVotes.Checked = ConfigOptions.bEpVotes
         _setup.chkScraperShowActors.Checked = ConfigOptions.bShowActors
@@ -159,11 +157,9 @@ Public Class TVDB_Data
         ConfigOptions.bEpAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpEpisode = clsAdvancedSettings.GetBooleanSetting("DoEpisode", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpSeason = clsAdvancedSettings.GetBooleanSetting("DoSeason", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.TVEpisode)
         ConfigOptions.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.TVShow)
@@ -192,11 +188,9 @@ Public Class TVDB_Data
             settings.SetBooleanSetting("DoAired", ConfigOptions.bEpAired, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoCredits", ConfigOptions.bEpCredits, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoDirector", ConfigOptions.bEpDirector, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoEpisode", ConfigOptions.bEpEpisode, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoGuestStars", ConfigOptions.bEpGuestStars, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bEpPlot, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigOptions.bShowRating, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoSeason", ConfigOptions.bEpSeason, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoTitle", ConfigOptions.bEpTitle, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoVotes", ConfigOptions.bEpVotes, , , Enums.Content_Type.TVEpisode)
             settings.SetBooleanSetting("DoActors", ConfigOptions.bShowActors, , , Enums.Content_Type.TVShow)
@@ -219,11 +213,9 @@ Public Class TVDB_Data
         ConfigOptions.bEpAired = _setup.chkScraperEpAired.Checked
         ConfigOptions.bEpCredits = _setup.chkScraperEpCredits.Checked
         ConfigOptions.bEpDirector = _setup.chkScraperEpDirector.Checked
-        ConfigOptions.bEpEpisode = _setup.chkScraperEpEpisode.Checked
         ConfigOptions.bEpGuestStars = _setup.chkScraperEpGuestStars.Checked
         ConfigOptions.bEpPlot = _setup.chkScraperEpPlot.Checked
         ConfigOptions.bEpRating = _setup.chkScraperEpRating.Checked
-        ConfigOptions.bEpSeason = _setup.chkScraperEpSeason.Checked
         ConfigOptions.bEpTitle = _setup.chkScraperEpTitle.Checked
         ConfigOptions.bEpVotes = _setup.chkScraperEpVotes.Checked
         ConfigOptions.bShowActors = _setup.chkScraperShowActors.Checked
@@ -253,7 +245,7 @@ Public Class TVDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("Started TVDB Scraper")
 
         LoadSettings()
@@ -265,10 +257,10 @@ Public Class TVDB_Data
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
 
-        If Master.GlobalScrapeMod.MainNFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+        If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, False, filterOptions, False, withEpisodes)
+                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, False, filterOptions, False, ScrapeModifier.withEpisodes)
             ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
@@ -291,9 +283,9 @@ Public Class TVDB_Data
             If String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 Using dSearch As New dlgTVDBSearchResults(Settings, _scraper)
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, filterOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetTVShowInfo(nShow.TVDB, nShow, False, filterOptions, False, withEpisodes)
+                        _scraper.GetTVShowInfo(nShow.TVDB, nShow, False, filterOptions, False, ScrapeModifier.withEpisodes)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
-                        Functions.SetScraperMod_Movie_MovieSet(Enums.ModType_Movie.DoSearch, False, False)
+                        ScrapeModifier.DoSearch = False
                     Else
                         nShow = Nothing
                         Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -317,16 +309,28 @@ Public Class TVDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function Scraper_GetSingleEpisode(ByRef oDBTVEpisode As Structures.DBTV, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
+    Public Function Scraper_TVEpisode(ByRef oDBTVEpisode As Structures.DBTV, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
         logger.Trace("Started TVDB Scraper")
-        nEpisode = Nothing
-        logger.Trace("Finished TVDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
 
-    Public Function Scraper_GetSingleEpisode(ByRef oEpisode As MediaContainers.EpisodeDetails, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal TVDBID As String, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetSingleEpisode
-        logger.Trace("Started TVDB Scraper")
-        nEpisode = Nothing
+        LoadSettings()
+
+        Dim Settings As TVDBs.Scraper.MySettings
+        Settings.ApiKey = _MySettings.APIKey
+        Settings.Language = oDBTVEpisode.Language
+
+        Dim _scraper As New TVDBs.Scraper(Settings)
+        Dim filterOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+
+        If Not String.IsNullOrEmpty(oDBTVEpisode.TVShow.TVDB) Then
+            If Not oDBTVEpisode.TVEp.Episode = -1 AndAlso Not oDBTVEpisode.TVEp.Season = -1 Then
+                nEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEp.Season, oDBTVEpisode.TVEp.Episode, filterOptions)
+            ElseIf Not String.IsNullOrEmpty(oDBTVEpisode.TVEp.Aired) Then
+                nEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEp.Aired, filterOptions)
+            Else
+                nEpisode = Nothing
+            End If
+        End If
+
         logger.Trace("Finished TVDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

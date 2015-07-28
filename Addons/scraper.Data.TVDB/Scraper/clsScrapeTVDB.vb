@@ -329,7 +329,35 @@ Namespace TVDBs
             Return True
         End Function
 
-        Private Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+            Try
+                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _MySettings.Language, _TVDBMirror).Result
+                Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.Number = EpisodeNumber AndAlso f.SeasonNumber = SeasonNumber)
+                If Not EpisodeInfo Is Nothing Then
+                    Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, Options)
+                    Return nEpisode
+                Else
+                    Return Nothing
+                End If
+            Catch ex As Exception
+                logger.Error(String.Concat("TVDB Scraper: Can't get informations for TV Show with ID: ", tvdbID))
+                Return Nothing
+            End Try
+        End Function
+
+        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal Aired As String, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _MySettings.Language, _TVDBMirror).Result
+            If Results Is Nothing Then
+                Return Nothing
+            End If
+
+            Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.FirstAired = CDate(Aired))
+            Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, Options)
+
+            Return nEpisode
+        End Function
+
+        Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
 
             'IDs
@@ -337,52 +365,48 @@ Namespace TVDBs
             If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nEpisode.IMDB = EpisodeInfo.IMDBId
 
             'Episode # Absolute
-            If Options.bEpEpisode Then
-                If EpisodeInfo.AbsoluteNumber >= 0 Then
-                    nEpisode.EpisodeAbsolute = EpisodeInfo.AbsoluteNumber
-                End If
+            If EpisodeInfo.AbsoluteNumber >= 0 Then
+                nEpisode.EpisodeAbsolute = EpisodeInfo.AbsoluteNumber
+            End If
+
+            'Episode # AirsBeforeEpisode (DisplayEpisode)
+            If EpisodeInfo.AirsBeforeEpisode >= 0 Then
+                nEpisode.DisplayEpisode = EpisodeInfo.AirsBeforeEpisode
             End If
 
             'Episode # Combined
-            If Options.bEpEpisode Then
-                If EpisodeInfo.CombinedEpisodeNumber >= 0 Then
-                    nEpisode.EpisodeCombined = EpisodeInfo.CombinedEpisodeNumber
-                End If
+            If EpisodeInfo.CombinedEpisodeNumber >= 0 Then
+                nEpisode.EpisodeCombined = EpisodeInfo.CombinedEpisodeNumber
             End If
 
             'Episode # DVD
-            If Options.bEpEpisode Then
-                If EpisodeInfo.DVDEpisodeNumber >= 0 Then
-                    nEpisode.EpisodeDVD = EpisodeInfo.DVDEpisodeNumber
-                End If
+            If EpisodeInfo.DVDEpisodeNumber >= 0 Then
+                nEpisode.EpisodeDVD = EpisodeInfo.DVDEpisodeNumber
             End If
 
             'Episode # Standard
-            If Options.bEpEpisode Then
-                If EpisodeInfo.Number >= 0 Then
-                    nEpisode.Episode = EpisodeInfo.Number
-                End If
+            If EpisodeInfo.Number >= 0 Then
+                nEpisode.Episode = EpisodeInfo.Number
+            End If
+
+            'Season # AirsBeforeSeason (DisplaySeason)
+            If EpisodeInfo.AirsBeforeSeason >= 0 Then
+                nEpisode.DisplaySeason = EpisodeInfo.AirsBeforeSeason
             End If
 
             'Season # Combined
-            If Options.bEpSeason Then
-                If CInt(EpisodeInfo.CombinedSeason) >= 0 Then
-                    nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
-                End If
+            If CInt(EpisodeInfo.CombinedSeason) >= 0 Then
+                nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
             End If
 
             'Season # DVD
-            If Options.bEpSeason Then
-                If CInt(EpisodeInfo.DVDSeason) >= 0 Then
-                    nEpisode.SeasonDVD = EpisodeInfo.DVDSeason
-                End If
+            If CInt(EpisodeInfo.DVDSeason) >= 0 Then
+                nEpisode.SeasonDVD = EpisodeInfo.DVDSeason
             End If
 
             'Season # Standard
-            If Options.bEpSeason Then
-                If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
-                    nEpisode.Season = EpisodeInfo.SeasonNumber
-                End If
+            If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
+                nEpisode.Season = EpisodeInfo.SeasonNumber
             End If
 
             'Aired

@@ -253,11 +253,11 @@ Public Class frmSettingsHolder_TV
 
     End Sub
 
-    Private Sub chkScraperEpSeason_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpSeason.CheckedChanged
+    Private Sub chkScraperEpSeason_CheckedChanged(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub chkScraperEpEpisode_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpEpisode.CheckedChanged
+    Private Sub chkScraperEpEpisode_CheckedChanged(sender As Object, e As EventArgs)
 
     End Sub
 

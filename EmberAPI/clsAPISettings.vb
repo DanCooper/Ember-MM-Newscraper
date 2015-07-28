@@ -3179,15 +3179,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVScraperEpisodeEpisode() As Boolean
-        Get
-            Return Settings._XMLSettings.TVScraperEpisodeEpisode
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVScraperEpisodeEpisode = value
-        End Set
-    End Property
-
     Public Property TVScraperEpisodeGuestStars() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperEpisodeGuestStars
@@ -3230,15 +3221,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperEpisodeRuntime = value
-        End Set
-    End Property
-
-    Public Property TVScraperEpisodeSeason() As Boolean
-        Get
-            Return Settings._XMLSettings.TVScraperEpisodeSeason
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVScraperEpisodeSeason = value
         End Set
     End Property
 
@@ -4103,6 +4085,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowCertForMPAAFallback = value
+        End Set
+    End Property
+
+    Public Property TVScraperUseDisplaySeasonEpisode() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperUseDisplaySeasonEpisode
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperUseDisplaySeasonEpisode = value
         End Set
     End Property
 
@@ -6857,13 +6848,11 @@ Public Class Settings
         Me.TVScraperEpisodeAired = True
         Me.TVScraperEpisodeCredits = True
         Me.TVScraperEpisodeDirector = True
-        Me.TVScraperEpisodeEpisode = True
         Me.TVScraperEpisodeGuestStars = True
         Me.TVScraperEpisodeGuestStarsToActors = False
         Me.TVScraperEpisodePlot = True
         Me.TVScraperEpisodeRating = True
         Me.TVScraperEpisodeRuntime = True
-        Me.TVScraperEpisodeSeason = True
         Me.TVScraperEpisodeTitle = True
         Me.TVScraperEpisodeVotes = True
         Me.TVScraperMetaDataScan = True
@@ -6889,6 +6878,7 @@ Public Class Settings
         Me.TVScraperShowStudio = True
         Me.TVScraperShowTitle = True
         Me.TVScraperShowVotes = True
+        Me.TVScraperUseDisplaySeasonEpisode = True
         Me.TVScraperUseMDDuration = True
         Me.TVScraperUseSRuntimeForEp = True
         Me.TVSeasonBannerHeight = 0

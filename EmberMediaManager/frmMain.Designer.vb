@@ -975,17 +975,17 @@ Partial Class frmMain
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsbMediaCenters = New System.Windows.Forms.ToolStripSplitButton()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.tmrWaitMovie = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrLoadMovie = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Movies = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Movies = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
-        Me.tmrWaitShow = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrLoadShow = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrWaitSeason = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWait_TVShow = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoad_TVShow = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWait_TVSeason = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoad_TVSeason = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWait_TVEpisode = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoad_TVEpisode = New System.Windows.Forms.Timer(Me.components)
         Me.cmnuTray = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTrayTitle = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
@@ -1192,8 +1192,8 @@ Partial Class frmMain
         Me.pnlLoadSettings = New System.Windows.Forms.Panel()
         Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrLoadMovieSet = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrWaitMovieSet = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoad_MovieSet = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWait_MovieSet = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_MovieSets = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
@@ -10810,7 +10810,7 @@ Partial Class frmMain
         '
         'tmrWaitMovie
         '
-        Me.tmrWaitMovie.Interval = 250
+        Me.tmrWait_Movie.Interval = 250
         '
         'tmrLoadMovie
         '
@@ -10831,21 +10831,21 @@ Partial Class frmMain
         '
         'tmrWaitShow
         '
-        Me.tmrWaitShow.Interval = 250
+        Me.tmrWait_TVShow.Interval = 250
         '
         'tmrLoadShow
         '
         '
         'tmrWaitSeason
         '
-        Me.tmrWaitSeason.Interval = 250
+        Me.tmrWait_TVSeason.Interval = 250
         '
         'tmrLoadSeason
         '
         '
         'tmrWaitEp
         '
-        Me.tmrWaitEp.Interval = 250
+        Me.tmrWait_TVEpisode.Interval = 250
         '
         'tmrLoadEp
         '
@@ -12285,7 +12285,7 @@ Partial Class frmMain
         '
         'tmrWaitMovieSet
         '
-        Me.tmrWaitMovieSet.Interval = 250
+        Me.tmrWait_MovieSet.Interval = 250
         '
         'tmrSearchWait_MovieSets
         '
@@ -12774,8 +12774,8 @@ End Sub
     Friend WithEvents mnuMovieMiss As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieMissAuto As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieMissAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tmrWaitMovie As System.Windows.Forms.Timer
-    Friend WithEvents tmrLoadMovie As System.Windows.Forms.Timer
+    Friend WithEvents tmrWait_Movie As System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad_Movie As System.Windows.Forms.Timer
     Friend WithEvents pnlSearchMovies As System.Windows.Forms.Panel
     Friend WithEvents picSearchMovies As System.Windows.Forms.PictureBox
     Friend WithEvents txtSearchMovies As System.Windows.Forms.TextBox
@@ -12952,12 +12952,12 @@ End Sub
     Friend WithEvents mnuUpdateMovies As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuUpdateShows As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMainDonate As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tmrWaitShow As System.Windows.Forms.Timer
-    Friend WithEvents tmrLoadShow As System.Windows.Forms.Timer
-    Friend WithEvents tmrWaitSeason As System.Windows.Forms.Timer
-    Friend WithEvents tmrLoadSeason As System.Windows.Forms.Timer
-    Friend WithEvents tmrWaitEp As System.Windows.Forms.Timer
-    Friend WithEvents tmrLoadEp As System.Windows.Forms.Timer
+    Friend WithEvents tmrWait_TVShow As System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad_TVShow As System.Windows.Forms.Timer
+    Friend WithEvents tmrWait_TVSeason As System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad_TVSeason As System.Windows.Forms.Timer
+    Friend WithEvents tmrWait_TVEpisode As System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad_TVEpisode As System.Windows.Forms.Timer
     Friend WithEvents tsSpring As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents cmnuShow As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents cmnuSeason As System.Windows.Forms.ContextMenuStrip
@@ -13382,8 +13382,8 @@ End Sub
     Friend WithEvents dgvMovieSets As System.Windows.Forms.DataGridView
     Friend WithEvents dgvMovies As System.Windows.Forms.DataGridView
     Friend WithEvents cmnuMovieSet As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents tmrLoadMovieSet As System.Windows.Forms.Timer
-    Friend WithEvents tmrWaitMovieSet As System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad_MovieSet As System.Windows.Forms.Timer
+    Friend WithEvents tmrWait_MovieSet As System.Windows.Forms.Timer
     Friend WithEvents cmnuMovieSetReload As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetSep1 As System.Windows.Forms.ToolStripSeparator

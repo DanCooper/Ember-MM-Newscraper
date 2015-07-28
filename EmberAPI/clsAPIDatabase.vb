@@ -2078,7 +2078,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
-        Return Master.DB.LoadTVShowFromDB(ShowID, True, True)
+        Return Master.DB.LoadTVShowFromDB(ShowID, True, True, True)
     End Function
     ''' <summary>
     ''' Load all the information for a TV Season
@@ -2171,7 +2171,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
     ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV With {.Episodes = New List(Of Structures.DBTV)}
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
@@ -2274,10 +2274,10 @@ Public Class Database
         End If
 
         'Seasons
-        'If withSeasons Then
-        _TVDB.Seasons = LoadAllTVSeasonsFromDB(_TVDB.ID, withImages)
-        _TVDB.TVShow.Seasons = LoadAllTVSeasonsDetailsFromDB(_TVDB.ID)
-        'End If
+        If withSeasons Then
+            _TVDB.Seasons = LoadAllTVSeasonsFromDB(_TVDB.ID, withImages)
+            _TVDB.TVShow.Seasons = LoadAllTVSeasonsDetailsFromDB(_TVDB.ID)
+        End If
 
         'Episodes
         If withEpisodes Then
@@ -4757,6 +4757,138 @@ Public Class Database
 
     End Class
 
+    Public Class DBElement
+
+#Region "Fields"
+
+        Private _actorthumbs As New List(Of String)
+        Private _bannerpath As String
+        Private _characterartpath As String
+        Private _clearartpath As String
+        Private _clearlogopath As String
+        Private _dateadded As Long
+        Private _extrafanarts As New List(Of String)
+        Private _extrafanartspath As String
+        Private _extrathumbs As New List(Of String)
+        Private _extrathumbspath As String
+        Private _episodes As New List(Of DBElement)
+        Private _episodesorting As Enums.EpisodeSorting
+        Private _fanartpath As String
+        Private _filename As String
+        Private _filenameid As Long
+        Private _id As Long
+        Private _imagescontainer As MediaContainers.ImagesContainer
+        Private _islock As Boolean
+        Private _ismark As Boolean
+        Private _isonline As Boolean
+        Private _landscapepath As String
+        Private _language As String
+        Private _listtitle As String
+        Private _needssave As Boolean
+        Private _nfopath As String
+        Private _ordering As Enums.Ordering
+        Private _posterpath As String
+        Private _removeactorthumbs As Boolean
+        Private _removebanner As Boolean
+        Private _removecharacterart As Boolean
+        Private _removeclearart As Boolean
+        Private _removeclearlogo As Boolean
+        Private _removediscart As Boolean
+        Private _removeefanarts As Boolean
+        Private _removeethumbs As Boolean
+        Private _removefanart As Boolean
+        Private _removelandscape As Boolean
+        Private _removeposter As Boolean
+        Private _removetheme As Boolean
+        Private _removetrailer As Boolean
+        Private _seasons As New List(Of DBElement)
+        Private _showid As Long
+        Private _showpath As String
+        Private _source As String
+        Private _subtitles As New List(Of MediaInfo.Subtitle)
+        Private _tvep As MediaContainers.EpisodeDetails
+        Private _tvseason As MediaContainers.SeasonDetails
+        Private _tvshow As MediaContainers.TVShow
+        Private _themepath As String
+        Private _videosource As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property ActorThumbs() As List(Of String)
+            Get
+                Return Me._actorthumbs
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._actorthumbs = value
+            End Set
+        End Property
+
+        Public Property BannerPath() As String
+            Get
+                Return Me._bannerpath
+            End Get
+            Set(ByVal value As String)
+                Me._bannerpath = value
+            End Set
+        End Property
+
+        Public Property CharacterArtPath() As String
+            Get
+                Return Me._characterartpath
+            End Get
+            Set(ByVal value As String)
+                Me._characterartpath = value
+            End Set
+        End Property
+
+        Public Property ClearArtPath() As String
+            Get
+                Return Me._clearartpath
+            End Get
+            Set(ByVal value As String)
+                Me._clearartpath = value
+            End Set
+        End Property
+
+        Public Property ClearLogoPath() As String
+            Get
+                Return Me._clearlogopath
+            End Get
+            Set(ByVal value As String)
+                Me._clearlogopath = value
+            End Set
+        End Property
+
+        Public Property DateAdded() As Long
+            Get
+                Return Me._dateadded
+            End Get
+            Set(ByVal value As Long)
+                Me._dateadded = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+
+        End Sub
+
+#End Region 'Methods
+
+    End Class
 
 #End Region 'Nested Types
 

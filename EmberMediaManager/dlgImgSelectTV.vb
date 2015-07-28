@@ -441,7 +441,7 @@ Public Class dlgImgSelectTV
 
         'get the TVDB ID for proper caching or cache all images in "mixed" folder
         If tmpShowContainer.TVShow Is Nothing OrElse (tmpShowContainer.TVShow IsNot Nothing AndAlso String.IsNullOrEmpty(tmpShowContainer.TVShow.TVDB)) Then
-            uniqueID = Master.DB.LoadTVShowFromDB(tmpShowContainer.ShowID, False).TVShow.TVDB
+            uniqueID = Master.DB.LoadTVShowFromDB(tmpShowContainer.ShowID, False, False).TVShow.TVDB
         Else
             uniqueID = tmpShowContainer.TVShow.TVDB
         End If

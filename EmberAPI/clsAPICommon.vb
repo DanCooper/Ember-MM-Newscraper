@@ -645,6 +645,7 @@ Public Class Enums
         SeasonLandscape = 28
         SeasonPoster = 29
         withEpisodes = 30
+        withSeasons = 31
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
@@ -1268,12 +1269,10 @@ Public Class Functions
             .bEpAired = Master.eSettings.TVScraperEpisodeAired
             .bEpCredits = Master.eSettings.TVScraperEpisodeCredits
             .bEpDirector = Master.eSettings.TVScraperEpisodeDirector
-            .bEpEpisode = Master.eSettings.TVScraperEpisodeEpisode
             .bEpGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
             .bEpPlot = Master.eSettings.TVScraperEpisodePlot
             .bEpRating = Master.eSettings.TVScraperEpisodeRating
             .bEpRuntime = Master.eSettings.TVScraperEpisodeRuntime
-            .bEpSeason = Master.eSettings.TVScraperEpisodeSeason
             .bEpTitle = Master.eSettings.TVScraperEpisodeTitle
             .bEpVotes = Master.eSettings.TVScraperEpisodeVotes
             .bShowActors = Master.eSettings.TVScraperShowActors
@@ -1562,12 +1561,10 @@ Public Class Functions
         filterOptions.bEpAired = Options.bEpAired AndAlso Options2.bEpAired
         filterOptions.bEpCredits = Options.bEpCredits AndAlso Options2.bEpCredits
         filterOptions.bEpDirector = Options.bEpDirector AndAlso Options2.bEpDirector
-        filterOptions.bEpEpisode = Options.bEpEpisode AndAlso Options2.bEpEpisode
         filterOptions.bEpGuestStars = Options.bEpGuestStars AndAlso Options2.bEpGuestStars
         filterOptions.bEpPlot = Options.bEpPlot AndAlso Options2.bEpPlot
         filterOptions.bEpRating = Options.bEpRating AndAlso Options2.bEpRating
         filterOptions.bEpRuntime = Options.bEpRuntime AndAlso Options2.bEpRuntime
-        filterOptions.bEpSeason = Options.bEpSeason AndAlso Options2.bEpSeason
         filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
         filterOptions.bEpVotes = Options.bEpVotes AndAlso Options2.bEpVotes
         filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
@@ -1659,6 +1656,7 @@ Public Class Functions
                     .SeasonLandscape = MValue
                     .SeasonPoster = MValue
                     '.withEpisodes should not be set here
+                    '.withSeasons should not be set here
                 Case Enums.ModType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
                 Case Enums.ModType.AllSeasonsFanart
@@ -1719,6 +1717,8 @@ Public Class Functions
                     .SeasonPoster = MValue
                 Case Enums.ModType.withEpisodes
                     .withEpisodes = MValue
+                Case Enums.ModType.withSeasons
+                    .withSeasons = MValue
             End Select
         End With
     End Sub
@@ -2162,6 +2162,7 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBTV
+        Dim ActorThumbs As List(Of String)
         Dim BannerPath As String
         Dim CharacterArtPath As String
         Dim ClearArtPath As String
@@ -2266,6 +2267,7 @@ Public Class Structures
         Dim SeasonLandscape As Boolean
         Dim SeasonPoster As Boolean
         Dim withEpisodes As Boolean
+        Dim withSeasons As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing posible scrape fields for movies
@@ -2319,12 +2321,10 @@ Public Class Structures
         Dim bEpAired As Boolean
         Dim bEpCredits As Boolean
         Dim bEpDirector As Boolean
-        Dim bEpEpisode As Boolean
         Dim bEpGuestStars As Boolean
         Dim bEpPlot As Boolean
         Dim bEpRating As Boolean
         Dim bEpRuntime As Boolean
-        Dim bEpSeason As Boolean
         Dim bEpTitle As Boolean
         Dim bEpVotes As Boolean
         Dim bSeasonAired As Boolean

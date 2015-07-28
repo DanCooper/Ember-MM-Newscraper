@@ -722,8 +722,25 @@ Public Class NFO
             'Create KnownEpisodes index (season and episode number)
             If withEpisodes Then
                 For Each kEpisode As MediaContainers.EpisodeDetails In scrapedshow.KnownEpisodes
-                    Dim nKnownEpisode As New KnownEpisode With {.Episode = kEpisode.Episode, .Season = kEpisode.Season}
+                    Dim nKnownEpisode As New KnownEpisode With {.Episode = kEpisode.Episode, _
+                                                                .EpisodeAbsolute = kEpisode.EpisodeAbsolute, _
+                                                                .EpisodeCombined = kEpisode.EpisodeCombined, _
+                                                                .EpisodeDVD = kEpisode.EpisodeDVD, _
+                                                                .Season = kEpisode.Season, _
+                                                                .SeasonCombined = kEpisode.SeasonCombined, _
+                                                                .SeasonDVD = kEpisode.SeasonDVD}
                     If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
+                        KnownEpisodesIndex.Add(nKnownEpisode)
+
+                        'try to get an episode information with more numbers
+                    ElseIf KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season AndAlso _
+                                ((nKnownEpisode.EpisodeAbsolute > -1 AndAlso Not f.EpisodeAbsolute = nKnownEpisode.EpisodeAbsolute) OrElse _
+                                 (nKnownEpisode.EpisodeCombined > -1 AndAlso Not f.EpisodeCombined = nKnownEpisode.EpisodeCombined) OrElse _
+                                 (nKnownEpisode.EpisodeDVD > -1 AndAlso Not f.EpisodeDVD = nKnownEpisode.EpisodeDVD) OrElse _
+                                 (nKnownEpisode.SeasonCombined > -1 AndAlso Not f.SeasonCombined = nKnownEpisode.SeasonCombined) OrElse _
+                                 (nKnownEpisode.SeasonDVD > -1 AndAlso Not f.SeasonDVD = nKnownEpisode.SeasonDVD))).Count = 1 Then
+                        Dim toRemove As KnownEpisode = KnownEpisodesIndex.FirstOrDefault(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season)
+                        KnownEpisodesIndex.Remove(toRemove)
                         KnownEpisodesIndex.Add(nKnownEpisode)
                     End If
                 Next
@@ -789,6 +806,7 @@ Public Class NFO
                     .ShowID = DBTV.ShowID, _
                     .ShowPath = DBTV.ShowPath, _
                     .TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
+                mSeason = Master.DB.FillTVShowFromDB(mSeason, DBTV)
                 DBTV.Seasons.Add(MergeDataScraperResults(mSeason, ScrapedSeasonList, Options))
             End If
         Next
@@ -801,6 +819,20 @@ Public Class NFO
             Next
 
             For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex
+
+                'convert the episode and season number if needed
+                Dim iEpisode As Integer = -1
+                Dim iSeason As Integer = -1
+                If DBTV.Ordering = Enums.Ordering.Absolute Then
+                    iEpisode = aKnownEpisode.EpisodeAbsolute
+                ElseIf DBTV.Ordering = Enums.Ordering.DVD Then
+                    iEpisode = CInt(aKnownEpisode.EpisodeDVD)
+                    iSeason = aKnownEpisode.SeasonDVD
+                ElseIf DBTV.Ordering = Enums.Ordering.Standard Then
+                    iEpisode = aKnownEpisode.Episode
+                    iSeason = aKnownEpisode.Season
+                End If
+
                 'create a list of specified episode informations from all scrapers
                 Dim ScrapedEpisodeList As New List(Of MediaContainers.EpisodeDetails)
                 For Each nShow As MediaContainers.TVShow In ScrapedList
@@ -808,20 +840,22 @@ Public Class NFO
                         ScrapedEpisodeList.Add(nEpisodeDetails)
                     Next
                 Next
+
                 'check if we have a local episode file for this scraped episode
-                Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.TVEp.Episode = aKnownEpisode.Episode AndAlso f.TVEp.Season = aKnownEpisode.Season)
+                Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.TVEp.Episode = iEpisode AndAlso f.TVEp.Season = iSeason)
 
                 If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
                     For Each nEpisode As Structures.DBTV In lEpisodeList
                         MergeDataScraperResults(nEpisode, ScrapedEpisodeList, Options)
                     Next
                 Else
+
                     'no local episode found -> add it as "missing" episode
                     Dim mEpisode As New Structures.DBTV With { _
                         .FilenameID = -1, _
                         .ID = -1, _
                         .ImagesContainer = New MediaContainers.ImagesContainer, _
-                        .TVEp = New MediaContainers.EpisodeDetails With {.Episode = aKnownEpisode.Episode, .Season = aKnownEpisode.Season}}
+                        .TVEp = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
                     mEpisode = Master.DB.FillTVShowFromDB(mEpisode, DBTV)
                     DBTV.Episodes.Add(MergeDataScraperResults(mEpisode, ScrapedEpisodeList, Options))
                 End If
@@ -932,16 +966,14 @@ Public Class NFO
                 DBTVEpisode.TVEp.TVDB = scrapedepisode.TVDB
             End If
 
-            'Episode number
-            If scrapedepisode.Episode >= 0 AndAlso Not new_Episode Then
-                DBTVEpisode.TVEp.Episode = scrapedepisode.Episode
-                new_Episode = True
+            'DisplayEpisode
+            If scrapedepisode.DisplayEpisodeSpecified Then
+                DBTVEpisode.TVEp.DisplayEpisode = scrapedepisode.DisplayEpisode
             End If
 
-            'Season number
-            If scrapedepisode.Season >= 0 AndAlso Not new_Season Then
-                DBTVEpisode.TVEp.Season = scrapedepisode.Season
-                new_Season = True
+            'DisplaySeason
+            If scrapedepisode.DisplaySeasonSpecified Then
+                DBTVEpisode.TVEp.DisplaySeason = scrapedepisode.DisplaySeason
             End If
 
             'Actors
@@ -2238,6 +2270,12 @@ Public Class NFO
                                 End If
                             End If
 
+                            'removing <displayepisode> and <displayseason> if disabled
+                            If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
+                                tvEp.DisplayEpisode = -1
+                                tvEp.DisplaySeason = -1
+                            End If
+
                             Using xmlSW As New Utf8StringWriter
                                 xmlSer.Serialize(xmlSW, tvEp, NS)
                                 If sBuilder.Length > 0 Then
@@ -2471,7 +2509,12 @@ Public Class NFO
 #Region "Fields"
 
         Private _episode As Integer
+        Private _episodeabsolute As Integer
+        Private _episodecombined As Double
+        Private _episodedvd As Double
         Private _season As Integer
+        Private _seasoncombined As Integer
+        Private _seasondvd As Integer
 
 #End Region 'Fields
 
@@ -2494,12 +2537,57 @@ Public Class NFO
             End Set
         End Property
 
+        Public Property EpisodeAbsolute() As Integer
+            Get
+                Return Me._episodeabsolute
+            End Get
+            Set(ByVal value As Integer)
+                Me._episodeabsolute = value
+            End Set
+        End Property
+
+        Public Property EpisodeCombined() As Double
+            Get
+                Return Me._episodecombined
+            End Get
+            Set(ByVal value As Double)
+                Me._episodecombined = value
+            End Set
+        End Property
+
+        Public Property EpisodeDVD() As Double
+            Get
+                Return Me._episodedvd
+            End Get
+            Set(ByVal value As Double)
+                Me._episodedvd = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return Me._season
             End Get
             Set(ByVal value As Integer)
                 Me._season = value
+            End Set
+        End Property
+
+        Public Property SeasonCombined() As Integer
+            Get
+                Return Me._seasoncombined
+            End Get
+            Set(ByVal value As Integer)
+                Me._seasoncombined = value
+            End Set
+        End Property
+
+        Public Property SeasonDVD() As Integer
+            Get
+                Return Me._seasondvd
+            End Get
+            Set(ByVal value As Integer)
+                Me._seasondvd = value
             End Set
         End Property
 

@@ -396,13 +396,11 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisodeaired As Boolean
     Private _tvscraperepisodecredits As Boolean
     Private _tvscraperepisodedirector As Boolean
-    Private _tvscraperepisodeepisode As Boolean
     Private _tvscraperepisodegueststars As Boolean
     Private _tvscraperepisodegueststarstoactors As Boolean
     Private _tvscraperepisodeplot As Boolean
     Private _tvscraperepisoderating As Boolean
     Private _tvscraperepisoderuntime As Boolean
-    Private _tvscraperepisodeseason As Boolean
     Private _tvscraperepisodetitle As Boolean
     Private _tvscraperepisodevotes As Boolean
     Private _tvscrapermetadatascan As Boolean
@@ -428,6 +426,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowstudio As Boolean
     Private _tvscrapershowtitle As Boolean
     Private _tvscrapershowvotes As Boolean
+    Private _tvscraperusedisplayseasonepisode As Boolean
     Private _tvscraperusemdduration As Boolean
     Private _tvscraperusesruntimeforep As Boolean
     Private _tvseasonbannerheight As Integer
@@ -4063,15 +4062,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVScraperEpisodeEpisode() As Boolean
-        Get
-            Return Me._tvscraperepisodeepisode
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvscraperepisodeepisode = value
-        End Set
-    End Property
-
     Public Property TVScraperEpisodeGuestStars() As Boolean
         Get
             Return Me._tvscraperepisodegueststars
@@ -4114,15 +4104,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscraperepisoderuntime = value
-        End Set
-    End Property
-
-    Public Property TVScraperEpisodeSeason() As Boolean
-        Get
-            Return Me._tvscraperepisodeseason
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvscraperepisodeseason = value
         End Set
     End Property
 
@@ -4996,6 +4977,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscrapershowcertformpaafallback = value
+        End Set
+    End Property
+
+    Public Property TVScraperUseDisplaySeasonEpisode() As Boolean
+        Get
+            Return Me._tvscraperusedisplayseasonepisode
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperusedisplayseasonepisode = value
         End Set
     End Property
 

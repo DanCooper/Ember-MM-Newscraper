@@ -372,13 +372,13 @@ Public Class Scanner
             Catch
             End Try
 
-            ''episode actor thumbs
-            'For Each a In FileUtils.GetFilenameList.TVEpisode(Episode.Filename, Enums.ModType.ActorThumbs)
-            '    Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
-            '    If Directory.Exists(parDir) Then
-            '        Episode.ActorThumbs.AddRange(Directory.GetFiles(parDir))
-            '    End If
-            'Next
+            'episode actor thumbs
+            For Each a In FileUtils.GetFilenameList.TVEpisode(Episode.Filename, Enums.ModType.EpisodeActorThumbs)
+                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                If Directory.Exists(parDir) Then
+                    Episode.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                End If
+            Next
 
             'episode fanart
             If String.IsNullOrEmpty(Episode.FanartPath) Then
@@ -711,45 +711,13 @@ Public Class Scanner
             Catch
             End Try
 
-            ''show actor thumbs
-            'For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.ActorThumbs)
-            '    Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
-            '    If Directory.Exists(parDir) Then
-            '        tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
-            '    End If
-            'Next
-
-            ''all-season banner
-            'If String.IsNullOrEmpty(tShow.AllSeasonsBanner) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsBanner)
-            '        tShow.AllSeasonsBanner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            '        If Not String.IsNullOrEmpty(tShow.AllSeasonsBanner) Then Exit For
-            '    Next
-            'End If
-
-            ''all-season fanart
-            'If String.IsNullOrEmpty(tShow.AllSeasonsFanart) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsFanart)
-            '        tShow.AllSeasonsFanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            '        If Not String.IsNullOrEmpty(tShow.AllSeasonsFanart) Then Exit For
-            '    Next
-            'End If
-
-            ''all-season landscape
-            'If String.IsNullOrEmpty(tShow.AllSeasonsLandscape) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsLandscape)
-            '        tShow.AllSeasonsLandscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            '        If Not String.IsNullOrEmpty(tShow.AllSeasonsLandscape) Then Exit For
-            '    Next
-            'End If
-
-            ''all-season poster
-            'If String.IsNullOrEmpty(tShow.AllSeasonsPoster) Then
-            '    For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsPoster)
-            '        tShow.AllSeasonsPoster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            '        If Not String.IsNullOrEmpty(tShow.AllSeasonsPoster) Then Exit For
-            '    Next
-            'End If
+            'show actor thumbs
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainActorThumbs)
+                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                If Directory.Exists(parDir) Then
+                    tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                End If
+            Next
 
             'show banner
             If String.IsNullOrEmpty(tShow.BannerPath) Then
@@ -1065,14 +1033,14 @@ Public Class Scanner
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(DBTVShow.ListTitle) Then
-                    'search local actor thumb for each actor in NFO
-                    'If DBTVShow.TVShow.Actors.Count > 0 AndAlso TVContainer.ActorThumbs.Count > 0 Then
-                    '    For Each actor In DBTVShow.TVShow.Actors
-                    '        actor.ThumbPath = TVContainer.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                    '    Next
-                    'End If
+                'search local actor thumb for each actor in NFO
+                If DBTVShow.TVShow.Actors.Count > 0 AndAlso DBTVShow.ActorThumbs.Count > 0 Then
+                    For Each actor In DBTVShow.TVShow.Actors
+                        actor.ThumbPath = DBTVShow.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    Next
+                End If
 
+                If Not String.IsNullOrEmpty(DBTVShow.ListTitle) Then
                     Master.DB.SaveTVShowToDB(DBTVShow, True, False, True)
                 End If
             Else
@@ -1101,29 +1069,30 @@ Public Class Scanner
                                     End If
                                 Else
                                     If Not String.IsNullOrEmpty(DBTVEpisode.TVShow.TVDB) AndAlso DBTVEpisode.ShowID >= 0 Then
-                                        DBTVEpisode.TVEp = ModulesManager.Instance.ScrapeData_TV_GetSingleEpisode(DBTVEpisode.TVEp, DBTVEpisode.TVShow.TVDB, sEpisode.Aired, DBTVEpisode.Language, DBTVEpisode.Ordering, Master.DefaultOptions_TV)
+                                        If String.IsNullOrEmpty(DBTVEpisode.TVEp.Aired) Then DBTVEpisode.TVEp.Aired = sEpisode.Aired
+                                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(DBTVEpisode, Master.DefaultOptions_TV, False) Then
+                                            If Not String.IsNullOrEmpty(DBTVEpisode.TVEp.Title) Then
+                                                toNfo = True
 
-                                        If Not String.IsNullOrEmpty(DBTVEpisode.TVEp.Title) Then
-                                            toNfo = True
-
-                                            'if we had info for it (based on title) and mediainfo scanning is enabled
-                                            If Master.eSettings.TVScraperMetaDataScan Then
-                                                MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
-                                            End If
-                                        End If
-
-                                        If String.IsNullOrEmpty(DBTVEpisode.PosterPath) Then
-                                            If Not String.IsNullOrEmpty(DBTVEpisode.TVEp.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEp.LocalFile) Then
-                                                DBTVEpisode.TVEp.Poster.WebImage.FromFile(DBTVEpisode.TVEp.LocalFile)
-                                                If Not IsNothing(DBTVEpisode.TVEp.Poster.WebImage.Image) Then
-                                                    DBTVEpisode.PosterPath = DBTVEpisode.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                'if we had info for it (based on title) and mediainfo scanning is enabled
+                                                If Master.eSettings.TVScraperMetaDataScan Then
+                                                    MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
                                                 End If
-                                            ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEp.PosterURL) Then
-                                                DBTVEpisode.TVEp.Poster.WebImage.FromWeb(DBTVEpisode.TVEp.PosterURL)
-                                                If Not IsNothing(DBTVEpisode.TVEp.Poster.WebImage.Image) Then
-                                                    Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEp.LocalFile).FullName)
-                                                    DBTVEpisode.TVEp.Poster.WebImage.Save(DBTVEpisode.TVEp.LocalFile)
-                                                    DBTVEpisode.PosterPath = DBTVEpisode.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                            End If
+
+                                            If String.IsNullOrEmpty(DBTVEpisode.PosterPath) Then
+                                                If Not String.IsNullOrEmpty(DBTVEpisode.TVEp.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEp.LocalFile) Then
+                                                    DBTVEpisode.TVEp.Poster.WebImage.FromFile(DBTVEpisode.TVEp.LocalFile)
+                                                    If Not IsNothing(DBTVEpisode.TVEp.Poster.WebImage.Image) Then
+                                                        DBTVEpisode.PosterPath = DBTVEpisode.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                    End If
+                                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEp.PosterURL) Then
+                                                    DBTVEpisode.TVEp.Poster.WebImage.FromWeb(DBTVEpisode.TVEp.PosterURL)
+                                                    If Not IsNothing(DBTVEpisode.TVEp.Poster.WebImage.Image) Then
+                                                        Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEp.LocalFile).FullName)
+                                                        DBTVEpisode.TVEp.Poster.WebImage.Save(DBTVEpisode.TVEp.LocalFile)
+                                                        DBTVEpisode.PosterPath = DBTVEpisode.TVEp.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                    End If
                                                 End If
                                             End If
                                         End If
@@ -1139,12 +1108,12 @@ Public Class Scanner
                                     If Not Master.eSettings.TVEpisodeNoFilter Then DBTVEpisode.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), DBTVEpisode.TVShow.Title)
                                 End If
 
-                                ''search local actor thumb for each actor in NFO
-                                'If DBTVEpisode.TVEp.Actors.Count > 0 AndAlso Episode.ActorThumbs.Count > 0 Then
-                                '    For Each actor In DBTVEpisode.TVEp.Actors
-                                '        actor.ThumbPath = Episode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                                '    Next
-                                'End If
+                                'search local actor thumb for each actor in NFO
+                                If DBTVEpisode.TVEp.Actors.Count > 0 AndAlso DBTVEpisode.ActorThumbs.Count > 0 Then
+                                    For Each actor In DBTVEpisode.TVEp.Actors
+                                        actor.ThumbPath = DBTVEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                                    Next
+                                End If
 
                                 If DBTVEpisode.TVEp.Season = -1 Then DBTVEpisode.TVEp.Season = sEpisode.Season
                                 If DBTVEpisode.TVEp.Episode = -1 AndAlso DBTVEpisode.Ordering = Enums.Ordering.DayOfYear Then
@@ -1227,12 +1196,12 @@ Public Class Scanner
                                     If Not Master.eSettings.TVEpisodeNoFilter Then DBTVEpisode.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), DBTVEpisode.TVShow.Title)
                                 End If
 
-                                ''search local actor thumb for each actor in NFO
-                                'If DBTVEpisode.TVEp.Actors.Count > 0 AndAlso Episode.ActorThumbs.Count > 0 Then
-                                '    For Each actor In DBTVEpisode.TVEp.Actors
-                                '        actor.ThumbPath = Episode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                                '    Next
-                                'End If
+                                'search local actor thumb for each actor in NFO
+                                If DBTVEpisode.TVEp.Actors.Count > 0 AndAlso DBTVEpisode.ActorThumbs.Count > 0 Then
+                                    For Each actor In DBTVEpisode.TVEp.Actors
+                                        actor.ThumbPath = DBTVEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                                    Next
+                                End If
 
                                 If DBTVEpisode.TVEp.Season = -1 Then DBTVEpisode.TVEp.Season = iSeason
                                 If DBTVEpisode.TVEp.Episode = -1 Then DBTVEpisode.TVEp.Episode = iEpisode
@@ -1438,7 +1407,7 @@ Public Class Scanner
             If Not TVEpPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                 Not Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso _
                 (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
-                tShow.Episodes.Add(New Structures.DBTV With {.Filename = lFile.FullName, .FilenameID = -1, .TVEp = New MediaContainers.EpisodeDetails})
+                tShow.Episodes.Add(New Structures.DBTV With {.ActorThumbs = New List(Of String), .Filename = lFile.FullName, .FilenameID = -1, .Subtitles = New List(Of MediaInfo.Subtitle), .TVEp = New MediaContainers.EpisodeDetails})
             ElseIf Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
                 logger.Info(String.Format("VideoInfoScanner: file {0} has been ignored (trailer or sample file)", lFile.FullName))
             End If
@@ -1531,13 +1500,16 @@ Public Class Scanner
             If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Functions.IsSeasonDirectory(s.FullName)).Count = 0 Then
                 'only files in the folder or all folders match the season regex... assume it's a single show folder
                 currShowContainer = New Structures.DBTV
+                currShowContainer.ActorThumbs = New List(Of String)
                 currShowContainer.Episodes = New List(Of Structures.DBTV)
                 currShowContainer.EpisodeSorting = sEpisodeSorting
                 currShowContainer.Language = sLang
                 currShowContainer.Ordering = sOrdering
+                currShowContainer.Seasons = New List(Of Structures.DBTV)
                 currShowContainer.ShowID = -1
                 currShowContainer.ShowPath = dInfo.FullName
                 currShowContainer.Source = sSource
+                currShowContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                 Me.ScanForTVFiles(currShowContainer, dInfo.FullName)
 
                 If Master.eSettings.TVScanOrderModify Then
@@ -1561,13 +1533,16 @@ Public Class Scanner
                 For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
 
                     currShowContainer = New Structures.DBTV
+                    currShowContainer.ActorThumbs = New List(Of String)
                     currShowContainer.Episodes = New List(Of Structures.DBTV)
                     currShowContainer.EpisodeSorting = sEpisodeSorting
                     currShowContainer.Language = sLang
                     currShowContainer.Ordering = sOrdering
+                    currShowContainer.Seasons = New List(Of Structures.DBTV)
                     currShowContainer.ShowID = -1
                     currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
+                    currShowContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                     Me.ScanForTVFiles(currShowContainer, inDir.FullName)
 
                     inInfo = New DirectoryInfo(inDir.FullName)
@@ -1698,13 +1673,16 @@ Public Class Scanner
 
                         If Not String.IsNullOrEmpty(ShowPath) AndAlso Directory.Exists(ShowPath) Then
                             Dim currShowContainer As New Structures.DBTV
+                            currShowContainer.ActorThumbs = New List(Of String)
                             currShowContainer.Episodes = New List(Of Structures.DBTV)
                             currShowContainer.EpisodeSorting = eSource.EpisodeSorting
                             currShowContainer.Language = eSource.Language
                             currShowContainer.Ordering = eSource.Ordering
+                            currShowContainer.Seasons = New List(Of Structures.DBTV)
                             currShowContainer.ShowID = -1
                             currShowContainer.ShowPath = ShowPath
                             currShowContainer.Source = eSource.Name
+                            currShowContainer.Subtitles = New List(Of MediaInfo.Subtitle)
 
                             Dim inInfo As DirectoryInfo = New DirectoryInfo(ShowPath)
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
@@ -1902,122 +1880,6 @@ Public Class Scanner
 #End Region 'Fields
 
     End Structure
-
-    Public Class EpisodeContainer
-
-#Region "Fields"
-
-        Private _actorthumbs As New List(Of String)
-        Private _fanart As String
-        Private _filename As String
-        Private _filenameid As Long
-        Private _nfo As String
-        Private _poster As String
-        Private _source As String
-        Private _subtiles As New List(Of MediaInfo.Subtitle)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property ActorThumbs() As List(Of String)
-            Get
-                Return _actorthumbs
-            End Get
-            Set(ByVal value As List(Of String))
-                _actorthumbs = value
-            End Set
-        End Property
-
-        Public Property Fanart() As String
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As String)
-                _fanart = value
-            End Set
-        End Property
-
-        Public Property Filename() As String
-            Get
-                Return _filename
-            End Get
-            Set(ByVal value As String)
-                _filename = value
-            End Set
-        End Property
-
-        Public Property FilenameID() As Long
-            Get
-                Return _filenameid
-            End Get
-            Set(ByVal value As Long)
-                _filenameid = value
-            End Set
-        End Property
-
-        Public Property Nfo() As String
-            Get
-                Return _nfo
-            End Get
-            Set(ByVal value As String)
-                _nfo = value
-            End Set
-        End Property
-
-        Public Property Poster() As String
-            Get
-                Return _poster
-            End Get
-            Set(ByVal value As String)
-                _poster = value
-            End Set
-        End Property
-
-        Public Property Source() As String
-            Get
-                Return _source
-            End Get
-            Set(ByVal value As String)
-                _source = value
-            End Set
-        End Property
-
-        Public Property Subtitles() As List(Of MediaInfo.Subtitle)
-            Get
-                Return _subtiles
-            End Get
-            Set(ByVal value As List(Of MediaInfo.Subtitle))
-                _subtiles = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _actorthumbs.Clear()
-            _filename = String.Empty
-            _filenameid = -1
-            _source = String.Empty
-            _subtiles.Clear()
-            _poster = String.Empty
-            _fanart = String.Empty
-            _nfo = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Public Class MovieContainer
 
@@ -2460,265 +2322,6 @@ Public Class Scanner
             Me._episode = -1
             Me._season = -1
             Me._subepisode = -1
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    Public Class TVShowContainer
-
-#Region "Fields"
-
-        Private _actorthumbs As New List(Of String)
-        Private _allseasonsbanner As String
-        Private _allseasonsfanart As String
-        Private _allseasonslandscape As String
-        Private _allseasonsposter As String
-        Private _episodes As New List(Of EpisodeContainer)
-        Private _episodesorting As Enums.EpisodeSorting
-        Private _language As String
-        Private _ordering As Enums.Ordering
-        Private _showbanner As String
-        Private _showcharacterart As String
-        Private _showclearart As String
-        Private _showclearlogo As String
-        Private _showefanarts As String
-        Private _showfanart As String
-        Private _showlandscape As String
-        Private _shownfo As String
-        Private _showposter As String
-        Private _showpath As String
-        Private _showtheme As String
-        Private _source As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property ActorThumbs() As List(Of String)
-            Get
-                Return Me._actorthumbs
-            End Get
-            Set(ByVal value As List(Of String))
-                Me._actorthumbs = value
-            End Set
-        End Property
-
-        Public Property AllSeasonsBanner() As String
-            Get
-                Return Me._allseasonsbanner
-            End Get
-            Set(ByVal value As String)
-                Me._allseasonsbanner = value
-            End Set
-        End Property
-
-        Public Property AllSeasonsFanart() As String
-            Get
-                Return Me._allseasonsfanart
-            End Get
-            Set(ByVal value As String)
-                Me._allseasonsfanart = value
-            End Set
-        End Property
-
-        Public Property AllSeasonsLandscape() As String
-            Get
-                Return Me._allseasonslandscape
-            End Get
-            Set(ByVal value As String)
-                Me._allseasonslandscape = value
-            End Set
-        End Property
-
-        Public Property AllSeasonsPoster() As String
-            Get
-                Return Me._allseasonsposter
-            End Get
-            Set(ByVal value As String)
-                Me._allseasonsposter = value
-            End Set
-        End Property
-
-        Public Property Episodes() As List(Of EpisodeContainer)
-            Get
-                Return Me._episodes
-            End Get
-            Set(ByVal value As List(Of EpisodeContainer))
-                Me._episodes = value
-            End Set
-        End Property
-
-        Public Property EpisodeSorting() As Enums.EpisodeSorting
-            Get
-                Return Me._episodesorting
-            End Get
-            Set(ByVal value As Enums.EpisodeSorting)
-                Me._episodesorting = value
-            End Set
-        End Property
-
-        Public Property Language() As String
-            Get
-                Return Me._language
-            End Get
-            Set(ByVal value As String)
-                Me._language = value
-            End Set
-        End Property
-
-        Public Property Ordering() As Enums.Ordering
-            Get
-                Return Me._ordering
-            End Get
-            Set(ByVal value As Enums.Ordering)
-                Me._ordering = value
-            End Set
-        End Property
-
-        Public Property ShowBanner() As String
-            Get
-                Return Me._showbanner
-            End Get
-            Set(ByVal value As String)
-                Me._showbanner = value
-            End Set
-        End Property
-
-        Public Property ShowCharacterArt() As String
-            Get
-                Return Me._showcharacterart
-            End Get
-            Set(ByVal value As String)
-                Me._showcharacterart = value
-            End Set
-        End Property
-
-        Public Property ShowClearArt() As String
-            Get
-                Return Me._showclearart
-            End Get
-            Set(ByVal value As String)
-                Me._showclearart = value
-            End Set
-        End Property
-
-        Public Property ShowClearLogo() As String
-            Get
-                Return Me._showclearlogo
-            End Get
-            Set(ByVal value As String)
-                Me._showclearlogo = value
-            End Set
-        End Property
-
-        Public Property ShowEFanarts() As String
-            Get
-                Return _showefanarts
-            End Get
-            Set(ByVal value As String)
-                _showefanarts = value
-            End Set
-        End Property
-
-        Public Property ShowFanart() As String
-            Get
-                Return Me._showfanart
-            End Get
-            Set(ByVal value As String)
-                Me._showfanart = value
-            End Set
-        End Property
-
-        Public Property ShowLandscape() As String
-            Get
-                Return Me._showlandscape
-            End Get
-            Set(ByVal value As String)
-                Me._showlandscape = value
-            End Set
-        End Property
-
-        Public Property ShowNfo() As String
-            Get
-                Return Me._shownfo
-            End Get
-            Set(ByVal value As String)
-                Me._shownfo = value
-            End Set
-        End Property
-
-        Public Property ShowPoster() As String
-            Get
-                Return Me._showposter
-            End Get
-            Set(ByVal value As String)
-                Me._showposter = value
-            End Set
-        End Property
-
-        Public Property ShowPath() As String
-            Get
-                Return Me._showpath
-            End Get
-            Set(ByVal value As String)
-                Me._showpath = value
-            End Set
-        End Property
-
-        Public Property ShowTheme() As String
-            Get
-                Return Me._showtheme
-            End Get
-            Set(ByVal value As String)
-                Me._showtheme = value
-            End Set
-        End Property
-
-        Public Property Source() As String
-            Get
-                Return Me._source
-            End Get
-            Set(ByVal value As String)
-                Me._source = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._actorthumbs.Clear()
-            Me._allseasonsbanner = String.Empty
-            Me._allseasonsfanart = String.Empty
-            Me._allseasonslandscape = String.Empty
-            Me._allseasonsposter = String.Empty
-            Me._episodes.Clear()
-            Me._episodesorting = Enums.EpisodeSorting.Episode
-            Me._language = String.Empty
-            Me._ordering = Enums.Ordering.Standard
-            Me._showbanner = String.Empty
-            Me._showcharacterart = String.Empty
-            Me._showclearart = String.Empty
-            Me._showclearlogo = String.Empty
-            Me._showefanarts = String.Empty
-            Me._showfanart = String.Empty
-            Me._showlandscape = String.Empty
-            Me._shownfo = String.Empty
-            Me._showposter = String.Empty
-            Me._showpath = String.Empty
-            Me._showtheme = String.Empty
-            Me._source = String.Empty
         End Sub
 
 #End Region 'Methods

@@ -272,14 +272,11 @@ Namespace Kodi
                     End If
 
                     'integer or 0
+                    Dim mPlaycount As Integer = If(uMovie.Movie.PlayCountSpecified, CType(uMovie.Movie.PlayCount, Integer), 0)
                     Dim mRating As Double = If(uMovie.Movie.RatingSpecified, CType(Double.Parse(uMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = If(uMovie.Movie.RuntimeSpecified, CType(uMovie.Movie.Runtime, Integer), 0) * 60 'API requires runtime in seconds
                     Dim mTop250 As Integer = If(uMovie.Movie.Top250Specified, CType(uMovie.Movie.Top250, Integer), 0)
                     Dim mYear As Integer = If(uMovie.Movie.YearSpecified, CType(uMovie.Movie.Year, Integer), 0)
-
-                    'Nullable(Of Integer)types. Following values can be integer or set to Nothing if not filled (nullable integer type here because otherwise default value would always be "0" which is not correct)
-                    Dim mPlaycount As Integer? = If(uMovie.Movie.PlayCountSpecified, CType(uMovie.Movie.PlayCount, Integer?), New Integer?)
-
 
                     'arrays
                     'Countries
@@ -692,11 +689,9 @@ Namespace Kodi
                     End If
 
                     'integer or 0
+                    Dim mPlaycount As Integer = If(uEpisode.TVEp.PlaycountSpecified, CType(uEpisode.TVEp.Playcount, Integer), 0)
                     Dim mRating As Double = If(uEpisode.TVEp.RatingSpecified, CType(Double.Parse(uEpisode.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = If(uEpisode.TVEp.RuntimeSpecified, CType(uEpisode.TVEp.Runtime, Integer), 0) * 60 'API requires runtime in seconds
-
-                    'Nullable(Of Integer)types. Following values can be integer or set to Nothing if not filled (nullable integer type here because otherwise default value would always be "0" which is not correct)
-                    Dim mPlaycount As Integer? = If(uEpisode.TVEp.PlaycountSpecified, CType(uEpisode.TVEp.Playcount, Integer?), New Integer?)
 
                     'arrays
                     'Directors
@@ -989,7 +984,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVShowInfo(ByVal EmbershowID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbershowID, False)
+            Dim uTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbershowID, False, False)
             Try
 
                 If _kodi Is Nothing Then
@@ -1408,7 +1403,7 @@ Namespace Kodi
                         End If
                     End If
                 Case Enums.Content_Type.TVShow
-                    Dim uShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbervideofileID, False)
+                    Dim uShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbervideofileID, False, False)
                     If FileUtils.Common.isBDRip(uShow.ShowPath) Then
                         'needs some testing?!
                         uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uShow.ShowPath).FullName).FullName).FullName

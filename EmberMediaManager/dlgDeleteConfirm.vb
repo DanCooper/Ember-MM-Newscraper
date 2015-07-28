@@ -217,7 +217,7 @@ Public Class dlgDeleteConfirm
                         For Each ShowID As Long In ItemsToDelete.Keys
                             hadError = False
 
-                            tShow = Master.DB.LoadTVShowFromDB(ShowID, False)
+                            tShow = Master.DB.LoadTVShowFromDB(ShowID, False, False)
 
                             ItemParentNode = .Nodes.Add(ShowID.ToString, tShow.TVShow.Title)
                             ItemParentNode.ImageKey = "MOVIE"
