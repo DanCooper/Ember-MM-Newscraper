@@ -1766,140 +1766,12 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub cbGeneralDateTime_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralDateTime.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieScraperCertLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieScraperCertLang.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieEFanartsPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieEFanartsPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVShowEFanartsPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVShowEFanartsPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieEThumbsPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieEThumbsPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieFanartPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
 
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
         Me.SetApplyButton(True)
         If Not Me.cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
             Handle_SetupNeedsRestart()
         End If
-    End Sub
-
-    Private Sub cbMovieLanguageOverlay_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieLanguageOverlay.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbGeneralMovieTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralMovieTheme.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbGeneralMovieSetTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralMovieSetTheme.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVGeneralLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVScraperOptionsOrdering_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperOptionsOrdering.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVLanguageOverlay_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguageOverlay.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVScraperUpdateTime_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieBannerPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieBannerPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMoviePosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMoviePosterPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieSetBannerPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetBannerPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieSetFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetFanartPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieSetPosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetPosterPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVScraperRatingRegion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVSeasonBannerPrefType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVSeasonBannerPrefType.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVSeasonFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVSeasonFanartPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVSeasonPosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVSeasonPosterPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVShowFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVShowFanartPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieTrailerMinQual_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTrailerMinVideoQual.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbMovieTrailerPrefQual_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTrailerPrefVideoQual.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbGeneralTVEpisodeTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralTVEpisodeTheme.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbGeneralTVShowTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralTVShowTheme.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVASBannerPrefType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVASBannerPrefType.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVASFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVASFanartPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVASPosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVASPosterPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVEpisodeFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVEpisodeFanartPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVEpisodePosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVEpisodePosterPrefSize.SelectedIndexChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub CheckHideSettings()
@@ -1917,21 +1789,6 @@ Public Class dlgSettings
 
     Private Sub chkMovieClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClickScrape.CheckedChanged
         chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieClickScrapeAsk_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClickScrapeAsk.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieBackdropsAuto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSourcesBackdropsAuto.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCastWithImg.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-    Private Sub chkMovieScraperStudioWithImg_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperStudioWithImg.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1998,14 +1855,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMPAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieScraperMPAANotRated_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperMPAANotRated.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2027,109 +1876,11 @@ Public Class dlgSettings
             Me.chkTVScraperShowCertForMPAAFallback.Enabled = True
         End If
     End Sub
-
-    Private Sub chkMovieScraperCertForMPAAFallback_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAAFallback.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperCertOnlyValue_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertOnlyValue.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-    Private Sub chkMovieScraperCertFSK_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertFSK.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperCleanFields_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCleanFields.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkIMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperCleanPlotOutline.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperDetailView_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperDetailView.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-    Private Sub chkMovieScraperReleaseFormat_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperReleaseFormat.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
     Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLevTolerance.CheckedChanged
         Me.SetApplyButton(True)
 
         Me.txtMovieLevTolerance.Enabled = Me.chkMovieLevTolerance.Checked
         If Not Me.chkMovieLevTolerance.Checked Then Me.txtMovieLevTolerance.Text = String.Empty
-    End Sub
-
-    Private Sub chkMovieCleanDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieCleanDB.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetCleanDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetCleanDB.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetCleanFiles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetCleanFiles.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanDotFanartJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanExtrathumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanExtrathumbs.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanFanartJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanFolderJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieFanartJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieNameJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieNFOb_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieNFOb.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieNFO.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieTBNb_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieTBNb.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanPosterJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkCleanPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanPosterTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperDirector.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVDisplayMissingEpisodes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayMissingEpisodes.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayYear.CheckedChanged
@@ -2198,61 +1949,9 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVLockEpisodeLanguageA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeLanguageA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockEpisodeLanguageV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeLanguageV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockEpisodePlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodePlot.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockEpisodeRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeRating.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockEpisodeRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeRuntime.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockEpisodeTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockEpisodeVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockEpisodeVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsRefresh_TV = True
-    End Sub
-
-    Private Sub chkMovieBannerPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBannerPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMoviePosterPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviePosterPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieEFanartsPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieEFanartsPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowEFanartsPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowEFanartsPrefSizeOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieEThumbsPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieEThumbsPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieFanartPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieFanartPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
 
@@ -2262,127 +1961,6 @@ Public Class dlgSettings
         Me.txtMovieScraperGenreLimit.Enabled = Me.chkMovieScraperGenre.Checked
 
         If Not Me.chkMovieScraperGenre.Checked Then Me.txtMovieScraperGenreLimit.Text = "0"
-    End Sub
-
-    Private Sub chkMovieScraperMetaDataIFOScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMetaDataIFOScan.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieGeneralIgnoreLastScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieGeneralIgnoreLastScan.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockGenre.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockOutline.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockPlot.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockRating.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockCollectionID.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockCollections_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockCollections.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockTagline.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockOriginalTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockOriginalTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLockTrailer.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockYear_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockYear.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockRuntime_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockRuntime.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockTop250_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockTop250.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockStudio_CheckedChanged_1(sender As Object, e As EventArgs) Handles chkMovieLockStudio.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockCountry_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockCountry.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockReleaseDate_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockReleaseDate.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockCertification_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockCert.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockMPAA_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockMPAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockVotes_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockActors_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockActors.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockDirector_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockDirector.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockCredits_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockCredits.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockTags_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockTags.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockLanguageA_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockLanguageA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLockLanguageV_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieLockLanguageV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-
-    Private Sub chkTVGeneralMarkNewEpisodes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVGeneralMarkNewEpisodes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVGeneralMarkNewShows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVGeneralMarkNewShows.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieGeneralMarkNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieGeneralMarkNew.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkGeneralHideBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideBanner.CheckedChanged
@@ -2442,130 +2020,6 @@ Public Class dlgSettings
         Me.btnTVEpisodeFilterRemove.Enabled = Not Me.chkTVEpisodeNoFilter.Checked
     End Sub
 
-    Private Sub chkMovieImageSelect_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieImagesDisplayImageSelect.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieImagesNotSaveURLToNfo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralImagesGlassOverlay_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralImagesGlassOverlay.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperOutline.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVEpisodeFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeFanartOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVEpisodePosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralOverwriteNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralOverwriteNfo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralDateAddedIgnoreNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDateAddedIgnoreNFO.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralDoubleClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDoubleClickScrape.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieActorThumbsOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBannerOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieClearArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearArtOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieClearLogoOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearLogoOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieDiscArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDiscArtOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieEFanartsOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieEFanartsOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowEFanartsOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowEFanartsOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieEThumbsOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieEThumbsOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieFanartOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLandscapeOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMoviePosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviePosterOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVASBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVASBannerOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVASPosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVASPosterOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVASFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVASFanartOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVASLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVASLandscapeOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowCharacterArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowCharacterArtOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowClearArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearArtOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowClearLogoOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearLogoOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowLandscapeOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowPosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlotForOutline.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2576,10 +2030,6 @@ Public Class dlgSettings
             Me.chkMovieScraperPlotForOutlineIfEmpty.Checked = False
             Me.chkMovieScraperPlotForOutlineIfEmpty.Enabled = False
         End If
-    End Sub
-
-    Private Sub chkMovieScraperPlotForOutlineIfEmpty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlot.CheckedChanged
@@ -2595,14 +2045,6 @@ Public Class dlgSettings
     Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieProperCase.CheckedChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsRefresh_Movie = True
-    End Sub
-
-    Private Sub chkMovieScraperRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperRating.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperRelease.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkTVASBannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVASBannerResize.CheckedChanged
@@ -2809,131 +2251,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperRuntime.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperMetaDataScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperMetaDataScan.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScanOrderModify_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScanOrderModify.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeActors.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeAired_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeAired.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeCredits_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeCredits.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeDirector.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperSaveDisplaySeasonEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperUseDisplaySeasonEpisode.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeGuestStars_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeGuestStars.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodePlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodePlot.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeRating.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeRuntime.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperEpisodeVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowActors.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowEpiGuideURL_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowEpiGuideURL.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowGenre.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowMPAA.CheckedChanged, chkTVScraperShowOriginalTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVScraperShowMPAANotRated_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowPlot.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowPremiered_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowPremiered.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowRating.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVScraperShowRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowRuntime.CheckedChanged
         Me.chkTVScraperUseSRuntimeForEp.Enabled = Me.chkTVScraperShowRuntime.Checked
         If Not Me.chkTVScraperShowRuntime.Checked Then
             Me.chkTVScraperUseSRuntimeForEp.Checked = False
         End If
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowStatus.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowStudio.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperShowVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonBannerOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonFanartOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonLandscapeOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonPosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterOverwrite.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2973,83 +2295,9 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkGeneralShowLangFlags_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowLangFlags.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralShowImgDims_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowImgDims.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralShowImgNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowImgNames.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralShowGenresText_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralShowGenresText.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowGenre.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowPlot.CheckedChanged, chkTVLockShowOriginalTitle.CheckedChanged, chkTVLockShowMPAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowRating.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowRuntime.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowStatus.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowStudio.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVLockShowVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowProperCase.CheckedChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsRefresh_TV = True
-    End Sub
-
-    Private Sub chkMovieSortBeforeScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSortBeforeScan.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralSourceFromFolder_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralSourceFromFolder.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralDigitGrpSymbolVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDigitGrpSymbolVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTagline.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-    Private Sub chkMovieScraperOriginalTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieScraperOriginalTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-    Private Sub chkMovieScraperTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTop250.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCollectionID.CheckedChanged
@@ -3061,26 +2309,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperCollectionsAuto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCollectionsAuto.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCountry.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperTrailer.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVCleanDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVCleanDB.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVGeneralIgnoreLastScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVGeneralIgnoreLastScan.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVScraperMetaDataScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperMetaDataScan.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -3089,14 +2317,6 @@ Public Class dlgSettings
         If Not Me.chkTVScraperMetaDataScan.Checked Then
             Me.cbTVLanguageOverlay.SelectedIndex = 0
         End If
-    End Sub
-
-    Private Sub chkTVScanOrderModify_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScanOrderModify.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkGeneralCheckUpdates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralCheckUpdates.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
 
@@ -3309,26 +2529,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVScraperUseSRuntimeForEp_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperUseSRuntimeForEp.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperVotes.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkFileSystemCleanerWhitelist_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFileSystemCleanerWhitelist.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperCredits_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCredits.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieXBMCProtectVTSBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCProtectVTSBDMV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieXBMCThemeCustomPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeCustom.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -3398,33 +2598,9 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub txtMovieXBMCThemeCustomPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieXBMCThemeCustomPath.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieXBMCThemeSubDir_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieXBMCThemeSubDir.TextChanged, txtTVXBMCThemeSubDir.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieXBMCTrailerFormat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperXBMCTrailerFormat.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieScraperYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperYear.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieYAMJWatchedFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJWatchedFile.CheckedChanged
         Me.txtMovieYAMJWatchedFolder.Enabled = Me.chkMovieYAMJWatchedFile.Checked
         Me.btnMovieYAMJWatchedFilesBrowse.Enabled = Me.chkMovieYAMJWatchedFile.Checked
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVShowBannerPrefType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVShowBannerPrefType.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVShowPosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVShowPosterPrefSize.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -6213,18 +5389,6 @@ Public Class dlgSettings
         If Not NoUpdate Then Me.btnApply.Enabled = v
     End Sub
 
-    Private Sub chkMovieThemeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieTrailerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTrailerOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieTrailerDeleteExisting_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTrailerDeleteExisting.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub SetUp()
 
         'Actor Thumbs
@@ -6395,11 +5559,11 @@ Public Class dlgSettings
         Dim strDefaults As String = Master.eLang.GetString(713, "Defaults")
         Me.gbMovieSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
-        Me.gbMovieSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
+        Me.gbMovieSourcesFileNamingKodiDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
-        Me.gbTVSourcesFileNamingXBMCDefaultsOpts.Text = strDefaults
+        Me.gbTVSourcesFileNamingKodiDefaultsOpts.Text = strDefaults
 
         'Defaults by File Type
         Dim strDefaultsByFileType As String = Master.eLang.GetString(625, "Defaults by File Type")
@@ -6495,7 +5659,7 @@ Public Class dlgSettings
 
         'Extended Images
         Dim strExtendedImages As String = Master.eLang.GetString(822, "Extended Images")
-        Me.gbMovieSourcesFileNamingXBMCExtendedOpts.Text = strExtendedImages
+        Me.gbMovieSourcesFileNamingKodiExtendedOpts.Text = strExtendedImages
 
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
@@ -6759,7 +5923,7 @@ Public Class dlgSettings
         Me.gbMovieSourcesFileNamingExpertSingleOptionalOpts.Text = strOptionalSettings
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = strOptionalSettings
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Text = strOptionalSettings
-        Me.gbMovieSourcesFileNamingXBMCOptionalOpts.Text = strOptionalSettings
+        Me.gbMovieSourcesFileNamingKodiOptionalOpts.Text = strOptionalSettings
 
         'Original Title
         Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
@@ -7233,10 +6397,6 @@ Public Class dlgSettings
         Me.LoadTVScraperOptionsOrdering()
     End Sub
 
-    Private Sub tcFileSystemCleaner_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcFileSystemCleaner.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub ToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) 'TODO: check why no Handles (maybe not needed)
         currText = DirectCast(sender, ToolStripButton).Text
         Me.FillList(currText)
@@ -7260,56 +6420,28 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieScraperCastLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperCastLimit.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVASBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVASBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVASBannerHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVASBannerHeight.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVASBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVASBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVASBannerWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVASBannerWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVASPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVASPosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVASPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVASPosterHeight.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVASPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVASPosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVASPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVASPosterWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVASFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVASFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVASFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVASFanartHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVASFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVASFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVASFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVASFanartWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSourcesBackdropsFolderPath.TextChanged
@@ -7327,10 +6459,6 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieLevTolerance_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieLevTolerance.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperDefFIExt.TextChanged
         btnMovieScraperDefFIExtAdd.Enabled = Not String.IsNullOrEmpty(txtMovieScraperDefFIExt.Text) AndAlso Not Me.lstMovieScraperDefFIExt.Items.Contains(If(txtMovieScraperDefFIExt.Text.StartsWith("."), txtMovieScraperDefFIExt.Text, String.Concat(".", txtMovieScraperDefFIExt.Text)))
         If btnMovieScraperDefFIExtAdd.Enabled Then
@@ -7343,270 +6471,111 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVEpisodeFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVEpisodeFanartHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVEpisodeFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodeFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVEpisodeFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVEpisodeFanartWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVEpisodePosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodePosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVEpisodePosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVEpisodePosterHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVEpisodePosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodePosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVEpisodePosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVEpisodePosterWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieBannerHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieBannerWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieSetBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetBannerHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieSetBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetBannerWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVShowEFanartsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowEFanartsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowEFanartsHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowEFanartsHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVShowEFanartsLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowEFanartsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowEFanartsLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowEFanartsLimit.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVShowEFanartsWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowEFanartsWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowEFanartsWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowEFanartsWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieEFanartsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEFanartsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieEFanartsHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieEFanartsHeight.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieEFanartsLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEFanartsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieEFanartsLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieEFanartsLimit.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieEFanartsWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEFanartsWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieEFanartsWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieEFanartsWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieEThumbsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEThumbsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieEThumbsHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieEThumbsHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieEThumbsLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEThumbsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieEThumbsLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieEThumbsLimit.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieEThumbsWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEThumbsWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieEThumbsWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieEThumbsWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieFanartHeight.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieFanartWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieSetFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieSetFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartHeight.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieSetFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperGenreLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
-
-    Private Sub txtMovieScraperGenreLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperGenreLimit.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-    Private Sub txtMovieScraperStudioLimit_TextChanged(sender As Object, e As EventArgs) Handles txtMovieScraperStudioLimit.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
     Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieScraperOutlineLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperOutlineLimit.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMoviePosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMoviePosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMoviePosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMoviePosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMoviePosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMoviePosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieSetPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetPosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtMovieSetPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetPosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtProxyDomain_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyDomain.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtProxyPassword_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPassword.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtProxyPort.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtProxyPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPort.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtProxyUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyUsername.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieScraperDurationRuntimeFormat_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperDurationRuntimeFormat.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVScraperDurationRuntimeFormat_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVScraperDurationRuntimeFormat.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVSeasonBannerHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSeasonBannerHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVSeasonBannerWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSeasonBannerWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVSeasonFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSeasonFanartHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVSeasonFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSeasonFanartWidth.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVSeasonPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSeasonPosterHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtTVSeasonPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSeasonPosterWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
@@ -7621,48 +6590,24 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowBannerHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowBannerHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVShowBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowBannerWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowBannerWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVShowFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowFanartHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVShowFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowFanartWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVShowPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowPosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowPosterHeight.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtTVShowPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowPosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtTVShowPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowPosterWidth.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtMovieSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSkipLessThan.KeyPress
@@ -7691,10 +6636,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub txtMovieYAMJWatchedFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieYAMJWatchedFolder.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub ValidateTVShowMatching()
         If Not String.IsNullOrEmpty(Me.txtTVSourcesRegexTVShowMatchingRegex.Text) AndAlso (String.IsNullOrEmpty(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Integer.TryParse(Me.txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0)) Then
             Me.btnTVSourcesRegexTVShowMatchingAdd.Enabled = True
@@ -7720,10 +6661,6 @@ Public Class dlgSettings
             Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
         End Function
     End Class
-
-    Private Sub txtMovieSetPathMSAA_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPathMSAA.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
 
     Private Sub btnMovieSetPathMSAABrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetPathMSAABrowse.Click
         Try
@@ -7783,14 +6720,6 @@ Public Class dlgSettings
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
-
-    Private Sub cbGeneralDaemonDrive_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGeneralDaemonDrive.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtGeneralDaemonPath_TextChanged(sender As Object, e As EventArgs) Handles txtGeneralDaemonPath.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs) Handles btnGeneralDaemonPathBrowse.Click
@@ -7879,237 +6808,13 @@ Public Class dlgSettings
         Me.txtMovieTrailerExpertVTS.Enabled = Me.chkMovieUseExpert.Checked
     End Sub
 
-    Private Sub chkMovieActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertSingle.CheckedChanged, chkTVShowActorThumbsExpert.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieActorThumbsExtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertSingle.TextChanged, txtTVShowActorThumbsExtExpert.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertSingle.TextChanged, txtTVShowBannerExpert.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertSingle.TextChanged, txtTVShowCharacterArtExpert.TextChanged, txtTVShowPosterExpert.TextChanged, txtTVShowNFOExpert.TextChanged, txtTVShowLandscapeExpert.TextChanged, txtTVShowFanartExpert.TextChanged, txtTVShowClearLogoExpert.TextChanged, txtTVShowClearArtExpert.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearLogoExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearLogoExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieDiscArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieDiscArtExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieExtrafanartsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertSingle.CheckedChanged, chkTVShowExtrafanartsExpert.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieExtrathumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrathumbsExpertSingle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieFanartExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieFanartExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieLandscapeExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieLandscapeExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieNFOExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieNFOExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMoviePosterExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieStackExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieStackExpertSingle.CheckedChanged
         Me.chkMovieUnstackExpertSingle.Enabled = Me.chkMovieStackExpertSingle.Checked AndAlso Me.chkMovieStackExpertSingle.Enabled
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtMovieTrailerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieTrailerExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieUnstackExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUnstackExpertSingle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieActorThumbsExpertMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertMulti.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieActorThumbsExtExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieBannerExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearArtExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearLogoExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearLogoExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieDiscArtExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieDiscArtExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieFanartExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieFanartExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieLandscapeExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieLandscapeExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieNFOExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieNFOExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMoviePosterExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieStackExpertMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieStackExpertMulti.CheckedChanged
         Me.chkMovieUnstackExpertMulti.Enabled = Me.chkMovieStackExpertMulti.Checked AndAlso Me.chkMovieStackExpertMulti.Enabled
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieTrailerExpertMulti_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieTrailerExpertMulti.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieUnstackExpertMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUnstackExpertMulti.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieActorThumbsExpertVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertVTS.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieActorThumbsExtExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieBannerExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearArtExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearLogoExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearLogoExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieDiscArtExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieDiscArtExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieExtrafanartsExpertVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertVTS.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieExtrathumbsExpertVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrathumbsExpertVTS.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieFanartExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieFanartExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieLandscapeExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieLandscapeExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieNFOExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieNFOExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMoviePosterExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieRecognizeVTSExpertVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieRecognizeVTSExpertVTS.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieTrailerExpertVTS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieTrailerExpertVTS.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieUseBaseDirectoryExpertVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBaseDirectoryExpertVTS.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieActorThumbsExpertBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsExpertBDMV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieActorThumbsExtExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieActorThumbsExtExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieBannerExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieBannerExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearArtExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearArtExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieClearLogoExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieClearLogoExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieDiscArtExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieDiscArtExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieExtrafanartsExpertBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsExpertBDMV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieExtrathumbsExpertBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrathumbsExpertBDMV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieFanartExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieFanartExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieLandscapeExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieLandscapeExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieNFOExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieNFOExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMoviePosterExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieTrailerExpertBDMV_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieTrailerExpertBDMV.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieUseBaseDirectoryExpertBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBaseDirectoryExpertBDMV.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJCompatibleSets.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -8136,70 +6841,6 @@ Public Class dlgSettings
         Me.txtMovieSetPosterExpertSingle.Enabled = Me.chkMovieSetUseExpert.Checked
     End Sub
 
-    Private Sub txtMovieSetBannerExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetClearArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearArtExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetClearLogoExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearLogoExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetDiscArtExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetDiscArtExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetFanartExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetLandscapeExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetLandscapeExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetNFOExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetNFOExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetPosterExpertSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterExpertSingle.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetBannerExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetClearArtExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearArtExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetClearLogoExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetClearLogoExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetDiscArtExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetDiscArtExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetFanartExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetLandscapeExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetLandscapeExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetNFOExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetNFOExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieSetPosterExpertParent_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterExpertParent.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -8222,26 +6863,6 @@ Public Class dlgSettings
             Me.chkTVShowFanartBoxee.Checked = True
             Me.chkTVShowPosterBoxee.Checked = True
         End If
-    End Sub
-
-    Private Sub chkTVEpisodePosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterBoxee.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonPosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterBoxee.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowBannerBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerBoxee.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowFanartBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartBoxee.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowPosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterBoxee.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
@@ -8299,75 +6920,12 @@ Public Class dlgSettings
             Me.chkTVShowPosterFrodo.Checked = True
         End If
     End Sub
-    Private Sub chkTVEpisodeActorThumbsFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeActorThumbsFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVEpisodePosterFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonBannerFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonBannerFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonFanartFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonFanartFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonLandscapeAD.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonPosterFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowActorThumbsFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowActorThumbsFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowBannerFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowCharacterArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowCharacterArtAD.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowClearArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearArtAD.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowClearLogoXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearLogoAD.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowExtrafanartsXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowExtrafanartsFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowFanartFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowLandscapeAD.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowPosterFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
 
     Private Sub chkTVShowTVThemeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVXBMCThemeEnable.CheckedChanged
         Me.SetApplyButton(True)
 
         Me.btnTVXBMCThemeCustomPathBrowse.Enabled = Me.chkTVXBMCThemeEnable.Checked
         Me.txtTVXBMCThemeCustomPath.Enabled = Me.chkTVXBMCThemeEnable.Checked
-    End Sub
-
-    Private Sub txtTVShowTVThemeFolderXBMC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVXBMCThemeCustomPath.TextChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub btnTVShowTVThemeBrowse_Click(sender As Object, e As EventArgs) Handles btnTVXBMCThemeCustomPathBrowse.Click
@@ -8440,140 +6998,8 @@ Public Class dlgSettings
         Me.txtTVShowPosterExpert.Enabled = Me.chkTVUseExpert.Checked
     End Sub
 
-    Private Sub chkTVEpisodePosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonBannerYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonBannerYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonFanartYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonFanartYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVSeasonPosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowBannerYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowFanartYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVShowPosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterYAMJ.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieGeneralCustomMarker1_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker1.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieGeneralCustomMarker2_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker2.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieGeneralCustomMarker3_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker3.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtMovieGeneralCustomMarker4_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker4.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetGeneralMarkNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetGeneralMarkNew.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetBannerMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetClearArtMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearArtMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetClearLogoMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearLogoMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetFanartMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetLandscapeMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLandscapeMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetNFOMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetNFOMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetPosterMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterMSAA.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLockPlot.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLockTitle.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetBannerPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetClearArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearArtOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetClearLogoOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearLogoOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieSetClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClickScrape.CheckedChanged
         chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetClickScrapeAsk_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClickScrapeAsk.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetFanartPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLandscapeOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetPosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterOverwrite.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetPosterPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterPrefOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetScraperPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetScraperPlot.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetScraperTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetScraperTitle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -8657,6 +7083,26 @@ Public Class dlgSettings
         Me.Cursor = Cursors.Default
     End Sub
 
+    Private Sub pbTVSourcesTvTunesInfo_Click(sender As Object, e As EventArgs) Handles pbTVSourcesTvTunesInfo.Click
+        If Master.isWindows Then
+            Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:TvTunes"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
+    Private Sub pbTVSourcesTvTunesInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbTVSourcesTvTunesInfo.MouseEnter
+        Me.Cursor = Cursors.Hand
+    End Sub
+
+    Private Sub pbTVSourcesTvTunesInfo_MouseLeave(sender As Object, e As EventArgs) Handles pbTVSourcesTvTunesInfo.MouseLeave
+        Me.Cursor = Cursors.Default
+    End Sub
+
     Private Sub btnMovieSetScraperMapperAdd_Click(sender As Object, e As EventArgs) Handles btnMovieSetScraperTitleRenamerAdd.Click
         Dim i As Integer = dgvMovieSetScraperTitleRenamer.Rows.Add(New Object() {String.Empty, String.Empty})
         dgvMovieSetScraperTitleRenamer.Rows(i).Tag = False
@@ -8700,18 +7146,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub cbMovieImagesPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMovieImagesPrefLanguage.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieImagesGetEnglishImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesGetEnglishImages.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieImagesGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesGetBlankImages.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMovieSetImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesPrefLanguageOnly.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -8722,18 +7156,6 @@ Public Class dlgSettings
             Me.chkMovieSetImagesGetBlankImages.Checked = False
             Me.chkMovieSetImagesGetEnglishImages.Checked = False
         End If
-    End Sub
-
-    Private Sub cbMovieSetImagesPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMovieSetImagesPrefLanguage.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetImagesGetEnglishImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesGetEnglishImages.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieSetImagesGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesGetBlankImages.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkTVImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesPrefLanguageOnly.CheckedChanged
@@ -8748,23 +7170,426 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub cbTVImagesPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTVImagesPrefLanguage.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
+    Private Sub EnableApplyButton(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        cbGeneralDaemonDrive.SelectedIndexChanged, _
+        cbGeneralDateTime.SelectedIndexChanged, _
+        cbGeneralMovieSetTheme.SelectedIndexChanged, _
+        cbGeneralMovieTheme.SelectedIndexChanged, _
+        cbGeneralTVEpisodeTheme.SelectedIndexChanged, _
+        cbGeneralTVShowTheme.SelectedIndexChanged, _
+        cbMovieBannerPrefSize.SelectedIndexChanged, _
+        cbMovieEFanartsPrefSize.SelectedIndexChanged, _
+        cbMovieEThumbsPrefSize.SelectedIndexChanged, _
+        cbMovieFanartPrefSize.SelectedIndexChanged, _
+        cbMovieImagesPrefLanguage.SelectedIndexChanged, _
+        cbMovieLanguageOverlay.SelectedIndexChanged, _
+        cbMoviePosterPrefSize.SelectedIndexChanged, _
+        cbMovieScraperCertLang.SelectedIndexChanged, _
+        cbMovieSetBannerPrefSize.SelectedIndexChanged, _
+        cbMovieSetFanartPrefSize.SelectedIndexChanged, _
+        cbMovieSetImagesPrefLanguage.SelectedIndexChanged, _
+        cbMovieSetPosterPrefSize.SelectedIndexChanged, _
+        cbMovieTrailerMinVideoQual.SelectedIndexChanged, _
+        cbMovieTrailerPrefVideoQual.SelectedIndexChanged, _
+        cbTVASBannerPrefType.SelectedIndexChanged, _
+        cbTVASFanartPrefSize.SelectedIndexChanged, _
+        cbTVASPosterPrefSize.SelectedIndexChanged, _
+        cbTVEpisodeFanartPrefSize.SelectedIndexChanged, _
+        cbTVEpisodePosterPrefSize.SelectedIndexChanged, _
+        cbTVGeneralLang.SelectedIndexChanged, _
+        cbTVImagesPrefLanguage.SelectedIndexChanged, _
+        cbTVLanguageOverlay.SelectedIndexChanged, _
+        cbTVScraperOptionsOrdering.SelectedIndexChanged, _
+        cbTVSeasonBannerPrefType.SelectedIndexChanged, _
+        cbTVSeasonFanartPrefSize.SelectedIndexChanged, _
+        cbTVSeasonPosterPrefSize.SelectedIndexChanged, _
+        cbTVShowBannerPrefType.SelectedIndexChanged, _
+        cbTVShowEFanartsPrefSize.SelectedIndexChanged, _
+        cbTVShowFanartPrefSize.SelectedIndexChanged, _
+        cbTVShowPosterPrefSize.SelectedIndexChanged, _
+        chkCleanDotFanartJPG.CheckedChanged, _
+        chkCleanExtrathumbs.CheckedChanged, _
+        chkCleanFanartJPG.CheckedChanged, _
+        chkCleanFolderJPG.CheckedChanged, _
+        chkCleanMovieFanartJPG.CheckedChanged, _
+        chkCleanMovieJPG.CheckedChanged, _
+        chkCleanMovieNFO.CheckedChanged, _
+        chkCleanMovieNFOb.CheckedChanged, _
+        chkCleanMovieNameJPG.CheckedChanged, _
+        chkCleanMovieTBN.CheckedChanged, _
+        chkCleanMovieTBNb.CheckedChanged, _
+        chkCleanPosterJPG.CheckedChanged, _
+        chkCleanPosterTBN.CheckedChanged, _
+        chkFileSystemCleanerWhitelist.CheckedChanged, _
+        chkGeneralCheckUpdates.CheckedChanged, _
+        chkGeneralDateAddedIgnoreNFO.CheckedChanged, _
+        chkGeneralDigitGrpSymbolVotes.CheckedChanged, _
+        chkGeneralDoubleClickScrape.CheckedChanged, _
+        chkGeneralImagesGlassOverlay.CheckedChanged, _
+        chkGeneralOverwriteNfo.CheckedChanged, _
+        chkGeneralShowGenresText.CheckedChanged, _
+        chkGeneralShowImgDims.CheckedChanged, _
+        chkGeneralShowImgNames.CheckedChanged, _
+        chkGeneralShowLangFlags.CheckedChanged, _
+        chkGeneralSourceFromFolder.CheckedChanged, _
+        chkMovieActorThumbsExpertBDMV.CheckedChanged, _
+        chkMovieActorThumbsExpertMulti.CheckedChanged, _
+        chkMovieActorThumbsExpertSingle.CheckedChanged, _
+        chkMovieActorThumbsExpertVTS.CheckedChanged, _
+        chkMovieActorThumbsOverwrite.CheckedChanged, _
+        chkMovieBannerOverwrite.CheckedChanged, _
+        chkMovieBannerPrefOnly.CheckedChanged, _
+        chkMovieCleanDB.CheckedChanged, _
+        chkMovieClearArtOverwrite.CheckedChanged, _
+        chkMovieClearLogoOverwrite.CheckedChanged, _
+        chkMovieClickScrapeAsk.CheckedChanged, _
+        chkMovieDiscArtOverwrite.CheckedChanged, _
+        chkMovieEFanartsOverwrite.CheckedChanged, _
+        chkMovieEFanartsPrefOnly.CheckedChanged, _
+        chkMovieEThumbsOverwrite.CheckedChanged, _
+        chkMovieEThumbsPrefOnly.CheckedChanged, _
+        chkMovieExtrafanartsExpertBDMV.CheckedChanged, _
+        chkMovieExtrafanartsExpertSingle.CheckedChanged, _
+        chkMovieExtrafanartsExpertVTS.CheckedChanged, _
+        chkMovieExtrathumbsExpertBDMV.CheckedChanged, _
+        chkMovieExtrathumbsExpertSingle.CheckedChanged, _
+        chkMovieExtrathumbsExpertVTS.CheckedChanged, _
+        chkMovieFanartOverwrite.CheckedChanged, _
+        chkMovieFanartPrefOnly.CheckedChanged, _
+        chkMovieGeneralIgnoreLastScan.CheckedChanged, _
+        chkMovieGeneralMarkNew.CheckedChanged, _
+        chkMovieImagesDisplayImageSelect.CheckedChanged, _
+        chkMovieImagesGetBlankImages.CheckedChanged, _
+        chkMovieImagesGetEnglishImages.CheckedChanged, _
+        chkMovieImagesNotSaveURLToNfo.CheckedChanged, _
+        chkMovieLandscapeOverwrite.CheckedChanged, _
+        chkMovieLockActors.CheckedChanged, _
+        chkMovieLockCert.CheckedChanged, _
+        chkMovieLockCollectionID.CheckedChanged, _
+        chkMovieLockCollections.CheckedChanged, _
+        chkMovieLockCountry.CheckedChanged, _
+        chkMovieLockCredits.CheckedChanged, _
+        chkMovieLockDirector.CheckedChanged, _
+        chkMovieLockGenre.CheckedChanged, _
+        chkMovieLockLanguageA.CheckedChanged, _
+        chkMovieLockLanguageV.CheckedChanged, _
+        chkMovieLockMPAA.CheckedChanged, _
+        chkMovieLockOriginalTitle.CheckedChanged, _
+        chkMovieLockOutline.CheckedChanged, _
+        chkMovieLockPlot.CheckedChanged, _
+        chkMovieLockRating.CheckedChanged, _
+        chkMovieLockReleaseDate.CheckedChanged, _
+        chkMovieLockRuntime.CheckedChanged, _
+        chkMovieLockStudio.CheckedChanged, _
+        chkMovieLockTagline.CheckedChanged, _
+        chkMovieLockTags.CheckedChanged, _
+        chkMovieLockTitle.CheckedChanged, _
+        chkMovieLockTop250.CheckedChanged, _
+        chkMovieLockTrailer.CheckedChanged, _
+        chkMovieLockVotes.CheckedChanged, _
+        chkMovieLockYear.CheckedChanged, _
+        chkMoviePosterOverwrite.CheckedChanged, _
+        chkMoviePosterPrefOnly.CheckedChanged, _
+        chkMovieRecognizeVTSExpertVTS.CheckedChanged, _
+        chkMovieScanOrderModify.CheckedChanged, _
+        chkMovieScraperCastWithImg.CheckedChanged, _
+        chkMovieScraperCertFSK.CheckedChanged, _
+        chkMovieScraperCertForMPAAFallback.CheckedChanged, _
+        chkMovieScraperCertOnlyValue.CheckedChanged, _
+        chkMovieScraperCleanFields.CheckedChanged, _
+        chkMovieScraperCleanPlotOutline.CheckedChanged, _
+        chkMovieScraperCollectionsAuto.CheckedChanged, _
+        chkMovieScraperCountry.CheckedChanged, _
+        chkMovieScraperCredits.CheckedChanged, _
+        chkMovieScraperDetailView.CheckedChanged, _
+        chkMovieScraperDirector.CheckedChanged, _
+        chkMovieScraperMPAA.CheckedChanged, _
+        chkMovieScraperMetaDataIFOScan.CheckedChanged, _
+        chkMovieScraperMetaDataScan.CheckedChanged, _
+        chkMovieScraperOriginalTitle.CheckedChanged, _
+        chkMovieScraperOutline.CheckedChanged, _
+        chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged, _
+        chkMovieScraperRating.CheckedChanged, _
+        chkMovieScraperRelease.CheckedChanged, _
+        chkMovieScraperReleaseFormat.CheckedChanged, _
+        chkMovieScraperRuntime.CheckedChanged, _
+        chkMovieScraperStudioWithImg.CheckedChanged, _
+        chkMovieScraperTagline.CheckedChanged, _
+        chkMovieScraperTitle.CheckedChanged, _
+        chkMovieScraperTop250.CheckedChanged, _
+        chkMovieScraperTrailer.CheckedChanged, _
+        chkMovieScraperVotes.CheckedChanged, _
+        chkMovieScraperXBMCTrailerFormat.CheckedChanged, _
+        chkMovieScraperYear.CheckedChanged, _
+        chkMovieSetBannerMSAA.CheckedChanged, _
+        chkMovieSetBannerOverwrite.CheckedChanged, _
+        chkMovieSetBannerPrefOnly.CheckedChanged, _
+        chkMovieSetCleanDB.CheckedChanged, _
+        chkMovieSetCleanFiles.CheckedChanged, _
+        chkMovieSetClearArtMSAA.CheckedChanged, _
+        chkMovieSetClearArtOverwrite.CheckedChanged, _
+        chkMovieSetClearLogoMSAA.CheckedChanged, _
+        chkMovieSetClearLogoOverwrite.CheckedChanged, _
+        chkMovieSetClickScrapeAsk.CheckedChanged, _
+        chkMovieSetFanartMSAA.CheckedChanged, _
+        chkMovieSetFanartOverwrite.CheckedChanged, _
+        chkMovieSetFanartPrefOnly.CheckedChanged, _
+        chkMovieSetGeneralMarkNew.CheckedChanged, _
+        chkMovieSetImagesGetBlankImages.CheckedChanged, _
+        chkMovieSetImagesGetEnglishImages.CheckedChanged, _
+        chkMovieSetLandscapeMSAA.CheckedChanged, _
+        chkMovieSetLandscapeOverwrite.CheckedChanged, _
+        chkMovieSetLockPlot.CheckedChanged, _
+        chkMovieSetLockTitle.CheckedChanged, _
+        chkMovieSetNFOMSAA.CheckedChanged, _
+        chkMovieSetPosterMSAA.CheckedChanged, _
+        chkMovieSetPosterOverwrite.CheckedChanged, _
+        chkMovieSetPosterPrefOnly.CheckedChanged, _
+        chkMovieSetScraperPlot.CheckedChanged, _
+        chkMovieSetScraperTitle.CheckedChanged, _
+        chkMovieSortBeforeScan.CheckedChanged, _
+        chkMovieSourcesBackdropsAuto.CheckedChanged, _
+        chkMovieThemeOverwrite.CheckedChanged, _
+        chkMovieTrailerDeleteExisting.CheckedChanged, _
+        chkMovieTrailerOverwrite.CheckedChanged, _
+        chkMovieUnstackExpertMulti.CheckedChanged, _
+        chkMovieUnstackExpertSingle.CheckedChanged, _
+        chkMovieUseBaseDirectoryExpertBDMV.CheckedChanged, _
+        chkMovieUseBaseDirectoryExpertVTS.CheckedChanged, _
+        chkMovieXBMCProtectVTSBDMV.CheckedChanged, _
+        chkMovieYAMJCompatibleSets.CheckedChanged, _
+        chkTVASBannerOverwrite.CheckedChanged, _
+        chkTVASFanartOverwrite.CheckedChanged, _
+        chkTVASLandscapeOverwrite.CheckedChanged, _
+        chkTVASPosterOverwrite.CheckedChanged, _
+        chkTVCleanDB.CheckedChanged, _
+        chkTVDisplayMissingEpisodes.CheckedChanged, _
+        chkTVEpisodeActorThumbsFrodo.CheckedChanged, _
+        chkTVEpisodeFanartOverwrite.CheckedChanged, _
+        chkTVEpisodePosterBoxee.CheckedChanged, _
+        chkTVEpisodePosterFrodo.CheckedChanged, _
+        chkTVEpisodePosterOverwrite.CheckedChanged, _
+        chkTVEpisodePosterYAMJ.CheckedChanged, _
+        chkTVGeneralIgnoreLastScan.CheckedChanged, _
+        chkTVGeneralMarkNewEpisodes.CheckedChanged, _
+        chkTVGeneralMarkNewShows.CheckedChanged, _
+        chkTVImagesDisplayImageSelect.CheckedChanged, _
+        chkTVImagesGetBlankImages.CheckedChanged, _
+        chkTVImagesGetEnglishImages.CheckedChanged, _
+        chkTVImagesNotSaveURLToNfo.CheckedChanged, _
+        chkTVLockEpisodeLanguageA.CheckedChanged, _
+        chkTVLockEpisodeLanguageV.CheckedChanged, _
+        chkTVLockEpisodePlot.CheckedChanged, _
+        chkTVLockEpisodeRating.CheckedChanged, _
+        chkTVLockEpisodeRuntime.CheckedChanged, _
+        chkTVLockEpisodeTitle.CheckedChanged, _
+        chkTVLockEpisodeVotes.CheckedChanged, _
+        chkTVLockShowGenre.CheckedChanged, _
+        chkTVLockShowMPAA.CheckedChanged, _
+        chkTVLockShowOriginalTitle.CheckedChanged, _
+        chkTVLockShowPlot.CheckedChanged, _
+        chkTVLockShowRating.CheckedChanged, _
+        chkTVLockShowRuntime.CheckedChanged, _
+        chkTVLockShowStatus.CheckedChanged, _
+        chkTVLockShowStudio.CheckedChanged, _
+        chkTVLockShowTitle.CheckedChanged, _
+        chkTVLockShowVotes.CheckedChanged, _
+        chkTVScanOrderModify.CheckedChanged, _
+        chkTVScraperEpisodeActors.CheckedChanged, _
+        chkTVScraperEpisodeAired.CheckedChanged, _
+        chkTVScraperEpisodeCredits.CheckedChanged, _
+        chkTVScraperEpisodeDirector.CheckedChanged, _
+        chkTVScraperEpisodeGuestStars.CheckedChanged, _
+        chkTVScraperEpisodePlot.CheckedChanged, _
+        chkTVScraperEpisodeRating.CheckedChanged, _
+        chkTVScraperEpisodeRuntime.CheckedChanged, _
+        chkTVScraperEpisodeTitle.CheckedChanged, _
+        chkTVScraperEpisodeVotes.CheckedChanged, _
+        chkTVScraperShowActors.CheckedChanged, _
+        chkTVScraperShowEpiGuideURL.CheckedChanged, _
+        chkTVScraperShowGenre.CheckedChanged, _
+        chkTVScraperShowMPAA.CheckedChanged, _
+        chkTVScraperShowOriginalTitle.CheckedChanged, _
+        chkTVScraperShowPlot.CheckedChanged, _
+        chkTVScraperShowPremiered.CheckedChanged, _
+        chkTVScraperShowRating.CheckedChanged, _
+        chkTVScraperShowStatus.CheckedChanged, _
+        chkTVScraperShowStudio.CheckedChanged, _
+        chkTVScraperShowTitle.CheckedChanged, _
+        chkTVScraperShowVotes.CheckedChanged, _
+        chkTVScraperUseDisplaySeasonEpisode.CheckedChanged, _
+        chkTVScraperUseSRuntimeForEp.CheckedChanged, _
+        chkTVSeasonBannerFrodo.CheckedChanged, _
+        chkTVSeasonBannerOverwrite.CheckedChanged, _
+        chkTVSeasonBannerYAMJ.CheckedChanged, _
+        chkTVSeasonFanartFrodo.CheckedChanged, _
+        chkTVSeasonFanartOverwrite.CheckedChanged, _
+        chkTVSeasonFanartYAMJ.CheckedChanged, _
+        chkTVSeasonLandscapeAD.CheckedChanged, _
+        chkTVSeasonLandscapeOverwrite.CheckedChanged, _
+        chkTVSeasonPosterBoxee.CheckedChanged, _
+        chkTVSeasonPosterFrodo.CheckedChanged, _
+        chkTVSeasonPosterOverwrite.CheckedChanged, _
+        chkTVSeasonPosterYAMJ.CheckedChanged, _
+        chkTVShowActorThumbsExpert.CheckedChanged, _
+        chkTVShowActorThumbsFrodo.CheckedChanged, _
+        chkTVShowBannerBoxee.CheckedChanged, _
+        chkTVShowBannerFrodo.CheckedChanged, _
+        chkTVShowBannerOverwrite.CheckedChanged, _
+        chkTVShowBannerYAMJ.CheckedChanged, _
+        chkTVShowCharacterArtAD.CheckedChanged, _
+        chkTVShowCharacterArtOverwrite.CheckedChanged, _
+        chkTVShowClearArtAD.CheckedChanged, _
+        chkTVShowClearArtOverwrite.CheckedChanged, _
+        chkTVShowClearLogoAD.CheckedChanged, _
+        chkTVShowClearLogoOverwrite.CheckedChanged, _
+        chkTVShowEFanartsOverwrite.CheckedChanged, _
+        chkTVShowEFanartsPrefSizeOnly.CheckedChanged, _
+        chkTVShowExtrafanartsExpert.CheckedChanged, _
+        chkTVShowExtrafanartsFrodo.CheckedChanged, _
+        chkTVShowFanartBoxee.CheckedChanged, _
+        chkTVShowFanartFrodo.CheckedChanged, _
+        chkTVShowFanartOverwrite.CheckedChanged, _
+        chkTVShowFanartYAMJ.CheckedChanged, _
+        chkTVShowLandscapeAD.CheckedChanged, _
+        chkTVShowLandscapeOverwrite.CheckedChanged, _
+        chkTVShowPosterBoxee.CheckedChanged, _
+        chkTVShowPosterFrodo.CheckedChanged, _
+        chkTVShowPosterOverwrite.CheckedChanged, _
+        chkTVShowPosterYAMJ.CheckedChanged, _
+        tcFileSystemCleaner.SelectedIndexChanged, _
+        txtGeneralDaemonPath.TextChanged, _
+        txtMovieActorThumbsExtExpertBDMV.TextChanged, _
+        txtMovieActorThumbsExtExpertMulti.TextChanged, _
+        txtMovieActorThumbsExtExpertSingle.TextChanged, _
+        txtMovieActorThumbsExtExpertVTS.TextChanged, _
+        txtMovieBannerExpertBDMV.TextChanged, _
+        txtMovieBannerExpertMulti.TextChanged, _
+        txtMovieBannerExpertSingle.TextChanged, _
+        txtMovieBannerExpertVTS.TextChanged, _
+        txtMovieBannerHeight.TextChanged, _
+        txtMovieBannerWidth.TextChanged, _
+        txtMovieClearArtExpertBDMV.TextChanged, _
+        txtMovieClearArtExpertMulti.TextChanged, _
+        txtMovieClearArtExpertSingle.TextChanged, _
+        txtMovieClearArtExpertVTS.TextChanged, _
+        txtMovieClearLogoExpertBDMV.TextChanged, _
+        txtMovieClearLogoExpertMulti.TextChanged, _
+        txtMovieClearLogoExpertSingle.TextChanged, _
+        txtMovieClearLogoExpertVTS.TextChanged, _
+        txtMovieDiscArtExpertBDMV.TextChanged, _
+        txtMovieDiscArtExpertMulti.TextChanged, _
+        txtMovieDiscArtExpertSingle.TextChanged, _
+        txtMovieDiscArtExpertVTS.TextChanged, _
+        txtMovieEFanartsHeight.TextChanged, _
+        txtMovieEFanartsLimit.TextChanged, _
+        txtMovieEFanartsWidth.TextChanged, _
+        txtMovieEThumbsHeight.TextChanged, _
+        txtMovieEThumbsLimit.TextChanged, _
+        txtMovieEThumbsWidth.TextChanged, _
+        txtMovieFanartExpertBDMV.TextChanged, _
+        txtMovieFanartExpertMulti.TextChanged, _
+        txtMovieFanartExpertSingle.TextChanged, _
+        txtMovieFanartExpertVTS.TextChanged, _
+        txtMovieFanartHeight.TextChanged, _
+        txtMovieFanartWidth.TextChanged, _
+        txtMovieGeneralCustomMarker1.TextChanged, _
+        txtMovieGeneralCustomMarker2.TextChanged, _
+        txtMovieGeneralCustomMarker3.TextChanged, _
+        txtMovieGeneralCustomMarker4.TextChanged, _
+        txtMovieLandscapeExpertBDMV.TextChanged, _
+        txtMovieLandscapeExpertMulti.TextChanged, _
+        txtMovieLandscapeExpertSingle.TextChanged, _
+        txtMovieLandscapeExpertVTS.TextChanged, _
+        txtMovieLevTolerance.TextChanged, _
+        txtMovieNFOExpertBDMV.TextChanged, _
+        txtMovieNFOExpertMulti.TextChanged, _
+        txtMovieNFOExpertSingle.TextChanged, _
+        txtMovieNFOExpertVTS.TextChanged, _
+        txtMoviePosterExpertBDMV.TextChanged, _
+        txtMoviePosterExpertMulti.TextChanged, _
+        txtMoviePosterExpertSingle.TextChanged, _
+        txtMoviePosterExpertVTS.TextChanged, _
+        txtMoviePosterHeight.TextChanged, _
+        txtMoviePosterWidth.TextChanged, _
+        txtMovieScraperCastLimit.TextChanged, _
+        txtMovieScraperDurationRuntimeFormat.TextChanged, _
+        txtMovieScraperGenreLimit.TextChanged, _
+        txtMovieScraperMPAANotRated.TextChanged, _
+        txtMovieScraperOutlineLimit.TextChanged, _
+        txtMovieScraperStudioLimit.TextChanged, _
+        txtMovieSetBannerExpertParent.TextChanged, _
+        txtMovieSetBannerExpertSingle.TextChanged, _
+        txtMovieSetBannerHeight.TextChanged, _
+        txtMovieSetBannerWidth.TextChanged, _
+        txtMovieSetClearArtExpertParent.TextChanged, _
+        txtMovieSetClearArtExpertSingle.TextChanged, _
+        txtMovieSetClearLogoExpertParent.TextChanged, _
+        txtMovieSetClearLogoExpertSingle.TextChanged, _
+        txtMovieSetDiscArtExpertParent.TextChanged, _
+        txtMovieSetDiscArtExpertSingle.TextChanged, _
+        txtMovieSetFanartExpertParent.TextChanged, _
+        txtMovieSetFanartExpertSingle.TextChanged, _
+        txtMovieSetFanartHeight.TextChanged, _
+        txtMovieSetFanartWidth.TextChanged, _
+        txtMovieSetLandscapeExpertParent.TextChanged, _
+        txtMovieSetLandscapeExpertSingle.TextChanged, _
+        txtMovieSetNFOExpertParent.TextChanged, _
+        txtMovieSetNFOExpertSingle.TextChanged, _
+        txtMovieSetPathMSAA.TextChanged, _
+        txtMovieSetPosterExpertParent.TextChanged, _
+        txtMovieSetPosterExpertSingle.TextChanged, _
+        txtMovieSetPosterHeight.TextChanged, _
+        txtMovieSetPosterWidth.TextChanged, _
+        txtMovieTrailerExpertBDMV.TextChanged, _
+        txtMovieTrailerExpertMulti.TextChanged, _
+        txtMovieTrailerExpertSingle.TextChanged, _
+        txtMovieTrailerExpertVTS.TextChanged, _
+        txtMovieXBMCThemeCustomPath.TextChanged, _
+        txtMovieXBMCThemeSubDir.TextChanged, _
+        txtMovieYAMJWatchedFolder.TextChanged, _
+        txtProxyDomain.TextChanged, _
+        txtProxyPassword.TextChanged, _
+        txtProxyPort.TextChanged, _
+        txtProxyUsername.TextChanged, _
+        txtTVASBannerHeight.TextChanged, _
+        txtTVASBannerWidth.TextChanged, _
+        txtTVASFanartHeight.TextChanged, _
+        txtTVASFanartWidth.TextChanged, _
+        txtTVASPosterHeight.TextChanged, _
+        txtTVASPosterWidth.TextChanged, _
+        txtTVEpisodeFanartHeight.TextChanged, _
+        txtTVEpisodeFanartWidth.TextChanged, _
+        txtTVEpisodePosterHeight.TextChanged, _
+        txtTVEpisodePosterWidth.TextChanged, _
+        txtTVScraperDurationRuntimeFormat.TextChanged, _
+        txtTVSeasonBannerHeight.TextChanged, _
+        txtTVSeasonBannerWidth.TextChanged, _
+        txtTVSeasonFanartHeight.TextChanged, _
+        txtTVSeasonFanartWidth.TextChanged, _
+        txtTVSeasonPosterHeight.TextChanged, _
+        txtTVSeasonPosterWidth.TextChanged, _
+        txtTVShowActorThumbsExtExpert.TextChanged, _
+        txtTVShowBannerExpert.TextChanged, _
+        txtTVShowBannerHeight.TextChanged, _
+        txtTVShowBannerWidth.TextChanged, _
+        txtTVShowCharacterArtExpert.TextChanged, _
+        txtTVShowClearArtExpert.TextChanged, _
+        txtTVShowClearLogoExpert.TextChanged, _
+        txtTVShowEFanartsHeight.TextChanged, _
+        txtTVShowEFanartsLimit.TextChanged, _
+        txtTVShowEFanartsWidth.TextChanged, _
+        txtTVShowFanartExpert.TextChanged, _
+        txtTVShowFanartHeight.TextChanged, _
+        txtTVShowFanartWidth.TextChanged, _
+        txtTVShowLandscapeExpert.TextChanged, _
+        txtTVShowNFOExpert.TextChanged, _
+        txtTVShowPosterExpert.TextChanged, _
+        txtTVShowPosterHeight.TextChanged, _
+        txtTVShowPosterWidth.TextChanged, _
+        txtTVXBMCThemeCustomPath.TextChanged, _
+        txtTVXBMCThemeSubDir.TextChanged
 
-    Private Sub chkTVImagesGetEnglishImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesGetEnglishImages.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVImagesGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesGetBlankImages.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVImagesDisplayImageSelect_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesDisplayImageSelect.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVImagesNotSaveURLToNfo_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesNotSaveURLToNfo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
