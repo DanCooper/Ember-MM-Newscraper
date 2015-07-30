@@ -120,6 +120,10 @@ Public Class frmSettingsHolder_TV
         End If
     End Sub
 
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
+    End Sub
+
     Private Sub SettingsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
         chkFallBackEng.CheckedChanged, _
         chkGetAdultItems.CheckedChanged, _
