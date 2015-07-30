@@ -6095,6 +6095,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowClearLogoExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowClearLogoExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowClearLogoExtended = value
+        End Set
+    End Property
+
     Public Property TVShowClearArtAD() As Boolean
         Get
             Return Settings._XMLSettings.TVShowClearArtAD
@@ -6104,12 +6113,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowClearArtExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowClearArtExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowClearArtExtended = value
+        End Set
+    End Property
+
     Public Property TVShowCharacterArtAD() As Boolean
         Get
             Return Settings._XMLSettings.TVShowCharacterArtAD
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowCharacterArtAD = value
+        End Set
+    End Property
+
+    Public Property TVShowCharacterArtExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowCharacterArtExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowCharacterArtExtended = value
         End Set
     End Property
 
@@ -6140,12 +6167,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowLandscapeExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowLandscapeExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowLandscapeExtended = value
+        End Set
+    End Property
+
     Public Property TVSeasonLandscapeAD() As Boolean
         Get
             Return Settings._XMLSettings.TVSeasonLandscapeAD
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVSeasonLandscapeAD = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapeExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.TVSeasonLandscapeExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVSeasonLandscapeExtended = value
         End Set
     End Property
 
@@ -6385,16 +6430,16 @@ Public Class Settings
             Master.eSettings.TVEpisodePosterFrodo = True
             Master.eSettings.TVSeasonBannerFrodo = True
             Master.eSettings.TVSeasonFanartFrodo = True
-            Master.eSettings.TVSeasonLandscapeAD = True
+            Master.eSettings.TVSeasonLandscapeExtended = True
             Master.eSettings.TVSeasonPosterFrodo = True
             Master.eSettings.TVShowActorThumbsFrodo = True
             Master.eSettings.TVShowBannerFrodo = True
-            Master.eSettings.TVShowCharacterArtAD = True
-            Master.eSettings.TVShowClearArtAD = True
-            Master.eSettings.TVShowClearLogoAD = True
+            Master.eSettings.TVShowCharacterArtExtended = True
+            Master.eSettings.TVShowClearArtExtended = True
+            Master.eSettings.TVShowClearLogoExtended = True
             Master.eSettings.TVShowExtrafanartsFrodo = True
             Master.eSettings.TVShowFanartFrodo = True
-            Master.eSettings.TVShowLandscapeAD = True
+            Master.eSettings.TVShowLandscapeExtended = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
     End Sub
@@ -7309,7 +7354,7 @@ Public Class Settings
     End Function
 
     Public Function TVASLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD OrElse _
+        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
     End Function
 
@@ -7343,7 +7388,7 @@ Public Class Settings
     End Function
 
     Public Function TVSeasonLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD OrElse _
+        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonLandscapeExpert))
     End Function
 
@@ -7363,17 +7408,17 @@ Public Class Settings
     End Function
 
     Public Function TVShowCharacterArtAnyEnabled() As Boolean
-        Return TVShowCharacterArtAD OrElse _
+        Return TVShowCharacterArtAD OrElse TVShowCharacterArtExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowCharacterArtExpert))
     End Function
 
     Public Function TVShowClearArtAnyEnabled() As Boolean
-        Return TVShowClearArtAD OrElse _
+        Return TVShowClearArtAD OrElse TVShowClearArtExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearArtExpert))
     End Function
 
     Public Function TVShowClearLogoAnyEnabled() As Boolean
-        Return TVShowClearLogoAD OrElse _
+        Return TVShowClearLogoAD OrElse TVShowClearLogoExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
     End Function
 
@@ -7388,7 +7433,7 @@ Public Class Settings
     End Function
 
     Public Function TVShowLandscapeAnyEnabled() As Boolean
-        Return TVShowLandscapeAD OrElse _
+        Return TVShowLandscapeAD OrElse TVShowLandscapeExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowLandscapeExpert))
     End Function
 

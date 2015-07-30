@@ -3041,7 +3041,6 @@ Public Class dlgSettings
             Me.chkTVScraperShowEpiGuideURL.Checked = .TVScraperShowEpiGuideURL
             Me.chkTVScraperShowGenre.Checked = .TVScraperShowGenre
             Me.chkTVScraperShowMPAA.Checked = .TVScraperShowMPAA
-            Me.txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
             Me.chkTVScraperShowOriginalTitle.Checked = .TVScraperShowOriginalTitle
             Me.chkTVScraperShowPlot.Checked = .TVScraperShowPlot
             Me.chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
@@ -3129,6 +3128,7 @@ Public Class dlgSettings
             Me.txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
             Me.txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
             Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
+            Me.txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
             Me.txtTVShowEFanartsLimit.Text = .TVShowEFanartsLimit.ToString
             Me.txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
             Me.txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
@@ -3451,6 +3451,13 @@ Public Class dlgSettings
             Me.chkTVShowClearArtAD.Checked = .TVShowClearArtAD
             Me.chkTVShowClearLogoAD.Checked = .TVShowClearLogoAD
             Me.chkTVShowLandscapeAD.Checked = .TVShowLandscapeAD
+
+            '********* XBMC Extended Images settings ***********
+            Me.chkTVSeasonLandscapeExtended.Checked = .TVSeasonLandscapeExtended
+            Me.chkTVShowCharacterArtExtended.Checked = .TVShowCharacterArtExtended
+            Me.chkTVShowClearArtExtended.Checked = .TVShowClearArtExtended
+            Me.chkTVShowClearLogoExtended.Checked = .TVShowClearLogoExtended
+            Me.chkTVShowLandscapeExtended.Checked = .TVShowLandscapeExtended
 
             '************* XBMC TvTunes settings ***************
             Me.chkTVXBMCThemeEnable.Checked = .TVShowTVThemeXBMC
@@ -5231,6 +5238,13 @@ Public Class dlgSettings
             .TVShowTVThemeXBMC = Me.chkTVXBMCThemeEnable.Checked
             .TVShowTVThemeFolderXBMC = Me.txtTVXBMCThemeCustomPath.Text
 
+            '********* XBMC Extended Images settings ***********
+            .TVSeasonLandscapeExtended = Me.chkTVSeasonLandscapeExtended.Checked
+            .TVShowCharacterArtExtended = Me.chkTVShowCharacterArtExtended.Checked
+            .TVShowClearArtExtended = Me.chkTVShowClearArtExtended.Checked
+            .TVShowClearLogoExtended = Me.chkTVShowClearLogoExtended.Checked
+            .TVShowLandscapeExtended = Me.chkTVShowLandscapeExtended.Checked
+
             '****************** YAMJ settings ******************
             .TVUseYAMJ = Me.chkTVUseYAMJ.Checked
             .TVEpisodePosterYAMJ = Me.chkTVEpisodePosterYAMJ.Checked
@@ -6873,15 +6887,20 @@ Public Class dlgSettings
         Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonLandscapeExtended.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowCharacterArtAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowCharacterArtExtended.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowClearArtAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearArtExtended.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowClearLogoAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearLogoExtended.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowExtrafanartsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowLandscapeExtended.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVXBMCThemeEnable.Enabled = Me.chkTVUseFrodo.Checked
 
@@ -6891,15 +6910,20 @@ Public Class dlgSettings
             Me.chkTVSeasonBannerFrodo.Checked = False
             Me.chkTVSeasonFanartFrodo.Checked = False
             Me.chkTVSeasonLandscapeAD.Checked = False
+            Me.chkTVSeasonLandscapeExtended.Checked = False
             Me.chkTVSeasonPosterFrodo.Checked = False
             Me.chkTVShowActorThumbsFrodo.Checked = False
             Me.chkTVShowBannerFrodo.Checked = False
             Me.chkTVShowCharacterArtAD.Checked = False
+            Me.chkTVShowCharacterArtExtended.Checked = False
             Me.chkTVShowClearArtAD.Checked = False
+            Me.chkTVShowClearArtExtended.Checked = False
             Me.chkTVShowClearLogoAD.Checked = False
+            Me.chkTVShowClearLogoExtended.Checked = False
             Me.chkTVShowExtrafanartsFrodo.Checked = False
             Me.chkTVShowFanartFrodo.Checked = False
             Me.chkTVShowLandscapeAD.Checked = False
+            Me.chkTVShowLandscapeExtended.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
             Me.chkTVXBMCThemeEnable.Checked = False
         Else
@@ -6907,16 +6931,16 @@ Public Class dlgSettings
             Me.chkTVEpisodePosterFrodo.Checked = True
             Me.chkTVSeasonBannerFrodo.Checked = True
             Me.chkTVSeasonFanartFrodo.Checked = True
-            Me.chkTVSeasonLandscapeAD.Checked = True
+            Me.chkTVSeasonLandscapeExtended.Checked = True
             Me.chkTVSeasonPosterFrodo.Checked = True
             Me.chkTVShowActorThumbsFrodo.Checked = True
             Me.chkTVShowBannerFrodo.Checked = True
-            Me.chkTVShowCharacterArtAD.Checked = True
-            Me.chkTVShowClearArtAD.Checked = True
-            Me.chkTVShowClearLogoAD.Checked = True
+            Me.chkTVShowCharacterArtExtended.Checked = True
+            Me.chkTVShowClearArtExtended.Checked = True
+            Me.chkTVShowClearLogoExtended.Checked = True
             Me.chkTVShowExtrafanartsFrodo.Checked = True
             Me.chkTVShowFanartFrodo.Checked = True
-            Me.chkTVShowLandscapeAD.Checked = True
+            Me.chkTVShowLandscapeExtended.Checked = True
             Me.chkTVShowPosterFrodo.Checked = True
         End If
     End Sub
@@ -7426,6 +7450,7 @@ Public Class dlgSettings
         chkTVSeasonFanartOverwrite.CheckedChanged, _
         chkTVSeasonFanartYAMJ.CheckedChanged, _
         chkTVSeasonLandscapeAD.CheckedChanged, _
+        chkTVSeasonLandscapeExtended.CheckedChanged, _
         chkTVSeasonLandscapeOverwrite.CheckedChanged, _
         chkTVSeasonPosterBoxee.CheckedChanged, _
         chkTVSeasonPosterFrodo.CheckedChanged, _
@@ -7438,10 +7463,13 @@ Public Class dlgSettings
         chkTVShowBannerOverwrite.CheckedChanged, _
         chkTVShowBannerYAMJ.CheckedChanged, _
         chkTVShowCharacterArtAD.CheckedChanged, _
+        chkTVShowCharacterArtExtended.CheckedChanged, _
         chkTVShowCharacterArtOverwrite.CheckedChanged, _
         chkTVShowClearArtAD.CheckedChanged, _
+        chkTVShowClearArtExtended.CheckedChanged, _
         chkTVShowClearArtOverwrite.CheckedChanged, _
         chkTVShowClearLogoAD.CheckedChanged, _
+        chkTVShowClearLogoExtended.CheckedChanged, _
         chkTVShowClearLogoOverwrite.CheckedChanged, _
         chkTVShowEFanartsOverwrite.CheckedChanged, _
         chkTVShowEFanartsPrefSizeOnly.CheckedChanged, _
@@ -7452,6 +7480,7 @@ Public Class dlgSettings
         chkTVShowFanartOverwrite.CheckedChanged, _
         chkTVShowFanartYAMJ.CheckedChanged, _
         chkTVShowLandscapeAD.CheckedChanged, _
+        chkTVShowLandscapeExtended.CheckedChanged, _
         chkTVShowLandscapeOverwrite.CheckedChanged, _
         chkTVShowPosterBoxee.CheckedChanged, _
         chkTVShowPosterFrodo.CheckedChanged, _

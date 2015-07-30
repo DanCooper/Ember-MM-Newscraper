@@ -732,6 +732,13 @@ Partial Public Class clsXMLSettings
     Private _tvshowclearlogoad As Boolean
     Private _tvshowlandscapead As Boolean
 
+    '********* XBMC Extended Images settings **********
+    Private _tvseasonlandscapeextended As Boolean
+    Private _tvshowcharacterartextended As Boolean
+    Private _tvshowclearartextended As Boolean
+    Private _tvshowclearlogoextended As Boolean
+    Private _tvshowlandscapeextended As Boolean
+
     '************* XBMC TvTunes settings ***************
     Private _tvshowtvthemefolderxbmc As String
     Private _tvshowtvthemexbmc As Boolean
@@ -6978,6 +6985,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowClearLogoExtended() As Boolean
+        Get
+            Return Me._tvshowclearlogoextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclearlogoextended = value
+        End Set
+    End Property
+
     Public Property TVShowClearArtAD() As Boolean
         Get
             Return Me._tvshowclearartad
@@ -6987,12 +7003,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowClearArtExtended() As Boolean
+        Get
+            Return Me._tvshowclearartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclearartextended = value
+        End Set
+    End Property
+
     Public Property TVShowCharacterArtAD() As Boolean
         Get
             Return Me._tvshowcharacterartad
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowcharacterartad = value
+        End Set
+    End Property
+
+    Public Property TVShowCharacterArtExtended() As Boolean
+        Get
+            Return Me._tvshowcharacterartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowcharacterartextended = value
         End Set
     End Property
 
@@ -7023,12 +7057,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowLandscapeExtended() As Boolean
+        Get
+            Return Me._tvshowlandscapeextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowlandscapeextended = value
+        End Set
+    End Property
+
     Public Property TVSeasonLandscapeAD() As Boolean
         Get
             Return Me._tvseasonlandscapead
         End Get
         Set(ByVal value As Boolean)
             Me._tvseasonlandscapead = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapeExtended() As Boolean
+        Get
+            Return Me._tvseasonlandscapeextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonlandscapeextended = value
         End Set
     End Property
 

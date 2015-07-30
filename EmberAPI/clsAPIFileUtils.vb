@@ -1858,8 +1858,10 @@ Namespace FileUtils
                     With Master.eSettings
                         If mSeason = 0 Then 'season specials
                             If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
+                            If .TVUseFrodo AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                         Else
                             If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If .TVUseFrodo AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
                             If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
                                 For Each a In .TVSeasonLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
@@ -1939,6 +1941,7 @@ Namespace FileUtils
                 Case Enums.ModType.AllSeasonsLandscape
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
+                        If .TVUseFrodo AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsLandscapeExpert) Then
                             For Each a In .TVAllSeasonsLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -1971,6 +1974,7 @@ Namespace FileUtils
                 Case Enums.ModType.MainCharacterArt
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowCharacterArtAD Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
+                        If .TVUseFrodo AndAlso .TVShowCharacterArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "characterart.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowCharacterArtExpert) Then
                             For Each a In .TVShowCharacterArtExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -1981,6 +1985,7 @@ Namespace FileUtils
                 Case Enums.ModType.MainClearArt
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowClearArtAD Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
+                        If .TVUseFrodo AndAlso .TVShowClearArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearArtExpert) Then
                             For Each a In .TVShowClearArtExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -1991,6 +1996,7 @@ Namespace FileUtils
                 Case Enums.ModType.MainClearLogo
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowClearLogoAD Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
+                        If .TVUseFrodo AndAlso .TVShowClearLogoExtended Then FilenameList.Add(Path.Combine(fShowPath, "clearlogo.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearLogoExpert) Then
                             For Each a In .TVShowClearLogoExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
@@ -2020,6 +2026,7 @@ Namespace FileUtils
                 Case Enums.ModType.MainLandscape
                     With Master.eSettings
                         If .TVUseFrodo AndAlso .TVShowLandscapeAD Then FilenameList.Add(Path.Combine(ShowPath, "landscape.jpg"))
+                        If .TVUseFrodo AndAlso .TVShowLandscapeExtended Then FilenameList.Add(Path.Combine(ShowPath, "landscape.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowLandscapeExpert) Then
                             For Each a In .TVShowLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
