@@ -354,15 +354,15 @@ Namespace EmberTests
             options.bTrailer = False
 
             'These simulate the "allowed" scrape items
-            Functions.SetScraperMod_Movie_MovieSet(ModType_Movie.All, True)
-            Functions.SetScraperMod_Movie_MovieSet(ModType_Movie.MainTrailer, False, False)
+            Dim ScrapeModifier As Structures.ScrapeModifier
+            Functions.SetScrapeModifier(ScrapeModifier, ModType_Movie.All, True)
 
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             '   Dim mmovie As Structures.DBMovie = Nothing
             Dim mmovie As MediaContainers.Movie = Nothing
-            Dim result As Interfaces.ModuleResult = provider.Scraper(movie, mmovie, scrapeType, options)
+            Dim result As Interfaces.ModuleResult = provider.Scraper(movie, mmovie, ScrapeModifier, scrapeType, options)
 
             Dim methodName = GetMethodName()
 

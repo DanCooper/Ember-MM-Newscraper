@@ -33,7 +33,7 @@ Public Class IMDB_Image
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     Private _Name As String = "IMDB_Poster"
@@ -88,7 +88,7 @@ Public Class IMDB_Image
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
-                Return ConfigScrapeModifier.MainPoster
+                Return ConfigModifier.MainPoster
         End Select
         Return False
     End Function
@@ -137,10 +137,10 @@ Public Class IMDB_Image
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape", New StackTrace().ToString())
         LoadSettings()
 
@@ -152,7 +152,7 @@ Public Class IMDB_Image
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.MainPoster)
+            settings.SetBooleanSetting("DoPoster", ConfigModifier.MainPoster)
         End Using
     End Sub
 

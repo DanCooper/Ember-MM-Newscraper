@@ -29,7 +29,7 @@ Public Class TVDB_Image
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     Private _MySettings As New sMySettings
@@ -87,17 +87,17 @@ Public Class TVDB_Image
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities_TV.EpisodePoster
-                Return ConfigScrapeModifier.EpisodePoster
+                Return ConfigModifier.EpisodePoster
             Case Enums.ScraperCapabilities_TV.SeasonBanner
-                Return ConfigScrapeModifier.SeasonBanner
+                Return ConfigModifier.SeasonBanner
             Case Enums.ScraperCapabilities_TV.SeasonPoster
-                Return ConfigScrapeModifier.SeasonPoster
+                Return ConfigModifier.SeasonPoster
             Case Enums.ScraperCapabilities_TV.ShowBanner
-                Return ConfigScrapeModifier.MainBanner
+                Return ConfigModifier.MainBanner
             Case Enums.ScraperCapabilities_TV.ShowFanart
-                Return ConfigScrapeModifier.MainFanart
+                Return ConfigModifier.MainFanart
             Case Enums.ScraperCapabilities_TV.ShowPoster
-                Return ConfigScrapeModifier.MainPoster
+                Return ConfigModifier.MainPoster
         End Select
         Return False
     End Function
@@ -125,12 +125,12 @@ Public Class TVDB_Image
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.chkScrapeEpisodePoster.Checked = ConfigScrapeModifier.EpisodePoster
-        _setup.chkScrapeSeasonBanner.Checked = ConfigScrapeModifier.SeasonBanner
-        _setup.chkScrapeSeasonPoster.Checked = ConfigScrapeModifier.SeasonPoster
-        _setup.chkScrapeShowBanner.Checked = ConfigScrapeModifier.MainBanner
-        _setup.chkScrapeShowFanart.Checked = ConfigScrapeModifier.MainFanart
-        _setup.chkScrapeShowPoster.Checked = ConfigScrapeModifier.MainPoster
+        _setup.chkScrapeEpisodePoster.Checked = ConfigModifier.EpisodePoster
+        _setup.chkScrapeSeasonBanner.Checked = ConfigModifier.SeasonBanner
+        _setup.chkScrapeSeasonPoster.Checked = ConfigModifier.SeasonPoster
+        _setup.chkScrapeShowBanner.Checked = ConfigModifier.MainBanner
+        _setup.chkScrapeShowFanart.Checked = ConfigModifier.MainFanart
+        _setup.chkScrapeShowPoster.Checked = ConfigModifier.MainPoster
 
         _setup.txtApiKey.Text = _MySettings.ApiKey
 
@@ -161,34 +161,34 @@ Public Class TVDB_Image
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("ApiKey", "")
         _MySettings.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
 
-        ConfigScrapeModifier.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
-        ConfigScrapeModifier.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)
-        ConfigScrapeModifier.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True)
-        ConfigScrapeModifier.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True)
-        ConfigScrapeModifier.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True)
-        ConfigScrapeModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True)
+        ConfigModifier.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
+        ConfigModifier.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)
+        ConfigModifier.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True)
+        ConfigModifier.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True)
+        ConfigModifier.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True)
+        ConfigModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoEpisodePoster", ConfigScrapeModifier.EpisodePoster)
-            settings.SetBooleanSetting("DoSeasonBanner", ConfigScrapeModifier.SeasonBanner)
-            settings.SetBooleanSetting("DoSeasonPoster", ConfigScrapeModifier.SeasonPoster)
-            settings.SetBooleanSetting("DoShowBanner", ConfigScrapeModifier.MainBanner)
-            settings.SetBooleanSetting("DoShowFanart", ConfigScrapeModifier.MainFanart)
-            settings.SetBooleanSetting("DoShowPoster", ConfigScrapeModifier.MainPoster)
+            settings.SetBooleanSetting("DoEpisodePoster", ConfigModifier.EpisodePoster)
+            settings.SetBooleanSetting("DoSeasonBanner", ConfigModifier.SeasonBanner)
+            settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier.SeasonPoster)
+            settings.SetBooleanSetting("DoShowBanner", ConfigModifier.MainBanner)
+            settings.SetBooleanSetting("DoShowFanart", ConfigModifier.MainFanart)
+            settings.SetBooleanSetting("DoShowPoster", ConfigModifier.MainPoster)
 
             settings.SetSetting("ApiKey", _setup.txtApiKey.Text)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_TV.SaveSetupScraper
-        ConfigScrapeModifier.EpisodePoster = _setup.chkScrapeEpisodePoster.Checked
-        ConfigScrapeModifier.SeasonBanner = _setup.chkScrapeSeasonBanner.Checked
-        ConfigScrapeModifier.SeasonPoster = _setup.chkScrapeSeasonPoster.Checked
-        ConfigScrapeModifier.MainBanner = _setup.chkScrapeShowBanner.Checked
-        ConfigScrapeModifier.MainFanart = _setup.chkScrapeShowFanart.Checked
-        ConfigScrapeModifier.MainPoster = _setup.chkScrapeShowPoster.Checked
+        ConfigModifier.EpisodePoster = _setup.chkScrapeEpisodePoster.Checked
+        ConfigModifier.SeasonBanner = _setup.chkScrapeSeasonBanner.Checked
+        ConfigModifier.SeasonPoster = _setup.chkScrapeSeasonPoster.Checked
+        ConfigModifier.MainBanner = _setup.chkScrapeShowBanner.Checked
+        ConfigModifier.MainFanart = _setup.chkScrapeShowFanart.Checked
+        ConfigModifier.MainPoster = _setup.chkScrapeShowPoster.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -198,7 +198,7 @@ Public Class TVDB_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper(ByRef DBTV As Structures.DBTV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("Started scrape TVDB")
 
         LoadSettings()
@@ -206,7 +206,7 @@ Public Class TVDB_Image
         Dim Settings As TVDBs.Scraper.MySettings
         Settings.ApiKey = _MySettings.ApiKey
 
-        Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigScrapeModifier)
+        Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier)
 
         'If Not Type = Enums.ScraperCapabilities_TV.EpisodePoster Then
         If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then

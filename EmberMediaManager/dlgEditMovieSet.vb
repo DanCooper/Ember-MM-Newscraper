@@ -326,7 +326,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Banner, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainBanner, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Banners.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Banner, aContainer.Banners, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -390,7 +392,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearArt, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainClearArt, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.ClearArts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.ClearArt, aContainer.ClearArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -454,7 +458,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainClearLogo, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.ClearLogos.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.ClearLogo, aContainer.ClearLogos, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -518,7 +524,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.DiscArt, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainDiscArt, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.DiscArts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.DiscArt, aContainer.DiscArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -582,7 +590,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainFanart, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Fanarts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Fanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
@@ -645,7 +655,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Landscape, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainLandscape, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Landscapes.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Landscape, aContainer.Landscapes, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -709,7 +721,9 @@ Public Class dlgEditMovieSet
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
 
-        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, Enums.ScraperCapabilities_Movie_MovieSet.Poster, aContainer) Then
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainPoster, True)
+        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Posters.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Poster, aContainer.Posters, efList, etList, True) = Windows.Forms.DialogResult.OK Then

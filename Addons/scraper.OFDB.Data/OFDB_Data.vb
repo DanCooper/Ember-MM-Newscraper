@@ -170,12 +170,12 @@ Public Class OFDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef Modifier As Structures.ScrapeModifier, ByRef Type As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started OFDB Scraper")
 
         LoadSettings()
 
-        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim FilteredOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(ScrapeOptions, ConfigOptions)
 
         'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
@@ -183,8 +183,8 @@ Public Class OFDB_Data
             Return New Interfaces.ModuleResult With {.breakChain = False}
         End If
 
-        If Master.GlobalScrapeMod.MainNFO Then
-            _scraper.GetMovieInfo(oDBMovie.Movie.ID, nMovie, filterOptions)
+        If Modifier.MainNFO Then
+            _scraper.GetMovieInfo(oDBMovie.Movie.ID, nMovie, FilteredOptions)
         End If
 
         logger.Trace("Finished OFDB Scraper")

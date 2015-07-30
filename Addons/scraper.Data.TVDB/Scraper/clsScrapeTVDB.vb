@@ -112,14 +112,14 @@ Namespace TVDBs
             End While
         End Sub
 
-        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV) As MediaContainers.TVShow
+        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.TVShow
             Dim r As SearchResults = SearchTVShow(sShowName)
             Dim b As Boolean = False
 
             Select Case iType
                 Case Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Enums.ScrapeType_Movie_MovieSet_TV.MissAsk, Enums.ScrapeType_Movie_MovieSet_TV.NewAsk, Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk, Enums.ScrapeType_Movie_MovieSet_TV.FilterAsk, Enums.ScrapeType_Movie_MovieSet_TV.SingleField
                     If r.Matches.Count = 1 Then
-                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, Options, True, False)
+                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     Else
                         nShow.Clear()
                         Using dTVDB As New dlgTVDBSearchResults(_MySettings, Me)
@@ -127,7 +127,7 @@ Namespace TVDBs
                                 If String.IsNullOrEmpty(nShow.TVDB) Then
                                     b = False
                                 Else
-                                    b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, Options, True, False)
+                                    b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                                 End If
                             Else
                                 b = False
@@ -136,11 +136,11 @@ Namespace TVDBs
                     End If
                 Case Enums.ScrapeType_Movie_MovieSet_TV.FilterSkip, Enums.ScrapeType_Movie_MovieSet_TV.FullSkip, Enums.ScrapeType_Movie_MovieSet_TV.MarkSkip, Enums.ScrapeType_Movie_MovieSet_TV.NewSkip, Enums.ScrapeType_Movie_MovieSet_TV.MissSkip
                     If r.Matches.Count = 1 Then
-                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, Options, True, False)
+                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If
                 Case Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto
                     If r.Matches.Count > 1 Then
-                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, Options, True, False)
+                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If
             End Select
 
@@ -181,12 +181,12 @@ Namespace TVDBs
         ''' <param name="strID">TVDB ID</param>
         ''' <param name="nShow"></param>
         ''' <param name="GetPoster"></param>
-        ''' <param name="Options"></param>
+        ''' <param name="FilteredOptions"></param>
         ''' <param name="IsSearch"></param>
         ''' <param name="withEpisodes"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_TV, ByVal IsSearch As Boolean, ByVal withEpisodes As Boolean) As Boolean
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions_TV, ByVal IsSearch As Boolean, ByVal withEpisodes As Boolean) As Boolean
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
 
             'clear nShow from search results
@@ -204,7 +204,7 @@ Namespace TVDBs
             nShow.IMDB = CStr(Results.Series.IMDBId)
 
             'Actors
-            If Options.bShowActors Then
+            If FilteredOptions.bShowActors Then
                 If Results.Actors IsNot Nothing Then
                     For Each aCast As TVDB.Model.Actor In Results.Actors.OrderBy(Function(f) f.SortOrder)
                         nShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
@@ -219,7 +219,7 @@ Namespace TVDBs
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Genres
-            If Options.bShowGenre Then
+            If FilteredOptions.bShowGenre Then
                 Dim aGenres As List(Of String) = Nothing
                 If Results.Series.Genre IsNot Nothing Then
                     aGenres = Results.Series.Genre.Split(CChar(",")).ToList
@@ -235,14 +235,14 @@ Namespace TVDBs
             If bwTVDB.CancellationPending Then Return Nothing
 
             'MPAA
-            If Options.bShowMPAA Then
+            If FilteredOptions.bShowMPAA Then
                 nShow.MPAA = Results.Series.ContentRating
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Plot
-            If Options.bShowPlot Then
+            If FilteredOptions.bShowPlot Then
                 If Results.Series.Overview IsNot Nothing Then
                     nShow.Plot = Results.Series.Overview
                 End If
@@ -262,49 +262,49 @@ Namespace TVDBs
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Premiered
-            If Options.bShowPremiered Then
+            If FilteredOptions.bShowPremiered Then
                 nShow.Premiered = CStr(Results.Series.FirstAired)
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Rating
-            If Options.bShowRating Then
+            If FilteredOptions.bShowRating Then
                 nShow.Rating = CStr(Results.Series.Rating)
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Runtime
-            If Options.bShowRuntime Then
+            If FilteredOptions.bShowRuntime Then
                 nShow.Runtime = CStr(Results.Series.Runtime)
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Status
-            If Options.bShowStatus Then
+            If FilteredOptions.bShowStatus Then
                 nShow.Status = Results.Series.Status
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Studios
-            If Options.bShowStudio Then
+            If FilteredOptions.bShowStudio Then
                 nShow.Studios.Add(Results.Series.Network)
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Title
-            If Options.bShowTitle Then
+            If FilteredOptions.bShowTitle Then
                 nShow.Title = Results.Series.Name
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Votes
-            If Options.bShowVotes Then
+            If FilteredOptions.bShowVotes Then
                 nShow.Votes = CStr(Results.Series.RatingCount)
             End If
 
@@ -320,7 +320,7 @@ Namespace TVDBs
                 End If
 
                 If withEpisodes Then
-                    Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(aEpisode, Options)
+                    Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(aEpisode, FilteredOptions)
                     nEpisode.Actors.AddRange(nShow.Actors)
                     nShow.KnownEpisodes.Add(nEpisode)
                 End If
@@ -329,12 +329,12 @@ Namespace TVDBs
             Return True
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Try
                 Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _MySettings.Language, _TVDBMirror).Result
                 Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.Number = EpisodeNumber AndAlso f.SeasonNumber = SeasonNumber)
                 If Not EpisodeInfo Is Nothing Then
-                    Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, Options)
+                    Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
                     Return nEpisode
                 Else
                     Return Nothing
@@ -345,19 +345,19 @@ Namespace TVDBs
             End Try
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal Aired As String, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _MySettings.Language, _TVDBMirror).Result
             If Results Is Nothing Then
                 Return Nothing
             End If
 
             Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.FirstAired = CDate(Aired))
-            Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, Options)
+            Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
 
             Return nEpisode
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef Options As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
 
             'IDs
@@ -416,7 +416,7 @@ Namespace TVDBs
             End If
 
             'Aired
-            If Options.bEpAired Then
+            If FilteredOptions.bEpAired Then
                 Dim ScrapedDate As String = CStr(EpisodeInfo.FirstAired)
                 If Not String.IsNullOrEmpty(ScrapedDate) Then
                     Dim RelDate As Date
@@ -430,7 +430,7 @@ Namespace TVDBs
             End If
 
             'Credits
-            If Options.bEpCredits Then
+            If FilteredOptions.bEpCredits Then
                 If EpisodeInfo.Writer IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Writer) Then
                     Dim CreditsList As New List(Of String)
                     Dim charsToTrim() As Char = {"|"c, ","c}
@@ -442,7 +442,7 @@ Namespace TVDBs
             End If
 
             'Writer
-            If Options.bEpDirector Then
+            If FilteredOptions.bEpDirector Then
                 If EpisodeInfo.Director IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Director) Then
                     Dim DirectorsList As New List(Of String)
                     Dim charsToTrim() As Char = {"|"c, ","c}
@@ -454,33 +454,33 @@ Namespace TVDBs
             End If
 
             'Guest Stars
-            If Options.bEpGuestStars Then
+            If FilteredOptions.bEpGuestStars Then
                 If EpisodeInfo.GuestStars IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.GuestStars) Then
                     nEpisode.GuestStars.AddRange(StringToListOfPerson(EpisodeInfo.GuestStars))
                 End If
             End If
 
             'Plot
-            If Options.bEpPlot Then
+            If FilteredOptions.bEpPlot Then
                 If EpisodeInfo.Overview IsNot Nothing Then
                     nEpisode.Plot = EpisodeInfo.Overview
                 End If
             End If
 
             'Rating
-            If Options.bEpRating Then
+            If FilteredOptions.bEpRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.Rating)
             End If
 
             'Title
-            If Options.bEpTitle Then
+            If FilteredOptions.bEpTitle Then
                 If EpisodeInfo.Name IsNot Nothing Then
                     nEpisode.Title = EpisodeInfo.Name
                 End If
             End If
 
             'Votes
-            If Options.bEpVotes Then
+            If FilteredOptions.bEpVotes Then
                 nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
             End If
 
@@ -508,17 +508,17 @@ Namespace TVDBs
                 bwTVDB.WorkerReportsProgress = False
                 bwTVDB.WorkerSupportsCancellation = True
                 bwTVDB.RunWorkerAsync(New Arguments With {.Search = SearchType.TVShows, _
-                  .Parameter = sShow, .Options = filterOptions, .withEpisodes = False})
+                  .Parameter = sShow, .FilteredOptions = filterOptions, .withEpisodes = False})
             End If
         End Sub
 
-        Public Sub GetSearchTVShowInfoAsync(ByVal tvdbID As String, ByVal Show As MediaContainers.TVShow, ByVal Options As Structures.ScrapeOptions_TV)
+        Public Sub GetSearchTVShowInfoAsync(ByVal tvdbID As String, ByVal Show As MediaContainers.TVShow, ByVal FilteredOptions As Structures.ScrapeOptions_TV)
             '' The rule is that if there is a tt is an IMDB otherwise is a TVDB
             If Not bwTVDB.IsBusy Then
                 bwTVDB.WorkerReportsProgress = False
                 bwTVDB.WorkerSupportsCancellation = True
                 bwTVDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_TVShow, _
-                  .Parameter = tvdbID, .TVShow = Show, .Options = Options})
+                  .Parameter = tvdbID, .TVShow = Show, .FilteredOptions = FilteredOptions})
             End If
         End Sub
 
@@ -532,7 +532,7 @@ Namespace TVDBs
                     e.Result = New Results With {.ResultType = SearchType.TVShows, .Result = r}
 
                 Case SearchType.SearchDetails_TVShow
-                    Dim s As Boolean = GetTVShowInfo(Args.Parameter, Args.TVShow, True, Args.Options, True, Args.withEpisodes)
+                    Dim s As Boolean = GetTVShowInfo(Args.Parameter, Args.TVShow, True, Args.FilteredOptions, True, Args.withEpisodes)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_TVShow, .Success = s}
             End Select
         End Sub
@@ -561,7 +561,7 @@ Namespace TVDBs
 
             Dim FullCast As Boolean
             Dim FullCrew As Boolean
-            Dim Options As Structures.ScrapeOptions_TV
+            Dim FilteredOptions As Structures.ScrapeOptions_TV
             Dim Parameter As String
             Dim Search As SearchType
             Dim TVShow As MediaContainers.TVShow

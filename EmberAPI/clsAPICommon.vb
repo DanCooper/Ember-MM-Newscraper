@@ -1723,166 +1723,6 @@ Public Class Functions
         End With
     End Sub
     ''' <summary>
-    ''' Sets the Master.GlobalScrapeMod to the given MValue
-    ''' </summary>
-    ''' <param name="MType">The Enums.ModType that should be changed. Note that this could be All.</param>
-    ''' <param name="MValue">The <c>Boolean</c> value that you wish to change the ModType to.</param>
-    ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
-    ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
-    ''' <remarks></remarks>
-    Public Shared Sub SetScraperMod_Movie_MovieSet(ByVal MType As Enums.ModType_Movie, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
-        With Master.GlobalScrapeMod
-            If DoClear Then
-                .MainActorThumbs = False
-                .MainBanner = False
-                .MainCharacterArt = False
-                .MainClearArt = False
-                .MainClearLogo = False
-                .MainDiscArt = False
-                .DoSearch = False
-                .MainEFanarts = False
-                .MainEThumbs = False
-                .MainFanart = False
-                .MainLandscape = False
-                .MainMeta = False
-                .MainNFO = False
-                .MainPoster = False
-                .MainTrailer = False
-                .MainTheme = False
-            End If
-
-            Select Case MType
-                Case Enums.ModType_Movie.All
-                    '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
-                    .MainActorThumbs = MValue
-                    .MainBanner = MValue
-                    .MainCharacterArt = MValue
-                    .MainClearArt = MValue
-                    .MainClearLogo = MValue
-                    .MainDiscArt = MValue
-                    .MainEFanarts = MValue
-                    .MainEThumbs = MValue
-                    .MainFanart = MValue
-                    .MainLandscape = MValue
-                    .MainMeta = MValue
-                    .MainNFO = MValue
-                    .MainPoster = MValue
-                    .MainTrailer = MValue
-                    .MainTheme = MValue
-                Case Enums.ModType_Movie.MainActorThumbs
-                    .MainActorThumbs = MValue
-                Case Enums.ModType_Movie.MainBanner
-                    .MainBanner = MValue
-                Case Enums.ModType_Movie.MainCharacterArt
-                    .MainCharacterArt = MValue
-                Case Enums.ModType_Movie.MainClearArt
-                    .MainClearArt = MValue
-                Case Enums.ModType_Movie.MainClearLogo
-                    .MainClearLogo = MValue
-                Case Enums.ModType_Movie.MainDiscArt
-                    .MainDiscArt = MValue
-                Case Enums.ModType_Movie.DoSearch
-                    .DoSearch = MValue
-                Case Enums.ModType_Movie.MainEFanarts
-                    .MainEFanarts = MValue
-                Case Enums.ModType_Movie.MainEThumbs
-                    .MainEThumbs = MValue
-                Case Enums.ModType_Movie.MainFanart
-                    .MainFanart = MValue
-                Case Enums.ModType_Movie.MainLandscape
-                    .MainLandscape = MValue
-                Case Enums.ModType_Movie.MainMeta
-                    .MainMeta = MValue
-                Case Enums.ModType_Movie.MainNFO
-                    .MainNFO = MValue
-                Case Enums.ModType_Movie.MainPoster
-                    .MainPoster = MValue
-                Case Enums.ModType_Movie.MainTrailer
-                    .MainTrailer = MValue
-                Case Enums.ModType_Movie.MainTheme
-                    .MainTheme = MValue
-            End Select
-
-        End With
-    End Sub
-    ''' <summary>
-    ''' Sets the Master.GlobalScrapeMod to the given MValue
-    ''' </summary>
-    ''' <param name="MType">The Enums.ModType that should be changed. Note that this could be All.</param>
-    ''' <param name="MValue">The <c>Boolean</c> value that you wish to change the ModType to.</param>
-    ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
-    ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
-    ''' <remarks></remarks>
-    Public Shared Sub SetScraperMod_TV(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
-        With Master.GlobalScrapeMod
-            If DoClear Then
-                .MainActorThumbs = False
-                .MainBanner = False
-                .MainCharacterArt = False
-                .MainClearArt = False
-                .MainClearLogo = False
-                .MainDiscArt = False
-                .DoSearch = False
-                .MainEFanarts = False
-                .MainEThumbs = False
-                .MainFanart = False
-                .MainLandscape = False
-                .MainMeta = False
-                .MainNFO = False
-                .MainPoster = False
-                .MainTrailer = False
-                .MainTheme = False
-            End If
-
-            Select Case MType
-                Case Enums.ModType.All
-                    '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
-                    .MainActorThumbs = MValue
-                    .MainBanner = MValue
-                    .MainCharacterArt = MValue
-                    .MainClearArt = MValue
-                    .MainClearLogo = MValue
-                    .MainDiscArt = MValue
-                    .MainEFanarts = MValue
-                    .MainEThumbs = MValue
-                    .MainFanart = MValue
-                    .MainLandscape = MValue
-                    .MainMeta = MValue
-                    .MainNFO = MValue
-                    .MainPoster = MValue
-                    .MainTrailer = MValue
-                    .MainTheme = MValue
-                Case Enums.ModType.MainActorThumbs
-                    .MainActorThumbs = MValue
-                Case Enums.ModType.AllSeasonsBanner, Enums.ModType.SeasonBanner, Enums.ModType.MainBanner
-                    .MainBanner = MValue
-                Case Enums.ModType.MainCharacterArt
-                    .MainCharacterArt = MValue
-                Case Enums.ModType.MainClearArt
-                    .MainClearArt = MValue
-                Case Enums.ModType.MainClearLogo
-                    .MainClearLogo = MValue
-                Case Enums.ModType.DoSearch
-                    .DoSearch = MValue
-                Case Enums.ModType.MainEFanarts
-                    .MainEFanarts = MValue
-                Case Enums.ModType.AllSeasonsFanart, Enums.ModType.EpisodeFanart, Enums.ModType.SeasonFanart, Enums.ModType.MainFanart
-                    .MainFanart = MValue
-                Case Enums.ModType.AllSeasonsLandscape, Enums.ModType.SeasonLandscape, Enums.ModType.MainLandscape
-                    .MainLandscape = MValue
-                Case Enums.ModType.EpisodeMeta
-                    .MainMeta = MValue
-                Case Enums.ModType.EpisodeNFO, Enums.ModType.MainNFO
-                    .MainNFO = MValue
-                Case Enums.ModType.AllSeasonsPoster, Enums.ModType.EpisodePoster, Enums.ModType.SeasonPoster, Enums.ModType.MainPoster
-                    .MainPoster = MValue
-                Case Enums.ModType.MainTheme
-                    .MainTheme = MValue
-            End Select
-
-        End With
-    End Sub
-    ''' <summary>
     ''' This method launches the user's default web browser to the supplied destination
     ''' </summary>
     ''' <param name="Destination">URL or file to be launched. Note that care should be taken when launching files, as it exposes
@@ -2030,6 +1870,7 @@ Public Class Structures
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
         Dim Options As ScrapeOptions_Movie
+        Dim ScrapeModifier As Structures.ScrapeModifier
         Dim ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
     End Structure
     ''' <summary>
@@ -2219,23 +2060,6 @@ Public Class Structures
         Dim TV As Boolean
     End Structure
 
-    Public Structure ScrapeInfo
-        Dim Aired As String
-        Dim CurrentImage As Images
-        Dim Ordering As Enums.Ordering
-        Dim iEpisode As Integer
-        Dim ImageType As Enums.ImageType_TV
-        Dim iSeason As Integer
-        Dim Options As Structures.ScrapeOptions_TV
-        Dim ShowLang As String
-        Dim SourceLang As String
-        Dim ShowID As Integer
-        Dim ShowTitle As String
-        Dim TVDBID As String
-        Dim WithCurrent As Boolean
-        Dim ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
-    End Structure
-
     Public Structure ScrapeModifier
         Dim AllSeasonsBanner As Boolean
         Dim AllSeasonsFanart As Boolean
@@ -2313,7 +2137,7 @@ Public Class Structures
         Dim bTitle As Boolean
     End Structure
     ''' <summary>
-    ''' Structure representing possible scrape options for TV shows
+    ''' Structure representing possible scrape options for tv shows
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure ScrapeOptions_TV

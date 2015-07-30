@@ -665,7 +665,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -677,7 +677,7 @@ Public Class ModulesManager
             End While
 
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
+            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
                 DBMovie.RemoveActorThumbs = True
                 DBMovie.RemoveBanner = True
                 DBMovie.RemoveClearArt = True
@@ -744,7 +744,7 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
                     Dim nMovie As New MediaContainers.Movie
-                    ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovie, nMovie, ScrapeType, Options)
+                    ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovie, nMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
@@ -756,7 +756,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBMovie = NFO.MergeDataScraperResults(DBMovie, ScrapedList, ScrapeType, Options)
+                DBMovie = NFO.MergeDataScraperResults(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
             End If
             Return ret.Cancelled
         Else
@@ -772,7 +772,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_MovieSet) As Boolean
+    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -787,7 +787,7 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie set data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                 Try
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, ScrapeType, Options)
+                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie set data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
@@ -807,7 +807,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal Options As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -819,7 +819,7 @@ Public Class ModulesManager
             End While
 
             'clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso Master.GlobalScrapeMod.DoSearch Then
+            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
                 DBTV.RemoveActorThumbs = True
                 DBTV.RemoveBanner = True
                 DBTV.RemoveCharacterArt = True
@@ -869,7 +869,7 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     Dim nShow As New MediaContainers.TVShow
-                    ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeModifier, ScrapeType, Options)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeModifier, ScrapeType, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
@@ -881,7 +881,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeType, Options, ScrapeModifier.withEpisodes)
+                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
             End If
             Return ret.Cancelled
         Else
@@ -889,7 +889,7 @@ Public Class ModulesManager
         End If
     End Function
 
-    Public Function ScrapeData_TVEpisode(ByRef DBTV As Structures.DBTV, ByVal Options As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeData_TVEpisode(ByRef DBTV As Structures.DBTV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -921,7 +921,7 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     Dim nEpisode As New MediaContainers.EpisodeDetails
-                    ret = _externalScraperModule.ProcessorModule.Scraper_TVEpisode(oEpisode, nEpisode, Options)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_TVEpisode(oEpisode, nEpisode, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
@@ -933,7 +933,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, Options)
+                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeOptions)
             End If
             Return ret.Cancelled
         Else
@@ -944,11 +944,10 @@ Public Class ModulesManager
     ''' Request that enabled movie image scrapers perform their functions on the supplied movie
     ''' </summary>
     ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
-    ''' <param name="Type">What kind of image is being scraped (all poster, fanart, etc)</param>
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeImage_Movie(ByRef DBMovie As Structures.DBMovie, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal showMessage As Boolean) As Boolean
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -962,27 +961,27 @@ Public Class ModulesManager
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Image_Movie In modules
                     logger.Trace("Scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                    If Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
-                        AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                        Try
-                            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
-                            ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aContainer)
-                            If aContainer IsNot Nothing Then
-                                ImagesContainer.Banners.AddRange(aContainer.Banners)
-                                ImagesContainer.CharacterArts.AddRange(aContainer.CharacterArts)
-                                ImagesContainer.ClearArts.AddRange(aContainer.ClearArts)
-                                ImagesContainer.ClearLogos.AddRange(aContainer.ClearLogos)
-                                ImagesContainer.DiscArts.AddRange(aContainer.DiscArts)
-                                ImagesContainer.Fanarts.AddRange(aContainer.Fanarts)
-                                ImagesContainer.Landscapes.AddRange(aContainer.Landscapes)
-                                ImagesContainer.Posters.AddRange(aContainer.Posters)
-                            End If
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                        End Try
-                        RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                        If ret.breakChain Then Exit For
-                    End If
+                    'If Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
+                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
+                    Try
+                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, aContainer, ScrapeModifier)
+                        If aContainer IsNot Nothing Then
+                            ImagesContainer.Banners.AddRange(aContainer.Banners)
+                            ImagesContainer.CharacterArts.AddRange(aContainer.CharacterArts)
+                            ImagesContainer.ClearArts.AddRange(aContainer.ClearArts)
+                            ImagesContainer.ClearLogos.AddRange(aContainer.ClearLogos)
+                            ImagesContainer.DiscArts.AddRange(aContainer.DiscArts)
+                            ImagesContainer.Fanarts.AddRange(aContainer.Fanarts)
+                            ImagesContainer.Landscapes.AddRange(aContainer.Landscapes)
+                            ImagesContainer.Posters.AddRange(aContainer.Posters)
+                        End If
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    End Try
+                    RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
+                    If ret.breakChain Then Exit For
+                    'End If
                 Next
 
                 'sorting
@@ -999,11 +998,10 @@ Public Class ModulesManager
     ''' Request that enabled movieset image scrapers perform their functions on the supplied movie
     ''' </summary>
     ''' <param name="DBMovieSet">Movieset to be scraped. Scraper will directly manipulate this structure</param>
-    ''' <param name="Type">What kind of image is being scraped (all, poster, fanart, etc)</param>
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet) As Boolean
+    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1016,27 +1014,27 @@ Public Class ModulesManager
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Image_MovieSet In modules
                 logger.Trace(New StackFrame().GetMethod().Name, "Scraping movieset images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                If Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
-                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
-                    Try
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
-                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aContainer)
-                        If aContainer IsNot Nothing Then
-                            ImagesContainer.Banners.AddRange(aContainer.Banners)
-                            ImagesContainer.CharacterArts.AddRange(aContainer.CharacterArts)
-                            ImagesContainer.ClearArts.AddRange(aContainer.ClearArts)
-                            ImagesContainer.ClearLogos.AddRange(aContainer.ClearLogos)
-                            ImagesContainer.DiscArts.AddRange(aContainer.DiscArts)
-                            ImagesContainer.Fanarts.AddRange(aContainer.Fanarts)
-                            ImagesContainer.Landscapes.AddRange(aContainer.Landscapes)
-                            ImagesContainer.Posters.AddRange(aContainer.Posters)
-                        End If
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                    End Try
-                    RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
-                    If ret.breakChain Then Exit For
-                End If
+                'If Type = Enums.ScraperCapabilities_Movie_MovieSet.All OrElse _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
+                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
+                Try
+                    Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, aContainer, ScrapeModifier)
+                    If aContainer IsNot Nothing Then
+                        ImagesContainer.Banners.AddRange(aContainer.Banners)
+                        ImagesContainer.CharacterArts.AddRange(aContainer.CharacterArts)
+                        ImagesContainer.ClearArts.AddRange(aContainer.ClearArts)
+                        ImagesContainer.ClearLogos.AddRange(aContainer.ClearLogos)
+                        ImagesContainer.DiscArts.AddRange(aContainer.DiscArts)
+                        ImagesContainer.Fanarts.AddRange(aContainer.Fanarts)
+                        ImagesContainer.Landscapes.AddRange(aContainer.Landscapes)
+                        ImagesContainer.Posters.AddRange(aContainer.Posters)
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                End Try
+                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
+                If ret.breakChain Then Exit For
+                'End If
             Next
 
             'sorting
@@ -1054,7 +1052,7 @@ Public Class ModulesManager
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeImage_TV(ByRef DBTV As Structures.DBTV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -1072,7 +1070,7 @@ Public Class ModulesManager
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     Try
                         Dim aContainer As New MediaContainers.SearchResultsContainer_TV
-                        ret = _externalScraperModule.ProcessorModule.Scraper(DBTV, ScrapeModifier, aContainer)
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBTV, aContainer, ScrapeModifier)
                         If aContainer IsNot Nothing Then
                             ImagesContainer.EpisodeFanarts.AddRange(aContainer.EpisodeFanarts)
                             ImagesContainer.EpisodePosters.AddRange(aContainer.EpisodePosters)
@@ -1549,7 +1547,7 @@ Public Class ModulesManager
         Return Langs
     End Function
 
-    Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.ScrapeOptions_TV) As Boolean
+    Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Aired As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Boolean
         Dim testDBTV As Structures.DBTV = Master.currShow
         If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(testDBTV, True) Then
             Dim ret As Interfaces.ModuleResult
