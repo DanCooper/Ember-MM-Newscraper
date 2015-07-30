@@ -12531,32 +12531,32 @@ doCancel:
                     If Master.DB.ConnectMyVideosDB() Then
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
                     End If
-                    If dlgWizard.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                        Application.DoEvents()
-                        Me.SetUp(False) 'just in case user changed languages
-                        Me.Visible = True
-                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
-                    Else
-                        Me.FillList(True, True, True)
-                        Me.Visible = True
-                    End If
+                    'If dlgWizard.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    '    Application.DoEvents()
+                    '    Me.SetUp(False) 'just in case user changed languages
+                    '    Me.Visible = True
+                    '    Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
+                    'Else
+                    Me.FillList(True, True, True)
+                    Me.Visible = True
+                    'End If
                 End If
 
-                AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-                AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-                AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+            AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+            AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+            AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
 
-                Master.DB.LoadMovieSourcesFromDB()
-                Master.DB.LoadTVSourcesFromDB()
-                Master.DB.LoadExcludeDirsFromDB()
+            Master.DB.LoadMovieSourcesFromDB()
+            Master.DB.LoadTVSourcesFromDB()
+            Master.DB.LoadExcludeDirsFromDB()
 
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
-                Me.SetMenus(True)
-                Functions.GetListOfSources()
-                Me.cmnuTrayExit.Enabled = True
-                Me.cmnuTraySettings.Enabled = True
-                Me.mnuMainEdit.Enabled = True
-                If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
+            Me.SetMenus(True)
+            Functions.GetListOfSources()
+            Me.cmnuTrayExit.Enabled = True
+            Me.cmnuTraySettings.Enabled = True
+            Me.mnuMainEdit.Enabled = True
+            If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
