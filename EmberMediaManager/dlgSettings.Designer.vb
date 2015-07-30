@@ -241,9 +241,6 @@ Partial Class dlgSettings
         Me.chkGeneralHideCharacterArt = New System.Windows.Forms.CheckBox()
         Me.chkGeneralShowLangFlags = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
-        Me.gbGeneralScrapers = New System.Windows.Forms.GroupBox()
-        Me.tblGeneralScrapers = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkGeneralResumeScraper = New System.Windows.Forms.CheckBox()
         Me.pnlMovieGeneral = New System.Windows.Forms.Panel()
         Me.tblMovieGeneral = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieGeneralFiltersOpts = New System.Windows.Forms.GroupBox()
@@ -1566,8 +1563,6 @@ Partial Class dlgSettings
         Me.tblGeneralDateAdded.SuspendLayout
         Me.gbGeneralMainWindow.SuspendLayout
         Me.tblGeneralMainWindow.SuspendLayout
-        Me.gbGeneralScrapers.SuspendLayout
-        Me.tblGeneralScrapers.SuspendLayout
         Me.pnlMovieGeneral.SuspendLayout
         Me.tblMovieGeneral.SuspendLayout
         Me.gbMovieGeneralFiltersOpts.SuspendLayout
@@ -4438,10 +4433,9 @@ Partial Class dlgSettings
         Me.tblGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneral.Controls.Add(Me.gbGeneralInterface, 0, 0)
-        Me.tblGeneral.Controls.Add(Me.gbGeneralDateAdded, 0, 2)
+        Me.tblGeneral.Controls.Add(Me.gbGeneralDateAdded, 0, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMainWindow, 1, 0)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMiscOpts, 1, 1)
-        Me.tblGeneral.Controls.Add(Me.gbGeneralScrapers, 0, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralDaemon, 0, 3)
         Me.tblGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneral.Location = New System.Drawing.Point(0, 0)
@@ -4494,9 +4488,9 @@ Partial Class dlgSettings
         Me.gbGeneralDateAdded.Controls.Add(Me.tblGeneralDateAdded)
         Me.gbGeneralDateAdded.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralDateAdded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbGeneralDateAdded.Location = New System.Drawing.Point(3, 342)
+        Me.gbGeneralDateAdded.Location = New System.Drawing.Point(3, 292)
         Me.gbGeneralDateAdded.Name = "gbGeneralDateAdded"
-        Me.gbGeneralDateAdded.Size = New System.Drawing.Size(238, 89)
+        Me.gbGeneralDateAdded.Size = New System.Drawing.Size(238, 71)
         Me.gbGeneralDateAdded.TabIndex = 16
         Me.gbGeneralDateAdded.TabStop = false
         Me.gbGeneralDateAdded.Text = "Adding Date"
@@ -4516,7 +4510,7 @@ Partial Class dlgSettings
         Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDateAdded.Size = New System.Drawing.Size(232, 68)
+        Me.tblGeneralDateAdded.Size = New System.Drawing.Size(232, 50)
         Me.tblGeneralDateAdded.TabIndex = 17
         '
         'cbGeneralDateTime
@@ -4690,46 +4684,6 @@ Partial Class dlgSettings
         Me.chkGeneralHideLandscape.TabIndex = 18
         Me.chkGeneralHideLandscape.Text = "Do Not Display Landscape"
         Me.chkGeneralHideLandscape.UseVisualStyleBackColor = true
-        '
-        'gbGeneralScrapers
-        '
-        Me.gbGeneralScrapers.AutoSize = true
-        Me.gbGeneralScrapers.Controls.Add(Me.tblGeneralScrapers)
-        Me.gbGeneralScrapers.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralScrapers.Enabled = false
-        Me.gbGeneralScrapers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbGeneralScrapers.Location = New System.Drawing.Point(3, 292)
-        Me.gbGeneralScrapers.Name = "gbGeneralScrapers"
-        Me.gbGeneralScrapers.Size = New System.Drawing.Size(238, 44)
-        Me.gbGeneralScrapers.TabIndex = 15
-        Me.gbGeneralScrapers.TabStop = false
-        Me.gbGeneralScrapers.Text = "Scrapers"
-        '
-        'tblGeneralScrapers
-        '
-        Me.tblGeneralScrapers.AutoSize = true
-        Me.tblGeneralScrapers.ColumnCount = 1
-        Me.tblGeneralScrapers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblGeneralScrapers.Controls.Add(Me.chkGeneralResumeScraper, 0, 0)
-        Me.tblGeneralScrapers.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblGeneralScrapers.Location = New System.Drawing.Point(3, 18)
-        Me.tblGeneralScrapers.Name = "tblGeneralScrapers"
-        Me.tblGeneralScrapers.RowCount = 1
-        Me.tblGeneralScrapers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblGeneralScrapers.Size = New System.Drawing.Size(232, 23)
-        Me.tblGeneralScrapers.TabIndex = 17
-        '
-        'chkGeneralResumeScraper
-        '
-        Me.chkGeneralResumeScraper.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralResumeScraper.AutoSize = true
-        Me.chkGeneralResumeScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralResumeScraper.Location = New System.Drawing.Point(3, 3)
-        Me.chkGeneralResumeScraper.Name = "chkGeneralResumeScraper"
-        Me.chkGeneralResumeScraper.Size = New System.Drawing.Size(145, 17)
-        Me.chkGeneralResumeScraper.TabIndex = 1
-        Me.chkGeneralResumeScraper.Text = "Enable Scraper Resume"
-        Me.chkGeneralResumeScraper.UseVisualStyleBackColor = true
         '
         'pnlMovieGeneral
         '
@@ -21316,10 +21270,6 @@ Partial Class dlgSettings
         Me.gbGeneralMainWindow.PerformLayout
         Me.tblGeneralMainWindow.ResumeLayout(false)
         Me.tblGeneralMainWindow.PerformLayout
-        Me.gbGeneralScrapers.ResumeLayout(false)
-        Me.gbGeneralScrapers.PerformLayout
-        Me.tblGeneralScrapers.ResumeLayout(false)
-        Me.tblGeneralScrapers.PerformLayout
         Me.pnlMovieGeneral.ResumeLayout(false)
         Me.pnlMovieGeneral.PerformLayout
         Me.tblMovieGeneral.ResumeLayout(false)
@@ -22710,7 +22660,6 @@ End Sub
     Friend WithEvents txtMovieGeneralCustomMarker1 As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieGeneralCustomMarker1 As System.Windows.Forms.Label
     Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
-    Friend WithEvents gbGeneralScrapers As System.Windows.Forms.GroupBox
     Friend WithEvents chkGeneralDoubleClickScrape As System.Windows.Forms.CheckBox
     Friend WithEvents pnlMovieSetGeneral As System.Windows.Forms.Panel
     Friend WithEvents gbMovieSetGeneralMiscOpts As System.Windows.Forms.GroupBox
@@ -22983,8 +22932,6 @@ End Sub
     Friend WithEvents tblMovieSetImagesPosterOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblGeneral As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblGeneralDateAdded As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblGeneralScrapers As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkGeneralResumeScraper As System.Windows.Forms.CheckBox
     Friend WithEvents tblGeneralDaemon As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblGeneralMisc As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblGeneralInterface As System.Windows.Forms.TableLayoutPanel

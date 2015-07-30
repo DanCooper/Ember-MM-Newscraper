@@ -2709,7 +2709,6 @@ Public Class dlgSettings
 
     Private Sub FillSettings()
         With Master.eSettings
-            Me.chkGeneralResumeScraper.Checked = .RestartScraper
             Me.btnMovieGeneralCustomMarker1.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker1Color)
             Me.btnMovieGeneralCustomMarker2.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker2Color)
             Me.btnMovieGeneralCustomMarker3.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker3Color)
@@ -4505,7 +4504,6 @@ Public Class dlgSettings
             .FileSystemValidSubtitlesExts.AddRange(lstFileSystemValidSubtitlesExts.Items.OfType(Of String).ToList)
             .FileSystemValidThemeExts.Clear()
             .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
-            .RestartScraper = Me.chkGeneralResumeScraper.Checked
             .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
             .GeneralDateAddedIgnoreNFO = Me.chkGeneralDateAddedIgnoreNFO.Checked
             .GeneralDigitGrpSymbolVotes = Me.chkGeneralDigitGrpSymbolVotes.Checked
@@ -6196,8 +6194,6 @@ Public Class dlgSettings
         Dim strYear As String = Master.eLang.GetString(278, "Year")
         Me.lblMovieScraperGlobalYear.Text = strYear
 
-        Me.gbGeneralScrapers.Text = Master.eLang.GetString(1193, "Scrapers")
-        Me.chkGeneralResumeScraper.Text = Master.eLang.GetString(1194, "Enable Scraper Resume")
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")

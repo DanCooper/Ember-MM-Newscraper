@@ -56,15 +56,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property RestartScraper() As Boolean
-        Get
-            Return Settings._XMLSettings.RestartScraper
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.RestartScraper = value
-        End Set
-    End Property
-
     Public Property MovieActorThumbsOverwrite() As Boolean
         Get
             Return Settings._XMLSettings.MovieActorThumbsOverwrite
@@ -7008,7 +6999,6 @@ Public Class Settings
         Me.Username = String.Empty
         Me.UseTrakt = False
         Me.Version = String.Empty
-        Me.RestartScraper = False
 
         LoadTVLanguages()
     End Sub

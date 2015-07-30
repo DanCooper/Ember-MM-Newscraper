@@ -7734,10 +7734,6 @@ doCancel:
         End Using
     End Sub
 
-    Private Sub mnuMovieRestart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieRestart.Click, cmnuTrayMovieRestart.Click
-        'Me.ScrapeData_Movie(False, Nothing, Nothing, True)
-    End Sub
-
 
     Private Sub cmnuMovieRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisk.Click
         Try
@@ -14551,7 +14547,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub ScrapeData_Movie(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal ScrapeModifier As Structures.ScrapeModifier, Optional ByVal Restart As Boolean = False)
+    Private Sub ScrapeData_Movie(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal ScrapeModifier As Structures.ScrapeModifier)
         ScrapeList.Clear()
 
         If selected Then
@@ -14859,7 +14855,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub ScrapeData_TV(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier, Optional ByVal Restart As Boolean = False)
+    Private Sub ScrapeData_TV(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
         ScrapeList.Clear()
 
         If selected Then
@@ -15015,7 +15011,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub ScrapeData_TVEpisode(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier, Optional ByVal Restart As Boolean = False)
+    Private Sub ScrapeData_TVEpisode(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
         ScrapeList.Clear()
 
         If selected Then
@@ -18601,7 +18597,6 @@ doCancel:
         Me.cmnuTrayTools.Enabled = Me.mnuMainTools.Enabled
         Me.cmnuTrayScrape.Enabled = Me.mnuScrapeMovies.Enabled
         Me.cmnuTrayUpdate.Enabled = isEnabled
-        Me.cmnuTrayMediaCenters.Enabled = isEnabled
         Me.cmnuTraySettings.Enabled = isEnabled
         Me.cmnuTrayExit.Enabled = isEnabled
 
@@ -19850,12 +19845,6 @@ doCancel:
                 .mnuMovieSetCustom.Text = .mnuMovieCustom.Text
                 .cmnuTrayMovieCustom.Text = .mnuMovieCustom.Text
 
-                ' Scrape Media Menu: Restart last scraper
-                .mnuMovieRestart.Text = Master.eLang.GetString(1160, "Restart last scrape...")
-                .cmnuTrayMovieRestart.Text = .mnuMovieRestart.Text
-                .mnuMovieRestart.Visible = Master.eSettings.RestartScraper
-                .cmnuTrayMovieRestart.Visible = Master.eSettings.RestartScraper
-
                 ' Scrape Media Menu: FullAuto
                 .mnuMovieAllAuto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
                 .mnuMovieMissAuto.Text = .mnuMovieAllAuto.Text
@@ -20761,7 +20750,6 @@ doCancel:
                 .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
                 .cmnuShowLanguageSet.Text = cmnuMovieGenresSet.Text
                 .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
                 .cmnuTrayToolsBackdrops.Text = .mnuMainToolsBackdrops.Text
                 .cmnuTrayToolsCleanFiles.Text = .mnuMainToolsCleanFiles.Text
                 .cmnuTrayToolsClearCache.Text = .mnuMainToolsClearCache.Text

@@ -509,7 +509,6 @@ Partial Public Class clsXMLSettings
     Private _username As String
     Private _usetrakt As Boolean
     Private _version As String
-    Private _restartscraper As Boolean
 
 
     '***************************************************
@@ -810,15 +809,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movieactorthumbsnmj = value
-        End Set
-    End Property
-
-    Public Property RestartScraper() As Boolean
-        Get
-            Return Me._restartscraper
-        End Get
-        Set(ByVal value As Boolean)
-            Me._restartscraper = value
         End Set
     End Property
 
