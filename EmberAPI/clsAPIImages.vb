@@ -2662,10 +2662,10 @@ Public Class Images
                                           ByRef DefaultSeasonImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer), _
                                           ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer), _
                                           ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer_TV, _
-                                          ByRef Type As Enums.ImageType_TV)
+                                          ByRef ScrapeModifier As Structures.ScrapeModifier)
 
         'Banner Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled Then
+        If ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled Then
             If DBTV.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Banner = DBTV.ImagesContainer.Banner
             Else
@@ -2680,7 +2680,7 @@ Public Class Images
         End If
 
         'CharacterArt Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then
+        If ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then
             If DBTV.ImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.CharacterArt = DBTV.ImagesContainer.CharacterArt
             Else
@@ -2695,7 +2695,7 @@ Public Class Images
         End If
 
         'ClearArt Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then
+        If ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then
             If DBTV.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearArt = DBTV.ImagesContainer.ClearArt
             Else
@@ -2710,7 +2710,7 @@ Public Class Images
         End If
 
         'ClearLogo Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then
+        If ScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then
             If DBTV.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearLogo = DBTV.ImagesContainer.ClearLogo
             Else
@@ -2725,7 +2725,7 @@ Public Class Images
         End If
 
         'Fanart Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowFanart OrElse Type = Enums.ImageType_TV.EpisodeFanart) Then
+        If (ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.MainFanart) Then
             If DBTV.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Fanart = DBTV.ImagesContainer.Fanart
             Else
@@ -2740,7 +2740,7 @@ Public Class Images
         End If
 
         'Landscape Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then
+        If ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then
             If DBTV.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Landscape = DBTV.ImagesContainer.Landscape
             Else
@@ -2755,7 +2755,7 @@ Public Class Images
         End If
 
         'Poster Show
-        If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled Then
+        If ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled Then
             If DBTV.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Poster = DBTV.ImagesContainer.Poster
             Else
@@ -2770,15 +2770,15 @@ Public Class Images
         End If
 
         'Season / AllSeasons Banner/Fanart/Poster
-        If Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.SeasonBanner OrElse Type = Enums.ImageType_TV.SeasonFanart _
-            OrElse Type = Enums.ImageType_TV.SeasonLandscape OrElse Type = Enums.ImageType_TV.SeasonPoster Then
+        If (ScrapeModifier.SeasonBanner OrElse ScrapeModifier.SeasonFanart _
+            OrElse ScrapeModifier.SeasonLandscape OrElse ScrapeModifier.SeasonPoster) AndAlso DBTV.Seasons IsNot Nothing Then
             For Each cSeason As Structures.DBTV In DBTV.Seasons.OrderBy(Function(f) f.TVSeason.Season)
                 Dim iSeason As Integer = cSeason.TVSeason.Season
                 Dim SIC As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = iSeason}
 
                 If iSeason = 999 Then
                     'Banner AllSeasons 
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.AllSeasonsBanner) AndAlso Master.eSettings.TVASBannerAnyEnabled Then
+                    If ScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVASBannerAnyEnabled Then
                         If cSeason.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
                             SIC.Banner = cSeason.ImagesContainer.Banner
                         Else
@@ -2793,7 +2793,7 @@ Public Class Images
                     End If
                 Else
                     'Banner Season
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.SeasonBanner) AndAlso Master.eSettings.TVSeasonBannerAnyEnabled Then
+                    If ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled Then
                         If cSeason.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
                             SIC.Banner = cSeason.ImagesContainer.Banner
                         Else
@@ -2810,7 +2810,7 @@ Public Class Images
 
                 If iSeason = 999 Then
                     'Fanart AllSeasons
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.AllSeasonsFanart) AndAlso Master.eSettings.TVASFanartAnyEnabled Then
+                    If ScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVASFanartAnyEnabled Then
                         If cSeason.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                             SIC.Fanart = cSeason.ImagesContainer.Fanart
                         Else
@@ -2825,7 +2825,7 @@ Public Class Images
                     End If
                 Else
                     'Fanart Season
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.SeasonFanart) AndAlso Master.eSettings.TVSeasonFanartAnyEnabled Then
+                    If ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled Then
                         If cSeason.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                             SIC.Fanart = cSeason.ImagesContainer.Fanart
                         Else
@@ -2842,7 +2842,7 @@ Public Class Images
 
                 If iSeason = 999 Then
                     'Landscape AllSeasons
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.AllSeasonsLandscape) AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then
+                    If ScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then
                         If cSeason.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
                             SIC.Landscape = cSeason.ImagesContainer.Landscape
                         Else
@@ -2857,7 +2857,7 @@ Public Class Images
                     End If
                 Else
                     ' Landscape Season
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.SeasonLandscape) AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled Then
+                    If ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled Then
                         If cSeason.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
                             SIC.Landscape = cSeason.ImagesContainer.Landscape
                         Else
@@ -2874,7 +2874,7 @@ Public Class Images
 
                 If iSeason = 999 Then
                     'Poster AllSeasons
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.AllSeasonsPoster) AndAlso Master.eSettings.TVASPosterAnyEnabled Then
+                    If ScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
                         If cSeason.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                             SIC.Poster = cSeason.ImagesContainer.Poster
                         Else
@@ -2889,7 +2889,7 @@ Public Class Images
                     End If
                 Else
                     'Poster Season
-                    If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.SeasonPoster) AndAlso Master.eSettings.TVSeasonPosterAnyEnabled Then
+                    If ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled Then
                         If cSeason.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                             SIC.Poster = cSeason.ImagesContainer.Poster
                         Else
@@ -2908,14 +2908,14 @@ Public Class Images
         End If
 
         'Episode Fanart/Poster
-        If Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.EpisodeFanart OrElse Type = Enums.ImageType_TV.EpisodePoster Then
+        If (ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.EpisodePoster) AndAlso DBTV.Episodes IsNot Nothing Then
             For Each cEpisode As Structures.DBTV In DBTV.Episodes
                 Dim iEpisode As Integer = cEpisode.TVEp.Episode
                 Dim iSeason As Integer = cEpisode.TVEp.Season
                 Dim EIC As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Episode = iEpisode, .Season = iSeason}
 
                 'Fanart Episode
-                If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.EpisodeFanart) AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then
+                If ScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then
                     If cEpisode.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                         EIC.Fanart = cEpisode.ImagesContainer.Fanart
                     Else
@@ -2930,7 +2930,7 @@ Public Class Images
                 End If
 
                 'Poster Episode
-                If (Type = Enums.ImageType_TV.All OrElse Type = Enums.ImageType_TV.EpisodePoster) AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then
+                If ScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then
                     If cEpisode.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                         EIC.Poster = cEpisode.ImagesContainer.Poster
                     Else

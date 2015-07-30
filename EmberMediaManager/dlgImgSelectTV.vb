@@ -53,9 +53,8 @@ Public Class dlgImgSelectTV
     Private SelSeason As Integer = -999
     Private _id As Integer = -1
     Private _season As Integer = -999
-    Private _type As Enums.ImageType_TV = Enums.ImageType_TV.All
     Private _withcurrent As Boolean = True
-    Private _ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
+    Private _ScrapeModifier As New Structures.ScrapeModifier
 
 #End Region 'Fields
 
@@ -80,21 +79,20 @@ Public Class dlgImgSelectTV
     End Sub
 
     Public Function SetDefaults() As Boolean
-        Images.SetDefaultImages_TV(tmpShowContainer, DefaultImagesContainer, DefaultSeasonImagesContainer, DefaultEpisodeImagesContainer, SearchResultsContainer, Me._type)
+        Images.SetDefaultImages_TV(tmpShowContainer, DefaultImagesContainer, DefaultSeasonImagesContainer, DefaultEpisodeImagesContainer, SearchResultsContainer, Me._ScrapeModifier)
         Return False
     End Function
 
-    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.ImageType_TV, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal WithCurrent As Boolean) As System.Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal WithCurrent As Boolean) As System.Windows.Forms.DialogResult
         Me._id = ShowID
-        Me._type = Type
+        Me._ScrapeModifier = _ScrapeModifier
         Me._withcurrent = WithCurrent
-        Me._ScrapeType = ScrapeType
         Return MyBase.ShowDialog
     End Function
 
-    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal Type As Enums.ImageType_TV, ByVal Season As Integer, ByVal CurrentImage As Images) As Images
+    Public Overloads Function ShowDialog(ByVal ShowID As Integer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal Season As Integer, ByVal CurrentImage As Images) As Images
         Me._id = ShowID
-        Me._type = Type
+        Me._ScrapeModifier = ScrapeModifier
         Me._season = Season
         Me.pbCurrent.Image = CurrentImage.Image
         Me.pbCurrent.Tag = CurrentImage
@@ -104,6 +102,13 @@ Public Class dlgImgSelectTV
         Else
             Return Nothing
         End If
+    End Function
+
+    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal ScrapeModifier As Structures.ScrapeModifier, Optional ByVal _isEdit As Boolean = False) As DialogResult
+        Me.SearchResultsContainer = ImagesContainer
+        Me.tmpShowContainer = DBTV
+        Me._ScrapeModifier = ScrapeModifier
+        Return MyBase.ShowDialog()
     End Function
 
     Private Sub AddImage(ByRef fTag As MediaContainers.Image, ByVal iIndex As Integer)
@@ -343,23 +348,19 @@ Public Class dlgImgSelectTV
 
     Private Sub bwLoadImages_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadImages.RunWorkerCompleted
         Me.pnlStatus.Visible = False
-        If _ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAuto Then
-            DoneAndClose()
-        Else
-            If Not e.Cancelled Then
-                Me.tvList.Enabled = True
-                Me.tvList.Visible = True
-                If Me.tvList.Nodes.Count > 0 Then
-                    Me.tvList.SelectedNode = Me.tvList.Nodes(0)
-                End If
-                Me.tvList.Focus()
-
-                Me.btnOK.Enabled = True
+        If Not e.Cancelled Then
+            Me.tvList.Enabled = True
+            Me.tvList.Visible = True
+            If Me.tvList.Nodes.Count > 0 Then
+                Me.tvList.SelectedNode = Me.tvList.Nodes(0)
             End If
+            Me.tvList.Focus()
 
-            Me.pbCurrent.Visible = True
-            Me.lblCurrentImage.Visible = True
+            Me.btnOK.Enabled = True
         End If
+
+        Me.pbCurrent.Visible = True
+        Me.lblCurrentImage.Visible = True
     End Sub
 
     Private Sub CheckCurrentImage()
@@ -398,12 +399,6 @@ Public Class dlgImgSelectTV
 
         Me.SetUp()
     End Sub
-
-    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByVal Type As Enums.ImageType_TV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, Optional ByVal _isEdit As Boolean = False) As DialogResult
-        Me.SearchResultsContainer = ImagesContainer
-        Me.tmpShowContainer = DBTV
-        Return MyBase.ShowDialog()
-    End Function
 
     Private Sub dlgTVImageSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.bwLoadData.WorkerReportsProgress = True
@@ -455,7 +450,7 @@ Public Class dlgImgSelectTV
                                        SearchResultsContainer.ShowClearLogos.Count + SearchResultsContainer.ShowFanarts.Count + SearchResultsContainer.ShowLandscapes.Count + _
                                        SearchResultsContainer.ShowPosters.Count, "max")
 
-        'Create chaching paths
+        'Create caching paths
 
         'Banner Show
         For Each img In SearchResultsContainer.ShowBanners
@@ -556,7 +551,7 @@ Public Class dlgImgSelectTV
         'Start images caching
 
         'Episode Fanarts
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.EpisodeFanart Then
+        If Me._ScrapeModifier.EpisodeFanart Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.EpisodeFanarts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -568,7 +563,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Episode Posters
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.EpisodePoster Then
+        If Me._ScrapeModifier.EpisodePoster Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.EpisodePosters
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -580,7 +575,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Season Poster / AllSeasons Poster
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonPoster OrElse Me._type = Enums.ImageType_TV.AllSeasonsPoster Then
+        If Me._ScrapeModifier.SeasonPoster OrElse Me._ScrapeModifier.AllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.SeasonPosters
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -592,7 +587,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Season Banner / AllSeasons Banner
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonBanner OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner Then
+        If Me._ScrapeModifier.SeasonBanner OrElse Me._ScrapeModifier.AllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.SeasonBanners
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -604,7 +599,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Season Fanart  /AllSeasons Fanart
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonFanart OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart Then
+        If Me._ScrapeModifier.SeasonFanart OrElse Me._ScrapeModifier.AllSeasonsFanart Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.SeasonFanarts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -616,7 +611,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Season Landscape  /AllSeasons Landscape
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.SeasonLandscape OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape Then
+        If Me._ScrapeModifier.SeasonLandscape OrElse Me._ScrapeModifier.AllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.SeasonLandscapes
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -628,7 +623,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show Poster / AllSeasons Poster
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowPoster OrElse Me._type = Enums.ImageType_TV.AllSeasonsPoster Then
+        If Me._ScrapeModifier.MainPoster OrElse Me._ScrapeModifier.AllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowPosters
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -640,7 +635,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show Banner / AllSeasons Banner
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowBanner OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner Then
+        If Me._ScrapeModifier.MainBanner OrElse Me._ScrapeModifier.AllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowBanners
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -652,7 +647,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show CharacterArt
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowCharacterArt Then
+        If Me._ScrapeModifier.MainCharacterArt Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowCharacterArts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -664,7 +659,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show ClearArt
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearArt Then
+        If Me._ScrapeModifier.MainClearArt Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowClearArts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -676,7 +671,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show ClearLogo
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearLogo Then
+        If Me._ScrapeModifier.MainClearLogo Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowClearLogos
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -688,7 +683,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show Landscape / AllSeasons Landscape
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape Then
+        If Me._ScrapeModifier.MainLandscape OrElse Me._ScrapeModifier.AllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowLandscapes
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -700,7 +695,7 @@ Public Class dlgImgSelectTV
         End If
 
         'Show Fanart / AllSeasons Fanart / Season Fanart / Episode Fanart
-        If Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart OrElse Me._type = Enums.ImageType_TV.SeasonFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart Then
+        If Me._ScrapeModifier.MainFanart OrElse Me._ScrapeModifier.AllSeasonsFanart OrElse Me._ScrapeModifier.SeasonFanart OrElse Me._ScrapeModifier.EpisodeFanart Then
             For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowFanarts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
@@ -762,20 +757,20 @@ Public Class dlgImgSelectTV
     End Sub
 
     Private Sub GenerateList()
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowBanner) AndAlso Master.eSettings.TVShowBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(658, "TV Show Banner"), .Tag = "showb", .ImageIndex = 0, .SelectedImageIndex = 0})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowCharacterArt) AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "TV Show CharacterArt"), .Tag = "showch", .ImageIndex = 1, .SelectedImageIndex = 1})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearArt) AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "TV Show ClearArt"), .Tag = "showca", .ImageIndex = 2, .SelectedImageIndex = 2})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowClearLogo) AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "TV Show ClearLogo"), .Tag = "showcl", .ImageIndex = 3, .SelectedImageIndex = 3})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowFanart OrElse Me._type = Enums.ImageType_TV.EpisodeFanart) AndAlso (Master.eSettings.TVShowFanartAnyEnabled OrElse Master.eSettings.TVEpisodeFanartAnyEnabled) Then Me.tvList.Nodes.Add(New TreeNode With {.Text = If(Me._type = Enums.ImageType_TV.EpisodeFanart, Master.eLang.GetString(688, "Episode Fanart"), Master.eLang.GetString(684, "TV Show Fanart")), .Tag = "showf", .ImageIndex = 4, .SelectedImageIndex = 4})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowLandscape) AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1010, "TV Show Landscape"), .Tag = "showl", .ImageIndex = 5, .SelectedImageIndex = 5})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.ShowPoster) AndAlso Master.eSettings.TVShowPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(956, "TV Show Poster"), .Tag = "showp", .ImageIndex = 6, .SelectedImageIndex = 6})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsBanner) AndAlso Master.eSettings.TVASBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1014, "All Seasons Banner"), .Tag = "allb", .ImageIndex = 0, .SelectedImageIndex = 0})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsFanart) AndAlso Master.eSettings.TVASFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1015, "All Seasons Fanart"), .Tag = "allf", .ImageIndex = 4, .SelectedImageIndex = 4})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsLandscape) AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1016, "All Seasons Landscape"), .Tag = "alll", .ImageIndex = 5, .SelectedImageIndex = 5})
-        If (Me._type = Enums.ImageType_TV.All OrElse Me._type = Enums.ImageType_TV.AllSeasonsPoster) AndAlso Master.eSettings.TVASPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(735, "All Seasons Poster"), .Tag = "allp", .ImageIndex = 6, .SelectedImageIndex = 6})
+        If Me._ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(658, "TV Show Banner"), .Tag = "showb", .ImageIndex = 0, .SelectedImageIndex = 0})
+        If Me._ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1011, "TV Show CharacterArt"), .Tag = "showch", .ImageIndex = 1, .SelectedImageIndex = 1})
+        If Me._ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1013, "TV Show ClearArt"), .Tag = "showca", .ImageIndex = 2, .SelectedImageIndex = 2})
+        If Me._ScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1012, "TV Show ClearLogo"), .Tag = "showcl", .ImageIndex = 3, .SelectedImageIndex = 3})
+        If Me._ScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(684, "TV Show Fanart"), .Tag = "showf", .ImageIndex = 4, .SelectedImageIndex = 4})
+        If Me._ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1010, "TV Show Landscape"), .Tag = "showl", .ImageIndex = 5, .SelectedImageIndex = 5})
+        If Me._ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(956, "TV Show Poster"), .Tag = "showp", .ImageIndex = 6, .SelectedImageIndex = 6})
+        If Me._ScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVASBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1014, "All Seasons Banner"), .Tag = "allb", .ImageIndex = 0, .SelectedImageIndex = 0})
+        If Me._ScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVASFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1015, "All Seasons Fanart"), .Tag = "allf", .ImageIndex = 4, .SelectedImageIndex = 4})
+        If Me._ScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1016, "All Seasons Landscape"), .Tag = "alll", .ImageIndex = 5, .SelectedImageIndex = 5})
+        If Me._ScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(735, "All Seasons Poster"), .Tag = "allp", .ImageIndex = 6, .SelectedImageIndex = 6})
 
         Dim TnS As TreeNode
-        If Me._type = Enums.ImageType_TV.All Then
+        If tmpShowContainer.Seasons IsNot Nothing AndAlso tmpShowContainer.Seasons.Count > 0 Then
             For Each cSeason As Structures.DBTV In tmpShowContainer.Seasons.Where(Function(s) Not s.TVSeason.Season = 999).OrderBy(Function(s) s.TVSeason.Season)
                 TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.TVSeason.Season), 7, 7)
                 If Master.eSettings.TVSeasonBannerAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1017, "Season Banner"), .Tag = String.Concat("b", cSeason.TVSeason.Season), .ImageIndex = 0, .SelectedImageIndex = 0})
@@ -784,13 +779,13 @@ Public Class dlgImgSelectTV
                 If Master.eSettings.TVSeasonPosterAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.TVSeason.Season), .ImageIndex = 6, .SelectedImageIndex = 6})
                 Me.tvList.Nodes.Add(TnS)
             Next
-        ElseIf Me._type = Enums.ImageType_TV.SeasonBanner Then
+        ElseIf Me._ScrapeModifier.SeasonBanner Then
             If Master.eSettings.TVSeasonBannerAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(1019, "Season {0} Banner"), Me._season), .Tag = String.Concat("b", Me._season)})
-        ElseIf Me._type = Enums.ImageType_TV.SeasonFanart Then
+        ElseIf Me._ScrapeModifier.SeasonFanart Then
             If Master.eSettings.TVSeasonFanartAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(962, "Season {0} Fanart"), Me._season), .Tag = String.Concat("f", Me._season)})
-        ElseIf Me._type = Enums.ImageType_TV.SeasonLandscape Then
+        ElseIf Me._ScrapeModifier.SeasonLandscape Then
             If Master.eSettings.TVSeasonLandscapeAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(1020, "Season {0} Landscape"), Me._season), .Tag = String.Concat("l", Me._season)})
-        ElseIf Me._type = Enums.ImageType_TV.SeasonPoster Then
+        ElseIf Me._ScrapeModifier.SeasonPoster Then
             If Master.eSettings.TVSeasonPosterAnyEnabled Then Me.tvList.Nodes.Add(New TreeNode With {.Text = String.Format(Master.eLang.GetString(961, "Season {0} Posters"), Me._season), .Tag = String.Concat("p", Me._season)})
         End If
 

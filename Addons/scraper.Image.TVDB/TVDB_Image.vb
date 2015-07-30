@@ -208,19 +208,19 @@ Public Class TVDB_Image
 
         Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier)
 
-        'If Not Type = Enums.ScraperCapabilities_TV.EpisodePoster Then
-        If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-            ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, filterModifier, Settings)
+        If DBTV.TVEp IsNot Nothing Then
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) AndAlso DBTV.TVEp IsNot Nothing Then
+                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEp.Season, DBTV.TVEp.Episode, Settings)
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            End If
         Else
-            logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, filterModifier, Settings)
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            End If
         End If
-        'Else
-        '    If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) AndAlso DBTV.TVEp IsNot Nothing Then
-        '        ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEp.Season, DBTV.TVEp.Episode, Settings)
-        '    Else
-        '        logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
-        '    End If
-        'End If
 
         logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape TVDB")
         Return New Interfaces.ModuleResult With {.breakChain = False}

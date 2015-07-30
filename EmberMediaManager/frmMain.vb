@@ -3374,7 +3374,7 @@ Public Class frmMain
 
                     If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                         Using dImgSelect As New dlgImgSelectTV()
-                            If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.All, aContainer, True) = DialogResult.OK Then
+                            If dImgSelect.ShowDialog(DBScrapeShow, aContainer, Args.ScrapeModifier, True) = DialogResult.OK Then
                                 DBScrapeShow = dImgSelect.Results
                             End If
                         End Using
@@ -3388,47 +3388,47 @@ Public Class frmMain
                             Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEp.Season, tEpisode.TVEp.Episode)
                             tEpisode.ImagesContainer.Poster = imgResult
                         Next
-                        If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeShow, Enums.ImageType_TV.ShowPoster) Then
-                            If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredTVShowPoster(aContainer.ShowPosters, ShowPoster) Then
-                                If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
-                                    ShowPoster.WebImage.FromWeb(ShowPoster.URL)
-                                End If
-                                If ShowPoster.WebImage.Image IsNot Nothing Then
-                                    tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
-                                    If Not String.IsNullOrEmpty(tURL) Then
-                                        DBScrapeShow.PosterPath = tURL
-                                        'TVScraperEvent(Enums.ScraperEventType_TV.PosterItem, DBScrapeShow.ShowPosterPath)
-                                        'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                        '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                        'End If
-                                    End If
-                                End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                                If aContainer.ShowPosters.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                                        MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                    End If
-                                    Using dImgSelect As New dlgImgSelectTV()
-                                        If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.ShowPoster, aContainer) = DialogResult.OK Then
-                                            ShowPoster = dImgSelect.Results.ImagesContainer.Poster
-                                            If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
-                                                ShowPoster.WebImage.FromWeb(ShowPoster.URL)
-                                            End If
-                                            If ShowPoster.WebImage.Image IsNot Nothing Then
-                                                tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
-                                                If Not String.IsNullOrEmpty(tURL) Then
-                                                    DBScrapeShow.PosterPath = tURL
-                                                    'TVScraperEvent(Enums.ScraperEventType_TV.ShowPosterItem, DBScrapeShow.ShowPosterPath)
-                                                    'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                    '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                                    'End If
-                                                End If
-                                            End If
-                                        End If
-                                    End Using
-                                End If
-                            End If
-                        End If
+                        '    If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeShow, Enums.ImageType_TV.ShowPoster) Then
+                        '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredTVShowPoster(aContainer.ShowPosters, ShowPoster) Then
+                        '            If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
+                        '                ShowPoster.WebImage.FromWeb(ShowPoster.URL)
+                        '            End If
+                        '            If ShowPoster.WebImage.Image IsNot Nothing Then
+                        '                tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
+                        '                If Not String.IsNullOrEmpty(tURL) Then
+                        '                    DBScrapeShow.PosterPath = tURL
+                        '                    'TVScraperEvent(Enums.ScraperEventType_TV.PosterItem, DBScrapeShow.ShowPosterPath)
+                        '                    'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                        '                    '    DBScrapeMovie.Movie.Thumb = pResults.Posters
+                        '                    'End If
+                        '                End If
+                        '            End If
+                        '        ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
+                        '            If aContainer.ShowPosters.Count > 0 Then
+                        '                If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
+                        '                    MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        '                End If
+                        '                Using dImgSelect As New dlgImgSelectTV()
+                        '                    If dImgSelect.ShowDialog(DBScrapeShow, Enums.ImageType_TV.ShowPoster, aContainer) = DialogResult.OK Then
+                        '                        ShowPoster = dImgSelect.Results.ImagesContainer.Poster
+                        '                        If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
+                        '                            ShowPoster.WebImage.FromWeb(ShowPoster.URL)
+                        '                        End If
+                        '                        If ShowPoster.WebImage.Image IsNot Nothing Then
+                        '                            tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
+                        '                            If Not String.IsNullOrEmpty(tURL) Then
+                        '                                DBScrapeShow.PosterPath = tURL
+                        '                                'TVScraperEvent(Enums.ScraperEventType_TV.ShowPosterItem, DBScrapeShow.ShowPosterPath)
+                        '                                'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                        '                                '    DBScrapeMovie.Movie.Thumb = pResults.Posters
+                        '                                'End If
+                        '                            End If
+                        '                        End If
+                        '                    End If
+                        '                End Using
+                        '            End If
+                        '        End If
+                        '    End If
                     End If
 
                     '    'Poster
@@ -4136,53 +4136,53 @@ Public Class frmMain
 
                     If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                         Using dImgSelect As New dlgImgSelectTV()
-                            If dImgSelect.ShowDialog(DBScrapeEpisode, Enums.ImageType_TV.EpisodePoster, aContainer, True) = DialogResult.OK Then
+                            If dImgSelect.ShowDialog(DBScrapeEpisode, aContainer, Args.ScrapeModifier, True) = DialogResult.OK Then
                                 DBScrapeEpisode = dImgSelect.Results
                             End If
                         End Using
 
                     Else 'autoscraping
-                        If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeEpisode, Enums.ImageType_TV.ShowPoster) Then
-                            If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredTVShowPoster(aContainer.ShowPosters, ShowPoster) Then
-                                If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
-                                    ShowPoster.WebImage.FromWeb(ShowPoster.URL)
-                                End If
-                                If ShowPoster.WebImage.Image IsNot Nothing Then
-                                    tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeEpisode)
-                                    If Not String.IsNullOrEmpty(tURL) Then
-                                        DBScrapeEpisode.PosterPath = tURL
-                                        'TVScraperEvent(Enums.ScraperEventType_TV.PosterItem, DBScrapeShow.ShowPosterPath)
-                                        'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                        '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                        'End If
-                                    End If
-                                End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                                If aContainer.ShowPosters.Count > 0 Then
-                                    If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                                        MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                    End If
-                                    Using dImgSelect As New dlgImgSelectTV()
-                                        If dImgSelect.ShowDialog(DBScrapeEpisode, Enums.ImageType_TV.ShowPoster, aContainer) = DialogResult.OK Then
-                                            ShowPoster = dImgSelect.Results.ImagesContainer.Poster
-                                            If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
-                                                ShowPoster.WebImage.FromWeb(ShowPoster.URL)
-                                            End If
-                                            If ShowPoster.WebImage.Image IsNot Nothing Then
-                                                tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeEpisode)
-                                                If Not String.IsNullOrEmpty(tURL) Then
-                                                    DBScrapeEpisode.PosterPath = tURL
-                                                    'TVScraperEvent(Enums.ScraperEventType_TV.ShowPosterItem, DBScrapeShow.ShowPosterPath)
-                                                    'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                    '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                                    'End If
-                                                End If
-                                            End If
-                                        End If
-                                    End Using
-                                End If
-                            End If
-                        End If
+                        '    If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeEpisode, Enums.ImageType_TV.ShowPoster) Then
+                        '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredTVShowPoster(aContainer.ShowPosters, ShowPoster) Then
+                        '            If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
+                        '                ShowPoster.WebImage.FromWeb(ShowPoster.URL)
+                        '            End If
+                        '            If ShowPoster.WebImage.Image IsNot Nothing Then
+                        '                tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeEpisode)
+                        '                If Not String.IsNullOrEmpty(tURL) Then
+                        '                    DBScrapeEpisode.PosterPath = tURL
+                        '                    'TVScraperEvent(Enums.ScraperEventType_TV.PosterItem, DBScrapeShow.ShowPosterPath)
+                        '                    'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                        '                    '    DBScrapeMovie.Movie.Thumb = pResults.Posters
+                        '                    'End If
+                        '                End If
+                        '            End If
+                        '        ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
+                        '            If aContainer.ShowPosters.Count > 0 Then
+                        '                If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
+                        '                    MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        '                End If
+                        '                Using dImgSelect As New dlgImgSelectTV()
+                        '                    If dImgSelect.ShowDialog(DBScrapeEpisode, Enums.ImageType_TV.ShowPoster, aContainer) = DialogResult.OK Then
+                        '                        ShowPoster = dImgSelect.Results.ImagesContainer.Poster
+                        '                        If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
+                        '                            ShowPoster.WebImage.FromWeb(ShowPoster.URL)
+                        '                        End If
+                        '                        If ShowPoster.WebImage.Image IsNot Nothing Then
+                        '                            tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeEpisode)
+                        '                            If Not String.IsNullOrEmpty(tURL) Then
+                        '                                DBScrapeEpisode.PosterPath = tURL
+                        '                                'TVScraperEvent(Enums.ScraperEventType_TV.ShowPosterItem, DBScrapeShow.ShowPosterPath)
+                        '                                'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                        '                                '    DBScrapeMovie.Movie.Thumb = pResults.Posters
+                        '                                'End If
+                        '                            End If
+                        '                        End If
+                        '                    End If
+                        '                End Using
+                        '            End If
+                        '        End If
+                        '    End If
                     End If
 
                     '    'Poster
