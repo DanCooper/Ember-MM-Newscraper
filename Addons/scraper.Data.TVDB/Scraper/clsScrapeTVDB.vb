@@ -394,6 +394,12 @@ Namespace TVDBs
                 nEpisode.DisplaySeason = EpisodeInfo.AirsBeforeSeason
             End If
 
+            'Season # AirsAfterSeason (DisplaySeason, DisplayEpisode; Special handling like in Kodi)
+            If CDbl(EpisodeInfo.AirsAfterSeason) >= 0 Then
+                nEpisode.DisplaySeason = CInt(EpisodeInfo.AirsAfterSeason)
+                nEpisode.DisplayEpisode = 4096
+            End If
+
             'Season # Combined
             If CInt(EpisodeInfo.CombinedSeason) >= 0 Then
                 nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
