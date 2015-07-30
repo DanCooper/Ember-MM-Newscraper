@@ -120,89 +120,33 @@ Public Class frmSettingsHolder_TV
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
-    End Sub
-    Private Sub chkWriters_CheckedChanged(sender As Object, e As EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-    Private Sub chkDirector_CheckedChanged(sender As System.Object, e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
+    Private Sub SettingsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        chkFallBackEng.CheckedChanged, _
+        chkGetAdultItems.CheckedChanged, _
+        chkScraperEpActors.CheckedChanged, _
+        chkScraperEpAired.CheckedChanged, _
+        chkScraperEpCredits.CheckedChanged, _
+        chkScraperEpDirector.CheckedChanged, _
+        chkScraperEpGuestStars.CheckedChanged, _
+        chkScraperEpPlot.CheckedChanged, _
+        chkScraperEpRating.CheckedChanged, _
+        chkScraperEpTitle.CheckedChanged, _
+        chkScraperEpVotes.CheckedChanged, _
+        chkScraperShowActors.CheckedChanged, _
+        chkScraperShowCert.CheckedChanged, _
+        chkScraperShowCountry.CheckedChanged, _
+        chkScraperShowCreator.CheckedChanged, _
+        chkScraperShowGenre.CheckedChanged, _
+        chkScraperShowOriginalTitle.CheckedChanged, _
+        chkScraperShowPlot.CheckedChanged, _
+        chkScraperShowPremiered.CheckedChanged, _
+        chkScraperShowRating.CheckedChanged, _
+        chkScraperShowRuntime.CheckedChanged, _
+        chkScraperShowStatus.CheckedChanged, _
+        chkScraperShowStudio.CheckedChanged, _
+        chkScraperShowTitle.CheckedChanged, _
+        chkScraperShowVotes.CheckedChanged
 
-    Private Sub chkCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkGetAdult_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetAdultItems.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkFallBackEng.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -237,83 +181,4 @@ Public Class frmSettingsHolder_TV
 
 #End Region 'Methods
 
-    Private Sub chkScraperShowGenre_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowGenre.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowMPAA_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowCert.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowPlot_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowPlot.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowPremiered_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowPremiered.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowRating.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowStudio_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowStudio.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowActors_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowActors.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowStatus_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowStatus.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperShowVotes_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowVotes.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpTitle.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpPlot_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpPlot.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpSeason_CheckedChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub chkScraperEpEpisode_CheckedChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub chkScraperEpDirector_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpDirector.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpCredits_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpCredits.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpActors_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpActors.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpAired_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpAired.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpRating.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpVotes_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpVotes.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpGuestStars_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpGuestStars.CheckedChanged
-
-    End Sub
 End Class

@@ -689,6 +689,19 @@ Partial Class dlgSettings
         Me.tcTVSourcesFileNaming = New System.Windows.Forms.TabControl()
         Me.tpTVSourcesFileNamingKodi = New System.Windows.Forms.TabPage()
         Me.tblTVSourcesFileNamingXBMC = New System.Windows.Forms.TableLayoutPanel()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt = New System.Windows.Forms.Label()
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo = New System.Windows.Forms.Label()
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.chkTVShowClearArtExtended = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowClearLogoExtended = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonLandscapeExtended = New System.Windows.Forms.CheckBox()
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape = New System.Windows.Forms.Label()
+        Me.chkTVShowLandscapeExtended = New System.Windows.Forms.CheckBox()
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt = New System.Windows.Forms.Label()
+        Me.chkTVShowCharacterArtExtended = New System.Windows.Forms.CheckBox()
         Me.gbTVSourcesFileNamingKodiDefaultsOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesFileNamingKodiDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVShowFanartFrodo = New System.Windows.Forms.CheckBox()
@@ -1499,19 +1512,6 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt = New System.Windows.Forms.Label()
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo = New System.Windows.Forms.Label()
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt = New System.Windows.Forms.Label()
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.chkTVShowClearArtExtended = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowClearLogoExtended = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowCharacterArtExtended = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonLandscapeExtended = New System.Windows.Forms.CheckBox()
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape = New System.Windows.Forms.Label()
-        Me.chkTVShowLandscapeExtended = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -1696,6 +1696,8 @@ Partial Class dlgSettings
         Me.tcTVSourcesFileNaming.SuspendLayout
         Me.tpTVSourcesFileNamingKodi.SuspendLayout
         Me.tblTVSourcesFileNamingXBMC.SuspendLayout
+        Me.GroupBox1.SuspendLayout
+        Me.TableLayoutPanel4.SuspendLayout
         Me.gbTVSourcesFileNamingKodiDefaultsOpts.SuspendLayout
         Me.tblTVSourcesFileNamingKodiDefaultsOpts.SuspendLayout
         Me.tpTVSourcesFileNamingKodiAddons.SuspendLayout
@@ -1909,8 +1911,6 @@ Partial Class dlgSettings
         Me.scSettingsMain.Panel2.SuspendLayout
         Me.scSettingsMain.SuspendLayout
         Me.tblSettingsFooter.SuspendLayout
-        Me.GroupBox1.SuspendLayout
-        Me.TableLayoutPanel4.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMiscOpts
@@ -4302,7 +4302,7 @@ Partial Class dlgSettings
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnOK.Location = New System.Drawing.Point(1513, 41)
+        Me.btnOK.Location = New System.Drawing.Point(1019, 41)
         Me.btnOK.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
@@ -4315,7 +4315,7 @@ Partial Class dlgSettings
         Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnApply.Enabled = false
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnApply.Location = New System.Drawing.Point(1353, 41)
+        Me.btnApply.Location = New System.Drawing.Point(859, 41)
         Me.btnApply.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(74, 23)
@@ -4328,7 +4328,7 @@ Partial Class dlgSettings
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(1433, 41)
+        Me.btnCancel.Location = New System.Drawing.Point(939, 41)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(74, 23)
@@ -4346,7 +4346,7 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(1598, 64)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(1104, 64)
         Me.pnlSettingsTop.TabIndex = 3
         '
         'lblSettingsTopDetails
@@ -5949,7 +5949,7 @@ Partial Class dlgSettings
         Me.pnlSettingsCurrent.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsCurrent.Location = New System.Drawing.Point(5, 3)
         Me.pnlSettingsCurrent.Name = "pnlSettingsCurrent"
-        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1588, 27)
+        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1094, 27)
         Me.pnlSettingsCurrent.TabIndex = 5
         '
         'pbSettingsCurrent
@@ -5966,7 +5966,7 @@ Partial Class dlgSettings
         Me.pnlMovieSources.AutoSize = true
         Me.pnlMovieSources.BackColor = System.Drawing.Color.White
         Me.pnlMovieSources.Controls.Add(Me.tblMovieSources)
-        Me.pnlMovieSources.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMovieSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSources.Name = "pnlMovieSources"
         Me.pnlMovieSources.Size = New System.Drawing.Size(854, 531)
         Me.pnlMovieSources.TabIndex = 13
@@ -10210,7 +10210,7 @@ Partial Class dlgSettings
         Me.pnlTVSources.AutoSize = true
         Me.pnlTVSources.BackColor = System.Drawing.Color.White
         Me.pnlTVSources.Controls.Add(Me.tblTVSources)
-        Me.pnlTVSources.Location = New System.Drawing.Point(900, 0)
+        Me.pnlTVSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(836, 506)
         Me.pnlTVSources.TabIndex = 11
@@ -10388,6 +10388,173 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingXBMC.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblTVSourcesFileNamingXBMC.Size = New System.Drawing.Size(512, 314)
         Me.tblTVSourcesFileNamingXBMC.TabIndex = 4
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.AutoSize = true
+        Me.GroupBox1.Controls.Add(Me.TableLayoutPanel4)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.GroupBox1.Location = New System.Drawing.Point(259, 3)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(205, 181)
+        Me.GroupBox1.TabIndex = 12
+        Me.GroupBox1.TabStop = false
+        Me.GroupBox1.Text = "Extended Images"
+        '
+        'TableLayoutPanel4
+        '
+        Me.TableLayoutPanel4.AutoSize = true
+        Me.TableLayoutPanel4.ColumnCount = 3
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedClearArt, 0, 2)
+        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedClearLogo, 0, 3)
+        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape, 0, 4)
+        Me.TableLayoutPanel4.Controls.Add(Me.Label6, 1, 0)
+        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowClearArtExtended, 1, 2)
+        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowClearLogoExtended, 1, 3)
+        Me.TableLayoutPanel4.Controls.Add(Me.chkTVSeasonLandscapeExtended, 1, 4)
+        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape, 0, 5)
+        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowLandscapeExtended, 1, 5)
+        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt, 0, 1)
+        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowCharacterArtExtended, 1, 1)
+        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel4.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+        Me.TableLayoutPanel4.RowCount = 7
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(199, 160)
+        Me.TableLayoutPanel4.TabIndex = 0
+        '
+        'lblTVSourcesFileNamingXBMCExtendedClearArt
+        '
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.AutoSize = true
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Location = New System.Drawing.Point(3, 63)
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Name = "lblTVSourcesFileNamingXBMCExtendedClearArt"
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Size = New System.Drawing.Size(48, 13)
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.TabIndex = 10
+        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Text = "ClearArt"
+        '
+        'lblTVSourcesFileNamingXBMCExtendedClearLogo
+        '
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.AutoSize = true
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Location = New System.Drawing.Point(3, 83)
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Name = "lblTVSourcesFileNamingXBMCExtendedClearLogo"
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Size = New System.Drawing.Size(59, 13)
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.TabIndex = 10
+        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Text = "ClearLogo"
+        '
+        'lblTVSourcesFileNamingXBMCExtendedSeasonLandscape
+        '
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.AutoSize = true
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Location = New System.Drawing.Point(3, 103)
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Name = "lblTVSourcesFileNamingXBMCExtendedSeasonLandscape"
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Size = New System.Drawing.Size(101, 13)
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.TabIndex = 10
+        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Text = "Season Landscape"
+        '
+        'Label6
+        '
+        Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label6.AutoSize = true
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label6.Location = New System.Drawing.Point(117, 13)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(79, 13)
+        Me.Label6.TabIndex = 1
+        Me.Label6.Text = "Kodi Interface"
+        Me.Label6.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'chkTVShowClearArtExtended
+        '
+        Me.chkTVShowClearArtExtended.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVShowClearArtExtended.AutoSize = true
+        Me.chkTVShowClearArtExtended.Enabled = false
+        Me.chkTVShowClearArtExtended.Location = New System.Drawing.Point(149, 63)
+        Me.chkTVShowClearArtExtended.Name = "chkTVShowClearArtExtended"
+        Me.chkTVShowClearArtExtended.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVShowClearArtExtended.TabIndex = 11
+        Me.chkTVShowClearArtExtended.UseVisualStyleBackColor = true
+        '
+        'chkTVShowClearLogoExtended
+        '
+        Me.chkTVShowClearLogoExtended.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVShowClearLogoExtended.AutoSize = true
+        Me.chkTVShowClearLogoExtended.Enabled = false
+        Me.chkTVShowClearLogoExtended.Location = New System.Drawing.Point(149, 83)
+        Me.chkTVShowClearLogoExtended.Name = "chkTVShowClearLogoExtended"
+        Me.chkTVShowClearLogoExtended.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVShowClearLogoExtended.TabIndex = 11
+        Me.chkTVShowClearLogoExtended.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonLandscapeExtended
+        '
+        Me.chkTVSeasonLandscapeExtended.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVSeasonLandscapeExtended.AutoSize = true
+        Me.chkTVSeasonLandscapeExtended.Enabled = false
+        Me.chkTVSeasonLandscapeExtended.Location = New System.Drawing.Point(149, 103)
+        Me.chkTVSeasonLandscapeExtended.Name = "chkTVSeasonLandscapeExtended"
+        Me.chkTVSeasonLandscapeExtended.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVSeasonLandscapeExtended.TabIndex = 11
+        Me.chkTVSeasonLandscapeExtended.UseVisualStyleBackColor = true
+        '
+        'lblTVSourcesFileNamingXBMCExtendedTVShowLandscape
+        '
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.AutoSize = true
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Location = New System.Drawing.Point(3, 123)
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Name = "lblTVSourcesFileNamingXBMCExtendedTVShowLandscape"
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Size = New System.Drawing.Size(108, 13)
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.TabIndex = 10
+        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Text = "TV Show Landscape"
+        '
+        'chkTVShowLandscapeExtended
+        '
+        Me.chkTVShowLandscapeExtended.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVShowLandscapeExtended.AutoSize = true
+        Me.chkTVShowLandscapeExtended.Enabled = false
+        Me.chkTVShowLandscapeExtended.Location = New System.Drawing.Point(149, 123)
+        Me.chkTVShowLandscapeExtended.Name = "chkTVShowLandscapeExtended"
+        Me.chkTVShowLandscapeExtended.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVShowLandscapeExtended.TabIndex = 11
+        Me.chkTVShowLandscapeExtended.UseVisualStyleBackColor = true
+        '
+        'lblTVSourcesFileNamingXBMCExtendedCharacterArt
+        '
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.AutoSize = true
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Location = New System.Drawing.Point(3, 43)
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Name = "lblTVSourcesFileNamingXBMCExtendedCharacterArt"
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Size = New System.Drawing.Size(71, 13)
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.TabIndex = 10
+        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Text = "CharacterArt"
+        '
+        'chkTVShowCharacterArtExtended
+        '
+        Me.chkTVShowCharacterArtExtended.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVShowCharacterArtExtended.AutoSize = true
+        Me.chkTVShowCharacterArtExtended.Enabled = false
+        Me.chkTVShowCharacterArtExtended.Location = New System.Drawing.Point(149, 43)
+        Me.chkTVShowCharacterArtExtended.Name = "chkTVShowCharacterArtExtended"
+        Me.chkTVShowCharacterArtExtended.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVShowCharacterArtExtended.TabIndex = 11
+        Me.chkTVShowCharacterArtExtended.UseVisualStyleBackColor = true
         '
         'gbTVSourcesFileNamingKodiDefaultsOpts
         '
@@ -18383,7 +18550,7 @@ Partial Class dlgSettings
         Me.tsSettingsTopMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsSettingsTopMenu.Location = New System.Drawing.Point(0, 64)
         Me.tsSettingsTopMenu.Name = "tsSettingsTopMenu"
-        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1598, 25)
+        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1104, 25)
         Me.tsSettingsTopMenu.Stretch = true
         Me.tsSettingsTopMenu.TabIndex = 4
         Me.tsSettingsTopMenu.Text = "ToolStrip1"
@@ -18395,7 +18562,7 @@ Partial Class dlgSettings
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(1342, 634)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(848, 634)
         Me.pnlSettingsMain.TabIndex = 9
         '
         'gbSettingsHelp
@@ -18407,7 +18574,7 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbSettingsHelp.Location = New System.Drawing.Point(0, 0)
         Me.gbSettingsHelp.Name = "gbSettingsHelp"
-        Me.gbSettingsHelp.Size = New System.Drawing.Size(1072, 66)
+        Me.gbSettingsHelp.Size = New System.Drawing.Size(677, 66)
         Me.gbSettingsHelp.TabIndex = 0
         Me.gbSettingsHelp.TabStop = false
         Me.gbSettingsHelp.Text = "     Help"
@@ -18427,7 +18594,7 @@ Partial Class dlgSettings
         Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblHelp.Location = New System.Drawing.Point(3, 18)
         Me.lblHelp.Name = "lblHelp"
-        Me.lblHelp.Size = New System.Drawing.Size(1066, 45)
+        Me.lblHelp.Size = New System.Drawing.Size(671, 45)
         Me.lblHelp.TabIndex = 0
         '
         'pnlSettingsHelp
@@ -18439,7 +18606,7 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlSettingsHelp.Location = New System.Drawing.Point(3, 3)
         Me.pnlSettingsHelp.Name = "pnlSettingsHelp"
-        Me.pnlSettingsHelp.Size = New System.Drawing.Size(1074, 68)
+        Me.pnlSettingsHelp.Size = New System.Drawing.Size(679, 68)
         Me.pnlSettingsHelp.TabIndex = 8
         '
         'pnlMovieTrailers
@@ -20934,7 +21101,7 @@ Partial Class dlgSettings
         'scSettings.Panel2
         '
         Me.scSettings.Panel2.Controls.Add(Me.scSettingsBody)
-        Me.scSettings.Size = New System.Drawing.Size(1598, 861)
+        Me.scSettings.Size = New System.Drawing.Size(1104, 861)
         Me.scSettings.SplitterDistance = 145
         Me.scSettings.TabIndex = 28
         '
@@ -20949,7 +21116,7 @@ Partial Class dlgSettings
         Me.tblSettingsCurrent.Padding = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.tblSettingsCurrent.RowCount = 1
         Me.tblSettingsCurrent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1598, 33)
+        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1104, 33)
         Me.tblSettingsCurrent.TabIndex = 6
         '
         'scSettingsBody
@@ -20969,7 +21136,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsBody.Panel2.Controls.Add(Me.tblSettingsFooter)
         Me.scSettingsBody.Panel2.Padding = New System.Windows.Forms.Padding(2, 0, 5, 0)
-        Me.scSettingsBody.Size = New System.Drawing.Size(1598, 712)
+        Me.scSettingsBody.Size = New System.Drawing.Size(1104, 712)
         Me.scSettingsBody.SplitterDistance = 634
         Me.scSettingsBody.TabIndex = 99
         '
@@ -20989,7 +21156,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsMain.Panel2.Controls.Add(Me.pnlSettingsMain)
         Me.scSettingsMain.Panel2.Padding = New System.Windows.Forms.Padding(0, 0, 5, 0)
-        Me.scSettingsMain.Size = New System.Drawing.Size(1598, 634)
+        Me.scSettingsMain.Size = New System.Drawing.Size(1104, 634)
         Me.scSettingsMain.SplitterDistance = 247
         Me.scSettingsMain.TabIndex = 0
         '
@@ -21010,175 +21177,8 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Name = "tblSettingsFooter"
         Me.tblSettingsFooter.RowCount = 1
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
-        Me.tblSettingsFooter.Size = New System.Drawing.Size(1591, 74)
+        Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.AutoSize = true
-        Me.GroupBox1.Controls.Add(Me.TableLayoutPanel4)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.GroupBox1.Location = New System.Drawing.Point(259, 3)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(205, 181)
-        Me.GroupBox1.TabIndex = 12
-        Me.GroupBox1.TabStop = false
-        Me.GroupBox1.Text = "Extended Images"
-        '
-        'TableLayoutPanel4
-        '
-        Me.TableLayoutPanel4.AutoSize = true
-        Me.TableLayoutPanel4.ColumnCount = 3
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedClearArt, 0, 2)
-        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedClearLogo, 0, 3)
-        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape, 0, 4)
-        Me.TableLayoutPanel4.Controls.Add(Me.Label6, 1, 0)
-        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowClearArtExtended, 1, 2)
-        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowClearLogoExtended, 1, 3)
-        Me.TableLayoutPanel4.Controls.Add(Me.chkTVSeasonLandscapeExtended, 1, 4)
-        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape, 0, 5)
-        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowLandscapeExtended, 1, 5)
-        Me.TableLayoutPanel4.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt, 0, 1)
-        Me.TableLayoutPanel4.Controls.Add(Me.chkTVShowCharacterArtExtended, 1, 1)
-        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel4.Location = New System.Drawing.Point(3, 18)
-        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
-        Me.TableLayoutPanel4.RowCount = 7
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40!))
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel4.Size = New System.Drawing.Size(199, 160)
-        Me.TableLayoutPanel4.TabIndex = 0
-        '
-        'lblTVSourcesFileNamingXBMCExtendedClearArt
-        '
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Name = "lblTVSourcesFileNamingXBMCExtendedClearArt"
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Size = New System.Drawing.Size(48, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Text = "ClearArt"
-        '
-        'lblTVSourcesFileNamingXBMCExtendedClearLogo
-        '
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Location = New System.Drawing.Point(3, 83)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Name = "lblTVSourcesFileNamingXBMCExtendedClearLogo"
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Size = New System.Drawing.Size(59, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Text = "ClearLogo"
-        '
-        'lblTVSourcesFileNamingXBMCExtendedCharacterArt
-        '
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Location = New System.Drawing.Point(3, 43)
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Name = "lblTVSourcesFileNamingXBMCExtendedCharacterArt"
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Size = New System.Drawing.Size(71, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedCharacterArt.Text = "CharacterArt"
-        '
-        'lblTVSourcesFileNamingXBMCExtendedSeasonLandscape
-        '
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Location = New System.Drawing.Point(3, 103)
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Name = "lblTVSourcesFileNamingXBMCExtendedSeasonLandscape"
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Size = New System.Drawing.Size(101, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Text = "Season Landscape"
-        '
-        'Label6
-        '
-        Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label6.AutoSize = true
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label6.Location = New System.Drawing.Point(117, 13)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(79, 13)
-        Me.Label6.TabIndex = 1
-        Me.Label6.Text = "Kodi Interface"
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        '
-        'chkTVShowClearArtExtended
-        '
-        Me.chkTVShowClearArtExtended.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowClearArtExtended.AutoSize = true
-        Me.chkTVShowClearArtExtended.Enabled = false
-        Me.chkTVShowClearArtExtended.Location = New System.Drawing.Point(149, 63)
-        Me.chkTVShowClearArtExtended.Name = "chkTVShowClearArtExtended"
-        Me.chkTVShowClearArtExtended.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVShowClearArtExtended.TabIndex = 11
-        Me.chkTVShowClearArtExtended.UseVisualStyleBackColor = true
-        '
-        'chkTVShowClearLogoExtended
-        '
-        Me.chkTVShowClearLogoExtended.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowClearLogoExtended.AutoSize = true
-        Me.chkTVShowClearLogoExtended.Enabled = false
-        Me.chkTVShowClearLogoExtended.Location = New System.Drawing.Point(149, 83)
-        Me.chkTVShowClearLogoExtended.Name = "chkTVShowClearLogoExtended"
-        Me.chkTVShowClearLogoExtended.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVShowClearLogoExtended.TabIndex = 11
-        Me.chkTVShowClearLogoExtended.UseVisualStyleBackColor = true
-        '
-        'chkTVShowCharacterArtExtended
-        '
-        Me.chkTVShowCharacterArtExtended.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowCharacterArtExtended.AutoSize = true
-        Me.chkTVShowCharacterArtExtended.Enabled = false
-        Me.chkTVShowCharacterArtExtended.Location = New System.Drawing.Point(149, 43)
-        Me.chkTVShowCharacterArtExtended.Name = "chkTVShowCharacterArtExtended"
-        Me.chkTVShowCharacterArtExtended.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVShowCharacterArtExtended.TabIndex = 11
-        Me.chkTVShowCharacterArtExtended.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonLandscapeExtended
-        '
-        Me.chkTVSeasonLandscapeExtended.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVSeasonLandscapeExtended.AutoSize = true
-        Me.chkTVSeasonLandscapeExtended.Enabled = false
-        Me.chkTVSeasonLandscapeExtended.Location = New System.Drawing.Point(149, 103)
-        Me.chkTVSeasonLandscapeExtended.Name = "chkTVSeasonLandscapeExtended"
-        Me.chkTVSeasonLandscapeExtended.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVSeasonLandscapeExtended.TabIndex = 11
-        Me.chkTVSeasonLandscapeExtended.UseVisualStyleBackColor = true
-        '
-        'lblTVSourcesFileNamingXBMCExtendedTVShowLandscape
-        '
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Name = "lblTVSourcesFileNamingXBMCExtendedTVShowLandscape"
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Size = New System.Drawing.Size(108, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Text = "TV Show Landscape"
-        '
-        'chkTVShowLandscapeExtended
-        '
-        Me.chkTVShowLandscapeExtended.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVShowLandscapeExtended.AutoSize = true
-        Me.chkTVShowLandscapeExtended.Enabled = false
-        Me.chkTVShowLandscapeExtended.Location = New System.Drawing.Point(149, 123)
-        Me.chkTVShowLandscapeExtended.Name = "chkTVShowLandscapeExtended"
-        Me.chkTVShowLandscapeExtended.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVShowLandscapeExtended.TabIndex = 11
-        Me.chkTVShowLandscapeExtended.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -21186,7 +21186,7 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(1598, 861)
+        Me.ClientSize = New System.Drawing.Size(1104, 861)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVThemes)
@@ -21561,6 +21561,10 @@ Partial Class dlgSettings
         Me.tpTVSourcesFileNamingKodi.PerformLayout
         Me.tblTVSourcesFileNamingXBMC.ResumeLayout(false)
         Me.tblTVSourcesFileNamingXBMC.PerformLayout
+        Me.GroupBox1.ResumeLayout(false)
+        Me.GroupBox1.PerformLayout
+        Me.TableLayoutPanel4.ResumeLayout(false)
+        Me.TableLayoutPanel4.PerformLayout
         Me.gbTVSourcesFileNamingKodiDefaultsOpts.ResumeLayout(false)
         Me.gbTVSourcesFileNamingKodiDefaultsOpts.PerformLayout
         Me.tblTVSourcesFileNamingKodiDefaultsOpts.ResumeLayout(false)
@@ -21959,10 +21963,6 @@ Partial Class dlgSettings
         CType(Me.scSettingsMain,System.ComponentModel.ISupportInitialize).EndInit
         Me.scSettingsMain.ResumeLayout(false)
         Me.tblSettingsFooter.ResumeLayout(false)
-        Me.GroupBox1.ResumeLayout(false)
-        Me.GroupBox1.PerformLayout
-        Me.TableLayoutPanel4.ResumeLayout(false)
-        Me.TableLayoutPanel4.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 

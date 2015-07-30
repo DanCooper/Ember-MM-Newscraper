@@ -20,14 +20,9 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports System.Diagnostics
 
 Public Class frmSettingsHolder
-
-#Region "Fields"
-
-    Private _api As String
-
-#End Region 'Fields
 
 #Region "Events"
 
@@ -38,6 +33,12 @@ Public Class frmSettingsHolder
     Public Event SetupNeedsRestart()
 
 #End Region 'Events
+
+#Region "Fields"
+
+    Private _api As String
+
+#End Region 'Fields
 
 #Region "Properties"
 
@@ -53,10 +54,15 @@ Public Class frmSettingsHolder
 #End Region 'Properties
 
 #Region "Methods"
+
     Public Sub New()
         _api = String.Empty
         InitializeComponent()
         Me.SetUp()
+    End Sub
+
+    Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click
+        Functions.Launch(My.Resources.urlAPIKey)
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
@@ -79,63 +85,25 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperLanguage.SelectedIndexChanged
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            Me.lblEMMAPI.Visible = False
+            Me.txtApiKey.Enabled = True
+        Else
+            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            Me.chkScraperShowEpisodeGuide.Checked = False
+            Me.lblEMMAPI.Visible = True
+            Me.txtApiKey.Enabled = False
+            Me.txtApiKey.Text = String.Empty
+        End If
     End Sub
 
-    Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkScraperEpActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpActors.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpAired_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpAired.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpCredits_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpCredits.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpDirector.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpGuestStars_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpGuestStars.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpPlot.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpTitle.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpVotes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowActors.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowEGU_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEpisodeGuide.CheckedChanged
+    Private Sub chkScraperShowEpisodeGuide_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEpisodeGuide.CheckedChanged
         If String.IsNullOrEmpty(txtApiKey.Text) AndAlso chkScraperShowEpisodeGuide.Checked Then
             MessageBox.Show(Master.eLang.GetString(1133, "You need your own API key for that"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             chkScraperShowEpisodeGuide.Checked = False
@@ -143,39 +111,33 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScraperShowGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowGenre.CheckedChanged
+    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowMPAA.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
+    Private Sub SettingsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        chkScraperEpActors.CheckedChanged, _
+        chkScraperEpAired.CheckedChanged, _
+        chkScraperEpCredits.CheckedChanged, _
+        chkScraperEpDirector.CheckedChanged, _
+        chkScraperEpGuestStars.CheckedChanged, _
+        chkScraperEpPlot.CheckedChanged, _
+        chkScraperEpRating.CheckedChanged, _
+        chkScraperEpTitle.CheckedChanged, _
+        chkScraperEpVotes.CheckedChanged, _
+        chkScraperShowActors.CheckedChanged, _
+        chkScraperShowGenre.CheckedChanged, _
+        chkScraperShowMPAA.CheckedChanged, _
+        chkScraperShowPlot.CheckedChanged, _
+        chkScraperShowPremiered.CheckedChanged, _
+        chkScraperShowRating.CheckedChanged, _
+        chkScraperShowRuntime.CheckedChanged, _
+        chkScraperShowStatus.CheckedChanged, _
+        chkScraperShowStudio.CheckedChanged, _
+        chkScraperShowTitle.CheckedChanged, _
+        chkScraperShowVotes.CheckedChanged
 
-    Private Sub chkScraperShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowPlot.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowPremiered_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowPremiered.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowStatus.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowStudio.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperShowVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowVotes.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -190,84 +152,15 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click
-        If Master.isWindows Then
-            Process.Start("http://thetvdb.com/?tab=apiregister")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://thetvdb.com/?tab=apiregister"
-                Explorer.Start()
-            End Using
-        End If
-    End Sub
-
     Private Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkScraperEpActors.Text = Master.eLang.GetString(725, "Actors")
-        Me.chkScraperEpAired.Text = Master.eLang.GetString(728, "Aired")
-        Me.chkScraperEpCredits.Text = Master.eLang.GetString(729, "Credits")
-        Me.chkScraperEpDirector.Text = Master.eLang.GetString(62, "Director")
-        Me.chkScraperEpGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
-        Me.chkScraperEpPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkScraperEpRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkScraperEpTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkScraperEpVotes.Text = Master.eLang.GetString(399, "Votes")
-        Me.chkScraperShowActors.Text = Master.eLang.GetString(725, "Actors")
-        Me.chkScraperShowEpisodeGuide.Text = Master.eLang.GetString(723, "Episode Guide URL")
-        Me.chkScraperShowGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkScraperShowMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
-        Me.chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkScraperShowRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
-        Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkScraperShowVotes.Text = Master.eLang.GetString(399, "Votes")
-        Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
-        Me.gbScraperFields.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
-        Me.gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
-        Me.gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
-        Me.gbTVDB.Text = "TVDB"
+        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
+        Me.lblApiKey.Text = String.Concat(Master.eLang.GetString(932, "TVDB API Key"), ":")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
-        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblScrapeOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
-        Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.lblTVLanguagePreferred.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
-    End Sub
-
-    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
-            Me.lblEMMAPI.Visible = False
-            Me.txtApiKey.Enabled = True
-        Else
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-            Me.lblEMMAPI.Visible = True
-            Me.txtApiKey.Enabled = False
-            Me.txtApiKey.Text = String.Empty
-        End If
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtTVDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
-        _api = txtApiKey.Text
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtTVDBApiKey_TestValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
-        If Not (_api = txtApiKey.Text) Then
-            RaiseEvent SetupNeedsRestart()
-        End If
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
-        RaiseEvent ModuleSettingsChanged()
+        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

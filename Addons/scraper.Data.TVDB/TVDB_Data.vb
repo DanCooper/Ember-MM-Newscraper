@@ -106,7 +106,6 @@ Public Class TVDB_Data
         LoadSettings()
         _setup.API = _setup.txtApiKey.Text
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.txtTVDBMirror.Text = _TVDBMirror
         _setup.chkScraperEpActors.Checked = ConfigOptions.bEpActors
         _setup.chkScraperEpAired.Checked = ConfigOptions.bEpAired
         _setup.chkScraperEpCredits.Checked = ConfigOptions.bEpCredits

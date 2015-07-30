@@ -29,7 +29,7 @@ Partial Class frmSettingsHolder
         Me.gbScraperImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperImagesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperImagesSeason = New System.Windows.Forms.GroupBox()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblScraperImagesSeason = New System.Windows.Forms.TableLayoutPanel()
         Me.chkScrapeSeasonBanner = New System.Windows.Forms.CheckBox()
         Me.chkScrapeSeasonPoster = New System.Windows.Forms.CheckBox()
         Me.gbScraperImagesTVShow = New System.Windows.Forms.GroupBox()
@@ -37,6 +37,9 @@ Partial Class frmSettingsHolder
         Me.chkScrapeShowBanner = New System.Windows.Forms.CheckBox()
         Me.chkScrapeShowFanart = New System.Windows.Forms.CheckBox()
         Me.chkScrapeShowPoster = New System.Windows.Forms.CheckBox()
+        Me.gbScraperImagesEpisode = New System.Windows.Forms.GroupBox()
+        Me.tblScraperImagesEpisode = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkScrapeEpisodePoster = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblAPIKey = New System.Windows.Forms.Label()
@@ -54,18 +57,17 @@ Partial Class frmSettingsHolder
         Me.lblScraperOrder = New System.Windows.Forms.Label()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
-        Me.gbScraperImagesEpisode = New System.Windows.Forms.GroupBox()
-        Me.tblScraperImagesEpisode = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkScrapeEpisodePoster = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
         Me.gbScraperImagesOpts.SuspendLayout()
         Me.tblScraperImagesOpts.SuspendLayout()
         Me.gbScraperImagesSeason.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.tblScraperImagesSeason.SuspendLayout()
         Me.gbScraperImagesTVShow.SuspendLayout()
         Me.tblScraperImagesShow.SuspendLayout()
+        Me.gbScraperImagesEpisode.SuspendLayout()
+        Me.tblScraperImagesEpisode.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -74,8 +76,6 @@ Partial Class frmSettingsHolder
         CType(Me.pbIconBottom, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
-        Me.gbScraperImagesEpisode.SuspendLayout()
-        Me.tblScraperImagesEpisode.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -155,7 +155,7 @@ Partial Class frmSettingsHolder
         'gbScraperImagesSeason
         '
         Me.gbScraperImagesSeason.AutoSize = True
-        Me.gbScraperImagesSeason.Controls.Add(Me.TableLayoutPanel1)
+        Me.gbScraperImagesSeason.Controls.Add(Me.tblScraperImagesSeason)
         Me.gbScraperImagesSeason.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperImagesSeason.Location = New System.Drawing.Point(105, 3)
         Me.gbScraperImagesSeason.Name = "gbScraperImagesSeason"
@@ -164,25 +164,25 @@ Partial Class frmSettingsHolder
         Me.gbScraperImagesSeason.TabStop = False
         Me.gbScraperImagesSeason.Text = "Season"
         '
-        'TableLayoutPanel1
+        'tblScraperImagesSeason
         '
-        Me.TableLayoutPanel1.AutoSize = True
-        Me.TableLayoutPanel1.ColumnCount = 3
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonBanner, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.chkScrapeSeasonPoster, 0, 1)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 3
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(90, 69)
-        Me.TableLayoutPanel1.TabIndex = 98
+        Me.tblScraperImagesSeason.AutoSize = True
+        Me.tblScraperImagesSeason.ColumnCount = 3
+        Me.tblScraperImagesSeason.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesSeason.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesSeason.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesSeason.Controls.Add(Me.chkScrapeSeasonBanner, 0, 0)
+        Me.tblScraperImagesSeason.Controls.Add(Me.chkScrapeSeasonPoster, 0, 1)
+        Me.tblScraperImagesSeason.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblScraperImagesSeason.Location = New System.Drawing.Point(3, 18)
+        Me.tblScraperImagesSeason.Name = "tblScraperImagesSeason"
+        Me.tblScraperImagesSeason.RowCount = 3
+        Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperImagesSeason.Size = New System.Drawing.Size(90, 69)
+        Me.tblScraperImagesSeason.TabIndex = 98
         '
         'chkScrapeSeasonBanner
         '
@@ -283,6 +283,45 @@ Partial Class frmSettingsHolder
         Me.chkScrapeShowPoster.Text = "Get Poster"
         Me.chkScrapeShowPoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeShowPoster.UseVisualStyleBackColor = True
+        '
+        'gbScraperImagesEpisode
+        '
+        Me.gbScraperImagesEpisode.AutoSize = True
+        Me.gbScraperImagesEpisode.Controls.Add(Me.tblScraperImagesEpisode)
+        Me.gbScraperImagesEpisode.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbScraperImagesEpisode.Location = New System.Drawing.Point(207, 3)
+        Me.gbScraperImagesEpisode.Name = "gbScraperImagesEpisode"
+        Me.gbScraperImagesEpisode.Size = New System.Drawing.Size(91, 90)
+        Me.gbScraperImagesEpisode.TabIndex = 12
+        Me.gbScraperImagesEpisode.TabStop = False
+        Me.gbScraperImagesEpisode.Text = "Episode"
+        '
+        'tblScraperImagesEpisode
+        '
+        Me.tblScraperImagesEpisode.AutoSize = True
+        Me.tblScraperImagesEpisode.ColumnCount = 2
+        Me.tblScraperImagesEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblScraperImagesEpisode.Controls.Add(Me.chkScrapeEpisodePoster, 0, 0)
+        Me.tblScraperImagesEpisode.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblScraperImagesEpisode.Location = New System.Drawing.Point(3, 18)
+        Me.tblScraperImagesEpisode.Name = "tblScraperImagesEpisode"
+        Me.tblScraperImagesEpisode.RowCount = 2
+        Me.tblScraperImagesEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblScraperImagesEpisode.Size = New System.Drawing.Size(85, 69)
+        Me.tblScraperImagesEpisode.TabIndex = 0
+        '
+        'chkScrapeEpisodePoster
+        '
+        Me.chkScrapeEpisodePoster.AutoSize = True
+        Me.chkScrapeEpisodePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeEpisodePoster.Location = New System.Drawing.Point(3, 3)
+        Me.chkScrapeEpisodePoster.Name = "chkScrapeEpisodePoster"
+        Me.chkScrapeEpisodePoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapeEpisodePoster.TabIndex = 0
+        Me.chkScrapeEpisodePoster.Text = "Get Poster"
+        Me.chkScrapeEpisodePoster.UseVisualStyleBackColor = True
         '
         'gbScraperOpts
         '
@@ -505,45 +544,6 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'gbScraperImagesEpisode
-        '
-        Me.gbScraperImagesEpisode.AutoSize = True
-        Me.gbScraperImagesEpisode.Controls.Add(Me.tblScraperImagesEpisode)
-        Me.gbScraperImagesEpisode.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperImagesEpisode.Location = New System.Drawing.Point(207, 3)
-        Me.gbScraperImagesEpisode.Name = "gbScraperImagesEpisode"
-        Me.gbScraperImagesEpisode.Size = New System.Drawing.Size(91, 90)
-        Me.gbScraperImagesEpisode.TabIndex = 12
-        Me.gbScraperImagesEpisode.TabStop = False
-        Me.gbScraperImagesEpisode.Text = "Episode"
-        '
-        'tblScraperImagesEpisode
-        '
-        Me.tblScraperImagesEpisode.AutoSize = True
-        Me.tblScraperImagesEpisode.ColumnCount = 2
-        Me.tblScraperImagesEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperImagesEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperImagesEpisode.Controls.Add(Me.chkScrapeEpisodePoster, 0, 0)
-        Me.tblScraperImagesEpisode.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblScraperImagesEpisode.Location = New System.Drawing.Point(3, 18)
-        Me.tblScraperImagesEpisode.Name = "tblScraperImagesEpisode"
-        Me.tblScraperImagesEpisode.RowCount = 2
-        Me.tblScraperImagesEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesEpisode.Size = New System.Drawing.Size(85, 69)
-        Me.tblScraperImagesEpisode.TabIndex = 0
-        '
-        'chkScrapeEpisodePoster
-        '
-        Me.chkScrapeEpisodePoster.AutoSize = True
-        Me.chkScrapeEpisodePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeEpisodePoster.Location = New System.Drawing.Point(3, 3)
-        Me.chkScrapeEpisodePoster.Name = "chkScrapeEpisodePoster"
-        Me.chkScrapeEpisodePoster.Size = New System.Drawing.Size(79, 17)
-        Me.chkScrapeEpisodePoster.TabIndex = 0
-        Me.chkScrapeEpisodePoster.Text = "Get Poster"
-        Me.chkScrapeEpisodePoster.UseVisualStyleBackColor = True
-        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -572,12 +572,16 @@ Partial Class frmSettingsHolder
         Me.tblScraperImagesOpts.PerformLayout()
         Me.gbScraperImagesSeason.ResumeLayout(False)
         Me.gbScraperImagesSeason.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.tblScraperImagesSeason.ResumeLayout(False)
+        Me.tblScraperImagesSeason.PerformLayout()
         Me.gbScraperImagesTVShow.ResumeLayout(False)
         Me.gbScraperImagesTVShow.PerformLayout()
         Me.tblScraperImagesShow.ResumeLayout(False)
         Me.tblScraperImagesShow.PerformLayout()
+        Me.gbScraperImagesEpisode.ResumeLayout(False)
+        Me.gbScraperImagesEpisode.PerformLayout()
+        Me.tblScraperImagesEpisode.ResumeLayout(False)
+        Me.tblScraperImagesEpisode.PerformLayout()
         Me.gbScraperOpts.ResumeLayout(False)
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
@@ -592,10 +596,6 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
         Me.tblSettingsTop.PerformLayout()
-        Me.gbScraperImagesEpisode.ResumeLayout(False)
-        Me.gbScraperImagesEpisode.PerformLayout()
-        Me.tblScraperImagesEpisode.ResumeLayout(False)
-        Me.tblScraperImagesEpisode.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -628,7 +628,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents tblScraperImagesOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents gbScraperImagesTVShow As System.Windows.Forms.GroupBox
     Friend WithEvents gbScraperImagesSeason As System.Windows.Forms.GroupBox
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblScraperImagesSeason As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkScrapeSeasonBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeSeasonPoster As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperImagesEpisode As System.Windows.Forms.GroupBox
