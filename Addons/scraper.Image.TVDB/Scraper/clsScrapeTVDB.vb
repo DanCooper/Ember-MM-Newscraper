@@ -47,7 +47,7 @@ Namespace TVDBs
 
 #Region "Methods"
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
             Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
@@ -64,7 +64,7 @@ Namespace TVDBs
                 If Results.Banners IsNot Nothing Then
 
                     'Banner Show / AllSeasons
-                    If (ScrapeModifier.AllSeasonsBanner OrElse ScrapeModifier.MainBanner) Then
+                    If (FilteredModifier.AllSeasonsBanner OrElse FilteredModifier.MainBanner) Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.series)
                             Dim img As New MediaContainers.Image With {.Height = "140", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -80,7 +80,7 @@ Namespace TVDBs
                     End If
 
                     'Banner Season / AllSeasons
-                    If (ScrapeModifier.AllSeasonsBanner OrElse ScrapeModifier.SeasonBanner) Then
+                    If (FilteredModifier.AllSeasonsBanner OrElse FilteredModifier.SeasonBanner) Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso f.BannerPath.Contains("seasonswide"))
                             Dim img As New MediaContainers.Image With {.Height = "140", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -96,7 +96,7 @@ Namespace TVDBs
                     End If
 
                     'Fanart Show / AllSeasons / Season / Episode
-                    If (ScrapeModifier.AllSeasonsFanart OrElse ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.MainFanart OrElse ScrapeModifier.SeasonFanart) Then
+                    If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
                             alContainer.ShowFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                           .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -111,7 +111,7 @@ Namespace TVDBs
                     End If
 
                     'Poster Show / AllSeasons
-                    If (ScrapeModifier.AllSeasonsPoster OrElse ScrapeModifier.MainPoster) Then
+                    If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.MainPoster) Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
                             Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                           .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -127,7 +127,7 @@ Namespace TVDBs
                     End If
 
                     'Poster Season  /AllSeasons
-                    If (ScrapeModifier.AllSeasonsPoster OrElse ScrapeModifier.SeasonPoster) Then
+                    If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.SeasonPoster) Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso Not f.BannerPath.Contains("seasonswide"))
                             Dim img As New MediaContainers.Image With {.Height = "578", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _

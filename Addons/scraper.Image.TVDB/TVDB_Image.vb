@@ -79,19 +79,19 @@ Public Class TVDB_Image
 
 #Region "Methods"
 
-    Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
+    Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_TV.EpisodePoster
+            Case Enums.ModifierType.EpisodePoster
                 Return ConfigModifier.EpisodePoster
-            Case Enums.ScraperCapabilities_TV.SeasonBanner
+            Case Enums.ModifierType.SeasonBanner
                 Return ConfigModifier.SeasonBanner
-            Case Enums.ScraperCapabilities_TV.SeasonPoster
+            Case Enums.ModifierType.SeasonPoster
                 Return ConfigModifier.SeasonPoster
-            Case Enums.ScraperCapabilities_TV.ShowBanner
+            Case Enums.ModifierType.MainBanner
                 Return ConfigModifier.MainBanner
-            Case Enums.ScraperCapabilities_TV.ShowFanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier.MainFanart
-            Case Enums.ScraperCapabilities_TV.ShowPoster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier.MainPoster
         End Select
         Return False
@@ -201,7 +201,7 @@ Public Class TVDB_Image
         Dim Settings As TVDBs.Scraper.MySettings
         Settings.ApiKey = _MySettings.ApiKey
 
-        Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier)
+        Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier)
 
         If DBTV.TVEp IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) AndAlso DBTV.TVEp IsNot Nothing Then
@@ -211,7 +211,7 @@ Public Class TVDB_Image
             End If
         Else
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, filterModifier, Settings)
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifier, Settings)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If

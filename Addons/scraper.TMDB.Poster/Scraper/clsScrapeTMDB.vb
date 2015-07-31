@@ -58,7 +58,7 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer_Movie_MovieSet
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -79,7 +79,7 @@ Namespace TMDB
                 End If
 
                 'Fanart
-                If (ScrapeModifier.MainEFanarts OrElse ScrapeModifier.MainEThumbs OrElse ScrapeModifier.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
                     For Each image In Results.Backdrops
                         Dim tmpImage As New MediaContainers.Image With { _
                             .Height = image.Height.ToString, _
@@ -97,7 +97,7 @@ Namespace TMDB
                 End If
 
                 'Poster
-                If ScrapeModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
+                If FilteredModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
                     For Each image In Results.Posters
                         Dim tmpImage As New MediaContainers.Image With { _
                                 .Height = image.Height.ToString, _
@@ -121,7 +121,7 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tmdbID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
             Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -138,7 +138,7 @@ Namespace TMDB
                 End If
 
                 'Fanart Show / AllSeasons / Season / Episode
-                If (ScrapeModifier.AllSeasonsFanart OrElse ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.MainFanart OrElse ScrapeModifier.SeasonFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) AndAlso Results.Backdrops IsNot Nothing Then
                     For Each image In Results.Backdrops
                         Dim tmpImage As New MediaContainers.Image With { _
                             .Height = image.Height.ToString, _
@@ -156,7 +156,7 @@ Namespace TMDB
                 End If
 
                 'Poster Show / AllSeasons
-                If (ScrapeModifier.AllSeasonsPoster OrElse ScrapeModifier.MainPoster) AndAlso Results.Posters IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.MainPoster) AndAlso Results.Posters IsNot Nothing Then
                     For Each image In Results.Posters
                         Dim tmpImage As New MediaContainers.Image With { _
                                 .Height = image.Height.ToString, _
@@ -246,7 +246,7 @@ Namespace TMDB
 #Region "Fields"
 
             Dim Parameter As String
-            Dim Type As Enums.ScraperCapabilities_Movie_MovieSet
+            Dim Type As Enums.ModifierType
 
 #End Region 'Fields
 

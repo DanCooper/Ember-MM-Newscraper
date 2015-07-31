@@ -536,7 +536,7 @@ Public Class dlgOfflineHolder
                 fPath = String.Empty
                 'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                 Dim ScrapeModifier As New Structures.ScrapeModifier
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.All, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
 
                 If Not ModulesManager.Instance.ScrapeData_Movie(ScrapedMovie, ScrapeModifier, Enums.ScrapeType.FullAsk, Master.DefaultOptions_Movie, False) Then
                     If rbTypeMovieTitle.Checked Then
@@ -1494,7 +1494,7 @@ Public Class dlgOfflineHolder
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.All, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
 
             If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, ScrapeModifier, Enums.ScrapeType.FullAsk, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then
@@ -1621,7 +1621,7 @@ Public Class dlgOfflineHolder
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.All, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
 
             If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, ScrapeModifier, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then

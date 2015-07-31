@@ -136,7 +136,7 @@ Public Class Trailers
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainTrailer)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainTrailer)
                 For Each t As String In Master.eSettings.FileSystemValidExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -837,7 +837,7 @@ Public Class Trailers
             End If
 
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainTrailer)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainTrailer)
                 If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
                     Save(String.Concat(a, fExt))
                     strReturn = (String.Concat(a, fExt))

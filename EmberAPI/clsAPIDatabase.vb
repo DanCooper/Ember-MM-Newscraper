@@ -4491,7 +4491,7 @@ Public Class Database
                             'TODO @DanCooper Please move following YAMJ part out of this function and delete function because its no longer needed!
                             'create .watched files
                             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                                For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType.MainWatchedFile)
+                                For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModifierType.MainWatchedFile)
                                     If Not File.Exists(a) Then
                                         Dim fs As FileStream = File.Create(a)
                                         fs.Close()

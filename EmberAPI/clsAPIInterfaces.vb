@@ -207,7 +207,7 @@ Public Class Interfaces
         Sub ScraperOrderChanged()
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
+        Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
         Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
 
@@ -241,7 +241,7 @@ Public Class Interfaces
         Sub ScraperOrderChanged()
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
+        Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
         Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
 
@@ -275,7 +275,7 @@ Public Class Interfaces
         Sub ScraperOrderChanged()
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean
+        Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
         Function Scraper(ByRef DBTV As Structures.DBTV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
 
@@ -390,7 +390,7 @@ Public Class Interfaces
         Sub ScraperOrderChanged()
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
 #End Region 'Methods

@@ -327,7 +327,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainBanner, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Banners.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -393,7 +393,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainClearArt, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.ClearArts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -459,7 +459,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainClearLogo, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.ClearLogos.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -525,7 +525,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainDiscArt, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.DiscArts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -591,7 +591,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainFanart, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Fanarts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -656,7 +656,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainLandscape, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Landscapes.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -722,7 +722,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainPoster, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Posters.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -1104,31 +1104,31 @@ Public Class dlgEditMovieSet
                     .lblMoviePosterSize.Visible = True
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Banner) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainBanner) Then
                     .btnSetMovieBannerScrape.Enabled = False
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainClearArt) Then
                     .btnSetMovieClearArtScrape.Enabled = False
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainClearLogo) Then
                     .btnSetMovieClearLogoScrape.Enabled = False
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainDiscArt) Then
                     .btnSetMovieDiscArtScrape.Enabled = False
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Fanart) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainFanart) Then
                     .btnSetMovieFanartScrape.Enabled = False
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Landscape) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainLandscape) Then
                     .btnSetMovieLandscapeScrape.Enabled = False
                 End If
 
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities_Movie_MovieSet.Poster) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainPoster) Then
                     .btnSetMoviePosterScrape.Enabled = False
                 End If
             End If

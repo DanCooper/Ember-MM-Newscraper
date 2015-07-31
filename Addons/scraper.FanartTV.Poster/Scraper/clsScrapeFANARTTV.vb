@@ -94,7 +94,7 @@ Namespace FanartTVs
         '	End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_Movie_MovieSet
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
             Try
@@ -111,7 +111,7 @@ Namespace FanartTVs
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Banner
-                If ScrapeModifier.MainBanner AndAlso Results.List.Moviebanner IsNot Nothing Then
+                If FilteredModifier.MainBanner AndAlso Results.List.Moviebanner IsNot Nothing Then
                     For Each image In Results.List.Moviebanner
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "185", _
@@ -127,7 +127,7 @@ Namespace FanartTVs
                 End If
 
                 'ClearArt
-                If ScrapeModifier.MainClearArt Then
+                If FilteredModifier.MainClearArt Then
                     If Results.List.Hdmovieclearart IsNot Nothing Then
                         For Each image In Results.List.Hdmovieclearart
                             Dim tmpPoster As New MediaContainers.Image With { _
@@ -159,7 +159,7 @@ Namespace FanartTVs
                 End If
 
                 'ClearLogo
-                If ScrapeModifier.MainClearLogo Then
+                If FilteredModifier.MainClearLogo Then
                     If Results.List.Hdmovielogo IsNot Nothing Then
                         For Each image In Results.List.Hdmovielogo
                             Dim tmpPoster As New MediaContainers.Image With { _
@@ -192,7 +192,7 @@ Namespace FanartTVs
                 End If
 
                 'DiscArt
-                If ScrapeModifier.MainDiscArt AndAlso Results.List.Moviedisc IsNot Nothing Then
+                If FilteredModifier.MainDiscArt AndAlso Results.List.Moviedisc IsNot Nothing Then
                     For Each image In Results.List.Moviedisc
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Disc = CInt(image.Disc), _
@@ -210,14 +210,14 @@ Namespace FanartTVs
                 End If
 
                 'Fanart
-                If (ScrapeModifier.MainEFanarts OrElse ScrapeModifier.MainEThumbs OrElse ScrapeModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
+                If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
                     For Each image In Results.List.Moviebackground
                         alImagesContainer.Fanarts.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
                 'Landscape
-                If ScrapeModifier.MainLandscape AndAlso Results.List.Moviethumb IsNot Nothing Then
+                If FilteredModifier.MainLandscape AndAlso Results.List.Moviethumb IsNot Nothing Then
                     For Each image In Results.List.Moviethumb
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "562", _
@@ -233,7 +233,7 @@ Namespace FanartTVs
                 End If
 
                 'Poster
-                If ScrapeModifier.MainPoster AndAlso Results.List.Movieposter IsNot Nothing Then
+                If FilteredModifier.MainPoster AndAlso Results.List.Movieposter IsNot Nothing Then
                     For Each image In Results.List.Movieposter
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "1426", _
@@ -255,7 +255,7 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
             Dim alContainer As New MediaContainers.SearchResultsContainer_TV
 
             Try
@@ -272,7 +272,7 @@ Namespace FanartTVs
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Banner Show / AllSeasons
-                If (ScrapeModifier.AllSeasonsBanner OrElse ScrapeModifier.MainBanner) AndAlso Results.List.Tvbanner IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsBanner OrElse FilteredModifier.MainBanner) AndAlso Results.List.Tvbanner IsNot Nothing Then
                     For Each image In Results.List.Tvbanner
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "185", _
@@ -289,7 +289,7 @@ Namespace FanartTVs
                 End If
 
                 'Banner Season / AllSeasons
-                If (ScrapeModifier.AllSeasonsBanner OrElse ScrapeModifier.SeasonBanner) AndAlso Results.List.Seasonbanner IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsBanner OrElse FilteredModifier.SeasonBanner) AndAlso Results.List.Seasonbanner IsNot Nothing Then
                     For Each image In Results.List.Seasonbanner
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "185", _
@@ -307,7 +307,7 @@ Namespace FanartTVs
                 End If
 
                 'CharacterArt Show
-                If ScrapeModifier.MainCharacterArt AndAlso Results.List.Characterart IsNot Nothing Then
+                If FilteredModifier.MainCharacterArt AndAlso Results.List.Characterart IsNot Nothing Then
                     For Each image In Results.List.Characterart
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "512", _
@@ -323,7 +323,7 @@ Namespace FanartTVs
                 End If
 
                 'ClearArt Show
-                If ScrapeModifier.MainClearArt Then
+                If FilteredModifier.MainClearArt Then
                     If Results.List.Hdclearart IsNot Nothing Then
                         For Each image In Results.List.Hdclearart
                             Dim tmpPoster As New MediaContainers.Image With { _
@@ -355,7 +355,7 @@ Namespace FanartTVs
                 End If
 
                 'ClearLogo Show
-                If ScrapeModifier.MainClearLogo Then
+                If FilteredModifier.MainClearLogo Then
                     If Results.List.HdTListvlogo IsNot Nothing Then
                         For Each Image In Results.List.HdTListvlogo
                             Dim tmpPoster As New MediaContainers.Image With { _
@@ -387,14 +387,14 @@ Namespace FanartTVs
                 End If
 
                 'Fanart Show / AllSeasons / Season / Episode
-                If (ScrapeModifier.AllSeasonsFanart OrElse ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.MainFanart OrElse ScrapeModifier.SeasonFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
                         alContainer.ShowFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
                 'Landscape Show / AllSeasons
-                If (ScrapeModifier.AllSeasonsLandscape OrElse ScrapeModifier.MainLandscape) AndAlso Results.List.Tvthumb IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsLandscape OrElse FilteredModifier.MainLandscape) AndAlso Results.List.Tvthumb IsNot Nothing Then
                     For Each Image In Results.List.Tvthumb
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "281", _
@@ -410,7 +410,7 @@ Namespace FanartTVs
                 End If
 
                 'Landscape Season / AllSeasons
-                If (ScrapeModifier.AllSeasonsLandscape OrElse ScrapeModifier.SeasonLandscape) AndAlso Results.List.Seasonthumb IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsLandscape OrElse FilteredModifier.SeasonLandscape) AndAlso Results.List.Seasonthumb IsNot Nothing Then
                     For Each Image In Results.List.Seasonthumb
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "281", _
@@ -428,7 +428,7 @@ Namespace FanartTVs
                 End If
 
                 'Poster Show / AllSeasons
-                If (ScrapeModifier.AllSeasonsPoster OrElse ScrapeModifier.MainPoster) AndAlso Results.List.Tvposter IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.MainPoster) AndAlso Results.List.Tvposter IsNot Nothing Then
                     For Each image In Results.List.Tvposter
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "1426", _
@@ -445,7 +445,7 @@ Namespace FanartTVs
                 End If
 
                 'Poster Season / AllSeasons
-                If (ScrapeModifier.AllSeasonsPoster OrElse ScrapeModifier.SeasonPoster) AndAlso Results.List.Seasonposter IsNot Nothing Then
+                If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.SeasonPoster) AndAlso Results.List.Seasonposter IsNot Nothing Then
                     For Each image In Results.List.Seasonposter
                         Dim tmpPoster As New MediaContainers.Image With { _
                             .Height = "1426", _

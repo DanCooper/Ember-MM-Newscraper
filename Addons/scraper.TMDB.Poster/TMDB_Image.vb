@@ -131,35 +131,35 @@ Public Class TMDB_Image
 
 #Region "Methods"
 
-    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Fanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_Movie.MainFanart
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_Movie.MainPoster
         End Select
         Return False
     End Function
 
-    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
+    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Fanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_MovieSet.MainFanart
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_MovieSet.MainPoster
         End Select
         Return False
     End Function
 
-    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
+    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_TV.EpisodePoster
+            Case Enums.ModifierType.EpisodePoster
                 Return ConfigModifier_TV.EpisodePoster
-            Case Enums.ScraperCapabilities_TV.SeasonPoster
+            Case Enums.ModifierType.SeasonPoster
                 Return ConfigModifier_TV.SeasonPoster
-            Case Enums.ScraperCapabilities_TV.ShowFanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_TV.MainFanart
-            Case Enums.ScraperCapabilities_TV.ShowPoster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_TV.MainPoster
         End Select
         Return False
@@ -368,9 +368,9 @@ Public Class TMDB_Image
             Settings.APIKey = _MySettings_Movie.APIKey
 
             Dim _scraper As New TMDB.Scraper
-            Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, filterModifier, Settings, Enums.ContentType.Movie)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifier, Settings, Enums.ContentType.Movie)
         End If
 
         logger.Trace("Finished TMDB Scraper")
@@ -393,9 +393,9 @@ Public Class TMDB_Image
             Settings.APIKey = _MySettings_MovieSet.APIKey
 
             Dim _scraper As New TMDB.Scraper
-            Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.ID, filterModifier, Settings, Enums.ContentType.MovieSet)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.ID, FilteredModifier, Settings, Enums.ContentType.MovieSet)
         End If
 
         logger.Trace("Finished TMDB Scraper")
@@ -411,7 +411,7 @@ Public Class TMDB_Image
         Settings.APIKey = _MySettings_TV.APIKey
 
         Dim _scraper As New TMDB.Scraper
-        Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+        Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
         If String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
@@ -425,7 +425,7 @@ Public Class TMDB_Image
             End If
         Else
             If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, filterModifier, Settings)
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, FilteredModifier, Settings)
             End If
         End If
 

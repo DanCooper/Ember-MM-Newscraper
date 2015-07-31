@@ -508,7 +508,7 @@ Public Class dlgEditMovie
 
         Try
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainBanner, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
             If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
                 If aContainer.Banners.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -586,7 +586,7 @@ Public Class dlgEditMovie
 
         Try
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainClearArt, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
             If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
                 If aContainer.ClearArts.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -664,7 +664,7 @@ Public Class dlgEditMovie
 
         Try
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainClearLogo, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
             If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
                 If aContainer.ClearLogos.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -742,7 +742,7 @@ Public Class dlgEditMovie
 
         Try
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainDiscArt, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
             If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
                 If aContainer.DiscArts.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -850,7 +850,7 @@ Public Class dlgEditMovie
 
         Try
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainFanart, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
             If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
                 If aContainer.Fanarts.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -932,7 +932,7 @@ Public Class dlgEditMovie
 
         Try
             Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainLandscape, True)
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
             If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
                 If aContainer.Landscapes.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -1009,7 +1009,7 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.MainPoster, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.Posters.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
@@ -1509,7 +1509,7 @@ Public Class dlgEditMovie
         Try
             ' load local Extrathumbs
             If Not Me.tmpDBMovie.RemoveEThumbs Then
-                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainEThumbs)
+                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
                     If Directory.Exists(a) Then
                         ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
                         If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -1583,7 +1583,7 @@ Public Class dlgEditMovie
         Try
             ' load local Extrafanarts
             If Not Me.tmpDBMovie.RemoveEFanarts Then
-                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainEFanarts)
+                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEFanarts)
                     If Directory.Exists(a) Then
                         EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
                         If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -2138,7 +2138,7 @@ Public Class dlgEditMovie
                     .bwEFanarts.RunWorkerAsync()
 
                     If Master.eSettings.MovieBannerAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Banner) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainBanner) Then
                             .btnSetMovieBannerScrape.Enabled = False
                         End If
                     Else
@@ -2146,7 +2146,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieClearArtAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearArt) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearArt) Then
                             .btnSetMovieClearArtScrape.Enabled = False
                         End If
                     Else
@@ -2154,7 +2154,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieClearLogoAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearLogo) Then
                             .btnSetMovieClearLogoScrape.Enabled = False
                         End If
                     Else
@@ -2162,7 +2162,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieDiscArtAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.DiscArt) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainDiscArt) Then
                             .btnSetMovieDiscArtScrape.Enabled = False
                         End If
                     Else
@@ -2186,7 +2186,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieFanartAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Fanart) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart) Then
                             .btnSetMovieFanartScrape.Enabled = False
                         End If
                     Else
@@ -2194,7 +2194,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieLandscapeAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Landscape) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainLandscape) Then
                             .btnSetMovieLandscapeScrape.Enabled = False
                         End If
                     Else
@@ -2202,7 +2202,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MoviePosterAnyEnabled Then
-                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities_Movie_MovieSet.Poster) Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster) Then
                             .btnSetMoviePosterScrape.Enabled = False
                         End If
                     Else
@@ -2882,7 +2882,7 @@ Public Class dlgEditMovie
 
     Private Sub SaveEThumbsList()
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainEThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -2899,7 +2899,7 @@ Public Class dlgEditMovie
 
     Private Sub SaveEFanartsList()
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEFanarts)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -3016,7 +3016,7 @@ Public Class dlgEditMovie
                         Me.tmpDBMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainWatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainWatchedFile)
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
                                 fs.Close()
@@ -3031,7 +3031,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainWatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainWatchedFile)
                             If File.Exists(a) Then
                                 File.Delete(a)
                             End If
@@ -3070,7 +3070,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Me.tmpDBMovie.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainActorThumbs)
+                    For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)

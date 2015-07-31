@@ -1153,7 +1153,7 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities_Movie_MovieSet, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
+    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1691,7 +1691,7 @@ Public Class ModulesManager
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 
-    Function QueryScraperCapabilities_Image_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
+    Function QueryScraperCapabilities_Image_Movie(ByVal cap As Enums.ModifierType) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1707,7 +1707,7 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryScraperCapabilities_Image_MovieSet(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
+    Function QueryScraperCapabilities_Image_MovieSet(ByVal cap As Enums.ModifierType) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1723,7 +1723,7 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryScraperCapabilities_Image_TV(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean
+    Function QueryScraperCapabilities_Image_TV(ByVal cap As Enums.ModifierType) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1739,7 +1739,39 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryScraperCapabilities_Trailer_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean
+    Function QueryScraperCapabilities_Theme_Movie(ByVal cap As Enums.ModifierType) As Boolean
+        Dim ret As Boolean = False
+        Dim sStudio As New List(Of String)
+        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
+            Application.DoEvents()
+        End While
+        For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
+            Try
+                ret = True 'if a theme scraper is enabled we can exit.
+                Exit For
+            Catch ex As Exception
+            End Try
+        Next
+        Return ret
+    End Function
+
+    Function QueryScraperCapabilities_Theme_TV(ByVal cap As Enums.ModifierType) As Boolean
+        Dim ret As Boolean = False
+        Dim sStudio As New List(Of String)
+        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
+            Application.DoEvents()
+        End While
+        For Each _externalScraperModule As _externalScraperModuleClass_Theme_TV In externalScrapersModules_Theme_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
+            Try
+                ret = True 'if a theme scraper is enabled we can exit.
+                Exit For
+            Catch ex As Exception
+            End Try
+        Next
+        Return ret
+    End Function
+
+    Function QueryScraperCapabilities_Trailer_Movie(ByVal cap As Enums.ModifierType) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)

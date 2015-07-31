@@ -203,7 +203,7 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModType.AllSeasonsBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModifierType.AllSeasonsBanner)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -221,7 +221,7 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModType.AllSeasonsFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModifierType.AllSeasonsFanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -239,7 +239,7 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModType.AllSeasonsLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModifierType.AllSeasonsLandscape)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -257,7 +257,7 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModType.AllSeasonsPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModifierType.AllSeasonsPoster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -275,7 +275,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode.Filename, Enums.ModType.EpisodeActorThumbs)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode.Filename, Enums.ModifierType.EpisodeActorThumbs)
                 Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                 If Directory.Exists(tmpPath) Then
                     FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -294,7 +294,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode.Filename, Enums.ModType.EpisodeFanart)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode.Filename, Enums.ModifierType.EpisodeFanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -312,7 +312,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode.Filename, Enums.ModType.EpisodePoster)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode.Filename, Enums.ModifierType.EpisodePoster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -330,7 +330,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainActorThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainActorThumbs)
                 Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                 If Directory.Exists(tmpPath) Then
                     FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -349,7 +349,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainBanner)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainBanner)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -367,7 +367,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainClearArt)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainClearArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -385,7 +385,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainClearLogo)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainClearLogo)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -403,7 +403,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainDiscArt)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainDiscArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -421,7 +421,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainEFanarts)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -439,7 +439,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainEThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -457,7 +457,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainFanart)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainFanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -475,7 +475,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainLandscape)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainLandscape)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -493,7 +493,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModType.MainPoster)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainPoster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -511,7 +511,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainBanner)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainBanner)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -529,7 +529,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainClearArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -547,7 +547,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainClearLogo)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearLogo)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -565,7 +565,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainDiscArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainDiscArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -583,7 +583,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainFanart)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainFanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -601,7 +601,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainLandscape)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainLandscape)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -619,7 +619,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModType.MainPoster)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainPoster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -653,7 +653,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonBanner)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonBanner)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -687,7 +687,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonFanart)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonFanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -721,7 +721,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonLandscape)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonLandscape)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -755,7 +755,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonPoster)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonPoster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -773,7 +773,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainActorThumbs)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainActorThumbs)
                 Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                 If Directory.Exists(tmpPath) Then
                     FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -792,7 +792,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainBanner)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -810,7 +810,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainCharacterArt)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainCharacterArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -828,7 +828,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainClearArt)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainClearArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -846,7 +846,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainClearLogo)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainClearLogo)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -864,7 +864,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainEFanarts)
                 If Directory.Exists(a) Then
                     FileUtils.Delete.DeleteDirectory(a)
                 End If
@@ -882,7 +882,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainFanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -900,7 +900,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainLandscape)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -918,7 +918,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModType.MainPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainPoster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -1273,7 +1273,7 @@ Public Class Images
         'TODO 2013/11/26 Dekker500 - This should be re-factored to remove the fPath argument. All callers pass the same string derived from the provided DBMovie, so why do it twice?
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.IsSingle, Enums.ModType.MainActorThumbs)
+        For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.IsSingle, Enums.ModifierType.MainActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.MovieActorThumbsOverwrite) Then
                 Save(tPath)
@@ -1307,7 +1307,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainBanner)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieBannerOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1336,7 +1336,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainClearArt)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearArtOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1365,7 +1365,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainClearLogo)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearLogoOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1394,7 +1394,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainDiscArt)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainDiscArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieDiscArtOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1430,7 +1430,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainEFanarts)
                 If Not a = String.Empty Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -1468,7 +1468,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainEThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainEThumbs)
                 If Not a = String.Empty Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -1510,7 +1510,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainFanart)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieFanartOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1544,7 +1544,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainLandscape)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieLandscapeOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1581,7 +1581,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType.MainPoster)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MoviePosterOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1618,7 +1618,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainBanner)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1647,7 +1647,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainClearArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearArtOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1676,7 +1676,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainClearLogo)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearLogoOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1705,7 +1705,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainDiscArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainDiscArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetDiscArtOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1742,7 +1742,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainFanart)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1771,7 +1771,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainLandscape)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetLandscapeOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1808,7 +1808,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModType.MainPoster)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.MovieSet.Title, Enums.ModifierType.MainPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1856,7 +1856,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1905,7 +1905,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1946,7 +1946,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -1995,7 +1995,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.AllSeasonsPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2018,7 +2018,7 @@ Public Class Images
     Public Function SaveAsTVEpisodeActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Structures.DBTV) As String
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.ModType.EpisodeActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.ModifierType.EpisodeActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeActorThumbsOverwrite) Then
                 Save(tPath)
@@ -2067,7 +2067,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType.EpisodeFanart)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModifierType.EpisodeFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2119,7 +2119,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModType.EpisodePoster)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModifierType.EpisodePoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2183,7 +2183,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonBanner)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2247,7 +2247,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonFanart)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonFanartOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2304,7 +2304,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonLandscape)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2368,7 +2368,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModType.SeasonPoster)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonPosterOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2390,7 +2390,7 @@ Public Class Images
     Public Function SaveAsTVShowActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Structures.DBTV) As String
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModType.MainActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModifierType.MainActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.TVShowActorThumbsOverwrite) Then
                 Save(tPath)
@@ -2438,7 +2438,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowBannerOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2481,7 +2481,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainCharacterArt)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2524,7 +2524,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainClearArt)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2567,7 +2567,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainClearLogo)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2605,7 +2605,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
                 If Not a = String.Empty Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -2661,7 +2661,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2704,7 +2704,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
                     Save(a, sURL)
                     strReturn = a
@@ -2755,7 +2755,7 @@ Public Class Images
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModType.MainPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
                     Save(a, sURL)
                     strReturn = a

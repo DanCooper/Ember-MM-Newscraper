@@ -614,7 +614,7 @@ Public Class Enums
         TVShow = 8
     End Enum
 
-    Public Enum ModType As Integer
+    Public Enum ModifierType As Integer
         All = 0
         AllSeasonsBanner = 1
         AllSeasonsFanart = 2
@@ -626,71 +626,31 @@ Public Class Enums
         EpisodePoster = 8
         EpisodeMeta = 9
         EpisodeNFO = 10
-        MainActorThumbs = 11
-        MainBanner = 12
-        MainCharacterArt = 13
-        MainClearArt = 14
-        MainClearLogo = 15
-        MainDiscArt = 16
-        MainEFanarts = 17
-        MainEThumbs = 18
-        MainFanart = 19
-        MainLandscape = 20
-        MainMeta = 21
-        MainNFO = 22
-        MainPoster = 23
-        MainSubtitle = 24
-        MainTheme = 25
-        MainTrailer = 26
-        MainWatchedFile = 27
-        SeasonBanner = 28
-        SeasonFanart = 29
-        SeasonLandscape = 30
-        SeasonPoster = 31
-        withEpisodes = 32
-        withSeasons = 33
-    End Enum
-    ''' <summary>
-    ''' Enum representing possible scraper capabilities
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ScraperCapabilities_Movie_MovieSet
-        All = 0
-        ActorThumbs = 1
-        Banner = 2
-        ClearArt = 3
-        ClearLogo = 4
-        DiscArt = 5
-        Fanart = 6
-        Landscape = 7
-        Poster = 8
-        Theme = 9
-        Trailer = 10
-    End Enum
-    ''' <summary>
-    ''' Enum representing possible scraper capabilities
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ScraperCapabilities_TV
-        All = 0
-        AllSeasonsBanner = 1
-        AllSeasonsFanart = 2
-        AllSeasonsLandscape = 3
-        AllSeasonsPoster = 4
-        EpisodeFanart = 5
-        EpisodePoster = 6
-        SeasonBanner = 7
-        SeasonFanart = 8
-        SeasonLandscape = 9
-        SeasonPoster = 10
-        ShowBanner = 11
-        ShowCharacterArt = 12
-        ShowClearArt = 13
-        ShowClearLogo = 14
-        ShowFanart = 15
-        ShowLandscape = 16
-        ShowPoster = 17
-        ShowTheme = 18
+        EpisodeSubtitle = 11
+        EpisodeWatchedFile = 12
+        MainActorThumbs = 13
+        MainBanner = 14
+        MainCharacterArt = 15
+        MainClearArt = 16
+        MainClearLogo = 17
+        MainDiscArt = 18
+        MainEFanarts = 19
+        MainEThumbs = 20
+        MainFanart = 21
+        MainLandscape = 22
+        MainMeta = 23
+        MainNFO = 24
+        MainPoster = 25
+        MainSubtitle = 26
+        MainTheme = 27
+        MainTrailer = 28
+        MainWatchedFile = 29
+        SeasonBanner = 30
+        SeasonFanart = 31
+        SeasonLandscape = 32
+        SeasonPoster = 33
+        withEpisodes = 34
+        withSeasons = 35
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -1544,43 +1504,48 @@ Public Class Functions
     End Function
 
     Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
-        Dim filterModifier As New Structures.ScrapeModifier
-        filterModifier.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
-        filterModifier.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
-        filterModifier.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
-        filterModifier.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
-        filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        filterModifier.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
-        filterModifier.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
-        filterModifier.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
-        filterModifier.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
-        filterModifier.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
-        filterModifier.MainActorThumbs = Options.MainActorThumbs AndAlso Options2.MainActorThumbs
-        filterModifier.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
-        filterModifier.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
-        filterModifier.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
-        filterModifier.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
-        filterModifier.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
-        filterModifier.MainEFanarts = Options.MainEFanarts AndAlso Options2.MainEFanarts
-        filterModifier.MainEThumbs = Options.MainEThumbs AndAlso Options2.MainEThumbs
-        filterModifier.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
-        filterModifier.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
-        filterModifier.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
-        filterModifier.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
-        filterModifier.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
-        filterModifier.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
-        filterModifier.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
-        filterModifier.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
-        filterModifier.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
-        filterModifier.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
-        filterModifier.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
-        Return filterModifier
+        Dim FilteredModifier As New Structures.ScrapeModifier
+        FilteredModifier.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
+        FilteredModifier.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
+        FilteredModifier.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
+        FilteredModifier.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
+        FilteredModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
+        FilteredModifier.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
+        FilteredModifier.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
+        FilteredModifier.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
+        FilteredModifier.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
+        FilteredModifier.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
+        FilteredModifier.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
+        FilteredModifier.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
+        FilteredModifier.MainActorThumbs = Options.MainActorThumbs AndAlso Options2.MainActorThumbs
+        FilteredModifier.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
+        FilteredModifier.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
+        FilteredModifier.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
+        FilteredModifier.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
+        FilteredModifier.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
+        FilteredModifier.MainEFanarts = Options.MainEFanarts AndAlso Options2.MainEFanarts
+        FilteredModifier.MainEThumbs = Options.MainEThumbs AndAlso Options2.MainEThumbs
+        FilteredModifier.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
+        FilteredModifier.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
+        FilteredModifier.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
+        FilteredModifier.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
+        FilteredModifier.MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles
+        FilteredModifier.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
+        FilteredModifier.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
+        FilteredModifier.MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile
+        FilteredModifier.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
+        FilteredModifier.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
+        FilteredModifier.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
+        FilteredModifier.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
+        FilteredModifier.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
+        FilteredModifier.withSeasons = Options.withSeasons AndAlso Options2.withSeasons
+        Return FilteredModifier
     End Function
 
-    Public Shared Sub SetScrapeModifier(ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal MType As Enums.ModType, ByVal MValue As Boolean)
+    Public Shared Sub SetScrapeModifier(ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal MType As Enums.ModifierType, ByVal MValue As Boolean)
         With ScrapeModifier
             Select Case MType
-                Case Enums.ModType.All
+                Case Enums.ModifierType.All
                     .AllSeasonsBanner = MValue
                     .AllSeasonsFanart = MValue
                     .AllSeasonsLandscape = MValue
@@ -1591,6 +1556,8 @@ Public Class Functions
                     .EpisodeMeta = MValue
                     .EpisodeNFO = MValue
                     .EpisodePoster = MValue
+                    .EpisodeSubtitles = MValue
+                    .EpisodeWatchedFile = MValue
                     .MainActorThumbs = MValue
                     .MainBanner = MValue
                     .MainCharacterArt = MValue
@@ -1604,75 +1571,85 @@ Public Class Functions
                     .MainMeta = MValue
                     .MainNFO = MValue
                     .MainPoster = MValue
-                    .MainTrailer = MValue
+                    .MainSubtitles = MValue
                     .MainTheme = MValue
+                    .MainTrailer = MValue
+                    .MainWatchedFile = MValue
                     .SeasonBanner = MValue
                     .SeasonFanart = MValue
                     .SeasonLandscape = MValue
                     .SeasonPoster = MValue
                     '.withEpisodes should not be set here
                     '.withSeasons should not be set here
-                Case Enums.ModType.AllSeasonsBanner
+                Case Enums.ModifierType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
-                Case Enums.ModType.AllSeasonsFanart
+                Case Enums.ModifierType.AllSeasonsFanart
                     .AllSeasonsFanart = MValue
-                Case Enums.ModType.AllSeasonsLandscape
+                Case Enums.ModifierType.AllSeasonsLandscape
                     .AllSeasonsLandscape = MValue
-                Case Enums.ModType.AllSeasonsPoster
+                Case Enums.ModifierType.AllSeasonsPoster
                     .AllSeasonsPoster = MValue
-                Case Enums.ModType.DoSearch
+                Case Enums.ModifierType.DoSearch
                     .DoSearch = MValue
-                Case Enums.ModType.EpisodeActorThumbs
+                Case Enums.ModifierType.EpisodeActorThumbs
                     .EpisodeActorThumbs = MValue
-                Case Enums.ModType.EpisodeFanart
+                Case Enums.ModifierType.EpisodeFanart
                     .EpisodeFanart = MValue
-                Case Enums.ModType.EpisodeMeta
+                Case Enums.ModifierType.EpisodeMeta
                     .EpisodeMeta = MValue
-                Case Enums.ModType.EpisodeNFO
+                Case Enums.ModifierType.EpisodeNFO
                     .EpisodeNFO = MValue
-                Case Enums.ModType.EpisodePoster
+                Case Enums.ModifierType.EpisodePoster
                     .EpisodePoster = MValue
-                Case Enums.ModType.MainActorThumbs
+                Case Enums.ModifierType.EpisodeSubtitle
+                    .EpisodeSubtitles = MValue
+                Case Enums.ModifierType.EpisodeWatchedFile
+                    .EpisodeWatchedFile = MValue
+                Case Enums.ModifierType.MainActorThumbs
                     .MainActorThumbs = MValue
-                Case Enums.ModType.MainBanner
+                Case Enums.ModifierType.MainBanner
                     .MainBanner = MValue
-                Case Enums.ModType.MainCharacterArt
+                Case Enums.ModifierType.MainCharacterArt
                     .MainCharacterArt = MValue
-                Case Enums.ModType.MainClearArt
+                Case Enums.ModifierType.MainClearArt
                     .MainClearArt = MValue
-                Case Enums.ModType.MainClearLogo
+                Case Enums.ModifierType.MainClearLogo
                     .MainClearLogo = MValue
-                Case Enums.ModType.MainDiscArt
+                Case Enums.ModifierType.MainDiscArt
                     .MainDiscArt = MValue
-                Case Enums.ModType.MainEFanarts
+                Case Enums.ModifierType.MainEFanarts
                     .MainEFanarts = MValue
-                Case Enums.ModType.MainEThumbs
+                Case Enums.ModifierType.MainEThumbs
                     .MainEThumbs = MValue
-                Case Enums.ModType.MainFanart
+                Case Enums.ModifierType.MainFanart
                     .MainFanart = MValue
-                Case Enums.ModType.MainLandscape
+                Case Enums.ModifierType.MainLandscape
                     .MainLandscape = MValue
-                Case Enums.ModType.MainMeta
+                Case Enums.ModifierType.MainMeta
                     .MainMeta = MValue
-                Case Enums.ModType.MainNFO
+                Case Enums.ModifierType.MainNFO
                     .MainNFO = MValue
-                Case Enums.ModType.MainPoster
+                Case Enums.ModifierType.MainPoster
                     .MainPoster = MValue
-                Case Enums.ModType.MainTrailer
-                    .MainTrailer = MValue
-                Case Enums.ModType.MainTheme
+                Case Enums.ModifierType.MainSubtitle
+                    .MainSubtitles = MValue
+                Case Enums.ModifierType.MainTheme
                     .MainTheme = MValue
-                Case Enums.ModType.SeasonBanner
+                Case Enums.ModifierType.MainTrailer
+                    .MainTrailer = MValue
+                Case Enums.ModifierType.MainWatchedFile
+                    .MainWatchedFile = MValue
+                Case Enums.ModifierType.SeasonBanner
                     .SeasonBanner = MValue
-                Case Enums.ModType.SeasonFanart
+                Case Enums.ModifierType.SeasonFanart
                     .SeasonFanart = MValue
-                Case Enums.ModType.SeasonLandscape
+                Case Enums.ModifierType.SeasonLandscape
                     .SeasonLandscape = MValue
-                Case Enums.ModType.SeasonPoster
+                Case Enums.ModifierType.SeasonPoster
                     .SeasonPoster = MValue
-                Case Enums.ModType.withEpisodes
+                Case Enums.ModifierType.withEpisodes
                     .withEpisodes = MValue
-                Case Enums.ModType.withSeasons
+                Case Enums.ModifierType.withSeasons
                     .withSeasons = MValue
             End Select
         End With
@@ -2026,6 +2003,8 @@ Public Class Structures
         Dim EpisodePoster As Boolean
         Dim EpisodeMeta As Boolean
         Dim EpisodeNFO As Boolean
+        Dim EpisodeSubtitles As Boolean
+        Dim EpisodeWatchedFile As Boolean
         Dim MainActorThumbs As Boolean
         Dim MainBanner As Boolean
         Dim MainCharacterArt As Boolean
@@ -2039,8 +2018,10 @@ Public Class Structures
         Dim MainMeta As Boolean
         Dim MainNFO As Boolean
         Dim MainPoster As Boolean
+        Dim MainSubtitles As Boolean
         Dim MainTheme As Boolean
         Dim MainTrailer As Boolean
+        Dim MainWatchedFile As Boolean
         Dim SeasonBanner As Boolean
         Dim SeasonFanart As Boolean
         Dim SeasonLandscape As Boolean

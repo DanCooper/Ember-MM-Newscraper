@@ -188,7 +188,7 @@ Namespace TMDB
 #Region "Fields"
 
             Dim Parameter As String
-            Dim Type As Enums.ScraperCapabilities_Movie_MovieSet
+            Dim Type As Enums.ModifierType
 
 #End Region 'Fields
 

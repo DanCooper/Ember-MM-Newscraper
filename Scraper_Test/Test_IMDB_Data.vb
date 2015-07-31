@@ -355,7 +355,7 @@ Namespace EmberTests
 
             'These simulate the "allowed" scrape items
             Dim ScrapeModifier As Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, ModType.All, True)
+            Functions.SetScrapeModifier(ScrapeModifier, ModifierType.All, True)
 
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 

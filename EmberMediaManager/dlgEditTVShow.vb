@@ -1228,7 +1228,7 @@ Public Class dlgEditTVShow
             .bwEFanarts.RunWorkerAsync()
 
             If Master.eSettings.TVShowBannerAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowBanner) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainBanner) Then
                     .btnSetShowBannerScrape.Enabled = False
                 End If
             Else
@@ -1236,7 +1236,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowCharacterArtAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowCharacterArt) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainCharacterArt) Then
                     .btnSetShowCharacterArtScrape.Enabled = False
                 End If
             Else
@@ -1244,7 +1244,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowClearArtAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowClearArt) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearArt) Then
                     .btnSetShowClearArtScrape.Enabled = False
                 End If
             Else
@@ -1252,7 +1252,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowClearLogoAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowClearLogo) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearLogo) Then
                     .btnSetShowClearLogoScrape.Enabled = False
                 End If
             Else
@@ -1260,7 +1260,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowFanartAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowFanart) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainFanart) Then
                     .btnSetShowFanartScrape.Enabled = False
                 End If
             Else
@@ -1268,7 +1268,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowLandscapeAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowLandscape) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainLandscape) Then
                     .btnSetShowLandscapeScrape.Enabled = False
                 End If
             Else
@@ -1276,7 +1276,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowPosterAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ScraperCapabilities_TV.ShowPoster) Then
+                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainPoster) Then
                     .btnSetShowPosterScrape.Enabled = False
                 End If
             Else
@@ -1312,7 +1312,7 @@ Public Class dlgEditTVShow
         Dim EF_i As Integer = 0
         Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
 
-        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType.MainEFanarts)
+        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModifierType.MainEFanarts)
             If Directory.Exists(a) Then
                 EF_lFI.AddRange(Directory.GetFiles(a))
             End If
@@ -1861,7 +1861,7 @@ Public Class dlgEditTVShow
 
     Private Sub SaveEFanartsList()
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModifierType.MainEFanarts)
                 If Not String.IsNullOrEmpty(a) Then
                     If Me.tmpDBTVShow.RemoveEFanarts AndAlso Not hasClearedEF Then
                         FileUtils.Delete.DeleteDirectory(a)
@@ -1991,7 +1991,7 @@ Public Class dlgEditTVShow
                 End If
 
                 If Me.tmpDBTVShow.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModType.MainActorThumbs)
+                    For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBTVShow.ShowPath, Enums.ModifierType.MainActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)

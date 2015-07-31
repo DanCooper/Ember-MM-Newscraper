@@ -129,66 +129,67 @@ Public Class FanartTV_Image
 
 #Region "Methods"
 
-    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Banner
+            Case Enums.ModifierType.MainBanner
                 Return ConfigModifier_Movie.MainBanner
-            Case Enums.ScraperCapabilities_Movie_MovieSet.ClearArt
+            Case Enums.ModifierType.MainClearArt
                 Return ConfigModifier_Movie.MainClearArt
-            Case Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo
+            Case Enums.ModifierType.MainClearLogo
                 Return ConfigModifier_Movie.MainClearLogo
-            Case Enums.ScraperCapabilities_Movie_MovieSet.DiscArt
+            Case Enums.ModifierType.MainDiscArt
                 Return ConfigModifier_Movie.MainDiscArt
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Fanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_Movie.MainFanart
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Landscape
+            Case Enums.ModifierType.MainLandscape
                 Return ConfigModifier_Movie.MainLandscape
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_Movie.MainPoster
         End Select
         Return False
     End Function
-    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ScraperCapabilities_Movie_MovieSet) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
+
+    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Banner
+            Case Enums.ModifierType.MainBanner
                 Return ConfigModifier_MovieSet.MainBanner
-            Case Enums.ScraperCapabilities_Movie_MovieSet.ClearArt
+            Case Enums.ModifierType.MainClearArt
                 Return ConfigModifier_MovieSet.MainClearArt
-            Case Enums.ScraperCapabilities_Movie_MovieSet.ClearLogo
+            Case Enums.ModifierType.MainClearLogo
                 Return ConfigModifier_MovieSet.MainClearLogo
-            Case Enums.ScraperCapabilities_Movie_MovieSet.DiscArt
+            Case Enums.ModifierType.MainDiscArt
                 Return ConfigModifier_MovieSet.MainDiscArt
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Fanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_MovieSet.MainFanart
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Landscape
+            Case Enums.ModifierType.MainLandscape
                 Return ConfigModifier_MovieSet.MainLandscape
-            Case Enums.ScraperCapabilities_Movie_MovieSet.Poster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_MovieSet.MainPoster
         End Select
         Return False
     End Function
 
-    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ScraperCapabilities_TV) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
+    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities_TV.SeasonBanner
+            Case Enums.ModifierType.SeasonBanner
                 Return ConfigModifier_TV.SeasonBanner
-            Case Enums.ScraperCapabilities_TV.SeasonLandscape
+            Case Enums.ModifierType.SeasonLandscape
                 Return ConfigModifier_TV.SeasonLandscape
-            Case Enums.ScraperCapabilities_TV.SeasonPoster
+            Case Enums.ModifierType.SeasonPoster
                 Return ConfigModifier_TV.SeasonPoster
-            Case Enums.ScraperCapabilities_TV.ShowBanner
+            Case Enums.ModifierType.MainBanner
                 Return ConfigModifier_TV.MainBanner
-            Case Enums.ScraperCapabilities_TV.ShowCharacterArt
+            Case Enums.ModifierType.MainCharacterArt
                 Return ConfigModifier_TV.MainCharacterArt
-            Case Enums.ScraperCapabilities_TV.ShowClearArt
+            Case Enums.ModifierType.MainClearArt
                 Return ConfigModifier_TV.MainClearArt
-            Case Enums.ScraperCapabilities_TV.ShowClearLogo
+            Case Enums.ModifierType.MainClearLogo
                 Return ConfigModifier_TV.MainClearLogo
-            Case Enums.ScraperCapabilities_TV.ShowFanart
+            Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_TV.MainFanart
-            Case Enums.ScraperCapabilities_TV.ShowLandscape
+            Case Enums.ModifierType.MainLandscape
                 Return ConfigModifier_TV.MainLandscape
-            Case Enums.ScraperCapabilities_TV.ShowPoster
+            Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_TV.MainPoster
         End Select
         Return False
@@ -539,12 +540,12 @@ Public Class FanartTV_Image
         Settings.ClearArtOnlyHD = _MySettings_Movie.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_Movie.ClearLogoOnlyHD
 
-        Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_Movie)
+        Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_Movie)
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, filterModifier, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, FilteredModifier, Settings)
         ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, filterModifier, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifier, Settings)
         Else
             logger.Trace(String.Concat("No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
         End If
@@ -570,9 +571,9 @@ Public Class FanartTV_Image
             Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
             Settings.ClearLogoOnlyHD = _MySettings_MovieSet.ClearLogoOnlyHD
 
-            Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_MovieSet)
+            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_MovieSet)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, filterModifier, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, FilteredModifier, Settings)
         End If
 
         logger.Trace("Finished scrape FanartTV")
@@ -589,13 +590,13 @@ Public Class FanartTV_Image
         Settings.ClearArtOnlyHD = _MySettings_TV.ClearArtOnlyHD
         Settings.ClearLogoOnlyHD = _MySettings_TV.ClearLogoOnlyHD
 
-        Dim filterModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+        Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
         If DBTV.TVEp IsNot Nothing Then
             Return Nothing
         Else
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, filterModifier, Settings)
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifier, Settings)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
