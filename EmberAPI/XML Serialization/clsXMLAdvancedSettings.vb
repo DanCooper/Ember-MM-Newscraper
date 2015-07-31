@@ -38,7 +38,7 @@ Partial Public Class AdvancedSettingsSetting
 
     Private _nameField As String
 
-    Private _contentField As Enums.Content_Type
+    Private _contentField As Enums.ContentType
 
     Private _valueField As String
 
@@ -57,11 +57,11 @@ Partial Public Class AdvancedSettingsSetting
 
     '''<remarks/>
     <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property Content() As Enums.Content_Type
+    Public Property Content() As Enums.ContentType
         Get
             Return Me._contentField
         End Get
-        Set(value As Enums.Content_Type)
+        Set(value As Enums.ContentType)
             Me._contentField = value
         End Set
     End Property

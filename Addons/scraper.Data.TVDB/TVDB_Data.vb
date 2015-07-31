@@ -49,7 +49,7 @@ Public Class TVDB_Data
 #Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Data_TV.ModuleSettingsChanged
-    Public Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_TV.ScraperEvent
+    Public Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_TV.ScraperEvent
     Public Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_TV.ScraperSetupChanged
     Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Data_TV.SetupNeedsRestart
 
@@ -152,27 +152,27 @@ Public Class TVDB_Data
     End Function
 
     Sub LoadSettings()
-        ConfigOptions.bEpActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowStatus = clsAdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.TVShow)
-        ConfigOptions.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.TVShow)
+        ConfigOptions.bEpActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowStatus = clsAdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
+        ConfigOptions.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVShow)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "")
         _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
@@ -183,26 +183,26 @@ Public Class TVDB_Data
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoActors", ConfigOptions.bEpActors, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoAired", ConfigOptions.bEpAired, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoCredits", ConfigOptions.bEpCredits, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions.bEpDirector, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoGuestStars", ConfigOptions.bEpGuestStars, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions.bEpPlot, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoRating", ConfigOptions.bShowRating, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bEpTitle, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bEpVotes, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoActors", ConfigOptions.bShowActors, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions.bShowEpisodeGuide, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoGenre", ConfigOptions.bShowGenre, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoMPAA", ConfigOptions.bShowMPAA, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions.bShowPlot, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoPremiered", ConfigOptions.bShowPremiered, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoRating", ConfigOptions.bShowRating, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoStatus", ConfigOptions.bShowStatus, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions.bShowStudio, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bShowTitle, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bShowVotes, , , Enums.Content_Type.TVShow)
+            settings.SetBooleanSetting("DoActors", ConfigOptions.bEpActors, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoAired", ConfigOptions.bEpAired, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoCredits", ConfigOptions.bEpCredits, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions.bEpDirector, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoGuestStars", ConfigOptions.bEpGuestStars, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions.bEpPlot, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoRating", ConfigOptions.bShowRating, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions.bEpTitle, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions.bEpVotes, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoActors", ConfigOptions.bShowActors, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions.bShowEpisodeGuide, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoGenre", ConfigOptions.bShowGenre, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoMPAA", ConfigOptions.bShowMPAA, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions.bShowPlot, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoPremiered", ConfigOptions.bShowPremiered, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRating", ConfigOptions.bShowRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoStatus", ConfigOptions.bShowStatus, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions.bShowStudio, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions.bShowTitle, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions.bShowVotes, , , Enums.ContentType.TVShow)
             settings.SetSetting("APIKey", _setup.txtApiKey.Text)
         End Using
     End Sub
@@ -244,7 +244,7 @@ Public Class TVDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+    Function Scraper(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("Started TVDB Scraper")
 
         LoadSettings()
@@ -260,7 +260,7 @@ Public Class TVDB_Data
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
-            ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
+            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
                     _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, FilteredOptions)
@@ -272,13 +272,13 @@ Public Class TVDB_Data
 
         If String.IsNullOrEmpty(nShow.TVDB) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nShow = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
         End If
 
-        If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto Then
+        If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 Using dSearch As New dlgTVDBSearchResults(Settings, _scraper)
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, FilteredOptions) = Windows.Forms.DialogResult.OK Then

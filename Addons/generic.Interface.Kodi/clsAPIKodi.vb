@@ -231,7 +231,7 @@ Namespace Kodi
                 'movie isn't in database of host -> scan directory
                 If KodiID = -1 Then
                     logger.Warn("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & uMovie.Filename & ": Not found in database, scan directory...")
-                    Await ScanVideoPath(EmbermovieID, Enums.Content_Type.Movie).ConfigureAwait(False)
+                    Await ScanVideoPath(EmbermovieID, Enums.ContentType.Movie).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
@@ -660,7 +660,7 @@ Namespace Kodi
                 'episode isn't in database of host -> scan directory
                 If KodiID = -1 Then
                     logger.Warn("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
-                    Await ScanVideoPath(EmberepisodeID, Enums.Content_Type.TVEpisode).ConfigureAwait(False)
+                    Await ScanVideoPath(EmberepisodeID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
@@ -833,7 +833,7 @@ Namespace Kodi
                 If KodiID = -1 Then
                     logger.Warn("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": Season " & uSeason.TVEp.Season & ": Not found in database, abort process...")
                     'what to do in this case?
-                    Await ScanVideoPath(EmberseasonID, Enums.Content_Type.TVShow).ConfigureAwait(False)
+                    Await ScanVideoPath(EmberseasonID, Enums.ContentType.TVShow).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiSeason = Await SearchTVSeasonByDetails(uSeason.ShowPath, uSeason.TVSeason.Season).ConfigureAwait(False)
@@ -1004,7 +1004,7 @@ Namespace Kodi
                 'TVShow isn't in database of host -> scan directory
                 If KodiID = -1 Then
                     logger.Warn("[APIKodi] UpdateTVShowInfo: " & _currenthost.name & ": """ & uTVShow.ShowPath & """: Not found in database, scan directory...")
-                    Await ScanVideoPath(EmbershowID, Enums.Content_Type.TVShow).ConfigureAwait(False)
+                    Await ScanVideoPath(EmbershowID, Enums.ContentType.TVShow).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiTVShow = Await SearchTVShowByPath(uTVShow.ShowPath).ConfigureAwait(False)
@@ -1168,7 +1168,7 @@ Namespace Kodi
                         If KodiMovie Is Nothing Then
                             'movie isn't in database of host -> scan directory
                             logger.Warn("[APIKodi] GetPlayCount: " & _currenthost.name & ": " & uMovie.Filename & ": Not found in database, scan directory...")
-                            Await ScanVideoPath(EmbervideofileID, Enums.Content_Type.Movie).ConfigureAwait(False)
+                            Await ScanVideoPath(EmbervideofileID, Enums.ContentType.Movie).ConfigureAwait(False)
                             'wait a bit before trying going on, as scan might take a while on Kodi...
                             Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                             KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
@@ -1199,7 +1199,7 @@ Namespace Kodi
                         If KodiEpsiode Is Nothing Then
                             'episode isn't in database of host -> scan directory
                             logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.name & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
-                            Await ScanVideoPath(EmbervideofileID, Enums.Content_Type.TVEpisode).ConfigureAwait(False)
+                            Await ScanVideoPath(EmbervideofileID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                             'wait a bit before trying going on, as scan might take a while on Kodi...
                             Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                             KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
@@ -1375,7 +1375,7 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Async Function ScanVideoPath(ByVal EmbervideofileID As Long, ByVal videotype As Enums.Content_Type) As Task(Of Boolean)
+        Public Async Function ScanVideoPath(ByVal EmbervideofileID As Long, ByVal videotype As Enums.ContentType) As Task(Of Boolean)
             Dim uPath As String = String.Empty
             If _kodi Is Nothing Then
                 logger.Warn("[APIKodi] ScanVideoPath: No client initialized! Abort!")
@@ -1383,7 +1383,7 @@ Namespace Kodi
             End If
 
             Select Case videotype
-                Case Enums.Content_Type.Movie
+                Case Enums.ContentType.Movie
                     Dim uMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(EmbervideofileID)
                     If FileUtils.Common.isBDRip(uMovie.Filename) Then
                         'filename must point to m2ts file! 
@@ -1402,7 +1402,7 @@ Namespace Kodi
                             uPath = Directory.GetParent(uMovie.Filename).FullName
                         End If
                     End If
-                Case Enums.Content_Type.TVShow
+                Case Enums.ContentType.TVShow
                     Dim uShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbervideofileID, False, False)
                     If FileUtils.Common.isBDRip(uShow.ShowPath) Then
                         'needs some testing?!
@@ -1413,7 +1413,7 @@ Namespace Kodi
                     Else
                         uPath = uShow.ShowPath
                     End If
-                Case Enums.Content_Type.TVEpisode
+                Case Enums.ContentType.TVEpisode
                     Dim uEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(EmbervideofileID, False)
                     If FileUtils.Common.isBDRip(uEpisode.Filename) Then
                         'needs some testing?!

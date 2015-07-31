@@ -138,7 +138,7 @@ Public Class Scanner
                         etList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Subtitle)
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.MainSubtitle)
                     If Directory.Exists(a) Then
                         sList.AddRange(Directory.GetFiles(a))
                     End If
@@ -928,7 +928,7 @@ Public Class Scanner
             End If
 
             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                For Each a In FileUtils.GetFilenameList.Movie(mContainer.Filename, False, Enums.ModType.WatchedFile)
+                For Each a In FileUtils.GetFilenameList.Movie(mContainer.Filename, False, Enums.ModType.MainWatchedFile)
                     If Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0" Then
                         If Not File.Exists(a) Then
                             Dim fs As FileStream = File.Create(a)

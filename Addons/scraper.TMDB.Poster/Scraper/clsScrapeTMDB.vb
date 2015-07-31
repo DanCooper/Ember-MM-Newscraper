@@ -58,7 +58,7 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.Content_Type) As MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal ScrapeModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer_Movie_MovieSet
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -68,9 +68,9 @@ Namespace TMDB
                 TMDBClient.GetConfig()
 
                 Dim Results As TMDbLib.Objects.General.Images = Nothing
-                If ContentType = Enums.Content_Type.Movie Then
+                If ContentType = Enums.ContentType.Movie Then
                     Results = TMDBClient.GetMovieImages(CInt(TMDBID))
-                ElseIf ContentType = Enums.Content_Type.MovieSet Then
+                ElseIf ContentType = Enums.ContentType.MovieSet Then
                     Results = TMDBClient.GetCollectionImages(CInt(TMDBID))
                 End If
 

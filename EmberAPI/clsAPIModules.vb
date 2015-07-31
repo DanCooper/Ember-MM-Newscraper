@@ -71,9 +71,9 @@ Public Class ModulesManager
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-    Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
-    Event ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
-    Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+    Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
+    Event ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
+    Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
 #End Region 'Events
 
@@ -145,15 +145,15 @@ Public Class ModulesManager
         dlgVersions.ShowDialog()
     End Sub
 
-    Public Sub Handler_ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+    Public Sub Handler_ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
         RaiseEvent ScraperEvent_Movie(eType, Parameter)
     End Sub
 
-    Public Sub Handler_ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
+    Public Sub Handler_ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
         RaiseEvent ScraperEvent_MovieSet(eType, Parameter)
     End Sub
 
-    Public Sub Handler_ScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+    Public Sub Handler_ScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
         RaiseEvent ScraperEvent_TV(eType, Parameter)
     End Sub
 
@@ -278,7 +278,7 @@ Public Class ModulesManager
                             logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.Movie)
+                                                                                                          x.ContentType = Enums.ContentType.Movie)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                 DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ModuleEnabled
                                 _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -306,7 +306,7 @@ Public Class ModulesManager
                                 logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                 For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.Movie)
+                                                                                                          x.ContentType = Enums.ContentType.Movie)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                     ImageScraperAnyEnabled = ImageScraperAnyEnabled OrElse i.ModuleEnabled
                                     _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -334,7 +334,7 @@ Public Class ModulesManager
                                     logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                     _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                     For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.Movie)
+                                                                                                          x.ContentType = Enums.ContentType.Movie)
                                         _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                         TrailerScraperAnyEnabled = TrailerScraperAnyEnabled OrElse i.ModuleEnabled
                                         _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -362,7 +362,7 @@ Public Class ModulesManager
                                         logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                         _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                         For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.Movie)
+                                                                                                          x.ContentType = Enums.ContentType.Movie)
                                             _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                             ThemeScraperAnyEnabled = ThemeScraperAnyEnabled OrElse i.ModuleEnabled
                                             _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -455,7 +455,7 @@ Public Class ModulesManager
                             logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.MovieSet)
+                                                                                                          x.ContentType = Enums.ContentType.MovieSet)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                 DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ModuleEnabled
                                 _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -483,7 +483,7 @@ Public Class ModulesManager
                                 logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                 For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.MovieSet)
+                                                                                                          x.ContentType = Enums.ContentType.MovieSet)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                     ImageScraperAnyEnabled = ImageScraperAnyEnabled OrElse i.ModuleEnabled
                                     _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -558,7 +558,7 @@ Public Class ModulesManager
                             logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.TV)
+                                                                                                          x.ContentType = Enums.ContentType.TV)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                 DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ModuleEnabled
                                 _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -586,7 +586,7 @@ Public Class ModulesManager
                                 logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                 For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
-                                                                                                          x.ContentType = Enums.Content_Type.TV)
+                                                                                                          x.ContentType = Enums.ContentType.TV)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                     ImageScraperAnyEnabled = ImageScraperAnyEnabled OrElse i.ModuleEnabled
                                     _externalScraperModule.ModuleOrder = i.ModuleOrder
@@ -665,7 +665,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -677,7 +677,7 @@ Public Class ModulesManager
             End While
 
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
+            If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
                 DBMovie.RemoveActorThumbs = True
                 DBMovie.RemoveBanner = True
                 DBMovie.RemoveClearArt = True
@@ -772,7 +772,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Boolean
+    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -807,7 +807,7 @@ Public Class ModulesManager
     ''' <param name="Options">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
+    Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -819,7 +819,7 @@ Public Class ModulesManager
             End While
 
             'clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
-            If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
+            If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
                 DBTV.RemoveActorThumbs = True
                 DBTV.RemoveBanner = True
                 DBTV.RemoveCharacterArt = True
@@ -985,7 +985,7 @@ Public Class ModulesManager
                 Next
 
                 'sorting
-                ImagesContainer.Sort(Enums.Content_Type.Movie)
+                ImagesContainer.Sort(Enums.ContentType.Movie)
 
             End If
 
@@ -1038,7 +1038,7 @@ Public Class ModulesManager
             Next
 
             'sorting
-            ImagesContainer.Sort(Enums.Content_Type.MovieSet)
+            ImagesContainer.Sort(Enums.ContentType.MovieSet)
 
         End If
 
@@ -2152,7 +2152,7 @@ Public Class ModulesManager
         Public ModuleOrder As Integer 'TODO: not important at this point.. for 1.5
         Public ProcessorModule As Interfaces.GenericModule 'Object
         Public Type As List(Of Enums.ModuleEventType)
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.Generic
+        Public ContentType As Enums.ContentType = Enums.ContentType.Generic
 
 #End Region 'Fields
 
@@ -2166,7 +2166,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Data_Movie 'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.Movie
+        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
 
 #End Region 'Fields
 
@@ -2180,7 +2180,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Data_MovieSet 'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.MovieSet
+        Public ContentType As Enums.ContentType = Enums.ContentType.MovieSet
 
 #End Region 'Fields
 
@@ -2194,7 +2194,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Data_TV 'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.TV
+        Public ContentType As Enums.ContentType = Enums.ContentType.TV
 
 #End Region 'Fields
 
@@ -2208,7 +2208,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Image_Movie  'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.Movie
+        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
 
 #End Region 'Fields
 
@@ -2222,7 +2222,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Image_MovieSet  'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.MovieSet
+        Public ContentType As Enums.ContentType = Enums.ContentType.MovieSet
 
 #End Region 'Fields
 
@@ -2236,7 +2236,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Image_TV  'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.TV
+        Public ContentType As Enums.ContentType = Enums.ContentType.TV
 
 #End Region 'Fields
 
@@ -2250,7 +2250,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Theme_Movie     'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.Movie
+        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
 
 #End Region 'Fields
 
@@ -2264,7 +2264,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Theme_TV  'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.TV
+        Public ContentType As Enums.ContentType = Enums.ContentType.TV
 
 #End Region 'Fields
 
@@ -2278,7 +2278,7 @@ Public Class ModulesManager
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.ScraperModule_Trailer_Movie     'Object
         Public ModuleOrder As Integer
-        Public ContentType As Enums.Content_Type = Enums.Content_Type.Movie
+        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
 
 #End Region 'Fields
 
@@ -2291,7 +2291,7 @@ Public Class ModulesManager
 
         Public AssemblyFileName As String
         Public AssemblyName As String
-        Public ContentType As Enums.Content_Type
+        Public ContentType As Enums.ContentType
         Public GenericEnabled As Boolean
         Public PostScraperEnabled As Boolean    'only for TV
         Public PostScraperOrder As Integer      'only for TV

@@ -85,7 +85,7 @@ Public Class clsAdvancedSettings
         Disposing(True)
     End Sub
 
-    Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.Content_Type = Enums.Content_Type.None) As Boolean
+    Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
         Try
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
@@ -95,7 +95,7 @@ Public Class clsAdvancedSettings
                 End If
             End If
 
-            If cContent = Enums.Content_Type.None Then
+            If cContent = Enums.ContentType.None Then
                 Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
             Else
@@ -109,7 +109,7 @@ Public Class clsAdvancedSettings
         End Try
     End Function
 
-    Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.Content_Type = Enums.Content_Type.None) As String
+    Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As String
         Dim Assembly As String = cAssembly
         Try
             If Assembly = "" Then
@@ -119,7 +119,7 @@ Public Class clsAdvancedSettings
                 End If
             End If
 
-            If cContent = Enums.Content_Type.None Then
+            If cContent = Enums.ContentType.None Then
                 Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, defvalue, v(0).Value.ToString)
             Else
@@ -281,7 +281,7 @@ Public Class clsAdvancedSettings
         End Try
     End Sub
 
-    Public Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.Content_Type = Enums.Content_Type.None) As Boolean
+    Public Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
         If _disposed Then
             Throw New ObjectDisposedException("AdvancedSettings.SetBooleanSetting on disposed object")
         End If
@@ -294,7 +294,7 @@ Public Class clsAdvancedSettings
                 End If
             End If
 
-            If cContent = Enums.Content_Type.None Then
+            If cContent = Enums.ContentType.None Then
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
                     _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
@@ -319,7 +319,7 @@ Public Class clsAdvancedSettings
         Return True
     End Function
 
-    Public Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.Content_Type = Enums.Content_Type.None) As Boolean
+    Public Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
         If _disposed Then
             Throw New ObjectDisposedException("AdvancedSettings.SetSetting on disposed object")
         End If
@@ -332,7 +332,7 @@ Public Class clsAdvancedSettings
                 End If
             End If
 
-            If cContent = Enums.Content_Type.None Then
+            If cContent = Enums.ContentType.None Then
 
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then

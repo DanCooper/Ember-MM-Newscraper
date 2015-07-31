@@ -560,7 +560,7 @@ Public Class Enums
 #Region "Enumerations"
 
     Public Enum SortMethod_MovieSet As Integer
-        Year = 0    'default in Kodi
+        Year = 0    'default in Kodi, so let's on the first position of enumeration
         Title = 1
     End Enum
     ''' <summary>
@@ -602,7 +602,7 @@ Public Class Enums
         Episodes = 3
     End Enum
 
-    Public Enum Content_Type As Integer
+    Public Enum ContentType As Integer
         None = 0
         Generic = 1
         Movie = 2
@@ -613,6 +613,7 @@ Public Class Enums
         TVSeason = 7
         TVShow = 8
     End Enum
+
     Public Enum ModType As Integer
         All = 0
         AllSeasonsBanner = 1
@@ -638,16 +639,16 @@ Public Class Enums
         MainMeta = 21
         MainNFO = 22
         MainPoster = 23
-        MainTheme = 24
-        MainTrailer = 25
-        SeasonBanner = 26
-        SeasonFanart = 27
-        SeasonLandscape = 28
-        SeasonPoster = 29
-        Subtitle = 30
-        WatchedFile = 31
+        MainSubtitle = 24
+        MainTheme = 25
+        MainTrailer = 26
+        MainWatchedFile = 27
+        SeasonBanner = 28
+        SeasonFanart = 29
+        SeasonLandscape = 30
+        SeasonPoster = 31
         withEpisodes = 32
-        withSeasons = 32
+        withSeasons = 33
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -800,30 +801,20 @@ Public Class Enums
         TVImageNaming = 52
     End Enum
 
-    Public Enum ScraperEventType_Movie As Integer
+    Public Enum ScraperEventType As Integer
         BannerItem = 0
-        ClearArtItem = 1
-        ClearLogoItem = 2
-        DiscArtItem = 3
-        EFanartsItem = 4
-        EThumbsItem = 5
-        FanartItem = 6
-        LandscapeItem = 7
-        NFOItem = 8
-        PosterItem = 9
-        ThemeItem = 10
-        TrailerItem = 11
-    End Enum
-
-    Public Enum ScraperEventType_MovieSet As Integer
-        NFOItem = 0
-        PosterItem = 1
-        FanartItem = 2
-        BannerItem = 3
-        LandscapeItem = 4
-        ClearArtItem = 5
-        ClearLogoItem = 6
-        DiscArtItem = 7
+        CharacterArtItem = 1
+        ClearArtItem = 2
+        ClearLogoItem = 3
+        DiscArtItem = 4
+        EFanartsItem = 5
+        EThumbsItem = 6
+        FanartItem = 7
+        LandscapeItem = 8
+        NFOItem = 9
+        PosterItem = 10
+        ThemeItem = 11
+        TrailerItem = 12
     End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
@@ -848,7 +839,7 @@ Public Class Enums
     ''' and whether results should be automatically chosen or asked of the user.
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum ScrapeType_Movie_MovieSet_TV As Integer
+    Public Enum ScrapeType As Integer
         SingleScrape = 0
         FullAuto = 1
         FullAsk = 2
@@ -1033,19 +1024,6 @@ Public Class Enums
         ShowFanart = 16
         ShowLandscape = 17
         ShowPoster = 18
-    End Enum
-
-    Public Enum ScraperEventType_TV As Integer
-        BannerItem = 0
-        CharacterArtItem = 1
-        ClearArtItem = 2
-        ClearLogoItem = 3
-        EFanartsItem = 4
-        FanartItem = 5
-        LandscapeItem = 6
-        NFOItem = 7
-        PosterItem = 8
-        ThemeItem = 9
     End Enum
 
 #End Region 'Enumerations
@@ -1848,7 +1826,7 @@ Public Class Structures
         Dim Canceled As Boolean
         Dim Options As ScrapeOptions_Movie
         Dim ScrapeModifier As Structures.ScrapeModifier
-        Dim ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV
+        Dim ScrapeType As Enums.ScrapeType
     End Structure
     ''' <summary>
     ''' Structure representing a movie source path and its metadata
@@ -2171,7 +2149,7 @@ Public Class Structures
 
     Public Structure MainTabType
         Dim ContentName As String
-        Dim ContentType As Enums.Content_Type
+        Dim ContentType As Enums.ContentType
         Dim DefaultList As String
     End Structure
 

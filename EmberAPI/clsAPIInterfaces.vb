@@ -71,7 +71,7 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -112,7 +112,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As ModuleResult
+        Function Scraper(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As ModuleResult
 
 #End Region 'Methods
 
@@ -124,7 +124,7 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -156,7 +156,7 @@ Public Class Interfaces
 
         'MovieSet is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
-        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As ModuleResult
+        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As ModuleResult
 
 #End Region 'Methods
 
@@ -167,11 +167,8 @@ Public Class Interfaces
 #Region "Events"
 
         Event ModuleSettingsChanged()
-
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
-
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
         Event SetupNeedsRestart()
 
 #End Region 'Events
@@ -205,7 +202,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVShow(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
+        Function Scraper_TVShow(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
         ''' <summary>
         ''' Get single episode information
         ''' </summary>
@@ -226,7 +223,7 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -271,15 +268,10 @@ Public Class Interfaces
 #Region "Events"
 
         Event ModuleSettingsChanged()
-
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
-
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
         Event SetupNeedsRestart()
-
         Event ImagesDownloaded(ByVal Posters As List(Of MediaContainers.Image))
-
         Event ProgressUpdated(ByVal iPercent As Integer)
 
 #End Region 'Events
@@ -317,15 +309,10 @@ Public Class Interfaces
 #Region "Events"
 
         Event ModuleSettingsChanged()
-
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
-
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
         Event SetupNeedsRestart()
-
         Event ImagesDownloaded(ByVal Images As List(Of MediaContainers.Image))
-
         Event ProgressUpdated(ByVal iPercent As Integer)
 
 #End Region 'Events
@@ -364,7 +351,7 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -403,12 +390,9 @@ Public Class Interfaces
 #Region "Events"
 
         Event ModuleSettingsChanged()
-
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
         Event SetupNeedsRestart()
-
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
 #End Region 'Events
 
@@ -465,7 +449,7 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 

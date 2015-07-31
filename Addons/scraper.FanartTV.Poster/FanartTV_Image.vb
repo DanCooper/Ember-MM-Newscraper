@@ -58,42 +58,28 @@ Public Class FanartTV_Image
 
 #Region "Events"
 
+    'Movie part
     Public Event ModuleSettingsChanged_Movie() Implements Interfaces.ScraperModule_Image_Movie.ModuleSettingsChanged
-
-    Public Event MovieScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_Movie.ScraperEvent
-
+    Public Event MovieScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_Movie.ScraperEvent
     Public Event SetupScraperChanged_Movie(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_Movie.ScraperSetupChanged
-
     Public Event SetupNeedsRestart_Movie() Implements Interfaces.ScraperModule_Image_Movie.SetupNeedsRestart
-
     Public Event ImagesDownloaded_Movie(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_Movie.ImagesDownloaded
-
     Public Event ProgressUpdated_Movie(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_Movie.ProgressUpdated
 
-
+    'MovieSet part
     Public Event ModuleSettingsChanged_MovieSet() Implements Interfaces.ScraperModule_Image_MovieSet.ModuleSettingsChanged
-
-    Public Event MovieScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_MovieSet.ScraperEvent
-
+    Public Event MovieScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_MovieSet.ScraperEvent
     Public Event SetupScraperChanged_MovieSet(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_MovieSet.ScraperSetupChanged
-
     Public Event SetupNeedsRestart_MovieSet() Implements Interfaces.ScraperModule_Image_MovieSet.SetupNeedsRestart
-
     Public Event ImagesDownloaded_MovieSet(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_MovieSet.ImagesDownloaded
-
     Public Event ProgressUpdated_MovieSet(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_MovieSet.ProgressUpdated
 
-
+    'TV part
     Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Image_TV.ModuleSettingsChanged
-
-    Public Event MovieScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_TV.ScraperEvent
-
+    Public Event MovieScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_TV.ScraperEvent
     Public Event SetupScraperChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_TV.ScraperSetupChanged
-
     Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Image_TV.SetupNeedsRestart
-
     Public Event ImagesDownloaded_TV(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_TV.ImagesDownloaded
-
     Public Event ProgressUpdated_TV(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_TV.ProgressUpdated
 
 #End Region 'Events
@@ -383,103 +369,103 @@ Public Class FanartTV_Image
     End Function
 
     Sub LoadSettings_Movie()
-        _MySettings_Movie.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.Movie)
-        _MySettings_Movie.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.Movie)
+        _MySettings_Movie.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.Movie)
+        _MySettings_Movie.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.ContentType.Movie)
+        _MySettings_Movie.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.ContentType.Movie)
 
-        ConfigModifier_Movie.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.Movie)
-        ConfigModifier_Movie.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.Movie)
-        ConfigModifier_Movie.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.Movie)
-        ConfigModifier_Movie.MainClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.Movie)
-        ConfigModifier_Movie.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.Movie)
-        ConfigModifier_Movie.MainDiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.Content_Type.Movie)
-        ConfigModifier_Movie.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.Content_Type.Movie)
+        ConfigModifier_Movie.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainDiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainEFanarts = ConfigModifier_Movie.MainFanart
         ConfigModifier_Movie.MainEThumbs = ConfigModifier_Movie.MainFanart
     End Sub
 
     Sub LoadSettings_MovieSet()
-        _MySettings_MovieSet.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.MovieSet)
+        _MySettings_MovieSet.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.ContentType.MovieSet)
+        _MySettings_MovieSet.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.ContentType.MovieSet)
 
-        ConfigModifier_MovieSet.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.MovieSet)
-        ConfigModifier_MovieSet.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.MovieSet)
-        ConfigModifier_MovieSet.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.MovieSet)
-        ConfigModifier_MovieSet.MainClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.MovieSet)
-        ConfigModifier_MovieSet.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.MovieSet)
-        ConfigModifier_MovieSet.MainDiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.Content_Type.MovieSet)
-        ConfigModifier_MovieSet.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.Content_Type.MovieSet)
+        ConfigModifier_MovieSet.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainDiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainEFanarts = ConfigModifier_MovieSet.MainFanart
         ConfigModifier_MovieSet.MainEThumbs = ConfigModifier_MovieSet.MainFanart
     End Sub
 
     Sub LoadSettings_TV()
-        _MySettings_TV.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.Content_Type.TV)
-        _MySettings_TV.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.TV)
-        _MySettings_TV.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.TV)
+        _MySettings_TV.ApiKey = clsAdvancedSettings.GetSetting("ApiKey", "", , Enums.ContentType.TV)
+        _MySettings_TV.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.ContentType.TV)
+        _MySettings_TV.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.ContentType.TV)
 
-        ConfigModifier_TV.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.SeasonLandscape = clsAdvancedSettings.GetBooleanSetting("DoSeasonLandscape", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainCharacterArt = clsAdvancedSettings.GetBooleanSetting("DoShowCharacterArt", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainClearArt = clsAdvancedSettings.GetBooleanSetting("DoShowClearArt", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoShowClearLogo", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.Content_Type.TV)
-        ConfigModifier_TV.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.Content_Type.TV)
+        ConfigModifier_TV.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.SeasonLandscape = clsAdvancedSettings.GetBooleanSetting("DoSeasonLandscape", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainCharacterArt = clsAdvancedSettings.GetBooleanSetting("DoShowCharacterArt", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainClearArt = clsAdvancedSettings.GetBooleanSetting("DoShowClearArt", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoShowClearLogo", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainEFanarts = ConfigModifier_TV.MainFanart
     End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_Movie.ClearArtOnlyHD, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_Movie.ClearLogoOnlyHD, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoPoster", ConfigModifier_Movie.MainPoster, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoFanart", ConfigModifier_Movie.MainFanart, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoBanner", ConfigModifier_Movie.MainBanner, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoClearArt", ConfigModifier_Movie.MainClearArt, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoClearLogo", ConfigModifier_Movie.MainClearLogo, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoDiscArt", ConfigModifier_Movie.MainDiscArt, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoLandscape", ConfigModifier_Movie.MainLandscape, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_Movie.ClearArtOnlyHD, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_Movie.ClearLogoOnlyHD, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoPoster", ConfigModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoFanart", ConfigModifier_Movie.MainFanart, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoBanner", ConfigModifier_Movie.MainBanner, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoClearArt", ConfigModifier_Movie.MainClearArt, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoClearLogo", ConfigModifier_Movie.MainClearLogo, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoDiscArt", ConfigModifier_Movie.MainDiscArt, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoLandscape", ConfigModifier_Movie.MainLandscape, , , Enums.ContentType.Movie)
 
-            settings.SetSetting("ApiKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
+            settings.SetSetting("ApiKey", _setup_Movie.txtApiKey.Text, , , Enums.ContentType.Movie)
         End Using
     End Sub
 
     Sub SaveSettings_MovieSet()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_MovieSet.ClearArtOnlyHD, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_MovieSet.ClearLogoOnlyHD, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoBanner", ConfigModifier_MovieSet.MainBanner, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoClearArt", ConfigModifier_MovieSet.MainClearArt, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoClearLogo", ConfigModifier_MovieSet.MainClearLogo, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoDiscArt", ConfigModifier_MovieSet.MainDiscArt, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoLandscape", ConfigModifier_MovieSet.MainLandscape, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_MovieSet.ClearArtOnlyHD, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_MovieSet.ClearLogoOnlyHD, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoBanner", ConfigModifier_MovieSet.MainBanner, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoClearArt", ConfigModifier_MovieSet.MainClearArt, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoClearLogo", ConfigModifier_MovieSet.MainClearLogo, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoDiscArt", ConfigModifier_MovieSet.MainDiscArt, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoLandscape", ConfigModifier_MovieSet.MainLandscape, , , Enums.ContentType.MovieSet)
 
-            settings.SetSetting("ApiKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("ApiKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.MovieSet)
         End Using
     End Sub
 
     Sub SaveSettings_TV()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_TV.ClearArtOnlyHD, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_TV.ClearLogoOnlyHD, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoSeasonBanner", ConfigModifier_TV.SeasonBanner, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoSeasonLandscape", ConfigModifier_TV.SeasonLandscape, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier_TV.SeasonPoster, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowBanner", ConfigModifier_TV.MainBanner, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowCharacterArt", ConfigModifier_TV.MainCharacterArt, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowClearArt", ConfigModifier_TV.MainClearArt, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowClearLogo", ConfigModifier_TV.MainClearLogo, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowFanart", ConfigModifier_TV.MainFanart, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowLandscape", ConfigModifier_TV.MainLandscape, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("DoShowPoster", ConfigModifier_TV.MainPoster, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_TV.ClearArtOnlyHD, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_TV.ClearLogoOnlyHD, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoSeasonBanner", ConfigModifier_TV.SeasonBanner, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoSeasonLandscape", ConfigModifier_TV.SeasonLandscape, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier_TV.SeasonPoster, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowBanner", ConfigModifier_TV.MainBanner, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowCharacterArt", ConfigModifier_TV.MainCharacterArt, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowClearArt", ConfigModifier_TV.MainClearArt, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowClearLogo", ConfigModifier_TV.MainClearLogo, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowFanart", ConfigModifier_TV.MainFanart, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowLandscape", ConfigModifier_TV.MainLandscape, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("DoShowPoster", ConfigModifier_TV.MainPoster, , , Enums.ContentType.TV)
 
-            settings.SetSetting("ApiKey", _setup_TV.txtApiKey.Text, , , Enums.Content_Type.TV)
+            settings.SetSetting("ApiKey", _setup_TV.txtApiKey.Text, , , Enums.ContentType.TV)
         End Using
     End Sub
 

@@ -349,7 +349,7 @@ Namespace EmberTests
             Dim movie As Structures.DBMovie = New Structures.DBMovie()
             movie.Movie = New MediaContainers.Movie()
             movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
-            Dim scrapeType As ScrapeType_Movie_MovieSet_TV = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape
+            Dim scrapeType As ScrapeType = Enums.ScrapeType.SingleScrape
             Dim options As ScrapeOptions_Movie = scrapeOptions_All
             options.bTrailer = False
 

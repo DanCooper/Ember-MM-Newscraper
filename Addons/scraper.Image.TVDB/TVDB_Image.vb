@@ -44,15 +44,10 @@ Public Class TVDB_Image
 #Region "Events"
 
     Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Image_TV.ModuleSettingsChanged
-
-    Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_TV.ScraperEvent
-
+    Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_TV.ScraperEvent
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_TV.ScraperSetupChanged
-
     Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Image_TV.SetupNeedsRestart
-
     Public Event ImagesDownloaded(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_TV.ImagesDownloaded
-
     Public Event ProgressUpdated(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_TV.ProgressUpdated
 
 #End Region 'Events

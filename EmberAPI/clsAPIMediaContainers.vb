@@ -3678,11 +3678,11 @@ Namespace MediaContainers
             Me._poster = New MediaContainers.Image
         End Sub
 
-        Public Sub SaveAllImages(ByRef DBTV As Structures.DBTV, ByRef Type As Enums.Content_Type)
+        Public Sub SaveAllImages(ByRef DBTV As Structures.DBTV, ByRef Type As Enums.ContentType)
             With DBTV.ImagesContainer
 
                 Select Case Type
-                    Case Enums.Content_Type.TVEpisode
+                    Case Enums.ContentType.TVEpisode
 
                         'Episode Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
@@ -3712,7 +3712,7 @@ Namespace MediaContainers
                             DBTV.PosterPath = String.Empty
                         End If
 
-                    Case Enums.Content_Type.TVSeason
+                    Case Enums.ContentType.TVSeason
 
                         'Season Banner
                         If .Banner.WebImage.Image IsNot Nothing Then
@@ -3838,7 +3838,7 @@ Namespace MediaContainers
                             End If
                         End If
 
-                    Case Enums.Content_Type.TVShow
+                    Case Enums.ContentType.TVShow
 
                         'Show Banner
                         If .Banner.WebImage.Image IsNot Nothing Then
@@ -4168,16 +4168,16 @@ Namespace MediaContainers
             Me._posters.Clear()
         End Sub
 
-        Public Sub Sort(ByRef ContentType As Enums.Content_Type)
+        Public Sub Sort(ByRef ContentType As Enums.ContentType)
             Dim cSettings As New Settings
 
             Select Case ContentType
-                Case Enums.Content_Type.Movie
+                Case Enums.ContentType.Movie
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
                     cSettings.PrefLanguage = Master.eSettings.MovieImagesPrefLanguage
                     cSettings.PrefLanguageOnly = Master.eSettings.MovieImagesPrefLanguageOnly
-                Case Enums.Content_Type.MovieSet
+                Case Enums.ContentType.MovieSet
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
                     cSettings.PrefLanguage = Master.eSettings.MovieSetImagesPrefLanguage

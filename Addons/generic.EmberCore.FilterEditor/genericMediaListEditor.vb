@@ -134,15 +134,15 @@ Public Class genericMediaListEditor
             tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
             For Each cTab In CustomTabs
                 If Master.DB.ViewExists(cTab.Value) Then
-                    Dim cTabType As Enums.Content_Type = Enums.Content_Type.None
+                    Dim cTabType As Enums.ContentType = Enums.ContentType.None
                     If cTab.Value.StartsWith("movie-") Then
-                        cTabType = Enums.Content_Type.Movie
+                        cTabType = Enums.ContentType.Movie
                     ElseIf cTab.Value.StartsWith("sets-") Then
-                        cTabType = Enums.Content_Type.MovieSet
+                        cTabType = Enums.ContentType.MovieSet
                     ElseIf cTab.Value.StartsWith("tvshow-") Then
-                        cTabType = Enums.Content_Type.TV
+                        cTabType = Enums.ContentType.TV
                     End If
-                    If Not cTabType = Enums.Content_Type.None AndAlso Not String.IsNullOrEmpty(cTab.Name) Then
+                    If Not cTabType = Enums.ContentType.None AndAlso Not String.IsNullOrEmpty(cTab.Name) Then
                         Dim NewTabPage As New TabPage
                         NewTabPage.Text = cTab.Name
                         NewTabPage.Tag = New Structures.MainTabType With {.ContentName = cTab.Name, .ContentType = cTabType, .DefaultList = cTab.Value}

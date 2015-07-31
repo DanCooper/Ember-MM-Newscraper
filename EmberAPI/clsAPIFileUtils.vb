@@ -1496,7 +1496,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType.Subtitle
+                Case Enums.ModType.MainSubtitle
                     With Master.eSettings
                         If isVideoTS Then
                             FilenameList.Add(Path.Combine(basePath, "subs"))
@@ -1606,7 +1606,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType.WatchedFile
+                Case Enums.ModType.MainWatchedFile
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseYAMJ AndAlso .MovieYAMJWatchedFile AndAlso String.IsNullOrEmpty(.MovieYAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(basePath, Directory.GetParent(fileParPath).Name), ".watched"))

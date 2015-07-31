@@ -58,7 +58,7 @@ Public Class frmSettingsHolder
 
         cbCustomMediaList.Items.Clear()
         colCustomTabList.Items.Clear()
-        For Each ViewName In Master.DB.GetViewList(Enums.Content_Type.None)
+        For Each ViewName In Master.DB.GetViewList(Enums.ContentType.None)
             cbCustomMediaList.Items.Add(ViewName)
             colCustomTabList.Items.Add(ViewName)
         Next

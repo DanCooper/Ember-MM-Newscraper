@@ -401,18 +401,18 @@ Public Class BulkRenamerModule
     End Function
 
     Sub LoadSettings()
-        MySettings.FoldersPattern_Movies = clsAdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.Content_Type.Movie)
-        MySettings.FoldersPattern_Seasons = clsAdvancedSettings.GetSetting("FoldersPattern", "Season $K2_?", , Enums.Content_Type.TVSeason)
-        MySettings.FoldersPattern_Shows = clsAdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.Content_Type.TVShow)
-        MySettings.FilesPattern_Episodes = clsAdvancedSettings.GetSetting("FilesPattern", "$Z - $W2_S?2E?{ - $T}", , Enums.Content_Type.TVEpisode)
-        MySettings.FilesPattern_Movies = clsAdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.Content_Type.Movie)
-        MySettings.RenameEdit_Movies = clsAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.Content_Type.Movie)
-        MySettings.RenameEdit_Episodes = clsAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.Content_Type.TVShow)
-        MySettings.RenameMulti_Movies = clsAdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.Content_Type.Movie)
-        MySettings.RenameMulti_Shows = clsAdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.Content_Type.TVShow)
-        MySettings.RenameSingle_Movies = clsAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.Content_Type.Movie)
-        MySettings.RenameSingle_Shows = clsAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.Content_Type.TVShow)
-        MySettings.RenameUpdate_Episodes = clsAdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.Content_Type.TVEpisode)
+        MySettings.FoldersPattern_Movies = clsAdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.ContentType.Movie)
+        MySettings.FoldersPattern_Seasons = clsAdvancedSettings.GetSetting("FoldersPattern", "Season $K2_?", , Enums.ContentType.TVSeason)
+        MySettings.FoldersPattern_Shows = clsAdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.ContentType.TVShow)
+        MySettings.FilesPattern_Episodes = clsAdvancedSettings.GetSetting("FilesPattern", "$Z - $W2_S?2E?{ - $T}", , Enums.ContentType.TVEpisode)
+        MySettings.FilesPattern_Movies = clsAdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.ContentType.Movie)
+        MySettings.RenameEdit_Movies = clsAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.Movie)
+        MySettings.RenameEdit_Episodes = clsAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.TVShow)
+        MySettings.RenameMulti_Movies = clsAdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.Movie)
+        MySettings.RenameMulti_Shows = clsAdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.TVShow)
+        MySettings.RenameSingle_Movies = clsAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.Movie)
+        MySettings.RenameSingle_Shows = clsAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.TVShow)
+        MySettings.RenameUpdate_Episodes = clsAdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.ContentType.TVEpisode)
         MySettings.BulkRenamer = clsAdvancedSettings.GetBooleanSetting("BulkRenamer", True)
         MySettings.GenericModule = clsAdvancedSettings.GetBooleanSetting("GenericModule", True)
     End Sub
@@ -420,7 +420,7 @@ Public Class BulkRenamerModule
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected.ContentType
-            Case Enums.Content_Type.Movie
+            Case Enums.ContentType.Movie
                 Using dBulkRename As New dlgBulkRenamer_Movie
                     dBulkRename.FilterMovies = ModulesManager.Instance.RuntimeObjects.FilterMovies
                     dBulkRename.FilterMoviesSearch = ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch
@@ -430,7 +430,7 @@ Public Class BulkRenamerModule
                     dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
                     dBulkRename.ShowDialog()
                 End Using
-            Case Enums.Content_Type.TV
+            Case Enums.ContentType.TV
                 Using dBulkRename As New dlgBulkRenamer_TV
                     dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterShows
                     dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterShowsSearch
@@ -472,18 +472,18 @@ Public Class BulkRenamerModule
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Movies, , , Enums.Content_Type.Movie)
-            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Seasons, , , Enums.Content_Type.TVSeason)
-            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Shows, , , Enums.Content_Type.TVShow)
-            settings.SetSetting("FilesPattern", MySettings.FilesPattern_Episodes, , , Enums.Content_Type.TVEpisode)
-            settings.SetSetting("FilesPattern", MySettings.FilesPattern_Movies, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("RenameEdit", MySettings.RenameEdit_Movies, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("RenameEdit", MySettings.RenameEdit_Episodes, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("RenameMulti", MySettings.RenameMulti_Movies, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("RenameMulti", MySettings.RenameMulti_Shows, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Movies, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Shows, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("RenameUpdate", MySettings.RenameUpdate_Episodes, , , Enums.Content_Type.TVEpisode)
+            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Movies, , , Enums.ContentType.Movie)
+            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Seasons, , , Enums.ContentType.TVSeason)
+            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Shows, , , Enums.ContentType.TVShow)
+            settings.SetSetting("FilesPattern", MySettings.FilesPattern_Episodes, , , Enums.ContentType.TVEpisode)
+            settings.SetSetting("FilesPattern", MySettings.FilesPattern_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameEdit", MySettings.RenameEdit_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameEdit", MySettings.RenameEdit_Episodes, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("RenameMulti", MySettings.RenameMulti_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameMulti", MySettings.RenameMulti_Shows, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Shows, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("RenameUpdate", MySettings.RenameUpdate_Episodes, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("BulkRenamer", MySettings.BulkRenamer)
             settings.SetBooleanSetting("GenericModule", MySettings.GenericModule)
         End Using

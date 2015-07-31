@@ -139,13 +139,13 @@ Public Class FileManagerExternalModule
         Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MoviePaths")
         If eMovies IsNot Nothing Then
             For Each sett In eMovies
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.Content_Type.Movie})
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.Movie})
             Next
         End If
         Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("ShowPaths")
         If eShows IsNot Nothing Then
             For Each sett In eShows
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.Content_Type.TVShow})
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.TVShow})
             Next
         End If
         _MySettings.TeraCopy = clsAdvancedSettings.GetBooleanSetting("TeraCopy", False)
@@ -162,7 +162,7 @@ Public Class FileManagerExternalModule
             settings.SetSetting("TeraCopyPath", _MySettings.TeraCopyPath)
 
             Dim eMovies As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.Content_Type.Movie)
+            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.Movie)
                 eMovies.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
             Next
             If eMovies IsNot Nothing Then
@@ -170,7 +170,7 @@ Public Class FileManagerExternalModule
             End If
 
             Dim eShows As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.Content_Type.TVShow)
+            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.TVShow)
                 eShows.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
             Next
             If eShows IsNot Nothing Then
@@ -267,10 +267,10 @@ Public Class FileManagerExternalModule
         SetToolsStripItem_Shows(cmnuSep_Shows)
         SetToolsStripItem_Shows(cmnuMedia_Shows)
 
-        PopulateFolders(cmnuMediaMove_Movies, Enums.Content_Type.Movie)
-        PopulateFolders(cmnuMediaMove_Shows, Enums.Content_Type.TVShow)
-        PopulateFolders(cmnuMediaCopy_Movies, Enums.Content_Type.Movie)
-        PopulateFolders(cmnuMediaCopy_Shows, Enums.Content_Type.TVShow)
+        PopulateFolders(cmnuMediaMove_Movies, Enums.ContentType.Movie)
+        PopulateFolders(cmnuMediaMove_Shows, Enums.ContentType.TVShow)
+        PopulateFolders(cmnuMediaCopy_Movies, Enums.ContentType.Movie)
+        PopulateFolders(cmnuMediaCopy_Shows, Enums.ContentType.TVShow)
         SetToolsStripItemVisibility(cmnuMedia_Movies, True)
         SetToolsStripItemVisibility(cmnuMedia_Shows, True)
         SetToolsStripItemVisibility(cmnuSep_Movies, True)
@@ -312,7 +312,7 @@ Public Class FileManagerExternalModule
             Dim doMove As Boolean = False
             Dim dstPath As String = String.Empty
             Dim useTeraCopy As Boolean = False
-            Dim ContentType As Enums.Content_Type = DirectCast(tMItem.Tag, SettingItem).Type
+            Dim ContentType As Enums.ContentType = DirectCast(tMItem.Tag, SettingItem).Type
 
             If DirectCast(tMItem.Tag, SettingItem).FolderPath = "CUSTOM" Then
                 Dim fl As New FolderBrowserDialog
@@ -335,14 +335,14 @@ Public Class FileManagerExternalModule
             Dim mTeraCopy As New TeraCopy.Filelist(_MySettings.TeraCopyPath, dstPath, doMove)
 
             If Not String.IsNullOrEmpty(dstPath) Then
-                If ContentType = Enums.Content_Type.Movie Then
+                If ContentType = Enums.ContentType.Movie Then
                     For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                         ID = Convert.ToInt64(sRow.Cells("idMovie").Value)
                         If Not MediaToWork.Contains(ID) Then
                             MediaToWork.Add(ID)
                         End If
                     Next
-                ElseIf ContentType = Enums.Content_Type.TVShow Then
+                ElseIf ContentType = Enums.ContentType.TVShow Then
                     For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows
                         ID = Convert.ToInt64(sRow.Cells("idShow").Value)
                         If Not MediaToWork.Contains(ID) Then
@@ -353,17 +353,17 @@ Public Class FileManagerExternalModule
                 If MediaToWork.Count > 0 Then
                     Dim strMove As String = String.Empty
                     Dim strCopy As String = String.Empty
-                    If ContentType = Enums.Content_Type.Movie Then
+                    If ContentType = Enums.ContentType.Movie Then
                         strMove = Master.eLang.GetString(314, "Move {0} Movie(s) To {1}")
                         strCopy = Master.eLang.GetString(315, "Copy {0} Movie(s) To {1}")
-                    ElseIf ContentType = Enums.Content_Type.TVShow Then
+                    ElseIf ContentType = Enums.ContentType.TVShow Then
                         strMove = Master.eLang.GetString(888, "Move {0} TV Show(s) To {1}")
                         strCopy = Master.eLang.GetString(889, "Copy {0} TV Show(s) To {1}")
                     End If
 
                     If MessageBox.Show(String.Format(If(doMove, strMove, strCopy), _
                                             MediaToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        If ContentType = Enums.Content_Type.Movie Then
+                        If ContentType = Enums.ContentType.Movie Then
                             Dim mMovie As New Structures.DBMovie
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
@@ -384,7 +384,7 @@ Public Class FileManagerExternalModule
                                 End If
                             Next
                             If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
-                        ElseIf ContentType = Enums.Content_Type.TVShow Then
+                        ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim mShow As New Structures.DBTV
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
@@ -455,7 +455,7 @@ Public Class FileManagerExternalModule
         Return SPanel
     End Function
 
-    Sub PopulateFolders(ByVal mnu As System.Windows.Forms.ToolStripMenuItem, ByVal ContentType As Enums.Content_Type)
+    Sub PopulateFolders(ByVal mnu As System.Windows.Forms.ToolStripMenuItem, ByVal ContentType As Enums.ContentType)
         mnu.DropDownItems.Clear()
         cmnuMediaCustomList.RemoveAll(Function(b) True)
 
@@ -495,19 +495,19 @@ Public Class FileManagerExternalModule
         eSettings.ModuleSettings.Clear()
         For Each e As ListViewItem In _setup.lvPaths.Items
             If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "Movie" Then
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.Content_Type.Movie})
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.ContentType.Movie})
             End If
         Next
         For Each e As ListViewItem In _setup.lvPaths.Items
             If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "Show" Then
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.Content_Type.TVShow})
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.ContentType.TVShow})
             End If
         Next
         SaveSettings()
-        PopulateFolders(cmnuMediaMove_Movies, Enums.Content_Type.Movie)
-        PopulateFolders(cmnuMediaMove_Shows, Enums.Content_Type.TVShow)
-        PopulateFolders(cmnuMediaCopy_Movies, Enums.Content_Type.Movie)
-        PopulateFolders(cmnuMediaCopy_Shows, Enums.Content_Type.TVShow)
+        PopulateFolders(cmnuMediaMove_Movies, Enums.ContentType.Movie)
+        PopulateFolders(cmnuMediaMove_Shows, Enums.ContentType.TVShow)
+        PopulateFolders(cmnuMediaCopy_Movies, Enums.ContentType.Movie)
+        PopulateFolders(cmnuMediaCopy_Shows, Enums.ContentType.TVShow)
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -556,7 +556,7 @@ Public Class FileManagerExternalModule
 
         Public FolderPath As String
         Public Name As String
-        Public Type As Enums.Content_Type
+        Public Type As Enums.ContentType
 
 #End Region 'Fields
 

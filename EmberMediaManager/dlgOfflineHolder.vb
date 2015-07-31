@@ -538,7 +538,7 @@ Public Class dlgOfflineHolder
                 Dim ScrapeModifier As New Structures.ScrapeModifier
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.All, True)
 
-                If Not ModulesManager.Instance.ScrapeData_Movie(ScrapedMovie, ScrapeModifier, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie, False) Then
+                If Not ModulesManager.Instance.ScrapeData_Movie(ScrapedMovie, ScrapeModifier, Enums.ScrapeType.FullAsk, Master.DefaultOptions_Movie, False) Then
                     If rbTypeMovieTitle.Checked Then
                         Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", ScrapedMovie.Movie.Title)
                     End If
@@ -1496,7 +1496,7 @@ Public Class dlgOfflineHolder
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.All, True)
 
-            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, ScrapeModifier, Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Master.DefaultOptions_Movie, False) Then
+            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, ScrapeModifier, Enums.ScrapeType.FullAsk, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then
                     Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", sMovie.Movie.Title)
                 End If
@@ -1623,7 +1623,7 @@ Public Class dlgOfflineHolder
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModType.All, True)
 
-            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, ScrapeModifier, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Master.DefaultOptions_Movie, False) Then
+            If Not ModulesManager.Instance.ScrapeData_Movie(sMovie, ScrapeModifier, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, False) Then
                 If rbTypeMovieTitle.Checked Then
                     Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", sMovie.Movie.Title)
                 End If

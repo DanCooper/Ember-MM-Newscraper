@@ -112,12 +112,12 @@ Namespace TVDBs
             End While
         End Sub
 
-        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType_Movie_MovieSet_TV, ByVal FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.TVShow
+        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.TVShow
             Dim r As SearchResults = SearchTVShow(sShowName)
             Dim b As Boolean = False
 
             Select Case iType
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FullAsk, Enums.ScrapeType_Movie_MovieSet_TV.MissAsk, Enums.ScrapeType_Movie_MovieSet_TV.NewAsk, Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk, Enums.ScrapeType_Movie_MovieSet_TV.FilterAsk, Enums.ScrapeType_Movie_MovieSet_TV.SingleField
+                Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     Else
@@ -134,11 +134,11 @@ Namespace TVDBs
                             End If
                         End Using
                     End If
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterSkip, Enums.ScrapeType_Movie_MovieSet_TV.FullSkip, Enums.ScrapeType_Movie_MovieSet_TV.MarkSkip, Enums.ScrapeType_Movie_MovieSet_TV.NewSkip, Enums.ScrapeType_Movie_MovieSet_TV.MissSkip
+                Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                     If r.Matches.Count = 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape, Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto
+                Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
                     If r.Matches.Count > 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If

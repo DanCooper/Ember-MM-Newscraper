@@ -3016,7 +3016,7 @@ Public Class dlgEditMovie
                         Me.tmpDBMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainWatchedFile)
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
                                 fs.Close()
@@ -3031,7 +3031,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModType.MainWatchedFile)
                             If File.Exists(a) Then
                                 File.Delete(a)
                             End If

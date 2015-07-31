@@ -1284,24 +1284,24 @@ Public Class Database
         End If
     End Function
 
-    Public Function GetViewList(ByVal Type As Enums.Content_Type) As List(Of String)
+    Public Function GetViewList(ByVal Type As Enums.ContentType) As List(Of String)
         Dim ViewList As New List(Of String)
         Dim ContentType As String = String.Empty
 
         Select Case Type
-            Case Enums.Content_Type.TVEpisode
+            Case Enums.ContentType.TVEpisode
                 ContentType = "episode-"
-            Case Enums.Content_Type.Movie
+            Case Enums.ContentType.Movie
                 ContentType = "movie-"
-            Case Enums.Content_Type.MovieSet
+            Case Enums.ContentType.MovieSet
                 ContentType = "sets-"
-            Case Enums.Content_Type.TVSeason
+            Case Enums.ContentType.TVSeason
                 ContentType = "seasons-"
-            Case Enums.Content_Type.TVShow
+            Case Enums.ContentType.TVShow
                 ContentType = "tvshow-"
         End Select
 
-        If Not String.IsNullOrEmpty(ContentType) OrElse Type = Enums.Content_Type.None Then
+        If Not String.IsNullOrEmpty(ContentType) OrElse Type = Enums.ContentType.None Then
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Format("SELECT name FROM sqlite_master WHERE type ='view' AND name LIKE '{0}%';", ContentType)
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -3851,7 +3851,7 @@ Public Class Database
 
                 'Images
                 If _TVEpDB.ImagesContainer IsNot Nothing Then
-                    _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.Content_Type.TVEpisode)
+                    _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.ContentType.TVEpisode)
                 End If
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4073,7 +4073,7 @@ Public Class Database
 
         'Images
         If _TVSeasonDB.ImagesContainer IsNot Nothing Then
-            _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.Content_Type.TVSeason)
+            _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.ContentType.TVSeason)
         End If
 
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4237,7 +4237,7 @@ Public Class Database
 
                 'Images
                 If _TVShowDB.ImagesContainer IsNot Nothing Then
-                    _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.Content_Type.TVShow)
+                    _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
                 End If
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4491,7 +4491,7 @@ Public Class Database
                             'TODO @DanCooper Please move following YAMJ part out of this function and delete function because its no longer needed!
                             'create .watched files
                             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                                For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType.WatchedFile)
+                                For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType.MainWatchedFile)
                                     If Not File.Exists(a) Then
                                         Dim fs As FileStream = File.Create(a)
                                         fs.Close()

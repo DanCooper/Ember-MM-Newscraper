@@ -55,18 +55,21 @@ Public Class TMDB_Data
 
 #Region "Events"
 
+    'Movie part
     Public Event ModuleSettingsChanged_Movie() Implements Interfaces.ScraperModule_Data_Movie.ModuleSettingsChanged
-    Public Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_Movie.ScraperEvent
+    Public Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_Movie.ScraperEvent
     Public Event ScraperSetupChanged_Movie(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_Movie.ScraperSetupChanged
     Public Event SetupNeedsRestart_Movie() Implements Interfaces.ScraperModule_Data_Movie.SetupNeedsRestart
 
+    'MovieSet part
     Public Event ModuleSettingsChanged_MovieSet() Implements Interfaces.ScraperModule_Data_MovieSet.ModuleSettingsChanged
-    Public Event ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_MovieSet.ScraperEvent
+    Public Event ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_MovieSet.ScraperEvent
     Public Event ScraperSetupChanged_MovieSet(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_MovieSet.ScraperSetupChanged
     Public Event SetupNeedsRestart_MovieSet() Implements Interfaces.ScraperModule_Data_MovieSet.SetupNeedsRestart
 
+    'TV part
     Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Data_TV.ModuleSettingsChanged
-    Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_TV.ScraperEvent
+    Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Data_TV.ScraperEvent
     Public Event ScraperSetupChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Data_TV.ScraperSetupChanged
     Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Data_TV.SetupNeedsRestart
 
@@ -317,167 +320,167 @@ Public Class TMDB_Data
     End Function
 
     Sub LoadSettings_Movie()
-        ConfigOptions_Movie.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bCollectionID = clsAdvancedSettings.GetBooleanSetting("DoCollectionID", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.Content_Type.Movie)
-        ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bCollectionID = clsAdvancedSettings.GetBooleanSetting("DoCollectionID", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
+        ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
-        _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.Movie)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.Movie)
+        _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.ContentType.Movie)
+        _MySettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.ContentType.Movie)
         _MySettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
+        _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.ContentType.Movie)
         ConfigScrapeModifier_Movie.DoSearch = True
         ConfigScrapeModifier_Movie.MainMeta = True
         ConfigScrapeModifier_Movie.MainNFO = True
     End Sub
 
     Sub LoadSettings_MovieSet()
-        ConfigOptions_MovieSet.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.MovieSet)
-        ConfigOptions_MovieSet.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.MovieSet)
+        ConfigOptions_MovieSet.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.MovieSet)
+        ConfigOptions_MovieSet.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.MovieSet)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.MovieSet)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.MovieSet)
+        _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.ContentType.MovieSet)
+        _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.ContentType.MovieSet)
         _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.ContentType.MovieSet)
         ConfigScrapeModifier_Movie.DoSearch = True
         ConfigScrapeModifier_Movie.MainMeta = False
         ConfigScrapeModifier_Movie.MainNFO = True
     End Sub
 
     Sub LoadSettings_TV()
-        ConfigOptions_TV.bEpActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.TVEpisode)
-        ConfigOptions_TV.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowCreator = clsAdvancedSettings.GetBooleanSetting("DoCreator", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowStatus = clsAdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.TVShow)
-        ConfigOptions_TV.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.TVShow)
+        ConfigOptions_TV.bEpActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowCreator = clsAdvancedSettings.GetBooleanSetting("DoCreator", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("DoPremiered", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowStatus = clsAdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
+        ConfigOptions_TV.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVShow)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.TV)
-        _MySettings_TV.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.TV)
-        _MySettings_TV.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.TV)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.TV)
+        _MySettings_TV.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.ContentType.TV)
+        _MySettings_TV.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.ContentType.TV)
         _MySettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_TV.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.TV)
+        _MySettings_TV.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.ContentType.TV)
         ConfigScrapeModifier_TV.DoSearch = True
         ConfigScrapeModifier_TV.MainNFO = True
     End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoCast", ConfigOptions_Movie.bCast, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoCert", ConfigOptions_Movie.bCert, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoCollectionID", ConfigOptions_Movie.bCollectionID, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.MainFanart, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions_Movie.bOriginalTitle, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoMusic", ConfigOptions_Movie.bMusicBy, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions_Movie.bOtherCrew, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoOutline", ConfigOptions_Movie.bOutline, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions_Movie.bPlot, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.MainPoster, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoProducers", ConfigOptions_Movie.bProducers, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoRating", ConfigOptions_Movie.bRating, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoRelease", ConfigOptions_Movie.bRelease, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoRuntime", ConfigOptions_Movie.bRuntime, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions_Movie.bStudio, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoTagline", ConfigOptions_Movie.bTagline, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions_Movie.bTitle, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoTop250", ConfigOptions_Movie.bTop250, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoTrailer", ConfigOptions_Movie.bTrailer, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems, , , Enums.Content_Type.Movie)
-            settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
-            settings.SetSetting("PrefLanguage", _MySettings_Movie.PrefLanguage, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCast", ConfigOptions_Movie.bCast, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoCert", ConfigOptions_Movie.bCert, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoCollectionID", ConfigOptions_Movie.bCollectionID, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.MainFanart, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions_Movie.bOriginalTitle, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoMusic", ConfigOptions_Movie.bMusicBy, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions_Movie.bOtherCrew, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoOutline", ConfigOptions_Movie.bOutline, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_Movie.bPlot, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoProducers", ConfigOptions_Movie.bProducers, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_Movie.bRating, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoRelease", ConfigOptions_Movie.bRelease, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoRuntime", ConfigOptions_Movie.bRuntime, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions_Movie.bStudio, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoTagline", ConfigOptions_Movie.bTagline, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_Movie.bTitle, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoTop250", ConfigOptions_Movie.bTop250, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoTrailer", ConfigOptions_Movie.bTrailer, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems, , , Enums.ContentType.Movie)
+            settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.ContentType.Movie)
+            settings.SetSetting("PrefLanguage", _MySettings_Movie.PrefLanguage, , , Enums.ContentType.Movie)
         End Using
     End Sub
 
     Sub SaveSettings_MovieSet()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoPlot", ConfigOptions_MovieSet.bPlot, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions_MovieSet.bTitle, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_MovieSet.bPlot, , , Enums.ContentType.MovieSet)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_MovieSet.bTitle, , , Enums.ContentType.MovieSet)
+            settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.MovieSet)
+            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.ContentType.MovieSet)
         End Using
     End Sub
 
     Sub SaveSettings_TV()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bEpActors, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoAired", ConfigOptions_TV.bEpAired, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoCredits", ConfigOptions_TV.bEpCredits, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions_TV.bEpDirector, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoGuestStars", ConfigOptions_TV.bEpGuestStars, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bEpPlot, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bEpRating, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpTitle, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpVotes, , , Enums.Content_Type.TVEpisode)
-            settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bShowActors, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoCert", ConfigOptions_TV.bShowCert, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoCountry", ConfigOptions_TV.bShowCountry, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoCreator", ConfigOptions_TV.bShowCreator, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions_TV.bShowEpisodeGuide, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoGenre", ConfigOptions_TV.bShowGenre, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions_TV.bShowOriginalTitle, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bShowPlot, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoPremiered", ConfigOptions_TV.bShowPremiered, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bShowRating, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoStatus", ConfigOptions_TV.bShowStatus, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions_TV.bShowStudio, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bShowTitle, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bShowVotes, , , Enums.Content_Type.TVShow)
-            settings.SetBooleanSetting("FallBackEn", _MySettings_TV.FallBackEng, , , Enums.Content_Type.TV)
-            settings.SetBooleanSetting("GetAdultItems", _MySettings_TV.GetAdultItems, , , Enums.Content_Type.TV)
-            settings.SetSetting("APIKey", _setup_TV.txtApiKey.Text, , , Enums.Content_Type.TV)
-            settings.SetSetting("PrefLanguage", _MySettings_TV.PrefLanguage, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bEpActors, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoAired", ConfigOptions_TV.bEpAired, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoCredits", ConfigOptions_TV.bEpCredits, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions_TV.bEpDirector, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoGuestStars", ConfigOptions_TV.bEpGuestStars, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bEpPlot, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bEpRating, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpTitle, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpVotes, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bShowActors, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoCert", ConfigOptions_TV.bShowCert, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions_TV.bShowCountry, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoCreator", ConfigOptions_TV.bShowCreator, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions_TV.bShowEpisodeGuide, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoGenre", ConfigOptions_TV.bShowGenre, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoOriginalTitle", ConfigOptions_TV.bShowOriginalTitle, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bShowPlot, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoPremiered", ConfigOptions_TV.bShowPremiered, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bShowRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoStatus", ConfigOptions_TV.bShowStatus, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions_TV.bShowStudio, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bShowTitle, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bShowVotes, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("FallBackEn", _MySettings_TV.FallBackEng, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("GetAdultItems", _MySettings_TV.GetAdultItems, , , Enums.ContentType.TV)
+            settings.SetSetting("APIKey", _setup_TV.txtApiKey.Text, , , Enums.ContentType.TV)
+            settings.SetSetting("PrefLanguage", _MySettings_TV.PrefLanguage, , , Enums.ContentType.TV)
         End Using
     End Sub
 
@@ -636,7 +639,7 @@ Public Class TMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper_Movie(ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started TMDB Scraper")
 
         LoadSettings_Movie()
@@ -657,7 +660,7 @@ Public Class TMDB_Data
             ElseIf Not String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
                 _scraper.GetMovieInfo(oDBMovie.Movie.TMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False)
-            ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
+            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBMovie.Movie.Title) Then
                     _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie, nMovie, ScrapeType, FilteredOptions)
@@ -669,13 +672,13 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(nMovie.TMDBID) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nMovie = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
         End If
 
-        If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto Then
+        If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBMovie.Movie.ID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgTMDBSearchResults_Movie(Settings, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Filename, FilteredOptions, oDBMovie.Movie.Year) = Windows.Forms.DialogResult.OK Then
@@ -714,7 +717,7 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
+    Function Scraper_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -734,7 +737,7 @@ Public Class TMDB_Data
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
                 _scraper.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, FilteredOptions, False)
-            ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
+            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
                     DBMovieSet.MovieSet = _scraper.GetSearchMovieSetInfo(DBMovieSet.MovieSet.Title, DBMovieSet, ScrapeType, FilteredOptions)
                 End If
@@ -744,7 +747,7 @@ Public Class TMDB_Data
 
         ' why a scraper should initialize the DBMovie structure?
         ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
-        If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso ScrapeModifier.DoSearch _
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso ScrapeModifier.DoSearch _
          AndAlso ModulesManager.Instance.externalScrapersModules_Data_MovieSet.OrderBy(Function(y) y.ModuleOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovieSet.MovieSet.ID = String.Empty
             DBMovieSet.RemoveBanner = True
@@ -767,10 +770,10 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
-            If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
+            If ScrapeType = Enums.ScrapeType.SingleScrape Then
 
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
@@ -830,7 +833,7 @@ Public Class TMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Structures.DBMovie Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_TV(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType_Movie_MovieSet_TV, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+    Function Scraper_TV(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("Started TMDB Scraper")
 
         LoadSettings_TV()
@@ -856,7 +859,7 @@ Public Class TMDB_Data
                 oDBTV.TVShow.TMDB = _scraper.GetTMDBbyIMDB(oDBTV.TVShow.IMDB)
                 If String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
                 _scraper.GetTVShowInfo(oDBTV.TVShow.TMDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
-            ElseIf Not ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape Then
+            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
                     _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, FilteredOptions)
@@ -868,13 +871,13 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(nShow.TMDB) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType_Movie_MovieSet_TV.FilterAuto, Enums.ScrapeType_Movie_MovieSet_TV.FullAuto, Enums.ScrapeType_Movie_MovieSet_TV.MarkAuto, Enums.ScrapeType_Movie_MovieSet_TV.NewAuto, Enums.ScrapeType_Movie_MovieSet_TV.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nShow = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
         End If
 
-        If ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleAuto Then
+        If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBTV.TVShow.TMDB) Then
                 Using dSearch As New dlgTMDBSearchResults_TV(Settings, _scraper)
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, FilteredOptions) = Windows.Forms.DialogResult.OK Then

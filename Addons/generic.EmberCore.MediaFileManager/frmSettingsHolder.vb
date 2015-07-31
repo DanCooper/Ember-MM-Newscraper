@@ -50,7 +50,7 @@ Public Class frmSettingsHolder
     Private Sub btnPathEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPathEdit.Click
         lvPaths.SelectedItems(0).SubItems(0).Text = txtName.Text
         lvPaths.SelectedItems(0).SubItems(1).Text = txtPath.Text
-        lvPaths.SelectedItems(0).SubItems(2).Text = CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.Content_Type)).Value.ToString
+        lvPaths.SelectedItems(0).SubItems(2).Text = CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.ContentType)).Value.ToString
         txtName.Text = ""
         txtPath.Text = ""
         cbType.SelectedIndex = -1
@@ -62,7 +62,7 @@ Public Class frmSettingsHolder
         Dim li As New ListViewItem
         li.Text = txtName.Text
         li.SubItems.Add(txtPath.Text)
-        li.SubItems.Add(CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.Content_Type)).Value.ToString)
+        li.SubItems.Add(CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.ContentType)).Value.ToString)
         lvPaths.Items.Add(li)
         txtName.Text = ""
         txtPath.Text = ""
@@ -168,9 +168,9 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub LoadContentTypes()
-        Dim items As New Dictionary(Of String, Enums.Content_Type)
-        items.Add(Master.eLang.GetString(1379, "Movie"), Enums.Content_Type.Movie)
-        items.Add(Master.eLang.GetString(700, "TV Show"), Enums.Content_Type.TVShow)
+        Dim items As New Dictionary(Of String, Enums.ContentType)
+        items.Add(Master.eLang.GetString(1379, "Movie"), Enums.ContentType.Movie)
+        items.Add(Master.eLang.GetString(700, "TV Show"), Enums.ContentType.TVShow)
         Me.cbType.DataSource = items.ToList
         Me.cbType.DisplayMember = "Key"
         Me.cbType.ValueMember = "Value"

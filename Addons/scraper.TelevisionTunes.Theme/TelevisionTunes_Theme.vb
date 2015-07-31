@@ -50,22 +50,17 @@ Public Class TelevisionTunes_Theme
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Theme_TV.ModuleSettingsChanged
-
-    Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_TV.ScraperEvent
-
-    Public Event SetupScraperChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_TV.ScraperSetupChanged
-
-    Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Theme_TV.SetupNeedsRestart
-
-
+    'Movie part
     Public Event ModuleSettingsChanged_Movie() Implements Interfaces.ScraperModule_Theme_Movie.ModuleSettingsChanged
-
-    Public Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_Movie.ScraperEvent
-
+    Public Event ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_Movie.ScraperEvent
     Public Event SetupScraperChanged_Movie(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_Movie.ScraperSetupChanged
-
     Public Event SetupNeedsRestart_Movie() Implements Interfaces.ScraperModule_Theme_Movie.SetupNeedsRestart
+
+    'TV part
+    Public Event ModuleSettingsChanged_TV() Implements Interfaces.ScraperModule_Theme_TV.ModuleSettingsChanged
+    Public Event ScraperEvent_TV(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_TV.ScraperEvent
+    Public Event SetupScraperChanged_TV(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_TV.ScraperSetupChanged
+    Public Event SetupNeedsRestart_TV() Implements Interfaces.ScraperModule_Theme_TV.SetupNeedsRestart
 
 #End Region 'Events
 
@@ -176,22 +171,22 @@ Public Class TelevisionTunes_Theme
     End Function
 
     Sub LoadSettings_Movie()
-        ConfigScrapeModifier_Movie.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.ContentType.Movie)
     End Sub
 
     Sub LoadSettings_TV()
-        ConfigScrapeModifier_TV.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.Content_Type.TV)
+        ConfigScrapeModifier_TV.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.ContentType.TV)
     End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_Movie.MainTheme, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_Movie.MainTheme, , , Enums.ContentType.Movie)
         End Using
     End Sub
 
     Sub SaveSettings_TV()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_TV.MainTheme, , , Enums.Content_Type.TV)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_TV.MainTheme, , , Enums.ContentType.TV)
         End Using
     End Sub
 
