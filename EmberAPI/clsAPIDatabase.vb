@@ -1352,7 +1352,7 @@ Public Class Database
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
     ''' <returns>Structures.DBMovie object</returns>
     Public Function LoadMovieFromDB(ByVal MovieID As Long) As Structures.DBMovie
-        Dim _movieDB As New Structures.DBMovie
+        Dim _movieDB As New Structures.DBMovie With {.ActorThumbs = New List(Of String)}
 
         _movieDB.ID = MovieID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1844,7 +1844,7 @@ Public Class Database
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Structures.DBTV object</returns>
     Public Function LoadTVEpFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV With {.ImagesContainer = New MediaContainers.ImagesContainer}
+        Dim _TVDB As New Structures.DBTV With {.ActorThumbs = New List(Of String), .ImagesContainer = New MediaContainers.ImagesContainer}
         Dim PathID As Long = -1
 
         _TVDB.ID = EpisodeID
@@ -2171,7 +2171,7 @@ Public Class Database
     ''' <param name="ShowID">Show ID</param>
     ''' <returns>Structures.DBTV object</returns>
     Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV With {.Episodes = New List(Of Structures.DBTV)}
+        Dim _TVDB As New Structures.DBTV With {.ActorThumbs = New List(Of String), .Episodes = New List(Of Structures.DBTV)}
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
