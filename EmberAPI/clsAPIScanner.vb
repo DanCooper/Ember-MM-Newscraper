@@ -277,8 +277,8 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="MovieSet">MovieSetContainer object.</param>
-    Public Sub GetMovieSetFolderContents(ByRef MovieSet As MovieSetContainer)
+    ''' <param name="DBMovieSet">MovieSetContainer object.</param>
+    Public Sub GetMovieSetFolderContents(ByRef DBMovieSet As Structures.DBMovieSet)
         Dim fList As New List(Of String)    'all other files list
         Dim fPath As String = Master.eSettings.MovieSetPathMSAA
 
@@ -289,66 +289,66 @@ Public Class Scanner
             End If
 
             'banner
-            If String.IsNullOrEmpty(MovieSet.Banner) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainBanner)
-                    MovieSet.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.Banner) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.BannerPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainBanner)
+                    DBMovieSet.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.BannerPath) Then Exit For
                 Next
             End If
 
             'clearart
-            If String.IsNullOrEmpty(MovieSet.ClearArt) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainClearArt)
-                    MovieSet.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.ClearArt) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.ClearArtPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearArt)
+                    DBMovieSet.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.ClearArtPath) Then Exit For
                 Next
             End If
 
             'clearlogo
-            If String.IsNullOrEmpty(MovieSet.ClearLogo) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainClearLogo)
-                    MovieSet.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.ClearLogo) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.ClearLogoPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearLogo)
+                    DBMovieSet.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.ClearLogoPath) Then Exit For
                 Next
             End If
 
             'discart
-            If String.IsNullOrEmpty(MovieSet.DiscArt) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainDiscArt)
-                    MovieSet.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.DiscArt) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.DiscArtPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainDiscArt)
+                    DBMovieSet.DiscArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.DiscArtPath) Then Exit For
                 Next
             End If
 
             'fanart
-            If String.IsNullOrEmpty(MovieSet.Fanart) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainFanart)
-                    MovieSet.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.Fanart) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.FanartPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainFanart)
+                    DBMovieSet.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.FanartPath) Then Exit For
                 Next
             End If
 
             'landscape
-            If String.IsNullOrEmpty(MovieSet.Landscape) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainLandscape)
-                    MovieSet.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.Landscape) Then Exit For
-                Next
-            End If
-
-            'poster
-            If String.IsNullOrEmpty(MovieSet.Poster) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainPoster)
-                    MovieSet.Poster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.Poster) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.LandscapePath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainLandscape)
+                    DBMovieSet.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.LandscapePath) Then Exit For
                 Next
             End If
 
             'nfo
-            If String.IsNullOrEmpty(MovieSet.Nfo) Then
-                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModifierType.MainNFO)
-                    MovieSet.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(MovieSet.Nfo) Then Exit For
+            If String.IsNullOrEmpty(DBMovieSet.NfoPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainNFO)
+                    DBMovieSet.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.NfoPath) Then Exit For
+                Next
+            End If
+
+            'poster
+            If String.IsNullOrEmpty(DBMovieSet.PosterPath) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainPoster)
+                    DBMovieSet.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovieSet.PosterPath) Then Exit For
                 Next
             End If
 
@@ -1876,133 +1876,6 @@ Public Class Scanner
 #End Region 'Fields
 
     End Structure
-
-    Public Class MovieSetContainer
-
-#Region "Fields"
-
-        Private _banner As String
-        Private _clearart As String
-        Private _clearlogo As String
-        Private _discart As String
-        Private _fanart As String
-        Private _landscape As String
-        Private _nfo As String
-        Private _poster As String
-        Private _setname As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Banner() As String
-            Get
-                Return _banner
-            End Get
-            Set(ByVal value As String)
-                _banner = value
-            End Set
-        End Property
-
-        Public Property ClearArt() As String
-            Get
-                Return _clearart
-            End Get
-            Set(ByVal value As String)
-                _clearart = value
-            End Set
-        End Property
-
-        Public Property ClearLogo() As String
-            Get
-                Return _clearlogo
-            End Get
-            Set(ByVal value As String)
-                _clearlogo = value
-            End Set
-        End Property
-
-        Public Property DiscArt() As String
-            Get
-                Return _discart
-            End Get
-            Set(ByVal value As String)
-                _discart = value
-            End Set
-        End Property
-
-        Public Property Fanart() As String
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As String)
-                _fanart = value
-            End Set
-        End Property
-
-        Public Property Landscape() As String
-            Get
-                Return _landscape
-            End Get
-            Set(ByVal value As String)
-                _landscape = value
-            End Set
-        End Property
-
-        Public Property Nfo() As String
-            Get
-                Return _nfo
-            End Get
-            Set(ByVal value As String)
-                _nfo = value
-            End Set
-        End Property
-
-        Public Property Poster() As String
-            Get
-                Return _poster
-            End Get
-            Set(ByVal value As String)
-                _poster = value
-            End Set
-        End Property
-
-        Public Property SetName() As String
-            Get
-                Return _setname
-            End Get
-            Set(ByVal value As String)
-                _setname = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _banner = String.Empty
-            _clearart = String.Empty
-            _clearlogo = String.Empty
-            _discart = String.Empty
-            _landscape = String.Empty
-            _poster = String.Empty
-            _fanart = String.Empty
-            _nfo = String.Empty
-            _setname = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Public Class EpisodeItem
 
