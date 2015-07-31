@@ -209,7 +209,7 @@ Public Class dlgImgSelect
             AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
 
-            If Me.DLType = Enums.ModifierType.Fanart Then
+            If Me.DLType = Enums.ModifierType.MainFanart Then
                 ReDim Preserve Me.chkImageET(iIndex)
                 ReDim Preserve Me.chkImageEF(iIndex)
                 ReDim Preserve Me.pnlImageET(iIndex)
@@ -559,7 +559,7 @@ Public Class dlgImgSelect
                 Results.WebImage.IsEdit = Me.isEdit
             End If
 
-            If Me.DLType = Enums.ModifierType.Fanart Then
+            If Me.DLType = Enums.ModifierType.MainFanart Then
                 Dim iMod As Integer = 0
                 Dim iVal As Integer = 1
                 Dim etPath As String = String.Empty
@@ -620,25 +620,25 @@ Public Class dlgImgSelect
                 Title = Me.tMovieSet.ListTitle
             End If
 
-            If Me.DLType = Enums.ModifierType.Poster Then
+            If Me.DLType = Enums.ModifierType.MainPoster Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ModifierType.Banner Then
+            ElseIf Me.DLType = Enums.ModifierType.MainBanner Then
                 Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ModifierType.Landscape Then
+            ElseIf Me.DLType = Enums.ModifierType.MainLandscape Then
                 Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ModifierType.Fanart Then
+            ElseIf Me.DLType = Enums.ModifierType.MainFanart Then
                 Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ModifierType.ClearArt Then
+            ElseIf Me.DLType = Enums.ModifierType.MainClearArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ModifierType.ClearLogo Then
+            ElseIf Me.DLType = Enums.ModifierType.MainClearLogo Then
                 Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ModifierType.DiscArt Then
+            ElseIf Me.DLType = Enums.ModifierType.MainDiscArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
             End If

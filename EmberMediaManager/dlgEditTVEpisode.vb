@@ -143,7 +143,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
-        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ImageType_TV.EpisodeFanart, 0, 0, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodeFanart, MediaContainers.Image))
+        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ModifierType.EpisodeFanart, 0, 0, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodeFanart, MediaContainers.Image))
 
         'If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
         '    EpisodeFanart = tImage
@@ -156,7 +156,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterScrape.Click
-        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ImageType_TV.EpisodePoster, Me.tmpDBTVEpisode.TVEp.Season, Me.tmpDBTVEpisode.TVEp.Episode, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodePoster, MediaContainers.Image))
+        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ModifierType.EpisodePoster, Me.tmpDBTVEpisode.TVEp.Season, Me.tmpDBTVEpisode.TVEp.Episode, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodePoster, MediaContainers.Image))
 
         'If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
         '    EpisodePoster = tImage

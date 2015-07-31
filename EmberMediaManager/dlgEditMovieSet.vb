@@ -331,7 +331,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Banners.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Banner, aContainer.Banners, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainBanner, aContainer.Banners, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor
@@ -397,7 +397,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.ClearArts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.ClearArt, aContainer.ClearArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainClearArt, aContainer.ClearArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor
@@ -463,7 +463,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.ClearLogos.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.ClearLogo, aContainer.ClearLogos, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainClearLogo, aContainer.ClearLogos, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor
@@ -529,7 +529,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.DiscArts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.DiscArt, aContainer.DiscArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainDiscArt, aContainer.DiscArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor
@@ -595,7 +595,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Fanarts.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Fanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainFanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor
@@ -660,7 +660,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Landscapes.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Landscape, aContainer.Landscapes, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainLandscape, aContainer.Landscapes, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor
@@ -726,7 +726,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.Posters.Count > 0 Then
                 dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ImageType_Movie.Poster, aContainer.Posters, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(Me.tmpDBMovieSet, Enums.ModifierType.MainPoster, aContainer.Posters, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                     pResults = dlgImgS.Results
                     If Not String.IsNullOrEmpty(pResults.URL) Then
                         Cursor = Cursors.WaitCursor

@@ -944,47 +944,6 @@ Public Class Enums
         SQ144p15fps = 12
         UNKNOWN = 13
     End Enum
-    ''' <summary>
-    ''' Enum represeting valid movie image types
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ImageType_Movie As Integer
-        Banner = 0
-        CharacterArt = 1
-        ClearArt = 2
-        ClearLogo = 3
-        DiscArt = 4
-        EFanarts = 5
-        EThumbs = 6
-        Fanart = 7
-        Landscape = 8
-        Poster = 9
-    End Enum
-    ''' <summary>
-    ''' Enum representing valid TV image types
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ImageType_TV As Integer
-        All = 0
-        AllSeasonsBanner = 1
-        AllSeasonsFanart = 2
-        AllSeasonsLandscape = 3
-        AllSeasonsPoster = 4
-        EpisodeFanart = 5
-        EpisodePoster = 6
-        SeasonBanner = 7
-        SeasonFanart = 8
-        SeasonLandscape = 9
-        SeasonPoster = 10
-        ShowBanner = 11
-        ShowCharacterArt = 12
-        ShowClearArt = 13
-        ShowClearLogo = 14
-        ShowEFanarts = 15
-        ShowFanart = 16
-        ShowLandscape = 17
-        ShowPoster = 18
-    End Enum
 
 #End Region 'Enumerations
 
