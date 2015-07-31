@@ -17294,7 +17294,7 @@ doCancel:
 
         'fake file just for getting images
         tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
-        fScanner.GetTVSeasonImages(tmpSeasonDb, tmpSeasonDb.TVSeason.Season)
+        fScanner.GetTVSeasonFolderContents(tmpSeasonDb, tmpSeasonDb.TVSeason.Season)
 
         Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False)
         RefreshRow_TVSeason(tmpSeasonDb.ID)

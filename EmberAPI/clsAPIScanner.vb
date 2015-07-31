@@ -26,13 +26,13 @@ Imports NLog
 Public Class Scanner
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public TVShowPaths As New Hashtable
     Public MoviePaths As New List(Of String)
-    Public ShowPath As String = String.Empty
     Public SourceLastScan As New DateTime
-    Public TVEpPaths As New List(Of String)
+    Public TVEpisodePaths As New List(Of String)
+    Public TVShowPaths As New Hashtable
 
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
 
@@ -420,7 +420,7 @@ Public Class Scanner
         fList = Nothing
     End Sub
 
-    Public Sub GetTVSeasonImages(ByRef TVDB As Structures.DBTV, ByVal sSeason As Integer)
+    Public Sub GetTVSeasonFolderContents(ByRef TVDB As Structures.DBTV, ByVal sSeason As Integer)
         Dim Season As Integer = sSeason
         Dim SeasonFirstEpisodePath As String = String.Empty
         Dim SeasonPath As String = String.Empty
@@ -651,160 +651,6 @@ Public Class Scanner
 
         fList = Nothing
     End Sub
-
-    Private Shared Function GetAirDateFromRegExp(ByVal reg As Match, ByRef eItem As EpisodeItem) As Boolean
-        Dim param1 As String = reg.Groups(1).Value
-        Dim param2 As String = reg.Groups(2).Value
-        Dim param3 As String = reg.Groups(3).Value
-
-        If Not String.IsNullOrEmpty(param1) AndAlso Not String.IsNullOrEmpty(param2) AndAlso Not String.IsNullOrEmpty(param3) Then
-            Dim len1 As Integer = param1.Length
-            Dim len2 As Integer = param2.Length
-            Dim len3 As Integer = param3.Length
-
-            If len1 = 4 AndAlso len2 = 2 AndAlso len3 = 2 Then
-                ' yyyy-MM-dd format
-                eItem.byDate = True
-                eItem.Episode = -1
-                eItem.Season = CInt(param1)
-                eItem.Aired = String.Concat(param1.ToString, "-", param2.ToString, "-", param3.ToString)
-                Return True
-            ElseIf len1 = 2 AndAlso len2 = 2 AndAlso len3 = 4 Then
-                ' dd-MM-yyyy format
-                eItem.byDate = True
-                eItem.Episode = -1
-                eItem.Season = CInt(param3)
-                eItem.Aired = String.Concat(param3.ToString, "-", param2.ToString, "-", param1.ToString)
-                Return True
-            End If
-        End If
-        Return False
-    End Function
-
-    Private Shared Function GetEpisodeAndSeasonFromRegExp(ByVal reg As Match, ByRef eItem As EpisodeItem, ByVal defaultSeason As Integer) As Boolean
-        Dim tSeason As String = reg.Groups(1).Value
-        Dim tEpisode As String = reg.Groups(2).Value
-
-        If Not String.IsNullOrEmpty(tSeason) OrElse Not String.IsNullOrEmpty(tEpisode) Then
-            Dim endPattern As String = String.Empty
-            If String.IsNullOrEmpty(tSeason) AndAlso Not String.IsNullOrEmpty(tEpisode) Then
-                'no season specified -> assume defaultSeason
-                eItem.Season = defaultSeason
-                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
-                eItem.Episode = CInt(Episode.Groups(1).Value)
-                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
-            ElseIf Not String.IsNullOrEmpty(tSeason) AndAlso String.IsNullOrEmpty(tEpisode) Then
-                'no episode specification -> assume defaultSeason
-                eItem.Season = defaultSeason
-                eItem.Episode = CInt(tSeason)
-            Else
-                'season and episode specified
-                eItem.Season = CInt(tSeason)
-                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
-                eItem.Episode = CInt(Episode.Groups(1).Value)
-                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
-            End If
-            eItem.byDate = False
-
-            If Not String.IsNullOrEmpty(endPattern) Then
-                If Regex.IsMatch(endPattern.ToLower, "[a-i]", RegexOptions.IgnoreCase) Then
-                    Dim count As Integer = 1
-                    For Each c As Char In "abcdefghi".ToCharArray()
-                        If c = endPattern.ToLower Then
-                            eItem.SubEpisode = count
-                            Exit For
-                        End If
-                        count += 1
-                    Next
-                ElseIf endPattern.StartsWith(".") Then
-                    eItem.SubEpisode = CInt(endPattern.Substring(1))
-                End If
-            End If
-            Return True
-        End If
-
-        Return False
-    End Function
-
-    Public Shared Function GetTVSeasons(ByVal sPath As String, ByVal ShowID As Long) As List(Of EpisodeItem)
-        Dim retEpisodeItemsList As New List(Of EpisodeItem)
-
-        For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
-            Dim reg As Regex = New Regex(rShow.Regexp, RegexOptions.IgnoreCase)
-
-            Dim regexppos As Integer
-            Dim regexp2pos As Integer
-
-            If reg.IsMatch(sPath.ToLower) Then
-                Dim eItem As New EpisodeItem
-                Dim defaultSeason As Integer = rShow.defaultSeason
-                Dim sMatch As Match = reg.Match(sPath.ToLower)
-
-                If rShow.byDate Then
-                    If Not GetAirDateFromRegExp(sMatch, eItem) Then Continue For
-                    retEpisodeItemsList.Add(eItem)
-                    logger.Info(String.Format("VideoInfoScanner: Found date based match {0} ({1}) [{2}]", sPath, eItem.Aired, rShow.Regexp))
-                Else
-                    If Not GetEpisodeAndSeasonFromRegExp(sMatch, eItem, defaultSeason) Then Continue For
-                    retEpisodeItemsList.Add(eItem)
-                    logger.Info(String.Format("VideoInfoScanner: Found episode match {0} (s{1}e{2}) [{3}]", sPath, eItem.Season, eItem.Episode, rShow.Regexp))
-                End If
-
-                ' Grab the remainder from first regexp run
-                ' as second run might modify or empty it.
-                Dim remainder As String = sMatch.Groups(3).Value.ToString
-
-                If Not String.IsNullOrEmpty(Master.eSettings.TVMultiPartMatching) Then
-                    Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
-
-                    ' check the remainder of the string for any further episodes.
-                    If Not rShow.byDate Then
-                        ' we want "long circuit" OR below so that both offsets are evaluated
-                        While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
-                            regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
-                            regexp2pos = If(reg2.IsMatch(remainder), reg2.Match(remainder).Index, -1)
-                            If (regexppos <= regexp2pos AndAlso regexppos <> -1) OrElse (regexppos >= 0 AndAlso regexp2pos = -1) Then
-                                eItem = New EpisodeItem
-                                GetEpisodeAndSeasonFromRegExp(reg.Match(remainder), eItem, defaultSeason)
-                                retEpisodeItemsList.Add(eItem)
-                                logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
-                                remainder = reg.Match(remainder).Groups(3).Value
-                            ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
-                                Dim endPattern As String = String.Empty
-                                eItem = New EpisodeItem With {.Season = eItem.Season}
-                                Dim Episode As Match = Regex.Match(reg2.Match(remainder).Groups(1).Value, "(\d*)(.*)")
-                                eItem.Episode = CInt(Episode.Groups(1).Value)
-                                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
-
-                                If Not String.IsNullOrEmpty(endPattern) Then
-                                    If Regex.IsMatch(endPattern.ToLower, "[a-i]", RegexOptions.IgnoreCase) Then
-                                        Dim count As Integer = 1
-                                        For Each c As Char In "abcdefghi".ToCharArray()
-                                            If c = endPattern.ToLower Then
-                                                eItem.SubEpisode = count
-                                                Exit For
-                                            End If
-                                            count += 1
-                                        Next
-                                    ElseIf endPattern.StartsWith(".") Then
-                                        eItem.SubEpisode = CInt(endPattern.Substring(1))
-                                    End If
-                                End If
-
-                                retEpisodeItemsList.Add(eItem)
-                                logger.Info(String.Format("VideoInfoScanner: Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
-                                remainder = remainder.Substring(reg2.Match(remainder).Length)
-                            End If
-                        End While
-                    End If
-                End If
-
-                Exit For
-            End If
-        Next
-
-        Return retEpisodeItemsList
-    End Function
 
     Public Function IsBusy() As Boolean
         Return bwPrelim.IsBusy
@@ -1058,7 +904,7 @@ Public Class Scanner
                         DBTVEpisode.IsLock = False
                         DBTVEpisode.IsMark = False
 
-                        For Each sEpisode As EpisodeItem In GetTVSeasons(DBTVEpisode.Filename, DBTVEpisode.ShowID)
+                        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
                             If sEpisode.byDate Then
 
                                 toNfo = False
@@ -1243,7 +1089,7 @@ Public Class Scanner
                                 tmpSeason.ID = -1
                                 tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = DBTVEpisode.TVEp.Season}
                                 tmpSeason = Master.DB.FillTVShowFromDB(tmpSeason, DBTVEpisode)
-                                GetTVSeasonImages(tmpSeason, tmpSeason.TVSeason.Season)
+                                GetTVSeasonFolderContents(tmpSeason, tmpSeason.TVSeason.Season)
                                 DBTVShow.Seasons.Add(tmpSeason)
                                 newSeasonsIndex.Add(tmpSeason.TVSeason.Season)
                             End If
@@ -1260,7 +1106,7 @@ Public Class Scanner
                 tmpAllSeasons.ID = -1
                 tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
                 tmpAllSeasons = Master.DB.FillTVShowFromDB(tmpAllSeasons, DBTVShow)
-                GetTVSeasonImages(tmpAllSeasons, tmpAllSeasons.TVSeason.Season)
+                GetTVSeasonFolderContents(tmpAllSeasons, tmpAllSeasons.TVSeason.Season)
                 DBTVShow.Seasons.Add(tmpAllSeasons)
                 newSeasonsIndex.Add(tmpAllSeasons.TVSeason.Season)
             End If
@@ -1274,6 +1120,160 @@ Public Class Scanner
             Next
         End If
     End Sub
+
+    Private Shared Function RegexGetAiredDate(ByVal reg As Match, ByRef eItem As EpisodeItem) As Boolean
+        Dim param1 As String = reg.Groups(1).Value
+        Dim param2 As String = reg.Groups(2).Value
+        Dim param3 As String = reg.Groups(3).Value
+
+        If Not String.IsNullOrEmpty(param1) AndAlso Not String.IsNullOrEmpty(param2) AndAlso Not String.IsNullOrEmpty(param3) Then
+            Dim len1 As Integer = param1.Length
+            Dim len2 As Integer = param2.Length
+            Dim len3 As Integer = param3.Length
+
+            If len1 = 4 AndAlso len2 = 2 AndAlso len3 = 2 Then
+                ' yyyy-MM-dd format
+                eItem.byDate = True
+                eItem.Episode = -1
+                eItem.Season = CInt(param1)
+                eItem.Aired = String.Concat(param1.ToString, "-", param2.ToString, "-", param3.ToString)
+                Return True
+            ElseIf len1 = 2 AndAlso len2 = 2 AndAlso len3 = 4 Then
+                ' dd-MM-yyyy format
+                eItem.byDate = True
+                eItem.Episode = -1
+                eItem.Season = CInt(param3)
+                eItem.Aired = String.Concat(param3.ToString, "-", param2.ToString, "-", param1.ToString)
+                Return True
+            End If
+        End If
+        Return False
+    End Function
+
+    Private Shared Function RegexGetSeasonAndEpisodeNumber(ByVal reg As Match, ByRef eItem As EpisodeItem, ByVal defaultSeason As Integer) As Boolean
+        Dim tSeason As String = reg.Groups(1).Value
+        Dim tEpisode As String = reg.Groups(2).Value
+
+        If Not String.IsNullOrEmpty(tSeason) OrElse Not String.IsNullOrEmpty(tEpisode) Then
+            Dim endPattern As String = String.Empty
+            If String.IsNullOrEmpty(tSeason) AndAlso Not String.IsNullOrEmpty(tEpisode) Then
+                'no season specified -> assume defaultSeason
+                eItem.Season = defaultSeason
+                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
+                eItem.Episode = CInt(Episode.Groups(1).Value)
+                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
+            ElseIf Not String.IsNullOrEmpty(tSeason) AndAlso String.IsNullOrEmpty(tEpisode) Then
+                'no episode specification -> assume defaultSeason
+                eItem.Season = defaultSeason
+                eItem.Episode = CInt(tSeason)
+            Else
+                'season and episode specified
+                eItem.Season = CInt(tSeason)
+                Dim Episode As Match = Regex.Match(tEpisode, "(\d*)(.*)")
+                eItem.Episode = CInt(Episode.Groups(1).Value)
+                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
+            End If
+            eItem.byDate = False
+
+            If Not String.IsNullOrEmpty(endPattern) Then
+                If Regex.IsMatch(endPattern.ToLower, "[a-i]", RegexOptions.IgnoreCase) Then
+                    Dim count As Integer = 1
+                    For Each c As Char In "abcdefghi".ToCharArray()
+                        If c = endPattern.ToLower Then
+                            eItem.SubEpisode = count
+                            Exit For
+                        End If
+                        count += 1
+                    Next
+                ElseIf endPattern.StartsWith(".") Then
+                    eItem.SubEpisode = CInt(endPattern.Substring(1))
+                End If
+            End If
+            Return True
+        End If
+
+        Return False
+    End Function
+
+    Public Shared Function RegexGetTVEpisode(ByVal sPath As String, ByVal ShowID As Long) As List(Of EpisodeItem)
+        Dim retEpisodeItemsList As New List(Of EpisodeItem)
+
+        For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
+            Dim reg As Regex = New Regex(rShow.Regexp, RegexOptions.IgnoreCase)
+
+            Dim regexppos As Integer
+            Dim regexp2pos As Integer
+
+            If reg.IsMatch(sPath.ToLower) Then
+                Dim eItem As New EpisodeItem
+                Dim defaultSeason As Integer = rShow.defaultSeason
+                Dim sMatch As Match = reg.Match(sPath.ToLower)
+
+                If rShow.byDate Then
+                    If Not RegexGetAiredDate(sMatch, eItem) Then Continue For
+                    retEpisodeItemsList.Add(eItem)
+                    logger.Info(String.Format("VideoInfoScanner: Found date based match {0} ({1}) [{2}]", sPath, eItem.Aired, rShow.Regexp))
+                Else
+                    If Not RegexGetSeasonAndEpisodeNumber(sMatch, eItem, defaultSeason) Then Continue For
+                    retEpisodeItemsList.Add(eItem)
+                    logger.Info(String.Format("VideoInfoScanner: Found episode match {0} (s{1}e{2}) [{3}]", sPath, eItem.Season, eItem.Episode, rShow.Regexp))
+                End If
+
+                ' Grab the remainder from first regexp run
+                ' as second run might modify or empty it.
+                Dim remainder As String = sMatch.Groups(3).Value.ToString
+
+                If Not String.IsNullOrEmpty(Master.eSettings.TVMultiPartMatching) Then
+                    Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+
+                    ' check the remainder of the string for any further episodes.
+                    If Not rShow.byDate Then
+                        ' we want "long circuit" OR below so that both offsets are evaluated
+                        While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
+                            regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
+                            regexp2pos = If(reg2.IsMatch(remainder), reg2.Match(remainder).Index, -1)
+                            If (regexppos <= regexp2pos AndAlso regexppos <> -1) OrElse (regexppos >= 0 AndAlso regexp2pos = -1) Then
+                                eItem = New EpisodeItem
+                                RegexGetSeasonAndEpisodeNumber(reg.Match(remainder), eItem, defaultSeason)
+                                retEpisodeItemsList.Add(eItem)
+                                logger.Info(String.Format("VideoInfoScanner: Adding new season {0}, multipart episode {1} [{2}]", eItem.Season, eItem.Episode, rShow.Regexp))
+                                remainder = reg.Match(remainder).Groups(3).Value
+                            ElseIf (regexp2pos < regexppos AndAlso regexp2pos <> -1) OrElse (regexp2pos >= 0 AndAlso regexppos = -1) Then
+                                Dim endPattern As String = String.Empty
+                                eItem = New EpisodeItem With {.Season = eItem.Season}
+                                Dim Episode As Match = Regex.Match(reg2.Match(remainder).Groups(1).Value, "(\d*)(.*)")
+                                eItem.Episode = CInt(Episode.Groups(1).Value)
+                                If Not String.IsNullOrEmpty(Episode.Groups(2).Value) Then endPattern = Episode.Groups(2).Value
+
+                                If Not String.IsNullOrEmpty(endPattern) Then
+                                    If Regex.IsMatch(endPattern.ToLower, "[a-i]", RegexOptions.IgnoreCase) Then
+                                        Dim count As Integer = 1
+                                        For Each c As Char In "abcdefghi".ToCharArray()
+                                            If c = endPattern.ToLower Then
+                                                eItem.SubEpisode = count
+                                                Exit For
+                                            End If
+                                            count += 1
+                                        Next
+                                    ElseIf endPattern.StartsWith(".") Then
+                                        eItem.SubEpisode = CInt(endPattern.Substring(1))
+                                    End If
+                                End If
+
+                                retEpisodeItemsList.Add(eItem)
+                                logger.Info(String.Format("VideoInfoScanner: Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
+                                remainder = remainder.Substring(reg2.Match(remainder).Length)
+                            End If
+                        End While
+                    End If
+                End If
+
+                Exit For
+            End If
+        Next
+
+        Return retEpisodeItemsList
+    End Function
 
     ''' <summary>
     ''' Find all related files in a directory.
@@ -1405,7 +1405,7 @@ Public Class Scanner
         Dim di As New DirectoryInfo(sPath)
 
         For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
-            If Not TVEpPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso _
+            If Not TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                 Not Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso _
                 (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
                 tShow.Episodes.Add(New Structures.DBTV With {.ActorThumbs = New List(Of String), .Filename = lFile.FullName, .FilenameID = -1, .Subtitles = New List(Of MediaInfo.Subtitle), .TVEp = New MediaContainers.EpisodeDetails})
@@ -1645,12 +1645,12 @@ Public Class Scanner
                         End Using
                     End Using
 
-                    TVEpPaths.Clear()
+                    TVEpisodePaths.Clear()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
-                                TVEpPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                                TVEpisodePaths.Add(SQLreader("TVEpPath").ToString.ToLower)
                                 If Me.bwPrelim.CancellationPending Then
                                     e.Cancel = True
                                     Return
@@ -1768,12 +1768,12 @@ Public Class Scanner
                 End Using
             End Using
 
-            TVEpPaths.Clear()
+            TVEpisodePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        TVEpPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                        TVEpisodePaths.Add(SQLreader("TVEpPath").ToString.ToLower)
                         If Me.bwPrelim.CancellationPending Then
                             e.Cancel = True
                             Return
