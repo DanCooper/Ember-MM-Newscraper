@@ -62,8 +62,8 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="Movie">MovieContainer object.</param>
-    Public Sub GetMovieFolderContents(ByRef Movie As MovieContainer)
+    ''' <param name="DBMovie">MovieContainer object.</param>
+    Public Sub GetMovieFolderContents(ByRef DBMovie As Structures.DBMovie)
         Dim currname As String = String.Empty
         Dim atList As New List(Of String)   'actor thumbs list
         Dim efList As New List(Of String)   'extrafanart list
@@ -75,30 +75,30 @@ Public Class Scanner
 
         Dim parPath As String = String.Empty
 
-        Dim fileName As String = Path.GetFileNameWithoutExtension(Movie.Filename)
-        Dim fileNameStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Movie.Filename))
-        Dim filePath As String = Path.Combine(Directory.GetParent(Movie.Filename).FullName, fileName)
-        Dim filePathStack As String = Path.Combine(Directory.GetParent(Movie.Filename).FullName, fileNameStack)
+        Dim fileName As String = Path.GetFileNameWithoutExtension(DBMovie.Filename)
+        Dim fileNameStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+        Dim filePath As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileName)
+        Dim filePathStack As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileNameStack)
         Dim fileParPath As String = Directory.GetParent(filePath).FullName
 
         Try
             'first add files to filelists
-            If FileUtils.Common.isVideoTS(Movie.Filename) Then
-                parPath = Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                parPath = Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName
 
                 Try
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(Movie.Filename).FullName))
+                    fList.AddRange(Directory.GetFiles(Directory.GetParent(DBMovie.Filename).FullName))
                     fList.AddRange(Directory.GetFiles(parPath))
                     If Master.eSettings.MovieUseNMJ Then
                         fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
                     End If
                 Catch
                 End Try
-            ElseIf FileUtils.Common.isBDRip(Movie.Filename) Then
-                parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).FullName
 
                 Try
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName))
+                    fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName))
                     fList.AddRange(Directory.GetFiles(parPath))
                     If Master.eSettings.MovieUseNMJ Then
                         fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
@@ -106,13 +106,13 @@ Public Class Scanner
                 Catch
                 End Try
             Else
-                parPath = Directory.GetParent(Movie.Filename).FullName
+                parPath = Directory.GetParent(DBMovie.Filename).FullName
 
-                If Movie.isSingle Then
+                If DBMovie.isSingle Then
                     fList.AddRange(Directory.GetFiles(parPath))
                 Else
                     Try
-                        Dim sName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Movie.Filename), True)
+                        Dim sName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(DBMovie.Filename), True)
                         fList.AddRange(Directory.GetFiles(parPath, If(sName.EndsWith("*"), sName, String.Concat(sName, "*"))))
                     Catch
                     End Try
@@ -120,29 +120,29 @@ Public Class Scanner
             End If
 
             'secondly add files from special folders to filelists
-            If Movie.isSingle Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainActorThumbs)
+            If DBMovie.isSingle Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.isSingle, Enums.ModifierType.MainActorThumbs)
                     Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
                     If Directory.Exists(parDir) Then
                         atList.AddRange(Directory.GetFiles(parDir))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainEFanarts)
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.isSingle, Enums.ModifierType.MainEFanarts)
                     If Directory.Exists(a) Then
                         efList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainEThumbs)
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.isSingle, Enums.ModifierType.MainEThumbs)
                     If Directory.Exists(a) Then
                         etList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainSubtitle)
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.isSingle, Enums.ModifierType.MainSubtitle)
                     If Directory.Exists(a) Then
                         sList.AddRange(Directory.GetFiles(a))
                     End If
                 Next
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainTheme)
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.isSingle, Enums.ModifierType.MainTheme)
                     If Directory.Exists(Directory.GetParent(a).FullName) Then
                         tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                     End If
@@ -151,84 +151,84 @@ Public Class Scanner
 
             'actor thumbs
             If atList.Count > 0 Then
-                Movie.ActorThumbs.AddRange(atList)
+                DBMovie.ActorThumbs.AddRange(atList)
             End If
 
             'banner
-            If String.IsNullOrEmpty(Movie.Banner) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainBanner)
-                    Movie.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.Banner) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.BannerPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainBanner)
+                    DBMovie.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.BannerPath) Then Exit For
                 Next
             End If
 
             'clearart
-            If String.IsNullOrEmpty(Movie.ClearArt) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainClearArt)
-                    Movie.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.ClearArt) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.ClearArtPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainClearArt)
+                    DBMovie.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.ClearArtPath) Then Exit For
                 Next
             End If
 
             'clearlogo
-            If String.IsNullOrEmpty(Movie.ClearLogo) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainClearLogo)
-                    Movie.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.ClearLogo) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.ClearLogoPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainClearLogo)
+                    DBMovie.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.ClearLogoPath) Then Exit For
                 Next
             End If
 
             'discart
-            If String.IsNullOrEmpty(Movie.DiscArt) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainDiscArt)
-                    Movie.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.DiscArt) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.DiscArtPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainDiscArt)
+                    DBMovie.DiscArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.DiscArtPath) Then Exit For
                 Next
             End If
 
             'extrafanart
-            If String.IsNullOrEmpty(Movie.EFanarts) Then
-                If eflist.Count > 0 Then
-                    Movie.EFanarts = efList.Item(0).ToString
+            If String.IsNullOrEmpty(DBMovie.EFanartsPath) Then
+                If efList.Count > 0 Then
+                    DBMovie.EFanartsPath = efList.Item(0).ToString
                 End If
             End If
 
             'extrathumbs
-            If String.IsNullOrEmpty(Movie.EThumbs) Then
+            If String.IsNullOrEmpty(DBMovie.EThumbsPath) Then
                 If etList.Count > 0 Then
-                    Movie.EThumbs = etList.Item(0).ToString
+                    DBMovie.EThumbsPath = etList.Item(0).ToString
                 End If
             End If
 
             'fanart
-            If String.IsNullOrEmpty(Movie.Fanart) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainFanart)
-                    Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.FanartPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainFanart)
+                    DBMovie.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.FanartPath) Then Exit For
                 Next
             End If
 
             'landscape
-            If String.IsNullOrEmpty(Movie.Landscape) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainLandscape)
-                    Movie.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.Landscape) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.LandscapePath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainLandscape)
+                    DBMovie.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.LandscapePath) Then Exit For
                 Next
             End If
 
             'nfo
-            If String.IsNullOrEmpty(Movie.Nfo) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainNFO)
-                    Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.NfoPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainNFO)
+                    DBMovie.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.NfoPath) Then Exit For
                 Next
             End If
 
             'poster
-            If String.IsNullOrEmpty(Movie.Poster) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainPoster)
-                    Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+            If String.IsNullOrEmpty(DBMovie.PosterPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainPoster)
+                    DBMovie.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBMovie.PosterPath) Then Exit For
                 Next
             End If
 
@@ -237,30 +237,30 @@ Public Class Scanner
                 For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                     If fFile.ToLower.EndsWith(ext) Then
                         Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                        Movie.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                        DBMovie.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                     End If
                 Next
             Next
 
             'theme
-            If String.IsNullOrEmpty(Movie.Theme) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainTheme)
+            If String.IsNullOrEmpty(DBMovie.ThemePath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainTheme)
                     For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                        Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                        If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
+                        DBMovie.ThemePath = tList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                        If Not String.IsNullOrEmpty(DBMovie.ThemePath) Then Exit For
                     Next
-                    If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
+                    If Not String.IsNullOrEmpty(DBMovie.ThemePath) Then Exit For
                 Next
             End If
 
             'trailer
-            If String.IsNullOrEmpty(Movie.Trailer) Then
-                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainTrailer)
+            If String.IsNullOrEmpty(DBMovie.TrailerPath) Then
+                For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainTrailer)
                     For Each t As String In Master.eSettings.FileSystemValidExts
-                        Movie.Trailer = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                        If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
+                        DBMovie.TrailerPath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                        If Not String.IsNullOrEmpty(DBMovie.TrailerPath) Then Exit For
                     Next
-                    If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
+                    If Not String.IsNullOrEmpty(DBMovie.TrailerPath) Then Exit For
                 Next
             End If
 
@@ -536,16 +536,16 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart)
     ''' </summary>
-    ''' <param name="tShow">TVShowContainer object.</param>
-    Public Sub GetTVShowFolderContents(ByRef tShow As Structures.DBTV, Optional ByVal ID As Long = 0)
-        Dim ShowPath As String = tShow.ShowPath
+    ''' <param name="DBTVShow">TVShowContainer object.</param>
+    Public Sub GetTVShowFolderContents(ByRef DBTVShow As Structures.DBTV)
+        Dim ShowPath As String = DBTVShow.ShowPath
         Dim efList As New List(Of String)
         Dim fList As New List(Of String)
         Dim fName As String = String.Empty
 
         Try
             Try
-                fList.AddRange(Directory.GetFiles(tShow.ShowPath))
+                fList.AddRange(Directory.GetFiles(DBTVShow.ShowPath))
 
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
                     If Directory.Exists(a) Then
@@ -559,89 +559,89 @@ Public Class Scanner
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainActorThumbs)
                 Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
                 If Directory.Exists(parDir) Then
-                    tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                    DBTVShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
                 End If
             Next
 
             'show banner
-            If String.IsNullOrEmpty(tShow.BannerPath) Then
+            If String.IsNullOrEmpty(DBTVShow.BannerPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
-                    tShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.BannerPath) Then Exit For
+                    DBTVShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.BannerPath) Then Exit For
                 Next
             End If
 
             'show characterart
-            If String.IsNullOrEmpty(tShow.CharacterArtPath) Then
+            If String.IsNullOrEmpty(DBTVShow.CharacterArtPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
-                    tShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.CharacterArtPath) Then Exit For
+                    DBTVShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.CharacterArtPath) Then Exit For
                 Next
             End If
 
             'show clearart
-            If String.IsNullOrEmpty(tShow.ClearArtPath) Then
+            If String.IsNullOrEmpty(DBTVShow.ClearArtPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
-                    tShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.ClearArtPath) Then Exit For
+                    DBTVShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.ClearArtPath) Then Exit For
                 Next
             End If
 
             'show clearlogo
-            If String.IsNullOrEmpty(tShow.ClearLogoPath) Then
+            If String.IsNullOrEmpty(DBTVShow.ClearLogoPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
-                    tShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.ClearLogoPath) Then Exit For
+                    DBTVShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.ClearLogoPath) Then Exit For
                 Next
             End If
 
             'extrafanart
-            If String.IsNullOrEmpty(tShow.EFanartsPath) Then
+            If String.IsNullOrEmpty(DBTVShow.EFanartsPath) Then
                 If efList.Count > 0 Then
-                    tShow.EFanartsPath = efList.Item(0).ToString
+                    DBTVShow.EFanartsPath = efList.Item(0).ToString
                 End If
             End If
 
             'show fanart
-            If String.IsNullOrEmpty(tShow.FanartPath) Then
+            If String.IsNullOrEmpty(DBTVShow.FanartPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
-                    tShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.FanartPath) Then Exit For
+                    DBTVShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.FanartPath) Then Exit For
                 Next
             End If
 
             'show landscape
-            If String.IsNullOrEmpty(tShow.LandscapePath) Then
+            If String.IsNullOrEmpty(DBTVShow.LandscapePath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
-                    tShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.LandscapePath) Then Exit For
+                    DBTVShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.LandscapePath) Then Exit For
                 Next
             End If
 
             'show NFO
-            If String.IsNullOrEmpty(tShow.NfoPath) Then
+            If String.IsNullOrEmpty(DBTVShow.NfoPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainNFO)
-                    tShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.NfoPath) Then Exit For
+                    DBTVShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.NfoPath) Then Exit For
                 Next
             End If
 
             'show poster
-            If String.IsNullOrEmpty(tShow.PosterPath) Then
+            If String.IsNullOrEmpty(DBTVShow.PosterPath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
-                    tShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.PosterPath) Then Exit For
+                    DBTVShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(DBTVShow.PosterPath) Then Exit For
                 Next
             End If
 
             'show theme
-            If String.IsNullOrEmpty(tShow.ThemePath) Then
+            If String.IsNullOrEmpty(DBTVShow.ThemePath) Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainTheme)
                     For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                        tShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                        If Not String.IsNullOrEmpty(tShow.ThemePath) Then Exit For
+                        DBTVShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                        If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
                     Next
-                    If Not String.IsNullOrEmpty(tShow.ThemePath) Then Exit For
+                    If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
                 Next
             End If
 
@@ -684,163 +684,141 @@ Public Class Scanner
         Return True 'This is the Else
     End Function
 
-    Public Sub LoadMovie(ByVal mContainer As MovieContainer)
-        Dim tmpMovieDB As New Structures.DBMovie
+    Public Sub LoadMovie(ByVal DBMovie As Structures.DBMovie)
         Dim ToNfo As Boolean = False
-        Try
-            'first, lets get the contents
-            GetMovieFolderContents(mContainer)
 
-            'add filename to tmpMovie for UpdateMediaInfo
-            tmpMovieDB.Filename = mContainer.Filename
+        'first, lets get the contents
+        GetMovieFolderContents(DBMovie)
 
-            If Not String.IsNullOrEmpty(mContainer.Nfo) Then
-                tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Nfo, mContainer.isSingle)
-                If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                    MediaInfo.UpdateMediaInfo(tmpMovieDB)
+        'add filename to tmpMovie for UpdateMediaInfo
+        DBMovie.Filename = DBMovie.Filename
+
+        If Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
+            DBMovie.Movie = NFO.LoadMovieFromNFO(DBMovie.NfoPath, DBMovie.IsSingle)
+            If Not DBMovie.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+                MediaInfo.UpdateMediaInfo(DBMovie)
+            End If
+        Else
+            DBMovie.Movie = NFO.LoadMovieFromNFO(DBMovie.Filename, DBMovie.IsSingle)
+            If Not DBMovie.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+                MediaInfo.UpdateMediaInfo(DBMovie)
+            End If
+        End If
+
+        'Year
+        If String.IsNullOrEmpty(DBMovie.Movie.Year) AndAlso DBMovie.GetYear Then
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+            Else
+                If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                    DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(DBMovie.Filename).Name)
+                Else
+                    DBMovie.Movie.Year = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+                End If
+            End If
+        End If
+
+        'IMDB ID
+        If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+            Else
+                If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                    DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(DBMovie.Filename).Name)
+                Else
+                    DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+                End If
+            End If
+        End If
+
+        'Title
+        If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+            'no title so assume it's an invalid nfo, clear nfo path if exists
+            DBMovie.NfoPath = String.Empty
+
+            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+                DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
+                If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                    DBMovie.Movie.Title = Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name
+                End If
+            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+                DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                    DBMovie.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name
                 End If
             Else
-                tmpMovieDB.Movie = NFO.LoadMovieFromNFO(mContainer.Filename, mContainer.isSingle)
-                If Not tmpMovieDB.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                    MediaInfo.UpdateMediaInfo(tmpMovieDB)
-                End If
-            End If
-
-            'Year
-            If String.IsNullOrEmpty(tmpMovieDB.Movie.Year) AndAlso mContainer.getYear Then
-                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
-                    tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
-                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
-                    tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
-                Else
-                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
-                        tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(mContainer.Filename).Name)
-                    Else
-                        tmpMovieDB.Movie.Year = StringUtils.GetYear(Path.GetFileNameWithoutExtension(mContainer.Filename))
-                    End If
-                End If
-            End If
-
-            'IMDB ID
-            If String.IsNullOrEmpty(tmpMovieDB.Movie.IMDBID) Then
-                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
-                    tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
-                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
-                    tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
-                Else
-                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
-                        tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(mContainer.Filename).Name)
-                    Else
-                        tmpMovieDB.Movie.IMDBID = StringUtils.GetIMDBID(Path.GetFileNameWithoutExtension(mContainer.Filename))
-                    End If
-                End If
-            End If
-
-            'Title
-            If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                'no title so assume it's an invalid nfo, clear nfo path if exists
-                mContainer.Nfo = String.Empty
-
-                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
-                    tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name, False)
-                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
-                    End If
-                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
-                    tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name, False)
-                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
+                If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                    DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name, False)
+                    If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                        DBMovie.Movie.Title = Directory.GetParent(DBMovie.Filename).Name
                     End If
                 Else
-                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
-                        tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(mContainer.Filename).Name, False)
-                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            tmpMovieDB.Movie.Title = Directory.GetParent(mContainer.Filename).Name
-                        End If
-                    Else
-                        tmpMovieDB.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(mContainer.Filename), False)
-                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(mContainer.Filename)
-                        End If
+                    DBMovie.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename), False)
+                    If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                        DBMovie.Movie.Title = Path.GetFileNameWithoutExtension(DBMovie.Filename)
                     End If
                 End If
             End If
+        End If
 
-            'ListTitle
-            Dim tTitle As String = StringUtils.SortTokens_Movie(tmpMovieDB.Movie.Title)
-            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
-            Else
-                tmpMovieDB.ListTitle = tTitle
-            End If
+        'ListTitle
+        Dim tTitle As String = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
+        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+            DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
+        Else
+            DBMovie.ListTitle = tTitle
+        End If
 
-            If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                For Each a In FileUtils.GetFilenameList.Movie(mContainer.Filename, False, Enums.ModifierType.MainWatchedFile)
-                    If Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0" Then
-                        If Not File.Exists(a) Then
-                            Dim fs As FileStream = File.Create(a)
-                            fs.Close()
-                        End If
-                    Else
-                        If File.Exists(a) Then
-                            tmpMovieDB.Movie.PlayCount = "1"
-                            ToNfo = True
-                        End If
+        If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, False, Enums.ModifierType.MainWatchedFile)
+                If Not String.IsNullOrEmpty(DBMovie.Movie.PlayCount) AndAlso Not DBMovie.Movie.PlayCount = "0" Then
+                    If Not File.Exists(a) Then
+                        Dim fs As FileStream = File.Create(a)
+                        fs.Close()
                     End If
+                Else
+                    If File.Exists(a) Then
+                        DBMovie.Movie.PlayCount = "1"
+                        ToNfo = True
+                    End If
+                End If
+            Next
+        End If
+
+        If Not String.IsNullOrEmpty(DBMovie.ListTitle) Then
+
+            'search local actor thumb for each actor in NFO
+            If DBMovie.Movie.Actors.Count > 0 AndAlso DBMovie.ActorThumbs.Count > 0 Then
+                For Each actor In DBMovie.Movie.Actors
+                    actor.ThumbPath = DBMovie.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                 Next
             End If
 
-            If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
-
-                'search local actor thumb for each actor in NFO
-                If tmpMovieDB.Movie.Actors.Count > 0 AndAlso mContainer.ActorThumbs.Count > 0 Then
-                    For Each actor In tmpMovieDB.Movie.Actors
-                        actor.ThumbPath = mContainer.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                    Next
-                End If
-
-                tmpMovieDB.BannerPath = mContainer.Banner
-                tmpMovieDB.ClearArtPath = mContainer.ClearArt
-                tmpMovieDB.ClearLogoPath = mContainer.ClearLogo
-                tmpMovieDB.DiscArtPath = mContainer.DiscArt
-                tmpMovieDB.EFanartsPath = mContainer.EFanarts
-                tmpMovieDB.EThumbsPath = mContainer.EThumbs
-                tmpMovieDB.FanartPath = mContainer.Fanart
-                tmpMovieDB.Filename = mContainer.Filename
-                tmpMovieDB.LandscapePath = mContainer.Landscape
-                tmpMovieDB.NfoPath = mContainer.Nfo
-                tmpMovieDB.PosterPath = mContainer.Poster
-                tmpMovieDB.Source = mContainer.Source
-                tmpMovieDB.Subtitles = mContainer.Subtitles
-                'tmpMovieDB.SubPath = mContainer.Subs
-                tmpMovieDB.ThemePath = mContainer.Theme
-                tmpMovieDB.TrailerPath = mContainer.Trailer
-                tmpMovieDB.UseFolder = mContainer.UseFolder
-                tmpMovieDB.IsSingle = mContainer.isSingle
-                Dim vSource As String = APIXML.GetVideoSource(mContainer.Filename, False)
-                If Not String.IsNullOrEmpty(vSource) Then
-                    tmpMovieDB.VideoSource = vSource
-                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
-                ElseIf String.IsNullOrEmpty(tmpMovieDB.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDB.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
-                    tmpMovieDB.Movie.VideoSource = tmpMovieDB.VideoSource
-                ElseIf Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
-                    tmpMovieDB.VideoSource = tmpMovieDB.Movie.VideoSource
-                End If
-                tmpMovieDB.IsLock = False
-                tmpMovieDB.IsMark = Master.eSettings.MovieGeneralMarkNew
-                'Do the Save
-                If ToNfo AndAlso Not String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
-                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True, True)
-                Else
-                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
-                End If
-
-                Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = tmpMovieDB.Movie.Title})
+            Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
+            If Not String.IsNullOrEmpty(vSource) Then
+                DBMovie.VideoSource = vSource
+                DBMovie.Movie.VideoSource = DBMovie.VideoSource
+            ElseIf String.IsNullOrEmpty(DBMovie.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                DBMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
+                DBMovie.Movie.VideoSource = DBMovie.VideoSource
+            ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.VideoSource) Then
+                DBMovie.VideoSource = DBMovie.Movie.VideoSource
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+            DBMovie.IsLock = False
+            DBMovie.IsMark = Master.eSettings.MovieGeneralMarkNew
+            'Do the Save
+            If ToNfo AndAlso Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, True, True, True)
+            Else
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, True, True)
+            End If
+
+            Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = DBMovie.Movie.Title})
+        End If
     End Sub
 
     Private Sub LoadTVShow(ByVal DBTVShow As Structures.DBTV)
@@ -1283,6 +1261,7 @@ Public Class Scanner
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
     Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean)
+        Dim currMovieContainer As Structures.DBMovie
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
         Dim fList As New List(Of String)
@@ -1348,7 +1327,15 @@ Public Class Scanner
                         Else
                             MoviePaths.Add(StringUtils.CleanStackingMarkers(tFile).ToLower)
                         End If
-                        LoadMovie(New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = True, .UseFolder = True})
+                        currMovieContainer = New Structures.DBMovie
+                        currMovieContainer.ActorThumbs = New List(Of String)
+                        currMovieContainer.Filename = tFile
+                        currMovieContainer.GetYear = bGetYear
+                        currMovieContainer.IsSingle = True
+                        currMovieContainer.Source = sSource
+                        currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
+                        currMovieContainer.UseFolder = True
+                        LoadMovie(currMovieContainer)
                     End If
 
                 Else
@@ -1382,7 +1369,15 @@ Public Class Scanner
                     End If
 
                     For Each s As String In fList
-                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False), .GetYear = bGetYear})
+                        currMovieContainer = New Structures.DBMovie
+                        currMovieContainer.ActorThumbs = New List(Of String)
+                        currMovieContainer.Filename = s
+                        currMovieContainer.GetYear = bGetYear
+                        currMovieContainer.IsSingle = bSingle
+                        currMovieContainer.Source = sSource
+                        currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
+                        currMovieContainer.UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)
+                        LoadMovie(currMovieContainer)
                     Next
                 End If
 
@@ -1881,243 +1876,6 @@ Public Class Scanner
 #End Region 'Fields
 
     End Structure
-
-    Public Class MovieContainer
-
-#Region "Fields"
-
-        Private _actorthumbs As New List(Of String)
-        Private _banner As String
-        Private _clearart As String
-        Private _clearlogo As String
-        Private _discart As String
-        Private _efanarts As String
-        Private _ethumbs As String
-        Private _fanart As String
-        Private _filename As String
-        Private _getyear As Boolean
-        Private _landscape As String
-        Private _nfo As String
-        Private _poster As String
-        Private _single As Boolean
-        Private _source As String
-        Private _subtitles As New List(Of MediaInfo.Subtitle)
-        Private _theme As String
-        Private _trailer As String
-        Private _usefolder As Boolean
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property ActorThumbs() As List(Of String)
-            Get
-                Return _actorthumbs
-            End Get
-            Set(ByVal value As List(Of String))
-                _actorthumbs = value
-            End Set
-        End Property
-
-        Public Property Banner() As String
-            Get
-                Return _banner
-            End Get
-            Set(ByVal value As String)
-                _banner = value
-            End Set
-        End Property
-
-        Public Property ClearArt() As String
-            Get
-                Return _clearart
-            End Get
-            Set(ByVal value As String)
-                _clearart = value
-            End Set
-        End Property
-
-        Public Property ClearLogo() As String
-            Get
-                Return _clearlogo
-            End Get
-            Set(ByVal value As String)
-                _clearlogo = value
-            End Set
-        End Property
-
-        Public Property DiscArt() As String
-            Get
-                Return _discart
-            End Get
-            Set(ByVal value As String)
-                _discart = value
-            End Set
-        End Property
-
-        Public Property EFanarts() As String
-            Get
-                Return _efanarts
-            End Get
-            Set(ByVal value As String)
-                _efanarts = value
-            End Set
-        End Property
-
-        Public Property EThumbs() As String
-            Get
-                Return _ethumbs
-            End Get
-            Set(ByVal value As String)
-                _ethumbs = value
-            End Set
-        End Property
-
-        Public Property Fanart() As String
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As String)
-                _fanart = value
-            End Set
-        End Property
-
-        Public Property Filename() As String
-            Get
-                Return _filename
-            End Get
-            Set(ByVal value As String)
-                _filename = value
-            End Set
-        End Property
-
-        Public Property getYear() As Boolean
-            Get
-                Return _getyear
-            End Get
-            Set(ByVal value As Boolean)
-                _getyear = value
-            End Set
-        End Property
-
-        Public Property isSingle() As Boolean
-            Get
-                Return _single
-            End Get
-            Set(ByVal value As Boolean)
-                _single = value
-            End Set
-        End Property
-
-        Public Property Landscape() As String
-            Get
-                Return _landscape
-            End Get
-            Set(ByVal value As String)
-                _landscape = value
-            End Set
-        End Property
-
-        Public Property Nfo() As String
-            Get
-                Return _nfo
-            End Get
-            Set(ByVal value As String)
-                _nfo = value
-            End Set
-        End Property
-
-        Public Property Poster() As String
-            Get
-                Return _poster
-            End Get
-            Set(ByVal value As String)
-                _poster = value
-            End Set
-        End Property
-
-        Public Property Source() As String
-            Get
-                Return _source
-            End Get
-            Set(ByVal value As String)
-                _source = value
-            End Set
-        End Property
-
-        Public Property Subtitles() As List(Of MediaInfo.Subtitle)
-            Get
-                Return _subtitles
-            End Get
-            Set(ByVal value As List(Of MediaInfo.Subtitle))
-                _subtitles = value
-            End Set
-        End Property
-
-        Public Property Theme() As String
-            Get
-                Return _theme
-            End Get
-            Set(ByVal value As String)
-                _theme = value
-            End Set
-        End Property
-
-        Public Property Trailer() As String
-            Get
-                Return _trailer
-            End Get
-            Set(ByVal value As String)
-                _trailer = value
-            End Set
-        End Property
-
-        Public Property UseFolder() As Boolean
-            Get
-                Return _usefolder
-            End Get
-            Set(ByVal value As Boolean)
-                _usefolder = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _actorthumbs.Clear()
-            _banner = String.Empty
-            _clearart = String.Empty
-            _clearlogo = String.Empty
-            _discart = String.Empty
-            _efanarts = String.Empty
-            _ethumbs = String.Empty
-            _fanart = String.Empty
-            _filename = String.Empty
-            _getyear = True
-            _landscape = String.Empty
-            _nfo = String.Empty
-            _poster = String.Empty
-            _single = False
-            _source = String.Empty
-            _subtitles.Clear()
-            _theme = String.Empty
-            _trailer = String.Empty
-            _usefolder = False
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Public Class MovieSetContainer
 

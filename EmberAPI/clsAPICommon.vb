@@ -1796,6 +1796,7 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBMovie
+        Dim ActorThumbs As List(Of String)
         Dim BannerPath As String
         Dim ClearArtPath As String
         Dim ClearLogoPath As String
@@ -1812,9 +1813,11 @@ Public Class Structures
         Dim etList As List(Of String)
         Dim EThumbsPath As String
         Dim FanartPath As String
+        Dim GetYear As Boolean
         Dim VideoSource As String
         Dim Filename As String
         Dim ID As Long
+        Dim ImagesContainer As MediaContainers.ImagesContainer
         Dim IsLock As Boolean
         Dim IsMark As Boolean
         Dim IsMarkCustom1 As Boolean

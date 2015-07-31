@@ -17070,26 +17070,12 @@ doCancel:
                 Next
             End If
 
-            Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDB.Filename, .isSingle = tmpMovieDB.IsSingle}
-            fScanner.GetMovieFolderContents(mContainer)
-            tmpMovieDB.BannerPath = mContainer.Banner
-            tmpMovieDB.ClearArtPath = mContainer.ClearArt
-            tmpMovieDB.ClearLogoPath = mContainer.ClearLogo
-            tmpMovieDB.DiscArtPath = mContainer.DiscArt
-            tmpMovieDB.EFanartsPath = mContainer.EFanarts
-            tmpMovieDB.EThumbsPath = mContainer.EThumbs
-            tmpMovieDB.FanartPath = mContainer.Fanart
-            tmpMovieDB.LandscapePath = mContainer.Landscape
-            tmpMovieDB.NfoPath = If(String.IsNullOrEmpty(tmpMovieDB.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
-            tmpMovieDB.PosterPath = mContainer.Poster
-            tmpMovieDB.Subtitles = mContainer.Subtitles
-            tmpMovieDB.ThemePath = mContainer.Theme
-            tmpMovieDB.TrailerPath = mContainer.Trailer
+            fScanner.GetMovieFolderContents(tmpMovieDB)
 
             'search local actor thumb for each actor in NFO
-            If tmpMovieDB.Movie.Actors.Count > 0 AndAlso mContainer.ActorThumbs.Count > 0 Then
+            If tmpMovieDB.Movie.Actors.Count > 0 AndAlso tmpMovieDB.ActorThumbs.Count > 0 Then
                 For Each actor In tmpMovieDB.Movie.Actors
-                    actor.ThumbPath = mContainer.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    actor.ThumbPath = tmpMovieDB.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                 Next
             End If
 
@@ -17362,19 +17348,7 @@ doCancel:
                 End If
             End If
 
-            Dim sContainer As New Structures.DBTV With {.ShowPath = tmpShowDb.ShowPath, .Episodes = New List(Of Structures.DBTV)}
-            fScanner.GetTVShowFolderContents(sContainer, ID)
-            tmpShowDb.BannerPath = sContainer.BannerPath
-            tmpShowDb.CharacterArtPath = sContainer.CharacterArtPath
-            tmpShowDb.ClearArtPath = sContainer.ClearArtPath
-            tmpShowDb.ClearLogoPath = sContainer.ClearLogoPath
-            tmpShowDb.EFanartsPath = sContainer.EFanartsPath
-            tmpShowDb.FanartPath = sContainer.FanartPath
-            tmpShowDb.LandscapePath = sContainer.LandscapePath
-            tmpShowDb.PosterPath = sContainer.PosterPath
-            tmpShowDb.ThemePath = sContainer.ThemePath
-            'assume invalid nfo if no title
-            tmpShowDb.NfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.NfoPath)
+            fScanner.GetTVShowFolderContents(tmpShowDb)
 
             Master.DB.SaveTVShowToDB(tmpShowDb, False, withEpisodes, BatchMode)
             RefreshRow_TVShow(tmpShowDb.ID)
