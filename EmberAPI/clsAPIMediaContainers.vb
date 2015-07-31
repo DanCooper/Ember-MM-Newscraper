@@ -3694,7 +3694,7 @@ Namespace MediaContainers
                             .Fanart.WebImage.FromFile(DBTV.FanartPath)
                             DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
                         Else
-                            .Fanart.WebImage.DeleteTVEpisodeFanart(DBTV)
+                            Images.DeleteTVEpisodeFanart(DBTV)
                             DBTV.FanartPath = String.Empty
                         End If
 
@@ -3708,7 +3708,7 @@ Namespace MediaContainers
                             .Poster.WebImage.FromFile(DBTV.PosterPath)
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
                         Else
-                            .Poster.WebImage.DeleteTVEpisodePoster(DBTV)
+                            Images.DeleteTVEpisodePoster(DBTV)
                             DBTV.PosterPath = String.Empty
                         End If
 
@@ -3740,7 +3740,7 @@ Namespace MediaContainers
                                 .Banner.WebImage.DeleteTVASBanner(DBTV)
                                 DBTV.BannerPath = String.Empty
                             Else
-                                .Banner.WebImage.DeleteTVSeasonBanner(DBTV)
+                                Images.DeleteTVSeasonBanner(DBTV)
                                 DBTV.BannerPath = String.Empty
                             End If
                         End If
@@ -3771,7 +3771,7 @@ Namespace MediaContainers
                                 .Fanart.WebImage.DeleteTVASFanart(DBTV)
                                 DBTV.FanartPath = String.Empty
                             Else
-                                .Fanart.WebImage.DeleteTVSeasonFanart(DBTV)
+                                Images.DeleteTVSeasonFanart(DBTV)
                                 DBTV.FanartPath = String.Empty
                             End If
                         End If
@@ -3802,7 +3802,7 @@ Namespace MediaContainers
                                 .Landscape.WebImage.DeleteTVASLandscape(DBTV)
                                 DBTV.LandscapePath = String.Empty
                             Else
-                                .Landscape.WebImage.DeleteTVSeasonLandscape(DBTV)
+                                Images.DeleteTVSeasonLandscape(DBTV)
                                 DBTV.LandscapePath = String.Empty
                             End If
                         End If
@@ -3833,7 +3833,7 @@ Namespace MediaContainers
                                 .Poster.WebImage.DeleteTVASPoster(DBTV)
                                 DBTV.PosterPath = String.Empty
                             Else
-                                .Poster.WebImage.DeleteTVSeasonPoster(DBTV)
+                                Images.DeleteTVSeasonPoster(DBTV)
                                 DBTV.PosterPath = String.Empty
                             End If
                         End If
@@ -3850,7 +3850,7 @@ Namespace MediaContainers
                             .Banner.WebImage.FromFile(DBTV.BannerPath)
                             DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
                         Else
-                            .Banner.WebImage.DeleteTVShowBanner(DBTV)
+                            Images.DeleteTVShowBanner(DBTV)
                             DBTV.BannerPath = String.Empty
                         End If
 
@@ -3864,7 +3864,7 @@ Namespace MediaContainers
                             .CharacterArt.WebImage.FromFile(DBTV.CharacterArtPath)
                             DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
                         Else
-                            .CharacterArt.WebImage.DeleteTVShowCharacterArt(DBTV)
+                            Images.DeleteTVShowCharacterArt(DBTV)
                             DBTV.CharacterArtPath = String.Empty
                         End If
 
@@ -3878,7 +3878,7 @@ Namespace MediaContainers
                             .ClearArt.WebImage.FromFile(DBTV.ClearArtPath)
                             DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
                         Else
-                            .ClearArt.WebImage.DeleteTVShowClearArt(DBTV)
+                            Images.DeleteTVShowClearArt(DBTV)
                             DBTV.ClearArtPath = String.Empty
                         End If
 
@@ -3892,7 +3892,7 @@ Namespace MediaContainers
                             .ClearLogo.WebImage.FromFile(DBTV.ClearLogoPath)
                             DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
                         Else
-                            .ClearLogo.WebImage.DeleteTVShowClearLogo(DBTV)
+                            Images.DeleteTVShowClearLogo(DBTV)
                             DBTV.ClearLogoPath = String.Empty
                         End If
 
@@ -3906,7 +3906,7 @@ Namespace MediaContainers
                             .Fanart.WebImage.FromFile(DBTV.FanartPath)
                             DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
                         Else
-                            .Fanart.WebImage.DeleteTVShowFanart(DBTV)
+                            Images.DeleteTVShowFanart(DBTV)
                             DBTV.FanartPath = String.Empty
                         End If
 
@@ -3920,7 +3920,7 @@ Namespace MediaContainers
                             .Landscape.WebImage.FromFile(DBTV.LandscapePath)
                             DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
                         Else
-                            .Landscape.WebImage.DeleteTVShowLandscape(DBTV)
+                            Images.DeleteTVShowLandscape(DBTV)
                             DBTV.LandscapePath = String.Empty
                         End If
 
@@ -3934,7 +3934,7 @@ Namespace MediaContainers
                             .Poster.WebImage.FromFile(DBTV.PosterPath)
                             DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
                         Else
-                            .Poster.WebImage.DeleteTVShowPoster(DBTV)
+                            Images.DeleteTVShowPoster(DBTV)
                             DBTV.PosterPath = String.Empty
                         End If
                 End Select

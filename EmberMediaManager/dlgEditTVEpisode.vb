@@ -1042,22 +1042,6 @@ Public Class dlgEditTVEpisode
                 Next
             End If
 
-            'Episode Fanart
-            If .EpisodeFanart.Image IsNot Nothing Then
-                Me.tmpDBTVEpisode.FanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Me.tmpDBTVEpisode)
-            Else
-                .EpisodeFanart.DeleteTVEpisodeFanart(Me.tmpDBTVEpisode)
-                Me.tmpDBTVEpisode.FanartPath = String.Empty
-            End If
-
-            'Episode Poster
-            If .EpisodePoster.Image IsNot Nothing Then
-                Me.tmpDBTVEpisode.PosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Me.tmpDBTVEpisode)
-            Else
-                .EpisodePoster.DeleteTVEpisodePoster(Me.tmpDBTVEpisode)
-                Me.tmpDBTVEpisode.PosterPath = String.Empty
-            End If
-
             Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
             For Each Subtitle In Me.tmpDBTVEpisode.Subtitles
                 If Subtitle.toRemove Then

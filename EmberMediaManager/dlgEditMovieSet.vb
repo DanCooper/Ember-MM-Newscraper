@@ -1361,31 +1361,31 @@ Public Class dlgEditMovieSet
             End If
 
             If Me.tmpDBMovieSet.RemoveBanner OrElse needsMovieUpdate Then
-                .MovieBanner.DeleteMovieSetBanner(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetBanner(Me.tmpDBMovieSet)
             End If
 
             If Me.tmpDBMovieSet.RemoveClearArt OrElse needsMovieUpdate Then
-                .MovieClearArt.DeleteMovieSetClearArt(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetClearArt(Me.tmpDBMovieSet)
             End If
 
             If Me.tmpDBMovieSet.RemoveClearLogo OrElse needsMovieUpdate Then
-                .MovieClearLogo.DeleteMovieSetClearLogo(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetClearLogo(Me.tmpDBMovieSet)
             End If
 
             If Me.tmpDBMovieSet.RemoveDiscArt OrElse needsMovieUpdate Then
-                .MovieDiscArt.DeleteMovieSetDiscArt(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetDiscArt(Me.tmpDBMovieSet)
             End If
 
             If Me.tmpDBMovieSet.RemoveFanart OrElse needsMovieUpdate Then
-                .MovieFanart.DeleteMovieSetFanart(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetFanart(Me.tmpDBMovieSet)
             End If
 
             If Me.tmpDBMovieSet.RemoveLandscape OrElse needsMovieUpdate Then
-                .MovieLandscape.DeleteMovieSetLandscape(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetLandscape(Me.tmpDBMovieSet)
             End If
 
             If Me.tmpDBMovieSet.RemovePoster OrElse needsMovieUpdate Then
-                .MoviePoster.DeleteMovieSetPoster(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetPoster(Me.tmpDBMovieSet)
             End If
 
             Me.tmpDBMovieSet.IsMark = Me.chkMark.Checked
@@ -1403,7 +1403,7 @@ Public Class dlgEditMovieSet
                 Dim fPath As String = .MovieBanner.SaveAsMovieSetBanner(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.BannerPath = fPath
             Else
-                .MovieBanner.DeleteMovieSetBanner(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetBanner(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.BannerPath = String.Empty
             End If
 
@@ -1411,7 +1411,7 @@ Public Class dlgEditMovieSet
                 Dim fPath As String = .MovieClearArt.SaveAsMovieSetClearArt(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.ClearArtPath = fPath
             Else
-                .MovieClearArt.DeleteMovieSetClearArt(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetClearArt(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.ClearArtPath = String.Empty
             End If
 
@@ -1419,7 +1419,7 @@ Public Class dlgEditMovieSet
                 Dim fPath As String = .MovieClearLogo.SaveAsMovieSetClearLogo(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.ClearLogoPath = fPath
             Else
-                .MovieClearLogo.DeleteMovieSetClearLogo(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetClearLogo(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.ClearLogoPath = String.Empty
             End If
 
@@ -1427,7 +1427,7 @@ Public Class dlgEditMovieSet
                 Dim fPath As String = .MovieDiscArt.SaveAsMovieSetDiscArt(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.DiscArtPath = fPath
             Else
-                .MovieDiscArt.DeleteMovieSetDiscArt(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetDiscArt(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.DiscArtPath = String.Empty
             End If
 
@@ -1435,7 +1435,7 @@ Public Class dlgEditMovieSet
                 Dim fPath As String = .MovieFanart.SaveAsMovieSetFanart(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.FanartPath = fPath
             Else
-                .MovieFanart.DeleteMovieSetFanart(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetFanart(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.FanartPath = String.Empty
             End If
 
@@ -1443,7 +1443,7 @@ Public Class dlgEditMovieSet
                 Dim fPath As String = .MovieLandscape.SaveAsMovieSetLandscape(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.LandscapePath = fPath
             Else
-                .MovieLandscape.DeleteMovieSetLandscape(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetLandscape(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.LandscapePath = String.Empty
             End If
 
@@ -1451,7 +1451,7 @@ Public Class dlgEditMovieSet
                 Dim pPath As String = .MoviePoster.SaveAsMovieSetPoster(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.PosterPath = pPath
             Else
-                .MoviePoster.DeleteMovieSetPoster(Me.tmpDBMovieSet)
+                Images.DeleteMovieSetPoster(Me.tmpDBMovieSet)
                 Me.tmpDBMovieSet.PosterPath = String.Empty
             End If
         End With

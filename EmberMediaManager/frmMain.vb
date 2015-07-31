@@ -2091,15 +2091,15 @@ Public Class frmMain
                             End If
                         Next
                     End If
-                    If DBScrapeMovie.RemoveBanner Then Banner.WebImage.DeleteMovieBanner(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveClearArt Then ClearArt.WebImage.DeleteMovieClearArt(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveClearLogo Then ClearLogo.WebImage.DeleteMovieClearLogo(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveDiscArt Then DiscArt.WebImage.DeleteMovieDiscArt(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveEFanarts Then EFanarts.WebImage.DeleteMovieEFanarts(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveEThumbs Then EThumbs.WebImage.DeleteMovieEThumbs(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveFanart Then Fanart.WebImage.DeleteMovieFanart(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveLandscape Then Landscape.WebImage.DeleteMovieLandscape(DBScrapeMovie)
-                    If DBScrapeMovie.RemovePoster Then Poster.WebImage.DeleteMoviePoster(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveBanner Then Images.DeleteMovieBanner(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveClearArt Then Images.DeleteMovieClearArt(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveClearLogo Then Images.DeleteMovieClearLogo(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveDiscArt Then Images.DeleteMovieDiscArt(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveEFanarts Then Images.DeleteMovieEFanarts(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveEThumbs Then Images.DeleteMovieEThumbs(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveFanart Then Images.DeleteMovieFanart(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveLandscape Then Images.DeleteMovieLandscape(DBScrapeMovie)
+                    If DBScrapeMovie.RemovePoster Then Images.DeleteMoviePoster(DBScrapeMovie)
                     If DBScrapeMovie.RemoveTheme Then Theme.WebTheme.DeleteMovieTheme(DBScrapeMovie)
                     If DBScrapeMovie.RemoveTrailer Then Trailer.WebTrailer.DeleteMovieTrailer(DBScrapeMovie)
                 End If
@@ -2826,15 +2826,13 @@ Public Class frmMain
                     End If
 
                     'delete old images
-                    Dim oldImage As New Images
-                    oldImage.DeleteMovieSetBanner(cloneMovieSet)
-                    oldImage.DeleteMovieSetClearArt(cloneMovieSet)
-                    oldImage.DeleteMovieSetClearLogo(cloneMovieSet)
-                    oldImage.DeleteMovieSetDiscArt(cloneMovieSet)
-                    oldImage.DeleteMovieSetFanart(cloneMovieSet)
-                    oldImage.DeleteMovieSetLandscape(cloneMovieSet)
-                    oldImage.DeleteMovieSetPoster(cloneMovieSet)
-                    oldImage.Dispose()
+                    Images.DeleteMovieSetBanner(cloneMovieSet)
+                    Images.DeleteMovieSetClearArt(cloneMovieSet)
+                    Images.DeleteMovieSetClearLogo(cloneMovieSet)
+                    Images.DeleteMovieSetDiscArt(cloneMovieSet)
+                    Images.DeleteMovieSetFanart(cloneMovieSet)
+                    Images.DeleteMovieSetLandscape(cloneMovieSet)
+                    Images.DeleteMovieSetPoster(cloneMovieSet)
 
                     'reset all images for scraper
                     Banner = New MediaContainers.Image
@@ -4049,18 +4047,6 @@ Public Class frmMain
 
         For Each dRow As DataRow In ScrapeList
             Dim aContainer As New MediaContainers.SearchResultsContainer_TV
-            Dim ShowBanner As New MediaContainers.Image
-            Dim ShowCharacterArt As New MediaContainers.Image
-            Dim ShowClearArt As New MediaContainers.Image
-            Dim ShowClearLogo As New MediaContainers.Image
-            Dim ShowFanart As New MediaContainers.Image
-            Dim ShowLandscape As New MediaContainers.Image
-            Dim ShowPoster As New MediaContainers.Image
-            Dim ShowTheme As New MediaContainers.Theme
-            Dim tURL As String = String.Empty
-            Dim efList As New List(Of String)
-            Dim etList As New List(Of String)
-            Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
 
@@ -4124,9 +4110,9 @@ Public Class frmMain
                     'If DBScrapeMovie.RemoveDiscArt Then DiscArt.WebImage.DeleteMovieDiscArt(DBScrapeMovie)
                     ''If DBScrapeMovie.RemoveEFanarts Then EFanarts.WebImage.DeleteMovieEFanarts(DBScrapeMovie)
                     ''If DBScrapeMovie.RemoveEThumbs Then EThumbs.WebImage.DeleteMovieEThumbs(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveFanart Then Fanart.WebImage.DeleteMovieFanart(DBScrapeMovie)
+                    If DBScrapeEpisode.RemoveFanart Then Images.DeleteTVEpisodeFanart(DBScrapeEpisode)
                     'If DBScrapeMovie.RemoveLandscape Then Landscape.WebImage.DeleteMovieLandscape(DBScrapeMovie)
-                    'If DBScrapeMovie.RemovePoster Then Poster.WebImage.DeleteMoviePoster(DBScrapeMovie)
+                    If DBScrapeEpisode.RemovePoster Then Images.DeleteTVEpisodePoster(DBScrapeEpisode)
                     'If DBScrapeMovie.RemoveTheme Then Theme.WebTheme.DeleteMovieTheme(DBScrapeMovie)
                     'If DBScrapeMovie.RemoveTrailer Then Trailer.WebTrailer.DeleteMovieTrailer(DBScrapeMovie)
                 End If

@@ -185,7 +185,7 @@ Public Class Images
     ''' <param name="sPath"></param>
     ''' <remarks>This version of Delete is wrapped in a try-catch block which 
     ''' will log errors before safely returning.</remarks>
-    Public Sub Delete(ByVal sPath As String)
+    Public Shared Sub Delete(ByVal sPath As String)
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 File.Delete(sPath)
@@ -271,7 +271,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted. It is parsed from the actual show's path</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVEpisodeFanart(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVEpisodeFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
         Try
@@ -289,7 +289,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the path is extracted. It is parsed from the individual episode path</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVEpisodePoster(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVEpisodePoster(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
         Try
@@ -307,7 +307,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieBanner(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieBanner(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -325,7 +325,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieClearArt(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieClearArt(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -343,7 +343,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieClearLogo(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieClearLogo(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -361,7 +361,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieDiscArt(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieDiscArt(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -379,7 +379,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieFanart(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieFanart(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -397,7 +397,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieLandscape(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieLandscape(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -415,7 +415,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie">Structures.DBMovie representing the movie to be worked on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMoviePoster(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMoviePoster(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -433,7 +433,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -451,7 +451,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -469,7 +469,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -487,7 +487,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -505,7 +505,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -523,7 +523,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -541,7 +541,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet)
         If String.IsNullOrEmpty(mMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -559,7 +559,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVSeasonBanner(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -593,7 +593,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVSeasonFanart(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -627,7 +627,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVSeasonLandscape(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -661,7 +661,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVSeasonPoster(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonPoster(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -695,7 +695,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowBanner(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -713,7 +713,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowCharacterArt(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowCharacterArt(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -731,7 +731,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowClearArt(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowClearArt(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -749,7 +749,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowClearLogo(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowClearLogo(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -767,7 +767,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowFanart(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -785,7 +785,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowLandscape(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -803,7 +803,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVShowPoster(ByVal mShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowPoster(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try

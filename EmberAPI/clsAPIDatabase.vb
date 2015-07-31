@@ -803,15 +803,14 @@ Public Class Database
 
             'delete all movieset images and if this setting is enabled
             If Master.eSettings.MovieSetCleanFiles Then
-                Dim tmpImage As New Images
                 Dim MovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
-                tmpImage.DeleteMovieSetBanner(MovieSet)
-                tmpImage.DeleteMovieSetClearArt(MovieSet)
-                tmpImage.DeleteMovieSetClearLogo(MovieSet)
-                tmpImage.DeleteMovieSetDiscArt(MovieSet)
-                tmpImage.DeleteMovieSetFanart(MovieSet)
-                tmpImage.DeleteMovieSetLandscape(MovieSet)
-                tmpImage.DeleteMovieSetPoster(MovieSet)
+                Images.DeleteMovieSetBanner(MovieSet)
+                Images.DeleteMovieSetClearArt(MovieSet)
+                Images.DeleteMovieSetClearLogo(MovieSet)
+                Images.DeleteMovieSetDiscArt(MovieSet)
+                Images.DeleteMovieSetFanart(MovieSet)
+                Images.DeleteMovieSetLandscape(MovieSet)
+                Images.DeleteMovieSetPoster(MovieSet)
             End If
 
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
