@@ -3015,27 +3015,11 @@ Public Class dlgEditMovie
                         Me.tmpDBMovie.Movie.PlayCount = "1"
                         Me.tmpDBMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
-                    If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainWatchedFile)
-                            If Not File.Exists(a) Then
-                                Dim fs As FileStream = File.Create(a)
-                                fs.Close()
-                            End If
-                        Next
-                    End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
                     If Integer.TryParse(Me.tmpDBMovie.Movie.PlayCount, 0) AndAlso CInt(Me.tmpDBMovie.Movie.PlayCount) > 0 Then
                         Me.tmpDBMovie.Movie.PlayCount = ""
                         Me.tmpDBMovie.Movie.LastPlayed = ""
-                    End If
-
-                    If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainWatchedFile)
-                            If File.Exists(a) Then
-                                File.Delete(a)
-                            End If
-                        Next
                     End If
                 End If
                 'cocotus End
@@ -3107,11 +3091,11 @@ Public Class dlgEditMovie
                 End If
 
                 If Me.tmpDBMovie.RemoveTheme Then
-                    .MovieTheme.DeleteMovieTheme(Me.tmpDBMovie)
+                    Themes.DeleteMovieTheme(Me.tmpDBMovie)
                 End If
 
                 If Me.tmpDBMovie.RemoveTrailer Then
-                    .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
+                    Trailers.DeleteMovieTrailer(Me.tmpDBMovie)
                 End If
 
                 If ActorThumbsHasChanged Then
@@ -3186,18 +3170,18 @@ Public Class dlgEditMovie
                     Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Me.tmpDBMovie)
                     Me.tmpDBMovie.ThemePath = tPath
                 Else
-                    .MovieTheme.DeleteMovieTheme(Me.tmpDBMovie)
+                    Themes.DeleteMovieTheme(Me.tmpDBMovie)
                     Me.tmpDBMovie.ThemePath = String.Empty
                 End If
 
                 If Not String.IsNullOrEmpty(.MovieTrailer.WebTrailer.Extention) AndAlso Not MovieTrailer.WebTrailer.toRemove Then 'TODO: proper check, extention check is only a woraround
                     If Master.eSettings.MovieTrailerDeleteExisting Then
-                        .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
+                        Trailers.DeleteMovieTrailer(Me.tmpDBMovie)
                     End If
                     Dim tPath As String = .MovieTrailer.WebTrailer.SaveAsMovieTrailer(Me.tmpDBMovie)
                     Me.tmpDBMovie.TrailerPath = tPath
                 Else
-                    .MovieTrailer.WebTrailer.DeleteMovieTrailer(Me.tmpDBMovie)
+                    Trailers.DeleteMovieTrailer(Me.tmpDBMovie)
                     Me.tmpDBMovie.TrailerPath = String.Empty
                 End If
 

@@ -189,7 +189,7 @@ Public Class dlgWizard
         Me.chkMovieNFOFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMoviePosterFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieTrailerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieXBMCThemeEnable.Enabled = Me.chkMovieUseFrodo.Checked OrElse Me.chkMovieUseEden.Checked
+        Me.chkMovieThemeTvTunesEnable.Enabled = Me.chkMovieUseFrodo.Checked OrElse Me.chkMovieUseEden.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked
 
         If Not Me.chkMovieUseFrodo.Checked Then
@@ -222,7 +222,7 @@ Public Class dlgWizard
         End If
 
         If Not Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked Then
-            Me.chkMovieXBMCThemeEnable.Checked = False
+            Me.chkMovieThemeTvTunesEnable.Checked = False
         End If
     End Sub
 
@@ -235,7 +235,7 @@ Public Class dlgWizard
         Me.chkMovieNFOEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMoviePosterEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieTrailerEden.Enabled = Me.chkMovieUseEden.Checked
-        Me.chkMovieXBMCThemeEnable.Enabled = Me.chkMovieUseEden.Checked OrElse Me.chkMovieUseFrodo.Checked
+        Me.chkMovieThemeTvTunesEnable.Enabled = Me.chkMovieUseEden.Checked OrElse Me.chkMovieUseFrodo.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Not Me.chkMovieUseEden.Checked AndAlso Me.chkMovieUseFrodo.Checked
 
         If Not Me.chkMovieUseEden.Checked Then
@@ -258,7 +258,7 @@ Public Class dlgWizard
         End If
 
         If Not Me.chkMovieUseEden.Checked AndAlso Not Me.chkMovieUseFrodo.Checked Then
-            Me.chkMovieXBMCThemeEnable.Checked = False
+            Me.chkMovieThemeTvTunesEnable.Checked = False
         End If
     End Sub
 
@@ -310,68 +310,68 @@ Public Class dlgWizard
         End If
     End Sub
 
-    Private Sub chkMovieXBMCThemeCustom_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeCustom.CheckedChanged
+    Private Sub chkMovieXBMCThemeCustom_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesCustom.CheckedChanged
 
-        Me.txtMovieXBMCThemeCustomPath.Enabled = Me.chkMovieXBMCThemeCustom.Checked
-        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = Me.chkMovieXBMCThemeCustom.Checked
+        Me.txtMovieThemeTvTunesCustomPath.Enabled = Me.chkMovieThemeTvTunesCustom.Checked
+        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = Me.chkMovieThemeTvTunesCustom.Checked
 
-        If Me.chkMovieXBMCThemeCustom.Checked Then
-            Me.chkMovieXBMCThemeMovie.Enabled = False
-            Me.chkMovieXBMCThemeMovie.Checked = False
-            Me.chkMovieXBMCThemeSub.Enabled = False
-            Me.chkMovieXBMCThemeSub.Checked = False
+        If Me.chkMovieThemeTvTunesCustom.Checked Then
+            Me.chkMovieThemeTvTunesMoviePath.Enabled = False
+            Me.chkMovieThemeTvTunesMoviePath.Checked = False
+            Me.chkMovieThemeTvTunesSub.Enabled = False
+            Me.chkMovieThemeTvTunesSub.Checked = False
         End If
 
-        If Not Me.chkMovieXBMCThemeCustom.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
-            Me.chkMovieXBMCThemeMovie.Enabled = True
-            Me.chkMovieXBMCThemeSub.Enabled = True
+        If Not Me.chkMovieThemeTvTunesCustom.Checked AndAlso Me.chkMovieThemeTvTunesEnable.Checked Then
+            Me.chkMovieThemeTvTunesMoviePath.Enabled = True
+            Me.chkMovieThemeTvTunesSub.Enabled = True
         End If
     End Sub
 
-    Private Sub chkMovieXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeEnable.CheckedChanged
+    Private Sub chkMovieXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesEnable.CheckedChanged
 
-        Me.chkMovieXBMCThemeCustom.Enabled = Me.chkMovieXBMCThemeEnable.Checked
-        Me.chkMovieXBMCThemeMovie.Enabled = Me.chkMovieXBMCThemeEnable.Checked
-        Me.chkMovieXBMCThemeSub.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+        Me.chkMovieThemeTvTunesCustom.Enabled = Me.chkMovieThemeTvTunesEnable.Checked
+        Me.chkMovieThemeTvTunesMoviePath.Enabled = Me.chkMovieThemeTvTunesEnable.Checked
+        Me.chkMovieThemeTvTunesSub.Enabled = Me.chkMovieThemeTvTunesEnable.Checked
 
-        If Not Me.chkMovieXBMCThemeEnable.Checked Then
-            Me.chkMovieXBMCThemeCustom.Checked = False
-            Me.chkMovieXBMCThemeMovie.Checked = False
-            Me.chkMovieXBMCThemeSub.Checked = False
+        If Not Me.chkMovieThemeTvTunesEnable.Checked Then
+            Me.chkMovieThemeTvTunesCustom.Checked = False
+            Me.chkMovieThemeTvTunesMoviePath.Checked = False
+            Me.chkMovieThemeTvTunesSub.Checked = False
         Else
-            Me.chkMovieXBMCThemeMovie.Checked = True
+            Me.chkMovieThemeTvTunesMoviePath.Checked = True
         End If
     End Sub
 
-    Private Sub chkMovieXBMCThemeMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeMovie.CheckedChanged
+    Private Sub chkMovieXBMCThemeMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesMoviePath.CheckedChanged
 
-        If Me.chkMovieXBMCThemeMovie.Checked Then
-            Me.chkMovieXBMCThemeCustom.Enabled = False
-            Me.chkMovieXBMCThemeCustom.Checked = False
-            Me.chkMovieXBMCThemeSub.Enabled = False
-            Me.chkMovieXBMCThemeSub.Checked = False
+        If Me.chkMovieThemeTvTunesMoviePath.Checked Then
+            Me.chkMovieThemeTvTunesCustom.Enabled = False
+            Me.chkMovieThemeTvTunesCustom.Checked = False
+            Me.chkMovieThemeTvTunesSub.Enabled = False
+            Me.chkMovieThemeTvTunesSub.Checked = False
         End If
 
-        If Not Me.chkMovieXBMCThemeMovie.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
-            Me.chkMovieXBMCThemeCustom.Enabled = True
-            Me.chkMovieXBMCThemeSub.Enabled = True
+        If Not Me.chkMovieThemeTvTunesMoviePath.Checked AndAlso Me.chkMovieThemeTvTunesEnable.Checked Then
+            Me.chkMovieThemeTvTunesCustom.Enabled = True
+            Me.chkMovieThemeTvTunesSub.Enabled = True
         End If
     End Sub
 
-    Private Sub chkMovieXBMCThemeSub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeSub.CheckedChanged
+    Private Sub chkMovieXBMCThemeSub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesSub.CheckedChanged
 
-        Me.txtMovieXBMCThemeSubDir.Enabled = Me.chkMovieXBMCThemeSub.Checked
+        Me.txtMovieThemeTvTunesSubDir.Enabled = Me.chkMovieThemeTvTunesSub.Checked
 
-        If Me.chkMovieXBMCThemeSub.Checked Then
-            Me.chkMovieXBMCThemeCustom.Enabled = False
-            Me.chkMovieXBMCThemeCustom.Checked = False
-            Me.chkMovieXBMCThemeMovie.Enabled = False
-            Me.chkMovieXBMCThemeMovie.Checked = False
+        If Me.chkMovieThemeTvTunesSub.Checked Then
+            Me.chkMovieThemeTvTunesCustom.Enabled = False
+            Me.chkMovieThemeTvTunesCustom.Checked = False
+            Me.chkMovieThemeTvTunesMoviePath.Enabled = False
+            Me.chkMovieThemeTvTunesMoviePath.Checked = False
         End If
 
-        If Not Me.chkMovieXBMCThemeSub.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
-            Me.chkMovieXBMCThemeCustom.Enabled = True
-            Me.chkMovieXBMCThemeMovie.Enabled = True
+        If Not Me.chkMovieThemeTvTunesSub.Checked AndAlso Me.chkMovieThemeTvTunesEnable.Checked Then
+            Me.chkMovieThemeTvTunesCustom.Enabled = True
+            Me.chkMovieThemeTvTunesMoviePath.Enabled = True
         End If
     End Sub
 
@@ -512,17 +512,17 @@ Public Class dlgWizard
         End If
     End Sub
 
-    Private Sub chkTVXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVXBMCThemeEnable.CheckedChanged
-        Me.btnTVXBMCThemeCustomPathBrowse.Enabled = Me.chkTVXBMCThemeEnable.Checked
-        Me.txtTVXBMCThemeCustomPath.Enabled = Me.chkTVXBMCThemeEnable.Checked
+    Private Sub chkTVXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesEnable.CheckedChanged
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Enabled = Me.chkTVShowThemeTvTunesEnable.Checked
+        Me.txtTVShowThemeTvTunesCustomPath.Enabled = Me.chkTVShowThemeTvTunesEnable.Checked
     End Sub
 
-    Private Sub btnTVXBMCThemeCustomPathBrowse_Click(sender As Object, e As EventArgs) Handles btnTVXBMCThemeCustomPathBrowse.Click
+    Private Sub btnTVXBMCThemeCustomPathBrowse_Click(sender As Object, e As EventArgs) Handles btnTVShowThemeTvTunesCustomPathBrowse.Click
         With Me.fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(1028, "Select the folder where you wish to store your tv themes...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    Me.txtTVXBMCThemeCustomPath.Text = .SelectedPath.ToString
+                    Me.txtTVShowThemeTvTunesCustomPath.Text = .SelectedPath.ToString
                 End If
             End If
         End With
@@ -534,7 +534,7 @@ Public Class dlgWizard
                 fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                        Me.txtMovieXBMCThemeCustomPath.Text = .SelectedPath.ToString
+                        Me.txtMovieThemeTvTunesCustomPath.Text = .SelectedPath.ToString
                     End If
                 End If
             End With
@@ -565,7 +565,7 @@ Public Class dlgWizard
         End If
     End Sub
 
-    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged  
+    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
         Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVEpisodePosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
@@ -581,7 +581,7 @@ Public Class dlgWizard
         Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVXBMCThemeEnable.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowThemeTvTunesEnable.Enabled = Me.chkTVUseFrodo.Checked
 
         If Not Me.chkTVUseFrodo.Checked Then
             Me.chkTVEpisodeActorThumbsFrodo.Checked = False
@@ -599,7 +599,7 @@ Public Class dlgWizard
             Me.chkTVShowFanartFrodo.Checked = False
             Me.chkTVShowLandscapeAD.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
-            Me.chkTVXBMCThemeEnable.Checked = False
+            Me.chkTVShowThemeTvTunesEnable.Checked = False
         Else
             Me.chkTVEpisodeActorThumbsFrodo.Checked = True
             Me.chkTVEpisodePosterFrodo.Checked = True
@@ -682,7 +682,7 @@ Public Class dlgWizard
                 Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
             End If
 
-            
+
 
             '***************************************************
             '******************* Movie Part ********************
@@ -719,12 +719,12 @@ Public Class dlgWizard
             Me.chkMovieLandscapeAD.Checked = .MovieLandscapeAD
 
             '************** XBMC TvTunes settings **************
-            Me.chkMovieXBMCThemeEnable.Checked = .MovieXBMCThemeEnable
-            Me.chkMovieXBMCThemeCustom.Checked = .MovieXBMCThemeCustom
-            Me.chkMovieXBMCThemeMovie.Checked = .MovieXBMCThemeMovie
-            Me.chkMovieXBMCThemeSub.Checked = .MovieXBMCThemeSub
-            Me.txtMovieXBMCThemeCustomPath.Text = .MovieXBMCThemeCustomPath
-            Me.txtMovieXBMCThemeSubDir.Text = .MovieXBMCThemeSubDir
+            Me.chkMovieThemeTvTunesEnable.Checked = .MovieThemeTvTunesEnable
+            Me.chkMovieThemeTvTunesCustom.Checked = .MovieThemeTvTunesCustom
+            Me.chkMovieThemeTvTunesMoviePath.Checked = .MovieThemeTvTunesMoviePath
+            Me.chkMovieThemeTvTunesSub.Checked = .MovieThemeTvTunesSub
+            Me.txtMovieThemeTvTunesCustomPath.Text = .MovieThemeTvTunesCustomPath
+            Me.txtMovieThemeTvTunesSubDir.Text = .MovieThemeTvTunesSubDir
 
             '****************** YAMJ settings ******************
             Me.chkMovieUseYAMJ.Checked = .MovieUseYAMJ
@@ -886,9 +886,13 @@ Public Class dlgWizard
             Me.chkTVShowClearLogoAD.Checked = .TVShowClearLogoAD
             Me.chkTVShowLandscapeAD.Checked = .TVShowLandscapeAD
 
-            '************* XBMC TvTunes settings ***************
-            Me.chkTVXBMCThemeEnable.Checked = .TVShowTVThemeXBMC
-            Me.txtTVXBMCThemeCustomPath.Text = .TVShowTVThemeFolderXBMC
+            '************** XBMC TvTunes settings **************
+            Me.chktvshowThemeTvTunesEnable.Checked = .TVShowThemeTvTunesEnable
+            Me.chkTVShowThemeTvTunesCustom.Checked = .TVShowThemeTvTunesCustom
+            Me.chkTVShowThemeTvTunesShowPath.Checked = .TVShowThemeTvTunesShowPath
+            Me.chkTVShowThemeTvTunesSub.Checked = .TVShowThemeTvTunesSub
+            Me.txtTVShowThemeTvTunesCustomPath.Text = .TVShowThemeTvTunesCustomPath
+            Me.txtTVShowThemeTvTunesSubDir.Text = .TVShowThemeTvTunesSubDir
 
             '****************** YAMJ settings ******************
             Me.chkTVUseYAMJ.Checked = .TVUseYAMJ
@@ -1110,12 +1114,12 @@ Public Class dlgWizard
             .MovieLandscapeAD = Me.chkMovieLandscapeAD.Checked
 
             '************** XBMC TvTunes settings **************
-            .MovieXBMCThemeCustom = Me.chkMovieXBMCThemeCustom.Checked
-            .MovieXBMCThemeCustomPath = Me.txtMovieXBMCThemeCustomPath.Text
-            .MovieXBMCThemeEnable = Me.chkMovieXBMCThemeEnable.Checked
-            .MovieXBMCThemeMovie = Me.chkMovieXBMCThemeMovie.Checked
-            .MovieXBMCThemeSub = Me.chkMovieXBMCThemeSub.Checked
-            .MovieXBMCThemeSubDir = Me.txtMovieXBMCThemeSubDir.Text
+            .MovieThemeTvTunesEnable = Me.chkMovieThemeTvTunesEnable.Checked
+            .MovieThemeTvTunesCustom = Me.chkMovieThemeTvTunesCustom.Checked
+            .MovieThemeTvTunesCustomPath = Me.txtMovieThemeTvTunesCustomPath.Text
+            .MovieThemeTvTunesMoviePath = Me.chkMovieThemeTvTunesMoviePath.Checked
+            .MovieThemeTvTunesSub = Me.chkMovieThemeTvTunesSub.Checked
+            .MovieThemeTvTunesSubDir = Me.txtMovieThemeTvTunesSubDir.Text
 
             '****************** YAMJ settings *****************
             .MovieUseYAMJ = Me.chkMovieUseYAMJ.Checked
@@ -1276,8 +1280,14 @@ Public Class dlgWizard
             .TVShowClearLogoAD = Me.chkTVShowClearLogoAD.Checked
             .TVShowExtrafanartsFrodo = Me.chkTVShowExtrafanartsFrodo.Checked
             .TVShowLandscapeAD = Me.chkTVShowLandscapeAD.Checked
-            .TVShowTVThemeXBMC = Me.chkTVXBMCThemeEnable.Checked
-            .TVShowTVThemeFolderXBMC = Me.txtTVXBMCThemeCustomPath.Text
+
+            '************** XBMC TvTunes settings **************
+            .TVShowThemeTvTunesEnable = Me.chkTVShowThemeTvTunesEnable.Checked
+            .TVShowThemeTvTunesCustom = Me.chkTVShowThemeTvTunesCustom.Checked
+            .TVShowThemeTvTunesCustomPath = Me.txtTVShowThemeTvTunesCustomPath.Text
+            .TVShowThemeTvTunesShowPath = Me.chkTVShowThemeTvTunesShowPath.Checked
+            .TVShowThemeTvTunesSub = Me.chkTVShowThemeTvTunesSub.Checked
+            .TVShowThemeTvTunesSubDir = Me.txtTVShowThemeTvTunesSubDir.Text
 
             '****************** YAMJ settings ******************
             .TVUseYAMJ = Me.chkTVUseYAMJ.Checked

@@ -280,7 +280,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetsorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
     Private _moviesetsorttokensisempty As Boolean
-    Private _moviethemeenable As Boolean
     Private _moviethemeoverwrite As Boolean
     Private _movietrailerdefaultsearch As String
     Private _movietrailerdeleteexisting As Boolean
@@ -503,6 +502,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
+    Private _tvshowthemeoverwrite As Boolean
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
     Private _tvsorttokensisempty As Boolean
@@ -552,13 +552,13 @@ Partial Public Class clsXMLSettings
     '************* XBMC optional settings *************
     Private _moviexbmcprotectvtsbdmv As Boolean
 
-    '*************** XBMC theme settings ***************
-    Private _moviexbmcthemeenable As Boolean
-    Private _moviexbmcthemecustom As Boolean
-    Private _moviexbmcthememovie As Boolean
-    Private _moviexbmcthemesub As Boolean
-    Private _moviexbmcthemecustompath As String
-    Private _moviexbmcthemesubdir As String
+    '*************** XBMC TvTunes settings ***************
+    Private _moviethemetvtunesenable As Boolean
+    Private _moviethemetvtunescustom As Boolean
+    Private _moviethemetvtunescustompath As String
+    Private _moviethemetvtunesmoviepath As Boolean
+    Private _moviethemetvtunessub As Boolean
+    Private _moviethemetvtunessubdir As String
 
     '****************** YAMJ settings *****************
     Private _movieuseyamj As Boolean
@@ -738,9 +738,13 @@ Partial Public Class clsXMLSettings
     Private _tvshowclearlogoextended As Boolean
     Private _tvshowlandscapeextended As Boolean
 
-    '************* XBMC TvTunes settings ***************
-    Private _tvshowtvthemefolderxbmc As String
-    Private _tvshowtvthemexbmc As Boolean
+    '*************** XBMC TvTunes settings ***************
+    Private _tvshowthemetvtunesenable As Boolean
+    Private _tvshowthemetvtunescustom As Boolean
+    Private _tvshowthemetvtunescustompath As String
+    Private _tvshowthemetvtunesshowpath As Boolean
+    Private _tvshowthemetvtunessub As Boolean
+    Private _tvshowthemetvtunessubdir As String
 
     '****************** YAMJ settings ******************
     Private _tvuseyamj As Boolean
@@ -3383,6 +3387,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowThemeOverwrite() As Boolean
+        Get
+            Return Me._tvshowthemeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowthemeoverwrite = value
+        End Set
+    End Property
+
     Public Property MovieScraperPlotForOutline() As Boolean
         Get
             Return Me._moviescraperplotforoutline
@@ -4932,15 +4945,6 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieThemeEnable() As Boolean
-        Get
-            Return Me._moviethemeenable
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviethemeenable = value
-        End Set
-    End Property
-
     Public Property MovieScraperCertForMPAA() As Boolean
         Get
             Return Me._moviescrapercertformpaa
@@ -5625,57 +5629,111 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieXBMCThemeEnable() As Boolean
+    Public Property MovieThemeTvTunesEnable() As Boolean
         Get
-            Return Me._moviexbmcthemeenable
+            Return Me._moviethemetvtunesenable
         End Get
         Set(ByVal value As Boolean)
-            Me._moviexbmcthemeenable = value
+            Me._moviethemetvtunesenable = value
         End Set
     End Property
 
-    Public Property MovieXBMCThemeCustom() As Boolean
+    Public Property MovieThemeTvTunesCustom() As Boolean
         Get
-            Return Me._moviexbmcthemecustom
+            Return Me._moviethemetvtunescustom
         End Get
         Set(ByVal value As Boolean)
-            Me._moviexbmcthemecustom = value
+            Me._moviethemetvtunescustom = value
         End Set
     End Property
 
-    Public Property MovieXBMCThemeMovie() As Boolean
+    Public Property MovieThemeTvTunesCustomPath() As String
         Get
-            Return Me._moviexbmcthememovie
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviexbmcthememovie = value
-        End Set
-    End Property
-
-    Public Property MovieXBMCThemeSub() As Boolean
-        Get
-            Return Me._moviexbmcthemesub
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviexbmcthemesub = value
-        End Set
-    End Property
-
-    Public Property MovieXBMCThemeCustomPath() As String
-        Get
-            Return Me._moviexbmcthemecustompath
+            Return Me._moviethemetvtunescustompath
         End Get
         Set(ByVal value As String)
-            Me._moviexbmcthemecustompath = value
+            Me._moviethemetvtunescustompath = value
         End Set
     End Property
 
-    Public Property MovieXBMCThemeSubDir() As String
+    Public Property MovieThemeTvTunesMoviePath() As Boolean
         Get
-            Return Me._moviexbmcthemesubdir
+            Return Me._moviethemetvtunesmoviepath
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviethemetvtunesmoviepath = value
+        End Set
+    End Property
+
+    Public Property MovieThemeTvTunesSub() As Boolean
+        Get
+            Return Me._moviethemetvtunessub
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviethemetvtunessub = value
+        End Set
+    End Property
+
+    Public Property MovieThemeTvTunesSubDir() As String
+        Get
+            Return Me._moviethemetvtunessubdir
         End Get
         Set(ByVal value As String)
-            Me._moviexbmcthemesubdir = value
+            Me._moviethemetvtunessubdir = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeTvTunesEnable() As Boolean
+        Get
+            Return Me._tvshowthemetvtunesenable
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowthemetvtunesenable = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeTvTunesCustom() As Boolean
+        Get
+            Return Me._tvshowthemetvtunescustom
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowthemetvtunescustom = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeTvTunesCustomPath() As String
+        Get
+            Return Me._tvshowthemetvtunescustompath
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowthemetvtunescustompath = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeTvTunesShowPath() As Boolean
+        Get
+            Return Me._tvshowthemetvtunesshowpath
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowthemetvtunesshowpath = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeTvTunesSub() As Boolean
+        Get
+            Return Me._tvshowthemetvtunessub
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowthemetvtunessub = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeTvTunesSubDir() As String
+        Get
+            Return Me._tvshowthemetvtunessubdir
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowthemetvtunessubdir = value
         End Set
     End Property
 
@@ -7017,24 +7075,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowcharacterartextended = value
-        End Set
-    End Property
-
-    Public Property TVShowTVThemeXBMC() As Boolean
-        Get
-            Return Me._tvshowtvthemexbmc
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowtvthemexbmc = value
-        End Set
-    End Property
-
-    Public Property TVShowTVThemeFolderXBMC() As String
-        Get
-            Return Me._tvshowtvthemefolderxbmc
-        End Get
-        Set(ByVal value As String)
-            Me._tvshowtvthemefolderxbmc = value
         End Set
     End Property
 

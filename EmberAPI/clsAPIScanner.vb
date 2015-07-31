@@ -59,7 +59,6 @@ Public Class Scanner
             Threading.Thread.Sleep(50)
         End While
     End Sub
-
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
@@ -247,7 +246,7 @@ Public Class Scanner
             If String.IsNullOrEmpty(Movie.Theme) Then
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainTheme)
                     For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                        Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
+                        Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                         If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
                     Next
                     If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
@@ -258,7 +257,7 @@ Public Class Scanner
             If String.IsNullOrEmpty(Movie.Trailer) Then
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModifierType.MainTrailer)
                     For Each t As String In Master.eSettings.FileSystemValidExts
-                        Movie.Trailer = fList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
+                        Movie.Trailer = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                         If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
                     Next
                     If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
@@ -534,6 +533,124 @@ Public Class Scanner
 
         fList = Nothing
     End Sub
+    ''' <summary>
+    ''' Check if a directory contains supporting files (nfo, poster, fanart)
+    ''' </summary>
+    ''' <param name="tShow">TVShowContainer object.</param>
+    Public Sub GetTVShowFolderContents(ByRef tShow As Structures.DBTV, Optional ByVal ID As Long = 0)
+        Dim ShowPath As String = tShow.ShowPath
+        Dim efList As New List(Of String)
+        Dim fList As New List(Of String)
+        Dim fName As String = String.Empty
+
+        Try
+            Try
+                fList.AddRange(Directory.GetFiles(tShow.ShowPath))
+
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
+                    If Directory.Exists(a) Then
+                        efList.AddRange(Directory.GetFiles(a))
+                    End If
+                Next
+            Catch
+            End Try
+
+            'show actor thumbs
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainActorThumbs)
+                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                If Directory.Exists(parDir) Then
+                    tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                End If
+            Next
+
+            'show banner
+            If String.IsNullOrEmpty(tShow.BannerPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
+                    tShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.BannerPath) Then Exit For
+                Next
+            End If
+
+            'show characterart
+            If String.IsNullOrEmpty(tShow.CharacterArtPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
+                    tShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.CharacterArtPath) Then Exit For
+                Next
+            End If
+
+            'show clearart
+            If String.IsNullOrEmpty(tShow.ClearArtPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
+                    tShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.ClearArtPath) Then Exit For
+                Next
+            End If
+
+            'show clearlogo
+            If String.IsNullOrEmpty(tShow.ClearLogoPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
+                    tShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.ClearLogoPath) Then Exit For
+                Next
+            End If
+
+            'extrafanart
+            If String.IsNullOrEmpty(tShow.EFanartsPath) Then
+                If efList.Count > 0 Then
+                    tShow.EFanartsPath = efList.Item(0).ToString
+                End If
+            End If
+
+            'show fanart
+            If String.IsNullOrEmpty(tShow.FanartPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
+                    tShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.FanartPath) Then Exit For
+                Next
+            End If
+
+            'show landscape
+            If String.IsNullOrEmpty(tShow.LandscapePath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
+                    tShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.LandscapePath) Then Exit For
+                Next
+            End If
+
+            'show NFO
+            If String.IsNullOrEmpty(tShow.NfoPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainNFO)
+                    tShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.NfoPath) Then Exit For
+                Next
+            End If
+
+            'show poster
+            If String.IsNullOrEmpty(tShow.PosterPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
+                    tShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(tShow.PosterPath) Then Exit For
+                Next
+            End If
+
+            'show theme
+            If String.IsNullOrEmpty(tShow.ThemePath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainTheme)
+                    For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                        tShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                        If Not String.IsNullOrEmpty(tShow.ThemePath) Then Exit For
+                    Next
+                    If Not String.IsNullOrEmpty(tShow.ThemePath) Then Exit For
+                Next
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        fList = Nothing
+    End Sub
 
     Private Shared Function GetAirDateFromRegExp(ByVal reg As Match, ByRef eItem As EpisodeItem) As Boolean
         Dim param1 As String = reg.Groups(1).Value
@@ -688,122 +805,6 @@ Public Class Scanner
 
         Return retEpisodeItemsList
     End Function
-
-    ''' <summary>
-    ''' Check if a directory contains supporting files (nfo, poster, fanart)
-    ''' </summary>
-    ''' <param name="tShow">TVShowContainer object.</param>
-    Public Sub GetTVShowFolderContents(ByRef tShow As Structures.DBTV, Optional ByVal ID As Long = 0)
-        Dim ShowPath As String = tShow.ShowPath
-        Dim efList As New List(Of String)
-        Dim fList As New List(Of String)
-        Dim fName As String = String.Empty
-
-        Try
-            Try
-                fList.AddRange(Directory.GetFiles(tShow.ShowPath))
-
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
-                    If Directory.Exists(a) Then
-                        efList.AddRange(Directory.GetFiles(a))
-                    End If
-                Next
-            Catch
-            End Try
-
-            'show actor thumbs
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainActorThumbs)
-                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
-                If Directory.Exists(parDir) Then
-                    tShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
-                End If
-            Next
-
-            'show banner
-            If String.IsNullOrEmpty(tShow.BannerPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
-                    tShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.BannerPath) Then Exit For
-                Next
-            End If
-
-            'show characterart
-            If String.IsNullOrEmpty(tShow.CharacterArtPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
-                    tShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.CharacterArtPath) Then Exit For
-                Next
-            End If
-
-            'show clearart
-            If String.IsNullOrEmpty(tShow.ClearArtPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
-                    tShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.ClearArtPath) Then Exit For
-                Next
-            End If
-
-            'show clearlogo
-            If String.IsNullOrEmpty(tShow.ClearLogoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
-                    tShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.ClearLogoPath) Then Exit For
-                Next
-            End If
-
-            'extrafanart
-            If String.IsNullOrEmpty(tShow.EFanartsPath) Then
-                If efList.Count > 0 Then
-                    tShow.EFanartsPath = efList.Item(0).ToString
-                End If
-            End If
-
-            'show fanart
-            If String.IsNullOrEmpty(tShow.FanartPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
-                    tShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.FanartPath) Then Exit For
-                Next
-            End If
-
-            'show landscape
-            If String.IsNullOrEmpty(tShow.LandscapePath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
-                    tShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.LandscapePath) Then Exit For
-                Next
-            End If
-
-            'show NFO
-            If String.IsNullOrEmpty(tShow.NfoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainNFO)
-                    tShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.NfoPath) Then Exit For
-                Next
-            End If
-
-            'show poster
-            If String.IsNullOrEmpty(tShow.PosterPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
-                    tShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.PosterPath) Then Exit For
-                Next
-            End If
-
-            'show theme
-            If String.IsNullOrEmpty(tShow.ThemePath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainTheme)
-                    tShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(tShow.ThemePath) Then Exit For
-                Next
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        fList = Nothing
-    End Sub
 
     Public Function IsBusy() As Boolean
         Return bwPrelim.IsBusy

@@ -995,29 +995,12 @@ Public Class dlgEditTVEpisode
                     Me.tmpDBTVEpisode.TVEp.Playcount = "1"
                     Me.tmpDBTVEpisode.TVEp.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 End If
-
-                'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
-                '        If Not File.Exists(a) Then
-                '            Dim fs As FileStream = File.Create(a)
-                '            fs.Close()
-                '        End If
-                '    Next
-                'End If
             Else
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
                 If Integer.TryParse(Me.tmpDBTVEpisode.TVEp.Playcount, 0) AndAlso CInt(Me.tmpDBTVEpisode.TVEp.Playcount) > 0 Then
                     Me.tmpDBTVEpisode.TVEp.Playcount = ""
                     Me.tmpDBTVEpisode.TVEp.LastPlayed = ""
                 End If
-
-                'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
-                '        If File.Exists(a) Then
-                '            File.Delete(a)
-                '        End If
-                '    Next
-                'End If
             End If
 
             If Me.tmpDBTVEpisode.RemoveActorThumbs OrElse ActorThumbsHasChanged Then

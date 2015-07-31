@@ -2092,8 +2092,8 @@ Public Class frmMain
                     If DBScrapeMovie.RemoveFanart Then Images.DeleteMovieFanart(DBScrapeMovie)
                     If DBScrapeMovie.RemoveLandscape Then Images.DeleteMovieLandscape(DBScrapeMovie)
                     If DBScrapeMovie.RemovePoster Then Images.DeleteMoviePoster(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveTheme Then Theme.WebTheme.DeleteMovieTheme(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveTrailer Then Trailer.WebTrailer.DeleteMovieTrailer(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveTheme Then Themes.DeleteMovieTheme(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveTrailer Then Trailers.DeleteMovieTrailer(DBScrapeMovie)
                 End If
 
                 'get all images
@@ -3347,6 +3347,7 @@ Public Class frmMain
                     If DBScrapeShow.RemoveFanart Then Images.DeleteTVShowFanart(DBScrapeShow)
                     If DBScrapeShow.RemoveLandscape Then Images.DeleteTVShowLandscape(DBScrapeShow)
                     If DBScrapeShow.RemovePoster Then Images.DeleteTVShowPoster(DBScrapeShow)
+                    If DBScrapeShow.RemoveTheme Then Themes.DeleteTVShowTheme(DBScrapeShow)
                 End If
 
                 'get all images
@@ -14518,7 +14519,7 @@ doCancel:
             Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
             Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainLandscape)
             Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster)
-            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Theme_Movie(Enums.ModifierType.MainTheme)
+            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeTvTunesEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Theme_Movie(Enums.ModifierType.MainTheme)
             Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTrailer)
 
             'create list of movies acording to scrapetype
@@ -17558,7 +17559,7 @@ doCancel:
 
                 If Not String.IsNullOrEmpty(MovieTrailer.Extention) Then
                     If Master.eSettings.MovieTrailerDeleteExisting Then
-                        MovieTrailer.DeleteMovieTrailer(tmpMovieDB)
+                        Trailers.DeleteMovieTrailer(tmpMovieDB)
                     End If
                     MovieTrailer.SaveAsMovieTrailer(tmpMovieDB)
                 End If
@@ -19230,7 +19231,7 @@ doCancel:
             Me.mnuMovieSetFilterAskPoster.Enabled = PosterAllowed_MovieSet
 
             'Theme Movie
-            Dim ThemeAllowed_Movie As Boolean = .MovieThemeEnable AndAlso .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
+            Dim ThemeAllowed_Movie As Boolean = .MovieThemeTvTunesEnable AndAlso .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
             Me.mnuMovieAllAutoTheme.Enabled = ThemeAllowed_Movie
             Me.mnuMovieAllAskTheme.Enabled = ThemeAllowed_Movie
             Me.mnuMovieMissAutoTheme.Enabled = ThemeAllowed_Movie

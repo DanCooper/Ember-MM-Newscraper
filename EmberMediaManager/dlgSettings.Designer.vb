@@ -403,13 +403,13 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.pbMovieSourcesTvTunesInfo = New System.Windows.Forms.PictureBox()
-        Me.txtMovieXBMCThemeSubDir = New System.Windows.Forms.TextBox()
-        Me.chkMovieXBMCThemeSub = New System.Windows.Forms.CheckBox()
-        Me.btnMovieXBMCThemeCustomPathBrowse = New System.Windows.Forms.Button()
-        Me.chkMovieXBMCThemeMovie = New System.Windows.Forms.CheckBox()
-        Me.chkMovieXBMCThemeEnable = New System.Windows.Forms.CheckBox()
-        Me.chkMovieXBMCThemeCustom = New System.Windows.Forms.CheckBox()
-        Me.txtMovieXBMCThemeCustomPath = New System.Windows.Forms.TextBox()
+        Me.txtMovieThemeTvTunesSubDir = New System.Windows.Forms.TextBox()
+        Me.chkMovieThemeTvTunesSub = New System.Windows.Forms.CheckBox()
+        Me.btnMovieThemeTvTunesCustomPathBrowse = New System.Windows.Forms.Button()
+        Me.chkMovieThemeTvTunesMoviePath = New System.Windows.Forms.CheckBox()
+        Me.chkMovieThemeTvTunesEnable = New System.Windows.Forms.CheckBox()
+        Me.chkMovieThemeTvTunesCustom = New System.Windows.Forms.CheckBox()
+        Me.txtMovieThemeTvTunesCustomPath = New System.Windows.Forms.TextBox()
         Me.tpMovieSourcesFileNamingNMT = New System.Windows.Forms.TabPage()
         Me.tblMovieSourcesFileNamingNMT = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts = New System.Windows.Forms.GroupBox()
@@ -740,13 +740,13 @@ Partial Class dlgSettings
         Me.gbTVSourcesFileNamingKodiTvTunesOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesFileNamingKodiTvTunesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTVSourcesTvTunesInfo = New System.Windows.Forms.PictureBox()
-        Me.txtTVXBMCThemeSubDir = New System.Windows.Forms.TextBox()
-        Me.chkTVXBMCThemeMovie = New System.Windows.Forms.CheckBox()
-        Me.btnTVXBMCThemeCustomPathBrowse = New System.Windows.Forms.Button()
-        Me.txtTVXBMCThemeCustomPath = New System.Windows.Forms.TextBox()
-        Me.chkTVXBMCThemeEnable = New System.Windows.Forms.CheckBox()
-        Me.chkTVXBMCThemeCustom = New System.Windows.Forms.CheckBox()
-        Me.chkTVXBMCThemeSub = New System.Windows.Forms.CheckBox()
+        Me.txtTVShowThemeTvTunesSubDir = New System.Windows.Forms.TextBox()
+        Me.chkTVShowThemeTvTunesShowPath = New System.Windows.Forms.CheckBox()
+        Me.btnTVShowThemeTvTunesCustomPathBrowse = New System.Windows.Forms.Button()
+        Me.txtTVShowThemeTvTunesCustomPath = New System.Windows.Forms.TextBox()
+        Me.chkTVShowThemeTvTunesEnable = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowThemeTvTunesCustom = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowThemeTvTunesSub = New System.Windows.Forms.CheckBox()
         Me.tpTVSourcesFileNamingNMT = New System.Windows.Forms.TabPage()
         Me.tblTVSourcesFileNamingNMT = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVSourcesFileNamingNMTDefaultsOpts = New System.Windows.Forms.GroupBox()
@@ -1333,9 +1333,11 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieThemeOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieThemeOverwrite = New System.Windows.Forms.CheckBox()
-        Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.tblTVThemes = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbTVThemeOpts = New System.Windows.Forms.GroupBox()
+        Me.tblTVThemeOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkTVShowThemeOverwrite = New System.Windows.Forms.CheckBox()
         Me.cdColor = New System.Windows.Forms.ColorDialog()
         Me.pnlMovieSetGeneral = New System.Windows.Forms.Panel()
         Me.tblMovieSetGeneral = New System.Windows.Forms.TableLayoutPanel()
@@ -1834,6 +1836,9 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.SuspendLayout
         Me.tblMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
+        Me.tblTVThemes.SuspendLayout
+        Me.gbTVThemeOpts.SuspendLayout
+        Me.tblTVThemeOpts.SuspendLayout
         Me.pnlMovieSetGeneral.SuspendLayout
         Me.tblMovieSetGeneral.SuspendLayout
         Me.gbMovieSetGeneralMediaListOpts.SuspendLayout
@@ -6812,13 +6817,13 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.pbMovieSourcesTvTunesInfo, 2, 0)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtMovieXBMCThemeSubDir, 0, 5)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieXBMCThemeSub, 0, 4)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.btnMovieXBMCThemeCustomPathBrowse, 1, 3)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieXBMCThemeMovie, 0, 1)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieXBMCThemeEnable, 0, 0)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieXBMCThemeCustom, 0, 2)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtMovieXBMCThemeCustomPath, 0, 3)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtMovieThemeTvTunesSubDir, 0, 5)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesSub, 0, 4)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.btnMovieThemeTvTunesCustomPathBrowse, 1, 3)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesMoviePath, 0, 1)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesEnable, 0, 0)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesCustom, 0, 2)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtMovieThemeTvTunesCustomPath, 0, 3)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Name = "tblMovieSourcesFileNamingKodiTvTunesOpts"
@@ -6846,87 +6851,87 @@ Partial Class dlgSettings
         Me.pbMovieSourcesTvTunesInfo.TabIndex = 12
         Me.pbMovieSourcesTvTunesInfo.TabStop = false
         '
-        'txtMovieXBMCThemeSubDir
+        'txtMovieThemeTvTunesSubDir
         '
-        Me.txtMovieXBMCThemeSubDir.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieXBMCThemeSubDir.Enabled = false
-        Me.txtMovieXBMCThemeSubDir.Location = New System.Drawing.Point(3, 123)
-        Me.txtMovieXBMCThemeSubDir.Name = "txtMovieXBMCThemeSubDir"
-        Me.txtMovieXBMCThemeSubDir.Size = New System.Drawing.Size(200, 22)
-        Me.txtMovieXBMCThemeSubDir.TabIndex = 3
+        Me.txtMovieThemeTvTunesSubDir.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMovieThemeTvTunesSubDir.Enabled = false
+        Me.txtMovieThemeTvTunesSubDir.Location = New System.Drawing.Point(3, 123)
+        Me.txtMovieThemeTvTunesSubDir.Name = "txtMovieThemeTvTunesSubDir"
+        Me.txtMovieThemeTvTunesSubDir.Size = New System.Drawing.Size(200, 22)
+        Me.txtMovieThemeTvTunesSubDir.TabIndex = 3
         '
-        'chkMovieXBMCThemeSub
+        'chkMovieThemeTvTunesSub
         '
-        Me.chkMovieXBMCThemeSub.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieXBMCThemeSub.AutoSize = true
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieXBMCThemeSub, 2)
-        Me.chkMovieXBMCThemeSub.Enabled = false
-        Me.chkMovieXBMCThemeSub.Location = New System.Drawing.Point(3, 100)
-        Me.chkMovieXBMCThemeSub.Name = "chkMovieXBMCThemeSub"
-        Me.chkMovieXBMCThemeSub.Size = New System.Drawing.Size(181, 17)
-        Me.chkMovieXBMCThemeSub.TabIndex = 4
-        Me.chkMovieXBMCThemeSub.Text = "Store themes in sub directorys"
-        Me.chkMovieXBMCThemeSub.UseVisualStyleBackColor = true
+        Me.chkMovieThemeTvTunesSub.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieThemeTvTunesSub.AutoSize = true
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieThemeTvTunesSub, 2)
+        Me.chkMovieThemeTvTunesSub.Enabled = false
+        Me.chkMovieThemeTvTunesSub.Location = New System.Drawing.Point(3, 100)
+        Me.chkMovieThemeTvTunesSub.Name = "chkMovieThemeTvTunesSub"
+        Me.chkMovieThemeTvTunesSub.Size = New System.Drawing.Size(181, 17)
+        Me.chkMovieThemeTvTunesSub.TabIndex = 4
+        Me.chkMovieThemeTvTunesSub.Text = "Store themes in sub directorys"
+        Me.chkMovieThemeTvTunesSub.UseVisualStyleBackColor = true
         '
         'btnMovieXBMCThemeCustomPathBrowse
         '
-        Me.btnMovieXBMCThemeCustomPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = false
-        Me.btnMovieXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnMovieXBMCThemeCustomPathBrowse.Location = New System.Drawing.Point(209, 72)
-        Me.btnMovieXBMCThemeCustomPathBrowse.Name = "btnMovieXBMCThemeCustomPathBrowse"
-        Me.btnMovieXBMCThemeCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
-        Me.btnMovieXBMCThemeCustomPathBrowse.TabIndex = 5
-        Me.btnMovieXBMCThemeCustomPathBrowse.Text = "..."
-        Me.btnMovieXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = true
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Enabled = false
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Location = New System.Drawing.Point(209, 72)
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Name = "btnMovieXBMCThemeCustomPathBrowse"
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnMovieThemeTvTunesCustomPathBrowse.TabIndex = 5
+        Me.btnMovieThemeTvTunesCustomPathBrowse.Text = "..."
+        Me.btnMovieThemeTvTunesCustomPathBrowse.UseVisualStyleBackColor = true
         '
-        'chkMovieXBMCThemeMovie
+        'chkMovieThemeTvTunesMoviePath
         '
-        Me.chkMovieXBMCThemeMovie.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieXBMCThemeMovie.AutoSize = true
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieXBMCThemeMovie, 2)
-        Me.chkMovieXBMCThemeMovie.Enabled = false
-        Me.chkMovieXBMCThemeMovie.Location = New System.Drawing.Point(3, 26)
-        Me.chkMovieXBMCThemeMovie.Name = "chkMovieXBMCThemeMovie"
-        Me.chkMovieXBMCThemeMovie.Size = New System.Drawing.Size(187, 17)
-        Me.chkMovieXBMCThemeMovie.TabIndex = 6
-        Me.chkMovieXBMCThemeMovie.Text = "Store themes in movie directory"
-        Me.chkMovieXBMCThemeMovie.UseVisualStyleBackColor = true
+        Me.chkMovieThemeTvTunesMoviePath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieThemeTvTunesMoviePath.AutoSize = true
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieThemeTvTunesMoviePath, 2)
+        Me.chkMovieThemeTvTunesMoviePath.Enabled = false
+        Me.chkMovieThemeTvTunesMoviePath.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieThemeTvTunesMoviePath.Name = "chkMovieThemeTvTunesMoviePath"
+        Me.chkMovieThemeTvTunesMoviePath.Size = New System.Drawing.Size(187, 17)
+        Me.chkMovieThemeTvTunesMoviePath.TabIndex = 6
+        Me.chkMovieThemeTvTunesMoviePath.Text = "Store themes in movie directory"
+        Me.chkMovieThemeTvTunesMoviePath.UseVisualStyleBackColor = true
         '
-        'chkMovieXBMCThemeEnable
+        'chkMovieThemeTvTunesEnable
         '
-        Me.chkMovieXBMCThemeEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieXBMCThemeEnable.AutoSize = true
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieXBMCThemeEnable, 2)
-        Me.chkMovieXBMCThemeEnable.Enabled = false
-        Me.chkMovieXBMCThemeEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieXBMCThemeEnable.Name = "chkMovieXBMCThemeEnable"
-        Me.chkMovieXBMCThemeEnable.Size = New System.Drawing.Size(97, 17)
-        Me.chkMovieXBMCThemeEnable.TabIndex = 0
-        Me.chkMovieXBMCThemeEnable.Text = "Enable Theme"
-        Me.chkMovieXBMCThemeEnable.UseVisualStyleBackColor = true
+        Me.chkMovieThemeTvTunesEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieThemeTvTunesEnable.AutoSize = true
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieThemeTvTunesEnable, 2)
+        Me.chkMovieThemeTvTunesEnable.Enabled = false
+        Me.chkMovieThemeTvTunesEnable.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieThemeTvTunesEnable.Name = "chkMovieThemeTvTunesEnable"
+        Me.chkMovieThemeTvTunesEnable.Size = New System.Drawing.Size(97, 17)
+        Me.chkMovieThemeTvTunesEnable.TabIndex = 0
+        Me.chkMovieThemeTvTunesEnable.Text = "Enable Theme"
+        Me.chkMovieThemeTvTunesEnable.UseVisualStyleBackColor = true
         '
-        'chkMovieXBMCThemeCustom
+        'chkMovieThemeTvTunesCustom
         '
-        Me.chkMovieXBMCThemeCustom.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieXBMCThemeCustom.AutoSize = true
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieXBMCThemeCustom, 2)
-        Me.chkMovieXBMCThemeCustom.Enabled = false
-        Me.chkMovieXBMCThemeCustom.Location = New System.Drawing.Point(3, 49)
-        Me.chkMovieXBMCThemeCustom.Name = "chkMovieXBMCThemeCustom"
-        Me.chkMovieXBMCThemeCustom.Size = New System.Drawing.Size(182, 17)
-        Me.chkMovieXBMCThemeCustom.TabIndex = 1
-        Me.chkMovieXBMCThemeCustom.Text = "Store themes in a custom path"
-        Me.chkMovieXBMCThemeCustom.UseVisualStyleBackColor = true
+        Me.chkMovieThemeTvTunesCustom.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieThemeTvTunesCustom.AutoSize = true
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieThemeTvTunesCustom, 2)
+        Me.chkMovieThemeTvTunesCustom.Enabled = false
+        Me.chkMovieThemeTvTunesCustom.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieThemeTvTunesCustom.Name = "chkMovieThemeTvTunesCustom"
+        Me.chkMovieThemeTvTunesCustom.Size = New System.Drawing.Size(182, 17)
+        Me.chkMovieThemeTvTunesCustom.TabIndex = 1
+        Me.chkMovieThemeTvTunesCustom.Text = "Store themes in a custom path"
+        Me.chkMovieThemeTvTunesCustom.UseVisualStyleBackColor = true
         '
-        'txtMovieXBMCThemeCustomPath
+        'txtMovieThemeTvTunesCustomPath
         '
-        Me.txtMovieXBMCThemeCustomPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieXBMCThemeCustomPath.Enabled = false
-        Me.txtMovieXBMCThemeCustomPath.Location = New System.Drawing.Point(3, 72)
-        Me.txtMovieXBMCThemeCustomPath.Name = "txtMovieXBMCThemeCustomPath"
-        Me.txtMovieXBMCThemeCustomPath.Size = New System.Drawing.Size(200, 22)
-        Me.txtMovieXBMCThemeCustomPath.TabIndex = 2
+        Me.txtMovieThemeTvTunesCustomPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtMovieThemeTvTunesCustomPath.Enabled = false
+        Me.txtMovieThemeTvTunesCustomPath.Location = New System.Drawing.Point(3, 72)
+        Me.txtMovieThemeTvTunesCustomPath.Name = "txtMovieThemeTvTunesCustomPath"
+        Me.txtMovieThemeTvTunesCustomPath.Size = New System.Drawing.Size(200, 22)
+        Me.txtMovieThemeTvTunesCustomPath.TabIndex = 2
         '
         'tpMovieSourcesFileNamingNMT
         '
@@ -11017,13 +11022,13 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.pbTVSourcesTvTunesInfo, 2, 0)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtTVXBMCThemeSubDir, 0, 5)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVXBMCThemeMovie, 0, 1)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.btnTVXBMCThemeCustomPathBrowse, 1, 3)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtTVXBMCThemeCustomPath, 0, 3)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVXBMCThemeEnable, 0, 0)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVXBMCThemeCustom, 0, 2)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVXBMCThemeSub, 0, 4)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtTVShowThemeTvTunesSubDir, 0, 5)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesShowPath, 0, 1)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.btnTVShowThemeTvTunesCustomPathBrowse, 1, 3)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtTVShowThemeTvTunesCustomPath, 0, 3)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesEnable, 0, 0)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesCustom, 0, 2)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesSub, 0, 4)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Name = "tblTVSourcesFileNamingKodiTvTunesOpts"
@@ -11053,82 +11058,82 @@ Partial Class dlgSettings
         Me.pbTVSourcesTvTunesInfo.TabIndex = 13
         Me.pbTVSourcesTvTunesInfo.TabStop = false
         '
-        'txtTVXBMCThemeSubDir
+        'txtTVShowThemeTvTunesSubDir
         '
-        Me.txtTVXBMCThemeSubDir.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtTVXBMCThemeSubDir.Enabled = false
-        Me.txtTVXBMCThemeSubDir.Location = New System.Drawing.Point(3, 123)
-        Me.txtTVXBMCThemeSubDir.Name = "txtTVXBMCThemeSubDir"
-        Me.txtTVXBMCThemeSubDir.Size = New System.Drawing.Size(200, 22)
-        Me.txtTVXBMCThemeSubDir.TabIndex = 3
+        Me.txtTVShowThemeTvTunesSubDir.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtTVShowThemeTvTunesSubDir.Enabled = false
+        Me.txtTVShowThemeTvTunesSubDir.Location = New System.Drawing.Point(3, 123)
+        Me.txtTVShowThemeTvTunesSubDir.Name = "txtTVShowThemeTvTunesSubDir"
+        Me.txtTVShowThemeTvTunesSubDir.Size = New System.Drawing.Size(200, 22)
+        Me.txtTVShowThemeTvTunesSubDir.TabIndex = 3
         '
-        'chkTVXBMCThemeMovie
+        'chkTVShowThemeTvTunesShowPath
         '
-        Me.chkTVXBMCThemeMovie.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVXBMCThemeMovie.AutoSize = true
-        Me.chkTVXBMCThemeMovie.Enabled = false
-        Me.chkTVXBMCThemeMovie.Location = New System.Drawing.Point(3, 26)
-        Me.chkTVXBMCThemeMovie.Name = "chkTVXBMCThemeMovie"
-        Me.chkTVXBMCThemeMovie.Size = New System.Drawing.Size(185, 17)
-        Me.chkTVXBMCThemeMovie.TabIndex = 8
-        Me.chkTVXBMCThemeMovie.Text = "Store themes in show directory"
-        Me.chkTVXBMCThemeMovie.UseVisualStyleBackColor = true
+        Me.chkTVShowThemeTvTunesShowPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVShowThemeTvTunesShowPath.AutoSize = true
+        Me.chkTVShowThemeTvTunesShowPath.Enabled = false
+        Me.chkTVShowThemeTvTunesShowPath.Location = New System.Drawing.Point(3, 26)
+        Me.chkTVShowThemeTvTunesShowPath.Name = "chkTVShowThemeTvTunesShowPath"
+        Me.chkTVShowThemeTvTunesShowPath.Size = New System.Drawing.Size(185, 17)
+        Me.chkTVShowThemeTvTunesShowPath.TabIndex = 8
+        Me.chkTVShowThemeTvTunesShowPath.Text = "Store themes in show directory"
+        Me.chkTVShowThemeTvTunesShowPath.UseVisualStyleBackColor = true
         '
         'btnTVXBMCThemeCustomPathBrowse
         '
-        Me.btnTVXBMCThemeCustomPathBrowse.Enabled = false
-        Me.btnTVXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVXBMCThemeCustomPathBrowse.Location = New System.Drawing.Point(209, 72)
-        Me.btnTVXBMCThemeCustomPathBrowse.Name = "btnTVXBMCThemeCustomPathBrowse"
-        Me.btnTVXBMCThemeCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
-        Me.btnTVXBMCThemeCustomPathBrowse.TabIndex = 7
-        Me.btnTVXBMCThemeCustomPathBrowse.Text = "..."
-        Me.btnTVXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = true
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Enabled = false
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Location = New System.Drawing.Point(209, 72)
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Name = "btnTVXBMCThemeCustomPathBrowse"
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.TabIndex = 7
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.Text = "..."
+        Me.btnTVShowThemeTvTunesCustomPathBrowse.UseVisualStyleBackColor = true
         '
-        'txtTVXBMCThemeCustomPath
+        'txtTVShowThemeTvTunesCustomPath
         '
-        Me.txtTVXBMCThemeCustomPath.Enabled = false
-        Me.txtTVXBMCThemeCustomPath.Location = New System.Drawing.Point(3, 72)
-        Me.txtTVXBMCThemeCustomPath.Name = "txtTVXBMCThemeCustomPath"
-        Me.txtTVXBMCThemeCustomPath.Size = New System.Drawing.Size(200, 22)
-        Me.txtTVXBMCThemeCustomPath.TabIndex = 6
+        Me.txtTVShowThemeTvTunesCustomPath.Enabled = false
+        Me.txtTVShowThemeTvTunesCustomPath.Location = New System.Drawing.Point(3, 72)
+        Me.txtTVShowThemeTvTunesCustomPath.Name = "txtTVShowThemeTvTunesCustomPath"
+        Me.txtTVShowThemeTvTunesCustomPath.Size = New System.Drawing.Size(200, 22)
+        Me.txtTVShowThemeTvTunesCustomPath.TabIndex = 6
         '
-        'chkTVXBMCThemeEnable
+        'chkTVShowThemeTvTunesEnable
         '
-        Me.chkTVXBMCThemeEnable.AutoSize = true
-        Me.chkTVXBMCThemeEnable.Enabled = false
-        Me.chkTVXBMCThemeEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkTVXBMCThemeEnable.Name = "chkTVXBMCThemeEnable"
-        Me.chkTVXBMCThemeEnable.Size = New System.Drawing.Size(74, 17)
-        Me.chkTVXBMCThemeEnable.TabIndex = 5
-        Me.chkTVXBMCThemeEnable.Text = "TV Theme"
-        Me.chkTVXBMCThemeEnable.UseVisualStyleBackColor = true
+        Me.chkTVShowThemeTvTunesEnable.AutoSize = true
+        Me.chkTVShowThemeTvTunesEnable.Enabled = false
+        Me.chkTVShowThemeTvTunesEnable.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVShowThemeTvTunesEnable.Name = "chkTVShowThemeTvTunesEnable"
+        Me.chkTVShowThemeTvTunesEnable.Size = New System.Drawing.Size(74, 17)
+        Me.chkTVShowThemeTvTunesEnable.TabIndex = 5
+        Me.chkTVShowThemeTvTunesEnable.Text = "TV Theme"
+        Me.chkTVShowThemeTvTunesEnable.UseVisualStyleBackColor = true
         '
-        'chkTVXBMCThemeCustom
+        'chkTVShowThemeTvTunesCustom
         '
-        Me.chkTVXBMCThemeCustom.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVXBMCThemeCustom.AutoSize = true
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkTVXBMCThemeCustom, 2)
-        Me.chkTVXBMCThemeCustom.Enabled = false
-        Me.chkTVXBMCThemeCustom.Location = New System.Drawing.Point(3, 49)
-        Me.chkTVXBMCThemeCustom.Name = "chkTVXBMCThemeCustom"
-        Me.chkTVXBMCThemeCustom.Size = New System.Drawing.Size(182, 17)
-        Me.chkTVXBMCThemeCustom.TabIndex = 9
-        Me.chkTVXBMCThemeCustom.Text = "Store themes in a custom path"
-        Me.chkTVXBMCThemeCustom.UseVisualStyleBackColor = true
+        Me.chkTVShowThemeTvTunesCustom.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVShowThemeTvTunesCustom.AutoSize = true
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkTVShowThemeTvTunesCustom, 2)
+        Me.chkTVShowThemeTvTunesCustom.Enabled = false
+        Me.chkTVShowThemeTvTunesCustom.Location = New System.Drawing.Point(3, 49)
+        Me.chkTVShowThemeTvTunesCustom.Name = "chkTVShowThemeTvTunesCustom"
+        Me.chkTVShowThemeTvTunesCustom.Size = New System.Drawing.Size(182, 17)
+        Me.chkTVShowThemeTvTunesCustom.TabIndex = 9
+        Me.chkTVShowThemeTvTunesCustom.Text = "Store themes in a custom path"
+        Me.chkTVShowThemeTvTunesCustom.UseVisualStyleBackColor = true
         '
-        'chkTVXBMCThemeSub
+        'chkTVShowThemeTvTunesSub
         '
-        Me.chkTVXBMCThemeSub.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVXBMCThemeSub.AutoSize = true
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkTVXBMCThemeSub, 2)
-        Me.chkTVXBMCThemeSub.Enabled = false
-        Me.chkTVXBMCThemeSub.Location = New System.Drawing.Point(3, 100)
-        Me.chkTVXBMCThemeSub.Name = "chkTVXBMCThemeSub"
-        Me.chkTVXBMCThemeSub.Size = New System.Drawing.Size(181, 17)
-        Me.chkTVXBMCThemeSub.TabIndex = 10
-        Me.chkTVXBMCThemeSub.Text = "Store themes in sub directorys"
-        Me.chkTVXBMCThemeSub.UseVisualStyleBackColor = true
+        Me.chkTVShowThemeTvTunesSub.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVShowThemeTvTunesSub.AutoSize = true
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkTVShowThemeTvTunesSub, 2)
+        Me.chkTVShowThemeTvTunesSub.Enabled = false
+        Me.chkTVShowThemeTvTunesSub.Location = New System.Drawing.Point(3, 100)
+        Me.chkTVShowThemeTvTunesSub.Name = "chkTVShowThemeTvTunesSub"
+        Me.chkTVShowThemeTvTunesSub.Size = New System.Drawing.Size(181, 17)
+        Me.chkTVShowThemeTvTunesSub.TabIndex = 10
+        Me.chkTVShowThemeTvTunesSub.Text = "Store themes in sub directorys"
+        Me.chkTVShowThemeTvTunesSub.UseVisualStyleBackColor = true
         '
         'tpTVSourcesFileNamingNMT
         '
@@ -18778,7 +18783,7 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieThemeOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieThemeOpts.Name = "gbMovieThemeOpts"
-        Me.gbMovieThemeOpts.Size = New System.Drawing.Size(154, 67)
+        Me.gbMovieThemeOpts.Size = New System.Drawing.Size(131, 44)
         Me.gbMovieThemeOpts.TabIndex = 2
         Me.gbMovieThemeOpts.TabStop = false
         Me.gbMovieThemeOpts.Text = "Themes"
@@ -18789,62 +18794,98 @@ Partial Class dlgSettings
         Me.tblMovieThemeOpts.ColumnCount = 2
         Me.tblMovieThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieThemeOpts.Controls.Add(Me.chkMovieThemeOverwrite, 0, 1)
-        Me.tblMovieThemeOpts.Controls.Add(Me.chkMovieThemeEnable, 0, 0)
+        Me.tblMovieThemeOpts.Controls.Add(Me.chkMovieThemeOverwrite, 0, 0)
         Me.tblMovieThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieThemeOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieThemeOpts.Name = "tblMovieThemeOpts"
-        Me.tblMovieThemeOpts.RowCount = 3
+        Me.tblMovieThemeOpts.RowCount = 2
         Me.tblMovieThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieThemeOpts.Size = New System.Drawing.Size(148, 46)
+        Me.tblMovieThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieThemeOpts.Size = New System.Drawing.Size(125, 23)
         Me.tblMovieThemeOpts.TabIndex = 3
         '
         'chkMovieThemeOverwrite
         '
         Me.chkMovieThemeOverwrite.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieThemeOverwrite.AutoSize = true
-        Me.chkMovieThemeOverwrite.Enabled = false
         Me.chkMovieThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieThemeOverwrite.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieThemeOverwrite.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieThemeOverwrite.Name = "chkMovieThemeOverwrite"
         Me.chkMovieThemeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieThemeOverwrite.TabIndex = 4
         Me.chkMovieThemeOverwrite.Text = "Overwrite Existing"
         Me.chkMovieThemeOverwrite.UseVisualStyleBackColor = true
         '
-        'chkMovieThemeEnable
-        '
-        Me.chkMovieThemeEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieThemeEnable.AutoSize = true
-        Me.chkMovieThemeEnable.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieThemeEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieThemeEnable.Name = "chkMovieThemeEnable"
-        Me.chkMovieThemeEnable.Size = New System.Drawing.Size(142, 17)
-        Me.chkMovieThemeEnable.TabIndex = 0
-        Me.chkMovieThemeEnable.Text = "Enable Theme Support"
-        Me.chkMovieThemeEnable.UseVisualStyleBackColor = true
-        '
         'pnlTVThemes
         '
+        Me.pnlTVThemes.AutoSize = true
         Me.pnlTVThemes.BackColor = System.Drawing.Color.White
-        Me.pnlTVThemes.Controls.Add(Me.Label2)
+        Me.pnlTVThemes.Controls.Add(Me.tblTVThemes)
         Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlTVThemes.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVThemes.Name = "pnlTVThemes"
-        Me.pnlTVThemes.Size = New System.Drawing.Size(750, 500)
+        Me.pnlTVThemes.Size = New System.Drawing.Size(162, 73)
         Me.pnlTVThemes.TabIndex = 23
         Me.pnlTVThemes.Visible = false
         '
-        'Label2
+        'tblTVThemes
         '
-        Me.Label2.AutoSize = true
-        Me.Label2.Location = New System.Drawing.Point(206, 235)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(131, 13)
-        Me.Label2.TabIndex = 0
-        Me.Label2.Text = "TV Themes Dummy Label"
+        Me.tblTVThemes.AutoScroll = true
+        Me.tblTVThemes.AutoSize = true
+        Me.tblTVThemes.ColumnCount = 2
+        Me.tblTVThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVThemes.Controls.Add(Me.gbTVThemeOpts, 0, 0)
+        Me.tblTVThemes.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVThemes.Location = New System.Drawing.Point(0, 0)
+        Me.tblTVThemes.Name = "tblTVThemes"
+        Me.tblTVThemes.RowCount = 2
+        Me.tblTVThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVThemes.Size = New System.Drawing.Size(162, 73)
+        Me.tblTVThemes.TabIndex = 4
+        '
+        'gbTVThemeOpts
+        '
+        Me.gbTVThemeOpts.AutoSize = true
+        Me.gbTVThemeOpts.Controls.Add(Me.tblTVThemeOpts)
+        Me.gbTVThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVThemeOpts.Location = New System.Drawing.Point(3, 3)
+        Me.gbTVThemeOpts.Name = "gbTVThemeOpts"
+        Me.gbTVThemeOpts.Size = New System.Drawing.Size(131, 44)
+        Me.gbTVThemeOpts.TabIndex = 2
+        Me.gbTVThemeOpts.TabStop = false
+        Me.gbTVThemeOpts.Text = "Themes"
+        '
+        'tblTVThemeOpts
+        '
+        Me.tblTVThemeOpts.AutoSize = true
+        Me.tblTVThemeOpts.ColumnCount = 2
+        Me.tblTVThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVThemeOpts.Controls.Add(Me.chkTVShowThemeOverwrite, 0, 0)
+        Me.tblTVThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVThemeOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVThemeOpts.Name = "tblTVThemeOpts"
+        Me.tblTVThemeOpts.RowCount = 2
+        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblTVThemeOpts.Size = New System.Drawing.Size(125, 23)
+        Me.tblTVThemeOpts.TabIndex = 3
+        '
+        'chkTVThemeOverwrite
+        '
+        Me.chkTVShowThemeOverwrite.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVShowThemeOverwrite.AutoSize = true
+        Me.chkTVShowThemeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowThemeOverwrite.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVShowThemeOverwrite.Name = "chkTVThemeOverwrite"
+        Me.chkTVShowThemeOverwrite.Size = New System.Drawing.Size(119, 17)
+        Me.chkTVShowThemeOverwrite.TabIndex = 4
+        Me.chkTVShowThemeOverwrite.Text = "Overwrite Existing"
+        Me.chkTVShowThemeOverwrite.UseVisualStyleBackColor = true
         '
         'pnlMovieSetGeneral
         '
@@ -21789,6 +21830,12 @@ Partial Class dlgSettings
         Me.tblMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
+        Me.tblTVThemes.ResumeLayout(false)
+        Me.tblTVThemes.PerformLayout
+        Me.gbTVThemeOpts.ResumeLayout(false)
+        Me.gbTVThemeOpts.PerformLayout
+        Me.tblTVThemeOpts.ResumeLayout(false)
+        Me.tblTVThemeOpts.PerformLayout
         Me.pnlMovieSetGeneral.ResumeLayout(false)
         Me.pnlMovieSetGeneral.PerformLayout
         Me.tblMovieSetGeneral.ResumeLayout(false)
@@ -22480,14 +22527,14 @@ End Sub
     Friend WithEvents chkTVShowFanartFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowPosterFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents gbTVSourcesFileNamingKodiADOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkTVXBMCThemeEnable As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowThemeTvTunesEnable As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonLandscapeAD As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowLandscapeAD As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowCharacterArtAD As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowClearArtAD As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowClearLogoAD As System.Windows.Forms.CheckBox
-    Friend WithEvents txtTVXBMCThemeCustomPath As System.Windows.Forms.TextBox
-    Friend WithEvents btnTVXBMCThemeCustomPathBrowse As System.Windows.Forms.Button
+    Friend WithEvents txtTVShowThemeTvTunesCustomPath As System.Windows.Forms.TextBox
+    Friend WithEvents btnTVShowThemeTvTunesCustomPathBrowse As System.Windows.Forms.Button
     Friend WithEvents gbTVImagesShowBannerOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtTVShowBannerWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtTVShowBannerHeight As System.Windows.Forms.TextBox
@@ -22595,15 +22642,14 @@ End Sub
     Friend WithEvents chkTVScraperShowStatus As System.Windows.Forms.CheckBox
     Friend WithEvents pnlMovieThemes As System.Windows.Forms.Panel
     Friend WithEvents pnlTVThemes As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents gbMovieSourcesFileNamingKodiTvTunesOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents btnMovieXBMCThemeCustomPathBrowse As System.Windows.Forms.Button
-    Friend WithEvents chkMovieXBMCThemeSub As System.Windows.Forms.CheckBox
-    Friend WithEvents txtMovieXBMCThemeSubDir As System.Windows.Forms.TextBox
-    Friend WithEvents txtMovieXBMCThemeCustomPath As System.Windows.Forms.TextBox
-    Friend WithEvents chkMovieXBMCThemeCustom As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieXBMCThemeEnable As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieXBMCThemeMovie As System.Windows.Forms.CheckBox
+    Friend WithEvents btnMovieThemeTvTunesCustomPathBrowse As System.Windows.Forms.Button
+    Friend WithEvents chkMovieThemeTvTunesSub As System.Windows.Forms.CheckBox
+    Friend WithEvents txtMovieThemeTvTunesSubDir As System.Windows.Forms.TextBox
+    Friend WithEvents txtMovieThemeTvTunesCustomPath As System.Windows.Forms.TextBox
+    Friend WithEvents chkMovieThemeTvTunesCustom As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieThemeTvTunesEnable As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieThemeTvTunesMoviePath As System.Windows.Forms.CheckBox
     Friend WithEvents gbFileSystemValidThemeExts As System.Windows.Forms.GroupBox
     Friend WithEvents btnFileSystemValidThemeExtsReset As System.Windows.Forms.Button
     Friend WithEvents btnFileSystemValidThemeExtsRemove As System.Windows.Forms.Button
@@ -22612,7 +22658,6 @@ End Sub
     Friend WithEvents lstFileSystemValidThemeExts As System.Windows.Forms.ListBox
     Friend WithEvents gbMovieThemeOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieThemeOverwrite As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieThemeEnable As System.Windows.Forms.CheckBox
     Friend WithEvents tpMovieSourcesFileNamingBoxee As System.Windows.Forms.TabPage
     Friend WithEvents gbMovieSourcesFileNamingBoxeeDefaultsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieUseBoxee As System.Windows.Forms.CheckBox
@@ -23121,10 +23166,10 @@ End Sub
     Friend WithEvents lblTVSourcesFileNamingXBMCDefaultsPoster As System.Windows.Forms.Label
     Friend WithEvents tblTVSourcesFileNamingXBMC As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVSourcesFileNamingKodiTvTunesOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtTVXBMCThemeSubDir As System.Windows.Forms.TextBox
-    Friend WithEvents chkTVXBMCThemeMovie As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTVXBMCThemeCustom As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTVXBMCThemeSub As System.Windows.Forms.CheckBox
+    Friend WithEvents txtTVShowThemeTvTunesSubDir As System.Windows.Forms.TextBox
+    Friend WithEvents chkTVShowThemeTvTunesShowPath As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowThemeTvTunesCustom As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowThemeTvTunesSub As System.Windows.Forms.CheckBox
     Friend WithEvents tblTVSources As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVSourcesFileNamingNMT As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblTVSourcesFileNamingNMTDefaultsOpts As System.Windows.Forms.TableLayoutPanel
@@ -23398,4 +23443,8 @@ End Sub
     Friend WithEvents chkTVShowLandscapeExtended As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVSourcesFileNamingXBMCExtendedCharacterArt As System.Windows.Forms.Label
     Friend WithEvents chkTVShowCharacterArtExtended As System.Windows.Forms.CheckBox
+    Friend WithEvents tblTVThemes As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbTVThemeOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents tblTVThemeOpts As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkTVShowThemeOverwrite As System.Windows.Forms.CheckBox
 End Class

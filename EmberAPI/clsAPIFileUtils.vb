@@ -1511,22 +1511,22 @@ Namespace FileUtils
                 Case Enums.ModifierType.MainTheme
                     With Master.eSettings
                         If isVideoTS Then
-                            If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
-                                If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(basePath, "theme"))
-                                If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
-                                If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, .MovieXBMCThemeSubDir, Path.DirectorySeparatorChar, "theme"))
+                            If .MovieUseFrodo AndAlso .MovieThemeTvTunesEnable Then
+                                If .MovieThemeTvTunesMoviePath Then FilenameList.Add(Path.Combine(basePath, "theme"))
+                                If .MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath) Then FilenameList.Add(Path.Combine(.MovieThemeTvTunesCustomPath, "theme"))
+                                If .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, .MovieThemeTvTunesSubDir, Path.DirectorySeparatorChar, "theme"))
                             End If
                         ElseIf isBDRip Then
-                            If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
-                                If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(basePath, "theme"))
-                                If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
-                                If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, .MovieXBMCThemeSubDir, Path.DirectorySeparatorChar, "theme"))
+                            If .MovieUseFrodo AndAlso .MovieThemeTvTunesEnable Then
+                                If .MovieThemeTvTunesMoviePath Then FilenameList.Add(Path.Combine(basePath, "theme"))
+                                If .MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath) Then FilenameList.Add(Path.Combine(.MovieThemeTvTunesCustomPath, "theme"))
+                                If .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, .MovieThemeTvTunesSubDir, Path.DirectorySeparatorChar, "theme"))
                             End If
                         Else
-                            If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
-                                If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(fileParPath, "theme"))
-                                If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
-                                If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(fileParPath, Path.DirectorySeparatorChar, .MovieXBMCThemeSubDir, Path.DirectorySeparatorChar, "theme"))
+                            If .MovieUseFrodo AndAlso .MovieThemeTvTunesEnable Then
+                                If .MovieThemeTvTunesMoviePath Then FilenameList.Add(Path.Combine(fileParPath, "theme"))
+                                If .MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath) Then FilenameList.Add(Path.Combine(.MovieThemeTvTunesCustomPath, "theme"))
+                                If .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir) Then FilenameList.Add(String.Concat(fileParPath, Path.DirectorySeparatorChar, .MovieThemeTvTunesSubDir, Path.DirectorySeparatorChar, "theme"))
                             End If
                         End If
                     End With
@@ -2053,6 +2053,15 @@ Namespace FileUtils
                             For Each a In .TVShowPosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
+                        End If
+                    End With
+
+                Case Enums.ModifierType.MainTheme
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVShowThemeTvTunesEnable Then
+                            If .TVShowThemeTvTunesShowPath Then FilenameList.Add(Path.Combine(fShowPath, "theme"))
+                            If .TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.TVShowThemeTvTunesCustomPath) Then FilenameList.Add(Path.Combine(.TVShowThemeTvTunesCustomPath, "theme"))
+                            If .TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.TVShowThemeTvTunesSubDir) Then FilenameList.Add(String.Concat(fShowPath, Path.DirectorySeparatorChar, .TVShowThemeTvTunesSubDir, Path.DirectorySeparatorChar, "theme"))
                         End If
                     End With
             End Select

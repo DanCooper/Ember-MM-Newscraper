@@ -118,7 +118,7 @@ Public Class Trailers
     ''' <param name="sPath"></param>
     ''' <remarks>This version of Delete is wrapped in a try-catch block which 
     ''' will log errors before safely returning.</remarks>
-    Public Sub Delete(ByVal sPath As String)
+    Public Shared Sub Delete(ByVal sPath As String)
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 File.Delete(sPath)
@@ -132,7 +132,7 @@ Public Class Trailers
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieTrailer(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieTrailer(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try

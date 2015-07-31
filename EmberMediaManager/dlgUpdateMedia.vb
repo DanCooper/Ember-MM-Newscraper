@@ -126,7 +126,7 @@ Public Class dlgUpdateMedia
                 chkModPoster.Checked = chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster)
                 chkModMeta.Checked = chkModAll.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan
                 chkModNFO.Checked = chkModAll.Checked
-                chkModTheme.Checked = chkModAll.Checked AndAlso .MovieThemeEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTheme)
+                chkModTheme.Checked = chkModAll.Checked AndAlso .MovieThemeTvTunesEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTheme)
                 chkModTrailer.Checked = chkModAll.Checked AndAlso .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTrailer)
                 chkOptsAll.Checked = chkModAll.Checked
             Else
@@ -146,7 +146,7 @@ Public Class dlgUpdateMedia
             chkModMeta.Enabled = Not chkModAll.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkModNFO.Checked)
             chkModNFO.Enabled = Not chkModAll.Checked
             chkModPoster.Enabled = Not chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster)
-            chkModTheme.Enabled = Not chkModAll.Checked AndAlso .MovieThemeEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTheme)
+            chkModTheme.Enabled = Not chkModAll.Checked AndAlso .MovieThemeTvTunesEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTheme)
             chkModTrailer.Enabled = Not chkModAll.Checked AndAlso .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTrailer)
             chkOptsAll.Enabled = Not chkModAll.Checked
 

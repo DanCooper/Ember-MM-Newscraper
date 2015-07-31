@@ -3389,6 +3389,23 @@ Public Class Database
                 Next
             End If
         End Using
+
+        'YAMJ watched file
+        If _movieDB.Movie.PlayCountSpecified AndAlso Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+            For Each a In FileUtils.GetFilenameList.Movie(_movieDB.Filename, _movieDB.IsSingle, Enums.ModifierType.MainWatchedFile)
+                If Not File.Exists(a) Then
+                    Dim fs As FileStream = File.Create(a)
+                    fs.Close()
+                End If
+            Next
+        ElseIf Not _movieDB.Movie.PlayCountSpecified AndAlso Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+            For Each a In FileUtils.GetFilenameList.Movie(_movieDB.Filename, _movieDB.IsSingle, Enums.ModifierType.MainWatchedFile)
+                If File.Exists(a) Then
+                    File.Delete(a)
+                End If
+            Next
+        End If
+
         If Not BatchMode Then SQLtransaction.Commit()
 
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, _movieDB)
@@ -4467,45 +4484,6 @@ Public Class Database
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-    ''' <summary>
-    ''' Save the PlayCount Tag for watched movie  into Ember database /NFO if not already set
-    ''' </summary>
-    ''' <param name="WatchedMovieData">The watched movie as Keypair</param>
-    ''' <remarks>    
-    ''' cocotus 2013/02 Trakt.tv syncing - Movies
-    ''' not using loop here, only do one movie a time (call function repeatedly!)! -> only deliver keypair instead of whole dictionary
-    ''' Old-> Public Sub SaveMoviePlayCountInDatabase(ByVal myWatchedMovies As Dictionary(Of String, KeyValuePair(Of String, String)))
-    ''' </remarks>
-    Public Sub SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer)), ByVal BatchMode As Boolean)
-        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT idMovie, Playcount FROM movie WHERE Imdb = '{0}';", WatchedMovieData.Value.Key)
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                If SQLreader.HasRows Then
-                    While SQLreader.Read
-                        Dim currPlaycount As String = If(Not DBNull.Value.Equals(SQLreader("Playcount")), SQLreader("Playcount").ToString, Nothing) 'Playcount is always Nothing or > 0
-                        If currPlaycount Is Nothing OrElse Not CInt(currPlaycount) = WatchedMovieData.Value.Value Then
-                            Dim _movieSavetoNFO = Master.DB.LoadMovieFromDB(CInt(SQLreader("idMovie")))
-                            _movieSavetoNFO.Movie.PlayCount = WatchedMovieData.Value.Value.ToString
-                            Master.DB.SaveMovieToDB(_movieSavetoNFO, False, BatchMode, True)
-
-                            'TODO @DanCooper Please move following YAMJ part out of this function and delete function because its no longer needed!
-                            'create .watched files
-                            If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                                For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModifierType.MainWatchedFile)
-                                    If Not File.Exists(a) Then
-                                        Dim fs As FileStream = File.Create(a)
-                                        fs.Close()
-                                    End If
-                                Next
-                            End If
-                        End If
-                    End While
-                End If
-            End Using
-        End Using
-    End Sub
-
-
     ''' <summary>
     ''' Check if provided querystring is valid SQL
     ''' </summary>

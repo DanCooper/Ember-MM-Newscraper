@@ -191,7 +191,7 @@ Public Class Themes
     ''' <param name="sPath"></param>
     ''' <remarks>This version of Delete is wrapped in a try-catch block which 
     ''' will log errors before safely returning.</remarks>
-    Public Sub Delete(ByVal sPath As String)
+    Public Shared Sub Delete(ByVal sPath As String)
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 File.Delete(sPath)
@@ -203,13 +203,13 @@ Public Class Themes
     ''' <summary>
     ''' Delete the movie themes
     ''' </summary>
-    ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
+    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMovieTheme(ByVal mMovie As Structures.DBMovie)
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return
+    Public Shared Sub DeleteMovieTheme(ByVal DBMovie As Structures.DBMovie)
+        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainTheme)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainTheme)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -217,7 +217,27 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the tv show themes
+    ''' </summary>
+    ''' <param name="DBTVShow"><c>DBMovie</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Shared Sub DeleteTVShowTheme(ByVal DBTVShow As Structures.DBTV)
+        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow.ShowPath, Enums.ModifierType.MainTheme)
+                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                    If File.Exists(String.Concat(a, t)) Then
+                        Delete(String.Concat(a, t))
+                    End If
+                Next
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -347,10 +367,10 @@ Public Class Themes
     Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeOverwrite) AndAlso .MovieXBMCThemeEnable AndAlso _
-                    (mMovie.IsSingle AndAlso .MovieXBMCThemeMovie) OrElse _
-                    (mMovie.IsSingle AndAlso .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir)) OrElse _
-                    (.MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath)) Then
+                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeOverwrite) AndAlso .MovieThemeTvTunesEnable AndAlso _
+                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesMoviePath) OrElse _
+                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir)) OrElse _
+                    (.MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath)) Then
                     Return True
                 Else
                     Return False

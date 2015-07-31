@@ -1349,12 +1349,12 @@
   <string id="1257">Country-Tag: Save country abbreviation(s) instead of full name(s)</string>
   <string id="1258">Store themes in movie directory</string>
   <string id="1259">Store themes in a custom path</string>
-  <string id="1260">Store themes in sub directorys</string>
+  <string id="1260">Store themes in sub directories</string>
   <string id="1261">Configuration ISO Filescanning</string>
   <string id="1262">Use Show Runtime for Episodes if no Episode Runtime can be found</string>
   <string id="1263">TMDB Collection ID found</string>
   <string id="1264">Should the Collection ID of the movie "{0}" be used as ID for this Collection?</string>
-  <string id="1265"></string>
+  <string id="1265">Store themes in tv show directory</string>
   <string id="1266">Add Movie automatically to Collections</string>
   <string id="1267">Search the movieset titles by entering text here.</string>
   <string id="1268">Search the tv show titles by entering text here.</string>
