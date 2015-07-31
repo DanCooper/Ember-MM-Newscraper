@@ -644,33 +644,10 @@ Public Class Enums
         SeasonFanart = 27
         SeasonLandscape = 28
         SeasonPoster = 29
-        withEpisodes = 30
-        withSeasons = 31
-    End Enum
-    ''' <summary>
-    ''' Enum representing possible scrape data types
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ModType_Movie As Integer
-        MainNFO = 0
-        MainPoster = 1
-        MainFanart = 2
-        MainEThumbs = 3
-        MainTrailer = 4
-        MainMeta = 5
-        All = 6
-        DoSearch = 7
-        MainActorThumbs = 8
-        MainEFanarts = 9
-        MainBanner = 10
-        MainDiscArt = 11
-        MainClearLogo = 12
-        MainClearArt = 13
-        MainLandscape = 14
-        WatchedFile = 15
-        MainCharacterArt = 16
-        MainTheme = 17
-        Subtitle = 18
+        Subtitle = 30
+        WatchedFile = 31
+        withEpisodes = 32
+        withSeasons = 32
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities

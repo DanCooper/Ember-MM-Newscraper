@@ -2083,20 +2083,13 @@ Public Class frmMain
 
                 'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Movie" window)
                 If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    If DBScrapeMovie.RemoveActorThumbs Then
-                        For Each a In FileUtils.GetFilenameList.Movie(DBScrapeMovie.Filename, DBScrapeMovie.IsSingle, Enums.ModType_Movie.MainActorThumbs)
-                            Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                            If Directory.Exists(tmpPath) Then
-                                FileUtils.Delete.DeleteDirectory(tmpPath)
-                            End If
-                        Next
-                    End If
+                    If DBScrapeMovie.RemoveActorThumbs Then Images.DeleteMovieActorThumbs(DBScrapeMovie)
                     If DBScrapeMovie.RemoveBanner Then Images.DeleteMovieBanner(DBScrapeMovie)
                     If DBScrapeMovie.RemoveClearArt Then Images.DeleteMovieClearArt(DBScrapeMovie)
                     If DBScrapeMovie.RemoveClearLogo Then Images.DeleteMovieClearLogo(DBScrapeMovie)
                     If DBScrapeMovie.RemoveDiscArt Then Images.DeleteMovieDiscArt(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveEFanarts Then Images.DeleteMovieEFanarts(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveEThumbs Then Images.DeleteMovieEThumbs(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveEFanarts Then Images.DeleteMovieEFanarts(DBScrapeMovie)
+                    If DBScrapeMovie.RemoveEThumbs Then Images.DeleteMovieEThumbs(DBScrapeMovie)
                     If DBScrapeMovie.RemoveFanart Then Images.DeleteMovieFanart(DBScrapeMovie)
                     If DBScrapeMovie.RemoveLandscape Then Images.DeleteMovieLandscape(DBScrapeMovie)
                     If DBScrapeMovie.RemovePoster Then Images.DeleteMoviePoster(DBScrapeMovie)
@@ -3346,25 +3339,15 @@ Public Class frmMain
 
                 'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Show" window)
                 If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    If DBScrapeShow.RemoveActorThumbs Then
-                        For Each a In FileUtils.GetFilenameList.TVShow(DBScrapeShow.ShowPath, Enums.ModType.MainActorThumbs)
-                            Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                            If Directory.Exists(tmpPath) Then
-                                FileUtils.Delete.DeleteDirectory(tmpPath)
-                            End If
-                        Next
-                    End If
-                    'If DBScrapeMovie.RemoveBanner Then Banner.WebImage.DeleteMovieBanner(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveClearArt Then ClearArt.WebImage.DeleteMovieClearArt(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveClearLogo Then ClearLogo.WebImage.DeleteMovieClearLogo(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveDiscArt Then DiscArt.WebImage.DeleteMovieDiscArt(DBScrapeMovie)
-                    ''If DBScrapeMovie.RemoveEFanarts Then EFanarts.WebImage.DeleteMovieEFanarts(DBScrapeMovie)
-                    ''If DBScrapeMovie.RemoveEThumbs Then EThumbs.WebImage.DeleteMovieEThumbs(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveFanart Then Fanart.WebImage.DeleteMovieFanart(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveLandscape Then Landscape.WebImage.DeleteMovieLandscape(DBScrapeMovie)
-                    'If DBScrapeMovie.RemovePoster Then Poster.WebImage.DeleteMoviePoster(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveTheme Then Theme.WebTheme.DeleteMovieTheme(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveTrailer Then Trailer.WebTrailer.DeleteMovieTrailer(DBScrapeMovie)
+                    If DBScrapeShow.RemoveActorThumbs Then Images.DeleteTVShowActorThumbs(DBScrapeShow)
+                    If DBScrapeShow.RemoveBanner Then Images.DeleteTVShowBanner(DBScrapeShow)
+                    If DBScrapeShow.RemoveCharacterArt Then Images.DeleteTVShowCharacterArt(DBScrapeShow)
+                    If DBScrapeShow.RemoveClearArt Then Images.DeleteTVShowClearArt(DBScrapeShow)
+                    If DBScrapeShow.RemoveClearLogo Then Images.DeleteTVShowClearLogo(DBScrapeShow)
+                    If DBScrapeShow.RemoveEFanarts Then Images.DeleteTVShowEFanarts(DBScrapeShow)
+                    If DBScrapeShow.RemoveFanart Then Images.DeleteTVShowFanart(DBScrapeShow)
+                    If DBScrapeShow.RemoveLandscape Then Images.DeleteTVShowLandscape(DBScrapeShow)
+                    If DBScrapeShow.RemovePoster Then Images.DeleteTVShowPoster(DBScrapeShow)
                 End If
 
                 'get all images
@@ -4096,25 +4079,9 @@ Public Class frmMain
 
                 'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Show" window)
                 If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    If DBScrapeEpisode.RemoveActorThumbs Then
-                        For Each a In FileUtils.GetFilenameList.TVEpisode(DBScrapeEpisode.Filename, Enums.ModType.EpisodeActorThumbs)
-                            Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                            If Directory.Exists(tmpPath) Then
-                                FileUtils.Delete.DeleteDirectory(tmpPath)
-                            End If
-                        Next
-                    End If
-                    'If DBScrapeMovie.RemoveBanner Then Banner.WebImage.DeleteMovieBanner(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveClearArt Then ClearArt.WebImage.DeleteMovieClearArt(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveClearLogo Then ClearLogo.WebImage.DeleteMovieClearLogo(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveDiscArt Then DiscArt.WebImage.DeleteMovieDiscArt(DBScrapeMovie)
-                    ''If DBScrapeMovie.RemoveEFanarts Then EFanarts.WebImage.DeleteMovieEFanarts(DBScrapeMovie)
-                    ''If DBScrapeMovie.RemoveEThumbs Then EThumbs.WebImage.DeleteMovieEThumbs(DBScrapeMovie)
+                    If DBScrapeEpisode.RemoveActorThumbs Then Images.DeleteTVEpisodeActorThumbs(DBScrapeEpisode)
                     If DBScrapeEpisode.RemoveFanart Then Images.DeleteTVEpisodeFanart(DBScrapeEpisode)
-                    'If DBScrapeMovie.RemoveLandscape Then Landscape.WebImage.DeleteMovieLandscape(DBScrapeMovie)
                     If DBScrapeEpisode.RemovePoster Then Images.DeleteTVEpisodePoster(DBScrapeEpisode)
-                    'If DBScrapeMovie.RemoveTheme Then Theme.WebTheme.DeleteMovieTheme(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveTrailer Then Trailer.WebTrailer.DeleteMovieTrailer(DBScrapeMovie)
                 End If
 
                 'get all images
@@ -8736,11 +8703,11 @@ doCancel:
             'End If
             '    Select Case e.ColumnIndex
             '        Case 4 'Poster
-            '            Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
+            '            Functions.SetScraperMod(Enums.ModType.Poster, True)
             '        Case 5 'Fanart
-            '            Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
+            '            Functions.SetScraperMod(Enums.ModType.Fanart, True)
             '        Case 6 'Nfo
-            '            Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+            '            Functions.SetScraperMod(Enums.ModType.NFO, True)
             '    End Select
             '    If Master.eSettings.TVEpisodeClickScrapeAsk Then
             '        TVEpisodeScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultTVOptions)
@@ -12170,31 +12137,31 @@ doCancel:
         '                    Exit For
         '                End If
         '            Case "-all"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.All, True)
+        '                Functions.SetScraperMod(Enums.ModType.All, True)
         '            Case "-banner"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.Banner, True)
+        '                Functions.SetScraperMod(Enums.ModType.Banner, True)
         '            Case "-clearart"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
+        '                Functions.SetScraperMod(Enums.ModType.ClearArt, True)
         '            Case "-clearlogo"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.ClearLogo, True)
+        '                Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
         '            Case "-discart"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.DiscArt, True)
+        '                Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         '            Case "-efanarts"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.EFanarts, True)
+        '                Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         '            Case "-ethumbs"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.EThumbs, True)
+        '                Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         '            Case "-fanart"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.Fanart, True)
+        '                Functions.SetScraperMod(Enums.ModType.Fanart, True)
         '            Case "-landscape"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.Landscape, True)
+        '                Functions.SetScraperMod(Enums.ModType.Landscape, True)
         '            Case "-nfo"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.NFO, True)
+        '                Functions.SetScraperMod(Enums.ModType.NFO, True)
         '            Case "-poster"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.Poster, True)
+        '                Functions.SetScraperMod(Enums.ModType.Poster, True)
         '            Case "-theme"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.Theme, True)
+        '                Functions.SetScraperMod(Enums.ModType.Theme, True)
         '            Case "-trailer"
-        '                Functions.SetScraperMod(Enums.ModType_Movie.Trailer, True)
+        '                Functions.SetScraperMod(Enums.ModType.Trailer, True)
         '            Case "--verbose"
         '                clAsk = True
         '            Case "-nowindow"
@@ -17081,7 +17048,7 @@ doCancel:
             End If
 
             If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDB.Filename, tmpMovieDB.IsSingle, Enums.ModType_Movie.WatchedFile)
+                For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDB.Filename, tmpMovieDB.IsSingle, Enums.ModType.WatchedFile)
                     If delWatched Then
                         If File.Exists(a) Then
                             File.Delete(a)

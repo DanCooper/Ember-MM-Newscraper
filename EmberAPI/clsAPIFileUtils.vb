@@ -790,7 +790,7 @@ Namespace FileUtils
         ''' <param name="mType"></param>
         ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
         ''' <remarks></remarks>
-        Public Shared Function Movie(ByVal mPath As String, ByVal isSingle As Boolean, ByVal mType As Enums.ModType_Movie) As List(Of String)
+        Public Shared Function Movie(ByVal mPath As String, ByVal isSingle As Boolean, ByVal mType As Enums.ModType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             Dim fPath As String = mPath
@@ -809,7 +809,7 @@ Namespace FileUtils
             If isBDRip Then basePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).FullName
 
             Select Case mType
-                Case Enums.ModType_Movie.MainActorThumbs
+                Case Enums.ModType.MainActorThumbs
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(fileParPath, "\.actors", "\<placeholder>.jpg"))
@@ -846,7 +846,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainBanner
+                Case Enums.ModType.MainBanner
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieBannerAD Then FilenameList.Add(Path.Combine(basePath, "banner.jpg"))
@@ -921,7 +921,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainClearArt
+                Case Enums.ModType.MainClearArt
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieClearArtAD Then FilenameList.Add(Path.Combine(basePath, "clearart.png"))
@@ -988,7 +988,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainClearLogo
+                Case Enums.ModType.MainClearLogo
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieClearLogoAD Then FilenameList.Add(Path.Combine(basePath, "logo.png"))
@@ -1055,7 +1055,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainDiscArt
+                Case Enums.ModType.MainDiscArt
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieDiscArtAD Then FilenameList.Add(Path.Combine(basePath, "disc.png"))
@@ -1122,7 +1122,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainEFanarts
+                Case Enums.ModType.MainEFanarts
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieExtrafanartsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
@@ -1155,7 +1155,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainEThumbs
+                Case Enums.ModType.MainEThumbs
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieExtrathumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
@@ -1188,7 +1188,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainFanart
+                Case Enums.ModType.MainFanart
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseBoxee AndAlso .MovieFanartBoxee Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
@@ -1266,7 +1266,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainLandscape
+                Case Enums.ModType.MainLandscape
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieLandscapeAD Then FilenameList.Add(Path.Combine(basePath, "landscape.jpg"))
@@ -1334,7 +1334,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainNFO
+                Case Enums.ModType.MainNFO
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseBoxee AndAlso .MovieNFOBoxee Then FilenameList.Add(String.Concat(filePath, ".nfo"))
@@ -1417,7 +1417,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainPoster
+                Case Enums.ModType.MainPoster
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseBoxee AndAlso .MoviePosterBoxee Then FilenameList.Add(Path.Combine(basePath, "folder.jpg"))
@@ -1496,7 +1496,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.Subtitle
+                Case Enums.ModType.Subtitle
                     With Master.eSettings
                         If isVideoTS Then
                             FilenameList.Add(Path.Combine(basePath, "subs"))
@@ -1508,7 +1508,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainTheme
+                Case Enums.ModType.MainTheme
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
@@ -1531,7 +1531,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainTrailer
+                Case Enums.ModType.MainTrailer
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseEden AndAlso .MovieTrailerEden Then FilenameList.Add(String.Concat(filePath, "-trailer"))
@@ -1606,7 +1606,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.WatchedFile
+                Case Enums.ModType.WatchedFile
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseYAMJ AndAlso .MovieYAMJWatchedFile AndAlso String.IsNullOrEmpty(.MovieYAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(basePath, Directory.GetParent(fileParPath).Name), ".watched"))
@@ -1630,7 +1630,7 @@ Namespace FileUtils
         ''' <param name="mType"></param>
         ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
         ''' <remarks></remarks>
-        Public Shared Function MovieSet(ByVal SetName As String, ByVal mType As Enums.ModType_Movie) As List(Of String)
+        Public Shared Function MovieSet(ByVal SetName As String, ByVal mType As Enums.ModType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             Dim fSetName As String = SetName
@@ -1645,7 +1645,7 @@ Namespace FileUtils
             Next
 
             Select Case mType
-                Case Enums.ModType_Movie.MainNFO
+                Case Enums.ModType.MainNFO
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetNFOMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetNFOExpertSingle) Then
@@ -1655,7 +1655,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainPoster
+                Case Enums.ModType.MainPoster
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetPosterMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-poster.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetPosterExpertSingle) Then
@@ -1670,7 +1670,7 @@ Namespace FileUtils
                         'End If
                     End With
 
-                Case Enums.ModType_Movie.MainFanart
+                Case Enums.ModType.MainFanart
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetFanartMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-fanart.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetFanartExpertSingle) Then
@@ -1680,7 +1680,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainBanner
+                Case Enums.ModType.MainBanner
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetBannerMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-banner.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetBannerExpertSingle) Then
@@ -1690,7 +1690,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainClearLogo
+                Case Enums.ModType.MainClearLogo
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetClearLogoMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-logo.png")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearLogoExpertSingle) Then
@@ -1700,7 +1700,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainClearArt
+                Case Enums.ModType.MainClearArt
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetClearArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.png")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearArtExpertSingle) Then
@@ -1710,7 +1710,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainDiscArt
+                Case Enums.ModType.MainDiscArt
                     With Master.eSettings
                         'If .MovieSetUseMSAA AndAlso .MovieSetDiscArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.png")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetDiscArtExpertSingle) Then
@@ -1720,7 +1720,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType_Movie.MainLandscape
+                Case Enums.ModType.MainLandscape
                     With Master.eSettings
                         If .MovieSetUseMSAA AndAlso .MovieSetLandscapeMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-landscape.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetLandscapeExpertSingle) Then
@@ -2119,52 +2119,52 @@ Namespace FileUtils
                         RaiseEvent ProgressUpdated((iCount \ lFi.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
                         tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
                         '...clean fanart and trailer decorations...
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainBanner)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainBanner)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainCharacterArt)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainCharacterArt)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainClearArt)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainClearArt)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainClearLogo)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainClearLogo)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainDiscArt)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainDiscArt)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainFanart)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainFanart)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainLandscape)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainLandscape)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainNFO)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainNFO)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainPoster)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainPoster)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType_Movie.MainTrailer)
+                        For Each a In FileUtils.GetFilenameList.Movie("dummyname.ext", False, Enums.ModType.MainTrailer)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
