@@ -41,7 +41,7 @@ Public Class dlgImgSelect
     Private chkImageEF() As CheckBox
     Private pnlImageET() As Panel
     Private pnlImageEF() As Panel
-    Private DLType As Enums.ImageType_Movie
+    Private DLType As Enums.ModifierType
     Private isWorkerDone As Boolean = False
     'Private ETHashes As New List(Of String)
     Private iCounter As Integer = 0
@@ -129,7 +129,7 @@ Public Class dlgImgSelect
     ''' <param name="_isEdit"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType_Movie, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tMovie = DBMovie
         Me.tIsMovie = True
         Me._ImageList = ImageList
@@ -142,7 +142,7 @@ Public Class dlgImgSelect
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ImageType_Movie, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tMovieSet = DBMovieSet
         Me.tIsMovie = False
         Me._ImageList = ImageList
@@ -209,7 +209,7 @@ Public Class dlgImgSelect
             AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
 
-            If Me.DLType = Enums.ImageType_Movie.Fanart Then
+            If Me.DLType = Enums.ModifierType.Fanart Then
                 ReDim Preserve Me.chkImageET(iIndex)
                 ReDim Preserve Me.chkImageEF(iIndex)
                 ReDim Preserve Me.pnlImageET(iIndex)
@@ -559,7 +559,7 @@ Public Class dlgImgSelect
                 Results.WebImage.IsEdit = Me.isEdit
             End If
 
-            If Me.DLType = Enums.ImageType_Movie.Fanart Then
+            If Me.DLType = Enums.ModifierType.Fanart Then
                 Dim iMod As Integer = 0
                 Dim iVal As Integer = 1
                 Dim etPath As String = String.Empty
@@ -620,25 +620,25 @@ Public Class dlgImgSelect
                 Title = Me.tMovieSet.ListTitle
             End If
 
-            If Me.DLType = Enums.ImageType_Movie.Poster Then
+            If Me.DLType = Enums.ModifierType.Poster Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ImageType_Movie.Banner Then
+            ElseIf Me.DLType = Enums.ModifierType.Banner Then
                 Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ImageType_Movie.Landscape Then
+            ElseIf Me.DLType = Enums.ModifierType.Landscape Then
                 Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ImageType_Movie.Fanart Then
+            ElseIf Me.DLType = Enums.ModifierType.Fanart Then
                 Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ImageType_Movie.ClearArt Then
+            ElseIf Me.DLType = Enums.ModifierType.ClearArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ImageType_Movie.ClearLogo Then
+            ElseIf Me.DLType = Enums.ModifierType.ClearLogo Then
                 Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", Title)
                 Me.pnlDwld.Visible = True
-            ElseIf Me.DLType = Enums.ImageType_Movie.DiscArt Then
+            ElseIf Me.DLType = Enums.ModifierType.DiscArt Then
                 Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
             End If

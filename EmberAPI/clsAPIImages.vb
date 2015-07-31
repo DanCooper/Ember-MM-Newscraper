@@ -1115,52 +1115,52 @@ Public Class Images
         End With
     End Function
 
-    Public Function IsAllowedToDownload(ByVal mTV As Structures.DBTV, ByVal fType As Enums.ImageType_TV, Optional ByVal isChange As Boolean = False) As Boolean
+    Public Function IsAllowedToDownload(ByVal mTV As Structures.DBTV, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
         With Master.eSettings
             Select Case fType
-                Case Enums.ImageType_TV.ShowBanner
+                Case Enums.ModifierType.MainBanner
                     If isChange OrElse (String.IsNullOrEmpty(mTV.BannerPath) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowCharacterArt
+                Case Enums.ModifierType.MainCharacterArt
                     If isChange OrElse (String.IsNullOrEmpty(mTV.CharacterArtPath) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowClearArt
+                Case Enums.ModifierType.MainClearArt
                     If isChange OrElse (String.IsNullOrEmpty(mTV.ClearArtPath) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowClearLogo
+                Case Enums.ModifierType.MainClearLogo
                     If isChange OrElse (String.IsNullOrEmpty(mTV.ClearLogoPath) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowEFanarts
+                Case Enums.ModifierType.MainEFanarts
                     If isChange OrElse (String.IsNullOrEmpty(mTV.EFanartsPath) OrElse .TVShowEFanartsOverwrite) AndAlso .TVShowEFanartsAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowFanart
+                Case Enums.ModifierType.MainFanart
                     If isChange OrElse (String.IsNullOrEmpty(mTV.FanartPath) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowLandscape
+                Case Enums.ModifierType.MainLandscape
                     If isChange OrElse (String.IsNullOrEmpty(mTV.LandscapePath) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Enums.ImageType_TV.ShowPoster
+                Case Enums.ModifierType.MainPoster
                     If isChange OrElse (String.IsNullOrEmpty(mTV.PosterPath) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
                         Return True
                     Else

@@ -49,7 +49,7 @@ Public Class dlgImgSelectTV
     Private lblImage() As Label
     Private pbImage() As PictureBox
     Private pnlImage() As Panel
-    Private SelImgType As Enums.ImageType_TV
+    Private SelImgType As Enums.ModifierType
     Private SelSeason As Integer = -999
     Private _id As Integer = -1
     Private _season As Integer = -999
@@ -826,7 +826,7 @@ Public Class dlgImgSelectTV
 
     Private Sub pbUndo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbUndo.Click
         If Me.SelSeason = -999 Then
-            If SelImgType = Enums.ImageType_TV.ShowBanner Then
+            If SelImgType = Enums.ModifierType.MainBanner Then
                 tmpShowContainer.ImagesContainer.Banner = DefaultImagesContainer.Banner
                 If DefaultImagesContainer.Banner.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Banner.WebImage.Image
@@ -834,7 +834,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Banner.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = tmpShowContainer.ImagesContainer.Banner
-            ElseIf SelImgType = Enums.ImageType_TV.ShowCharacterArt Then
+            ElseIf SelImgType = Enums.ModifierType.MainCharacterArt Then
                 tmpShowContainer.ImagesContainer.CharacterArt = DefaultImagesContainer.CharacterArt
                 If DefaultImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.CharacterArt.WebImage.Image
@@ -842,14 +842,14 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.CharacterArt.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = tmpShowContainer.ImagesContainer.CharacterArt
-            ElseIf SelImgType = Enums.ImageType_TV.ShowClearArt Then
+            ElseIf SelImgType = Enums.ModifierType.MainClearArt Then
                 If DefaultImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.ClearArt.WebImage.Image
                 ElseIf DefaultImagesContainer.Banner.WebThumb IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.ClearArt.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = tmpShowContainer.ImagesContainer.ClearArt
-            ElseIf SelImgType = Enums.ImageType_TV.ShowClearLogo Then
+            ElseIf SelImgType = Enums.ModifierType.MainClearLogo Then
                 tmpShowContainer.ImagesContainer.ClearLogo = DefaultImagesContainer.ClearLogo
                 If DefaultImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.ClearLogo.WebImage.Image
@@ -857,7 +857,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.ClearLogo.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = tmpShowContainer.ImagesContainer.ClearLogo
-            ElseIf SelImgType = Enums.ImageType_TV.ShowFanart Then
+            ElseIf SelImgType = Enums.ModifierType.MainFanart Then
                 tmpShowContainer.ImagesContainer.Fanart = DefaultImagesContainer.Fanart
                 If DefaultImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Fanart.WebImage.Image
@@ -865,7 +865,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Fanart.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = tmpShowContainer.ImagesContainer.Fanart
-            ElseIf SelImgType = Enums.ImageType_TV.ShowPoster Then
+            ElseIf SelImgType = Enums.ModifierType.MainPoster Then
                 tmpShowContainer.ImagesContainer.Poster = DefaultImagesContainer.Poster
                 If DefaultImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Poster.WebImage.Image
@@ -875,7 +875,7 @@ Public Class dlgImgSelectTV
                 Me.pbCurrent.Tag = tmpShowContainer.ImagesContainer.Poster
             End If
         Else
-            If SelImgType = Enums.ImageType_TV.SeasonBanner Then
+            If SelImgType = Enums.ModifierType.SeasonBanner Then
                 Dim sImg As MediaContainers.Image = DefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner = sImg
                 If sImg.WebImage.Image IsNot Nothing Then
@@ -884,7 +884,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = sImg.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = sImg
-            ElseIf SelImgType = Enums.ImageType_TV.SeasonFanart Then
+            ElseIf SelImgType = Enums.ModifierType.SeasonFanart Then
                 Dim sImg As MediaContainers.Image = DefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart = sImg
                 If sImg.WebImage.Image IsNot Nothing Then
@@ -893,7 +893,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = sImg.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = sImg
-            ElseIf SelImgType = Enums.ImageType_TV.SeasonLandscape Then
+            ElseIf SelImgType = Enums.ModifierType.SeasonLandscape Then
                 Dim sImg As MediaContainers.Image = DefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape = sImg
                 If sImg.WebImage.Image IsNot Nothing Then
@@ -902,7 +902,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = sImg.WebThumb.Image
                 End If
                 Me.pbCurrent.Tag = sImg
-            ElseIf SelImgType = Enums.ImageType_TV.SeasonPoster Then
+            ElseIf SelImgType = Enums.ModifierType.SeasonPoster Then
                 Dim sImg As MediaContainers.Image = DefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster = sImg
                 If sImg.WebImage.Image IsNot Nothing Then
@@ -930,29 +930,29 @@ Public Class dlgImgSelectTV
         End If
 
         If Me.SelSeason = -999 Then
-            If SelImgType = Enums.ImageType_TV.ShowBanner Then
+            If SelImgType = Enums.ModifierType.MainBanner Then
                 tmpShowContainer.ImagesContainer.Banner = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.ShowCharacterArt Then
+            ElseIf SelImgType = Enums.ModifierType.MainCharacterArt Then
                 tmpShowContainer.ImagesContainer.CharacterArt = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.ShowClearArt Then
+            ElseIf SelImgType = Enums.ModifierType.MainClearArt Then
                 tmpShowContainer.ImagesContainer.ClearArt = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.ShowClearLogo Then
+            ElseIf SelImgType = Enums.ModifierType.MainClearLogo Then
                 tmpShowContainer.ImagesContainer.ClearLogo = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.ShowLandscape Then
+            ElseIf SelImgType = Enums.ModifierType.MainLandscape Then
                 tmpShowContainer.ImagesContainer.Landscape = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.ShowFanart Then
+            ElseIf SelImgType = Enums.ModifierType.MainFanart Then
                 tmpShowContainer.ImagesContainer.Fanart = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.ShowPoster Then
+            ElseIf SelImgType = Enums.ModifierType.MainPoster Then
                 tmpShowContainer.ImagesContainer.Poster = SelTag
             End If
         Else
-            If SelImgType = Enums.ImageType_TV.AllSeasonsBanner OrElse SelImgType = Enums.ImageType_TV.SeasonBanner Then
+            If SelImgType = Enums.ModifierType.AllSeasonsBanner OrElse SelImgType = Enums.ModifierType.SeasonBanner Then
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsFanart OrElse SelImgType = Enums.ImageType_TV.SeasonFanart Then
+            ElseIf SelImgType = Enums.ModifierType.AllSeasonsFanart OrElse SelImgType = Enums.ModifierType.SeasonFanart Then
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsLandscape OrElse SelImgType = Enums.ImageType_TV.SeasonLandscape Then
+            ElseIf SelImgType = Enums.ModifierType.AllSeasonsLandscape OrElse SelImgType = Enums.ModifierType.SeasonLandscape Then
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape = SelTag
-            ElseIf SelImgType = Enums.ImageType_TV.AllSeasonsPoster OrElse SelImgType = Enums.ImageType_TV.SeasonPoster Then
+            ElseIf SelImgType = Enums.ModifierType.AllSeasonsPoster OrElse SelImgType = Enums.ModifierType.SeasonPoster Then
                 tmpShowContainer.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster = SelTag
             End If
         End If
@@ -976,7 +976,7 @@ Public Class dlgImgSelectTV
             'Show Banner
             If e.Node.Tag.ToString = "showb" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowBanner
+                Me.SelImgType = Enums.ModifierType.MainBanner
                 If tmpShowContainer.ImagesContainer.Banner IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Banner.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Banner.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.Banner IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Banner.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Banner.WebThumb.Image IsNot Nothing Then
@@ -993,7 +993,7 @@ Public Class dlgImgSelectTV
                 'Show Characterart
             ElseIf e.Node.Tag.ToString = "showch" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowCharacterArt
+                Me.SelImgType = Enums.ModifierType.MainCharacterArt
                 If tmpShowContainer.ImagesContainer.CharacterArt IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.CharacterArt.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.CharacterArt.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.CharacterArt IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.CharacterArt.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.CharacterArt.WebThumb.Image IsNot Nothing Then
@@ -1010,7 +1010,7 @@ Public Class dlgImgSelectTV
                 'Show ClearArt
             ElseIf e.Node.Tag.ToString = "showca" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowClearArt
+                Me.SelImgType = Enums.ModifierType.MainClearArt
                 If tmpShowContainer.ImagesContainer.ClearArt IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearArt.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.ClearArt.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.ClearArt IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearArt.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearArt.WebThumb.Image IsNot Nothing Then
@@ -1027,7 +1027,7 @@ Public Class dlgImgSelectTV
                 'Show ClearLogo
             ElseIf e.Node.Tag.ToString = "showcl" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowClearLogo
+                Me.SelImgType = Enums.ModifierType.MainClearLogo
                 If tmpShowContainer.ImagesContainer.ClearLogo IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearLogo.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.ClearLogo.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.ClearLogo IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearLogo.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.ClearLogo.WebThumb.Image IsNot Nothing Then
@@ -1044,7 +1044,7 @@ Public Class dlgImgSelectTV
                 'Show Fanart
             ElseIf e.Node.Tag.ToString = "showf" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowFanart
+                Me.SelImgType = Enums.ModifierType.MainFanart
                 If tmpShowContainer.ImagesContainer.Fanart IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Fanart.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Fanart.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.Fanart IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Fanart.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Fanart.WebThumb.Image IsNot Nothing Then
@@ -1061,7 +1061,7 @@ Public Class dlgImgSelectTV
                 'Show Landscape
             ElseIf e.Node.Tag.ToString = "showl" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowLandscape
+                Me.SelImgType = Enums.ModifierType.MainLandscape
                 If tmpShowContainer.ImagesContainer.Landscape IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Landscape.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Landscape.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.Landscape IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Landscape.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Landscape.WebThumb.Image IsNot Nothing Then
@@ -1078,7 +1078,7 @@ Public Class dlgImgSelectTV
                 'Show Poster
             ElseIf e.Node.Tag.ToString = "showp" Then
                 Me.SelSeason = -999
-                Me.SelImgType = Enums.ImageType_TV.ShowPoster
+                Me.SelImgType = Enums.ModifierType.MainPoster
                 If tmpShowContainer.ImagesContainer.Poster IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Poster.WebImage IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tmpShowContainer.ImagesContainer.Poster.WebImage.Image
                 ElseIf tmpShowContainer.ImagesContainer.Poster IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Poster.WebThumb IsNot Nothing AndAlso tmpShowContainer.ImagesContainer.Poster.WebThumb.Image IsNot Nothing Then
@@ -1095,7 +1095,7 @@ Public Class dlgImgSelectTV
                 'AllSeasons Banner
             ElseIf e.Node.Tag.ToString = "allb" Then
                 Me.SelSeason = 999
-                Me.SelImgType = Enums.ImageType_TV.AllSeasonsBanner
+                Me.SelImgType = Enums.ModifierType.AllSeasonsBanner
                 Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner
                 If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1117,7 +1117,7 @@ Public Class dlgImgSelectTV
                 'AllSeasons Fanart
             ElseIf e.Node.Tag.ToString = "allf" Then
                 Me.SelSeason = 999
-                Me.SelImgType = Enums.ImageType_TV.AllSeasonsFanart
+                Me.SelImgType = Enums.ModifierType.AllSeasonsFanart
                 Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart
                 If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1139,7 +1139,7 @@ Public Class dlgImgSelectTV
                 'AllSeasons Landscape
             ElseIf e.Node.Tag.ToString = "alll" Then
                 Me.SelSeason = 999
-                Me.SelImgType = Enums.ImageType_TV.AllSeasonsLandscape
+                Me.SelImgType = Enums.ModifierType.AllSeasonsLandscape
                 Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape
                 If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1161,7 +1161,7 @@ Public Class dlgImgSelectTV
                 'AllSeasons Poster
             ElseIf e.Node.Tag.ToString = "allp" Then
                 Me.SelSeason = 999
-                Me.SelImgType = Enums.ImageType_TV.AllSeasonsPoster
+                Me.SelImgType = Enums.ModifierType.AllSeasonsPoster
                 Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster
                 If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                     Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1188,7 +1188,7 @@ Public Class dlgImgSelectTV
                     'Season Banner
                     If tMatch.Groups("type").Value = "b" Then
                         Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                        Me.SelImgType = Enums.ImageType_TV.SeasonBanner
+                        Me.SelImgType = Enums.ModifierType.SeasonBanner
                         Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner
                         If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                             Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1206,7 +1206,7 @@ Public Class dlgImgSelectTV
                         'Season Fanart
                     ElseIf tMatch.Groups("type").Value = "f" Then
                         Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                        Me.SelImgType = Enums.ImageType_TV.SeasonFanart
+                        Me.SelImgType = Enums.ModifierType.SeasonFanart
                         Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart
                         If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                             Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1228,7 +1228,7 @@ Public Class dlgImgSelectTV
                         'Season Landscape
                     ElseIf tMatch.Groups("type").Value = "l" Then
                         Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                        Me.SelImgType = Enums.ImageType_TV.SeasonLandscape
+                        Me.SelImgType = Enums.ModifierType.SeasonLandscape
                         Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape
                         If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                             Me.pbCurrent.Image = tImg.WebImage.Image
@@ -1246,7 +1246,7 @@ Public Class dlgImgSelectTV
                         'Season Poster
                     ElseIf tMatch.Groups("type").Value = "p" Then
                         Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
-                        Me.SelImgType = Enums.ImageType_TV.SeasonPoster
+                        Me.SelImgType = Enums.ModifierType.SeasonPoster
                         Dim tImg As MediaContainers.Image = tmpShowContainer.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster
                         If tImg IsNot Nothing AndAlso tImg.WebImage IsNot Nothing AndAlso tImg.WebImage.Image IsNot Nothing Then
                             Me.pbCurrent.Image = tImg.WebImage.Image
