@@ -1172,6 +1172,26 @@ Public Class Database
         Return tList
     End Function
 
+    Public Function GetMovieSourceYearSetting(ByVal sName As String) As Boolean
+        Dim bYear As Boolean = False
+
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT GetYear FROM Sources WHERE Name = """, sName, """;")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        SQLreader.Read()
+                        bYear = Convert.ToBoolean(SQLreader("GetYear"))
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return bYear
+    End Function
+
     Public Function GetTVSourceLanguage(ByVal sName As String) As String
         Dim sLang As String = String.Empty
 
@@ -1390,6 +1410,7 @@ Public Class Database
                     _movieDB.IsMarkCustom2 = Convert.ToBoolean(SQLreader("MarkCustom2"))
                     _movieDB.IsMarkCustom3 = Convert.ToBoolean(SQLreader("MarkCustom3"))
                     _movieDB.IsMarkCustom4 = Convert.ToBoolean(SQLreader("MarkCustom4"))
+                    _movieDB.GetYear = GetMovieSourceYearSetting(_movieDB.Source)
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _movieDB.VideoSource = SQLreader("VideoSource").ToString
                     _movieDB.Movie = New MediaContainers.Movie
                     With _movieDB.Movie

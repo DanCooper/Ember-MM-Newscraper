@@ -1983,7 +1983,7 @@ Public Class frmMain
             Me.InfoDownloaded_Movie(Res.Movie)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped Movie from disk to get clean informations in DB
-            Me.Reload_Movie(Res.Movie.ID, False, True, False, False)
+            Me.Reload_Movie(Res.Movie.ID)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -2681,7 +2681,7 @@ Public Class frmMain
             Me.InfoDownloaded_MovieSet(Res.MovieSet)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped MovieSet from disk to get clean informations in DB
-            Me.Reload_MovieSet(Res.MovieSet.ID, False, True, False)
+            Me.Reload_MovieSet(Res.MovieSet.ID)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -4750,7 +4750,7 @@ Public Class frmMain
 
                                 fDeleter.GetItemsToDelete(True, scrapeMovie)
 
-                                Me.Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True, True)
+                                Me.Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True)
 
                                 Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item("idMovie").ToString))
                             Catch ex As Exception
@@ -7229,11 +7229,9 @@ doCancel:
         Dim doFill As Boolean = False
         Dim tFill As Boolean = False
 
-        Dim doBatch As Boolean = Not Me.dgvMovieSets.SelectedRows.Count = 1
-
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                tFill = Me.Reload_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value), doBatch)
+                tFill = Me.Reload_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value), True)
                 If tFill Then doFill = True
             Next
             SQLtransaction.Commit()
@@ -16959,127 +16957,16 @@ doCancel:
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <param name="BatchMode"></param>
-    ''' <param name="FromNfo"></param>
-    ''' <param name="ToNfo"></param>
-    ''' <param name="delWatched"></param>
     ''' <returns>reload list from database</returns>
     ''' <remarks></remarks>
-    Private Function Reload_Movie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
-        Dim tmpDBMovie As New Structures.DBMovie
-        Dim OldTitle As String = String.Empty
-        Dim newTable As New DataTable
+    Private Function Reload_Movie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Dim DBMovie As New Structures.DBMovie
 
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        DBMovie = Master.DB.LoadMovieFromDB(ID)
 
-        tmpDBMovie = Master.DB.LoadMovieFromDB(ID)
-
-        OldTitle = tmpDBMovie.Movie.Title
-
-        If tmpDBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tmpDBMovie, Not BatchMode) Then
-
-            If FromNfo Then
-                If String.IsNullOrEmpty(tmpDBMovie.NfoPath) Then
-                    Dim sNFO As String = NFO.GetNfoPath_Movie(tmpDBMovie.Filename, tmpDBMovie.IsSingle)
-                    tmpDBMovie.NfoPath = sNFO
-                    tmpDBMovie.Movie = NFO.LoadMovieFromNFO(sNFO, tmpDBMovie.IsSingle)
-                Else
-                    tmpDBMovie.Movie = NFO.LoadMovieFromNFO(tmpDBMovie.NfoPath, tmpDBMovie.IsSingle)
-                End If
-                ''subsType and subsPath not in NFO , try to load it from DB
-                'For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
-                '    If tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
-                '        tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
-                '        tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDB.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
-                '    End If
-                'Next
-            End If
-
-            If String.IsNullOrEmpty(tmpDBMovie.Movie.Title) Then
-                If FileUtils.Common.isVideoTS(tmpDBMovie.Filename) Then
-                    tmpDBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(tmpDBMovie.Filename).FullName).Name)
-                    tmpDBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(tmpDBMovie.Filename).FullName).Name, False)
-                ElseIf FileUtils.Common.isBDRip(tmpDBMovie.Filename) Then
-                    tmpDBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpDBMovie.Filename).FullName).FullName).Name)
-                    tmpDBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpDBMovie.Filename).FullName).FullName).Name, False)
-                Else
-                    If tmpDBMovie.UseFolder AndAlso tmpDBMovie.IsSingle Then
-                        tmpDBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(tmpDBMovie.Filename).Name)
-                        tmpDBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(tmpDBMovie.Filename).Name, False)
-                    Else
-                        tmpDBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(tmpDBMovie.Filename))
-                        tmpDBMovie.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(tmpDBMovie.Filename), False)
-                    End If
-                End If
-            Else
-                Dim tTitle As String = StringUtils.SortTokens_Movie(tmpDBMovie.Movie.Title)
-                If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpDBMovie.Movie.Year) Then
-                    tmpDBMovie.ListTitle = String.Format("{0} ({1})", tTitle, tmpDBMovie.Movie.Year)
-                Else
-                    tmpDBMovie.ListTitle = tTitle
-                End If
-            End If
-
-            'Year
-            If String.IsNullOrEmpty(tmpDBMovie.Movie.Year) Then 'AndAlso mContainer.getYear Then TODO: add getYear value from source settings
-                If FileUtils.Common.isVideoTS(tmpDBMovie.Filename) Then
-                    tmpDBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(tmpDBMovie.Filename).FullName).Name)
-                ElseIf FileUtils.Common.isBDRip(tmpDBMovie.Filename) Then
-                    tmpDBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpDBMovie.Filename).FullName).FullName).Name)
-                Else
-                    If tmpDBMovie.UseFolder AndAlso tmpDBMovie.IsSingle Then
-                        tmpDBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(tmpDBMovie.Filename).Name)
-                    Else
-                        tmpDBMovie.Movie.Year = StringUtils.GetYear(Path.GetFileNameWithoutExtension(tmpDBMovie.Filename))
-                    End If
-                End If
-            End If
-
-            Dim fromFile As String = APIXML.GetVideoSource(tmpDBMovie.Filename, False)
-            If Not String.IsNullOrEmpty(fromFile) Then
-                tmpDBMovie.VideoSource = fromFile
-                tmpDBMovie.Movie.VideoSource = tmpDBMovie.VideoSource
-            ElseIf String.IsNullOrEmpty(tmpDBMovie.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                tmpDBMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBMovie.Filename)), String.Empty, "*EmberAPP")
-                tmpDBMovie.Movie.VideoSource = tmpDBMovie.VideoSource
-            ElseIf Not String.IsNullOrEmpty(tmpDBMovie.Movie.VideoSource) Then
-                tmpDBMovie.VideoSource = tmpDBMovie.Movie.VideoSource
-            End If
-
-            If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                For Each a In FileUtils.GetFilenameList.Movie(tmpDBMovie.Filename, tmpDBMovie.IsSingle, Enums.ModifierType.MainWatchedFile)
-                    If delWatched Then
-                        If File.Exists(a) Then
-                            File.Delete(a)
-                        End If
-                    End If
-                    If Not String.IsNullOrEmpty(tmpDBMovie.Movie.PlayCount) AndAlso Not tmpDBMovie.Movie.PlayCount = "0" Then
-                        If Not File.Exists(a) Then
-                            Dim fs As FileStream = File.Create(a)
-                            fs.Close()
-                        End If
-                    Else
-                        If File.Exists(a) Then
-                            tmpDBMovie.Movie.PlayCount = "1"
-                            If Not tmpDBMovie.NfoPath = tmpDBMovie.Filename AndAlso Not String.IsNullOrEmpty(tmpDBMovie.NfoPath) Then
-                                ToNfo = True
-                            End If
-                        End If
-                    End If
-                Next
-            End If
-
-            fScanner.GetMovieFolderContents(tmpDBMovie)
-
-            'search local actor thumb for each actor in NFO
-            If tmpDBMovie.Movie.Actors.Count > 0 AndAlso tmpDBMovie.ActorThumbs.Count > 0 Then
-                For Each actor In tmpDBMovie.Movie.Actors
-                    actor.ThumbPath = tmpDBMovie.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                Next
-            End If
-
-            Master.DB.SaveMovieToDB(tmpDBMovie, False, BatchMode, ToNfo)
-            RefreshRow_Movie(tmpDBMovie.ID)
-
+        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not BatchMode) Then
+            fScanner.LoadMovie(DBMovie, False, BatchMode)
+            RefreshRow_Movie(DBMovie.ID)
         Else
             If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
@@ -17094,84 +16981,18 @@ doCancel:
 
         If Not BatchMode Then
             Me.DoTitleCheck()
-
-            Dim selI As Integer = 0
-
-            If Me.dgvMovies.SelectedRows.Count > 0 Then selI = Me.dgvMovies.SelectedRows(0).Index
-
-            Me.dgvMovies.ClearSelection()
-            Me.dgvMovies.CurrentCell = Nothing
-
-            If Me.dgvMovies.RowCount - 1 < selI Then selI = Me.dgvMovies.RowCount
-
-            Me.ClearInfo()
-            Me.prevRow_Movie = -2
-            Me.currRow_Movie = -1
-
-            If Me.dgvMovies.RowCount > 0 Then
-                Me.dgvMovies.Rows(selI).Cells("ListTitle").Selected = True
-                Me.dgvMovies.CurrentCell = Me.dgvMovies.Rows(selI).Cells("ListTitle")
-            End If
         End If
 
         Return False
     End Function
 
-    Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim tmpDBMovieSet As New Structures.DBMovieSet
-        Dim OldTitle As String = String.Empty
-        Dim newTable As New DataTable
+    Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Dim DBMovieSet As New Structures.DBMovieSet
 
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
 
-        tmpDBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
-
-        OldTitle = tmpDBMovieSet.MovieSet.Title
-
-        If FromNfo Then
-            If String.IsNullOrEmpty(tmpDBMovieSet.NfoPath) Then
-                Dim sNFO As String = NFO.GetNfoPath_MovieSet(tmpDBMovieSet.MovieSet.Title)
-                If Not String.IsNullOrEmpty(sNFO) Then
-                    tmpDBMovieSet.NfoPath = sNFO
-                    tmpDBMovieSet.MovieSet = NFO.LoadMovieSetFromNFO(sNFO)
-                End If
-            Else
-                tmpDBMovieSet.MovieSet = NFO.LoadMovieSetFromNFO(tmpDBMovieSet.NfoPath)
-            End If
-        End If
-
-        Dim tTitle As String = StringUtils.SortTokens_MovieSet(tmpDBMovieSet.MovieSet.Title)
-        If Not String.IsNullOrEmpty(tTitle) Then
-            tmpDBMovieSet.ListTitle = tTitle
-        Else
-            tmpDBMovieSet.ListTitle = OldTitle
-        End If
-
-        fScanner.GetMovieSetFolderContents(tmpDBMovieSet)
-
-        Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, BatchMode, ToNfo, True)
-        RefreshRow_MovieSet(tmpDBMovieSet.ID)
-
-        If Not BatchMode Then
-
-            Dim selI As Integer = 0
-
-            If Me.dgvMovieSets.SelectedRows.Count > 0 Then selI = Me.dgvMovieSets.SelectedRows(0).Index
-
-            Me.dgvMovieSets.ClearSelection()
-            Me.dgvMovieSets.CurrentCell = Nothing
-
-            If Me.dgvMovieSets.RowCount - 1 < selI Then selI = Me.dgvMovieSets.RowCount
-
-            Me.ClearInfo()
-            Me.prevRow_MovieSet = -2
-            Me.currRow_MovieSet = -1
-
-            If Me.dgvMovieSets.RowCount > 0 Then
-                Me.dgvMovieSets.Rows(selI).Cells("ListTitle").Selected = True
-                Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(selI).Cells("ListTitle")
-            End If
-        End If
+        fScanner.LoadMovieSet(DBMovieSet, False, BatchMode)
+        RefreshRow_MovieSet(DBMovieSet.ID)
 
         Return False
     End Function

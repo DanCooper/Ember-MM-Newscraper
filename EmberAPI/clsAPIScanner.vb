@@ -62,7 +62,7 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="DBMovie">MovieContainer object.</param>
+    ''' <param name="DBMovie">Structures.DBMovie object</param>
     Public Sub GetMovieFolderContents(ByRef DBMovie As Structures.DBMovie)
         Dim currname As String = String.Empty
         Dim atList As New List(Of String)   'actor thumbs list
@@ -80,6 +80,23 @@ Public Class Scanner
         Dim filePath As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileName)
         Dim filePathStack As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileNameStack)
         Dim fileParPath As String = Directory.GetParent(filePath).FullName
+
+        'remove all known paths
+        DBMovie.ActorThumbs.Clear()
+        DBMovie.BannerPath = String.Empty
+        DBMovie.ClearArtPath = String.Empty
+        DBMovie.ClearLogoPath = String.Empty
+        DBMovie.DiscArtPath = String.Empty
+        DBMovie.EFanartsPath = String.Empty
+        DBMovie.EThumbsPath = String.Empty
+        DBMovie.FanartPath = String.Empty
+        DBMovie.LandscapePath = String.Empty
+        DBMovie.NfoPath = String.Empty
+        DBMovie.PosterPath = String.Empty
+        DBMovie.SubPath = String.Empty
+        DBMovie.Subtitles.Clear()
+        DBMovie.ThemePath = String.Empty
+        DBMovie.TrailerPath = String.Empty
 
         Try
             'first add files to filelists
@@ -267,11 +284,6 @@ Public Class Scanner
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-
-        efList = Nothing
-        etList = Nothing
-        fList = Nothing
-        sList = Nothing
     End Sub
 
     ''' <summary>
@@ -281,6 +293,16 @@ Public Class Scanner
     Public Sub GetMovieSetFolderContents(ByRef DBMovieSet As Structures.DBMovieSet)
         Dim fList As New List(Of String)    'all other files list
         Dim fPath As String = Master.eSettings.MovieSetPathMSAA
+
+        'remove all known paths
+        DBMovieSet.BannerPath = String.Empty
+        DBMovieSet.ClearArtPath = String.Empty
+        DBMovieSet.ClearLogoPath = String.Empty
+        DBMovieSet.DiscArtPath = String.Empty
+        DBMovieSet.FanartPath = String.Empty
+        DBMovieSet.LandscapePath = String.Empty
+        DBMovieSet.NfoPath = String.Empty
+        DBMovieSet.PosterPath = String.Empty
 
         Try
             'first add files to filelists
@@ -684,7 +706,7 @@ Public Class Scanner
         Return True 'This is the Else
     End Function
 
-    Public Sub LoadMovie(ByVal DBMovie As Structures.DBMovie)
+    Public Sub LoadMovie(ByRef DBMovie As Structures.DBMovie, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
         Dim ToNfo As Boolean = False
 
         'first, lets get the contents
@@ -808,17 +830,49 @@ Public Class Scanner
             ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.VideoSource) Then
                 DBMovie.VideoSource = DBMovie.Movie.VideoSource
             End If
-            DBMovie.IsLock = False
-            DBMovie.IsMark = Master.eSettings.MovieGeneralMarkNew
-            'Do the Save
-            If ToNfo AndAlso Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, True, True, True)
-            Else
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, True, True)
+
+            If isNew AndAlso Master.eSettings.MovieGeneralMarkNew Then
+                DBMovie.IsMark = True
             End If
 
-            Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = DBMovie.Movie.Title})
+            'Do the Save
+            If ToNfo AndAlso Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, True)
+            Else
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode)
+            End If
         End If
+    End Sub
+
+    Public Sub LoadMovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
+        Dim ToNfo As Boolean = False
+        Dim OldTitle As String = DBMovieSet.MovieSet.Title
+
+        'first, lets get the contents
+        GetMovieSetFolderContents(DBMovieSet)
+
+        If String.IsNullOrEmpty(DBMovieSet.NfoPath) Then
+            Dim sNFO As String = NFO.GetNfoPath_MovieSet(DBMovieSet.MovieSet.Title)
+            If Not String.IsNullOrEmpty(sNFO) Then
+                DBMovieSet.NfoPath = sNFO
+                DBMovieSet.MovieSet = NFO.LoadMovieSetFromNFO(sNFO)
+            End If
+        Else
+            DBMovieSet.MovieSet = NFO.LoadMovieSetFromNFO(DBMovieSet.NfoPath)
+        End If
+
+        'ListTitle
+        Dim tTitle As String = StringUtils.SortTokens_MovieSet(DBMovieSet.MovieSet.Title)
+        If Not String.IsNullOrEmpty(tTitle) Then
+            DBMovieSet.ListTitle = tTitle
+        Else
+            DBMovieSet.ListTitle = OldTitle
+        End If
+
+        If isNew AndAlso Master.eSettings.MovieSetGeneralMarkNew Then
+            DBMovieSet.IsMark = True
+        End If
+        DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, True)
     End Sub
 
     Private Sub LoadTVShow(ByVal DBTVShow As Structures.DBTV)
@@ -1335,7 +1389,8 @@ Public Class Scanner
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         currMovieContainer.UseFolder = True
-                        LoadMovie(currMovieContainer)
+                        LoadMovie(currMovieContainer, True, True)
+                        Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = currMovieContainer.Movie.Title})
                     End If
 
                 Else
@@ -1377,7 +1432,8 @@ Public Class Scanner
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         currMovieContainer.UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)
-                        LoadMovie(currMovieContainer)
+                        LoadMovie(currMovieContainer, True, True)
+                        Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = currMovieContainer.Movie.Title})
                     Next
                 End If
 
