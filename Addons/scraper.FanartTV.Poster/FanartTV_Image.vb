@@ -559,13 +559,13 @@ Public Class FanartTV_Image
 
         LoadSettings_MovieSet()
 
-        If String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
+        If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) Then
             If DBMovieset.Movies IsNot Nothing AndAlso DBMovieset.Movies.Count > 0 Then
-                DBMovieset.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.Movies.Item(0).Movie.ID)
+                DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.Movies.Item(0).Movie.ID)
             End If
         End If
 
-        If Not String.IsNullOrEmpty(DBMovieset.MovieSet.ID) Then
+        If Not String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) Then
             Dim Settings As New FanartTVs.Scraper.MySettings
             Settings.ApiKey = _MySettings_MovieSet.ApiKey
             Settings.ClearArtOnlyHD = _MySettings_MovieSet.ClearArtOnlyHD
@@ -573,7 +573,7 @@ Public Class FanartTV_Image
 
             Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_MovieSet)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.ID, FilteredModifier, Settings)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.TMDB, FilteredModifier, Settings)
         End If
 
         logger.Trace("Finished scrape FanartTV")

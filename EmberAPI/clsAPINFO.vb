@@ -438,6 +438,64 @@ Public Class NFO
 
         Return DBMovie
     End Function
+
+    Public Shared Function MergeDataScraperResults(ByVal DBMovieSet As Structures.DBMovieSet, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Structures.DBMovieSet
+
+        'protects the first scraped result against overwriting
+        Dim new_Plot As Boolean = False
+        Dim new_Title As Boolean = False
+
+        For Each scrapedmovieset In ScrapedList
+
+            'IDs
+            If Not String.IsNullOrEmpty(scrapedmovieset.TMDB) Then
+                DBMovieSet.MovieSet.TMDB = scrapedmovieset.TMDB
+            End If
+
+            'Plot
+            If (String.IsNullOrEmpty(DBMovieSet.MovieSet.Plot) OrElse Not Master.eSettings.MovieSetLockPlot) AndAlso ScrapeOptions.bPlot AndAlso _
+                Not String.IsNullOrEmpty(scrapedmovieset.Plot) AndAlso Master.eSettings.MovieSetScraperPlot AndAlso Not new_Plot Then
+                DBMovieSet.MovieSet.Plot = scrapedmovieset.Plot
+                new_Plot = True
+                'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperPlot AndAlso Not Master.eSettings.MovieSetLockPlot Then
+                '    DBMovieSet.MovieSet.Plot = String.Empty
+            End If
+
+            'Title
+            If (String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) OrElse Not Master.eSettings.MovieSetLockTitle) AndAlso ScrapeOptions.bTitle AndAlso _
+                Not String.IsNullOrEmpty(scrapedmovieset.Title) AndAlso Master.eSettings.MovieSetScraperTitle AndAlso Not new_Title Then
+                DBMovieSet.MovieSet.Title = scrapedmovieset.Title
+                new_Title = True
+                'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperTitle AndAlso Not Master.eSettings.MovieSetLockTitle Then
+                '    DBMovieSet.MovieSet.Title = String.Empty
+            End If
+        Next
+
+        'set Title
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+            DBMovieSet.MovieSet.Title = DBMovieSet.MovieSet.Title.Replace(sett.Name.Substring(21), sett.Value)
+        Next
+
+        'set ListTitle at the end of merging
+        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
+            Dim tTitle As String = StringUtils.SortTokens_MovieSet(DBMovieSet.MovieSet.Title)
+            DBMovieSet.ListTitle = tTitle
+        Else
+            'If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+            '    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+            'ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+            '    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+            'Else
+            '    If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+            '        DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
+            '    Else
+            '        DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+            '    End If
+            'End If
+        End If
+
+        Return DBMovieSet
+    End Function
     ''' <summary>
     ''' Returns the "merged" result of each data scraper results
     ''' </summary>

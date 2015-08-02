@@ -528,7 +528,7 @@ Namespace TMDB
             End If
 
             'nMovieSet.ID = CStr(MovieSet.Id)
-            DBMovieSet.ID = CStr(MovieSet.Id)
+            DBMovieSet.TMDB = CStr(MovieSet.Id)
 
             If bwTMDB.CancellationPending Or MovieSet Is Nothing Then Return Nothing
 
@@ -1085,24 +1085,23 @@ Namespace TMDB
             Return nMovie
         End Function
 
-        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef DBMovieSet As Structures.DBMovieSet, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
+        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef oDBMovieSet As Structures.DBMovieSet, ByRef nMovieSet As MediaContainers.MovieSet, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
             Dim r As SearchResults_MovieSet = SearchMovieSet(sMovieSetName, Nothing)
             Dim b As Boolean = False
-            Dim tmdbMovieSet As MediaContainers.MovieSet = DBMovieSet.MovieSet
 
             Select Case iType
                 Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk
 
                     If r.Matches.Count = 1 Then
-                        b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, FilteredOptions, True)
+                        b = GetMovieSetInfo(r.Matches.Item(0).TMDB, nMovieSet, False, FilteredOptions, True)
                     Else
-                        Master.tmpMovieSet.Clear()
+                        nMovieSet.Clear()
                         Using dTMDB As New dlgTMDBSearchResults_MovieSet(_MySettings, Me)
-                            If dTMDB.ShowDialog(r, sMovieSetName) = Windows.Forms.DialogResult.OK Then
-                                If String.IsNullOrEmpty(Master.tmpMovieSet.ID) Then
+                            If dTMDB.ShowDialog(nMovieSet, r, sMovieSetName) = Windows.Forms.DialogResult.OK Then
+                                If String.IsNullOrEmpty(nMovieSet.TMDB) Then
                                     b = False
                                 Else
-                                    b = GetMovieSetInfo(Master.tmpMovieSet.ID, tmdbMovieSet, False, FilteredOptions, True)
+                                    b = GetMovieSetInfo(nMovieSet.TMDB, nMovieSet, False, FilteredOptions, True)
                                 End If
                             Else
                                 b = False
@@ -1111,19 +1110,15 @@ Namespace TMDB
                     End If
                 Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                     If r.Matches.Count = 1 Then
-                        b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, FilteredOptions, True)
+                        b = GetMovieSetInfo(r.Matches.Item(0).TMDB, nMovieSet, False, FilteredOptions, True)
                     End If
                 Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
                     If r.Matches.Count >= 1 Then
-                        b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, FilteredOptions, True)
+                        b = GetMovieSetInfo(r.Matches.Item(0).TMDB, nMovieSet, False, FilteredOptions, True)
                     End If
             End Select
 
-            If b Then
-                Return tmdbMovieSet
-            Else
-                Return tmdbMovieSet
-            End If
+            Return nMovieSet
         End Function
 
         Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.TVShow

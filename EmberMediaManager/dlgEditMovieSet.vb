@@ -103,7 +103,7 @@ Public Class dlgEditMovieSet
 
             If Not String.IsNullOrEmpty(newColID) Then
                 Me.txtCollectionID.Text = newColID
-                Me.tmpDBMovieSet.MovieSet.ID = newColID
+                Me.tmpDBMovieSet.MovieSet.TMDB = newColID
             End If
         End If
     End Sub
@@ -232,7 +232,7 @@ Public Class dlgEditMovieSet
                         Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                         If result = Windows.Forms.DialogResult.Yes Then
                             Me.txtCollectionID.Text = tmpMovie.Movie.TMDBColID
-                            Me.tmpDBMovieSet.MovieSet.ID = tmpMovie.Movie.TMDBColID
+                            Me.tmpDBMovieSet.MovieSet.TMDB = tmpMovie.Movie.TMDBColID
                         End If
                     End If
                     Dim newMovie As New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.SortTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID}
@@ -1007,8 +1007,8 @@ Public Class dlgEditMovieSet
                 .txtPlot.Text = Me.tmpDBMovieSet.MovieSet.Plot
             End If
 
-            If Not String.IsNullOrEmpty(Me.tmpDBMovieSet.MovieSet.ID) Then
-                .txtCollectionID.Text = Me.tmpDBMovieSet.MovieSet.ID
+            If Not String.IsNullOrEmpty(Me.tmpDBMovieSet.MovieSet.TMDB) Then
+                .txtCollectionID.Text = Me.tmpDBMovieSet.MovieSet.TMDB
             End If
 
             If DoAll Then
@@ -1306,7 +1306,7 @@ Public Class dlgEditMovieSet
                 'If Not Master.eSettings.MovieYAMJCompatibleSets Then
                 '    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                 'Else
-                tMovie.DBMovie.Movie.AddSet(Me.tmpDBMovieSet.ID, Me.tmpDBMovieSet.MovieSet.Title, tMovie.Order, Me.tmpDBMovieSet.MovieSet.ID)
+                tMovie.DBMovie.Movie.AddSet(Me.tmpDBMovieSet.ID, Me.tmpDBMovieSet.MovieSet.Title, tMovie.Order, Me.tmpDBMovieSet.MovieSet.TMDB)
                 'End If
                 Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
             Next
@@ -1396,7 +1396,7 @@ Public Class dlgEditMovieSet
                 Me.tmpDBMovieSet.MovieSet.Title = .txtTitle.Text.Trim
             End If
 
-            Me.tmpDBMovieSet.MovieSet.ID = .txtCollectionID.Text.Trim
+            Me.tmpDBMovieSet.MovieSet.TMDB = .txtCollectionID.Text.Trim
             Me.tmpDBMovieSet.MovieSet.Plot = .txtPlot.Text.Trim
 
             If .MovieBanner.Image IsNot Nothing Then

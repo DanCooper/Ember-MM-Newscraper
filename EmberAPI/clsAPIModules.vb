@@ -662,7 +662,7 @@ Public Class ModulesManager
     ''' </summary>
     ''' <param name="DBMovie">Movie to be scraped</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
-    ''' <param name="Options">What kind of data is being requested from the scrape</param>
+    ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_Movie(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal showMessage As Boolean) As Boolean
@@ -769,34 +769,73 @@ Public Class ModulesManager
     ''' </summary>
     ''' <param name="DBMovieSet">MovieSet to be scraped. Scraper will directly manipulate this structure</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
-    ''' <param name="Options">What kind of data is being requested from the scrape</param>
+    ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Boolean
+    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet, ByVal showMessage As Boolean) As Boolean
+        'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
+        Dim oDBMovieSet As New Structures.DBMovieSet
+        Dim ScrapedList As New List(Of MediaContainers.MovieSet)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
         End While
 
+        'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
+        If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
+            Dim tmpTitle As String = DBMovieSet.MovieSet.Title
+
+            DBMovieSet.RemoveBanner = True
+            DBMovieSet.RemoveClearArt = True
+            DBMovieSet.RemoveClearLogo = True
+            DBMovieSet.RemoveDiscArt = True
+            DBMovieSet.RemoveFanart = True
+            DBMovieSet.RemoveLandscape = True
+            DBMovieSet.RemovePoster = True
+            DBMovieSet.BannerPath = String.Empty
+            DBMovieSet.ClearArtPath = String.Empty
+            DBMovieSet.ClearLogoPath = String.Empty
+            DBMovieSet.DiscArtPath = String.Empty
+            DBMovieSet.FanartPath = String.Empty
+            DBMovieSet.LandscapePath = String.Empty
+            DBMovieSet.NfoPath = String.Empty
+            DBMovieSet.PosterPath = String.Empty
+            DBMovieSet.MovieSet.Clear()
+
+            DBMovieSet.MovieSet.Title = tmpTitle
+        End If
+
+        'create a copy of DBMovieSet
+        oDBMovieSet.MovieSet = New MediaContainers.MovieSet With {.Title = DBMovieSet.MovieSet.Title, .TMDB = DBMovieSet.MovieSet.TMDB}
+
         If (modules.Count() <= 0) Then
-            logger.Warn("No movie scrapers are defined")
+            logger.Warn("No movieset scrapers are defined")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In modules
-                logger.Trace("Scraping movie set data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("Scraping movieset data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
-                Try
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie set data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                End Try
+
+                Dim nMovieSet As New MediaContainers.MovieSet
+                ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, nMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
+
+                If ret.Cancelled Then Return ret.Cancelled
+
+                If nMovieSet IsNot Nothing Then
+                    ScrapedList.Add(nMovieSet)
+                End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                 If ret.breakChain Then Exit For
             Next
-        End If
 
+            'Merge scraperresults considering global datascraper settings
+            DBMovieSet = NFO.MergeDataScraperResults(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
+        End If
         Return ret.Cancelled
+        'Else
+        'Return True 'Cancelled
+        'End If
     End Function
 
     ''' <summary>
@@ -804,7 +843,7 @@ Public Class ModulesManager
     ''' </summary>
     ''' <param name="DBTV">Show to be scraped</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
-    ''' <param name="Options">What kind of data is being requested from the scrape</param>
+    ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_TVShow(ByRef DBTV As Structures.DBTV, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal showMessage As Boolean) As Boolean

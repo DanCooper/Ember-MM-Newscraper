@@ -1932,9 +1932,9 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _id As String
         Private _plot As String
         Private _title As String
+        Private _tmdb As String
 
 #End Region 'Fields
 
@@ -1942,9 +1942,9 @@ Namespace MediaContainers
 
         Public Sub New(ByVal sID As String, ByVal sTitle As String, ByVal sPlot As String)
             Me.Clear()
-            Me._id = sID
-            Me._title = sTitle
             Me._plot = sPlot
+            Me._title = sTitle
+            Me._tmdb = sID
         End Sub
 
         Public Sub New()
@@ -1973,19 +1973,19 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("id")> _
-        Public Property ID() As String
+        Public Property TMDB() As String
             Get
-                Return Me._id.Trim
+                Return Me._tmdb.Trim
             End Get
             Set(ByVal value As String)
-                Me._id = value.Trim
+                Me._tmdb = value.Trim
             End Set
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property IDSpecified() As Boolean
+        Public ReadOnly Property TMDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._id)
+                Return Not String.IsNullOrEmpty(Me._tmdb)
             End Get
         End Property
 
@@ -2011,9 +2011,9 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
-            _title = String.Empty
-            _id = String.Empty
             _plot = String.Empty
+            _title = String.Empty
+            _tmdb = String.Empty
         End Sub
 
 #End Region 'Methods

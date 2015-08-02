@@ -382,20 +382,20 @@ Public Class TMDB_Image
 
         LoadSettings_MovieSet()
 
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+        If String.IsNullOrEmpty(DBMovieSet.MovieSet.TMDB) Then
             If DBMovieSet.Movies IsNot Nothing AndAlso DBMovieSet.Movies.Count > 0 Then
-                DBMovieSet.MovieSet.ID = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
+                DBMovieSet.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieSet.Movies.Item(0).Movie.ID)
             End If
         End If
 
-        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.TMDB) Then
             Dim Settings As TMDB.Scraper.MySettings
             Settings.APIKey = _MySettings_MovieSet.APIKey
 
             Dim _scraper As New TMDB.Scraper
             Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.ID, FilteredModifier, Settings, Enums.ContentType.MovieSet)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifier, Settings, Enums.ContentType.MovieSet)
         End If
 
         logger.Trace("Finished TMDB Scraper")

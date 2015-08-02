@@ -47,8 +47,6 @@ Public Class Master
     'Public Shared MediaJobLog As New MediaLog
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
-    Public Shared tmpMovie As New MediaContainers.Movie
-    Public Shared tmpMovieSet As New MediaContainers.MovieSet
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
     Public Shared ExcludeDirs As New List(Of String)

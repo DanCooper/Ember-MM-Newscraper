@@ -2758,17 +2758,17 @@ Public Class frmMain
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
                 If Args.ScrapeModifier.MainNFO Then
-                    If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.ScrapeModifier, Args.scrapeType, Args.Options_MovieSet) Then
+                    If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.ScrapeModifier, Args.scrapeType, Args.Options_MovieSet, ScrapeList.Count = 1) Then
                         Exit Try
                     End If
                 Else
                     ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                    If String.IsNullOrEmpty(DBScrapeMovieSet.MovieSet.ID) AndAlso (Args.ScrapeModifier.MainBanner Or Args.ScrapeModifier.MainClearArt Or _
+                    If String.IsNullOrEmpty(DBScrapeMovieSet.MovieSet.TMDB) AndAlso (Args.ScrapeModifier.MainBanner Or Args.ScrapeModifier.MainClearArt Or _
                                                                              Args.ScrapeModifier.MainClearLogo Or Args.ScrapeModifier.MainDiscArt Or _
                                                                              Args.ScrapeModifier.MainFanart Or Args.ScrapeModifier.MainLandscape Or _
                                                                              Args.ScrapeModifier.MainPoster) Then
                         Dim tOpt As New Structures.ScrapeOptions_MovieSet 'all false value not to override any field
-                        If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.ScrapeModifier, Args.scrapeType, tOpt) Then
+                        If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, Args.ScrapeModifier, Args.scrapeType, tOpt, ScrapeList.Count = 1) Then
                             Exit For
                         End If
                     End If
@@ -2778,7 +2778,7 @@ Public Class frmMain
 
                 NewListTitle = DBScrapeMovieSet.ListTitle
                 NewTitle = DBScrapeMovieSet.MovieSet.Title
-                NewTMDBColID = DBScrapeMovieSet.MovieSet.ID
+                NewTMDBColID = DBScrapeMovieSet.MovieSet.TMDB
 
                 If Not NewListTitle = OldListTitle Then
                     bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))

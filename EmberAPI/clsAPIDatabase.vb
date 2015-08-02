@@ -1613,7 +1613,7 @@ Public Class Database
                         _moviesetDB.SortMethod = DirectCast(Convert.ToInt32(SQLreader("SortMethod")), Enums.SortMethod_MovieSet)
                         _moviesetDB.MovieSet = New MediaContainers.MovieSet
                         With _moviesetDB.MovieSet
-                            If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .ID = SQLreader("TMDBColID").ToString
+                            If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDB = SQLreader("TMDBColID").ToString
                             If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                             If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
                         End With
@@ -3464,7 +3464,7 @@ Public Class Database
 
             parListTitle.Value = _moviesetDB.ListTitle
             parSetName.Value = _moviesetDB.MovieSet.Title
-            parTMDBColID.Value = _moviesetDB.MovieSet.ID
+            parTMDBColID.Value = _moviesetDB.MovieSet.TMDB
             parPlot.Value = _moviesetDB.MovieSet.Plot
 
             If IsNew Then
@@ -3517,7 +3517,7 @@ Public Class Database
             'write new movie NFOs
             If MoviesInSet.Count > 0 Then
                 For Each tMovie In MoviesInSet
-                    tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.ID)
+                    tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.TMDB)
                     Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
                 Next
             End If

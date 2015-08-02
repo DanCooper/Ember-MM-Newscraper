@@ -191,7 +191,7 @@ Public Class KodiInterface
                     Else
                         Dim tDBMovieset As EmberAPI.Structures.DBMovieSet = DirectCast(_refparam, EmberAPI.Structures.DBMovieSet)
                         If tDBMovieset.Movies.Count > 0 Then
-                            If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.ID) Then
+                            If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
                                 For Each host In MySettings.KodiHosts.host.ToList
                                     'only update movie if realtimesync of host is enabled
                                     If host.realtimesync Then

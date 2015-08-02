@@ -124,9 +124,17 @@ Public Class Interfaces
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        'MovieSet is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
-        'Options is byref to allow field blocking in scraper chain
-        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As ModuleResult
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="oDBMovieSet">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param>
+        ''' <param name="nMovieSet">New and empty MovieSet container to fill with new scraped data</param>
+        ''' <param name="ScrapeModifier"></param>
+        ''' <param name="ScrapeType"></param>
+        ''' <param name="ScrapeOptions"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Function Scraper(ByRef oDBMovieSet As Structures.DBMovieSet, ByRef nMovieSet As MediaContainers.MovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As ModuleResult
 
 #End Region 'Methods
 
