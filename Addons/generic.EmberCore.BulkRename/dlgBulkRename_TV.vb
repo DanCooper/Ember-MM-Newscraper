@@ -90,7 +90,7 @@ Public Class dlgBulkRenamer_TV
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Try
             Dim EpisodeFile As New FileFolderRenamer.FileRename
-            Dim _currShow As New Structures.DBTV
+            Dim _currShow As New Database.DBElement
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
 
@@ -144,7 +144,7 @@ Public Class dlgBulkRenamer_TV
                                         _currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
                                         If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
-                                            Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
+                                            Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEpisode.Title))
                                             EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
                                             FFRenamer.AddEpisode(EpisodeFile)
                                         End If

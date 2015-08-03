@@ -57,12 +57,10 @@ Public Class dlgImgSelectNew
     Private pbImage() As PictureBox
     Private pnlImage() As Panel
     'Private PreDL As Boolean = False
-    Private _results As New MediaContainers.Image
     Private selIndex As Integer = -1
 
     Private tIsMovie As Boolean
-    Private tMovie As New Database.DBElement
-    Private tMovieSet As New Database.DBElement
+    Private tDBElement As New Database.DBElement
     Private tmpImage As New MediaContainers.Image
     Private tmpImageEF As New MediaContainers.Image
     Private tmpImageET As New MediaContainers.Image
@@ -73,34 +71,25 @@ Public Class dlgImgSelectNew
 
     Private aDes As String = String.Empty
 
+    Private DefaultImagesContainer As New MediaContainers.ImagesContainer
+    Private DefaultEpisodeImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
+    Private DefaultSeasonImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
+    Private SearchResultsContainer As New MediaContainers.SearchResultsContainer
+    Private tmpResultDBElement As New Database.DBElement
+
+    Private tScrapeModifier As New Structures.ScrapeModifier
+    Private tContentType As Enums.ContentType
+
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public Property Results As MediaContainers.Image
+    Public Property Result As Database.DBElement
         Get
-            Return _results
+            Return tmpResultDBElement
         End Get
-        Set(value As MediaContainers.Image)
-            _results = value
-        End Set
-    End Property
-
-    Public Property efList As List(Of String)
-        Get
-            Return _efList
-        End Get
-        Set(value As List(Of String))
-            _efList = value
-        End Set
-    End Property
-
-    Public Property etList As List(Of String)
-        Get
-            Return _etList
-        End Get
-        Set(value As List(Of String))
-            _etList = value
+        Set(value As Database.DBElement)
+            tmpResultDBElement = value
         End Set
     End Property
 
@@ -114,6 +103,36 @@ Public Class dlgImgSelectNew
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
+    End Sub
+
+    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType, Optional ByVal _isEdit As Boolean = False) As DialogResult
+        Me.SearchResultsContainer = ImagesContainer
+        Me.tDBElement = DBElement
+        Me.tScrapeModifier = ScrapeModifier
+        Me.tContentType = ContentType
+
+        Return MyBase.ShowDialog()
+    End Function
+
+    Private Sub dlgImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        'AddHandler pnlImages.MouseWheel, AddressOf MouseWheelEvent
+        'AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
+        'AddHandler tvList.MouseWheel, AddressOf MouseWheelEvent
+
+        Functions.PNLDoubleBuffer(Me.pnlImages)
+
+        Me.SetUp()
+    End Sub
+
+    Private Sub dlgImageSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        'Me.bwLoadData.WorkerReportsProgress = True
+        'Me.bwLoadData.WorkerSupportsCancellation = True
+        'Me.bwLoadData.RunWorkerAsync()
+    End Sub
+
+    Private Sub SetUp()
+        Me.btnOK.Text = Master.eLang.GetString(179, "OK")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
 #End Region 'Methods

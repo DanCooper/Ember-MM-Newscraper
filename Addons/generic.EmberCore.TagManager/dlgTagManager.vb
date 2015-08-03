@@ -495,7 +495,7 @@ Public Class dlgTagManager
             If Not list.Name Is Nothing Then
 
                 'Step 1: create new DBTag object to store current tag in
-                Dim tmpDBMovieTag As New Database.DBElementTag
+                Dim tmpDBMovieTag As New Structures.DBMovieTag
                 If list.IsNew = True Then
                     'if tag is new and doesn't exist in Ember, create new one with basic information!
                     tmpDBMovieTag.ID = -1

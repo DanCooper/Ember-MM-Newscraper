@@ -94,8 +94,8 @@ Namespace FanartTVs
         '	End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_Movie_MovieSet
-            Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+            Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -122,7 +122,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        alImagesContainer.Banners.Add(tmpPoster)
+                        alImagesContainer.MainBanners.Add(tmpPoster)
                     Next
                 End If
 
@@ -139,7 +139,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "1000"}
 
-                            alImagesContainer.ClearArts.Add(tmpPoster)
+                            alImagesContainer.MainClearArts.Add(tmpPoster)
                         Next
                     End If
                     If Results.List.Movieart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
@@ -153,7 +153,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "500"}
 
-                            alImagesContainer.ClearArts.Add(tmpPoster)
+                            alImagesContainer.MainClearArts.Add(tmpPoster)
                         Next
                     End If
                 End If
@@ -171,7 +171,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "800"}
 
-                            alImagesContainer.ClearLogos.Add(tmpPoster)
+                            alImagesContainer.MainClearLogos.Add(tmpPoster)
                         Next
                     End If
 
@@ -186,7 +186,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "400"}
 
-                            alImagesContainer.ClearLogos.Add(tmpPoster)
+                            alImagesContainer.MainClearLogos.Add(tmpPoster)
                         Next
                     End If
                 End If
@@ -205,14 +205,14 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        alImagesContainer.DiscArts.Add(tmpPoster)
+                        alImagesContainer.MainDiscArts.Add(tmpPoster)
                     Next
                 End If
 
                 'Fanart
                 If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
                     For Each image In Results.List.Moviebackground
-                        alImagesContainer.Fanarts.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
@@ -228,7 +228,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        alImagesContainer.Landscapes.Add(tmpPoster)
+                        alImagesContainer.MainLandscapes.Add(tmpPoster)
                     Next
                 End If
 
@@ -244,7 +244,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        alImagesContainer.Posters.Add(tmpPoster)
+                        alImagesContainer.MainPosters.Add(tmpPoster)
                     Next
                 End If
 
@@ -255,8 +255,8 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
-            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
@@ -284,7 +284,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        alContainer.ShowBanners.Add(tmpPoster)
+                        alContainer.MainBanners.Add(tmpPoster)
                     Next
                 End If
 
@@ -318,7 +318,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "512"}
 
-                        alContainer.ShowCharacterArts.Add(tmpPoster)
+                        alContainer.MainCharacterArts.Add(tmpPoster)
                     Next
                 End If
 
@@ -335,7 +335,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "1000"}
 
-                            alContainer.ShowClearArts.Add(tmpPoster)
+                            alContainer.MainClearArts.Add(tmpPoster)
                         Next
                     End If
                     If Results.List.Clearart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
@@ -349,7 +349,7 @@ Namespace FanartTVs
                                 .URL = image.Url, _
                                 .Width = "500"}
 
-                            alContainer.ShowClearArts.Add(tmpPoster)
+                            alContainer.MainClearArts.Add(tmpPoster)
                         Next
                     End If
                 End If
@@ -367,7 +367,7 @@ Namespace FanartTVs
                                 .URL = Image.Url, _
                                 .Width = "800"}
 
-                            alContainer.ShowClearLogos.Add(tmpPoster)
+                            alContainer.MainClearLogos.Add(tmpPoster)
                         Next
                     End If
                     If Results.List.Clearlogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
@@ -381,7 +381,7 @@ Namespace FanartTVs
                                 .URL = Image.Url, _
                                 .Width = "400"}
 
-                            alContainer.ShowClearLogos.Add(tmpPoster)
+                            alContainer.MainClearLogos.Add(tmpPoster)
                         Next
                     End If
                 End If
@@ -389,7 +389,7 @@ Namespace FanartTVs
                 'Fanart Show / AllSeasons / Season / Episode
                 If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
-                        alContainer.ShowFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
@@ -405,7 +405,7 @@ Namespace FanartTVs
                             .URL = Image.Url, _
                             .Width = "500"}
 
-                        alContainer.ShowLandscapes.Add(tmpPoster)
+                        alContainer.MainLandscapes.Add(tmpPoster)
                     Next
                 End If
 
@@ -440,7 +440,7 @@ Namespace FanartTVs
                             .URL = image.Url, _
                             .Width = "1000"}
 
-                        alContainer.ShowPosters.Add(tmpPoster)
+                        alContainer.MainPosters.Add(tmpPoster)
                     Next
                 End If
 

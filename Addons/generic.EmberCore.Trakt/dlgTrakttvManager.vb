@@ -1415,9 +1415,9 @@ Public Class dlgTrakttvManager
                         For Each srow As DataRow In dtEpisodes.Rows
                             'search for episode in Emberdatabase and update playcount/lastplayed value
                             If watchedshow.Show.Ids.Tvdb.ToString = srow.Item("TVDB").ToString AndAlso watchedseason.Number.ToString = srow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = srow.Item("Episode").ToString Then
-                                Dim tmpshow As New Structures.DBTV
+                                Dim tmpshow As New Database.DBElement
                                 tmpshow = Master.DB.LoadTVEpFromDB(CLng(srow.Item("idEpisode")), True)
-                                tmpshow.TVEp.Playcount = CStr(watchedepisode.Plays)
+                                tmpshow.TVEpisode.Playcount = CStr(watchedepisode.Plays)
                                 'date is not user friendly formatted, so change format a bit
                                 '2014-09-01T09:10:11.000Z (original)
                                 'new format here: 2014-09-01  09:10:11
@@ -1425,7 +1425,7 @@ Public Class dlgTrakttvManager
                                 Dim myDate As DateTime
                                 Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
                                 If isDate Then
-                                    tmpshow.TVEp.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                    tmpshow.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
                                 Master.DB.SaveTVEpToDB(tmpshow, False, False, True)
                                 'Updated episode in Ember, next episode please!
@@ -1886,7 +1886,7 @@ Public Class dlgTrakttvManager
                     Next
 
                     'Step 2: create new DBTag object to store current trakt list in
-                    Dim currMovieTag As New Database.DBElementTag
+                    Dim currMovieTag As New Structures.DBMovieTag
                     If listDBID = -1 Then
                         'if tag is new and doesn't exist in Ember, create new one with basic information!
                         currMovieTag.ID = -1

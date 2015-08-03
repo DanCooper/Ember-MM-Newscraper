@@ -39,9 +39,9 @@ Public Class dlgImgSelectTV
     Private DefaultImagesContainer As New MediaContainers.ImagesContainer
     Private DefaultEpisodeImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
     Private DefaultSeasonImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
-    Private SearchResultsContainer As New MediaContainers.SearchResultsContainer_TV
+    Private SearchResultsContainer As New MediaContainers.SearchResultsContainer
 
-    Private tmpShowContainer As New Structures.DBTV
+    Private tmpShowContainer As New Database.DBElement
 
     Private iCounter As Integer = 0
     Private iLeft As Integer = 5
@@ -60,7 +60,7 @@ Public Class dlgImgSelectTV
 
 #Region "Properties"
 
-    Public ReadOnly Property Results As Structures.DBTV
+    Public ReadOnly Property Results As Database.DBElement
         Get
             Return tmpShowContainer
         End Get
@@ -104,7 +104,7 @@ Public Class dlgImgSelectTV
         End If
     End Function
 
-    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal ScrapeModifier As Structures.ScrapeModifier, Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.SearchResultsContainer = ImagesContainer
         Me.tmpShowContainer = DBTV
         Me._ScrapeModifier = ScrapeModifier
@@ -446,14 +446,14 @@ Public Class dlgImgSelectTV
 
         Me.bwLoadImages.ReportProgress(SearchResultsContainer.EpisodeFanarts.Count + SearchResultsContainer.EpisodePosters.Count + SearchResultsContainer.SeasonBanners.Count + _
                                        SearchResultsContainer.SeasonFanarts.Count + SearchResultsContainer.SeasonLandscapes.Count + SearchResultsContainer.SeasonPosters.Count + _
-                                       SearchResultsContainer.ShowBanners.Count + SearchResultsContainer.ShowCharacterArts.Count + SearchResultsContainer.ShowClearArts.Count + _
-                                       SearchResultsContainer.ShowClearLogos.Count + SearchResultsContainer.ShowFanarts.Count + SearchResultsContainer.ShowLandscapes.Count + _
-                                       SearchResultsContainer.ShowPosters.Count, "max")
+                                       SearchResultsContainer.MainBanners.Count + SearchResultsContainer.MainCharacterArts.Count + SearchResultsContainer.MainClearArts.Count + _
+                                       SearchResultsContainer.MainClearLogos.Count + SearchResultsContainer.MainFanarts.Count + SearchResultsContainer.MainLandscapes.Count + _
+                                       SearchResultsContainer.MainPosters.Count, "max")
 
         'Create caching paths
 
         'Banner Show
-        For Each img In SearchResultsContainer.ShowBanners
+        For Each img In SearchResultsContainer.MainBanners
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showbanners", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showbanners\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -469,7 +469,7 @@ Public Class dlgImgSelectTV
         Next
 
         'CharacterArt Show
-        For Each img In SearchResultsContainer.ShowCharacterArts
+        For Each img In SearchResultsContainer.MainCharacterArts
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showcharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showcharacterarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -477,7 +477,7 @@ Public Class dlgImgSelectTV
         Next
 
         'ClearArt Show
-        For Each img In SearchResultsContainer.ShowClearArts
+        For Each img In SearchResultsContainer.MainClearArts
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showcleararts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showcleararts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -485,7 +485,7 @@ Public Class dlgImgSelectTV
         Next
 
         'ClearLogo Show
-        For Each img In SearchResultsContainer.ShowClearLogos
+        For Each img In SearchResultsContainer.MainClearLogos
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showclearlogos\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -501,7 +501,7 @@ Public Class dlgImgSelectTV
         Next
 
         'Fanart Show
-        For Each img In SearchResultsContainer.ShowFanarts
+        For Each img In SearchResultsContainer.MainFanarts
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showfanarts", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showfanarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -509,7 +509,7 @@ Public Class dlgImgSelectTV
         Next
 
         'Landscape Show
-        For Each img In SearchResultsContainer.ShowLandscapes
+        For Each img In SearchResultsContainer.MainLandscapes
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showlandscapes\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -533,7 +533,7 @@ Public Class dlgImgSelectTV
         Next
 
         'Poster Show
-        For Each img In SearchResultsContainer.ShowPosters
+        For Each img In SearchResultsContainer.MainPosters
             img.LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showposters", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
             If Not String.IsNullOrEmpty(img.ThumbURL) Then
                 img.LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, uniqueID, Path.DirectorySeparatorChar, "showposters\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(img.URL)))
@@ -624,7 +624,7 @@ Public Class dlgImgSelectTV
 
         'Show Poster / AllSeasons Poster
         If Me._ScrapeModifier.MainPoster OrElse Me._ScrapeModifier.AllSeasonsPoster Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowPosters
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainPosters
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -636,7 +636,7 @@ Public Class dlgImgSelectTV
 
         'Show Banner / AllSeasons Banner
         If Me._ScrapeModifier.MainBanner OrElse Me._ScrapeModifier.AllSeasonsBanner Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowBanners
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainBanners
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -648,7 +648,7 @@ Public Class dlgImgSelectTV
 
         'Show CharacterArt
         If Me._ScrapeModifier.MainCharacterArt Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowCharacterArts
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainCharacterArts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -660,7 +660,7 @@ Public Class dlgImgSelectTV
 
         'Show ClearArt
         If Me._ScrapeModifier.MainClearArt Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowClearArts
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainClearArts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -672,7 +672,7 @@ Public Class dlgImgSelectTV
 
         'Show ClearLogo
         If Me._ScrapeModifier.MainClearLogo Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowClearLogos
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainClearLogos
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -684,7 +684,7 @@ Public Class dlgImgSelectTV
 
         'Show Landscape / AllSeasons Landscape
         If Me._ScrapeModifier.MainLandscape OrElse Me._ScrapeModifier.AllSeasonsLandscape Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowLandscapes
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainLandscapes
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -696,7 +696,7 @@ Public Class dlgImgSelectTV
 
         'Show Fanart / AllSeasons Fanart / Season Fanart / Episode Fanart
         If Me._ScrapeModifier.MainFanart OrElse Me._ScrapeModifier.AllSeasonsFanart OrElse Me._ScrapeModifier.SeasonFanart OrElse Me._ScrapeModifier.EpisodeFanart Then
-            For Each tImg As MediaContainers.Image In SearchResultsContainer.ShowFanarts
+            For Each tImg As MediaContainers.Image In SearchResultsContainer.MainFanarts
                 CacheAndLoad(tImg)
                 If Me.bwLoadImages.CancellationPending Then
                     Return True
@@ -771,7 +771,7 @@ Public Class dlgImgSelectTV
 
         Dim TnS As TreeNode
         If tmpShowContainer.Seasons IsNot Nothing AndAlso tmpShowContainer.Seasons.Count > 0 Then
-            For Each cSeason As Structures.DBTV In tmpShowContainer.Seasons.Where(Function(s) Not s.TVSeason.Season = 999).OrderBy(Function(s) s.TVSeason.Season)
+            For Each cSeason As Database.DBElement In tmpShowContainer.Seasons.Where(Function(s) Not s.TVSeason.Season = 999).OrderBy(Function(s) s.TVSeason.Season)
                 TnS = New TreeNode(String.Format(Master.eLang.GetString(726, "Season {0}"), cSeason.TVSeason.Season), 7, 7)
                 If Master.eSettings.TVSeasonBannerAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1017, "Season Banner"), .Tag = String.Concat("b", cSeason.TVSeason.Season), .ImageIndex = 0, .SelectedImageIndex = 0})
                 If Master.eSettings.TVSeasonFanartAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.TVSeason.Season), .ImageIndex = 4, .SelectedImageIndex = 4})
@@ -985,7 +985,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowBanners
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainBanners
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1002,7 +1002,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowCharacterArts
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainCharacterArts
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1019,7 +1019,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowClearArts
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainClearArts
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1036,7 +1036,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowClearLogos
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainClearLogos
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1053,7 +1053,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowFanarts
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainFanarts
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1070,7 +1070,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowLandscapes
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainLandscapes
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1087,7 +1087,7 @@ Public Class dlgImgSelectTV
                     Me.pbCurrent.Image = Nothing
                 End If
                 iCount = 0
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowPosters
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainPosters
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1109,7 +1109,7 @@ Public Class dlgImgSelectTV
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowBanners
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainBanners
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1131,7 +1131,7 @@ Public Class dlgImgSelectTV
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowFanarts
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainFanarts
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1153,7 +1153,7 @@ Public Class dlgImgSelectTV
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowLandscapes
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainLandscapes
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1175,7 +1175,7 @@ Public Class dlgImgSelectTV
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
-                For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowPosters
+                For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainPosters
                     Me.AddImage(tvImage, iCount)
                     iCount += 1
                 Next
@@ -1220,7 +1220,7 @@ Public Class dlgImgSelectTV
                             Me.AddImage(tvImage, iCount)
                             iCount += 1
                         Next
-                        For Each tvImage As MediaContainers.Image In SearchResultsContainer.ShowFanarts
+                        For Each tvImage As MediaContainers.Image In SearchResultsContainer.MainFanarts
                             Me.AddImage(tvImage, iCount)
                             iCount += 1
                         Next

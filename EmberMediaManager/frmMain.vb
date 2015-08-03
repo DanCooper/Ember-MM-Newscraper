@@ -1521,8 +1521,8 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.FanartPath)
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.PosterPath)
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.WebImage
 
         If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
@@ -1531,10 +1531,10 @@ Public Class frmMain
 
         If Not Master.eSettings.GeneralHideFanart Then
             Dim NeedsGS As Boolean = False
-            If Not String.IsNullOrEmpty(Master.currShow.FanartPath) Then
-                Me.MainFanart.FromFile(Master.currShow.FanartPath)
+            If Master.currShow.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage
             Else
-                Me.MainFanart.FromFile(Master.currShow.FanartPath)
+                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage 'TODO: find a fallback methode
                 NeedsGS = True
             End If
 
@@ -1598,14 +1598,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currMovie.BannerPath)
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovie.ClearArtPath)
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currMovie.ClearLogoPath)
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovie.DiscArtPath)
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovie.FanartPath)
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovie.FanartPath)
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovie.LandscapePath)
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovie.PosterPath)
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovie.ImagesContainer.Banner.WebImage
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovie.ImagesContainer.ClearArt.WebImage
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovie.ImagesContainer.ClearLogo.WebImage
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovie.ImagesContainer.DiscArt.WebImage
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovie.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovie.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovie.ImagesContainer.Landscape.WebImage
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovie.ImagesContainer.Poster.WebImage
         'read nfo if it's there
 
         'wait for mediainfo to update the nfo
@@ -1711,10 +1711,12 @@ Public Class frmMain
 
                         Dim ResImg As Image
                         Dim Poster As New Images
-                        If Not String.IsNullOrEmpty(Movie.PosterPath) Then
-                            Poster.FromFile(Movie.PosterPath)
+                        If Movie.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+                            Poster = Movie.ImagesContainer.Poster.WebImage
+                        ElseIf Not String.IsNullOrEmpty(Movie.ImagesContainer.Poster.LocalFile) Then
+                            Poster.FromFile(Movie.ImagesContainer.Poster.LocalFile)
                         End If
-                        If Poster.Image IsNot Nothing Then
+                        If Movie.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                             ResImg = CType(Poster.Image.Clone(), Image)
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
                             Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
@@ -1800,7 +1802,7 @@ Public Class frmMain
             If Master.currShow.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                 Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage
             Else
-                Me.MainFanart.FromFile(Master.currShow.FanartPath) 'TODO: find a fallback methode
+                Me.MainFanart.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFile) 'TODO: find a fallback methode
                 NeedsGS = True
             End If
 
@@ -1857,14 +1859,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currShow.BannerPath)
-        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt.FromFile(Master.currShow.CharacterArtPath)
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currShow.ClearArtPath)
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currShow.ClearLogoPath)
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currShow.FanartPath)
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.FanartPath)
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.LandscapePath)
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.PosterPath)
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.WebImage
+        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt = Master.currShow.ImagesContainer.CharacterArt.WebImage
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currShow.ImagesContainer.ClearArt.WebImage
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currShow.ImagesContainer.ClearLogo.WebImage
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.WebImage
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.WebImage
 
         If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True
@@ -1896,7 +1898,7 @@ Public Class frmMain
             If Args.IsTV Then
                 MediaInfo.UpdateTVMediaInfo(Args.TVShow)
                 Master.DB.SaveTVEpToDB(Args.TVShow, False, False, False, True)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEp.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
+                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.TVShow.TVEpisode.FileInfo, True), .TVShow = Args.TVShow, .IsTV = True, .setEnabled = Args.setEnabled}
             Else
                 MediaInfo.UpdateMediaInfo(Args.Movie)
                 Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
@@ -1930,7 +1932,7 @@ Public Class frmMain
 
                     If Res.IsTV Then
                         If Master.eSettings.TVScraperMetaDataScan Then
-                            Me.SetAVImages(APIXML.GetAVImages(Res.TVShow.TVEp.FileInfo, Res.TVShow.Filename, True, ""))
+                            Me.SetAVImages(APIXML.GetAVImages(Res.TVShow.TVEpisode.FileInfo, Res.TVShow.Filename, True, ""))
                             Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                             Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                         Else
@@ -2018,20 +2020,10 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf ScraperEvent_Movie
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
-            Dim Banner As New MediaContainers.Image
-            Dim ClearArt As New MediaContainers.Image
-            Dim ClearLogo As New MediaContainers.Image
-            Dim DiscArt As New MediaContainers.Image
-            Dim Fanart As New MediaContainers.Image
-            Dim Landscape As New MediaContainers.Image
-            Dim Poster As New MediaContainers.Image
             Dim Theme As New MediaContainers.Theme
             Dim Trailer As New MediaContainers.Trailer
             Dim tURL As String = String.Empty
             Dim aUrlList As New List(Of MediaContainers.Trailer)
-            Dim efList As New List(Of String)
-            Dim etList As New List(Of String)
             Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
@@ -2080,386 +2072,22 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
                 End If
 
-                'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Movie" window)
-                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    'If DBScrapeMovie.RemoveActorThumbs Then Images.DeleteMovieActorThumbs(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveBanner Then Images.DeleteMovieBanner(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveClearArt Then Images.DeleteMovieClearArt(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveClearLogo Then Images.DeleteMovieClearLogo(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveDiscArt Then Images.DeleteMovieDiscArt(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveEFanarts Then Images.DeleteMovieEFanarts(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveEThumbs Then Images.DeleteMovieEThumbs(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveFanart Then Images.DeleteMovieFanart(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveLandscape Then Images.DeleteMovieLandscape(DBScrapeMovie)
-                    'If DBScrapeMovie.RemovePoster Then Images.DeleteMoviePoster(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveTheme Then Themes.DeleteMovieTheme(DBScrapeMovie)
-                    'If DBScrapeMovie.RemoveTrailer Then Trailers.DeleteMovieTrailer(DBScrapeMovie)
-                End If
-
                 'get all images
-                If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
-
-                    'Poster
-                    If Args.ScrapeModifier.MainPoster Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Poster.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainPoster) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMoviePoster(aContainer.Posters, Poster) Then
-                                    If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
-                                        Poster.WebImage.FromWeb(Poster.URL)
-                                    End If
-                                    If Poster.WebImage.Image IsNot Nothing Then
-                                        tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.PosterPath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.PosterItem, DBScrapeMovie.PosterPath)
-                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                            'End If
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Posters.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainPoster, aContainer.Posters, etList, efList) = DialogResult.OK Then
-                                                Poster = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
-                                                        Poster.WebImage.FromWeb(Poster.URL)
-                                                    End If
-                                                    If Poster.WebImage.Image IsNot Nothing Then
-                                                        tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.PosterPath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.PosterItem, DBScrapeMovie.PosterPath)
-                                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                                            'End If
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.PosterPath = ":" & Poster.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
+                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
+                    If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
+                        Using dImgSelect As New dlgImgSelectNew()
+                            If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
+                                DBScrapeMovie = dImgSelect.Result
                             End If
-                        End If
+                        End Using
+
+                        'autoscraping
+                    ElseIf Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                        Dim newPreferredImages As New MediaContainers.ImagesContainer
+                        Images.SetDefaultImages(DBScrapeMovie, newPreferredImages, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.Movie)
+                        DBScrapeMovie.ImagesContainer = newPreferredImages
                     End If
-
-                    If bwMovieScraper.CancellationPending Then Exit For
-
-                    'Fanart
-                    If Args.ScrapeModifier.MainFanart Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Fanart.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainFanart) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aContainer.Fanarts, Fanart) Then
-                                    If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
-                                        Fanart.WebImage.FromWeb(Fanart.URL)
-                                    End If
-                                    If Fanart.WebImage.Image IsNot Nothing Then
-                                        tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.FanartPath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.FanartItem, DBScrapeMovie.FanartPath)
-                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                                            'End If
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Fanarts.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainFanart, aContainer.Fanarts, efList, etList) = DialogResult.OK Then
-                                                Fanart = dImgSelect.Results
-                                                efList = dImgSelect.efList
-                                                etList = dImgSelect.etList
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
-                                                        Fanart.WebImage.FromWeb(Fanart.URL)
-                                                    End If
-                                                    If Fanart.WebImage.Image IsNot Nothing Then
-                                                        tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.FanartPath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.FanartItem, DBScrapeMovie.FanartPath)
-                                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                                                            'End If
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.FanartPath = ":" & Fanart.URL
-                                                    DBScrapeMovie.efList = efList
-                                                    DBScrapeMovie.etList = etList
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieScraper.CancellationPending Then Exit For
-
-                    'Banner
-                    If Args.ScrapeModifier.MainBanner Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Banner.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainBanner) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieBanner(aContainer.Banners, Banner) Then
-                                    If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0)
-                                    If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
-                                        Banner.WebImage.FromWeb(Banner.URL)
-                                    End If
-                                    If Banner.WebImage.Image IsNot Nothing Then
-                                        tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.BannerPath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.BannerItem, DBScrapeMovie.BannerPath)
-                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                            'End If
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Banners.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainBanner, aContainer.Banners, etList, efList) = DialogResult.OK Then
-                                                Banner = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
-                                                        Banner.WebImage.FromWeb(Banner.URL)
-                                                    End If
-                                                    If Banner.WebImage.Image IsNot Nothing Then
-                                                        tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.BannerPath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.BannerItem, DBScrapeMovie.BannerPath)
-                                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                                            'End If
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.BannerPath = ":" & Banner.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieScraper.CancellationPending Then Exit For
-
-                    'Landscape
-                    If Args.ScrapeModifier.MainLandscape Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Landscape.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainLandscape) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
-                                    If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0)
-                                    If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
-                                        Landscape.WebImage.FromWeb(Landscape.URL)
-                                    End If
-                                    If Landscape.WebImage.Image IsNot Nothing Then
-                                        tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.LandscapePath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.LandscapeItem, DBScrapeMovie.LandscapePath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Landscapes.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainLandscape, aContainer.Landscapes, etList, efList) = DialogResult.OK Then
-                                                Landscape = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
-                                                        Landscape.WebImage.FromWeb(Landscape.URL)
-                                                    End If
-                                                    If Landscape.WebImage.Image IsNot Nothing Then
-                                                        tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.LandscapePath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.LandscapeItem, DBScrapeMovie.LandscapePath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.LandscapePath = ":" & Landscape.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieScraper.CancellationPending Then Exit For
-
-                    'ClearArt
-                    If Args.ScrapeModifier.MainClearArt Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If ClearArt.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainClearArt) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
-                                    If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0)
-                                    If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
-                                        ClearArt.WebImage.FromWeb(ClearArt.URL)
-                                    End If
-                                    If ClearArt.WebImage.Image IsNot Nothing Then
-                                        tURL = ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.ClearArtPath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.ClearArtItem, DBScrapeMovie.ClearArtPath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.ClearArts.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainClearArt, aContainer.ClearArts, etList, efList) = DialogResult.OK Then
-                                                ClearArt = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
-                                                        ClearArt.WebImage.FromWeb(ClearArt.URL)
-                                                    End If
-                                                    If ClearArt.WebImage.Image IsNot Nothing Then
-                                                        tURL = ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.ClearArtPath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.ClearArtItem, DBScrapeMovie.ClearArtPath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.ClearArtPath = ":" & ClearArt.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieScraper.CancellationPending Then Exit For
-
-                    'ClearLogo
-                    If Args.ScrapeModifier.MainClearLogo Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If ClearLogo.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainClearLogo) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
-                                    If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0)
-                                    If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
-                                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
-                                    End If
-                                    If ClearLogo.WebImage.Image IsNot Nothing Then
-                                        tURL = ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.ClearLogoPath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.ClearLogoItem, DBScrapeMovie.ClearLogoPath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.ClearLogos.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainClearLogo, aContainer.ClearLogos, etList, efList) = DialogResult.OK Then
-                                                ClearLogo = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
-                                                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
-                                                    End If
-                                                    If ClearLogo.WebImage.Image IsNot Nothing Then
-                                                        tURL = ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.ClearLogoPath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.ClearLogoItem, DBScrapeMovie.ClearLogoPath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.ClearLogoPath = ":" & ClearLogo.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieScraper.CancellationPending Then Exit For
-
-                    'DiscArt
-                    If Args.ScrapeModifier.MainDiscArt Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If DiscArt.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainDiscArt) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
-                                    If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0)
-                                    If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
-                                        DiscArt.WebImage.FromWeb(DiscArt.URL)
-                                    End If
-                                    If DiscArt.WebImage.Image IsNot Nothing Then
-                                        tURL = DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.DiscArtPath = tURL
-                                            ScraperEvent_Movie(Enums.ScraperEventType.DiscArtItem, DBScrapeMovie.DiscArtPath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.DiscArts.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.MainDiscArt, aContainer.DiscArts, etList, efList) = DialogResult.OK Then
-                                                DiscArt = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
-                                                        DiscArt.WebImage.FromWeb(DiscArt.URL)
-                                                    End If
-                                                    If DiscArt.WebImage.Image IsNot Nothing Then
-                                                        tURL = DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovie.DiscArtPath = tURL
-                                                            ScraperEvent_Movie(Enums.ScraperEventType.DiscArtItem, DBScrapeMovie.DiscArtPath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovie.DiscArtPath = ":" & DiscArt.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
                 End If
 
                 If bwMovieScraper.CancellationPending Then Exit For
@@ -2568,66 +2196,6 @@ Public Class frmMain
 
                 If bwMovieScraper.CancellationPending Then Exit For
 
-                'Extrathumbs
-                If Args.ScrapeModifier.MainEThumbs Then
-                    If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                        If Fanart.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainEThumbs) Then
-                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
-                                etList = Images.GetPreferredMovieEThumbs(aContainer.Fanarts)
-                                If etList.Count > 0 Then
-                                    Dim eti As Integer = 0
-                                    Dim etMax As Integer = Master.eSettings.MovieEThumbsLimit
-                                    For Each lItem As String In etList
-                                        Dim EThumb As New Images
-                                        EThumb.FromWeb(lItem)
-                                        If EThumb.Image IsNot Nothing Then
-                                            Dim etPath As String = EThumb.SaveAsMovieExtrathumb(DBScrapeMovie)
-                                            If Not String.IsNullOrEmpty(etPath) Then
-                                                DBScrapeMovie.EThumbsPath = etPath
-                                                ScraperEvent_Movie(Enums.ScraperEventType.EThumbsItem, DBScrapeMovie.EThumbsPath)
-                                                eti = eti + 1
-                                            End If
-                                        End If
-                                        If etMax > 0 AndAlso eti >= etMax Then Exit For
-                                    Next
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-
-                If bwMovieScraper.CancellationPending Then Exit For
-
-                'Extrafanarts
-                If Args.ScrapeModifier.MainEFanarts Then
-                    If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                        If Fanart.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainEFanarts) Then
-                            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
-                                efList = Images.GetPreferredMovieEFanarts(aContainer.Fanarts)
-                                If efList.Count > 0 Then
-                                    Dim efi As Integer = 0
-                                    Dim efMax As Integer = Master.eSettings.MovieEFanartsLimit
-                                    For Each lItem As String In efList
-                                        Dim EFanart As New Images
-                                        EFanart.FromWeb(lItem)
-                                        If EFanart.Image IsNot Nothing Then
-                                            Dim efPath As String = EFanart.SaveAsMovieExtrafanart(DBScrapeMovie, Path.GetFileName(lItem))
-                                            If Not String.IsNullOrEmpty(efPath) Then
-                                                DBScrapeMovie.EFanartsPath = efPath
-                                                ScraperEvent_Movie(Enums.ScraperEventType.EFanartsItem, DBScrapeMovie.EFanartsPath)
-                                                efi = efi + 1
-                                            End If
-                                        End If
-                                        If efMax > 0 AndAlso efi >= efMax Then Exit For
-                                    Next
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-
-                If bwMovieScraper.CancellationPending Then Exit For
-
                 'ActorThumbs
                 If Args.ScrapeModifier.MainActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
@@ -2715,20 +2283,13 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_MovieSet, AddressOf ScraperEvent_MovieSet
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
-            Dim Banner As New MediaContainers.Image
-            Dim ClearArt As New MediaContainers.Image
-            Dim ClearLogo As New MediaContainers.Image
-            Dim DiscArt As New MediaContainers.Image
-            Dim Fanart As New MediaContainers.Image
-            Dim Landscape As New MediaContainers.Image
+            Dim aContainer As New MediaContainers.SearchResultsContainer
             Dim NewListTitle As String = String.Empty
             Dim NewTMDBColID As String = String.Empty
             Dim NewTitle As String = String.Empty
             Dim OldListTitle As String = String.Empty
             Dim OldTMDBColID As String = String.Empty
             Dim OldTitle As String = String.Empty
-            Dim Poster As New MediaContainers.Image
             Dim efList As New List(Of String)
             Dim etList As New List(Of String)
             Dim tURL As String = String.Empty
@@ -2745,13 +2306,13 @@ Public Class frmMain
                 DBScrapeMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(dRow.Item("idSet")))
 
                 'clone the existing MovieSet with old paths and title to remove old images if the title is changed during the scraping
-                cloneMovieSet.BannerPath = DBScrapeMovieSet.BannerPath
-                cloneMovieSet.ClearArtPath = DBScrapeMovieSet.ClearArtPath
-                cloneMovieSet.ClearLogoPath = DBScrapeMovieSet.ClearLogoPath
-                cloneMovieSet.DiscArtPath = DBScrapeMovieSet.DiscArtPath
-                cloneMovieSet.FanartPath = DBScrapeMovieSet.FanartPath
-                cloneMovieSet.LandscapePath = DBScrapeMovieSet.LandscapePath
-                cloneMovieSet.PosterPath = DBScrapeMovieSet.PosterPath
+                cloneMovieSet.ImagesContainer.Banner.LocalFile = DBScrapeMovieSet.ImagesContainer.Banner.LocalFile
+                cloneMovieSet.ImagesContainer.ClearArt.LocalFile = DBScrapeMovieSet.ImagesContainer.ClearArt.LocalFile
+                cloneMovieSet.ImagesContainer.ClearLogo.LocalFile = DBScrapeMovieSet.ImagesContainer.ClearLogo.LocalFile
+                cloneMovieSet.ImagesContainer.DiscArt.LocalFile = DBScrapeMovieSet.ImagesContainer.DiscArt.LocalFile
+                cloneMovieSet.ImagesContainer.Fanart.LocalFile = DBScrapeMovieSet.ImagesContainer.Fanart.LocalFile
+                cloneMovieSet.ImagesContainer.Landscape.LocalFile = DBScrapeMovieSet.ImagesContainer.Landscape.LocalFile
+                cloneMovieSet.ImagesContainer.Poster.LocalFile = DBScrapeMovieSet.ImagesContainer.Poster.LocalFile
                 cloneMovieSet.MovieSet = New MediaContainers.MovieSet
                 cloneMovieSet.MovieSet.Title = DBScrapeMovieSet.MovieSet.Title
 
@@ -2788,414 +2349,60 @@ Public Class frmMain
                 If Not NewTitle = OldTitle AndAlso Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     'load all old images to memorystream
                     'save old images with new MovieSet title
-                    If Not String.IsNullOrEmpty(cloneMovieSet.BannerPath) AndAlso File.Exists(cloneMovieSet.BannerPath) Then
-                        Banner.WebImage.FromFile(cloneMovieSet.BannerPath)
-                        DBScrapeMovieSet.BannerPath = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
-                    End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearArtPath) AndAlso File.Exists(cloneMovieSet.ClearArtPath) Then
-                        ClearArt.WebImage.FromFile(cloneMovieSet.ClearArtPath)
-                        DBScrapeMovieSet.ClearArtPath = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
-                    End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.ClearLogoPath) AndAlso File.Exists(cloneMovieSet.ClearLogoPath) Then
-                        ClearLogo.WebImage.FromFile(cloneMovieSet.ClearLogoPath)
-                        DBScrapeMovieSet.ClearLogoPath = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
-                    End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.DiscArtPath) AndAlso File.Exists(cloneMovieSet.DiscArtPath) Then
-                        DiscArt.WebImage.FromFile(cloneMovieSet.DiscArtPath)
-                        DBScrapeMovieSet.DiscArtPath = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
-                    End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.FanartPath) AndAlso File.Exists(cloneMovieSet.FanartPath) Then
-                        Fanart.WebImage.FromFile(cloneMovieSet.FanartPath)
-                        DBScrapeMovieSet.FanartPath = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
-                    End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.LandscapePath) AndAlso File.Exists(cloneMovieSet.LandscapePath) Then
-                        Landscape.WebImage.FromFile(cloneMovieSet.LandscapePath)
-                        DBScrapeMovieSet.LandscapePath = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                    End If
-                    If Not String.IsNullOrEmpty(cloneMovieSet.PosterPath) AndAlso File.Exists(cloneMovieSet.PosterPath) Then
-                        Poster.WebImage.FromFile(cloneMovieSet.PosterPath)
-                        DBScrapeMovieSet.PosterPath = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
-                    End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Banner.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Banner.LocalFile) Then
+                    '    Banner.WebImage.FromFile(cloneMovieSet.ImagesContainer.Banner.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.Banner.LocalFile = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
+                    'End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.ClearArt.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.ClearArt.LocalFile) Then
+                    '    ClearArt.WebImage.FromFile(cloneMovieSet.ImagesContainer.ClearArt.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.ClearArt.LocalFile = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
+                    'End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.ClearLogo.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.ClearLogo.LocalFile) Then
+                    '    ClearLogo.WebImage.FromFile(cloneMovieSet.ImagesContainer.ClearLogo.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.ClearLogo.LocalFile = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
+                    'End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.DiscArt.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.DiscArt.LocalFile) Then
+                    '    DiscArt.WebImage.FromFile(cloneMovieSet.ImagesContainer.DiscArt.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.DiscArt.LocalFile = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
+                    'End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Fanart.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Fanart.LocalFile) Then
+                    '    Fanart.WebImage.FromFile(cloneMovieSet.ImagesContainer.Fanart.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.Fanart.LocalFile = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
+                    'End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Landscape.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Landscape.LocalFile) Then
+                    '    Landscape.WebImage.FromFile(cloneMovieSet.ImagesContainer.Landscape.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.Landscape.LocalFile = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
+                    'End If
+                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Poster.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Poster.LocalFile) Then
+                    '    Poster.WebImage.FromFile(cloneMovieSet.ImagesContainer.Poster.LocalFile)
+                    '    DBScrapeMovieSet.ImagesContainer.Poster.LocalFile = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
+                    'End If
 
-                    'delete old images
-                    Images.DeleteMovieSetBanner(cloneMovieSet)
-                    Images.DeleteMovieSetClearArt(cloneMovieSet)
-                    Images.DeleteMovieSetClearLogo(cloneMovieSet)
-                    Images.DeleteMovieSetDiscArt(cloneMovieSet)
-                    Images.DeleteMovieSetFanart(cloneMovieSet)
-                    Images.DeleteMovieSetLandscape(cloneMovieSet)
-                    Images.DeleteMovieSetPoster(cloneMovieSet)
-
-                    'reset all images for scraper
-                    Banner = New MediaContainers.Image
-                    ClearArt = New MediaContainers.Image
-                    ClearLogo = New MediaContainers.Image
-                    DiscArt = New MediaContainers.Image
-                    Fanart = New MediaContainers.Image
-                    Landscape = New MediaContainers.Image
-                    Poster = New MediaContainers.Image
+                    ''delete old images
+                    'Images.DeleteMovieSetBanner(cloneMovieSet)
+                    'Images.DeleteMovieSetClearArt(cloneMovieSet)
+                    'Images.DeleteMovieSetClearLogo(cloneMovieSet)
+                    'Images.DeleteMovieSetDiscArt(cloneMovieSet)
+                    'Images.DeleteMovieSetFanart(cloneMovieSet)
+                    'Images.DeleteMovieSetLandscape(cloneMovieSet)
+                    'Images.DeleteMovieSetPoster(cloneMovieSet)
                 End If
 
                 'get all images
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, aContainer, Args.ScrapeModifier) Then
-
-                    'Poster
-                    If Args.ScrapeModifier.MainPoster Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Poster.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainPoster) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetPoster(aContainer.Posters, Poster) Then
-                                    If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
-                                        Poster.WebImage.FromWeb(Poster.URL)
-                                    End If
-                                    If Poster.WebImage.Image IsNot Nothing Then
-                                        tURL = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.PosterPath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.PosterItem, DBScrapeMovieSet.PosterPath)
-                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                            'End If
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Posters.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainPoster, aContainer.Posters, etList, efList) = DialogResult.OK Then
-                                                Poster = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
-                                                        Poster.WebImage.FromWeb(Poster.URL)
-                                                    End If
-                                                    If Poster.WebImage.Image IsNot Nothing Then
-                                                        tURL = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.PosterPath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.PosterItem, DBScrapeMovieSet.PosterPath)
-                                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                                            'End If
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.PosterPath = ":" & Poster.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
+                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, Args.ScrapeModifier) Then
+                    If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
+                        Using dImgSelect As New dlgImgSelectNew()
+                            If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
+                                DBScrapeMovieSet = dImgSelect.Result
                             End If
-                        End If
-                    End If
+                        End Using
 
-                    If bwMovieSetScraper.CancellationPending Then Exit For
-
-                    'Fanart
-                    If Args.ScrapeModifier.MainFanart Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Fanart.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainFanart) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetFanart(aContainer.Fanarts, Fanart) Then
-                                    If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
-                                        Fanart.WebImage.FromWeb(Fanart.URL)
-                                    End If
-                                    If Fanart.WebImage.Image IsNot Nothing Then
-                                        tURL = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.FanartPath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.FanartItem, DBScrapeMovieSet.FanartPath)
-                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                                            'End If
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Fanarts.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainFanart, aContainer.Fanarts, efList, etList) = DialogResult.OK Then
-                                                Fanart = dImgSelect.Results
-                                                efList = dImgSelect.efList
-                                                etList = dImgSelect.etList
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
-                                                        Fanart.WebImage.FromWeb(Fanart.URL)
-                                                    End If
-                                                    If Fanart.WebImage.Image IsNot Nothing Then
-                                                        tURL = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.FanartPath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.FanartItem, DBScrapeMovieSet.FanartPath)
-                                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                                                            'End If
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.FanartPath = ":" & Fanart.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieSetScraper.CancellationPending Then Exit For
-
-                    'Banner
-                    If Args.ScrapeModifier.MainBanner Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Banner.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainBanner) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetBanner(aContainer.Banners, Banner) Then
-                                    If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0)
-                                    If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
-                                        Banner.WebImage.FromWeb(Banner.URL)
-                                    End If
-                                    If Banner.WebImage.Image IsNot Nothing Then
-                                        tURL = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.BannerPath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.BannerItem, DBScrapeMovieSet.BannerPath)
-                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                            'End If
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Banners.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainBanner, aContainer.Banners, etList, efList) = DialogResult.OK Then
-                                                Banner = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
-                                                        Banner.WebImage.FromWeb(Banner.URL)
-                                                    End If
-                                                    If Banner.WebImage.Image IsNot Nothing Then
-                                                        tURL = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.BannerPath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.BannerItem, DBScrapeMovieSet.BannerPath)
-                                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                                                            'End If
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.BannerPath = ":" & Banner.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieSetScraper.CancellationPending Then Exit For
-
-                    'Landscape
-                    If Args.ScrapeModifier.MainLandscape Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Landscape.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainLandscape) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
-                                    If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0)
-                                    If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
-                                        Landscape.WebImage.FromWeb(Landscape.URL)
-                                    End If
-                                    If Landscape.WebImage.Image IsNot Nothing Then
-                                        tURL = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.LandscapePath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.LandscapeItem, DBScrapeMovieSet.LandscapePath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.Landscapes.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainLandscape, aContainer.Landscapes, etList, efList) = DialogResult.OK Then
-                                                Landscape = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
-                                                        Landscape.WebImage.FromWeb(Landscape.URL)
-                                                    End If
-                                                    If Landscape.WebImage.Image IsNot Nothing Then
-                                                        tURL = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.LandscapePath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.LandscapeItem, DBScrapeMovieSet.LandscapePath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.LandscapePath = ":" & Landscape.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieSetScraper.CancellationPending Then Exit For
-
-                    'ClearArt
-                    If Args.ScrapeModifier.MainClearArt Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If ClearArt.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainClearArt) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
-                                    If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0)
-                                    If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
-                                        ClearArt.WebImage.FromWeb(ClearArt.URL)
-                                    End If
-                                    If ClearArt.WebImage.Image IsNot Nothing Then
-                                        tURL = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.ClearArtPath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.ClearArtItem, DBScrapeMovieSet.ClearArtPath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.ClearArts.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainClearArt, aContainer.ClearArts, etList, efList) = DialogResult.OK Then
-                                                ClearArt = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
-                                                        ClearArt.WebImage.FromWeb(ClearArt.URL)
-                                                    End If
-                                                    If ClearArt.WebImage.Image IsNot Nothing Then
-                                                        tURL = ClearArt.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.ClearArtPath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.ClearArtItem, DBScrapeMovieSet.ClearArtPath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.ClearArtPath = ":" & ClearArt.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieSetScraper.CancellationPending Then Exit For
-
-                    'ClearLogo
-                    If Args.ScrapeModifier.MainClearLogo Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If ClearLogo.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainClearLogo) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
-                                    If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0)
-                                    If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
-                                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
-                                    End If
-                                    If ClearLogo.WebImage.Image IsNot Nothing Then
-                                        tURL = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.ClearLogoPath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.ClearLogoItem, DBScrapeMovieSet.ClearLogoPath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.ClearLogos.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainClearLogo, aContainer.ClearLogos, etList, efList) = DialogResult.OK Then
-                                                ClearLogo = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
-                                                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
-                                                    End If
-                                                    If ClearLogo.WebImage.Image IsNot Nothing Then
-                                                        tURL = ClearLogo.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.ClearLogoPath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.ClearLogoItem, DBScrapeMovieSet.ClearLogoPath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.ClearLogoPath = ":" & ClearLogo.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-
-                    If bwMovieSetScraper.CancellationPending Then Exit For
-
-                    'DiscArt
-                    If Args.ScrapeModifier.MainDiscArt Then
-                        tURL = String.Empty
-                        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If DiscArt.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainDiscArt) Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
-                                    If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0)
-                                    If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
-                                        DiscArt.WebImage.FromWeb(DiscArt.URL)
-                                    End If
-                                    If DiscArt.WebImage.Image IsNot Nothing Then
-                                        tURL = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
-                                        If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovieSet.DiscArtPath = tURL
-                                            ScraperEvent_MovieSet(Enums.ScraperEventType.DiscArtItem, DBScrapeMovieSet.DiscArtPath)
-                                        End If
-                                    End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                    If aContainer.DiscArts.Count > 0 Then
-                                        If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.MissAsk Then
-                                            MessageBox.Show(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                        End If
-                                        Using dImgSelect As New dlgImgSelect()
-                                            If dImgSelect.ShowDialog(DBScrapeMovieSet, Enums.ModifierType.MainDiscArt, aContainer.DiscArts, etList, efList) = DialogResult.OK Then
-                                                DiscArt = dImgSelect.Results
-                                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                                    If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
-                                                        DiscArt.WebImage.FromWeb(DiscArt.URL)
-                                                    End If
-                                                    If DiscArt.WebImage.Image IsNot Nothing Then
-                                                        tURL = DiscArt.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                                                        If Not String.IsNullOrEmpty(tURL) Then
-                                                            DBScrapeMovieSet.DiscArtPath = tURL
-                                                            ScraperEvent_MovieSet(Enums.ScraperEventType.DiscArtItem, DBScrapeMovieSet.DiscArtPath)
-                                                        End If
-                                                    End If
-                                                Else
-                                                    DBScrapeMovieSet.DiscArtPath = ":" & DiscArt.URL
-                                                End If
-                                            End If
-                                        End Using
-                                    End If
-                                End If
-                            End If
-                        End If
+                        'autoscraping
+                    ElseIf Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                        Dim newPreferredImages As New MediaContainers.ImagesContainer
+                        Images.SetDefaultImages(DBScrapeMovieSet, newPreferredImages, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.MovieSet)
+                        DBScrapeMovieSet.ImagesContainer = newPreferredImages
                     End If
                 End If
 
@@ -3274,25 +2481,16 @@ Public Class frmMain
     Private Sub bwTVScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeShow As New Structures.DBTV
+        Dim DBScrapeShow As New Database.DBElement
 
         logger.Trace("Starting TV Show scrape")
 
         AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVShow
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer_TV
-            Dim ShowBanner As New MediaContainers.Image
-            Dim ShowCharacterArt As New MediaContainers.Image
-            Dim ShowClearArt As New MediaContainers.Image
-            Dim ShowClearLogo As New MediaContainers.Image
-            Dim ShowFanart As New MediaContainers.Image
-            Dim ShowLandscape As New MediaContainers.Image
-            Dim ShowPoster As New MediaContainers.Image
+            Dim aContainer As New MediaContainers.SearchResultsContainer
             Dim ShowTheme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
-            Dim efList As New List(Of String)
-            Dim etList As New List(Of String)
             Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
@@ -3336,20 +2534,6 @@ Public Class frmMain
                     bwTVScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
                 End If
 
-                'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Show" window)
-                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    If DBScrapeShow.RemoveActorThumbs Then Images.DeleteTVShowActorThumbs(DBScrapeShow)
-                    If DBScrapeShow.RemoveBanner Then Images.DeleteTVShowBanner(DBScrapeShow)
-                    If DBScrapeShow.RemoveCharacterArt Then Images.DeleteTVShowCharacterArt(DBScrapeShow)
-                    If DBScrapeShow.RemoveClearArt Then Images.DeleteTVShowClearArt(DBScrapeShow)
-                    If DBScrapeShow.RemoveClearLogo Then Images.DeleteTVShowClearLogo(DBScrapeShow)
-                    If DBScrapeShow.RemoveEFanarts Then Images.DeleteTVShowEFanarts(DBScrapeShow)
-                    If DBScrapeShow.RemoveFanart Then Images.DeleteTVShowFanart(DBScrapeShow)
-                    If DBScrapeShow.RemoveLandscape Then Images.DeleteTVShowLandscape(DBScrapeShow)
-                    If DBScrapeShow.RemovePoster Then Images.DeleteTVShowPoster(DBScrapeShow)
-                    If DBScrapeShow.RemoveTheme Then Themes.DeleteTVShowTheme(DBScrapeShow)
-                End If
-
                 'get all images
                 If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
 
@@ -3363,595 +2547,13 @@ Public Class frmMain
                     Else 'autoscraping
 
                         For Each tEpisode In DBScrapeShow.Episodes
-                            Dim epImagesContainer As New MediaContainers.SearchResultsContainer_TV
+                            Dim epImagesContainer As New MediaContainers.SearchResultsContainer
                             Dim imgResult As New MediaContainers.Image
                             ModulesManager.Instance.ScrapeImage_TV(tEpisode, epImagesContainer, Args.ScrapeModifier, False)
-                            Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEp.Season, tEpisode.TVEp.Episode)
+                            Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEpisode.Season, tEpisode.TVEpisode.Episode)
                             tEpisode.ImagesContainer.Poster = imgResult
                         Next
-                        '    If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeShow, Enums.ModifierType.ShowPoster) Then
-                        '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredTVShowPoster(aContainer.ShowPosters, ShowPoster) Then
-                        '            If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
-                        '                ShowPoster.WebImage.FromWeb(ShowPoster.URL)
-                        '            End If
-                        '            If ShowPoster.WebImage.Image IsNot Nothing Then
-                        '                tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
-                        '                If Not String.IsNullOrEmpty(tURL) Then
-                        '                    DBScrapeShow.PosterPath = tURL
-                        '                    'TVScraperEvent(Enums.ScraperEventType_TV.PosterItem, DBScrapeShow.ShowPosterPath)
-                        '                    'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                        '                    '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                        '                    'End If
-                        '                End If
-                        '            End If
-                        '        ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                        '            If aContainer.ShowPosters.Count > 0 Then
-                        '                If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                        '                    MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        '                End If
-                        '                Using dImgSelect As New dlgImgSelectTV()
-                        '                    If dImgSelect.ShowDialog(DBScrapeShow, Enums.ModifierType.ShowPoster, aContainer) = DialogResult.OK Then
-                        '                        ShowPoster = dImgSelect.Results.ImagesContainer.Poster
-                        '                        If Not String.IsNullOrEmpty(ShowPoster.URL) AndAlso ShowPoster.WebImage.Image Is Nothing Then
-                        '                            ShowPoster.WebImage.FromWeb(ShowPoster.URL)
-                        '                        End If
-                        '                        If ShowPoster.WebImage.Image IsNot Nothing Then
-                        '                            tURL = ShowPoster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
-                        '                            If Not String.IsNullOrEmpty(tURL) Then
-                        '                                DBScrapeShow.PosterPath = tURL
-                        '                                'TVScraperEvent(Enums.ScraperEventType_TV.ShowPosterItem, DBScrapeShow.ShowPosterPath)
-                        '                                'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                        '                                '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                        '                                'End If
-                        '                            End If
-                        '                        End If
-                        '                    End If
-                        '                End Using
-                        '            End If
-                        '        End If
-                        '    End If
                     End If
-
-                    '    'Poster
-                    '    If ScrapeModifier.Poster Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.TVImagesDisplayImageSelect) Then
-                    '            If Poster.WebImage.IsAllowedToDownload(DBScrapeShow, Enums.ModifierType.ShowPoster) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredTVShowPoster(aContainer.ShowPosters, Poster) Then
-                    '                    If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
-                    '                        Poster.WebImage.FromWeb(Poster.URL)
-                    '                    End If
-                    '                    If Poster.WebImage.Image IsNot Nothing Then
-                    '                        tURL = Poster.WebImage.SaveAsTVShowPoster(DBScrapeShow)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeShow.ShowPosterPath = tURL
-                    '                            'TVScraperEvent(Enums.ScraperEventType_TV.PosterItem, DBScrapeShow.ShowPosterPath)
-                    '                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                    '                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                    '                            'End If
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.ShowPosters.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(928, "A poster of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelectTV()
-                    '                            If dImgSelect.ShowDialog(DBScrapeShow, Enums.ModifierType.Poster, aContainer.ShowPosters, etList, efList) = DialogResult.OK Then
-                    '                                Poster = dImgSelect.Results
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
-                    '                                        Poster.WebImage.FromWeb(Poster.URL)
-                    '                                    End If
-                    '                                    If Poster.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = Poster.WebImage.SaveAsMoviePoster(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.PosterPath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.PosterItem, DBScrapeMovie.PosterPath)
-                    '                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                    '                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                    '                                            'End If
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.PosterPath = ":" & Poster.URL
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    '    If bwMovieScraper.CancellationPending Then Exit For
-
-                    '    'Fanart
-                    '    If ScrapeModifier.Fanart Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                    '            If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.Fanart) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aContainer.Fanarts, Fanart) Then
-                    '                    If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
-                    '                        Fanart.WebImage.FromWeb(Fanart.URL)
-                    '                    End If
-                    '                    If Fanart.WebImage.Image IsNot Nothing Then
-                    '                        tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeMovie.FanartPath = tURL
-                    '                            MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, DBScrapeMovie.FanartPath)
-                    '                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                    '                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                    '                            'End If
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.Fanarts.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelect()
-                    '                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.Fanart, aContainer.Fanarts, efList, etList) = DialogResult.OK Then
-                    '                                Fanart = dImgSelect.Results
-                    '                                efList = dImgSelect.efList
-                    '                                etList = dImgSelect.etList
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
-                    '                                        Fanart.WebImage.FromWeb(Fanart.URL)
-                    '                                    End If
-                    '                                    If Fanart.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = Fanart.WebImage.SaveAsMovieFanart(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.FanartPath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.FanartItem, DBScrapeMovie.FanartPath)
-                    '                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                    '                                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                    '                                            'End If
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.FanartPath = ":" & Fanart.URL
-                    '                                    DBScrapeMovie.efList = efList
-                    '                                    DBScrapeMovie.etList = etList
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    '    If bwMovieScraper.CancellationPending Then Exit For
-
-                    '    'Banner
-                    '    If ScrapeModifier.Banner Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                    '            If Banner.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.Banner) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Images.GetPreferredMovieBanner(aContainer.Banners, Banner) Then
-                    '                    If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0)
-                    '                    If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
-                    '                        Banner.WebImage.FromWeb(Banner.URL)
-                    '                    End If
-                    '                    If Banner.WebImage.Image IsNot Nothing Then
-                    '                        tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeMovie.BannerPath = tURL
-                    '                            MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, DBScrapeMovie.BannerPath)
-                    '                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                    '                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                    '                            'End If
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.Banners.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelect()
-                    '                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.Banner, aContainer.Banners, etList, efList) = DialogResult.OK Then
-                    '                                Banner = dImgSelect.Results
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
-                    '                                        Banner.WebImage.FromWeb(Banner.URL)
-                    '                                    End If
-                    '                                    If Banner.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.BannerPath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.BannerItem, DBScrapeMovie.BannerPath)
-                    '                                            'If ScrapeModifier.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                    '                                            '    DBScrapeMovie.Movie.Thumb = pResults.Posters
-                    '                                            'End If
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.BannerPath = ":" & Banner.URL
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    '    If bwMovieScraper.CancellationPending Then Exit For
-
-                    '    'Landscape
-                    '    If ScrapeModifier.Landscape Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                    '            If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.Landscape) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
-                    '                    If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0)
-                    '                    If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
-                    '                        Landscape.WebImage.FromWeb(Landscape.URL)
-                    '                    End If
-                    '                    If Landscape.WebImage.Image IsNot Nothing Then
-                    '                        tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeMovie.LandscapePath = tURL
-                    '                            MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, DBScrapeMovie.LandscapePath)
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.Landscapes.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelect()
-                    '                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.Landscape, aContainer.Landscapes, etList, efList) = DialogResult.OK Then
-                    '                                Landscape = dImgSelect.Results
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
-                    '                                        Landscape.WebImage.FromWeb(Landscape.URL)
-                    '                                    End If
-                    '                                    If Landscape.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.LandscapePath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.LandscapeItem, DBScrapeMovie.LandscapePath)
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.LandscapePath = ":" & Landscape.URL
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    '    If bwMovieScraper.CancellationPending Then Exit For
-
-                    '    'ClearArt
-                    '    If ScrapeModifier.ClearArt Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                    '            If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.ClearArt) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
-                    '                    If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0)
-                    '                    If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
-                    '                        ClearArt.WebImage.FromWeb(ClearArt.URL)
-                    '                    End If
-                    '                    If ClearArt.WebImage.Image IsNot Nothing Then
-                    '                        tURL = ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeMovie.ClearArtPath = tURL
-                    '                            MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, DBScrapeMovie.ClearArtPath)
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.ClearArts.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelect()
-                    '                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.ClearArt, aContainer.ClearArts, etList, efList) = DialogResult.OK Then
-                    '                                ClearArt = dImgSelect.Results
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
-                    '                                        ClearArt.WebImage.FromWeb(ClearArt.URL)
-                    '                                    End If
-                    '                                    If ClearArt.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.ClearArtPath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.ClearArtItem, DBScrapeMovie.ClearArtPath)
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.ClearArtPath = ":" & ClearArt.URL
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    '    If bwMovieScraper.CancellationPending Then Exit For
-
-                    '    'ClearLogo
-                    '    If ScrapeModifier.ClearLogo Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                    '            If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.ClearLogo) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
-                    '                    If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0)
-                    '                    If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
-                    '                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
-                    '                    End If
-                    '                    If ClearLogo.WebImage.Image IsNot Nothing Then
-                    '                        tURL = ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeMovie.ClearLogoPath = tURL
-                    '                            MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, DBScrapeMovie.ClearLogoPath)
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.ClearLogos.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelect()
-                    '                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.ClearLogo, aContainer.ClearLogos, etList, efList) = DialogResult.OK Then
-                    '                                ClearLogo = dImgSelect.Results
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
-                    '                                        ClearLogo.WebImage.FromWeb(ClearLogo.URL)
-                    '                                    End If
-                    '                                    If ClearLogo.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.ClearLogoPath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.ClearLogoItem, DBScrapeMovie.ClearLogoPath)
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.ClearLogoPath = ":" & ClearLogo.URL
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    '    If bwMovieScraper.CancellationPending Then Exit For
-
-                    '    'DiscArt
-                    '    If ScrapeModifier.DiscArt Then
-                    '        tURL = String.Empty
-                    '        If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                    '            If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.DiscArt) Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
-                    '                    If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0)
-                    '                    If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
-                    '                        DiscArt.WebImage.FromWeb(DiscArt.URL)
-                    '                    End If
-                    '                    If DiscArt.WebImage.Image IsNot Nothing Then
-                    '                        tURL = DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
-                    '                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                            DBScrapeMovie.DiscArtPath = tURL
-                    '                            MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, DBScrapeMovie.DiscArtPath)
-                    '                        End If
-                    '                    End If
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If aContainer.DiscArts.Count > 0 Then
-                    '                        If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                            MessageBox.Show(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                        End If
-                    '                        Using dImgSelect As New dlgImgSelect()
-                    '                            If dImgSelect.ShowDialog(DBScrapeMovie, Enums.ModifierType.DiscArt, aContainer.DiscArts, etList, efList) = DialogResult.OK Then
-                    '                                DiscArt = dImgSelect.Results
-                    '                                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                                    If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
-                    '                                        DiscArt.WebImage.FromWeb(DiscArt.URL)
-                    '                                    End If
-                    '                                    If DiscArt.WebImage.Image IsNot Nothing Then
-                    '                                        tURL = DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
-                    '                                        If Not String.IsNullOrEmpty(tURL) Then
-                    '                                            DBScrapeMovie.DiscArtPath = tURL
-                    '                                            MovieScraperEvent(Enums.ScraperEventType_Movie.DiscArtItem, DBScrapeMovie.DiscArtPath)
-                    '                                        End If
-                    '                                    End If
-                    '                                Else
-                    '                                    DBScrapeMovie.DiscArtPath = ":" & DiscArt.URL
-                    '                                End If
-                    '                            End If
-                    '                        End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-
-                    'End If
-
-                    'If bwMovieScraper.CancellationPending Then Exit For
-
-                    ''Theme
-                    'If ScrapeModifier.Theme Then
-                    '    If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '        tURL = String.Empty
-                    '        If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
-                    '            If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, tUrlList) Then
-                    '                If tUrlList.Count > 0 Then
-                    '                    If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '                        Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
-                    '                        If Theme.WebTheme IsNot Nothing Then 'TODO: fix check
-                    '                            tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
-                    '                            If Not String.IsNullOrEmpty(tURL) Then
-                    '                                DBScrapeMovie.ThemePath = tURL
-                    '                                MovieScraperEvent(Enums.ScraperEventType_Movie.ThemeItem, DBScrapeMovie.ThemePath)
-                    '                            End If
-                    '                        End If
-                    '                        'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                    '                        '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                    '                        '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                    '                        '    End If
-                    '                        '    Using dThemeSelect As New dlgThemeSelect()
-                    '                        '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
-                    '                        '        If Not String.IsNullOrEmpty(tURL) Then
-                    '                        '            DBScrapeMovie.ThemePath = tURL
-                    '                        '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, DBScrapeMovie.ThemePath )
-                    '                        '        End If
-                    '                        '    End Using
-                    '                    End If
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-                    'End If
-
-                    'If bwMovieScraper.CancellationPending Then Exit For
-
-                    ''Trailer
-                    'If ScrapeModifier.Trailer Then
-                    '    'If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    '    tURL = String.Empty
-                    '    If Trailer.WebTrailer.IsAllowedToDownload(DBScrapeMovie) Then
-                    '        If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Trailer, aUrlList) Then
-                    '            If aUrlList.Count > 0 Then
-                    '                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Avalaible trailers: " & aUrlList.Count)
-                    '            Else
-                    '                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] NO trailers avalaible!")
-                    '            End If
-                    '            If aUrlList.Count > 0 Then
-                    '                If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) AndAlso Trailers.GetPreferredTrailer(aUrlList, Trailer) Then
-
-
-                    '                    'Cocotus 2014/09/26 After going thourgh GetPreferredTrailers aUrlList is now sorted/filtered - any trailer on this list is ok and can be downloaded!
-                    '                    For Each _trailer As Trailers In aUrlList
-                    '                        'trailer URL shoud never be empty at this point anyway, might as well remove check
-                    '                        If Not String.IsNullOrEmpty(_trailer.VideoURL) Then
-                    '                            'this will download the trailer and save it temporarly as "dummy.ext"
-                    '                            Trailer.WebTrailer.FromWeb(_trailer)
-                    '                            'If trailer was downloaded, Trailer.WebTrailer.URL and Trailer.WebTrailer.Extension are not empty anymore. We use this as a check!
-                    '                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.VideoURL) Then
-                    '                                'now rename dummy.ext to trailer and save it in movie folder
-                    '                                tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
-                    '                                If Not String.IsNullOrEmpty(tURL) Then
-                    '                                    DBScrapeMovie.TrailerPath = tURL
-                    '                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, DBScrapeMovie.TrailerPath)
-                    '                                    logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.VideoURL)
-                    '                                    'since trailer was downloaded we can leave loop, all good!
-                    '                                    Exit For
-                    '                                Else
-                    '                                    logger.Warn("[" & DBScrapeMovie.Movie.Title & "] Saving of downloaded trailer failed: " & _trailer.VideoURL)
-                    '                                End If
-                    '                            Else
-                    '                                logger.Debug("[" & DBScrapeMovie.Movie.Title & "] Download of trailer failed: " & _trailer.VideoURL)
-                    '                            End If
-                    '                        Else
-                    '                            logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
-                    '                        End If
-                    '                    Next
-                    '                ElseIf Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                    If Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.FullAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.NewAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.MissAsk Then
-                    '                        MessageBox.Show(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    '                    End If
-                    '                    Using dTrailerSelect As New dlgTrailerSelect
-                    '                        If dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList, False, True, False) = DialogResult.OK Then
-                    '                            Trailer = dTrailerSelect.Results
-                    '                            If Not String.IsNullOrEmpty(Trailer.WebTrailer.VideoURL) Then
-                    '                                tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
-                    '                                If Not String.IsNullOrEmpty(tURL) Then
-                    '                                    DBScrapeMovie.TrailerPath = tURL
-                    '                                    MovieScraperEvent(Enums.ScraperEventType_Movie.TrailerItem, DBScrapeMovie.TrailerPath)
-                    '                                End If
-                    '                            End If
-                    '                        End If
-                    '                    End Using
-                    '                End If
-                    '            Else
-                    '                logger.Warn("[" & DBScrapeMovie.Movie.Title & "] No trailer links scraped!")
-                    '            End If
-                    '        End If
-                    '    End If
-                    '    'End If
-                    'End If
-
-                    'If bwMovieScraper.CancellationPending Then Exit For
-
-                    ''Extrathumbs
-                    'If ScrapeModifier.EThumbs Then
-                    '    If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '        If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.EThumbs) Then
-                    '            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aContainer, ScrapeList.Count = 1) Then
-                    '                etList = Images.GetPreferredMovieEThumbs(aContainer.Fanarts)
-                    '                If etList.Count > 0 Then
-                    '                    Dim eti As Integer = 0
-                    '                    Dim etMax As Integer = Master.eSettings.MovieEThumbsLimit
-                    '                    For Each lItem As String In etList
-                    '                        Dim EThumb As New Images
-                    '                        EThumb.FromWeb(lItem)
-                    '                        If EThumb.Image IsNot Nothing Then
-                    '                            Dim etPath As String = EThumb.SaveAsMovieExtrathumb(DBScrapeMovie)
-                    '                            If Not String.IsNullOrEmpty(etPath) Then
-                    '                                DBScrapeMovie.EThumbsPath = etPath
-                    '                                MovieScraperEvent(Enums.ScraperEventType_Movie.EThumbsItem, DBScrapeMovie.EThumbsPath)
-                    '                                eti = eti + 1
-                    '                            End If
-                    '                        End If
-                    '                        If etMax > 0 AndAlso eti >= etMax Then Exit For
-                    '                    Next
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-                    'End If
-
-                    'If bwMovieScraper.CancellationPending Then Exit For
-
-                    ''Extrafanarts
-                    'If ScrapeModifier.EFanarts Then
-                    '    If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '        If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.EFanarts) Then
-                    '            If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, Enums.ScraperCapabilities_Movie_MovieSet.Fanart, aContainer, ScrapeList.Count = 1) Then
-                    '                efList = Images.GetPreferredMovieEFanarts(aContainer.Fanarts)
-                    '                If efList.Count > 0 Then
-                    '                    Dim efi As Integer = 0
-                    '                    Dim efMax As Integer = Master.eSettings.MovieEFanartsLimit
-                    '                    For Each lItem As String In efList
-                    '                        Dim EFanart As New Images
-                    '                        EFanart.FromWeb(lItem)
-                    '                        If EFanart.Image IsNot Nothing Then
-                    '                            Dim efPath As String = EFanart.SaveAsMovieExtrafanart(DBScrapeMovie, Path.GetFileName(lItem))
-                    '                            If Not String.IsNullOrEmpty(efPath) Then
-                    '                                DBScrapeMovie.EFanartsPath = efPath
-                    '                                MovieScraperEvent(Enums.ScraperEventType_Movie.EFanartsItem, DBScrapeMovie.EFanartsPath)
-                    '                                efi = efi + 1
-                    '                            End If
-                    '                        End If
-                    '                        If efMax > 0 AndAlso efi >= efMax Then Exit For
-                    '                    Next
-                    '                End If
-                    '            End If
-                    '        End If
-                    '    End If
-                    'End If
-
-                    'If bwMovieScraper.CancellationPending Then Exit For
-
-                    ''ActorThumbs
-                    'If ScrapeModifier.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
-                    '    If Not (Args.scrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape) Then
-                    '        For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
-                    '            Dim img As New Images
-                    '            img.FromWeb(act.ThumbURL)
-                    '            If img.Image IsNot Nothing Then
-                    '                act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
-                    '            End If
-                    '        Next
-                    '    End If
                 End If
 
                 '-----
@@ -4022,14 +2624,14 @@ Public Class frmMain
     Private Sub bwTVEpisodeScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVEpisodeScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeEpisode As New Structures.DBTV
+        Dim DBScrapeEpisode As New Database.DBElement
 
         logger.Trace("Starting EPISODE scrape")
 
         AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVEpisode
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer_TV
+            Dim aContainer As New MediaContainers.SearchResultsContainer
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
 
@@ -4052,7 +2654,7 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeEpisode.TVEp.TVDB) AndAlso (Args.ScrapeModifier.MainActorThumbs Or Args.ScrapeModifier.MainBanner Or Args.ScrapeModifier.MainCharacterArt Or _
+                If String.IsNullOrEmpty(DBScrapeEpisode.TVEpisode.TVDB) AndAlso (Args.ScrapeModifier.MainActorThumbs Or Args.ScrapeModifier.MainBanner Or Args.ScrapeModifier.MainCharacterArt Or _
                                                                          Args.ScrapeModifier.MainClearArt Or Args.ScrapeModifier.MainClearLogo Or Args.ScrapeModifier.MainEFanarts Or _
                                                                          Args.ScrapeModifier.MainFanart Or Args.ScrapeModifier.MainLandscape Or Args.ScrapeModifier.MainPoster Or _
                                                                          Args.ScrapeModifier.MainTheme) Then
@@ -4075,13 +2677,6 @@ Public Class frmMain
 
                 If Not NewListTitle = OldListTitle Then
                     bwTVEpisodeScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
-                End If
-
-                'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Show" window)
-                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    If DBScrapeEpisode.RemoveActorThumbs Then Images.DeleteTVEpisodeActorThumbs(DBScrapeEpisode)
-                    If DBScrapeEpisode.RemoveFanart Then Images.DeleteTVEpisodeFanart(DBScrapeEpisode)
-                    If DBScrapeEpisode.RemovePoster Then Images.DeleteTVEpisodePoster(DBScrapeEpisode)
                 End If
 
                 'get all images
@@ -4937,7 +3532,7 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
                 If Me.bwRewrite_Movies.CancellationPending Then Return
                 Me.bwRewrite_Movies.ReportProgress(iCount, KVP.Value)
-                Me.RewriteMovie(KVP.Key)
+                Me.RewriteMovie(KVP.Key, True)
                 iCount += 1
             Next
             SQLtransaction.Commit()
@@ -6232,8 +4827,7 @@ doCancel:
         Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Master.currShow.Language)
 
         If tEpisode IsNot Nothing Then
-            Master.currShow.TVEp = tEpisode
-            Master.currShow.PosterPath = tEpisode.Poster.WebImage.SaveAsTVEpisodePoster(Master.currShow)
+            Master.currShow.TVEpisode = tEpisode
 
             Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
 
@@ -6344,7 +4938,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-        Dim tmpDBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(ID, True)
+        Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
         Edit_TVEpisode(tmpDBTVEpisode)
     End Sub
 
@@ -6362,7 +4956,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
-        Dim tmpDBMTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(ID, True, False)
+        Dim tmpDBMTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, True, False)
         Edit_TVShow(tmpDBMTVShow)
     End Sub
 
@@ -7528,7 +6122,7 @@ doCancel:
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
-        Dim tmpDBTVSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ID, False)
+        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, False)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
 
@@ -8723,7 +7317,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-        Dim tmpDBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(ID, True)
+        Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
         Edit_TVEpisode(tmpDBTVEpisode)
     End Sub
 
@@ -8931,7 +7525,7 @@ doCancel:
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-            Dim tmpDBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(ID, True)
+            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
             Edit_TVEpisode(tmpDBTVEpisode)
         End If
     End Sub
@@ -9124,7 +7718,7 @@ doCancel:
         
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
-        Dim tmpDBTVSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ID, False)
+        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, False)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
 
@@ -9315,7 +7909,7 @@ doCancel:
 
             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
-            Dim tmpDBTVSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(ID, False)
+            Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, False)
             Edit_TVSeason(tmpDBTVSeason)
         End If
     End Sub
@@ -9457,7 +8051,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
-        Dim tmpDBTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(ID, True, False)
+        Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, True, False)
         Edit_TVShow(tmpDBTVShow)
     End Sub
 
@@ -9673,7 +8267,7 @@ doCancel:
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
-            Dim tmpDBTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(ID, True, False)
+            Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, True, False)
             Edit_TVShow(tmpDBTVShow)
         End If
     End Sub
@@ -9962,7 +8556,7 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Structures.DBTV)
+    Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
         Me.SetControlsEnabled(False)
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
@@ -9982,7 +8576,7 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVSeason(ByRef DBTVSeason As Structures.DBTV)
+    Private Sub Edit_TVSeason(ByRef DBTVSeason As Database.DBElement)
         Me.SetControlsEnabled(False)
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
@@ -10002,7 +8596,7 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVShow(ByRef DBTVShow As Structures.DBTV)
+    Private Sub Edit_TVShow(ByRef DBTVShow As Database.DBElement)
         Me.SetControlsEnabled(False)
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
             Using dEditTVShow As New dlgEditTVShow
@@ -11248,37 +9842,37 @@ doCancel:
     Private Sub FillScreenInfoWith_TVEpisode()
         Try
             Me.SuspendLayout()
-            Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEp.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Master.currShow.TVEp.Title)
-            Me.txtPlot.Text = Master.currShow.TVEp.Plot
-            Me.lblDirector.Text = String.Join(" / ", Master.currShow.TVEp.Directors.ToArray)
+            Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Master.currShow.TVEpisode.Title)
+            Me.txtPlot.Text = Master.currShow.TVEpisode.Plot
+            Me.lblDirector.Text = String.Join(" / ", Master.currShow.TVEpisode.Directors.ToArray)
             Me.txtFilePath.Text = Master.currShow.Filename
-            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEpisode.Aired), "?", Master.currShow.TVEpisode.Aired))
 
             Try
-                If Master.currShow.TVEp.RatingSpecified Then
-                    If Master.currShow.TVEp.VotesSpecified Then
-                        Dim strRating As String = Double.Parse(Master.currShow.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                        Dim strVotes As String = Double.Parse(Master.currShow.TVEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                If Master.currShow.TVEpisode.RatingSpecified Then
+                    If Master.currShow.TVEpisode.VotesSpecified Then
+                        Dim strRating As String = Double.Parse(Master.currShow.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Master.currShow.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currShow.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Master.currShow.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVEp.Rating, " / ", Master.currShow.TVEp.Votes, ")"))
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVEpisode.Rating, " / ", Master.currShow.TVEpisode.Votes, ")"))
                 Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
             End Try
 
             Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"), _
-                            If(String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString), "?", Master.currShow.TVEp.Season.ToString), _
-                            If(String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString), "?", Master.currShow.TVEp.Episode.ToString))
+                            If(String.IsNullOrEmpty(Master.currShow.TVEpisode.Season.ToString), "?", Master.currShow.TVEpisode.Season.ToString), _
+                            If(String.IsNullOrEmpty(Master.currShow.TVEpisode.Episode.ToString), "?", Master.currShow.TVEpisode.Episode.ToString))
 
             Me.alActors = New List(Of String)
 
-            If Master.currShow.TVEp.ActorsSpecified Then
+            If Master.currShow.TVEpisode.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As MediaContainers.Person In Master.currShow.TVEp.Actors
+                For Each imdbAct As MediaContainers.Person In Master.currShow.TVEpisode.Actors
                     If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbPath)
@@ -11312,7 +9906,7 @@ doCancel:
                 End If
             End If
 
-            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEp.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEpisode.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
@@ -11332,7 +9926,7 @@ doCancel:
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
             If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
-                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename, True, Master.currShow.TVEp.VideoSource))
+                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEpisode.FileInfo, Master.currShow.Filename, True, Master.currShow.TVEpisode.VideoSource))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -11340,7 +9934,7 @@ doCancel:
                 Me.pbStudio.Left = 0
             End If
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo, True)
+            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEpisode.FileInfo, True)
 
             FillScreenInfoWithImages()
 
@@ -12560,7 +11154,7 @@ doCancel:
                     If Me.Reload_TVEpisode(Convert.ToInt16(_params(0))) Then
                         Me.FillList(False, False, True)
                     End If
-                    Me.SetStatus(Master.currShow.TVEp.Title)
+                    Me.SetStatus(Master.currShow.TVEpisode.Title)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -14682,7 +13276,7 @@ doCancel:
         bwMovieSetScraper.RunWorkerAsync(New Arguments With {.ScrapeModifier = ScrapeModifier, .scrapeType = sType, .Options_MovieSet = ScrapeOptions})
     End Sub
 
-    Private Sub InfoDownloaded_TV(ByRef DBTVShow As Structures.DBTV)
+    Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
         If Not String.IsNullOrEmpty(DBTVShow.TVShow.Title) Then
             Me.tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
             Application.DoEvents()
@@ -14838,8 +13432,8 @@ doCancel:
         bwTVScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeModifier = ScrapeModifier, .scrapeType = sType})
     End Sub
 
-    Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Structures.DBTV)
-        If Not String.IsNullOrEmpty(DBTVEpisode.TVEp.Title) Then
+    Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
+        If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
             Me.tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode Details:")
             Application.DoEvents()
 
@@ -15298,7 +13892,7 @@ doCancel:
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15307,16 +13901,16 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.Banners.Count > 0 Then
+                            If aContainer.MainBanners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBMovie, Enums.ModifierType.MainBanner, aContainer.Banners, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBMovie, Enums.ModifierType.MainBanner, aContainer.MainBanners, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
                                         pResults.WebImage.FromWeb(pResults.URL)
                                         newImage = pResults.WebImage
                                         newImage.IsEdit = True
-                                        tmpDBMovie.BannerPath = newImage.SaveAsMovieBanner(tmpDBMovie)
+                                        tmpDBMovie.ImagesContainer.Banner.WebImage = newImage
                                         Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                         Cursor = Cursors.Default
                                         Me.RefreshRow_Movie(ID)
@@ -15334,7 +13928,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15343,9 +13937,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.Banners.Count > 0 Then
+                            If aContainer.MainBanners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainBanner, aContainer.Banners, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainBanner, aContainer.MainBanners, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15502,7 +14096,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15511,9 +14105,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.ClearArts.Count > 0 Then
+                            If aContainer.MainClearArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainClearArt, aContainer.ClearArts, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainClearArt, aContainer.MainClearArts, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15537,7 +14131,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15546,9 +14140,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.ClearArts.Count > 0 Then
+                            If aContainer.MainClearArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainClearArt, aContainer.ClearArts, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainClearArt, aContainer.MainClearArts, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15621,7 +14215,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15630,9 +14224,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.ClearLogos.Count > 0 Then
+                            If aContainer.MainClearLogos.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainClearLogo, aContainer.ClearLogos, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainClearLogo, aContainer.MainClearLogos, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15656,7 +14250,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15665,9 +14259,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.ClearLogos.Count > 0 Then
+                            If aContainer.MainClearLogos.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainClearLogo, aContainer.ClearLogos, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainClearLogo, aContainer.MainClearLogos, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15740,7 +14334,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15749,9 +14343,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.DiscArts.Count > 0 Then
+                            If aContainer.MainDiscArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainDiscArt, aContainer.DiscArts, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainDiscArt, aContainer.MainDiscArts, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15775,7 +14369,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15784,9 +14378,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.DiscArts.Count > 0 Then
+                            If aContainer.MainDiscArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainDiscArt, aContainer.DiscArts, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainDiscArt, aContainer.MainDiscArts, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15850,7 +14444,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15859,9 +14453,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.Fanarts.Count > 0 Then
+                            If aContainer.MainFanarts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainFanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainFanart, aContainer.MainFanarts, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15885,7 +14479,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -15894,9 +14488,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.Fanarts.Count > 0 Then
+                            If aContainer.MainFanarts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainFanart, aContainer.Fanarts, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainFanart, aContainer.MainFanarts, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -15984,8 +14578,8 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.FanartPath) Then
-                                oldImage.WebImage.FromFile(Master.currShow.FanartPath)
+                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Fanart.LocalFile) Then
+                                oldImage.WebImage.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFile)
                             End If
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodeFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, oldImage)
@@ -16023,7 +14617,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -16032,9 +14626,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.Landscapes.Count > 0 Then
+                            If aContainer.MainLandscapes.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainLandscape, aContainer.Landscapes, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainLandscape, aContainer.MainLandscapes, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -16058,7 +14652,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -16067,9 +14661,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.Landscapes.Count > 0 Then
+                            If aContainer.MainLandscapes.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainLandscape, aContainer.Landscapes, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainLandscape, aContainer.MainLandscapes, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -16173,7 +14767,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -16182,9 +14776,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.Posters.Count > 0 Then
+                            If aContainer.MainPosters.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainPoster, aContainer.Posters, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainPoster, aContainer.MainPosters, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -16208,7 +14802,7 @@ doCancel:
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
 
-                        Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim pResults As New MediaContainers.Image
                         Dim efList As New List(Of String)
                         Dim etList As New List(Of String)
@@ -16217,9 +14811,9 @@ doCancel:
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.Posters.Count > 0 Then
+                            If aContainer.MainPosters.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainPoster, aContainer.Posters, efList, etList, True) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainPoster, aContainer.MainPosters, efList, etList, True) = DialogResult.OK Then
                                     pResults = dlgImgS.Results
                                     If Not String.IsNullOrEmpty(pResults.URL) Then
                                         Cursor = Cursors.WaitCursor
@@ -16306,11 +14900,11 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.PosterPath) Then
-                                oldImage.WebImage.FromFile(Master.currShow.PosterPath)
+                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Poster.LocalFile) Then
+                                oldImage.WebImage.FromFile(Master.currShow.ImagesContainer.Poster.LocalFile)
                             End If
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.Language, Master.currShow.Ordering, oldImage)
+                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodePoster, Master.currShow.TVEpisode.Season, Master.currShow.TVEpisode.Episode, Master.currShow.Language, Master.currShow.Ordering, oldImage)
 
                             If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
                                 newImage = tImage.WebImage
@@ -16901,7 +15495,7 @@ doCancel:
     End Function
 
     Private Function Reload_TVEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim tmpDBTVEpisode As New Structures.DBTV
+        Dim tmpDBTVEpisode As New Database.DBElement
         Dim tmpEp As New MediaContainers.EpisodeDetails
         Dim SeasonChanged As Boolean = False
         Dim EpisodeChanged As Boolean = False
@@ -16917,29 +15511,29 @@ doCancel:
                 If String.IsNullOrEmpty(tmpDBTVEpisode.NfoPath) Then
                     Dim sNFO As String = NFO.GetEpNfoPath(tmpDBTVEpisode.Filename)
                     tmpDBTVEpisode.NfoPath = sNFO
-                    tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpDBTVEpisode.TVEp.Season, tmpDBTVEpisode.TVEp.Episode)
+                    tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpDBTVEpisode.TVEpisode.Season, tmpDBTVEpisode.TVEpisode.Episode)
                 Else
-                    tmpEp = NFO.LoadTVEpFromNFO(tmpDBTVEpisode.NfoPath, tmpDBTVEpisode.TVEp.Season, tmpDBTVEpisode.TVEp.Episode)
+                    tmpEp = NFO.LoadTVEpFromNFO(tmpDBTVEpisode.NfoPath, tmpDBTVEpisode.TVEpisode.Season, tmpDBTVEpisode.TVEpisode.Episode)
                 End If
 
                 If Not tmpEp.Episode = -999 Then
-                    tmpDBTVEpisode.TVEp = tmpEp
+                    tmpDBTVEpisode.TVEpisode = tmpEp
                 End If
             End If
 
-            If String.IsNullOrEmpty(tmpDBTVEpisode.TVEp.Title) Then
-                tmpDBTVEpisode.TVEp.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpDBTVEpisode.Filename), tmpDBTVEpisode.TVShow.Title, False)
+            If String.IsNullOrEmpty(tmpDBTVEpisode.TVEpisode.Title) Then
+                tmpDBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpDBTVEpisode.Filename), tmpDBTVEpisode.TVShow.Title, False)
             End If
 
             Dim fromFile As String = APIXML.GetVideoSource(tmpDBTVEpisode.Filename, False)
             If Not String.IsNullOrEmpty(fromFile) Then
                 tmpDBTVEpisode.VideoSource = fromFile
-                tmpDBTVEpisode.TVEp.VideoSource = tmpDBTVEpisode.VideoSource
+                tmpDBTVEpisode.TVEpisode.VideoSource = tmpDBTVEpisode.VideoSource
             ElseIf String.IsNullOrEmpty(tmpDBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                 tmpDBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBTVEpisode.Filename)), String.Empty, "*EmberAPP")
-                tmpDBTVEpisode.TVEp.VideoSource = tmpDBTVEpisode.VideoSource
-            ElseIf Not String.IsNullOrEmpty(tmpDBTVEpisode.TVEp.VideoSource) Then
-                tmpDBTVEpisode.VideoSource = tmpDBTVEpisode.TVEp.VideoSource
+                tmpDBTVEpisode.TVEpisode.VideoSource = tmpDBTVEpisode.VideoSource
+            ElseIf Not String.IsNullOrEmpty(tmpDBTVEpisode.TVEpisode.VideoSource) Then
+                tmpDBTVEpisode.VideoSource = tmpDBTVEpisode.TVEpisode.VideoSource
             End If
 
             fScanner.GetTVEpisodeFolderContents(tmpDBTVEpisode)
@@ -16972,7 +15566,7 @@ doCancel:
     End Function
 
     Private Function Reload_TVSeason(ByVal SeasonID As Integer, ByVal BatchMode As Boolean) As Boolean
-        Dim tmpSeasonDb As New Structures.DBTV
+        Dim tmpSeasonDb As New Database.DBElement
         Dim newTable As New DataTable
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
@@ -17007,7 +15601,7 @@ doCancel:
     End Function
 
     Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean) As Boolean
-        Dim DBTVShow As New Structures.DBTV
+        Dim DBTVShow As New Database.DBElement
 
         DBTVShow = Master.DB.LoadTVShowFromDB(ID, withSeasons, withEpisodes)
 
@@ -17048,7 +15642,7 @@ doCancel:
             Application.DoEvents()
         End If
 
-        Dim tmpShowDb As New Structures.DBTV
+        Dim tmpShowDb As New Database.DBElement
         Dim tmpShow As New MediaContainers.TVShow
         Dim newTable As New DataTable
 
@@ -17173,117 +15767,17 @@ doCancel:
     ''' <param name="ID">Movie ID</param>
     ''' <returns>reload list from database?</returns>
     ''' <remarks></remarks>
-    Private Function RewriteMovie(ByVal ID As Long) As Boolean
-        Dim tmpMovie As New MediaContainers.Movie
+    Private Function RewriteMovie(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         Dim tmpMovieDB As New Database.DBElement
-        Dim OldTitle As String = String.Empty
-        Dim selRow As DataRow = Nothing
 
-        Dim MovieBanner As New Images With {.IsEdit = True}
-        Dim MovieClearArt As New Images With {.IsEdit = True}
-        Dim MovieClearLogo As New Images With {.IsEdit = True}
-        Dim MovieDiscArt As New Images With {.IsEdit = True}
-        Dim MovieFanart As New Images With {.IsEdit = True}
-        Dim MovieLandscape As New Images With {.IsEdit = True}
-        Dim MoviePoster As New Images With {.IsEdit = True}
-        Dim MovieTrailer As New Trailers
-        Dim MovieTheme As New Themes
+        tmpMovieDB = Master.DB.LoadMovieFromDB(ID)
 
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
-
-        Try
-
-            tmpMovieDB = Master.DB.LoadMovieFromDB(ID)
-
-            If Directory.Exists(Directory.GetParent(tmpMovieDB.Filename).FullName) Then
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.BannerPath) Then
-                    MovieBanner.FromFile(tmpMovieDB.BannerPath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.ClearArtPath) Then
-                    MovieClearArt.FromFile(tmpMovieDB.ClearArtPath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.ClearLogoPath) Then
-                    MovieClearLogo.FromFile(tmpMovieDB.ClearLogoPath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.DiscArtPath) Then
-                    MovieDiscArt.FromFile(tmpMovieDB.DiscArtPath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.FanartPath) Then
-                    MovieFanart.FromFile(tmpMovieDB.FanartPath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.LandscapePath) Then
-                    MovieLandscape.FromFile(tmpMovieDB.LandscapePath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.PosterPath) Then
-                    MoviePoster.FromFile(tmpMovieDB.PosterPath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.ThemePath) Then
-                    MovieTheme.FromFile(tmpMovieDB.ThemePath)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.TrailerPath) Then
-                    MovieTrailer.FromFile(tmpMovieDB.TrailerPath)
-                End If
-
-                If MovieBanner.Image IsNot Nothing Then
-                    MovieBanner.SaveAsMovieBanner(tmpMovieDB)
-                End If
-
-                If MovieClearArt.Image IsNot Nothing Then
-                    MovieClearArt.SaveAsMovieClearArt(tmpMovieDB)
-                End If
-
-                If MovieClearLogo.Image IsNot Nothing Then
-                    MovieClearLogo.SaveAsMovieClearLogo(tmpMovieDB)
-                End If
-
-                If MovieDiscArt.Image IsNot Nothing Then
-                    MovieDiscArt.SaveAsMovieDiscArt(tmpMovieDB)
-                End If
-
-                If MovieFanart.Image IsNot Nothing Then
-                    MovieFanart.SaveAsMovieFanart(tmpMovieDB)
-                End If
-
-                If MovieLandscape.Image IsNot Nothing Then
-                    MovieLandscape.SaveAsMovieLandscape(tmpMovieDB)
-                End If
-
-                If MoviePoster.Image IsNot Nothing Then
-                    MoviePoster.SaveAsMoviePoster(tmpMovieDB)
-                End If
-
-                If Not String.IsNullOrEmpty(MovieTheme.Extention) Then
-                    MovieTheme.SaveAsMovieTheme(tmpMovieDB)
-                End If
-
-                If Not String.IsNullOrEmpty(MovieTrailer.Extention) Then
-                    If Master.eSettings.MovieTrailerDeleteExisting Then
-                        Trailers.DeleteMovieTrailer(tmpMovieDB)
-                    End If
-                    MovieTrailer.SaveAsMovieTrailer(tmpMovieDB)
-                End If
-
-                If Not String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
-                    NFO.SaveMovieToNFO(tmpMovieDB)
-                End If
-            Else
-                Return True
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Return False
+        If tmpMovieDB.IsOnline Then
+            Master.DB.SaveMovieToDB(tmpMovieDB, False, BatchMode, True)
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     Private Sub cmnuMovieRemoveFromDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
@@ -18338,17 +16832,17 @@ doCancel:
                 Dim currPlaycount As String = String.Empty
                 Dim hasWatched As Boolean = False
 
-                Dim tmpDBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False)
+                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False)
 
                 currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
                 hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
 
                 If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
-                    tmpDBTVEpisode.TVEp.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
                 ElseIf Not hasWatched Then
-                    tmpDBTVEpisode.TVEp.Playcount = "1"
+                    tmpDBTVEpisode.TVEpisode.Playcount = "1"
                 Else
-                    tmpDBTVEpisode.TVEp.Playcount = "0"
+                    tmpDBTVEpisode.TVEpisode.Playcount = "0"
                 End If
 
                 Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, True, True)
@@ -18394,16 +16888,16 @@ doCancel:
                             While SQLreader.Read
                                 Dim currPlaycount As String = String.Empty
 
-                                Dim tmpDBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
+                                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
 
                                 currPlaycount = SQLreader("Playcount").ToString
 
                                 If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso setWatched Then
-                                    tmpDBTVEpisode.TVEp.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
                                 ElseIf Not hasWatched Then
-                                    tmpDBTVEpisode.TVEp.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
                                 Else
-                                    tmpDBTVEpisode.TVEp.Playcount = "0"
+                                    tmpDBTVEpisode.TVEpisode.Playcount = "0"
                                 End If
 
                                 Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, True, True)
@@ -18449,16 +16943,16 @@ doCancel:
                             If Not SeasonsList.Contains(CInt(SQLreader("Season"))) Then SeasonsList.Add(CInt(SQLreader("Season")))
                             Dim currPlaycount As String = String.Empty
 
-                            Dim tmpDBTVEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
+                            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
 
                             currPlaycount = SQLreader("Playcount").ToString
 
                             If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso setWatched Then
-                                tmpDBTVEpisode.TVEp.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
                             ElseIf Not hasWatched Then
-                                tmpDBTVEpisode.TVEp.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
                             Else
-                                tmpDBTVEpisode.TVEp.Playcount = "0"
+                                tmpDBTVEpisode.TVEpisode.Playcount = "0"
                             End If
 
                             Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, True, True)
@@ -18522,7 +17016,7 @@ doCancel:
     Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                Dim tmpDBTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False)
+                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False)
                 tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuShowLanguageLanguages.Text).abbreviation
                 Master.DB.SaveTVShowToDB(tmpDBTVShow, False, False, True, True)
                 RefreshRow_TVShow(tmpDBTVShow.ID)
@@ -19192,9 +17686,9 @@ doCancel:
 
     Private Sub mnuMainToolsOfflineMM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsOfflineHolder.Click, cmnuTrayToolsOfflineHolder.Click
         Me.SetControlsEnabled(False)
-        Using dOfflineHolder As New dlgOfflineHolder
-            dOfflineHolder.ShowDialog()
-        End Using
+        'Using dOfflineHolder As New dlgOfflineHolder
+        '    dOfflineHolder.ShowDialog()
+        'End Using
         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = False})
         Me.SetControlsEnabled(True)
     End Sub
@@ -21406,7 +19900,7 @@ doCancel:
         Dim ScrapeModifier As Structures.ScrapeModifier
         Dim Season As Integer
         Dim setEnabled As Boolean
-        Dim TVShow As Structures.DBTV
+        Dim TVShow As Database.DBElement
         Dim SetName As String
 
 #End Region 'Fields
@@ -21428,8 +19922,8 @@ doCancel:
         Dim Result As Image
         Dim ScrapeType As Enums.ScrapeType
         Dim setEnabled As Boolean
-        Dim TVShow As Structures.DBTV
-        Dim TVEpisode As Structures.DBTV
+        Dim TVShow As Database.DBElement
+        Dim TVEpisode As Database.DBElement
         Dim Cancelled As Boolean
 
 #End Region 'Fields

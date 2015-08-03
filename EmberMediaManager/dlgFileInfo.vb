@@ -74,7 +74,7 @@ Public Class dlgFileInfo
                     If Not stream Is Nothing Then
                         If Not SettingDefaults Then
                             If _isEpisode Then
-                                Master.currShow.TVEp.FileInfo = _FileInfo
+                                Master.currShow.TVEpisode.FileInfo = _FileInfo
                             Else
                                 Master.currMovie.Movie.FileInfo = _FileInfo
                             End If
@@ -133,7 +133,7 @@ Public Class dlgFileInfo
                 Dim i As ListViewItem = lvStreams.SelectedItems(0)
                 If Not SettingDefaults Then
                     If _isEpisode Then
-                        Master.currShow.TVEp.FileInfo = _FileInfo
+                        Master.currShow.TVEpisode.FileInfo = _FileInfo
                     Else
                         Master.currMovie.Movie.FileInfo = _FileInfo
                     End If
@@ -165,7 +165,7 @@ Public Class dlgFileInfo
     Private Sub dlgFileInfo_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
         If Not SettingDefaults Then
-            _FileInfo = If(_isEpisode, Master.currShow.TVEp.FileInfo, Master.currMovie.Movie.FileInfo)
+            _FileInfo = If(_isEpisode, Master.currShow.TVEpisode.FileInfo, Master.currMovie.Movie.FileInfo)
         End If
         LoadInfo()
     End Sub
@@ -183,7 +183,7 @@ Public Class dlgFileInfo
                     If Not stream Is Nothing Then
                         If Not SettingDefaults Then
                             If _isEpisode Then
-                                Master.currShow.TVEp.FileInfo = _FileInfo
+                                Master.currShow.TVEpisode.FileInfo = _FileInfo
                             Else
                                 Master.currMovie.Movie.FileInfo = _FileInfo
                             End If

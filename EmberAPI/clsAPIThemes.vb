@@ -225,7 +225,7 @@ Public Class Themes
     ''' </summary>
     ''' <param name="DBTVShow"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowTheme(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowTheme(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try

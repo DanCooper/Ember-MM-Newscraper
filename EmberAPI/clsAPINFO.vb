@@ -507,7 +507,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByVal DBTV As Structures.DBTV, ByVal ScrapedList As List(Of MediaContainers.TVShow), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Structures.DBTV
+    Public Shared Function MergeDataScraperResults(ByVal DBTV As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.TVShow), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -853,12 +853,12 @@ Public Class NFO
             Dim lSeasonList = DBTV.Seasons.Where(Function(f) f.TVSeason.Season = aKnownSeason)
 
             If lSeasonList IsNot Nothing AndAlso lSeasonList.Count > 0 Then
-                For Each nSeason As Structures.DBTV In lSeasonList
+                For Each nSeason As Database.DBElement In lSeasonList
                     MergeDataScraperResults(nSeason, ScrapedSeasonList, ScrapeOptions)
                 Next
             Else
                 'no existing season found -> add it as "missing" season
-                Dim mSeason As New Structures.DBTV With { _
+                Dim mSeason As New Database.DBElement With { _
                     .ID = -1, _
                     .ImagesContainer = New MediaContainers.ImagesContainer, _
                     .ShowID = DBTV.ShowID, _
@@ -900,20 +900,20 @@ Public Class NFO
                 Next
 
                 'check if we have a local episode file for this scraped episode
-                Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.TVEp.Episode = iEpisode AndAlso f.TVEp.Season = iSeason)
+                Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
 
                 If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
-                    For Each nEpisode As Structures.DBTV In lEpisodeList
+                    For Each nEpisode As Database.DBElement In lEpisodeList
                         MergeDataScraperResults(nEpisode, ScrapedEpisodeList, ScrapeOptions)
                     Next
                 Else
 
                     'no local episode found -> add it as "missing" episode
-                    Dim mEpisode As New Structures.DBTV With { _
+                    Dim mEpisode As New Database.DBElement With { _
                         .FilenameID = -1, _
                         .ID = -1, _
                         .ImagesContainer = New MediaContainers.ImagesContainer, _
-                        .TVEp = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
+                        .TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
                     mEpisode = Master.DB.FillTVShowFromDB(mEpisode, DBTV)
                     DBTV.Episodes.Add(MergeDataScraperResults(mEpisode, ScrapedEpisodeList, ScrapeOptions))
                 End If
@@ -923,7 +923,7 @@ Public Class NFO
         Return DBTV
     End Function
 
-    Public Shared Function MergeDataScraperResults(ByRef DBTVSeason As Structures.DBTV, ByVal ScrapedList As List(Of MediaContainers.SeasonDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Structures.DBTV
+    Public Shared Function MergeDataScraperResults(ByRef DBTVSeason As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.SeasonDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Aired As Boolean = False
@@ -988,7 +988,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByRef DBTVEpisode As Structures.DBTV, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Structures.DBTV
+    Public Shared Function MergeDataScraperResults(ByRef DBTVEpisode As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -1015,27 +1015,27 @@ Public Class NFO
 
             'IDs
             If Not String.IsNullOrEmpty(scrapedepisode.IMDB) Then
-                DBTVEpisode.TVEp.IMDB = scrapedepisode.IMDB
+                DBTVEpisode.TVEpisode.IMDB = scrapedepisode.IMDB
             End If
             If Not String.IsNullOrEmpty(scrapedepisode.TMDB) Then
-                DBTVEpisode.TVEp.TMDB = scrapedepisode.TMDB
+                DBTVEpisode.TVEpisode.TMDB = scrapedepisode.TMDB
             End If
             If Not String.IsNullOrEmpty(scrapedepisode.TVDB) Then
-                DBTVEpisode.TVEp.TVDB = scrapedepisode.TVDB
+                DBTVEpisode.TVEpisode.TVDB = scrapedepisode.TVDB
             End If
 
             'DisplayEpisode
             If scrapedepisode.DisplayEpisodeSpecified Then
-                DBTVEpisode.TVEp.DisplayEpisode = scrapedepisode.DisplayEpisode
+                DBTVEpisode.TVEpisode.DisplayEpisode = scrapedepisode.DisplayEpisode
             End If
 
             'DisplaySeason
             If scrapedepisode.DisplaySeasonSpecified Then
-                DBTVEpisode.TVEp.DisplaySeason = scrapedepisode.DisplaySeason
+                DBTVEpisode.TVEpisode.DisplaySeason = scrapedepisode.DisplaySeason
             End If
 
             'Actors
-            If (DBTVEpisode.TVEp.Actors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpActors AndAlso _
+            If (DBTVEpisode.TVEpisode.Actors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpActors AndAlso _
                 scrapedepisode.Actors.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
 
                 'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
@@ -1050,7 +1050,7 @@ Public Class NFO
                 '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
                 'End If
 
-                DBTVEpisode.TVEp.Actors = scrapedepisode.Actors
+                DBTVEpisode.TVEpisode.Actors = scrapedepisode.Actors
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.Actors.Count > 0 Then
                     new_Actors = True
@@ -1063,40 +1063,40 @@ Public Class NFO
                 End If
 
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
-                DBTVEpisode.TVEp.Actors.Clear()
+                DBTVEpisode.TVEpisode.Actors.Clear()
             End If
 
             'Aired
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Aired) OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bEpAired AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bEpAired AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Aired) AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
-                DBTVEpisode.TVEp.Aired = scrapedepisode.Aired
+                DBTVEpisode.TVEpisode.Aired = scrapedepisode.Aired
                 new_Aired = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
-                DBTVEpisode.TVEp.Aired = String.Empty
+                DBTVEpisode.TVEpisode.Aired = String.Empty
             End If
 
             'Credits
-            If (DBTVEpisode.TVEp.Credits.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso _
+            If (DBTVEpisode.TVEpisode.Credits.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso _
                 scrapedepisode.Credits.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeCredits AndAlso Not new_Credits Then
-                DBTVEpisode.TVEp.Credits.Clear()
-                DBTVEpisode.TVEp.Credits.AddRange(scrapedepisode.Credits)
+                DBTVEpisode.TVEpisode.Credits.Clear()
+                DBTVEpisode.TVEpisode.Credits.AddRange(scrapedepisode.Credits)
                 new_Credits = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeCredits AndAlso Not Master.eSettings.TVLockEpisodeCredits Then
-                DBTVEpisode.TVEp.Credits.Clear()
+                DBTVEpisode.TVEpisode.Credits.Clear()
             End If
 
             'Directors
-            If (DBTVEpisode.TVEp.Directors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpDirector AndAlso _
+            If (DBTVEpisode.TVEpisode.Directors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpDirector AndAlso _
                 scrapedepisode.Directors.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeDirector AndAlso Not new_Directors Then
-                DBTVEpisode.TVEp.Directors.Clear()
-                DBTVEpisode.TVEp.Directors.AddRange(scrapedepisode.Directors)
+                DBTVEpisode.TVEpisode.Directors.Clear()
+                DBTVEpisode.TVEpisode.Directors.AddRange(scrapedepisode.Directors)
                 new_Directors = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeDirector AndAlso Not Master.eSettings.TVLockEpisodeDirector Then
-                DBTVEpisode.TVEp.Directors.Clear()
+                DBTVEpisode.TVEpisode.Directors.Clear()
             End If
 
             'GuestStars
-            If (DBTVEpisode.TVEp.GuestStars.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpGuestStars AndAlso _
+            If (DBTVEpisode.TVEpisode.GuestStars.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpGuestStars AndAlso _
                 scrapedepisode.GuestStars.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
 
                 'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
@@ -1111,7 +1111,7 @@ Public Class NFO
                 '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
                 'End If
 
-                DBTVEpisode.TVEp.GuestStars = scrapedepisode.GuestStars
+                DBTVEpisode.TVEpisode.GuestStars = scrapedepisode.GuestStars
                 'added check if there's any actors left to add, if not then try with results of following scraper...
                 If scrapedepisode.GuestStars.Count > 0 Then
                     new_GuestStars = True
@@ -1124,58 +1124,58 @@ Public Class NFO
                 End If
 
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not Master.eSettings.TVLockEpisodeGuestStars Then
-                DBTVEpisode.TVEp.GuestStars.Clear()
+                DBTVEpisode.TVEpisode.GuestStars.Clear()
             End If
 
             'Plot
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso ScrapeOptions.bEpPlot AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso ScrapeOptions.bEpPlot AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Plot) AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
-                DBTVEpisode.TVEp.Plot = scrapedepisode.Plot
+                DBTVEpisode.TVEpisode.Plot = scrapedepisode.Plot
                 new_Plot = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodePlot AndAlso Not Master.eSettings.TVLockEpisodePlot Then
-                DBTVEpisode.TVEp.Plot = String.Empty
+                DBTVEpisode.TVEpisode.Plot = String.Empty
             End If
 
             'Rating
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Rating) OrElse DBTVEpisode.TVEp.Rating = "0" OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpRating AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Rating) OrElse DBTVEpisode.TVEpisode.Rating = "0" OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpRating AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Rating) AndAlso Not scrapedepisode.Rating = "0" AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
-                DBTVEpisode.TVEp.Rating = scrapedepisode.Rating
+                DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
                 new_Rating = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
-                DBTVEpisode.TVEp.Rating = String.Empty
+                DBTVEpisode.TVEpisode.Rating = String.Empty
             End If
 
             'Runtime
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Runtime) OrElse DBTVEpisode.TVEp.Runtime = "0" OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso ScrapeOptions.bEpRuntime AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Runtime) OrElse DBTVEpisode.TVEpisode.Runtime = "0" OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso ScrapeOptions.bEpRuntime AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Runtime) AndAlso Not scrapedepisode.Runtime = "0" AndAlso Master.eSettings.TVScraperEpisodeRuntime AndAlso Not new_Runtime Then
-                DBTVEpisode.TVEp.Runtime = scrapedepisode.Runtime
+                DBTVEpisode.TVEpisode.Runtime = scrapedepisode.Runtime
                 new_Runtime = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRuntime AndAlso Not Master.eSettings.TVLockEpisodeRuntime Then
-                DBTVEpisode.TVEp.Runtime = String.Empty
+                DBTVEpisode.TVEpisode.Runtime = String.Empty
             End If
 
             'Title
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpTitle AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpTitle AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Title) AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
-                DBTVEpisode.TVEp.Title = scrapedepisode.Title
+                DBTVEpisode.TVEpisode.Title = scrapedepisode.Title
                 new_Title = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeTitle AndAlso Not Master.eSettings.TVLockEpisodeTitle Then
-                DBTVEpisode.TVEp.Title = String.Empty
+                DBTVEpisode.TVEpisode.Title = String.Empty
             End If
 
             'Votes
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEp.Votes) OrElse DBTVEpisode.TVEp.Votes = "0" OrElse Not Master.eSettings.TVLockEpisodeVotes) AndAlso ScrapeOptions.bEpVotes AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Votes) OrElse DBTVEpisode.TVEpisode.Votes = "0" OrElse Not Master.eSettings.TVLockEpisodeVotes) AndAlso ScrapeOptions.bEpVotes AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Votes) AndAlso Not scrapedepisode.Votes = "0" AndAlso Master.eSettings.TVScraperEpisodeVotes AndAlso Not new_Votes Then
-                DBTVEpisode.TVEp.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
+                DBTVEpisode.TVEpisode.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
                 new_Votes = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeVotes AndAlso Not Master.eSettings.TVLockEpisodeVotes Then
-                DBTVEpisode.TVEp.Votes = String.Empty
+                DBTVEpisode.TVEpisode.Votes = String.Empty
             End If
         Next
 
         'Add GuestStars to Actors
-        If DBTVEpisode.TVEp.GuestStars.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
-            DBTVEpisode.TVEp.Actors.AddRange(DBTVEpisode.TVEp.GuestStars)
+        If DBTVEpisode.TVEpisode.GuestStars.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
+            DBTVEpisode.TVEpisode.Actors.AddRange(DBTVEpisode.TVEpisode.GuestStars)
         End If
 
         Return DBTVEpisode
@@ -2266,7 +2266,7 @@ Public Class NFO
         End Property
     End Class
 
-    Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Structures.DBTV)
+    Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Database.DBElement)
 
         Try
 
@@ -2309,11 +2309,11 @@ Public Class NFO
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLreader.Read
-                                EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), False).TVEp)
+                                EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
                             End While
                         End Using
 
-                        EpList.Add(tvEpToSave.TVEp)
+                        EpList.Add(tvEpToSave.TVEpisode)
 
                         Dim NS As New XmlSerializerNamespaces
                         NS.Add(String.Empty, String.Empty)
@@ -2361,7 +2361,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveTVShowToNFO(ByRef tvShowToSave As Structures.DBTV)
+    Public Shared Sub SaveTVShowToNFO(ByRef tvShowToSave As Database.DBElement)
 
         Try
             Dim params As New List(Of Object)(New Object() {tvShowToSave})
@@ -2483,14 +2483,14 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub LoadTVEpDuration(ByRef _TVEpDB As Structures.DBTV)
-        If _TVEpDB.TVEp Is Nothing OrElse _TVEpDB.TVEp.FileInfo Is Nothing Then Return
+    Public Shared Sub LoadTVEpDuration(ByRef _TVEpDB As Database.DBElement)
+        If _TVEpDB.TVEpisode Is Nothing OrElse _TVEpDB.TVEpisode.FileInfo Is Nothing Then Return
 
         Dim tRuntime As String = String.Empty
         If Master.eSettings.TVScraperUseMDDuration Then
-            If _TVEpDB.TVEp.FileInfo.StreamDetails IsNot Nothing AndAlso _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count > 0 Then
+            If _TVEpDB.TVEpisode.FileInfo.StreamDetails IsNot Nothing AndAlso _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video.Count > 0 Then
                 Dim cTotal As String = String.Empty
-                For Each tVid As MediaInfo.Video In _TVEpDB.TVEp.FileInfo.StreamDetails.Video
+                For Each tVid As MediaInfo.Video In _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video
                     cTotal = cTotal + tVid.Duration
                 Next
                 tRuntime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
@@ -2498,12 +2498,12 @@ Public Class NFO
         End If
 
         If String.IsNullOrEmpty(tRuntime) Then
-            If (String.IsNullOrEmpty(_TVEpDB.TVEp.Runtime) OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVShow.Runtime) AndAlso Master.eSettings.TVScraperUseSRuntimeForEp Then
-                _TVEpDB.TVEp.Runtime = _TVEpDB.TVShow.Runtime
+            If (String.IsNullOrEmpty(_TVEpDB.TVEpisode.Runtime) OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVShow.Runtime) AndAlso Master.eSettings.TVScraperUseSRuntimeForEp Then
+                _TVEpDB.TVEpisode.Runtime = _TVEpDB.TVShow.Runtime
             End If
         Else
-            If (String.IsNullOrEmpty(_TVEpDB.TVEp.Runtime) OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso Master.eSettings.TVScraperUseMDDuration Then
-                _TVEpDB.TVEp.Runtime = tRuntime
+            If (String.IsNullOrEmpty(_TVEpDB.TVEpisode.Runtime) OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso Master.eSettings.TVScraperUseMDDuration Then
+                _TVEpDB.TVEpisode.Runtime = tRuntime
             End If
         End If
     End Sub

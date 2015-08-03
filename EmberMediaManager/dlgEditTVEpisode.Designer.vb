@@ -23,14 +23,14 @@ Partial Class dlgEditTVEpisode
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditTVEpisode))
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
-        Me.tcEditEpisode = New System.Windows.Forms.TabControl()
-        Me.tpEpsiodeDetails = New System.Windows.Forms.TabPage()
+        Me.tcEdit = New System.Windows.Forms.TabControl()
+        Me.tpDetails = New System.Windows.Forms.TabPage()
         Me.txtVideoSource = New System.Windows.Forms.TextBox()
         Me.lblVideoSource = New System.Windows.Forms.Label()
         Me.txtVotes = New System.Windows.Forms.TextBox()
@@ -74,20 +74,20 @@ Partial Class dlgEditTVEpisode
         Me.lblAired = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.txtTitle = New System.Windows.Forms.TextBox()
-        Me.tpEpisodePoster = New System.Windows.Forms.TabPage()
-        Me.btnSetEpisodePosterDL = New System.Windows.Forms.Button()
-        Me.btnRemoveEpisodePoster = New System.Windows.Forms.Button()
-        Me.lblEpisodePosterSize = New System.Windows.Forms.Label()
-        Me.btnSetEpisodePosterScrape = New System.Windows.Forms.Button()
-        Me.btnSetEpisodePoster = New System.Windows.Forms.Button()
-        Me.pbEpisodePoster = New System.Windows.Forms.PictureBox()
-        Me.tpEpisodeFanart = New System.Windows.Forms.TabPage()
-        Me.lblEpisodeFanartSize = New System.Windows.Forms.Label()
-        Me.btnSetEpisodeFanartDL = New System.Windows.Forms.Button()
-        Me.btnRemoveEpisodeFanart = New System.Windows.Forms.Button()
-        Me.btnSetEpisodeFanartScrape = New System.Windows.Forms.Button()
-        Me.btnSetEpisodeFanart = New System.Windows.Forms.Button()
-        Me.pbEpisodeFanart = New System.Windows.Forms.PictureBox()
+        Me.tpPoster = New System.Windows.Forms.TabPage()
+        Me.btnSetPosterDL = New System.Windows.Forms.Button()
+        Me.btnRemovePoster = New System.Windows.Forms.Button()
+        Me.lblPosterSize = New System.Windows.Forms.Label()
+        Me.btnSetPosterScrape = New System.Windows.Forms.Button()
+        Me.btnSetPoster = New System.Windows.Forms.Button()
+        Me.pbPoster = New System.Windows.Forms.PictureBox()
+        Me.tpFanart = New System.Windows.Forms.TabPage()
+        Me.lblFanartSize = New System.Windows.Forms.Label()
+        Me.btnSetFanartDL = New System.Windows.Forms.Button()
+        Me.btnRemoveFanart = New System.Windows.Forms.Button()
+        Me.btnSetFanartScrape = New System.Windows.Forms.Button()
+        Me.btnSetFanart = New System.Windows.Forms.Button()
+        Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
         Me.tpSubtitles = New System.Windows.Forms.TabPage()
@@ -103,7 +103,7 @@ Partial Class dlgEditTVEpisode
         Me.btnSetMovieSubtitleDL = New System.Windows.Forms.Button()
         Me.btnSetMovieSubtitleScrape = New System.Windows.Forms.Button()
         Me.btnSetMovieSubtitleLocal = New System.Windows.Forms.Button()
-        Me.tpEpisodeMetaData = New System.Windows.Forms.TabPage()
+        Me.tpMetaData = New System.Windows.Forms.TabPage()
         Me.pnlFileInfo = New System.Windows.Forms.Panel()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
@@ -114,8 +114,8 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tcEditEpisode.SuspendLayout()
-        Me.tpEpsiodeDetails.SuspendLayout()
+        Me.tcEdit.SuspendLayout()
+        Me.tpDetails.SuspendLayout()
         CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -126,13 +126,13 @@ Partial Class dlgEditTVEpisode
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tpEpisodePoster.SuspendLayout()
-        CType(Me.pbEpisodePoster, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tpEpisodeFanart.SuspendLayout()
-        CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpPoster.SuspendLayout()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpFanart.SuspendLayout()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpSubtitles.SuspendLayout()
-        Me.tpEpisodeMetaData.SuspendLayout()
+        Me.tpMetaData.SuspendLayout()
         Me.StatusStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -186,69 +186,69 @@ Partial Class dlgEditTVEpisode
         Me.pbTopLogo.TabIndex = 0
         Me.pbTopLogo.TabStop = False
         '
-        'tcEditEpisode
+        'tcEdit
         '
-        Me.tcEditEpisode.Controls.Add(Me.tpEpsiodeDetails)
-        Me.tcEditEpisode.Controls.Add(Me.tpEpisodePoster)
-        Me.tcEditEpisode.Controls.Add(Me.tpEpisodeFanart)
-        Me.tcEditEpisode.Controls.Add(Me.tpFrameExtraction)
-        Me.tcEditEpisode.Controls.Add(Me.tpSubtitles)
-        Me.tcEditEpisode.Controls.Add(Me.tpEpisodeMetaData)
-        Me.tcEditEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tcEditEpisode.Location = New System.Drawing.Point(4, 70)
-        Me.tcEditEpisode.Name = "tcEditEpisode"
-        Me.tcEditEpisode.SelectedIndex = 0
-        Me.tcEditEpisode.Size = New System.Drawing.Size(844, 478)
-        Me.tcEditEpisode.TabIndex = 3
+        Me.tcEdit.Controls.Add(Me.tpDetails)
+        Me.tcEdit.Controls.Add(Me.tpPoster)
+        Me.tcEdit.Controls.Add(Me.tpFanart)
+        Me.tcEdit.Controls.Add(Me.tpFrameExtraction)
+        Me.tcEdit.Controls.Add(Me.tpSubtitles)
+        Me.tcEdit.Controls.Add(Me.tpMetaData)
+        Me.tcEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tcEdit.Location = New System.Drawing.Point(4, 70)
+        Me.tcEdit.Name = "tcEdit"
+        Me.tcEdit.SelectedIndex = 0
+        Me.tcEdit.Size = New System.Drawing.Size(844, 478)
+        Me.tcEdit.TabIndex = 3
         '
-        'tpEpsiodeDetails
+        'tpDetails
         '
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtVideoSource)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblVideoSource)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtVotes)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblVotes)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblRuntime)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtRuntime)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar10)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar9)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar8)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar7)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar6)
-        Me.tpEpsiodeDetails.Controls.Add(Me.btnActorDown)
-        Me.tpEpsiodeDetails.Controls.Add(Me.btnActorUp)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtAired)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtEpisode)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblEpisode)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtSeason)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblSeason)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblCredits)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtCredits)
-        Me.tpEpsiodeDetails.Controls.Add(Me.btnEditActor)
-        Me.tpEpsiodeDetails.Controls.Add(Me.btnAddActor)
-        Me.tpEpsiodeDetails.Controls.Add(Me.btnManual)
-        Me.tpEpsiodeDetails.Controls.Add(Me.btnRemove)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblActors)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lvActors)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblDirector)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtDirector)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblPlot)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtPlot)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar5)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar4)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar3)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar2)
-        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar1)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblRating)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblAired)
-        Me.tpEpsiodeDetails.Controls.Add(Me.lblTitle)
-        Me.tpEpsiodeDetails.Controls.Add(Me.txtTitle)
-        Me.tpEpsiodeDetails.Location = New System.Drawing.Point(4, 22)
-        Me.tpEpsiodeDetails.Name = "tpEpsiodeDetails"
-        Me.tpEpsiodeDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEpsiodeDetails.Size = New System.Drawing.Size(836, 452)
-        Me.tpEpsiodeDetails.TabIndex = 0
-        Me.tpEpsiodeDetails.Text = "Details"
-        Me.tpEpsiodeDetails.UseVisualStyleBackColor = True
+        Me.tpDetails.Controls.Add(Me.txtVideoSource)
+        Me.tpDetails.Controls.Add(Me.lblVideoSource)
+        Me.tpDetails.Controls.Add(Me.txtVotes)
+        Me.tpDetails.Controls.Add(Me.lblVotes)
+        Me.tpDetails.Controls.Add(Me.lblRuntime)
+        Me.tpDetails.Controls.Add(Me.txtRuntime)
+        Me.tpDetails.Controls.Add(Me.pbStar10)
+        Me.tpDetails.Controls.Add(Me.pbStar9)
+        Me.tpDetails.Controls.Add(Me.pbStar8)
+        Me.tpDetails.Controls.Add(Me.pbStar7)
+        Me.tpDetails.Controls.Add(Me.pbStar6)
+        Me.tpDetails.Controls.Add(Me.btnActorDown)
+        Me.tpDetails.Controls.Add(Me.btnActorUp)
+        Me.tpDetails.Controls.Add(Me.txtAired)
+        Me.tpDetails.Controls.Add(Me.txtEpisode)
+        Me.tpDetails.Controls.Add(Me.lblEpisode)
+        Me.tpDetails.Controls.Add(Me.txtSeason)
+        Me.tpDetails.Controls.Add(Me.lblSeason)
+        Me.tpDetails.Controls.Add(Me.lblCredits)
+        Me.tpDetails.Controls.Add(Me.txtCredits)
+        Me.tpDetails.Controls.Add(Me.btnEditActor)
+        Me.tpDetails.Controls.Add(Me.btnAddActor)
+        Me.tpDetails.Controls.Add(Me.btnManual)
+        Me.tpDetails.Controls.Add(Me.btnRemove)
+        Me.tpDetails.Controls.Add(Me.lblActors)
+        Me.tpDetails.Controls.Add(Me.lvActors)
+        Me.tpDetails.Controls.Add(Me.lblDirector)
+        Me.tpDetails.Controls.Add(Me.txtDirector)
+        Me.tpDetails.Controls.Add(Me.lblPlot)
+        Me.tpDetails.Controls.Add(Me.txtPlot)
+        Me.tpDetails.Controls.Add(Me.pbStar5)
+        Me.tpDetails.Controls.Add(Me.pbStar4)
+        Me.tpDetails.Controls.Add(Me.pbStar3)
+        Me.tpDetails.Controls.Add(Me.pbStar2)
+        Me.tpDetails.Controls.Add(Me.pbStar1)
+        Me.tpDetails.Controls.Add(Me.lblRating)
+        Me.tpDetails.Controls.Add(Me.lblAired)
+        Me.tpDetails.Controls.Add(Me.lblTitle)
+        Me.tpDetails.Controls.Add(Me.txtTitle)
+        Me.tpDetails.Location = New System.Drawing.Point(4, 22)
+        Me.tpDetails.Name = "tpDetails"
+        Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpDetails.Size = New System.Drawing.Size(836, 452)
+        Me.tpDetails.TabIndex = 0
+        Me.tpDetails.Text = "Details"
+        Me.tpDetails.UseVisualStyleBackColor = True
         '
         'txtVideoSource
         '
@@ -621,185 +621,185 @@ Partial Class dlgEditTVEpisode
         Me.txtTitle.Size = New System.Drawing.Size(241, 22)
         Me.txtTitle.TabIndex = 1
         '
-        'tpEpisodePoster
+        'tpPoster
         '
-        Me.tpEpisodePoster.Controls.Add(Me.btnSetEpisodePosterDL)
-        Me.tpEpisodePoster.Controls.Add(Me.btnRemoveEpisodePoster)
-        Me.tpEpisodePoster.Controls.Add(Me.lblEpisodePosterSize)
-        Me.tpEpisodePoster.Controls.Add(Me.btnSetEpisodePosterScrape)
-        Me.tpEpisodePoster.Controls.Add(Me.btnSetEpisodePoster)
-        Me.tpEpisodePoster.Controls.Add(Me.pbEpisodePoster)
-        Me.tpEpisodePoster.Location = New System.Drawing.Point(4, 22)
-        Me.tpEpisodePoster.Name = "tpEpisodePoster"
-        Me.tpEpisodePoster.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEpisodePoster.Size = New System.Drawing.Size(836, 452)
-        Me.tpEpisodePoster.TabIndex = 1
-        Me.tpEpisodePoster.Text = "Poster"
-        Me.tpEpisodePoster.UseVisualStyleBackColor = True
+        Me.tpPoster.Controls.Add(Me.btnSetPosterDL)
+        Me.tpPoster.Controls.Add(Me.btnRemovePoster)
+        Me.tpPoster.Controls.Add(Me.lblPosterSize)
+        Me.tpPoster.Controls.Add(Me.btnSetPosterScrape)
+        Me.tpPoster.Controls.Add(Me.btnSetPoster)
+        Me.tpPoster.Controls.Add(Me.pbPoster)
+        Me.tpPoster.Location = New System.Drawing.Point(4, 22)
+        Me.tpPoster.Name = "tpPoster"
+        Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpPoster.Size = New System.Drawing.Size(836, 452)
+        Me.tpPoster.TabIndex = 1
+        Me.tpPoster.Text = "Poster"
+        Me.tpPoster.UseVisualStyleBackColor = True
         '
-        'btnSetEpisodePosterDL
+        'btnSetPosterDL
         '
-        Me.btnSetEpisodePosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetEpisodePosterDL.Image = CType(resources.GetObject("btnSetEpisodePosterDL.Image"), System.Drawing.Image)
-        Me.btnSetEpisodePosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetEpisodePosterDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetEpisodePosterDL.Name = "btnSetEpisodePosterDL"
-        Me.btnSetEpisodePosterDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetEpisodePosterDL.TabIndex = 3
-        Me.btnSetEpisodePosterDL.Text = "Change Poster (Download)"
-        Me.btnSetEpisodePosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetEpisodePosterDL.UseVisualStyleBackColor = True
+        Me.btnSetPosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
+        Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetPosterDL.Name = "btnSetPosterDL"
+        Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetPosterDL.TabIndex = 3
+        Me.btnSetPosterDL.Text = "Change Poster (Download)"
+        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetPosterDL.UseVisualStyleBackColor = True
         '
-        'btnRemoveEpisodePoster
+        'btnRemovePoster
         '
-        Me.btnRemoveEpisodePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveEpisodePoster.Image = CType(resources.GetObject("btnRemoveEpisodePoster.Image"), System.Drawing.Image)
-        Me.btnRemoveEpisodePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveEpisodePoster.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveEpisodePoster.Name = "btnRemoveEpisodePoster"
-        Me.btnRemoveEpisodePoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveEpisodePoster.TabIndex = 4
-        Me.btnRemoveEpisodePoster.Text = "Remove Poster"
-        Me.btnRemoveEpisodePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveEpisodePoster.UseVisualStyleBackColor = True
+        Me.btnRemovePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
+        Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemovePoster.Name = "btnRemovePoster"
+        Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemovePoster.TabIndex = 4
+        Me.btnRemovePoster.Text = "Remove Poster"
+        Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemovePoster.UseVisualStyleBackColor = True
         '
-        'lblEpisodePosterSize
+        'lblPosterSize
         '
-        Me.lblEpisodePosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEpisodePosterSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblEpisodePosterSize.Name = "lblEpisodePosterSize"
-        Me.lblEpisodePosterSize.Size = New System.Drawing.Size(104, 23)
-        Me.lblEpisodePosterSize.TabIndex = 0
-        Me.lblEpisodePosterSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEpisodePosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEpisodePosterSize.Visible = False
+        Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblPosterSize.Name = "lblPosterSize"
+        Me.lblPosterSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblPosterSize.TabIndex = 0
+        Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblPosterSize.Visible = False
         '
-        'btnSetEpisodePosterScrape
+        'btnSetPosterScrape
         '
-        Me.btnSetEpisodePosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetEpisodePosterScrape.Image = CType(resources.GetObject("btnSetEpisodePosterScrape.Image"), System.Drawing.Image)
-        Me.btnSetEpisodePosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetEpisodePosterScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetEpisodePosterScrape.Name = "btnSetEpisodePosterScrape"
-        Me.btnSetEpisodePosterScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetEpisodePosterScrape.TabIndex = 2
-        Me.btnSetEpisodePosterScrape.Text = "Change Poster (Scrape)"
-        Me.btnSetEpisodePosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetEpisodePosterScrape.UseVisualStyleBackColor = True
+        Me.btnSetPosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetPosterScrape.Image = CType(resources.GetObject("btnSetPosterScrape.Image"), System.Drawing.Image)
+        Me.btnSetPosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetPosterScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
+        Me.btnSetPosterScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetPosterScrape.TabIndex = 2
+        Me.btnSetPosterScrape.Text = "Change Poster (Scrape)"
+        Me.btnSetPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetPosterScrape.UseVisualStyleBackColor = True
         '
-        'btnSetEpisodePoster
+        'btnSetPoster
         '
-        Me.btnSetEpisodePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetEpisodePoster.Image = CType(resources.GetObject("btnSetEpisodePoster.Image"), System.Drawing.Image)
-        Me.btnSetEpisodePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetEpisodePoster.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetEpisodePoster.Name = "btnSetEpisodePoster"
-        Me.btnSetEpisodePoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetEpisodePoster.TabIndex = 1
-        Me.btnSetEpisodePoster.Text = "Change Poster (Local)"
-        Me.btnSetEpisodePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetEpisodePoster.UseVisualStyleBackColor = True
+        Me.btnSetPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetPoster.Image = CType(resources.GetObject("btnSetPoster.Image"), System.Drawing.Image)
+        Me.btnSetPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetPoster.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetPoster.Name = "btnSetPoster"
+        Me.btnSetPoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetPoster.TabIndex = 1
+        Me.btnSetPoster.Text = "Change Poster (Local)"
+        Me.btnSetPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetPoster.UseVisualStyleBackColor = True
         '
-        'pbEpisodePoster
+        'pbPoster
         '
-        Me.pbEpisodePoster.BackColor = System.Drawing.Color.DimGray
-        Me.pbEpisodePoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbEpisodePoster.Location = New System.Drawing.Point(6, 6)
-        Me.pbEpisodePoster.Name = "pbEpisodePoster"
-        Me.pbEpisodePoster.Size = New System.Drawing.Size(724, 440)
-        Me.pbEpisodePoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbEpisodePoster.TabIndex = 0
-        Me.pbEpisodePoster.TabStop = False
+        Me.pbPoster.BackColor = System.Drawing.Color.DimGray
+        Me.pbPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbPoster.Location = New System.Drawing.Point(6, 6)
+        Me.pbPoster.Name = "pbPoster"
+        Me.pbPoster.Size = New System.Drawing.Size(724, 440)
+        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbPoster.TabIndex = 0
+        Me.pbPoster.TabStop = False
         '
-        'tpEpisodeFanart
+        'tpFanart
         '
-        Me.tpEpisodeFanart.Controls.Add(Me.lblEpisodeFanartSize)
-        Me.tpEpisodeFanart.Controls.Add(Me.btnSetEpisodeFanartDL)
-        Me.tpEpisodeFanart.Controls.Add(Me.btnRemoveEpisodeFanart)
-        Me.tpEpisodeFanart.Controls.Add(Me.btnSetEpisodeFanartScrape)
-        Me.tpEpisodeFanart.Controls.Add(Me.btnSetEpisodeFanart)
-        Me.tpEpisodeFanart.Controls.Add(Me.pbEpisodeFanart)
-        Me.tpEpisodeFanart.Location = New System.Drawing.Point(4, 22)
-        Me.tpEpisodeFanart.Name = "tpEpisodeFanart"
-        Me.tpEpisodeFanart.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEpisodeFanart.Size = New System.Drawing.Size(836, 452)
-        Me.tpEpisodeFanart.TabIndex = 6
-        Me.tpEpisodeFanart.Text = "Fanart"
-        Me.tpEpisodeFanart.UseVisualStyleBackColor = True
+        Me.tpFanart.Controls.Add(Me.lblFanartSize)
+        Me.tpFanart.Controls.Add(Me.btnSetFanartDL)
+        Me.tpFanart.Controls.Add(Me.btnRemoveFanart)
+        Me.tpFanart.Controls.Add(Me.btnSetFanartScrape)
+        Me.tpFanart.Controls.Add(Me.btnSetFanart)
+        Me.tpFanart.Controls.Add(Me.pbFanart)
+        Me.tpFanart.Location = New System.Drawing.Point(4, 22)
+        Me.tpFanart.Name = "tpFanart"
+        Me.tpFanart.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpFanart.Size = New System.Drawing.Size(836, 452)
+        Me.tpFanart.TabIndex = 6
+        Me.tpFanart.Text = "Fanart"
+        Me.tpFanart.UseVisualStyleBackColor = True
         '
-        'lblEpisodeFanartSize
+        'lblFanartSize
         '
-        Me.lblEpisodeFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEpisodeFanartSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblEpisodeFanartSize.Name = "lblEpisodeFanartSize"
-        Me.lblEpisodeFanartSize.Size = New System.Drawing.Size(104, 23)
-        Me.lblEpisodeFanartSize.TabIndex = 0
-        Me.lblEpisodeFanartSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEpisodeFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEpisodeFanartSize.Visible = False
+        Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblFanartSize.Name = "lblFanartSize"
+        Me.lblFanartSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblFanartSize.TabIndex = 0
+        Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblFanartSize.Visible = False
         '
-        'btnSetEpisodeFanartDL
+        'btnSetFanartDL
         '
-        Me.btnSetEpisodeFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetEpisodeFanartDL.Image = CType(resources.GetObject("btnSetEpisodeFanartDL.Image"), System.Drawing.Image)
-        Me.btnSetEpisodeFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetEpisodeFanartDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetEpisodeFanartDL.Name = "btnSetEpisodeFanartDL"
-        Me.btnSetEpisodeFanartDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetEpisodeFanartDL.TabIndex = 3
-        Me.btnSetEpisodeFanartDL.Text = "Change Fanart (Download)"
-        Me.btnSetEpisodeFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetEpisodeFanartDL.UseVisualStyleBackColor = True
+        Me.btnSetFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
+        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetFanartDL.Name = "btnSetFanartDL"
+        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartDL.TabIndex = 3
+        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartDL.UseVisualStyleBackColor = True
         '
-        'btnRemoveEpisodeFanart
+        'btnRemoveFanart
         '
-        Me.btnRemoveEpisodeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveEpisodeFanart.Image = CType(resources.GetObject("btnRemoveEpisodeFanart.Image"), System.Drawing.Image)
-        Me.btnRemoveEpisodeFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveEpisodeFanart.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveEpisodeFanart.Name = "btnRemoveEpisodeFanart"
-        Me.btnRemoveEpisodeFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveEpisodeFanart.TabIndex = 4
-        Me.btnRemoveEpisodeFanart.Text = "Remove Fanart"
-        Me.btnRemoveEpisodeFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveEpisodeFanart.UseVisualStyleBackColor = True
+        Me.btnRemoveFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
+        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveFanart.Name = "btnRemoveFanart"
+        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveFanart.TabIndex = 4
+        Me.btnRemoveFanart.Text = "Remove Fanart"
+        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveFanart.UseVisualStyleBackColor = True
         '
-        'btnSetEpisodeFanartScrape
+        'btnSetFanartScrape
         '
-        Me.btnSetEpisodeFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetEpisodeFanartScrape.Image = CType(resources.GetObject("btnSetEpisodeFanartScrape.Image"), System.Drawing.Image)
-        Me.btnSetEpisodeFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetEpisodeFanartScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetEpisodeFanartScrape.Name = "btnSetEpisodeFanartScrape"
-        Me.btnSetEpisodeFanartScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetEpisodeFanartScrape.TabIndex = 2
-        Me.btnSetEpisodeFanartScrape.Text = "Change Fanart (Scrape)"
-        Me.btnSetEpisodeFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetEpisodeFanartScrape.UseVisualStyleBackColor = True
+        Me.btnSetFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetFanartScrape.Image = CType(resources.GetObject("btnSetFanartScrape.Image"), System.Drawing.Image)
+        Me.btnSetFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
+        Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartScrape.TabIndex = 2
+        Me.btnSetFanartScrape.Text = "Change Fanart (Scrape)"
+        Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartScrape.UseVisualStyleBackColor = True
         '
-        'btnSetEpisodeFanart
+        'btnSetFanart
         '
-        Me.btnSetEpisodeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetEpisodeFanart.Image = CType(resources.GetObject("btnSetEpisodeFanart.Image"), System.Drawing.Image)
-        Me.btnSetEpisodeFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetEpisodeFanart.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetEpisodeFanart.Name = "btnSetEpisodeFanart"
-        Me.btnSetEpisodeFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetEpisodeFanart.TabIndex = 1
-        Me.btnSetEpisodeFanart.Text = "Change Fanart (Local)"
-        Me.btnSetEpisodeFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetEpisodeFanart.UseVisualStyleBackColor = True
+        Me.btnSetFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetFanart.Image = CType(resources.GetObject("btnSetFanart.Image"), System.Drawing.Image)
+        Me.btnSetFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanart.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetFanart.Name = "btnSetFanart"
+        Me.btnSetFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanart.TabIndex = 1
+        Me.btnSetFanart.Text = "Change Fanart (Local)"
+        Me.btnSetFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanart.UseVisualStyleBackColor = True
         '
-        'pbEpisodeFanart
+        'pbFanart
         '
-        Me.pbEpisodeFanart.BackColor = System.Drawing.Color.DimGray
-        Me.pbEpisodeFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbEpisodeFanart.Location = New System.Drawing.Point(6, 6)
-        Me.pbEpisodeFanart.Name = "pbEpisodeFanart"
-        Me.pbEpisodeFanart.Size = New System.Drawing.Size(724, 440)
-        Me.pbEpisodeFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbEpisodeFanart.TabIndex = 30
-        Me.pbEpisodeFanart.TabStop = False
+        Me.pbFanart.BackColor = System.Drawing.Color.DimGray
+        Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbFanart.Location = New System.Drawing.Point(6, 6)
+        Me.pbFanart.Name = "pbFanart"
+        Me.pbFanart.Size = New System.Drawing.Size(724, 440)
+        Me.pbFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbFanart.TabIndex = 30
+        Me.pbFanart.TabStop = False
         '
         'tpFrameExtraction
         '
@@ -864,12 +864,12 @@ Partial Class dlgEditTVEpisode
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup2.Header = "Local Subtitles"
-        ListViewGroup2.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -944,16 +944,16 @@ Partial Class dlgEditTVEpisode
         Me.btnSetMovieSubtitleLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetMovieSubtitleLocal.UseVisualStyleBackColor = True
         '
-        'tpEpisodeMetaData
+        'tpMetaData
         '
-        Me.tpEpisodeMetaData.Controls.Add(Me.pnlFileInfo)
-        Me.tpEpisodeMetaData.Location = New System.Drawing.Point(4, 22)
-        Me.tpEpisodeMetaData.Name = "tpEpisodeMetaData"
-        Me.tpEpisodeMetaData.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEpisodeMetaData.Size = New System.Drawing.Size(836, 452)
-        Me.tpEpisodeMetaData.TabIndex = 5
-        Me.tpEpisodeMetaData.Text = "Meta Data"
-        Me.tpEpisodeMetaData.UseVisualStyleBackColor = True
+        Me.tpMetaData.Controls.Add(Me.pnlFileInfo)
+        Me.tpMetaData.Location = New System.Drawing.Point(4, 22)
+        Me.tpMetaData.Name = "tpMetaData"
+        Me.tpMetaData.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpMetaData.Size = New System.Drawing.Size(836, 452)
+        Me.tpMetaData.TabIndex = 5
+        Me.tpMetaData.Text = "Meta Data"
+        Me.tpMetaData.UseVisualStyleBackColor = True
         '
         'pnlFileInfo
         '
@@ -1019,7 +1019,7 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 75
         '
-        'dlgEditEpisode
+        'dlgEditTVEpisode
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -1029,7 +1029,7 @@ Partial Class dlgEditTVEpisode
         Me.Controls.Add(Me.txtLastPlayed)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.chkWatched)
-        Me.Controls.Add(Me.tcEditEpisode)
+        Me.Controls.Add(Me.tcEdit)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.pnlTop)
@@ -1038,14 +1038,14 @@ Partial Class dlgEditTVEpisode
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgEditEpisode"
+        Me.Name = "dlgEditTVEpisode"
         Me.Text = "Edit Episode"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tcEditEpisode.ResumeLayout(False)
-        Me.tpEpsiodeDetails.ResumeLayout(False)
-        Me.tpEpsiodeDetails.PerformLayout()
+        Me.tcEdit.ResumeLayout(False)
+        Me.tpDetails.ResumeLayout(False)
+        Me.tpDetails.PerformLayout()
         CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1056,14 +1056,14 @@ Partial Class dlgEditTVEpisode
         CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tpEpisodePoster.ResumeLayout(False)
-        CType(Me.pbEpisodePoster, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tpEpisodeFanart.ResumeLayout(False)
-        CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpPoster.ResumeLayout(False)
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpFanart.ResumeLayout(False)
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpSubtitles.ResumeLayout(False)
         Me.tpSubtitles.PerformLayout()
-        Me.tpEpisodeMetaData.ResumeLayout(False)
+        Me.tpMetaData.ResumeLayout(False)
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
         Me.ResumeLayout(False)
@@ -1074,8 +1074,8 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblTopTitle As System.Windows.Forms.Label
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
-    Friend WithEvents tcEditEpisode As System.Windows.Forms.TabControl
-    Friend WithEvents tpEpsiodeDetails As System.Windows.Forms.TabPage
+    Friend WithEvents tcEdit As System.Windows.Forms.TabControl
+    Friend WithEvents tpDetails As System.Windows.Forms.TabPage
     Friend WithEvents lblCredits As System.Windows.Forms.Label
     Friend WithEvents txtCredits As System.Windows.Forms.TextBox
     Friend WithEvents btnEditActor As System.Windows.Forms.Button
@@ -1100,15 +1100,15 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents lblAired As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
-    Friend WithEvents tpEpisodePoster As System.Windows.Forms.TabPage
-    Friend WithEvents btnSetEpisodePosterDL As System.Windows.Forms.Button
-    Friend WithEvents btnRemoveEpisodePoster As System.Windows.Forms.Button
-    Friend WithEvents lblEpisodePosterSize As System.Windows.Forms.Label
-    Friend WithEvents btnSetEpisodePosterScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetEpisodePoster As System.Windows.Forms.Button
-    Friend WithEvents pbEpisodePoster As System.Windows.Forms.PictureBox
+    Friend WithEvents tpPoster As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
+    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetPosterScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetPoster As System.Windows.Forms.Button
+    Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents tpFrameExtraction As System.Windows.Forms.TabPage
-    Friend WithEvents tpEpisodeMetaData As System.Windows.Forms.TabPage
+    Friend WithEvents tpMetaData As System.Windows.Forms.TabPage
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -1116,13 +1116,13 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents lblEpisode As System.Windows.Forms.Label
     Friend WithEvents txtSeason As System.Windows.Forms.TextBox
     Friend WithEvents lblSeason As System.Windows.Forms.Label
-    Friend WithEvents tpEpisodeFanart As System.Windows.Forms.TabPage
-    Friend WithEvents btnSetEpisodeFanartDL As System.Windows.Forms.Button
-    Friend WithEvents btnRemoveEpisodeFanart As System.Windows.Forms.Button
-    Friend WithEvents btnSetEpisodeFanartScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetEpisodeFanart As System.Windows.Forms.Button
-    Friend WithEvents pbEpisodeFanart As System.Windows.Forms.PictureBox
-    Friend WithEvents lblEpisodeFanartSize As System.Windows.Forms.Label
+    Friend WithEvents tpFanart As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
+    Friend WithEvents btnSetFanartScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetFanart As System.Windows.Forms.Button
+    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
     Friend WithEvents txtAired As System.Windows.Forms.TextBox
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button

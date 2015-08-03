@@ -299,20 +299,20 @@ Namespace Kodi
 
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.BannerPath), _
-                                                  GetRemotePath(uMovie.BannerPath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ClearArtPath), _
-                                                  GetRemotePath(uMovie.ClearArtPath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ClearLogoPath), _
-                                                  GetRemotePath(uMovie.ClearLogoPath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.DiscArtPath), _
-                                                  GetRemotePath(uMovie.DiscArtPath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.FanartPath), _
-                                                 GetRemotePath(uMovie.FanartPath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.LandscapePath), _
-                                                  GetRemotePath(uMovie.LandscapePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.PosterPath), _
-                                                  GetRemotePath(uMovie.PosterPath), Nothing)
+                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Banner.LocalFile), _
+                                                  GetRemotePath(uMovie.ImagesContainer.Banner.LocalFile), Nothing)
+                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearArt.LocalFile), _
+                                                  GetRemotePath(uMovie.ImagesContainer.ClearArt.LocalFile), Nothing)
+                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearLogo.LocalFile), _
+                                                  GetRemotePath(uMovie.ImagesContainer.ClearLogo.LocalFile), Nothing)
+                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.DiscArt.LocalFile), _
+                                                  GetRemotePath(uMovie.ImagesContainer.DiscArt.LocalFile), Nothing)
+                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Fanart.LocalFile), _
+                                                 GetRemotePath(uMovie.ImagesContainer.Fanart.LocalFile), Nothing)
+                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Landscape.LocalFile), _
+                                                  GetRemotePath(uMovie.ImagesContainer.Landscape.LocalFile), Nothing)
+                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Poster.LocalFile), _
+                                                  GetRemotePath(uMovie.ImagesContainer.Poster.LocalFile), Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -488,20 +488,20 @@ Namespace Kodi
                     Dim mTitle As String = uMovieset.MovieSet.Title
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovieset.BannerPath), _
-                                                  GetRemoteFilePath(uMovieset.BannerPath, MovieSetArtworkPath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovieset.ClearArtPath), _
-                                                  GetRemoteFilePath(uMovieset.ClearArtPath, MovieSetArtworkPath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovieset.ClearLogoPath), _
-                                                  GetRemoteFilePath(uMovieset.ClearLogoPath, MovieSetArtworkPath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovieset.DiscArtPath), _
-                                                  GetRemoteFilePath(uMovieset.DiscArtPath, MovieSetArtworkPath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovieset.FanartPath), _
-                                                 GetRemoteFilePath(uMovieset.FanartPath, MovieSetArtworkPath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovieset.LandscapePath), _
-                                                  GetRemoteFilePath(uMovieset.LandscapePath, MovieSetArtworkPath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovieset.PosterPath), _
-                                                  GetRemoteFilePath(uMovieset.PosterPath, MovieSetArtworkPath), Nothing)
+                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Banner.LocalFile), _
+                                                  GetRemoteFilePath(uMovieset.ImagesContainer.Banner.LocalFile, MovieSetArtworkPath), Nothing)
+                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearArt.LocalFile), _
+                                                  GetRemoteFilePath(uMovieset.ImagesContainer.ClearArt.LocalFile, MovieSetArtworkPath), Nothing)
+                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearLogo.LocalFile), _
+                                                  GetRemoteFilePath(uMovieset.ImagesContainer.ClearLogo.LocalFile, MovieSetArtworkPath), Nothing)
+                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.DiscArt.LocalFile), _
+                                                  GetRemoteFilePath(uMovieset.ImagesContainer.DiscArt.LocalFile, MovieSetArtworkPath), Nothing)
+                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Fanart.LocalFile), _
+                                                 GetRemoteFilePath(uMovieset.ImagesContainer.Fanart.LocalFile, MovieSetArtworkPath), Nothing)
+                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Landscape.LocalFile), _
+                                                  GetRemoteFilePath(uMovieset.ImagesContainer.Landscape.LocalFile, MovieSetArtworkPath), Nothing)
+                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Poster.LocalFile), _
+                                                  GetRemoteFilePath(uMovieset.ImagesContainer.Poster.LocalFile, MovieSetArtworkPath), Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -640,7 +640,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVEpisodeInfo(ByVal EmberepisodeID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(EmberepisodeID, True)
+            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(EmberepisodeID, True)
 
             Try
                 If _kodi Is Nothing Then
@@ -651,7 +651,7 @@ Namespace Kodi
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Start Syncing") & ": " & uEpisode.Filename, New Bitmap(My.Resources.logo)}))
 
                 'search ID in Kodi DB
-                Dim KodiEpsiode As XBMCRPC.Video.Details.Episode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
+                Dim KodiEpsiode As XBMCRPC.Video.Details.Episode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season).ConfigureAwait(False)
                 Dim KodiID As Integer = -1
                 If Not KodiEpsiode Is Nothing Then
                     KodiID = KodiEpsiode.episodeid
@@ -663,7 +663,7 @@ Namespace Kodi
                     Await ScanVideoPath(EmberepisodeID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
+                    KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season).ConfigureAwait(False)
                     If Not KodiEpsiode Is Nothing Then
                         isNew = True
                         KodiID = KodiEpsiode.episodeid
@@ -672,16 +672,16 @@ Namespace Kodi
 
                 If KodiID > -1 Then
                     'string or string.empty
-                    Dim mDateAdded As String = uEpisode.TVEp.DateAdded
-                    Dim mLastPlayed As String = uEpisode.TVEp.LastPlayed
-                    Dim mPlot As String = uEpisode.TVEp.Plot
-                    Dim mTitle As String = uEpisode.TVEp.Title
+                    Dim mDateAdded As String = uEpisode.TVEpisode.DateAdded
+                    Dim mLastPlayed As String = uEpisode.TVEpisode.LastPlayed
+                    Dim mPlot As String = uEpisode.TVEpisode.Plot
+                    Dim mTitle As String = uEpisode.TVEpisode.Title
 
                     'digit grouping symbol for Votes count
-                    Dim mVotes As String = If(Not String.IsNullOrEmpty(uEpisode.TVEp.Votes), uEpisode.TVEp.Votes, Nothing)
+                    Dim mVotes As String = If(Not String.IsNullOrEmpty(uEpisode.TVEpisode.Votes), uEpisode.TVEpisode.Votes, Nothing)
                     If Master.eSettings.GeneralDigitGrpSymbolVotes Then
-                        If uEpisode.TVEp.VotesSpecified Then
-                            Dim vote As String = Double.Parse(uEpisode.TVEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        If uEpisode.TVEpisode.VotesSpecified Then
+                            Dim vote As String = Double.Parse(uEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
                                 mVotes = vote
                             End If
@@ -689,23 +689,23 @@ Namespace Kodi
                     End If
 
                     'integer or 0
-                    Dim mPlaycount As Integer = If(uEpisode.TVEp.PlaycountSpecified, CType(uEpisode.TVEp.Playcount, Integer), 0)
-                    Dim mRating As Double = If(uEpisode.TVEp.RatingSpecified, CType(Double.Parse(uEpisode.TVEp.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
-                    Dim mRuntime As Integer = If(uEpisode.TVEp.RuntimeSpecified, CType(uEpisode.TVEp.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+                    Dim mPlaycount As Integer = If(uEpisode.TVEpisode.PlaycountSpecified, CType(uEpisode.TVEpisode.Playcount, Integer), 0)
+                    Dim mRating As Double = If(uEpisode.TVEpisode.RatingSpecified, CType(Double.Parse(uEpisode.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRuntime As Integer = If(uEpisode.TVEpisode.RuntimeSpecified, CType(uEpisode.TVEpisode.Runtime, Integer), 0) * 60 'API requires runtime in seconds
 
                     'arrays
                     'Directors
-                    Dim mDirectorList As List(Of String) = If(uEpisode.TVEp.DirectorSpecified, uEpisode.TVEp.Directors, New List(Of String))
+                    Dim mDirectorList As List(Of String) = If(uEpisode.TVEpisode.DirectorSpecified, uEpisode.TVEpisode.Directors, New List(Of String))
 
                     'Writers (Credits)
-                    Dim mWriterList As List(Of String) = If(uEpisode.TVEp.CreditsSpecified, uEpisode.TVEp.Credits, New List(Of String))
+                    Dim mWriterList As List(Of String) = If(uEpisode.TVEpisode.CreditsSpecified, uEpisode.TVEpisode.Credits, New List(Of String))
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
-                    artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.FanartPath), _
-                                                  GetRemotePath(uEpisode.FanartPath), Nothing)
-                    artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.PosterPath), _
-                                                  GetRemotePath(uEpisode.PosterPath), Nothing)
+                    artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Fanart.LocalFile), _
+                                                  GetRemotePath(uEpisode.ImagesContainer.Fanart.LocalFile), Nothing)
+                    artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Poster.LocalFile), _
+                                                  GetRemotePath(uEpisode.ImagesContainer.Poster.LocalFile), Nothing)
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
                     Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiID, _
@@ -741,7 +741,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEp.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEpisode.Title).ConfigureAwait(False)
                         End If
                         Return True
                     End If
@@ -813,7 +813,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVSeasonInfo(ByVal EmberseasonID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uSeason As Structures.DBTV = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True)
+            Dim uSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True)
 
             Try
                 If _kodi Is Nothing Then
@@ -831,7 +831,7 @@ Namespace Kodi
 
                 'season isn't in database of host -> scan show directory?
                 If KodiID = -1 Then
-                    logger.Warn("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": Season " & uSeason.TVEp.Season & ": Not found in database, abort process...")
+                    logger.Warn("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": Season " & uSeason.TVEpisode.Season & ": Not found in database, abort process...")
                     'what to do in this case?
                     Await ScanVideoPath(EmberseasonID, Enums.ContentType.TVShow).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
@@ -845,14 +845,14 @@ Namespace Kodi
 
                 If KodiID > -1 Then
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uSeason.BannerPath), _
-                                                  GetRemotePath(uSeason.BannerPath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uSeason.FanartPath), _
-                                                 GetRemotePath(uSeason.FanartPath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uSeason.LandscapePath), _
-                                                  GetRemotePath(uSeason.LandscapePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uSeason.PosterPath), _
-                                                  GetRemotePath(uSeason.PosterPath), Nothing)
+                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Banner.LocalFile), _
+                                                  GetRemotePath(uSeason.ImagesContainer.Banner.LocalFile), Nothing)
+                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Fanart.LocalFile), _
+                                                 GetRemotePath(uSeason.ImagesContainer.Fanart.LocalFile), Nothing)
+                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Landscape.LocalFile), _
+                                                  GetRemotePath(uSeason.ImagesContainer.Landscape.LocalFile), Nothing)
+                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Poster.LocalFile), _
+                                                  GetRemotePath(uSeason.ImagesContainer.Poster.LocalFile), Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -984,7 +984,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVShowInfo(ByVal EmbershowID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uTVShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbershowID, False, False)
+            Dim uTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(EmbershowID, False, False)
             Try
 
                 If _kodi Is Nothing Then
@@ -1056,20 +1056,20 @@ Namespace Kodi
                     Dim mTagList As List(Of String) = If(uTVShow.TVShow.Tags.Count > 0, uTVShow.TVShow.Tags, New List(Of String))
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uTVShow.BannerPath), _
-                                                  GetRemotePath(uTVShow.BannerPath), Nothing)
-                    Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.CharacterArtPath), _
-                                               GetRemotePath(uTVShow.CharacterArtPath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uTVShow.ClearArtPath), _
-                                                GetRemotePath(uTVShow.ClearArtPath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uTVShow.ClearLogoPath), _
-                                                GetRemotePath(uTVShow.ClearLogoPath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uTVShow.FanartPath), _
-                                               GetRemotePath(uTVShow.FanartPath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uTVShow.LandscapePath), _
-                                              GetRemotePath(uTVShow.LandscapePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uTVShow.PosterPath), _
-                                                 GetRemotePath(uTVShow.PosterPath), Nothing)
+                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Banner.LocalFile), _
+                                                  GetRemotePath(uTVShow.ImagesContainer.Banner.LocalFile), Nothing)
+                    Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.CharacterArt.LocalFile), _
+                                               GetRemotePath(uTVShow.ImagesContainer.CharacterArt.LocalFile), Nothing)
+                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.ClearArt.LocalFile), _
+                                                GetRemotePath(uTVShow.ImagesContainer.ClearArt.LocalFile), Nothing)
+                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.ClearLogo.LocalFile), _
+                                                GetRemotePath(uTVShow.ImagesContainer.ClearLogo.LocalFile), Nothing)
+                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Fanart.LocalFile), _
+                                               GetRemotePath(uTVShow.ImagesContainer.Fanart.LocalFile), Nothing)
+                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Landscape.LocalFile), _
+                                              GetRemotePath(uTVShow.ImagesContainer.Landscape.LocalFile), Nothing)
+                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Poster.LocalFile), _
+                                                 GetRemotePath(uTVShow.ImagesContainer.Poster.LocalFile), Nothing)
                     'TODO Missing Artwork:
                     'Dim mExtraThumbs As String = If(Not String.IsNullOrEmpty(uTVShow.ShowEThumbsPath), _
                     '                           Web.HttpUtility.JavaScriptStringEncode(GetRemoteFilePath(uTVShow.ShowEThumbsPath, uTVShow.Source), True), "null")
@@ -1193,30 +1193,30 @@ Namespace Kodi
                             Return False
                         End If
                     Case "episode"
-                        Dim uEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(EmbervideofileID, True)
+                        Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(EmbervideofileID, True)
                         'search movie ID in Kodi DB
-                        Dim KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
+                        Dim KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season).ConfigureAwait(False)
                         If KodiEpsiode Is Nothing Then
                             'episode isn't in database of host -> scan directory
                             logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.name & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
                             Await ScanVideoPath(EmbervideofileID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                             'wait a bit before trying going on, as scan might take a while on Kodi...
                             Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                            KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEp.Season).ConfigureAwait(False)
+                            KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season).ConfigureAwait(False)
                         End If
                         'if host information retrieved, update playcount/lastplayed in EmberDB
                         If Not KodiEpsiode Is Nothing Then
                             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                                Dim tmpshow As New Structures.DBTV
+                                Dim tmpshow As New Database.DBElement
                                 tmpshow = Master.DB.LoadTVEpFromDB(EmbervideofileID, True)
-                                tmpshow.TVEp.Playcount = CStr(KodiEpsiode.playcount)
+                                tmpshow.TVEpisode.Playcount = CStr(KodiEpsiode.playcount)
                                 'check date format
                                 'should be: 2014-09-01  09:10:11
                                 Dim myDateString As String = KodiEpsiode.lastplayed
                                 Dim myDate As DateTime
                                 Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
                                 If isDate Then
-                                    tmpshow.TVEp.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                    tmpshow.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
                                 Master.DB.SaveTVEpToDB(tmpshow, False, False, True)
                                 SQLtransaction.Commit()
@@ -1403,7 +1403,7 @@ Namespace Kodi
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    Dim uShow As Structures.DBTV = Master.DB.LoadTVShowFromDB(EmbervideofileID, False, False)
+                    Dim uShow As Database.DBElement = Master.DB.LoadTVShowFromDB(EmbervideofileID, False, False)
                     If FileUtils.Common.isBDRip(uShow.ShowPath) Then
                         'needs some testing?!
                         uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uShow.ShowPath).FullName).FullName).FullName
@@ -1414,7 +1414,7 @@ Namespace Kodi
                         uPath = uShow.ShowPath
                     End If
                 Case Enums.ContentType.TVEpisode
-                    Dim uEpisode As Structures.DBTV = Master.DB.LoadTVEpFromDB(EmbervideofileID, False)
+                    Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(EmbervideofileID, False)
                     If FileUtils.Common.isBDRip(uEpisode.Filename) Then
                         'needs some testing?!
                         uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uEpisode.Filename).FullName).FullName).FullName

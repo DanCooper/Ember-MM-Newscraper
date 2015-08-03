@@ -199,7 +199,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASBanner(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVASBanner(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -217,7 +217,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASFanart(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVASFanart(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -235,7 +235,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASLandscape(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVASLandscape(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -253,7 +253,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASPoster(ByVal mShow As Structures.DBTV)
+    Public Sub DeleteTVASPoster(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -271,7 +271,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVEpisode">Episode database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVEpisodeActorThumbs(ByVal DBTVEpisode As Structures.DBTV)
+    Public Shared Sub DeleteTVEpisodeActorThumbs(ByVal DBTVEpisode As Database.DBElement)
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
@@ -290,7 +290,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVEpisode">Episode database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVEpisodeFanart(ByVal DBTVEpisode As Structures.DBTV)
+    Public Shared Sub DeleteTVEpisodeFanart(ByVal DBTVEpisode As Database.DBElement)
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
@@ -308,7 +308,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVEpisode">Episode database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVEpisodePoster(ByVal DBTVEpisode As Structures.DBTV)
+    Public Shared Sub DeleteTVEpisodePoster(ByVal DBTVEpisode As Database.DBElement)
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
@@ -631,9 +631,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's season banner
     ''' </summary>
-    ''' <param name="DBTVSeason"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonBanner(ByVal DBTVSeason As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonBanner(ByVal DBTVSeason As Database.DBElement)
         If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
 
         Try
@@ -665,9 +665,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's season fanart
     ''' </summary>
-    ''' <param name="DBTVSeason"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonFanart(ByVal DBTVSeason As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonFanart(ByVal DBTVSeason As Database.DBElement)
         If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
 
         Try
@@ -699,9 +699,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's season landscape
     ''' </summary>
-    ''' <param name="DBTVSeason"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonLandscape(ByVal DBTVSeason As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonLandscape(ByVal DBTVSeason As Database.DBElement)
         If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
 
         Try
@@ -733,9 +733,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's season posters
     ''' </summary>
-    ''' <param name="DBTVSeason"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonPoster(ByVal DBTVSeason As Structures.DBTV)
+    Public Shared Sub DeleteTVSeasonPoster(ByVal DBTVSeason As Database.DBElement)
         If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
 
         Try
@@ -769,7 +769,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVShow">TV Show database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowActorThumbs(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowActorThumbs(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -786,9 +786,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's banner
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowBanner(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowBanner(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -804,9 +804,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's CharacterArt
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowCharacterArt(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowCharacterArt(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -822,9 +822,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's ClearArt
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowClearArt(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowClearArt(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -840,9 +840,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's ClearLogo
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowClearLogo(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowClearLogo(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -860,7 +860,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVShow">TV Show database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowEFanarts(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowEFanarts(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -876,9 +876,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's Fanart
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowFanart(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowFanart(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -894,9 +894,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's landscape
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowLandscape(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowLandscape(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -912,9 +912,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the TV Show's posters
     ''' </summary>
-    ''' <param name="DBTVShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowPoster(ByVal DBTVShow As Structures.DBTV)
+    Public Shared Sub DeleteTVShowPoster(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -1002,25 +1002,25 @@ Public Class Images
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Banner.LocalFile) OrElse .MovieBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso .MovieClearArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearArt.LocalFile) OrElse .MovieClearArtOverwrite) AndAlso .MovieClearArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso .MovieClearLogoAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearLogo.LocalFile) OrElse .MovieClearLogoOverwrite) AndAlso .MovieClearLogoAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainDiscArt
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso .MovieDiscArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.DiscArt.LocalFile) OrElse .MovieDiscArtOverwrite) AndAlso .MovieDiscArtAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1038,19 +1038,19 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite) AndAlso .MovieFanartAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Fanart.LocalFile) OrElse .MovieFanartOverwrite) AndAlso .MovieFanartAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso .MovieLandscapeAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Landscape.LocalFile) OrElse .MovieLandscapeOverwrite) AndAlso .MovieLandscapeAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite) AndAlso .MoviePosterAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Poster.LocalFile) OrElse .MoviePosterOverwrite) AndAlso .MoviePosterAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1070,43 +1070,43 @@ Public Class Images
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.BannerPath) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Banner.LocalFile) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearArtPath) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearArt.LocalFile) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearLogoPath) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearLogo.LocalFile) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainDiscArt
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.DiscArtPath) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.DiscArt.LocalFile) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.FanartPath) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Fanart.LocalFile) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.LandscapePath) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Landscape.LocalFile) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.PosterPath) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Poster.LocalFile) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
                         Return True
                     Else
                         Return False
@@ -1115,29 +1115,29 @@ Public Class Images
         End With
     End Function
 
-    Public Function IsAllowedToDownload(ByVal mTV As Structures.DBTV, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
+    Public Function IsAllowedToDownload(ByVal mTV As Database.DBElement, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.BannerPath) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Banner.LocalFile) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainCharacterArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.CharacterArtPath) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.CharacterArt.LocalFile) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ClearArtPath) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearArt.LocalFile) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ClearLogoPath) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearLogo.LocalFile) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1149,19 +1149,19 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.FanartPath) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Fanart.LocalFile) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.LandscapePath) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Landscape.LocalFile) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.PosterPath) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Poster.LocalFile) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1823,11 +1823,11 @@ Public Class Images
     ''' <summary>
     ''' Saves the image as the AllSeason banner
     ''' </summary>
-    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVASBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASBannerResize AndAlso (_image.Width > Master.eSettings.TVASBannerWidth OrElse _image.Height > Master.eSettings.TVASBannerHeight)
@@ -1872,11 +1872,11 @@ Public Class Images
     ''' <summary>
     ''' Saves the image as the AllSeason fanart
     ''' </summary>
-    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVASFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASFanartResize AndAlso (_image.Width > Master.eSettings.TVASFanartWidth OrElse _image.Height > Master.eSettings.TVASFanartHeight)
@@ -1921,11 +1921,11 @@ Public Class Images
     ''' <summary>
     ''' Saves the image as the AllSeason landscape
     ''' </summary>
-    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVASLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1962,11 +1962,11 @@ Public Class Images
     ''' <summary>
     ''' Saves the image as the AllSeason poster
     ''' </summary>
-    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVASPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASPosterResize AndAlso (_image.Width > Master.eSettings.TVASPosterWidth OrElse _image.Height > Master.eSettings.TVASPosterHeight)
@@ -2012,10 +2012,10 @@ Public Class Images
     ''' Save the image as an actor thumbnail
     ''' </summary>
     ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the episode being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the episode being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodeActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Structures.DBTV) As String
+    Public Function SaveAsTVEpisodeActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Database.DBElement) As String
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.ModifierType.EpisodeActorThumbs)
@@ -2030,11 +2030,11 @@ Public Class Images
     ''' <summary>
     ''' Saves the image as the episode fanart
     ''' </summary>
-    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodeFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVEpisodeFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         If String.IsNullOrEmpty(mShow.Filename) Then Return String.Empty
 
         Dim strReturn As String = String.Empty
@@ -2082,11 +2082,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as an episode poster
     ''' </summary>
-    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodePoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVEpisodePoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         If String.IsNullOrEmpty(mShow.Filename) Then Return String.Empty
 
         Dim strReturn As String = String.Empty
@@ -2134,11 +2134,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's season banner
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVSeasonBannerResize AndAlso (_image.Width > Master.eSettings.TVSeasonBannerWidth OrElse _image.Height > Master.eSettings.TVSeasonBannerHeight)
@@ -2198,11 +2198,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as the TV Show's season fanart
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVSeasonFanartResize AndAlso (_image.Width > Master.eSettings.TVSeasonFanartWidth OrElse _image.Height > Master.eSettings.TVSeasonFanartHeight)
@@ -2262,11 +2262,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's season landscape
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -2319,11 +2319,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's season poster
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVSeasonPosterResize AndAlso (_image.Width > Master.eSettings.TVSeasonPosterWidth OrElse _image.Height > Master.eSettings.TVSeasonPosterHeight)
@@ -2384,10 +2384,10 @@ Public Class Images
     ''' Save the image as an actor thumbnail
     ''' </summary>
     ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the show being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Structures.DBTV) As String
+    Public Function SaveAsTVShowActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Database.DBElement) As String
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.ModifierType.MainActorThumbs)
@@ -2402,11 +2402,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's banner
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowBanner(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2453,11 +2453,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's CharacterArt
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowCharacterArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowCharacterArt(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2496,11 +2496,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's ClearArt
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowClearArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowClearArt(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2539,11 +2539,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's ClearLogo
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowClearLogo(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowClearLogo(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2582,12 +2582,12 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a tv show's extrafanart
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowExtrafanart(ByVal mShow As Structures.DBTV, ByVal sName As String, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowExtrafanart(ByVal mShow As Database.DBElement, ByVal sName As String, Optional sURL As String = "") As String
         Dim efPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -2623,11 +2623,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's fanart
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowFanart(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2676,11 +2676,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's landscape
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2719,11 +2719,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a TV Show's poster
     ''' </summary>
-    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowPoster(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2768,11 +2768,193 @@ Public Class Images
         Return strReturn
     End Function
 
-    Public Shared Sub SetDefaultImages_TV(ByRef DBTV As Structures.DBTV, _
+    Public Shared Sub SetDefaultImages(ByRef DBElement As Database.DBElement, _
+                                          ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
+                                          ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, _
+                                          ByRef ScrapeModifier As Structures.ScrapeModifier, _
+                                          ByRef ContentType As Enums.ContentType)
+
+        Dim DoBanner As Boolean = False
+        Dim DoCharacterArt As Boolean = False
+        Dim DoClearArt As Boolean = False
+        Dim DoClearLogo As Boolean = False
+        Dim DoDiscArt As Boolean = False
+        Dim DoFanart As Boolean = False
+        Dim DoLandscape As Boolean = False
+        Dim DoPoster As Boolean = False
+
+        Select Case ContentType
+            Case Enums.ContentType.Movie
+                DoBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
+                DoClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
+                DoClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
+                DoDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
+                DoFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
+                DoLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
+                DoPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
+            Case Enums.ContentType.MovieSet
+                DoBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
+                DoClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
+                DoClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
+                DoDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
+                DoFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
+                DoLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
+                DoPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
+        End Select
+
+        'Banner
+        If DoBanner Then
+            If DBElement.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieBanner(SearchResultsContainer.MainBanners, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetBanner(SearchResultsContainer.MainBanners, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.Banner = defImg
+                    DefaultImagesContainer.Banner = defImg
+                End If
+            End If
+        End If
+
+        'ClearArt
+        If DoClearArt Then
+            If DBElement.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.ClearArt = DBElement.ImagesContainer.ClearArt
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieClearArt(SearchResultsContainer.MainClearArts, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetClearArt(SearchResultsContainer.MainClearArts, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.ClearArt = defImg
+                    DefaultImagesContainer.ClearArt = defImg
+                End If
+            End If
+        End If
+
+        'ClearLogo
+        If DoClearLogo Then
+            If DBElement.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.ClearLogo = DBElement.ImagesContainer.ClearLogo
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieClearLogo(SearchResultsContainer.MainClearLogos, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetClearLogo(SearchResultsContainer.MainClearLogos, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.ClearLogo = defImg
+                    DefaultImagesContainer.ClearLogo = defImg
+                End If
+            End If
+        End If
+
+        'DiscArt
+        If DoDiscArt Then
+            If DBElement.ImagesContainer.DiscArt.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieDiscArt(SearchResultsContainer.MainDiscArts, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetDiscArt(SearchResultsContainer.MainDiscArts, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.DiscArt = defImg
+                    DefaultImagesContainer.DiscArt = defImg
+                End If
+            End If
+        End If
+
+        'Fanart
+        If DoFanart Then
+            If DBElement.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.Fanart = DBElement.ImagesContainer.Fanart
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieFanart(SearchResultsContainer.MainFanarts, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetFanart(SearchResultsContainer.MainFanarts, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.Fanart = defImg
+                    DefaultImagesContainer.Fanart = defImg
+                End If
+            End If
+        End If
+
+        'Landscape
+        If DoLandscape Then
+            If DBElement.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.Landscape = DBElement.ImagesContainer.Landscape
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieLandscape(SearchResultsContainer.MainLandscapes, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetLandscape(SearchResultsContainer.MainLandscapes, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.Landscape = defImg
+                    DefaultImagesContainer.Landscape = defImg
+                End If
+            End If
+        End If
+
+        'Poster
+        If DoPoster Then
+            If DBElement.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.Poster = DBElement.ImagesContainer.Poster
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMoviePoster(SearchResultsContainer.MainPosters, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetPoster(SearchResultsContainer.MainPosters, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.Poster = defImg
+                    DefaultImagesContainer.Poster = defImg
+                End If
+            End If
+        End If
+    End Sub
+
+    Public Shared Sub SetDefaultImages_TV(ByRef DBTV As Database.DBElement, _
                                           ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
                                           ByRef DefaultSeasonImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer), _
                                           ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer), _
-                                          ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer_TV, _
+                                          ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, _
                                           ByRef ScrapeModifier As Structures.ScrapeModifier)
 
         'Banner Show
@@ -2781,7 +2963,7 @@ Public Class Images
                 DefaultImagesContainer.Banner = DBTV.ImagesContainer.Banner
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowBanner(SearchResultsContainer.ShowBanners, defImg)
+                Images.GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.Banner = defImg
@@ -2796,7 +2978,7 @@ Public Class Images
                 DefaultImagesContainer.CharacterArt = DBTV.ImagesContainer.CharacterArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowCharacterArt(SearchResultsContainer.ShowCharacterArts, defImg)
+                Images.GetPreferredTVShowCharacterArt(SearchResultsContainer.MainCharacterArts, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.CharacterArt = defImg
@@ -2811,7 +2993,7 @@ Public Class Images
                 DefaultImagesContainer.ClearArt = DBTV.ImagesContainer.ClearArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowClearArt(SearchResultsContainer.ShowClearArts, defImg)
+                Images.GetPreferredTVShowClearArt(SearchResultsContainer.MainClearArts, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.ClearArt = defImg
@@ -2826,7 +3008,7 @@ Public Class Images
                 DefaultImagesContainer.ClearLogo = DBTV.ImagesContainer.ClearLogo
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowClearLogo(SearchResultsContainer.ShowClearLogos, defImg)
+                Images.GetPreferredTVShowClearLogo(SearchResultsContainer.MainClearLogos, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.ClearLogo = defImg
@@ -2841,7 +3023,7 @@ Public Class Images
                 DefaultImagesContainer.Fanart = DBTV.ImagesContainer.Fanart
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowFanart(SearchResultsContainer.ShowFanarts, defImg)
+                Images.GetPreferredTVShowFanart(SearchResultsContainer.MainFanarts, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.Fanart = defImg
@@ -2856,7 +3038,7 @@ Public Class Images
                 DefaultImagesContainer.Landscape = DBTV.ImagesContainer.Landscape
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowLandscape(SearchResultsContainer.ShowLandscapes, defImg)
+                Images.GetPreferredTVShowLandscape(SearchResultsContainer.MainLandscapes, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.Landscape = defImg
@@ -2871,7 +3053,7 @@ Public Class Images
                 DefaultImagesContainer.Poster = DBTV.ImagesContainer.Poster
             Else
                 Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowPoster(SearchResultsContainer.ShowPosters, defImg)
+                Images.GetPreferredTVShowPoster(SearchResultsContainer.MainPosters, defImg)
 
                 If defImg IsNot Nothing Then
                     DBTV.ImagesContainer.Poster = defImg
@@ -2883,7 +3065,7 @@ Public Class Images
         'Season / AllSeasons Banner/Fanart/Poster
         If (ScrapeModifier.SeasonBanner OrElse ScrapeModifier.SeasonFanart _
             OrElse ScrapeModifier.SeasonLandscape OrElse ScrapeModifier.SeasonPoster) AndAlso DBTV.Seasons IsNot Nothing Then
-            For Each cSeason As Structures.DBTV In DBTV.Seasons.OrderBy(Function(f) f.TVSeason.Season)
+            For Each cSeason As Database.DBElement In DBTV.Seasons.OrderBy(Function(f) f.TVSeason.Season)
                 Dim iSeason As Integer = cSeason.TVSeason.Season
                 Dim SIC As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = iSeason}
 
@@ -2894,7 +3076,7 @@ Public Class Images
                             SIC.Banner = cSeason.ImagesContainer.Banner
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.ShowBanners, defImg)
+                            Images.GetPreferredTVASBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
 
                             If defImg IsNot Nothing Then
                                 cSeason.ImagesContainer.Banner = defImg
@@ -2926,7 +3108,7 @@ Public Class Images
                             SIC.Fanart = cSeason.ImagesContainer.Fanart
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.ShowFanarts, defImg)
+                            Images.GetPreferredTVASFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
 
                             If defImg IsNot Nothing Then
                                 cSeason.ImagesContainer.Fanart = defImg
@@ -2941,7 +3123,7 @@ Public Class Images
                             SIC.Fanart = cSeason.ImagesContainer.Fanart
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.ShowFanarts, defImg, iSeason)
+                            Images.GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, iSeason)
 
                             If defImg IsNot Nothing Then
                                 cSeason.ImagesContainer.Fanart = defImg
@@ -2958,7 +3140,7 @@ Public Class Images
                             SIC.Landscape = cSeason.ImagesContainer.Landscape
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.ShowLandscapes, defImg)
+                            Images.GetPreferredTVASLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
 
                             If defImg IsNot Nothing Then
                                 cSeason.ImagesContainer.Landscape = defImg
@@ -2990,7 +3172,7 @@ Public Class Images
                             SIC.Poster = cSeason.ImagesContainer.Poster
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.ShowPosters, defImg)
+                            Images.GetPreferredTVASPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
 
                             If defImg IsNot Nothing Then
                                 cSeason.ImagesContainer.Poster = defImg
@@ -3020,9 +3202,9 @@ Public Class Images
 
         'Episode Fanart/Poster
         If (ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.EpisodePoster) AndAlso DBTV.Episodes IsNot Nothing Then
-            For Each cEpisode As Structures.DBTV In DBTV.Episodes
-                Dim iEpisode As Integer = cEpisode.TVEp.Episode
-                Dim iSeason As Integer = cEpisode.TVEp.Season
+            For Each cEpisode As Database.DBElement In DBTV.Episodes
+                Dim iEpisode As Integer = cEpisode.TVEpisode.Episode
+                Dim iSeason As Integer = cEpisode.TVEpisode.Season
                 Dim EIC As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Episode = iEpisode, .Season = iSeason}
 
                 'Fanart Episode
@@ -3031,7 +3213,7 @@ Public Class Images
                         EIC.Fanart = cEpisode.ImagesContainer.Fanart
                     Else
                         Dim defImg As MediaContainers.Image = Nothing
-                        Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.ShowFanarts, defImg, iEpisode, iSeason)
+                        Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, iEpisode, iSeason)
 
                         If defImg IsNot Nothing Then
                             cEpisode.ImagesContainer.Fanart = defImg
@@ -3183,6 +3365,102 @@ Public Class Images
         If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetPosterPrefSizeOnly AndAlso Not Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
             imgResult = ImageList.First
         End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieSetClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieSetClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieSetDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredMovieSetLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        imgResult = ImageList.First
 
         If imgResult IsNot Nothing Then
             Return True

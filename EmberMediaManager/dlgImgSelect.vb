@@ -129,7 +129,7 @@ Public Class dlgImgSelect
     ''' <param name="_isEdit"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tMovie = DBMovie
         Me.tIsMovie = True
         Me._ImageList = ImageList

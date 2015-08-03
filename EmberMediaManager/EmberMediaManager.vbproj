@@ -194,12 +194,6 @@
     <Compile Include="dlgDeleteConfirm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgDVDProfilerSelect.Designer.vb">
-      <DependentUpon>dlgDVDProfilerSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgDVDProfilerSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgEditTVEpisode.Designer.vb">
       <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
     </Compile>
@@ -288,12 +282,6 @@
       <DependentUpon>dlgNewVersion.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgNewVersion.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgOfflineHolder.designer.vb">
-      <DependentUpon>dlgOfflineHolder.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgOfflineHolder.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgRestart.Designer.vb">
@@ -413,9 +401,6 @@
       <DependentUpon>dlgDeleteConfirm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgDVDProfilerSelect.resx">
-      <DependentUpon>dlgDVDProfilerSelect.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgEditTVEpisode.resx">
       <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
     </EmbeddedResource>
@@ -461,9 +446,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgNewVersion.resx">
       <DependentUpon>dlgNewVersion.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgOfflineHolder.resx">
-      <DependentUpon>dlgOfflineHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgRestart.resx">
       <DependentUpon>dlgRestart.vb</DependentUpon>

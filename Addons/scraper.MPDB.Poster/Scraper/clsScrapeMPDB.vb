@@ -40,8 +40,8 @@ Namespace MPDB
 
 #Region "Methods"
 
-        Public Function GetMPDBPosters(ByVal imdbID As String) As MediaContainers.SearchResultsContainer_Movie_MovieSet
-            Dim alContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetMPDBPosters(ByVal imdbID As String) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 Dim sHTTP As New HTTP
@@ -55,7 +55,7 @@ Namespace MPDB
                     Dim ThumbURL As String = String.Empty
                     For Each mPoster As Match In mcPoster
                         ' there are a lot of duplicates in the page.
-                        Dim x = From MI As MediaContainers.Image In alContainer.Posters
+                        Dim x = From MI As MediaContainers.Image In alContainer.MainPosters
                         If x.Count > 0 Then
                             logger.Trace("Duplicate {0} ", PosterURL)
                         Else
@@ -65,7 +65,7 @@ Namespace MPDB
                             ' url are like> http://www.movieposterdb.com/posters/10_08/2009/499549/l_499549_43475538.jpg
                             'the parent id is the part AFTER the l_
                             ' all poster have the same size
-                            alContainer.Posters.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Width = "n/a", .Height = "n/a"})
+                            alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Width = "n/a", .Height = "n/a"})
                         End If
                     Next
                 End If

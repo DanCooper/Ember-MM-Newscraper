@@ -1800,60 +1800,6 @@ Public Class Structures
         Dim Title As String
         Dim Movies As List(Of Database.DBElement)
     End Structure
-    ''' <summary>
-    ''' Structure representing a TV show in the database
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure DBTV
-        Dim ActorThumbs As List(Of String)
-        Dim BannerPath As String
-        Dim CharacterArtPath As String
-        Dim ClearArtPath As String
-        Dim ClearLogoPath As String
-        Dim DateAdded As Long
-        Dim EFanarts As List(Of String)
-        Dim EFanartsPath As String
-        Dim Episodes As List(Of DBTV)
-        Dim EpisodeSorting As Enums.EpisodeSorting
-        Dim FanartPath As String
-        Dim Filename As String
-        Dim FilenameID As Long
-        Dim ID As Long
-        Dim ImagesContainer As MediaContainers.ImagesContainer
-        Dim IsLock As Boolean
-        Dim IsMark As Boolean
-        Dim IsOnline As Boolean
-        Dim LandscapePath As String
-        Dim Language As String
-        Dim ListTitle As String
-        Dim NeedsSave As Boolean
-        Dim NfoPath As String
-        Dim Ordering As Enums.Ordering
-        Dim PosterPath As String
-        Dim RemoveActorThumbs As Boolean
-        Dim RemoveBanner As Boolean
-        Dim RemoveCharacterArt As Boolean
-        Dim RemoveClearArt As Boolean
-        Dim RemoveClearLogo As Boolean
-        Dim RemoveDiscArt As Boolean
-        Dim RemoveEFanarts As Boolean
-        Dim RemoveEThumbs As Boolean
-        Dim RemoveFanart As Boolean
-        Dim RemoveLandscape As Boolean
-        Dim RemovePoster As Boolean
-        Dim RemoveTheme As Boolean
-        Dim RemoveTrailer As Boolean
-        Dim Seasons As List(Of DBTV)
-        Dim ShowID As Long
-        Dim ShowPath As String
-        Dim Source As String
-        Dim Subtitles As List(Of MediaInfo.Subtitle)
-        Dim TVEp As MediaContainers.EpisodeDetails
-        Dim TVSeason As MediaContainers.SeasonDetails
-        Dim TVShow As MediaContainers.TVShow
-        Dim ThemePath As String
-        Dim VideoSource As String
-    End Structure
 
     Public Structure Scans
         Dim Movies As Boolean

@@ -58,8 +58,8 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer_Movie_MovieSet
-            Dim alImagesContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
+            Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
@@ -92,7 +92,7 @@ Namespace TMDB
                             .VoteCount = image.VoteCount, _
                             .Width = image.Width.ToString}
 
-                        alImagesContainer.Fanarts.Add(tmpImage)
+                        alImagesContainer.MainFanarts.Add(tmpImage)
                     Next
                 End If
 
@@ -110,7 +110,7 @@ Namespace TMDB
                                 .VoteCount = image.VoteCount, _
                                 .Width = image.Width.ToString}
 
-                        alImagesContainer.Posters.Add(tmpImage)
+                        alImagesContainer.MainPosters.Add(tmpImage)
                     Next
                 End If
 
@@ -121,8 +121,8 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
-            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
@@ -151,7 +151,7 @@ Namespace TMDB
                             .VoteCount = image.VoteCount, _
                             .Width = image.Width.ToString}
 
-                        alContainer.ShowFanarts.Add(tmpImage)
+                        alContainer.MainFanarts.Add(tmpImage)
                     Next
                 End If
 
@@ -169,7 +169,7 @@ Namespace TMDB
                                 .VoteCount = image.VoteCount, _
                                 .Width = image.Width.ToString}
 
-                        alContainer.ShowPosters.Add(tmpImage)
+                        alContainer.MainPosters.Add(tmpImage)
                     Next
                 End If
 
@@ -180,8 +180,8 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
-            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 

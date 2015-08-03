@@ -1063,30 +1063,13 @@ Public Class Database
         sqlDA.Fill(dTable)
     End Sub
     ''' <summary>
-    ''' Adds TVSeason informations to a Structures.DBTV
+    ''' Adds TVShow informations to a Database.DBElement
     ''' </summary>
-    ''' <param name="_TVDB">Structure in which to return the information. NOTE: _TVDB.ShowID must be valid.</param>
-    ''' <param name="iSeason"></param>
-    ''' <remarks></remarks>
-    Public Sub FillTVSeasonFromDB(ByRef _TVDB As Structures.DBTV, ByVal iSeason As Integer)
-        Dim _tmpTVDBSeason As Structures.DBTV = LoadTVSeasonFromDB(_TVDB.ShowID, iSeason, False)
-
-        _TVDB.IsLock = _tmpTVDBSeason.IsLock
-        _TVDB.IsMark = _tmpTVDBSeason.IsMark
-        _TVDB.BannerPath = _tmpTVDBSeason.BannerPath
-        _TVDB.FanartPath = _tmpTVDBSeason.FanartPath
-        _TVDB.ID = _tmpTVDBSeason.ID
-        _TVDB.LandscapePath = _tmpTVDBSeason.LandscapePath
-        _TVDB.PosterPath = _tmpTVDBSeason.PosterPath
-    End Sub
-    ''' <summary>
-    ''' Adds TVShow informations to a Structures.DBTV
-    ''' </summary>
-    ''' <param name="_TVDB">Structures.DBTV container to fill with TVShow informations</param>
+    ''' <param name="_TVDB">Database.DBElement container to fill with TVShow informations</param>
     ''' <param name="_TVDBShow">Optional the TVShow informations to add to _TVDB</param>
     ''' <remarks></remarks>
-    Public Function FillTVShowFromDB(ByVal _TVDB As Structures.DBTV, Optional _TVDBShow As Structures.DBTV = Nothing) As Structures.DBTV
-        Dim _tmpTVDBShow As New Structures.DBTV
+    Public Function FillTVShowFromDB(ByVal _TVDB As Database.DBElement, Optional _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
+        Dim _tmpTVDBShow As New Database.DBElement
 
         If _TVDBShow.TVShow Is Nothing Then
             _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False)
@@ -1371,7 +1354,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal MovieID As Long) As Database.DBElement
+    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional withImages As Boolean = True) As Database.DBElement
         Dim _movieDB As New Database.DBElement
 
         _movieDB.ID = MovieID
@@ -1387,19 +1370,18 @@ Public Class Database
                     _movieDB.IsSingle = Convert.ToBoolean(SQLreader("type"))
                     If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("SubPath")) Then _movieDB.SubPath = SQLreader("SubPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then _movieDB.EThumbsPath = SQLreader("EThumbsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _movieDB.EFanartsPath = SQLreader("EFanartsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _movieDB.ThemePath = SQLreader("ThemePath").ToString
                     If Not DBNull.Value.Equals(SQLreader("Source")) Then _movieDB.Source = SQLreader("Source").ToString
 
-                    _movieDB.BannerPath = GetArtForItem(_movieDB.ID, "movie", "banner")
-                    _movieDB.ClearArtPath = GetArtForItem(_movieDB.ID, "movie", "clearart")
-                    _movieDB.ClearLogoPath = GetArtForItem(_movieDB.ID, "movie", "clearlogo")
-                    _movieDB.DiscArtPath = GetArtForItem(_movieDB.ID, "movie", "discart")
-                    _movieDB.FanartPath = GetArtForItem(_movieDB.ID, "movie", "fanart")
-                    _movieDB.LandscapePath = GetArtForItem(_movieDB.ID, "movie", "landscape")
-                    _movieDB.PosterPath = GetArtForItem(_movieDB.ID, "movie", "poster")
+                    _movieDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_movieDB.ID, "movie", "banner")
+                    _movieDB.ImagesContainer.ClearArt.LocalFile = GetArtForItem(_movieDB.ID, "movie", "clearart")
+                    _movieDB.ImagesContainer.ClearLogo.LocalFile = GetArtForItem(_movieDB.ID, "movie", "clearlogo")
+                    _movieDB.ImagesContainer.DiscArt.LocalFile = GetArtForItem(_movieDB.ID, "movie", "discart")
+                    _movieDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_movieDB.ID, "movie", "fanart")
+                    _movieDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_movieDB.ID, "movie", "landscape")
+                    _movieDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_movieDB.ID, "movie", "poster")
 
                     _movieDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _movieDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
@@ -1512,7 +1494,6 @@ Public Class Database
         End Using
 
         'embedded subtitles
-        _movieDB.Subtitles = New List(Of MediaInfo.Subtitle)
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, " AND NOT Subs_Type = 'External';")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1576,6 +1557,17 @@ Public Class Database
             End Using
         End Using
 
+        'ImagesContainer
+        If withImages Then
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFile) Then _movieDB.ImagesContainer.Banner.WebImage.FromFile(_movieDB.ImagesContainer.Banner.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFile) Then _movieDB.ImagesContainer.ClearArt.WebImage.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFile) Then _movieDB.ImagesContainer.ClearLogo.WebImage.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFile) Then _movieDB.ImagesContainer.DiscArt.WebImage.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFile) Then _movieDB.ImagesContainer.Fanart.WebImage.FromFile(_movieDB.ImagesContainer.Fanart.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFile) Then _movieDB.ImagesContainer.Landscape.WebImage.FromFile(_movieDB.ImagesContainer.Landscape.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFile) Then _movieDB.ImagesContainer.Poster.WebImage.FromFile(_movieDB.ImagesContainer.Poster.LocalFile)
+        End If
+
         'Check if the file is available and ready to edit
         If File.Exists(_movieDB.Filename) Then _movieDB.IsOnline = True
 
@@ -1587,13 +1579,13 @@ Public Class Database
     ''' </summary>
     ''' <param name="sPath">Full path to the movie file</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal sPath As String) As Database.DBElement
+    Public Function LoadMovieFromDB(ByVal sPath As String, Optional withImages As Boolean = True) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Concat("SELECT idMovie FROM movie WHERE MoviePath = ", sPath, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")))
+                    Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")), withImages)
                 Else
                     Return New Database.DBElement
                 End If
@@ -1608,7 +1600,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="MovieSetID">ID of the movieset to load, as stored in the database</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional withImages As Boolean = True) As DBElement
+    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional withImages As Boolean = True) As Database.DBElement
         Dim _moviesetDB As New DBElement
 
         _moviesetDB.ID = MovieSetID
@@ -1620,13 +1612,13 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _moviesetDB.ListTitle = SQLreader("ListTitle").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
 
-                    _moviesetDB.BannerPath = GetArtForItem(_moviesetDB.ID, "set", "banner")
-                    _moviesetDB.ClearArtPath = GetArtForItem(_moviesetDB.ID, "set", "clearart")
-                    _moviesetDB.ClearLogoPath = GetArtForItem(_moviesetDB.ID, "set", "clearlogo")
-                    _moviesetDB.DiscArtPath = GetArtForItem(_moviesetDB.ID, "set", "discart")
-                    _moviesetDB.FanartPath = GetArtForItem(_moviesetDB.ID, "set", "fanart")
-                    _moviesetDB.LandscapePath = GetArtForItem(_moviesetDB.ID, "set", "landscape")
-                    _moviesetDB.PosterPath = GetArtForItem(_moviesetDB.ID, "set", "poster")
+                    _moviesetDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "banner")
+                    _moviesetDB.ImagesContainer.ClearArt.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "clearart")
+                    _moviesetDB.ImagesContainer.ClearLogo.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "clearlogo")
+                    _moviesetDB.ImagesContainer.DiscArt.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "discart")
+                    _moviesetDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "fanart")
+                    _moviesetDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "landscape")
+                    _moviesetDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "poster")
 
                     _moviesetDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _moviesetDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
@@ -1666,13 +1658,13 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_moviesetDB.BannerPath) Then _moviesetDB.ImagesContainer.Banner.WebImage.FromFile(_moviesetDB.BannerPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then _moviesetDB.ImagesContainer.ClearArt.WebImage.FromFile(_moviesetDB.ClearArtPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath) Then _moviesetDB.ImagesContainer.ClearLogo.WebImage.FromFile(_moviesetDB.ClearLogoPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath) Then _moviesetDB.ImagesContainer.DiscArt.WebImage.FromFile(_moviesetDB.DiscArtPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.FanartPath) Then _moviesetDB.ImagesContainer.Fanart.WebImage.FromFile(_moviesetDB.FanartPath)
-            If Not String.IsNullOrEmpty(_moviesetDB.LandscapePath) Then _moviesetDB.ImagesContainer.Landscape.WebImage.FromFile(_moviesetDB.LandscapePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.PosterPath) Then _moviesetDB.ImagesContainer.Poster.WebImage.FromFile(_moviesetDB.PosterPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFile) Then _moviesetDB.ImagesContainer.Banner.WebImage.FromFile(_moviesetDB.ImagesContainer.Banner.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFile) Then _moviesetDB.ImagesContainer.ClearArt.WebImage.FromFile(_moviesetDB.ImagesContainer.ClearArt.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFile) Then _moviesetDB.ImagesContainer.ClearLogo.WebImage.FromFile(_moviesetDB.ImagesContainer.ClearLogo.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFile) Then _moviesetDB.ImagesContainer.DiscArt.WebImage.FromFile(_moviesetDB.ImagesContainer.DiscArt.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFile) Then _moviesetDB.ImagesContainer.Fanart.WebImage.FromFile(_moviesetDB.ImagesContainer.Fanart.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFile) Then _moviesetDB.ImagesContainer.Landscape.WebImage.FromFile(_moviesetDB.ImagesContainer.Landscape.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFile) Then _moviesetDB.ImagesContainer.Poster.WebImage.FromFile(_moviesetDB.ImagesContainer.Poster.LocalFile)
         End If
 
         Return _moviesetDB
@@ -1711,8 +1703,8 @@ Public Class Database
     ''' </summary>
     ''' <param name="TagID">ID of the movietag to load, as stored in the database</param>
     ''' <returns>Database.DBElementTag object</returns>
-    Public Function LoadMovieTagFromDB(ByVal TagID As Integer) As Database.DBElementTag
-        Dim _tagDB As New Database.DBElementTag
+    Public Function LoadMovieTagFromDB(ByVal TagID As Integer) As Structures.DBMovieTag
+        Dim _tagDB As New Structures.DBMovieTag
         _tagDB.ID = TagID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM tag WHERE idTag = ", TagID, ";")
@@ -1741,10 +1733,10 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal withImages As Boolean = True, Optional ByVal OnlySeason As Integer = -1) As List(Of Structures.DBTV)
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal withImages As Boolean = True, Optional ByVal OnlySeason As Integer = -1) As List(Of Database.DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Dim _TVEpisodesList As New List(Of Structures.DBTV)
+        Dim _TVEpisodesList As New List(Of Database.DBElement)
 
         Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             If OnlySeason = -1 Then
@@ -1776,10 +1768,10 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
-    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, ByVal withImages As Boolean) As List(Of Structures.DBTV)
+    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, ByVal withImages As Boolean) As List(Of Database.DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Dim _TVSeasonsList As New List(Of Structures.DBTV)
+        Dim _TVSeasonsList As New List(Of Database.DBElement)
 
         Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLCount.CommandText = String.Concat("SELECT COUNT(idSeason) AS eCount FROM seasons WHERE idShow = ", ShowID, ";")
@@ -1836,14 +1828,13 @@ Public Class Database
     ''' </summary>
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve base show information</param>
-    ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVAllSeasonsFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadTVAllSeasonsFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Database.DBElement
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Dim _TVDB As New Structures.DBTV
+        Dim _TVDB As New Database.DBElement
         _TVDB.ShowID = ShowID
-        _TVDB.TVEp = New MediaContainers.EpisodeDetails With {.Season = 999}
-        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer
+        _TVDB.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
 
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = 999;")
@@ -1852,10 +1843,10 @@ Public Class Database
                     SQLReader.Read()
                     If Not DBNull.Value.Equals(SQLReader("idSeason")) Then _TVDB.ID = Convert.ToInt64(SQLReader("idSeason"))
 
-                    _TVDB.BannerPath = GetArtForItem(_TVDB.ID, "season", "banner")
-                    _TVDB.FanartPath = GetArtForItem(_TVDB.ID, "season", "fanart")
-                    _TVDB.LandscapePath = GetArtForItem(_TVDB.ID, "season", "landscape")
-                    _TVDB.PosterPath = GetArtForItem(_TVDB.ID, "season", "poster")
+                    _TVDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_TVDB.ID, "season", "banner")
+                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "season", "fanart")
+                    _TVDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_TVDB.ID, "season", "landscape")
+                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "season", "poster")
                 End If
             End Using
         End Using
@@ -1869,9 +1860,9 @@ Public Class Database
     ''' </summary>
     ''' <param name="EpisodeID">Episode ID</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVEpFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV With {.ActorThumbs = New List(Of String), .ImagesContainer = New MediaContainers.ImagesContainer}
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadTVEpFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+        Dim _TVDB As New Database.DBElement
         Dim PathID As Long = -1
 
         _TVDB.ID = EpisodeID
@@ -1887,8 +1878,8 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _TVDB.VideoSource = SQLreader("VideoSource").ToString
                     PathID = Convert.ToInt64(SQLreader("TVEpPathid"))
 
-                    _TVDB.FanartPath = GetArtForItem(_TVDB.ID, "episode", "fanart")
-                    _TVDB.PosterPath = GetArtForItem(_TVDB.ID, "episode", "thumb")
+                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "episode", "fanart")
+                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "episode", "thumb")
 
                     _TVDB.FilenameID = PathID
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
@@ -1896,8 +1887,8 @@ Public Class Database
                     _TVDB.NeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
                     _TVDB.ShowID = Convert.ToInt64(SQLreader("idShow"))
                     _TVDB.ShowPath = LoadTVShowPathFromDB(Convert.ToInt64(SQLreader("idShow")))
-                    _TVDB.TVEp = New MediaContainers.EpisodeDetails
-                    With _TVDB.TVEp
+                    _TVDB.TVEpisode = New MediaContainers.EpisodeDetails
+                    With _TVDB.TVEpisode
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                         If Not DBNull.Value.Equals(SQLreader("Season")) Then .Season = Convert.ToInt32(SQLreader("Season"))
                         If Not DBNull.Value.Equals(SQLreader("Episode")) Then .Episode = Convert.ToInt32(SQLreader("Episode"))
@@ -1949,7 +1940,7 @@ Public Class Database
                     person.Role = SQLreader("strRole").ToString
                     person.ThumbPath = SQLreader("url").ToString
                     person.ThumbURL = SQLreader("strThumb").ToString
-                    _TVDB.TVEp.Actors.Add(person)
+                    _TVDB.TVEpisode.Actors.Add(person)
                 End While
             End Using
         End Using
@@ -1974,7 +1965,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("Video_EncodedSettings")) Then video.EncodedSettings = SQLreader("Video_EncodedSettings").ToString
                     If Not DBNull.Value.Equals(SQLreader("Video_MultiViewLayout")) Then video.MultiViewLayout = SQLreader("Video_MultiViewLayout").ToString
                     If Not DBNull.Value.Equals(SQLreader("Video_StereoMode")) Then video.StereoMode = SQLreader("Video_StereoMode").ToString
-                    _TVDB.TVEp.FileInfo.StreamDetails.Video.Add(video)
+                    _TVDB.TVEpisode.FileInfo.StreamDetails.Video.Add(video)
                 End While
             End Using
         End Using
@@ -1991,13 +1982,12 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec").ToString
                     If Not DBNull.Value.Equals(SQLreader("Audio_Channel")) Then audio.Channels = SQLreader("Audio_Channel").ToString
                     If Not DBNull.Value.Equals(SQLreader("Audio_Bitrate")) Then audio.Bitrate = SQLreader("Audio_Bitrate").ToString
-                    _TVDB.TVEp.FileInfo.StreamDetails.Audio.Add(audio)
+                    _TVDB.TVEpisode.FileInfo.StreamDetails.Audio.Add(audio)
                 End While
             End Using
         End Using
 
         'embedded subtitles
-        _TVDB.Subtitles = New List(Of MediaInfo.Subtitle)
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM TVSubs WHERE TVEpID = ", _TVDB.ID, " AND NOT Subs_Type = 'External';")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -2009,7 +1999,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_Path")) Then subtitle.SubsPath = SQLreader("Subs_Path").ToString
                     subtitle.SubsForced = Convert.ToBoolean(SQLreader("Subs_Forced"))
-                    _TVDB.TVEp.FileInfo.StreamDetails.Subtitle.Add(subtitle)
+                    _TVDB.TVEpisode.FileInfo.StreamDetails.Subtitle.Add(subtitle)
                 End While
             End Using
         End Using
@@ -2032,15 +2022,9 @@ Public Class Database
         End Using
 
         'ImagesContainer
-        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.BannerPath) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.BannerPath)
-            If Not String.IsNullOrEmpty(_TVDB.CharacterArtPath) Then _TVDB.ImagesContainer.CharacterArt.WebImage.FromFile(_TVDB.CharacterArtPath)
-            If Not String.IsNullOrEmpty(_TVDB.ClearArtPath) Then _TVDB.ImagesContainer.ClearArt.WebImage.FromFile(_TVDB.ClearArtPath)
-            If Not String.IsNullOrEmpty(_TVDB.ClearLogoPath) Then _TVDB.ImagesContainer.ClearLogo.WebImage.FromFile(_TVDB.ClearLogoPath)
-            If Not String.IsNullOrEmpty(_TVDB.FanartPath) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.FanartPath)
-            If Not String.IsNullOrEmpty(_TVDB.LandscapePath) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.LandscapePath)
-            If Not String.IsNullOrEmpty(_TVDB.PosterPath) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.PosterPath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFile) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.ImagesContainer.Fanart.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFile) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.ImagesContainer.Poster.LocalFile)
         End If
 
         If withShow Then
@@ -2057,20 +2041,20 @@ Public Class Database
     ''' </summary>
     ''' <param name="sPath">Full episode path</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVEpFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadTVEpFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEpPaths WHERE TVEpPath = ", sPath, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
                     Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), withShow, withImages)
                 Else
-                    Return New Structures.DBTV With {.ID = -1}
+                    Return New Database.DBElement With {.ID = -1}
                 End If
             End Using
         End Using
 
-        Return New Structures.DBTV With {.ID = -1}
+        Return New Database.DBElement With {.ID = -1}
     End Function
     ''' <summary>
     ''' Load all the information for a TV Episode
@@ -2079,9 +2063,9 @@ Public Class Database
     ''' <param name="iSeason">Season number</param>
     ''' <param name="iEpisode">Episode number</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <returns>Structures.DBTV object</returns>
+    ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
+    Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", iShowID, iSeason, iEpisode)
@@ -2089,20 +2073,20 @@ Public Class Database
                 If SQLreader.Read Then
                     Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, withImages)
                 Else
-                    Return New Structures.DBTV With {.ID = -1}
+                    Return New Database.DBElement With {.ID = -1}
                 End If
             End Using
         End Using
 
-        Return New Structures.DBTV With {.ID = -1}
+        Return New Database.DBElement With {.ID = -1}
     End Function
     ''' <summary>
     ''' Load all the information for a TV Show
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
-    ''' <returns>Structures.DBTV object</returns>
+    ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
+    Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Database.DBElement
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
         Return Master.DB.LoadTVShowFromDB(ShowID, True, True, True)
     End Function
@@ -2111,14 +2095,12 @@ Public Class Database
     ''' </summary>
     ''' <param name="SeasonID">Season ID</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <returns>Structures.DBTV object</returns>
+    ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV
-        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer
+    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+        Dim _TVDB As New Database.DBElement
 
         _TVDB.ID = SeasonID
-
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("SELECT * FROM seasons WHERE idSeason = ", _TVDB.ID, ";")
             Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
@@ -2138,24 +2120,20 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLReader("SeasonText")) Then .Title = CStr(SQLReader("SeasonText"))
                     End With
 
-                    _TVDB.BannerPath = GetArtForItem(_TVDB.ID, "season", "banner")
-                    _TVDB.FanartPath = GetArtForItem(_TVDB.ID, "season", "fanart")
-                    _TVDB.LandscapePath = GetArtForItem(_TVDB.ID, "season", "landscape")
-                    _TVDB.PosterPath = GetArtForItem(_TVDB.ID, "season", "poster")
+                    _TVDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_TVDB.ID, "season", "banner")
+                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "season", "fanart")
+                    _TVDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_TVDB.ID, "season", "landscape")
+                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "season", "poster")
                 End If
             End Using
         End Using
 
         'ImagesContainer
-        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.BannerPath) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.BannerPath)
-            If Not String.IsNullOrEmpty(_TVDB.CharacterArtPath) Then _TVDB.ImagesContainer.CharacterArt.WebImage.FromFile(_TVDB.CharacterArtPath)
-            If Not String.IsNullOrEmpty(_TVDB.ClearArtPath) Then _TVDB.ImagesContainer.ClearArt.WebImage.FromFile(_TVDB.ClearArtPath)
-            If Not String.IsNullOrEmpty(_TVDB.ClearLogoPath) Then _TVDB.ImagesContainer.ClearLogo.WebImage.FromFile(_TVDB.ClearLogoPath)
-            If Not String.IsNullOrEmpty(_TVDB.FanartPath) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.FanartPath)
-            If Not String.IsNullOrEmpty(_TVDB.LandscapePath) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.LandscapePath)
-            If Not String.IsNullOrEmpty(_TVDB.PosterPath) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.PosterPath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFile) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.ImagesContainer.Banner.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFile) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.ImagesContainer.Fanart.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFile) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.ImagesContainer.Landscape.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFile) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.ImagesContainer.Poster.LocalFile)
         End If
 
         If withShow Then
@@ -2170,10 +2148,10 @@ Public Class Database
     ''' <param name="ShowID">Show ID</param>
     ''' <param name="iSeason">Season number</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <returns>Structures.DBTV object</returns>
+    ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV With {.ImagesContainer = New MediaContainers.ImagesContainer}
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Database.DBElement
+        Dim _TVDB As New Database.DBElement
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
@@ -2196,9 +2174,9 @@ Public Class Database
     ''' Load all the information for a TV Show
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
-    ''' <returns>Structures.DBTV object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True) As Structures.DBTV
-        Dim _TVDB As New Structures.DBTV With {.ActorThumbs = New List(Of String), .Episodes = New List(Of Structures.DBTV)}
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+        Dim _TVDB As New Database.DBElement
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
@@ -2217,13 +2195,13 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("TVShowPath")) Then _TVDB.ShowPath = SQLreader("TVShowPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _TVDB.ThemePath = SQLreader("ThemePath").ToString
 
-                    _TVDB.BannerPath = GetArtForItem(_TVDB.ID, "tvshow", "banner")
-                    _TVDB.CharacterArtPath = GetArtForItem(_TVDB.ID, "tvshow", "characterart")
-                    _TVDB.ClearArtPath = GetArtForItem(_TVDB.ID, "tvshow", "clearart")
-                    _TVDB.ClearLogoPath = GetArtForItem(_TVDB.ID, "tvshow", "clearlogo")
-                    _TVDB.FanartPath = GetArtForItem(_TVDB.ID, "tvshow", "fanart")
-                    _TVDB.LandscapePath = GetArtForItem(_TVDB.ID, "tvshow", "landscape")
-                    _TVDB.PosterPath = GetArtForItem(_TVDB.ID, "tvshow", "poster")
+                    _TVDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "banner")
+                    _TVDB.ImagesContainer.CharacterArt.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "characterart")
+                    _TVDB.ImagesContainer.ClearArt.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "clearart")
+                    _TVDB.ImagesContainer.ClearLogo.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "clearlogo")
+                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "fanart")
+                    _TVDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "landscape")
+                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "poster")
 
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _TVDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
@@ -2288,15 +2266,14 @@ Public Class Database
         End Using
 
         'ImagesContainer
-        _TVDB.ImagesContainer = New MediaContainers.ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.BannerPath) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.BannerPath)
-            If Not String.IsNullOrEmpty(_TVDB.CharacterArtPath) Then _TVDB.ImagesContainer.CharacterArt.WebImage.FromFile(_TVDB.CharacterArtPath)
-            If Not String.IsNullOrEmpty(_TVDB.ClearArtPath) Then _TVDB.ImagesContainer.ClearArt.WebImage.FromFile(_TVDB.ClearArtPath)
-            If Not String.IsNullOrEmpty(_TVDB.ClearLogoPath) Then _TVDB.ImagesContainer.ClearLogo.WebImage.FromFile(_TVDB.ClearLogoPath)
-            If Not String.IsNullOrEmpty(_TVDB.FanartPath) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.FanartPath)
-            If Not String.IsNullOrEmpty(_TVDB.LandscapePath) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.LandscapePath)
-            If Not String.IsNullOrEmpty(_TVDB.PosterPath) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.PosterPath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFile) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.ImagesContainer.Banner.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.CharacterArt.LocalFile) Then _TVDB.ImagesContainer.CharacterArt.WebImage.FromFile(_TVDB.ImagesContainer.CharacterArt.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearArt.LocalFile) Then _TVDB.ImagesContainer.ClearArt.WebImage.FromFile(_TVDB.ImagesContainer.ClearArt.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearLogo.LocalFile) Then _TVDB.ImagesContainer.ClearLogo.WebImage.FromFile(_TVDB.ImagesContainer.ClearLogo.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFile) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.ImagesContainer.Fanart.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFile) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.ImagesContainer.Landscape.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFile) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.ImagesContainer.Poster.LocalFile)
         End If
 
         'Seasons
@@ -2307,7 +2284,7 @@ Public Class Database
 
         'Episodes
         If withEpisodes Then
-            For Each tEpisode As Structures.DBTV In LoadAllTVEpisodesFromDB(_TVDB.ID, False)
+            For Each tEpisode As Database.DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False)
                 tEpisode = Master.DB.FillTVShowFromDB(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
@@ -3004,7 +2981,6 @@ Public Class Database
             par_movie_EFanartsPath.Value = _movieDB.EFanartsPath
             par_movie_EThumbsPath.Value = _movieDB.EThumbsPath
             par_movie_NfoPath.Value = _movieDB.NfoPath
-            par_movie_SubPath.Value = _movieDB.SubPath
             par_movie_ThemePath.Value = _movieDB.ThemePath
             par_movie_TrailerPath.Value = _movieDB.TrailerPath
 
@@ -3119,17 +3095,19 @@ Public Class Database
                 Next
 
                 'Images
+                _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'movie';", _movieDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_movieDB.BannerPath) Then SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.BannerPath)
-                If Not String.IsNullOrEmpty(_movieDB.ClearArtPath) Then SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ClearArtPath)
-                If Not String.IsNullOrEmpty(_movieDB.ClearLogoPath) Then SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ClearLogoPath)
-                If Not String.IsNullOrEmpty(_movieDB.DiscArtPath) Then SetArtForItem(_movieDB.ID, "movie", "discart", _movieDB.DiscArtPath)
-                If Not String.IsNullOrEmpty(_movieDB.FanartPath) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.FanartPath)
-                If Not String.IsNullOrEmpty(_movieDB.LandscapePath) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.LandscapePath)
-                If Not String.IsNullOrEmpty(_movieDB.PosterPath) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.PosterPath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.ImagesContainer.Banner.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ImagesContainer.ClearArt.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ImagesContainer.ClearLogo.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "discart", _movieDB.ImagesContainer.DiscArt.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.ImagesContainer.Fanart.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.ImagesContainer.Landscape.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.ImagesContainer.Poster.LocalFile)
 
                 'Studios
                 Using SQLcommand_studiolinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3510,21 +3488,19 @@ Public Class Database
         End Using
 
         'Images
-        If _moviesetDB.ImagesContainer IsNot Nothing Then
-            _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB, Enums.ContentType.MovieSet)
-        End If
+        _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB, Enums.ContentType.MovieSet)
 
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, " AND media_type = 'set';")
             SQLcommand_art.ExecuteNonQuery()
         End Using
-        If Not String.IsNullOrEmpty(_moviesetDB.BannerPath) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.BannerPath)
-        If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ClearArtPath)
-        If Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ClearLogoPath)
-        If Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.DiscArtPath)
-        If Not String.IsNullOrEmpty(_moviesetDB.FanartPath) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.FanartPath)
-        If Not String.IsNullOrEmpty(_moviesetDB.LandscapePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.LandscapePath)
-        If Not String.IsNullOrEmpty(_moviesetDB.PosterPath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.PosterPath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.ImagesContainer.Banner.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ImagesContainer.ClearArt.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ImagesContainer.ClearLogo.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.ImagesContainer.DiscArt.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.ImagesContainer.Fanart.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.ImagesContainer.Landscape.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.ImagesContainer.Poster.LocalFile)
 
         If withMovies Then
             Dim MoviesInSet As New List(Of MovieInSet)
@@ -3570,7 +3546,7 @@ Public Class Database
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieTagToDB(ByVal _tagDB As Database.DBElementTag, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Database.DBElementTag
+    Public Function SaveMovieTagToDB(ByVal _tagDB As Structures.DBMovieTag, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieTag
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -3672,14 +3648,14 @@ Public Class Database
     End Function
 
     ''' <summary>
-    ''' Saves all episode information from a Structures.DBTV object to the database
+    ''' Saves all episode information from a Database.DBElement object to the database
     ''' </summary>
-    ''' <param name="_TVEpDB">Structures.DBTV object to save to the database</param>
+    ''' <param name="_TVEpDB">Database.DBElement object to save to the database</param>
     ''' <param name="IsNew">Is this a new episode (not already present in database)?</param>
     ''' <param name="WithSeason">If <c>True</c>, also save season information</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Function SaveTVEpToDB(ByVal _TVEpDB As Structures.DBTV, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBTV
+    Public Function SaveTVEpToDB(ByVal _TVEpDB As Database.DBElement, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Database.DBElement
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -3692,7 +3668,7 @@ Public Class Database
 
         'delete so it will remove if there is a "missing" episode entry already. Only "missing" episodes must be deleted.
         Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLCommand.CommandText = String.Concat("DELETE FROM episode WHERE idShow = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEp.Episode, " AND Season = ", _TVEpDB.TVEp.Season, " AND Missing = 1;")
+            SQLCommand.CommandText = String.Concat("DELETE FROM episode WHERE idShow = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEpisode.Episode, " AND Season = ", _TVEpDB.TVEpisode.Season, " AND Missing = 1;")
             SQLCommand.ExecuteNonQuery()
         End Using
 
@@ -3787,8 +3763,8 @@ Public Class Database
             Dim par_strTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTVDB", DbType.String, 0, "strTVDB")
 
             Try
-                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
-                    Dim DateTimeAdded As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEpisode.DateAdded) Then
+                    Dim DateTimeAdded As DateTime = DateTime.ParseExact(_TVEpDB.TVEpisode.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     parDateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
                     Select Case Master.eSettings.GeneralDateTime
@@ -3812,19 +3788,19 @@ Public Class Database
                             End If
                     End Select
                 End If
-                _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+                _TVEpDB.TVEpisode.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             Catch ex As Exception
                 parDateAdded.Value = If(IsNew, Functions.ConvertToUnixTimestamp(DateTime.Now), _TVEpDB.DateAdded)
-                _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
+                _TVEpDB.TVEpisode.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
             Try
-                Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEpisode.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                 par_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
             Catch
                 'Kodi save it only as yyyy-MM-dd, try that
                 Try
-                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEpisode.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
                     par_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
                     par_iLastPlayed.Value = Nothing 'need to be NOTHING instead of String.Empty
@@ -3836,7 +3812,7 @@ Public Class Database
 
             parTVShowID.Value = _TVEpDB.ShowID
             parNfoPath.Value = _TVEpDB.NfoPath
-            parHasSub.Value = (_TVEpDB.Subtitles IsNot Nothing AndAlso _TVEpDB.Subtitles.Count > 0) OrElse _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count > 0
+            parHasSub.Value = (_TVEpDB.Subtitles IsNot Nothing AndAlso _TVEpDB.Subtitles.Count > 0) OrElse _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle.Count > 0
             parNew.Value = IsNew
             parMark.Value = _TVEpDB.IsMark
             parTVEpPathID.Value = PathID
@@ -3846,7 +3822,7 @@ Public Class Database
             parTVEpMissing.Value = PathID < 0
             parVideoSource.Value = _TVEpDB.VideoSource
 
-            With _TVEpDB.TVEp
+            With _TVEpDB.TVEpisode
                 parTitle.Value = .Title
                 parSeason.Value = .Season
                 parEpisode.Value = .Episode
@@ -3895,26 +3871,24 @@ Public Class Database
                     SQLcommand_actorlinkepisode.CommandText = String.Concat("DELETE FROM actorlinkepisode WHERE idEpisode = ", _TVEpDB.ID, ";")
                     SQLcommand_actorlinkepisode.ExecuteNonQuery()
                 End Using
-                AddCast(_TVEpDB.ID, "episode", "episode", _TVEpDB.TVEp.Actors)
+                AddCast(_TVEpDB.ID, "episode", "episode", _TVEpDB.TVEpisode.Actors)
 
-                'Images
-                If _TVEpDB.ImagesContainer IsNot Nothing Then
-                    _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.ContentType.TVEpisode)
-                End If
+                'Images 
+                _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.ContentType.TVEpisode)
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVEpDB.ID, " AND media_type = 'episode';")
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_TVEpDB.FanartPath) Then SetArtForItem(_TVEpDB.ID, "episode", "fanart", _TVEpDB.FanartPath)
-                If Not String.IsNullOrEmpty(_TVEpDB.PosterPath) Then SetArtForItem(_TVEpDB.ID, "episode", "thumb", _TVEpDB.PosterPath)
+                If Not String.IsNullOrEmpty(_TVEpDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_TVEpDB.ID, "episode", "fanart", _TVEpDB.ImagesContainer.Fanart.LocalFile)
+                If Not String.IsNullOrEmpty(_TVEpDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_TVEpDB.ID, "episode", "thumb", _TVEpDB.ImagesContainer.Poster.LocalFile)
 
                 'Writers
                 Using SQLcommand_writerlinkepisode As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_writerlinkepisode.CommandText = String.Concat("DELETE FROM writerlinkepisode WHERE idEpisode = ", _TVEpDB.ID, ";")
                     SQLcommand_writerlinkepisode.ExecuteNonQuery()
                 End Using
-                For Each writer As String In _TVEpDB.TVEp.Credits
+                For Each writer As String In _TVEpDB.TVEpisode.Credits
                     AddWriterToEpisode(_TVEpDB.ID, AddActor(writer, "", "", "", ""))
                 Next
 
@@ -3942,22 +3916,22 @@ Public Class Database
                     Dim parVideo_MultiViewLayout As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_MultiViewLayout", DbType.String, 0, "Video_MultiViewLayout")
                     Dim parVideo_StereoMode As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_StereoMode", DbType.String, 0, "Video_StereoMode")
 
-                    For i As Integer = 0 To _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count - 1
+                    For i As Integer = 0 To _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video.Count - 1
                         parVideo_EpID.Value = _TVEpDB.ID
                         parVideo_StreamID.Value = i
-                        parVideo_Width.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Width
-                        parVideo_Height.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Height
-                        parVideo_Codec.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Codec
-                        parVideo_Duration.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Duration
-                        parVideo_ScanType.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Scantype
-                        parVideo_AspectDisplayRatio.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Aspect
-                        parVideo_Language.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Language
-                        parVideo_LongLanguage.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).LongLanguage
-                        parVideo_Bitrate.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Bitrate
-                        parVideo_MultiViewCount.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).MultiViewCount
-                        parVideo_MultiViewLayout.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).MultiViewLayout
-                        parVideo_EncodedSettings.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).EncodedSettings
-                        parVideo_StereoMode.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).StereoMode
+                        parVideo_Width.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Width
+                        parVideo_Height.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Height
+                        parVideo_Codec.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Codec
+                        parVideo_Duration.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Duration
+                        parVideo_ScanType.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Scantype
+                        parVideo_AspectDisplayRatio.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Aspect
+                        parVideo_Language.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Language
+                        parVideo_LongLanguage.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).LongLanguage
+                        parVideo_Bitrate.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).Bitrate
+                        parVideo_MultiViewCount.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).MultiViewCount
+                        parVideo_MultiViewLayout.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).MultiViewLayout
+                        parVideo_EncodedSettings.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).EncodedSettings
+                        parVideo_StereoMode.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Video(i).StereoMode
 
                         SQLcommandTVVStreams.ExecuteNonQuery()
                     Next
@@ -3977,14 +3951,14 @@ Public Class Database
                     Dim parAudio_Channel As SQLite.SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_Channel", DbType.String, 0, "Audio_Channel")
                     Dim parAudio_Bitrate As SQLite.SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_Bitrate", DbType.String, 0, "Audio_Bitrate")
 
-                    For i As Integer = 0 To _TVEpDB.TVEp.FileInfo.StreamDetails.Audio.Count - 1
+                    For i As Integer = 0 To _TVEpDB.TVEpisode.FileInfo.StreamDetails.Audio.Count - 1
                         parAudio_EpID.Value = _TVEpDB.ID
                         parAudio_StreamID.Value = i
-                        parAudio_Language.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Audio(i).Language
-                        parAudio_LongLanguage.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Audio(i).LongLanguage
-                        parAudio_Codec.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Audio(i).Codec
-                        parAudio_Channel.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Audio(i).Channels
-                        parAudio_Bitrate.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Audio(i).Bitrate
+                        parAudio_Language.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Audio(i).Language
+                        parAudio_LongLanguage.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Audio(i).LongLanguage
+                        parAudio_Codec.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Audio(i).Codec
+                        parAudio_Channel.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Audio(i).Channels
+                        parAudio_Bitrate.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Audio(i).Bitrate
 
                         SQLcommandTVAStreams.ExecuteNonQuery()
                     Next
@@ -4007,14 +3981,14 @@ Public Class Database
                     Dim parSubs_Forced As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Forced", DbType.Boolean, 0, "Subs_Forced")
                     Dim iID As Integer = 0
                     'embedded subtitles
-                    For i As Integer = 0 To _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle.Count - 1
+                    For i As Integer = 0 To _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle.Count - 1
                         parSubs_EpID.Value = _TVEpDB.ID
                         parSubs_StreamID.Value = iID
-                        parSubs_Language.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).Language
-                        parSubs_LongLanguage.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).LongLanguage
-                        parSubs_Type.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).SubsType
-                        parSubs_Path.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).SubsPath
-                        parSubs_Forced.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Subtitle(i).SubsForced
+                        parSubs_Language.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle(i).Language
+                        parSubs_LongLanguage.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle(i).LongLanguage
+                        parSubs_Type.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle(i).SubsType
+                        parSubs_Path.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle(i).SubsPath
+                        parSubs_Forced.Value = _TVEpDB.TVEpisode.FileInfo.StreamDetails.Subtitle(i).SubsForced
                         SQLcommandTVSubs.ExecuteNonQuery()
                         iID += 1
                     Next
@@ -4048,10 +4022,10 @@ Public Class Database
     ''' <summary>
     ''' Stores information for a single season to the database
     ''' </summary>
-    ''' <param name="_TVSeasonDB">Structures.DBTV representing the season to be stored.</param>
+    ''' <param name="_TVSeasonDB">Database.DBElement representing the season to be stored.</param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Function SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, Optional ByVal BatchMode As Boolean = False) As Structures.DBTV
+    Public Function SaveTVSeasonToDB(ByRef _TVSeasonDB As Database.DBElement, Optional ByVal BatchMode As Boolean = False) As Database.DBElement
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4120,18 +4094,16 @@ Public Class Database
         _TVSeasonDB.ID = ID
 
         'Images
-        If _TVSeasonDB.ImagesContainer IsNot Nothing Then
-            _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.ContentType.TVSeason)
-        End If
+        _TVSeasonDB.ImagesContainer.SaveAllImages(_TVSeasonDB, Enums.ContentType.TVSeason)
 
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.ID, " AND media_type = 'season';")
             SQLcommand_art.ExecuteNonQuery()
         End Using
-        If Not String.IsNullOrEmpty(_TVSeasonDB.BannerPath) Then SetArtForItem(_TVSeasonDB.ID, "season", "banner", _TVSeasonDB.BannerPath)
-        If Not String.IsNullOrEmpty(_TVSeasonDB.FanartPath) Then SetArtForItem(_TVSeasonDB.ID, "season", "fanart", _TVSeasonDB.FanartPath)
-        If Not String.IsNullOrEmpty(_TVSeasonDB.LandscapePath) Then SetArtForItem(_TVSeasonDB.ID, "season", "landscape", _TVSeasonDB.LandscapePath)
-        If Not String.IsNullOrEmpty(_TVSeasonDB.PosterPath) Then SetArtForItem(_TVSeasonDB.ID, "season", "poster", _TVSeasonDB.PosterPath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "banner", _TVSeasonDB.ImagesContainer.Banner.LocalFile)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "fanart", _TVSeasonDB.ImagesContainer.Fanart.LocalFile)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "landscape", _TVSeasonDB.ImagesContainer.Landscape.LocalFile)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "poster", _TVSeasonDB.ImagesContainer.Poster.LocalFile)
 
         If Not BatchMode Then SQLtransaction.Commit()
 
@@ -4140,13 +4112,13 @@ Public Class Database
         Return _TVSeasonDB
     End Function
     ''' <summary>
-    ''' Saves all show information from a Structures.DBTV object to the database
+    ''' Saves all show information from a Database.DBElement object to the database
     ''' </summary>
-    ''' <param name="_TVShowDB">Structures.DBTV object to save to the database</param>
+    ''' <param name="_TVShowDB">Database.DBElement object to save to the database</param>
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Function SaveTVShowToDB(ByRef _TVShowDB As Structures.DBTV, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBTV
+    Public Function SaveTVShowToDB(ByRef _TVShowDB As Database.DBElement, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Database.DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -4284,21 +4256,19 @@ Public Class Database
                 Next
 
                 'Images
-                If _TVShowDB.ImagesContainer IsNot Nothing Then
-                    _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
-                End If
+                _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
 
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_TVShowDB.BannerPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "banner", _TVShowDB.BannerPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.CharacterArtPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "characterart", _TVShowDB.CharacterArtPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.ClearArtPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearart", _TVShowDB.ClearArtPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.ClearLogoPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearlogo", _TVShowDB.ClearLogoPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.FanartPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "fanart", _TVShowDB.FanartPath)
-                If Not String.IsNullOrEmpty(_TVShowDB.LandscapePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "landscape", _TVShowDB.LandscapePath)
-                If Not String.IsNullOrEmpty(_TVShowDB.PosterPath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "poster", _TVShowDB.PosterPath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "banner", _TVShowDB.ImagesContainer.Banner.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.CharacterArt.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "characterart", _TVShowDB.ImagesContainer.CharacterArt.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.ClearArt.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearart", _TVShowDB.ImagesContainer.ClearArt.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.ClearLogo.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearlogo", _TVShowDB.ImagesContainer.ClearLogo.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "fanart", _TVShowDB.ImagesContainer.Fanart.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "landscape", _TVShowDB.ImagesContainer.Landscape.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "poster", _TVShowDB.ImagesContainer.Poster.LocalFile)
 
                 'Studios
                 Using SQLcommand_studiolinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4323,14 +4293,14 @@ Public Class Database
 
         'save season informations
         If _TVShowDB.Seasons IsNot Nothing AndAlso _TVShowDB.Seasons.Count > 0 Then
-            For Each nSeason As Structures.DBTV In _TVShowDB.Seasons
+            For Each nSeason As Database.DBElement In _TVShowDB.Seasons
                 SaveTVSeasonToDB(nSeason, True)
             Next
         End If
 
         'save episode informations
         If withEpisodes AndAlso _TVShowDB.Episodes IsNot Nothing AndAlso _TVShowDB.Episodes.Count > 0 Then
-            For Each nEpisode As Structures.DBTV In _TVShowDB.Episodes
+            For Each nEpisode As Database.DBElement In _TVShowDB.Episodes
                 SaveTVEpToDB(nEpisode, If(nEpisode.ID >= 0, False, True), False, True, True)
             Next
         End If
@@ -4770,20 +4740,14 @@ Public Class Database
 #Region "Fields"
 
         Private _actorthumbs As New List(Of String)
-        Private _bannerpath As String
-        Private _characterartpath As String
-        Private _clearartpath As String
-        Private _clearlogopath As String
         Private _dateadded As Long
         Private _datemodified As Long
-        Private _discartpath As String
         Private _episodes As New List(Of DBElement)
         Private _episodesorting As Enums.EpisodeSorting
         Private _extrafanarts As New List(Of String)
         Private _extrafanartspath As String
         Private _extrathumbs As New List(Of String)
         Private _extrathumbspath As String
-        Private _fanartpath As String
         Private _filename As String
         Private _filenameid As Long
         Private _getyear As Boolean
@@ -4791,9 +4755,12 @@ Public Class Database
         Private _imagescontainer As New MediaContainers.ImagesContainer
         Private _islock As Boolean
         Private _ismark As Boolean
+        Private _ismarkcustom1 As Boolean
+        Private _ismarkcustom2 As Boolean
+        Private _ismarkcustom3 As Boolean
+        Private _ismarkcustom4 As Boolean
         Private _isonline As Boolean
         Private _issingle As Boolean
-        Private _landscapepath As String
         Private _language As String
         Private _listtitle As String
         Private _movie As MediaContainers.Movie
@@ -4802,7 +4769,7 @@ Public Class Database
         Private _needssave As Boolean
         Private _nfopath As String
         Private _ordering As Enums.Ordering
-        Private _posterpath As String
+        Private _outoftolerance As Boolean
         Private _seasons As New List(Of DBElement)
         Private _showid As Long
         Private _showpath As String
@@ -4838,42 +4805,6 @@ Public Class Database
             End Set
         End Property
 
-        Public Property BannerPath() As String
-            Get
-                Return Me._bannerpath
-            End Get
-            Set(ByVal value As String)
-                Me._bannerpath = value
-            End Set
-        End Property
-
-        Public Property CharacterArtPath() As String
-            Get
-                Return Me._characterartpath
-            End Get
-            Set(ByVal value As String)
-                Me._characterartpath = value
-            End Set
-        End Property
-
-        Public Property ClearArtPath() As String
-            Get
-                Return Me._clearartpath
-            End Get
-            Set(ByVal value As String)
-                Me._clearartpath = value
-            End Set
-        End Property
-
-        Public Property ClearLogoPath() As String
-            Get
-                Return Me._clearlogopath
-            End Get
-            Set(ByVal value As String)
-                Me._clearlogopath = value
-            End Set
-        End Property
-
         Public Property DateAdded() As Long
             Get
                 Return Me._dateadded
@@ -4889,15 +4820,6 @@ Public Class Database
             End Get
             Set(ByVal value As Long)
                 Me._datemodified = value
-            End Set
-        End Property
-
-        Public Property DiscArtPath() As String
-            Get
-                Return Me._discartpath
-            End Get
-            Set(ByVal value As String)
-                Me._discartpath = value
             End Set
         End Property
 
@@ -4952,15 +4874,6 @@ Public Class Database
             End Get
             Set(ByVal value As String)
                 Me._extrathumbspath = value
-            End Set
-        End Property
-
-        Public Property FanartPath() As String
-            Get
-                Return Me._fanartpath
-            End Get
-            Set(ByVal value As String)
-                Me._fanartpath = value
             End Set
         End Property
 
@@ -5027,6 +4940,42 @@ Public Class Database
             End Set
         End Property
 
+        Public Property IsMarkCustom1() As Boolean
+            Get
+                Return Me._ismarkcustom1
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ismarkcustom1 = value
+            End Set
+        End Property
+
+        Public Property IsMarkCustom2() As Boolean
+            Get
+                Return Me._ismarkcustom2
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ismarkcustom2 = value
+            End Set
+        End Property
+
+        Public Property IsMarkCustom3() As Boolean
+            Get
+                Return Me._ismarkcustom3
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ismarkcustom3 = value
+            End Set
+        End Property
+
+        Public Property IsMarkCustom4() As Boolean
+            Get
+                Return Me._ismarkcustom4
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ismarkcustom4 = value
+            End Set
+        End Property
+
         Public Property IsOnline() As Boolean
             Get
                 Return Me._isonline
@@ -5042,15 +4991,6 @@ Public Class Database
             End Get
             Set(ByVal value As Boolean)
                 Me._issingle = value
-            End Set
-        End Property
-
-        Public Property LandscapePath() As String
-            Get
-                Return Me._landscapepath
-            End Get
-            Set(ByVal value As String)
-                Me._landscapepath = value
             End Set
         End Property
 
@@ -5126,12 +5066,12 @@ Public Class Database
             End Set
         End Property
 
-        Public Property PosterPath() As String
+        Public Property OutOfTolerance() As Boolean
             Get
-                Return Me._posterpath
+                Return Me._outoftolerance
             End Get
-            Set(ByVal value As String)
-                Me._posterpath = value
+            Set(ByVal value As Boolean)
+                Me._outoftolerance = value
             End Set
         End Property
 
@@ -5258,20 +5198,14 @@ Public Class Database
 
         Public Sub Clear()
             Me._actorthumbs = New List(Of String)
-            Me._bannerpath = String.Empty
-            Me._characterartpath = String.Empty
-            Me._clearartpath = String.Empty
-            Me._clearlogopath = String.Empty
             Me._dateadded = -1
             Me._datemodified = -1
-            Me._discartpath = String.Empty
             Me._episodes = New List(Of DBElement)
             Me._episodesorting = Enums.EpisodeSorting.Episode
             Me._extrafanarts = New List(Of String)
             Me._extrafanartspath = String.Empty
             Me._extrathumbs = New List(Of String)
             Me._extrathumbspath = String.Empty
-            Me._fanartpath = String.Empty
             Me._filename = String.Empty
             Me._filenameid = -1
             Me._getyear = False
@@ -5281,16 +5215,15 @@ Public Class Database
             Me._ismark = False
             Me._isonline = False
             Me._issingle = False
-            Me._landscapepath = String.Empty
             Me._language = String.Empty
             Me._listtitle = String.Empty
             Me._needssave = False
-            Me._movie = Nothing 'New MediaContainers.Movie
+            Me._movie = Nothing
             Me._movielist = New List(Of DBElement)
-            Me._movieset = Nothing 'New MediaContainers.MovieSet
+            Me._movieset = Nothing
             Me._nfopath = String.Empty
             Me._ordering = Enums.Ordering.Standard
-            Me._posterpath = String.Empty
+            Me._outoftolerance = False
             Me._seasons = New List(Of DBElement)
             Me._showid = -1
             Me._showpath = String.Empty
@@ -5299,9 +5232,9 @@ Public Class Database
             Me._subtitles = New List(Of MediaInfo.Subtitle)
             Me._themepath = String.Empty
             Me._trailerpath = String.Empty
-            Me._tvepisode = Nothing 'New MediaContainers.EpisodeDetails
-            Me._tvseason = Nothing 'New MediaContainers.SeasonDetails
-            Me._tvshow = Nothing 'New MediaContainers.TVShow
+            Me._tvepisode = Nothing
+            Me._tvseason = Nothing
+            Me._tvshow = Nothing
             Me._usefolder = False
             Me._videosource = String.Empty
         End Sub

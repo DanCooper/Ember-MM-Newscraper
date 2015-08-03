@@ -31,7 +31,7 @@ Public Class dlgThemeSelect
     Friend WithEvents bwDownloadTheme As New System.ComponentModel.BackgroundWorker
 
     Private tMovie As New Database.DBElement
-    Private tShow As New Structures.DBTV
+    Private tShow As New Database.DBElement
     Private _UrlList As List(Of Themes)
     Private tURL As String = String.Empty
     Private sPath As String
@@ -119,20 +119,10 @@ Public Class dlgThemeSelect
         End If
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement, ByRef tURLList As List(Of Themes)) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBElement As Database.DBElement, ByRef tURLList As List(Of Themes)) As DialogResult
         CreateTable(tURLList)
 
         Return MyBase.ShowDialog()
-    End Function
-
-    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef tURLList As List(Of Themes)) As Themes
-        CreateTable(tURLList)
-
-        If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            Return Me.tTheme
-        Else
-            Return Nothing
-        End If
     End Function
 
     Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick

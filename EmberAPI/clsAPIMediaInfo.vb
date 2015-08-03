@@ -148,7 +148,7 @@ Public Class MediaInfo
         End Try
     End Sub
 
-    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Structures.DBTV)
+    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Database.DBElement)
         Try
             'DON't clear it out
             'miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
@@ -167,12 +167,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Video.Count = miTV.TVEp.FileInfo.StreamDetails.Video.Count Then
+                            If tinfo.StreamDetails.Video.Count = miTV.TVEpisode.FileInfo.StreamDetails.Video.Count Then
                                 For i = 0 To tinfo.StreamDetails.Video.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miTV.TVEp.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Video.Item(i).Language = miTV.TVEp.FileInfo.StreamDetails.Video.Item(i).Language
-                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miTV.TVEp.FileInfo.StreamDetails.Video.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Video.Item(i).Language = miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).Language
+                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -184,12 +184,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Audio.Count = miTV.TVEp.FileInfo.StreamDetails.Audio.Count Then
+                            If tinfo.StreamDetails.Audio.Count = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count Then
                                 For i = 0 To tinfo.StreamDetails.Audio.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miTV.TVEp.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Audio.Item(i).Language = miTV.TVEp.FileInfo.StreamDetails.Audio.Item(i).Language
-                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miTV.TVEp.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Audio.Item(i).Language = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).Language
+                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -198,13 +198,13 @@ Public Class MediaInfo
 
                         End Try
                     End If
-                    miTV.TVEp.FileInfo = tinfo
+                    miTV.TVEpisode.FileInfo = tinfo
                 End If
             End If
-            If miTV.TVEp.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEp.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+            If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaInfo.Fileinfo
                 _mi = MediaInfo.ApplyTVDefaults(pExt)
-                If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
+                If Not _mi Is Nothing Then miTV.TVEpisode.FileInfo = _mi
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name,ex)

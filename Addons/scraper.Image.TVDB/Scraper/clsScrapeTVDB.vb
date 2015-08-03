@@ -47,8 +47,8 @@ Namespace TVDBs
 
 #Region "Methods"
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
-            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
@@ -75,7 +75,7 @@ Namespace TVDBs
                                                                        .VoteAverage = CStr(image.Rating), _
                                                                        .VoteCount = image.RatingCount, _
                                                                        .Width = "758"}
-                            alContainer.ShowBanners.Add(img)
+                            alContainer.MainBanners.Add(img)
                         Next
                     End If
 
@@ -98,7 +98,7 @@ Namespace TVDBs
                     'Fanart Show / AllSeasons / Season / Episode
                     If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
-                            alContainer.ShowFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
+                            alContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                           .LongLang = Localization.ISOGetLangByCode2(image.Language), _
                                                                           .Season = image.Season, _
                                                                           .ShortLang = image.Language, _
@@ -122,7 +122,7 @@ Namespace TVDBs
                                                                           .VoteAverage = CStr(image.Rating), _
                                                                           .VoteCount = image.RatingCount, _
                                                                           .Width = StringUtils.StringToSize(image.Dimension).Width.ToString}
-                            alContainer.ShowPosters.Add(img)
+                            alContainer.MainPosters.Add(img)
                         Next
                     End If
 
@@ -151,8 +151,8 @@ Namespace TVDBs
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer_TV
-            Dim alContainer As New MediaContainers.SearchResultsContainer_TV
+        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
                 Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)

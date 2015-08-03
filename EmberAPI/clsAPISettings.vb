@@ -7328,17 +7328,17 @@ Public Class Settings
     End Function
 
     Public Function MovieSetBannerAnyEnabled() As Boolean
-        Return MovieSetBannerMSAA OrElse _
+        Return (MovieSetUseMSAA AndAlso MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
     Public Function MovieSetClearArtAnyEnabled() As Boolean
-        Return MovieSetClearArtMSAA OrElse _
+        Return (MovieSetUseMSAA AndAlso MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
     End Function
 
     Public Function MovieSetClearLogoAnyEnabled() As Boolean
-        Return MovieSetClearLogoMSAA OrElse _
+        Return (MovieSetUseMSAA AndAlso MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
     End Function
 
@@ -7347,12 +7347,12 @@ Public Class Settings
     End Function
 
     Public Function MovieSetFanartAnyEnabled() As Boolean
-        Return MovieSetFanartMSAA OrElse _
+        Return (MovieSetUseMSAA AndAlso MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
     End Function
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
-        Return MovieSetLandscapeMSAA OrElse _
+        Return (MovieSetUseMSAA AndAlso MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
     End Function
 
@@ -7362,7 +7362,7 @@ Public Class Settings
     End Function
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
-        Return MovieSetPosterMSAA OrElse _
+        Return (MovieSetUseMSAA AndAlso MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 

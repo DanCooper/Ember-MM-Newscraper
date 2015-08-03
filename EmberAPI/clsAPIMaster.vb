@@ -34,7 +34,7 @@ Public Class Master
     Public Shared DB As New Database
     Public Shared currMovie As New Database.DBElement
     Public Shared currMovieSet As New Database.DBElement
-    Public Shared currShow As New Structures.DBTV
+    Public Shared currShow As New Database.DBElement
     Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared DefaultOptions_TV As New Structures.ScrapeOptions_TV

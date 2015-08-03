@@ -49,7 +49,7 @@ Public Class Interfaces
 
         Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String)
         Function InjectSetup() As Containers.SettingsPanel
-        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Database.DBElement) As ModuleResult
+        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Database.DBElement, ByRef _dbmovieset As Database.DBElement) As ModuleResult
         Sub SaveSetup(ByVal DoDispose As Boolean)
 
 #End Region 'Methods
@@ -174,7 +174,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVShow(ByRef oDBTV As Structures.DBTV, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
+        Function Scraper_TVShow(ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
         ''' <summary>
         ''' Get single episode information
         ''' </summary>
@@ -183,7 +183,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVEpisode(ByRef oDBTVEpisode As Structures.DBTV, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
+        Function Scraper_TVEpisode(ByRef oDBTVEpisode As Database.DBElement, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
 
 #End Region 'Methods
 
@@ -217,7 +217,7 @@ Public Class Interfaces
         Function InjectSetupScraper() As Containers.SettingsPanel
         Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -251,7 +251,7 @@ Public Class Interfaces
         Function InjectSetupScraper() As Containers.SettingsPanel
         Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        Function Scraper(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_Movie_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -285,7 +285,7 @@ Public Class Interfaces
         Function InjectSetupScraper() As Containers.SettingsPanel
         Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        Function Scraper(ByRef DBTV As Structures.DBTV, ByRef ImagesContainer As MediaContainers.SearchResultsContainer_TV, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -346,7 +346,7 @@ Public Class Interfaces
         Sub ScraperOrderChanged()
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
-        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Themes)) As ModuleResult
+        Function Scraper(ByVal DBTV As Database.DBElement, ByRef URLList As List(Of Themes)) As ModuleResult
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
 
@@ -364,7 +364,7 @@ Public Class Interfaces
 
         'Function InjectSetupScraper() As Containers.SettingsPanel
 
-        'Function Scraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
+        'Function Scraper(ByRef DBTV As Database.DBElement, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
 
         'Function SaveImages() As ModuleResult
 

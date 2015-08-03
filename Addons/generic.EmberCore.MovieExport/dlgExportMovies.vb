@@ -896,7 +896,7 @@ Public Class dlgExportMovies
             For Each _curMovie As Database.DBElement In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
                 Try
                     Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
-                    If File.Exists(_curMovie.FanartPath) Then
+                    If File.Exists(_curMovie.ImagesContainer.Fanart.LocalFile) Then
 
                         'cocotus, 2013/02 Export HTML expanded: configurable resizable images
 
@@ -904,12 +904,12 @@ Public Class dlgExportMovies
                         'File.Copy(_curMovie.FanartPath, fanartfile, True)
 
                         If strFanartSize = "original" Then
-                            File.Copy(_curMovie.FanartPath, fanartfile, True)
+                            File.Copy(_curMovie.ImagesContainer.Fanart.LocalFile, fanartfile, True)
                         Else
                             'Now we do some image processing to make the output file smaller!
                             Try
                                 Dim img As Image
-                                Dim sFileName As String = _curMovie.FanartPath
+                                Dim sFileName As String = _curMovie.ImagesContainer.Fanart.LocalFile
                                 Dim fs As New System.IO.FileStream(sFileName, System.IO.FileMode.Open)
                                 img = Image.FromStream(fs)
                                 fs.Close()
@@ -922,7 +922,7 @@ Public Class dlgExportMovies
 
                             Catch ex As Exception
                                 'The old method, used here when anything goes wrong
-                                File.Copy(_curMovie.FanartPath, fanartfile, True)
+                                File.Copy(_curMovie.ImagesContainer.Fanart.LocalFile, fanartfile, True)
                             End Try
                         End If
                         'cocotus end
@@ -950,7 +950,7 @@ Public Class dlgExportMovies
             For Each _curMovie As Database.DBElement In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
                 Try
                     Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
-                    If File.Exists(_curMovie.PosterPath) Then                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
+                    If File.Exists(_curMovie.ImagesContainer.Poster.LocalFile) Then                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
                         'cocotus, 2013/02 Export HTML expanded: configurable resizable images
 
                         'old method
@@ -964,12 +964,12 @@ Public Class dlgExportMovies
                         'End If
 
                         If strPosterSize = "original" Then
-                            File.Copy(_curMovie.PosterPath, posterfile, True)
+                            File.Copy(_curMovie.ImagesContainer.Poster.LocalFile, posterfile, True)
                         Else
                             'Now we do some image processing to make the output file smaller!
                             Try
                                 Dim img As Image
-                                Dim sFileName As String = _curMovie.PosterPath
+                                Dim sFileName As String = _curMovie.ImagesContainer.Poster.LocalFile
                                 Dim fs As New System.IO.FileStream(sFileName, System.IO.FileMode.Open)
                                 img = Image.FromStream(fs)
                                 fs.Close()
@@ -982,7 +982,7 @@ Public Class dlgExportMovies
 
                             Catch ex As Exception
                                 'The old method, used here when anything goes wrong
-                                File.Copy(_curMovie.PosterPath, posterfile, True)
+                                File.Copy(_curMovie.ImagesContainer.Poster.LocalFile, posterfile, True)
                             End Try
                         End If
 

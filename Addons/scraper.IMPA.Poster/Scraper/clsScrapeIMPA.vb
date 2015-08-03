@@ -41,8 +41,8 @@ Namespace IMPA
 
 #Region "Methods"
 
-        Public Function GetIMPAPosters(ByVal imdbID As String) As MediaContainers.SearchResultsContainer_Movie_MovieSet
-            Dim alContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
+        Public Function GetIMPAPosters(ByVal imdbID As String) As MediaContainers.SearchResultsContainer
+            Dim alContainer As New MediaContainers.SearchResultsContainer
             Dim ParentID As String
             Dim oV As String = String.Empty
 
@@ -73,7 +73,7 @@ Namespace IMPA
                         If Not ParentID = oV Then
 
                             Dim PosterURL = String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters").Replace("imp_", String.Empty)
-                            alContainer.Posters.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Height = "n/a", .Width = "n/a"})
+                            alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Height = "n/a", .Width = "n/a"})
                             oV = ParentID
                         End If
                     Next

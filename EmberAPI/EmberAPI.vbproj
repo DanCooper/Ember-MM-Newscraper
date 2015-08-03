@@ -177,7 +177,6 @@
     <Compile Include="dlgVersions.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="clsAPIDVDProfiler.vb" />
     <Compile Include="frmSplash.Designer.vb">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </Compile>

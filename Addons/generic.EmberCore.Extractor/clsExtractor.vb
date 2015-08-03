@@ -245,7 +245,7 @@ Public Class ThumbGenerator
                         'always set to something if extrathumbs are created so we know during scrapers
                         _setfa = "TRUE"
                         Using exFanart As New Images
-                            If String.IsNullOrEmpty(_movie.FanartPath) Then
+                            If String.IsNullOrEmpty(_movie.ImagesContainer.Fanart.LocalFile) Then
                                 exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
                                 _setfa = exFanart.SaveAsMovieFanart(_movie)
                             End If

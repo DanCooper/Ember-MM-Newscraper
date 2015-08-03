@@ -3678,163 +3678,363 @@ Namespace MediaContainers
             Me._poster = New MediaContainers.Image
         End Sub
 
-        Public Sub SaveAllImages(ByRef DBTV As Structures.DBTV, ByRef Type As Enums.ContentType)
-            With DBTV.ImagesContainer
+        Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByRef Type As Enums.ContentType)
+            With DBElement.ImagesContainer
 
                 Select Case Type
+                    Case Enums.ContentType.Movie
+
+                        'Movie Banner
+                        If .Banner.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsMovieBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
+                            .Banner.WebImage.FromWeb(.Banner.URL)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsMovieBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFile) Then
+                            .Banner.WebImage.FromFile(DBElement.ImagesContainer.Banner.LocalFile)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsMovieBanner(DBElement)
+                        Else
+                            Images.DeleteMovieBanner(DBElement)
+                            DBElement.ImagesContainer.Banner = New Image
+                        End If
+
+                        'Movie ClearArt
+                        If .ClearArt.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsMovieClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URL) Then
+                            .ClearArt.WebImage.FromWeb(.ClearArt.URL)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsMovieClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFile) Then
+                            .ClearArt.WebImage.FromFile(DBElement.ImagesContainer.ClearArt.LocalFile)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsMovieClearArt(DBElement)
+                        Else
+                            Images.DeleteMovieClearArt(DBElement)
+                            DBElement.ImagesContainer.ClearArt = New Image
+                        End If
+
+                        'Movie ClearLogo
+                        If .ClearLogo.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsMovieClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URL) Then
+                            .ClearLogo.WebImage.FromWeb(.ClearLogo.URL)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsMovieClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFile) Then
+                            .ClearLogo.WebImage.FromFile(DBElement.ImagesContainer.ClearLogo.LocalFile)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsMovieClearLogo(DBElement)
+                        Else
+                            Images.DeleteMovieClearLogo(DBElement)
+                            DBElement.ImagesContainer.ClearLogo = New Image
+                        End If
+
+                        'Movie DiscArt
+                        If .DiscArt.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.DiscArt.LocalFile = .DiscArt.WebImage.SaveAsMovieDiscArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.DiscArt.URL) Then
+                            .DiscArt.WebImage.FromWeb(.DiscArt.URL)
+                            DBElement.ImagesContainer.DiscArt.LocalFile = .DiscArt.WebImage.SaveAsMovieDiscArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFile) Then
+                            .DiscArt.WebImage.FromFile(DBElement.ImagesContainer.DiscArt.LocalFile)
+                            DBElement.ImagesContainer.DiscArt.LocalFile = .DiscArt.WebImage.SaveAsMovieDiscArt(DBElement)
+                        Else
+                            Images.DeleteMovieDiscArt(DBElement)
+                            DBElement.ImagesContainer.DiscArt = New Image
+                        End If
+
+                        'Movie Fanart
+                        If .Fanart.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsMovieFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
+                            .Fanart.WebImage.FromWeb(.Fanart.URL)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsMovieFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFile) Then
+                            .Fanart.WebImage.FromFile(DBElement.ImagesContainer.Fanart.LocalFile)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsMovieFanart(DBElement)
+                        Else
+                            Images.DeleteMovieFanart(DBElement)
+                            DBElement.ImagesContainer.Fanart = New Image
+                        End If
+
+                        'Movie Landscape
+                        If .Landscape.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsMovieLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
+                            .Landscape.WebImage.FromWeb(.Landscape.URL)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsMovieLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFile) Then
+                            .Landscape.WebImage.FromFile(DBElement.ImagesContainer.Landscape.LocalFile)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsMovieLandscape(DBElement)
+                        Else
+                            Images.DeleteMovieLandscape(DBElement)
+                            DBElement.ImagesContainer.Landscape = New Image
+                        End If
+
+                        'Movie Poster
+                        If .Poster.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsMoviePoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
+                            .Poster.WebImage.FromWeb(.Poster.URL)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsMoviePoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFile) Then
+                            .Poster.WebImage.FromFile(DBElement.ImagesContainer.Poster.LocalFile)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsMoviePoster(DBElement)
+                        Else
+                            Images.DeleteMoviePoster(DBElement)
+                            DBElement.ImagesContainer.Poster = New Image
+                        End If
+
+                    Case Enums.ContentType.MovieSet
+
+                        'MovieSet Banner
+                        If .Banner.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
+                            .Banner.WebImage.FromWeb(.Banner.URL)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFile) Then
+                            .Banner.WebImage.FromFile(DBElement.ImagesContainer.Banner.LocalFile)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
+                        Else
+                            Images.DeleteMovieSetBanner(DBElement)
+                            DBElement.ImagesContainer.Banner = New Image
+                        End If
+
+                        'MovieSet ClearArt
+                        If .ClearArt.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URL) Then
+                            .ClearArt.WebImage.FromWeb(.ClearArt.URL)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFile) Then
+                            .ClearArt.WebImage.FromFile(DBElement.ImagesContainer.ClearArt.LocalFile)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
+                        Else
+                            Images.DeleteMovieSetClearArt(DBElement)
+                            DBElement.ImagesContainer.ClearArt = New Image
+                        End If
+
+                        'MovieSet ClearLogo
+                        If .ClearLogo.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URL) Then
+                            .ClearLogo.WebImage.FromWeb(.ClearLogo.URL)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFile) Then
+                            .ClearLogo.WebImage.FromFile(DBElement.ImagesContainer.ClearLogo.LocalFile)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
+                        Else
+                            Images.DeleteMovieSetClearLogo(DBElement)
+                            DBElement.ImagesContainer.ClearLogo = New Image
+                        End If
+
+                        'MovieSet DiscArt
+                        If .DiscArt.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.DiscArt.LocalFile = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.DiscArt.URL) Then
+                            .DiscArt.WebImage.FromWeb(.DiscArt.URL)
+                            DBElement.ImagesContainer.DiscArt.LocalFile = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFile) Then
+                            .DiscArt.WebImage.FromFile(DBElement.ImagesContainer.DiscArt.LocalFile)
+                            DBElement.ImagesContainer.DiscArt.LocalFile = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
+                        Else
+                            Images.DeleteMovieSetDiscArt(DBElement)
+                            DBElement.ImagesContainer.DiscArt = New Image
+                        End If
+
+                        'MovieSet Fanart
+                        If .Fanart.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
+                            .Fanart.WebImage.FromWeb(.Fanart.URL)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFile) Then
+                            .Fanart.WebImage.FromFile(DBElement.ImagesContainer.Fanart.LocalFile)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
+                        Else
+                            Images.DeleteMovieSetFanart(DBElement)
+                            DBElement.ImagesContainer.Fanart = New Image
+                        End If
+
+                        'MovieSet Landscape
+                        If .Landscape.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
+                            .Landscape.WebImage.FromWeb(.Landscape.URL)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFile) Then
+                            .Landscape.WebImage.FromFile(DBElement.ImagesContainer.Landscape.LocalFile)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
+                        Else
+                            Images.DeleteMovieSetLandscape(DBElement)
+                            DBElement.ImagesContainer.Landscape = New Image
+                        End If
+
+                        'MovieSet Poster
+                        If .Poster.WebImage.Image IsNot Nothing Then
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
+                            .Poster.WebImage.FromWeb(.Poster.URL)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFile) Then
+                            .Poster.WebImage.FromFile(DBElement.ImagesContainer.Poster.LocalFile)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
+                        Else
+                            Images.DeleteMovieSetPoster(DBElement)
+                            DBElement.ImagesContainer.Poster = New Image
+                        End If
+
                     Case Enums.ContentType.TVEpisode
 
                         'Episode Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
-                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
                             .Fanart.WebImage.FromWeb(.Fanart.URL)
-                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.FanartPath) Then
-                            .Fanart.WebImage.FromFile(DBTV.FanartPath)
-                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBTV)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFile) Then
+                            .Fanart.WebImage.FromFile(DBElement.ImagesContainer.Fanart.LocalFile)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVEpisodeFanart(DBElement)
                         Else
-                            Images.DeleteTVEpisodeFanart(DBTV)
-                            DBTV.FanartPath = String.Empty
+                            Images.DeleteTVEpisodeFanart(DBElement)
+                            DBElement.ImagesContainer.Fanart = New Image
                         End If
 
                         'Episode Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
-                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVEpisodePoster(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
-                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.PosterPath) Then
-                            .Poster.WebImage.FromFile(DBTV.PosterPath)
-                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVEpisodePoster(DBTV)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVEpisodePoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFile) Then
+                            .Poster.WebImage.FromFile(DBElement.ImagesContainer.Poster.LocalFile)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVEpisodePoster(DBElement)
                         Else
-                            Images.DeleteTVEpisodePoster(DBTV)
-                            DBTV.PosterPath = String.Empty
+                            Images.DeleteTVEpisodePoster(DBElement)
+                            DBElement.ImagesContainer.Poster = New Image
                         End If
 
                     Case Enums.ContentType.TVSeason
 
                         'Season Banner
                         If .Banner.WebImage.Image IsNot Nothing Then
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVASBanner(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVASBanner(DBElement)
                             Else
-                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVSeasonBanner(DBTV)
+                                DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVSeasonBanner(DBElement)
                             End If
                         ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
                             .Banner.WebImage.FromWeb(.Banner.URL)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVASBanner(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVASBanner(DBElement)
                             Else
-                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVSeasonBanner(DBTV)
+                                DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVSeasonBanner(DBElement)
                             End If
-                        ElseIf Not String.IsNullOrEmpty(DBTV.BannerPath) Then
-                            .Banner.WebImage.FromFile(DBTV.BannerPath)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVASBanner(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFile) Then
+                            .Banner.WebImage.FromFile(DBElement.ImagesContainer.Banner.LocalFile)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVASBanner(DBElement)
                             Else
-                                DBTV.BannerPath = .Banner.WebImage.SaveAsTVSeasonBanner(DBTV)
+                                DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVSeasonBanner(DBElement)
                             End If
                         Else
-                            If DBTV.TVSeason.Season = 999 Then
-                                .Banner.WebImage.DeleteTVASBanner(DBTV)
-                                DBTV.BannerPath = String.Empty
+                            If DBElement.TVSeason.Season = 999 Then
+                                .Banner.WebImage.DeleteTVASBanner(DBElement)
+                                DBElement.ImagesContainer.Banner.LocalFile = String.Empty
                             Else
-                                Images.DeleteTVSeasonBanner(DBTV)
-                                DBTV.BannerPath = String.Empty
+                                Images.DeleteTVSeasonBanner(DBElement)
+                                DBElement.ImagesContainer.Banner = New Image
                             End If
                         End If
 
                         'Season Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.FanartPath = .Fanart.WebImage.SaveAsTVASFanart(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVASFanart(DBElement)
                             Else
-                                DBTV.FanartPath = .Fanart.WebImage.SaveAsTVSeasonFanart(DBTV)
+                                DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVSeasonFanart(DBElement)
                             End If
                         ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
                             .Fanart.WebImage.FromWeb(.Fanart.URL)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.FanartPath = .Fanart.WebImage.SaveAsTVASFanart(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVASFanart(DBElement)
                             Else
-                                DBTV.FanartPath = .Fanart.WebImage.SaveAsTVSeasonFanart(DBTV)
+                                DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVSeasonFanart(DBElement)
                             End If
-                        ElseIf Not String.IsNullOrEmpty(DBTV.FanartPath) Then
-                            .Banner.WebImage.FromFile(DBTV.FanartPath)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.FanartPath = .Banner.WebImage.SaveAsTVASFanart(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFile) Then
+                            .Banner.WebImage.FromFile(DBElement.ImagesContainer.Fanart.LocalFile)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Fanart.LocalFile = .Banner.WebImage.SaveAsTVASFanart(DBElement)
                             Else
-                                DBTV.FanartPath = .Banner.WebImage.SaveAsTVSeasonFanart(DBTV)
+                                DBElement.ImagesContainer.Fanart.LocalFile = .Banner.WebImage.SaveAsTVSeasonFanart(DBElement)
                             End If
                         Else
-                            If DBTV.TVSeason.Season = 999 Then
-                                .Fanart.WebImage.DeleteTVASFanart(DBTV)
-                                DBTV.FanartPath = String.Empty
+                            If DBElement.TVSeason.Season = 999 Then
+                                .Fanart.WebImage.DeleteTVASFanart(DBElement)
+                                DBElement.ImagesContainer.Fanart.LocalFile = String.Empty
                             Else
-                                Images.DeleteTVSeasonFanart(DBTV)
-                                DBTV.FanartPath = String.Empty
+                                Images.DeleteTVSeasonFanart(DBElement)
+                                DBElement.ImagesContainer.Fanart = New Image
                             End If
                         End If
 
                         'Season Landscape
                         If .Landscape.WebImage.Image IsNot Nothing Then
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVASLandscape(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVASLandscape(DBElement)
                             Else
-                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBTV)
+                                DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBElement)
                             End If
                         ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
                             .Landscape.WebImage.FromWeb(.Landscape.URL)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVASLandscape(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVASLandscape(DBElement)
                             Else
-                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBTV)
+                                DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBElement)
                             End If
-                        ElseIf Not String.IsNullOrEmpty(DBTV.LandscapePath) Then
-                            .Landscape.WebImage.FromFile(DBTV.LandscapePath)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVASLandscape(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFile) Then
+                            .Landscape.WebImage.FromFile(DBElement.ImagesContainer.Landscape.LocalFile)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVASLandscape(DBElement)
                             Else
-                                DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBTV)
+                                DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVSeasonLandscape(DBElement)
                             End If
                         Else
-                            If DBTV.TVSeason.Season = 999 Then
-                                .Landscape.WebImage.DeleteTVASLandscape(DBTV)
-                                DBTV.LandscapePath = String.Empty
+                            If DBElement.TVSeason.Season = 999 Then
+                                .Landscape.WebImage.DeleteTVASLandscape(DBElement)
+                                DBElement.ImagesContainer.Landscape.LocalFile = String.Empty
                             Else
-                                Images.DeleteTVSeasonLandscape(DBTV)
-                                DBTV.LandscapePath = String.Empty
+                                Images.DeleteTVSeasonLandscape(DBElement)
+                                DBElement.ImagesContainer.Landscape = New Image
                             End If
                         End If
 
                         'Season Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVASPoster(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVASPoster(DBElement)
                             Else
-                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVSeasonPoster(DBTV)
+                                DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVSeasonPoster(DBElement)
                             End If
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVASPoster(DBTV)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVASPoster(DBElement)
                             Else
-                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVSeasonPoster(DBTV)
+                                DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVSeasonPoster(DBElement)
                             End If
-                        ElseIf Not String.IsNullOrEmpty(DBTV.PosterPath) Then
-                            .Poster.WebImage.FromFile(DBTV.PosterPath)
-                            If DBTV.TVSeason.Season = 999 Then
-                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVASPoster(DBTV)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFile) Then
+                            .Poster.WebImage.FromFile(DBElement.ImagesContainer.Poster.LocalFile)
+                            If DBElement.TVSeason.Season = 999 Then
+                                DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVASPoster(DBElement)
                             Else
-                                DBTV.PosterPath = .Poster.WebImage.SaveAsTVSeasonPoster(DBTV)
+                                DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVSeasonPoster(DBElement)
                             End If
                         Else
-                            If DBTV.TVSeason.Season = 999 Then
-                                .Poster.WebImage.DeleteTVASPoster(DBTV)
-                                DBTV.PosterPath = String.Empty
+                            If DBElement.TVSeason.Season = 999 Then
+                                .Poster.WebImage.DeleteTVASPoster(DBElement)
+                                DBElement.ImagesContainer.Poster.LocalFile = String.Empty
                             Else
-                                Images.DeleteTVSeasonPoster(DBTV)
-                                DBTV.PosterPath = String.Empty
+                                Images.DeleteTVSeasonPoster(DBElement)
+                                DBElement.ImagesContainer.Poster = New Image
                             End If
                         End If
 
@@ -3842,207 +4042,100 @@ Namespace MediaContainers
 
                         'Show Banner
                         If .Banner.WebImage.Image IsNot Nothing Then
-                            DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVShowBanner(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
                             .Banner.WebImage.FromWeb(.Banner.URL)
-                            DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.BannerPath) Then
-                            .Banner.WebImage.FromFile(DBTV.BannerPath)
-                            DBTV.BannerPath = .Banner.WebImage.SaveAsTVShowBanner(DBTV)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVShowBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFile) Then
+                            .Banner.WebImage.FromFile(DBElement.ImagesContainer.Banner.LocalFile)
+                            DBElement.ImagesContainer.Banner.LocalFile = .Banner.WebImage.SaveAsTVShowBanner(DBElement)
                         Else
-                            Images.DeleteTVShowBanner(DBTV)
-                            DBTV.BannerPath = String.Empty
+                            Images.DeleteTVShowBanner(DBElement)
+                            DBElement.ImagesContainer.Banner = New Image
                         End If
 
                         'Show CharacterArt
                         If .CharacterArt.WebImage.Image IsNot Nothing Then
-                            DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
+                            DBElement.ImagesContainer.CharacterArt.LocalFile = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.CharacterArt.URL) Then
                             .CharacterArt.WebImage.FromWeb(.CharacterArt.URL)
-                            DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.CharacterArtPath) Then
-                            .CharacterArt.WebImage.FromFile(DBTV.CharacterArtPath)
-                            DBTV.CharacterArtPath = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBTV)
+                            DBElement.ImagesContainer.CharacterArt.LocalFile = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.CharacterArt.LocalFile) Then
+                            .CharacterArt.WebImage.FromFile(DBElement.ImagesContainer.CharacterArt.LocalFile)
+                            DBElement.ImagesContainer.CharacterArt.LocalFile = .CharacterArt.WebImage.SaveAsTVShowCharacterArt(DBElement)
                         Else
-                            Images.DeleteTVShowCharacterArt(DBTV)
-                            DBTV.CharacterArtPath = String.Empty
+                            Images.DeleteTVShowCharacterArt(DBElement)
+                            DBElement.ImagesContainer.CharacterArt = New Image
                         End If
 
                         'Show ClearArt
                         If .ClearArt.WebImage.Image IsNot Nothing Then
-                            DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsTVShowClearArt(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.ClearArt.URL) Then
                             .ClearArt.WebImage.FromWeb(.ClearArt.URL)
-                            DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.ClearArtPath) Then
-                            .ClearArt.WebImage.FromFile(DBTV.ClearArtPath)
-                            DBTV.ClearArtPath = .ClearArt.WebImage.SaveAsTVShowClearArt(DBTV)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsTVShowClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFile) Then
+                            .ClearArt.WebImage.FromFile(DBElement.ImagesContainer.ClearArt.LocalFile)
+                            DBElement.ImagesContainer.ClearArt.LocalFile = .ClearArt.WebImage.SaveAsTVShowClearArt(DBElement)
                         Else
-                            Images.DeleteTVShowClearArt(DBTV)
-                            DBTV.ClearArtPath = String.Empty
+                            Images.DeleteTVShowClearArt(DBElement)
+                            DBElement.ImagesContainer.ClearArt = New Image
                         End If
 
                         'Show ClearLogo
                         If .ClearLogo.WebImage.Image IsNot Nothing Then
-                            DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.ClearLogo.URL) Then
                             .ClearLogo.WebImage.FromWeb(.ClearLogo.URL)
-                            DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.ClearLogoPath) Then
-                            .ClearLogo.WebImage.FromFile(DBTV.ClearLogoPath)
-                            DBTV.ClearLogoPath = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBTV)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFile) Then
+                            .ClearLogo.WebImage.FromFile(DBElement.ImagesContainer.ClearLogo.LocalFile)
+                            DBElement.ImagesContainer.ClearLogo.LocalFile = .ClearLogo.WebImage.SaveAsTVShowClearLogo(DBElement)
                         Else
-                            Images.DeleteTVShowClearLogo(DBTV)
-                            DBTV.ClearLogoPath = String.Empty
+                            Images.DeleteTVShowClearLogo(DBElement)
+                            DBElement.ImagesContainer.ClearLogo = New Image
                         End If
 
                         'Show Fanart
                         If .Fanart.WebImage.Image IsNot Nothing Then
-                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVShowFanart(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
                             .Fanart.WebImage.FromWeb(.Fanart.URL)
-                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.FanartPath) Then
-                            .Fanart.WebImage.FromFile(DBTV.FanartPath)
-                            DBTV.FanartPath = .Fanart.WebImage.SaveAsTVShowFanart(DBTV)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVShowFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFile) Then
+                            .Fanart.WebImage.FromFile(DBElement.ImagesContainer.Fanart.LocalFile)
+                            DBElement.ImagesContainer.Fanart.LocalFile = .Fanart.WebImage.SaveAsTVShowFanart(DBElement)
                         Else
-                            Images.DeleteTVShowFanart(DBTV)
-                            DBTV.FanartPath = String.Empty
+                            Images.DeleteTVShowFanart(DBElement)
+                            DBElement.ImagesContainer.Fanart = New Image
                         End If
 
                         'Show Landscape
                         If .Landscape.WebImage.Image IsNot Nothing Then
-                            DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVShowLandscape(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
                             .Landscape.WebImage.FromWeb(.Landscape.URL)
-                            DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.LandscapePath) Then
-                            .Landscape.WebImage.FromFile(DBTV.LandscapePath)
-                            DBTV.LandscapePath = .Landscape.WebImage.SaveAsTVShowLandscape(DBTV)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVShowLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFile) Then
+                            .Landscape.WebImage.FromFile(DBElement.ImagesContainer.Landscape.LocalFile)
+                            DBElement.ImagesContainer.Landscape.LocalFile = .Landscape.WebImage.SaveAsTVShowLandscape(DBElement)
                         Else
-                            Images.DeleteTVShowLandscape(DBTV)
-                            DBTV.LandscapePath = String.Empty
+                            Images.DeleteTVShowLandscape(DBElement)
+                            DBElement.ImagesContainer.Landscape = New Image
                         End If
 
                         'Show Poster
                         If .Poster.WebImage.Image IsNot Nothing Then
-                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVShowPoster(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
                             .Poster.WebImage.FromWeb(.Poster.URL)
-                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
-                        ElseIf Not String.IsNullOrEmpty(DBTV.PosterPath) Then
-                            .Poster.WebImage.FromFile(DBTV.PosterPath)
-                            DBTV.PosterPath = .Poster.WebImage.SaveAsTVShowPoster(DBTV)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVShowPoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFile) Then
+                            .Poster.WebImage.FromFile(DBElement.ImagesContainer.Poster.LocalFile)
+                            DBElement.ImagesContainer.Poster.LocalFile = .Poster.WebImage.SaveAsTVShowPoster(DBElement)
                         Else
-                            Images.DeleteTVShowPoster(DBTV)
-                            DBTV.PosterPath = String.Empty
-                        End If
-                End Select
-            End With
-        End Sub
-
-        Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByRef Type As Enums.ContentType)
-            With DBElement.ImagesContainer
-
-                Select Case Type
-                    Case Enums.ContentType.MovieSet
-
-                        'Banner
-                        If .Banner.WebImage.Image IsNot Nothing Then
-                            DBElement.BannerPath = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
-                            .Banner.WebImage.FromWeb(.Banner.URL)
-                            DBElement.BannerPath = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.BannerPath) Then
-                            .Banner.WebImage.FromFile(DBElement.BannerPath)
-                            DBElement.BannerPath = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
-                        Else
-                            Images.DeleteMovieSetBanner(DBElement)
-                            DBElement.BannerPath = String.Empty
-                        End If
-
-                        'Show ClearArt
-                        If .ClearArt.WebImage.Image IsNot Nothing Then
-                            DBElement.ClearArtPath = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URL) Then
-                            .ClearArt.WebImage.FromWeb(.ClearArt.URL)
-                            DBElement.ClearArtPath = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.ClearArtPath) Then
-                            .ClearArt.WebImage.FromFile(DBElement.ClearArtPath)
-                            DBElement.ClearArtPath = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
-                        Else
-                            Images.DeleteMovieSetClearArt(DBElement)
-                            DBElement.ClearArtPath = String.Empty
-                        End If
-
-                        'Show ClearLogo
-                        If .ClearLogo.WebImage.Image IsNot Nothing Then
-                            DBElement.ClearLogoPath = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URL) Then
-                            .ClearLogo.WebImage.FromWeb(.ClearLogo.URL)
-                            DBElement.ClearLogoPath = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.ClearLogoPath) Then
-                            .ClearLogo.WebImage.FromFile(DBElement.ClearLogoPath)
-                            DBElement.ClearLogoPath = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
-                        Else
-                            Images.DeleteMovieSetClearLogo(DBElement)
-                            DBElement.ClearLogoPath = String.Empty
-                        End If
-
-                        'DiscArt
-                        If .DiscArt.WebImage.Image IsNot Nothing Then
-                            DBElement.DiscArtPath = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.DiscArt.URL) Then
-                            .DiscArt.WebImage.FromWeb(.DiscArt.URL)
-                            DBElement.DiscArtPath = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.DiscArtPath) Then
-                            .DiscArt.WebImage.FromFile(DBElement.DiscArtPath)
-                            DBElement.DiscArtPath = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
-                        Else
-                            Images.DeleteMovieSetDiscArt(DBElement)
-                            DBElement.DiscArtPath = String.Empty
-                        End If
-
-                        'Fanart
-                        If .Fanart.WebImage.Image IsNot Nothing Then
-                            DBElement.FanartPath = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
-                            .Fanart.WebImage.FromWeb(.Fanart.URL)
-                            DBElement.FanartPath = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.FanartPath) Then
-                            .Fanart.WebImage.FromFile(DBElement.FanartPath)
-                            DBElement.FanartPath = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
-                        Else
-                            Images.DeleteMovieSetFanart(DBElement)
-                            DBElement.FanartPath = String.Empty
-                        End If
-
-                        'Landscape
-                        If .Landscape.WebImage.Image IsNot Nothing Then
-                            DBElement.LandscapePath = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
-                            .Landscape.WebImage.FromWeb(.Landscape.URL)
-                            DBElement.LandscapePath = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.LandscapePath) Then
-                            .Landscape.WebImage.FromFile(DBElement.LandscapePath)
-                            DBElement.LandscapePath = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
-                        Else
-                            Images.DeleteMovieSetLandscape(DBElement)
-                            DBElement.LandscapePath = String.Empty
-                        End If
-
-                        'Poster
-                        If .Poster.WebImage.Image IsNot Nothing Then
-                            DBElement.PosterPath = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
-                            .Poster.WebImage.FromWeb(.Poster.URL)
-                            DBElement.PosterPath = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(DBElement.PosterPath) Then
-                            .Poster.WebImage.FromFile(DBElement.PosterPath)
-                            DBElement.PosterPath = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
-                        Else
-                            Images.DeleteMovieSetPoster(DBElement)
-                            DBElement.PosterPath = String.Empty
+                            Images.DeleteTVShowPoster(DBElement)
+                            DBElement.ImagesContainer.Poster = New Image
                         End If
                 End Select
             End With
@@ -4163,212 +4256,7 @@ Namespace MediaContainers
     End Class
 
     <Serializable()> _
-    Public Class SearchResultsContainer_Movie_MovieSet
-
-#Region "Fields"
-
-        Private _banners As New List(Of Image)
-        Private _characterarts As New List(Of Image)
-        Private _cleararts As New List(Of Image)
-        Private _clearlogos As New List(Of Image)
-        Private _discarts As New List(Of Image)
-        Private _fanarts As New List(Of Image)
-        Private _landscapes As New List(Of Image)
-        Private _posters As New List(Of Image)
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Banners() As List(Of Image)
-            Get
-                Return Me._banners
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._banners = value
-            End Set
-        End Property
-
-        Public Property CharacterArts() As List(Of Image)
-            Get
-                Return Me._characterarts
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._characterarts = value
-            End Set
-        End Property
-
-        Public Property ClearArts() As List(Of Image)
-            Get
-                Return Me._cleararts
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._cleararts = value
-            End Set
-        End Property
-
-        Public Property ClearLogos() As List(Of Image)
-            Get
-                Return Me._clearlogos
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._clearlogos = value
-            End Set
-        End Property
-
-        Public Property DiscArts() As List(Of Image)
-            Get
-                Return Me._discarts
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._discarts = value
-            End Set
-        End Property
-
-        Public Property Fanarts() As List(Of Image)
-            Get
-                Return Me._fanarts
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._fanarts = value
-            End Set
-        End Property
-
-        Public Property Landscapes() As List(Of Image)
-            Get
-                Return Me._landscapes
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._landscapes = value
-            End Set
-        End Property
-
-        Public Property Posters() As List(Of Image)
-            Get
-                Return Me._posters
-            End Get
-            Set(ByVal value As List(Of Image))
-                Me._posters = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._banners.Clear()
-            Me._characterarts.Clear()
-            Me._cleararts.Clear()
-            Me._clearlogos.Clear()
-            Me._discarts.Clear()
-            Me._fanarts.Clear()
-            Me._landscapes.Clear()
-            Me._posters.Clear()
-        End Sub
-
-        Public Sub Sort(ByRef ContentType As Enums.ContentType)
-            Dim cSettings As New Settings
-
-            Select Case ContentType
-                Case Enums.ContentType.Movie
-                    cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
-                    cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
-                    cSettings.PrefLanguage = Master.eSettings.MovieImagesPrefLanguage
-                    cSettings.PrefLanguageOnly = Master.eSettings.MovieImagesPrefLanguageOnly
-                Case Enums.ContentType.MovieSet
-                    cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
-                    cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
-                    cSettings.PrefLanguage = Master.eSettings.MovieSetImagesPrefLanguage
-                    cSettings.PrefLanguageOnly = Master.eSettings.MovieSetImagesPrefLanguageOnly
-            End Select
-
-            'sort all List(Of Image) by Image.ShortLang
-            Me._banners.Sort()
-            Me._characterarts.Sort()
-            Me._cleararts.Sort()
-            Me._clearlogos.Sort()
-            Me._discarts.Sort()
-            Me._fanarts.Sort()
-            Me._landscapes.Sort()
-            Me._posters.Sort()
-
-            'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
-            'Fanarts are not filtered, most of all have no language specification
-            Me._banners = SortImages(Me._banners, cSettings)
-            Me._characterarts = SortImages(Me._characterarts, cSettings)
-            Me._cleararts = SortImages(Me._cleararts, cSettings)
-            Me._clearlogos = SortImages(Me._clearlogos, cSettings)
-            Me._discarts = SortImages(Me._discarts, cSettings)
-            Me._landscapes = SortImages(Me._landscapes, cSettings)
-            Me._posters = SortImages(Me._posters, cSettings)
-        End Sub
-
-        Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
-            Dim SortedList As New List(Of Image)
-
-            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.PrefLanguage)
-                SortedList.Add(tmpImage)
-            Next
-
-            If (cSettings.GetEnglishImages OrElse Not cSettings.PrefLanguageOnly) AndAlso Not cSettings.PrefLanguage = "en" Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
-                    SortedList.Add(tmpImage)
-                Next
-            End If
-
-            If cSettings.GetBlankImages OrElse Not cSettings.PrefLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
-                    SortedList.Add(tmpImage)
-                Next
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
-                    SortedList.Add(tmpImage)
-                Next
-            End If
-
-            If Not cSettings.PrefLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.PrefLanguage OrElse _
-                                                                   Not f.ShortLang = "en" OrElse _
-                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") OrElse _
-                                                                   Not f.ShortLang = String.Empty)
-                    SortedList.Add(tmpImage)
-                Next
-            End If
-
-            Return SortedList
-        End Function
-
-#End Region 'Methods
-
-#Region "Nested Types"
-
-        Private Structure Settings
-
-#Region "Fields"
-
-            Dim GetBlankImages As Boolean
-            Dim GetEnglishImages As Boolean
-            Dim PrefLanguage As String
-            Dim PrefLanguageOnly As Boolean
-
-#End Region 'Fields
-
-        End Structure
-
-#End Region 'Nested Types
-
-    End Class
-
-    <Serializable()> _
-    Public Class SearchResultsContainer_TV
+    Public Class SearchResultsContainer
 
 #Region "Fields"
 
@@ -4378,13 +4266,14 @@ Namespace MediaContainers
         Private _seasonfanarts As New List(Of Image)
         Private _seasonlandscapes As New List(Of Image)
         Private _seasonposters As New List(Of Image)
-        Private _showbanners As New List(Of Image)
-        Private _showcharacterarts As New List(Of Image)
-        Private _showcleararts As New List(Of Image)
-        Private _showclearlogos As New List(Of Image)
-        Private _showfanarts As New List(Of Image)
-        Private _showlandscapes As New List(Of Image)
-        Private _showposters As New List(Of Image)
+        Private _mainbanners As New List(Of Image)
+        Private _maincharacterarts As New List(Of Image)
+        Private _maincleararts As New List(Of Image)
+        Private _mainclearlogos As New List(Of Image)
+        Private _maindiscarts As New List(Of Image)
+        Private _mainfanarts As New List(Of Image)
+        Private _mainlandscapes As New List(Of Image)
+        Private _mainposters As New List(Of Image)
 
 #End Region 'Fields
 
@@ -4452,66 +4341,75 @@ Namespace MediaContainers
             End Set
         End Property
 
-        Public Property ShowBanners() As List(Of Image)
+        Public Property MainBanners() As List(Of Image)
             Get
-                Return Me._showbanners
+                Return Me._mainbanners
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showbanners = value
+                Me._mainbanners = value
             End Set
         End Property
 
-        Public Property ShowCharacterArts() As List(Of Image)
+        Public Property MainCharacterArts() As List(Of Image)
             Get
-                Return Me._showcharacterarts
+                Return Me._maincharacterarts
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showcharacterarts = value
+                Me._maincharacterarts = value
             End Set
         End Property
 
-        Public Property ShowClearArts() As List(Of Image)
+        Public Property MainClearArts() As List(Of Image)
             Get
-                Return Me._showcleararts
+                Return Me._maincleararts
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showcleararts = value
+                Me._maincleararts = value
             End Set
         End Property
 
-        Public Property ShowClearLogos() As List(Of Image)
+        Public Property MainClearLogos() As List(Of Image)
             Get
-                Return Me._showclearlogos
+                Return Me._mainclearlogos
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showclearlogos = value
+                Me._mainclearlogos = value
             End Set
         End Property
 
-        Public Property ShowFanarts() As List(Of Image)
+        Public Property MainDiscArts() As List(Of Image)
             Get
-                Return Me._showfanarts
+                Return Me._maindiscarts
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showfanarts = value
+                Me._maindiscarts = value
             End Set
         End Property
 
-        Public Property ShowLandscapes() As List(Of Image)
+        Public Property MainFanarts() As List(Of Image)
             Get
-                Return Me._showlandscapes
+                Return Me._mainfanarts
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showlandscapes = value
+                Me._mainfanarts = value
             End Set
         End Property
 
-        Public Property ShowPosters() As List(Of Image)
+        Public Property MainLandscapes() As List(Of Image)
             Get
-                Return Me._showposters
+                Return Me._mainlandscapes
             End Get
             Set(ByVal value As List(Of Image))
-                Me._showposters = value
+                Me._mainlandscapes = value
+            End Set
+        End Property
+
+        Public Property MainPosters() As List(Of Image)
+            Get
+                Return Me._mainposters
+            End Get
+            Set(ByVal value As List(Of Image))
+                Me._mainposters = value
             End Set
         End Property
 
@@ -4526,21 +4424,36 @@ Namespace MediaContainers
             Me._seasonfanarts.Clear()
             Me._seasonlandscapes.Clear()
             Me._seasonposters.Clear()
-            Me._showbanners.Clear()
-            Me._showcharacterarts.Clear()
-            Me._showcleararts.Clear()
-            Me._showclearlogos.Clear()
-            Me._showfanarts.Clear()
-            Me._showlandscapes.Clear()
-            Me._showposters.Clear()
+            Me._mainbanners.Clear()
+            Me._maincharacterarts.Clear()
+            Me._maincleararts.Clear()
+            Me._mainclearlogos.Clear()
+            Me._maindiscarts.Clear()
+            Me._mainfanarts.Clear()
+            Me._mainlandscapes.Clear()
+            Me._mainposters.Clear()
         End Sub
 
-        Public Sub Sort()
+        Public Sub Sort(ByRef ContentType As Enums.ContentType)
             Dim cSettings As New Settings
-            cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
-            cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
-            cSettings.PrefLanguage = Master.eSettings.TVImagesPrefLanguage
-            cSettings.PrefLanguageOnly = Master.eSettings.TVImagesPrefLanguageOnly
+
+            Select Case ContentType
+                Case Enums.ContentType.Movie
+                    cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
+                    cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
+                    cSettings.PrefLanguage = Master.eSettings.MovieImagesPrefLanguage
+                    cSettings.PrefLanguageOnly = Master.eSettings.MovieImagesPrefLanguageOnly
+                Case Enums.ContentType.MovieSet
+                    cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
+                    cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
+                    cSettings.PrefLanguage = Master.eSettings.MovieSetImagesPrefLanguage
+                    cSettings.PrefLanguageOnly = Master.eSettings.MovieSetImagesPrefLanguageOnly
+                Case Enums.ContentType.TV
+                    cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
+                    cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
+                    cSettings.PrefLanguage = Master.eSettings.TVImagesPrefLanguage
+                    cSettings.PrefLanguageOnly = Master.eSettings.TVImagesPrefLanguageOnly
+            End Select
 
             'sort all List(Of Image) by Image.ShortLang
             Me._episodefanarts.Sort()
@@ -4549,13 +4462,14 @@ Namespace MediaContainers
             Me._seasonfanarts.Sort()
             Me._seasonlandscapes.Sort()
             Me._seasonposters.Sort()
-            Me._showbanners.Sort()
-            Me._showcharacterarts.Sort()
-            Me._showcleararts.Sort()
-            Me._showclearlogos.Sort()
-            Me._showfanarts.Sort()
-            Me._showlandscapes.Sort()
-            Me._showposters.Sort()
+            Me._mainbanners.Sort()
+            Me._maincharacterarts.Sort()
+            Me._maincleararts.Sort()
+            Me._mainclearlogos.Sort()
+            Me._maindiscarts.Sort()
+            Me._mainfanarts.Sort()
+            Me._mainlandscapes.Sort()
+            Me._mainposters.Sort()
 
             'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
             'Fanarts are not filtered, most of all have no language specification
@@ -4563,12 +4477,13 @@ Namespace MediaContainers
             Me._seasonbanners = SortImages(Me._seasonbanners, cSettings)
             Me._seasonlandscapes = SortImages(Me._seasonlandscapes, cSettings)
             Me._seasonposters = SortImages(Me._seasonposters, cSettings)
-            Me._showbanners = SortImages(Me._showbanners, cSettings)
-            Me._showcharacterarts = SortImages(Me._showcharacterarts, cSettings)
-            Me._showcleararts = SortImages(Me._showcleararts, cSettings)
-            Me._showclearlogos = SortImages(Me._showclearlogos, cSettings)
-            Me._showlandscapes = SortImages(Me._showlandscapes, cSettings)
-            Me._showposters = SortImages(Me._showposters, cSettings)
+            Me._mainbanners = SortImages(Me._mainbanners, cSettings)
+            Me._maincharacterarts = SortImages(Me._maincharacterarts, cSettings)
+            Me._maincleararts = SortImages(Me._maincleararts, cSettings)
+            Me._mainclearlogos = SortImages(Me._mainclearlogos, cSettings)
+            Me._maindiscarts = SortImages(Me._maincleararts, cSettings)
+            Me._mainlandscapes = SortImages(Me._mainlandscapes, cSettings)
+            Me._mainposters = SortImages(Me._mainposters, cSettings)
         End Sub
 
         Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)

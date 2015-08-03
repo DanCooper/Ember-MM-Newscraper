@@ -321,7 +321,7 @@ Namespace FileUtils
             Return True
         End Function
 
-        Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Structures.DBTV, ByVal showMessage As Boolean) As Boolean
+        Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbTV.Filename)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
@@ -337,7 +337,7 @@ Namespace FileUtils
             Return True
         End Function
 
-        Public Shared Function CheckOnlineStatus_TVShow(ByRef dbTV As Structures.DBTV, ByVal showMessage As Boolean) As Boolean
+        Public Shared Function CheckOnlineStatus_TVShow(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not Directory.Exists(dbTV.ShowPath)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
@@ -468,7 +468,7 @@ Namespace FileUtils
             End Try
         End Sub
 
-        'Public Function GetItemsToDelete_Episode(ByVal isCleaner As Boolean, ByVal mEpisode As Structures.DBTV) As List(Of IO.FileSystemInfo)
+        'Public Function GetItemsToDelete_Episode(ByVal isCleaner As Boolean, ByVal mEpisode As Database.DBElement) As List(Of IO.FileSystemInfo)
         '    Dim ItemsToDelete As New List(Of FileSystemInfo)
         '    Dim fScanner As New Scanner
 
@@ -524,7 +524,7 @@ Namespace FileUtils
                 Else
 
                     If Not isCleaner Then
-                        Dim fPath As String = mMovie.FanartPath
+                        Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFile
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                             If Common.isVideoTS(fPath) Then

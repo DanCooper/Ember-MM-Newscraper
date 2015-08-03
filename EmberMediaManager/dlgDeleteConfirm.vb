@@ -212,7 +212,7 @@ Public Class dlgDeleteConfirm
                             If hadError Then .Nodes.Remove(ItemParentNode)
                         Next
                     Case Enums.DelType.Shows
-                        Dim tShow As New Structures.DBTV
+                        Dim tShow As New Database.DBElement
 
                         For Each ShowID As Long In ItemsToDelete.Keys
                             hadError = False
@@ -231,7 +231,7 @@ Public Class dlgDeleteConfirm
                             End Try
                         Next
                     Case Enums.DelType.Seasons
-                        Dim tSeason As New Structures.DBTV
+                        Dim tSeason As New Database.DBElement
 
                         Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             For Each Season As KeyValuePair(Of Long, Long) In ItemsToDelete
@@ -296,14 +296,14 @@ Public Class dlgDeleteConfirm
                             Next
                         End Using
                     Case Enums.DelType.Episodes
-                        Dim tEp As New Structures.DBTV
+                        Dim tEp As New Database.DBElement
 
                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             For Each Ep As Long In ItemsToDelete.Keys
                                 hadError = False
 
                                 tEp = Master.DB.LoadTVEpFromDB(Ep, True)
-                                ItemParentNode = .Nodes.Add(Ep.ToString, tEp.TVEp.Title)
+                                ItemParentNode = .Nodes.Add(Ep.ToString, tEp.TVEpisode.Title)
                                 ItemParentNode.ImageKey = "MOVIE"
                                 ItemParentNode.SelectedImageKey = "MOVIE"
                                 ItemParentNode.Tag = Ep

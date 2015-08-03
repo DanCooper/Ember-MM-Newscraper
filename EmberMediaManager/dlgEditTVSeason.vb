@@ -27,14 +27,13 @@ Public Class dlgEditTVSeason
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-
-    Private tmpDBTVSeason As New Structures.DBTV
+    Private tmpDBTVSeason As New Database.DBElement
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As Structures.DBTV
+    Public ReadOnly Property Result As Database.DBElement
         Get
             Return tmpDBTVSeason
         End Get
@@ -52,7 +51,7 @@ Public Class dlgEditTVSeason
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBTVSeason As Structures.DBTV) As DialogResult
+    Public Overloads Function ShowDialog(ByVal DBTVSeason As Database.DBElement) As DialogResult
         Me.tmpDBTVSeason = DBTVSeason
         Return MyBase.ShowDialog()
     End Function
@@ -61,28 +60,24 @@ Public Class dlgEditTVSeason
         Me.pbSeasonBanner.Image = Nothing
         Me.pbSeasonBanner.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Banner = New MediaContainers.Image
-        Me.tmpDBTVSeason.BannerPath = String.Empty
     End Sub
 
     Private Sub btnRemoveSeasonFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonFanart.Click
         Me.pbSeasonFanart.Image = Nothing
         Me.pbSeasonFanart.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Fanart = New MediaContainers.Image
-        Me.tmpDBTVSeason.FanartPath = String.Empty
     End Sub
 
     Private Sub btnRemoveSeasonLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonLandscape.Click
         Me.pbSeasonLandscape.Image = Nothing
         Me.pbSeasonLandscape.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Landscape = New MediaContainers.Image
-        Me.tmpDBTVSeason.LandscapePath = String.Empty
     End Sub
 
     Private Sub btnRemoveSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonPoster.Click
         Me.pbSeasonPoster.Image = Nothing
         Me.pbSeasonPoster.Tag = Nothing
         Me.tmpDBTVSeason.ImagesContainer.Poster = New MediaContainers.Image
-        Me.tmpDBTVSeason.PosterPath = String.Empty
     End Sub
 
     Private Sub btnSetSeasonBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerDL.Click
