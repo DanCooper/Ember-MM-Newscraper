@@ -2769,41 +2769,51 @@ Public Class Images
     End Function
 
     Public Shared Sub SetDefaultImages(ByRef DBElement As Database.DBElement, _
-                                          ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
-                                          ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, _
-                                          ByRef ScrapeModifier As Structures.ScrapeModifier, _
-                                          ByRef ContentType As Enums.ContentType)
+                                       ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
+                                       ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, _
+                                       ByRef ScrapeModifier As Structures.ScrapeModifier, _
+                                       ByRef ContentType As Enums.ContentType, _
+                                       Optional ByRef DefaultSeasonImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing, _
+                                       Optional ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing)
 
-        Dim DoBanner As Boolean = False
-        Dim DoCharacterArt As Boolean = False
-        Dim DoClearArt As Boolean = False
-        Dim DoClearLogo As Boolean = False
-        Dim DoDiscArt As Boolean = False
-        Dim DoFanart As Boolean = False
-        Dim DoLandscape As Boolean = False
-        Dim DoPoster As Boolean = False
+        Dim DoMainBanner As Boolean = False
+        Dim DoMainCharacterArt As Boolean = False
+        Dim DoMainClearArt As Boolean = False
+        Dim DoMainClearLogo As Boolean = False
+        Dim DoMainDiscArt As Boolean = False
+        Dim DoMainFanart As Boolean = False
+        Dim DoMainLandscape As Boolean = False
+        Dim DoMainPoster As Boolean = False
 
         Select Case ContentType
             Case Enums.ContentType.Movie
-                DoBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
-                DoClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
-                DoClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
-                DoDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
-                DoFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
-                DoLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
-                DoPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
+                DoMainBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
+                DoMainClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
+                DoMainClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
+                DoMainDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
+                DoMainFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
+                DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
+                DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
             Case Enums.ContentType.MovieSet
-                DoBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
-                DoClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
-                DoClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
-                DoDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
-                DoFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
-                DoLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
-                DoPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
+                DoMainBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
+                DoMainClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
+                DoMainClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
+                DoMainDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
+                DoMainFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
+                DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
+                DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
+            Case Enums.ContentType.TV
+                DoMainBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
+                DoMainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
+                DoMainClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
+                DoMainClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
+                DoMainFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
+                DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
         End Select
 
-        'Banner
-        If DoBanner Then
+        'Main Banner
+        If DoMainBanner Then
             If DBElement.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
             Else
@@ -2814,6 +2824,8 @@ Public Class Images
                         Images.GetPreferredMovieBanner(SearchResultsContainer.MainBanners, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetBanner(SearchResultsContainer.MainBanners, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2823,8 +2835,27 @@ Public Class Images
             End If
         End If
 
-        'ClearArt
-        If DoClearArt Then
+        'Main CharacterArt
+        If DoMainClearArt Then
+            If DBElement.ImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.CharacterArt = DBElement.ImagesContainer.CharacterArt
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowCharacterArt(SearchResultsContainer.MainCharacterArts, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.CharacterArt = defImg
+                    DefaultImagesContainer.CharacterArt = defImg
+                End If
+            End If
+        End If
+
+        'Main ClearArt
+        If DoMainClearArt Then
             If DBElement.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearArt = DBElement.ImagesContainer.ClearArt
             Else
@@ -2835,6 +2866,8 @@ Public Class Images
                         Images.GetPreferredMovieClearArt(SearchResultsContainer.MainClearArts, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetClearArt(SearchResultsContainer.MainClearArts, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowClearArt(SearchResultsContainer.MainClearArts, defImg)
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2844,8 +2877,8 @@ Public Class Images
             End If
         End If
 
-        'ClearLogo
-        If DoClearLogo Then
+        'Main ClearLogo
+        If DoMainClearLogo Then
             If DBElement.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearLogo = DBElement.ImagesContainer.ClearLogo
             Else
@@ -2856,6 +2889,8 @@ Public Class Images
                         Images.GetPreferredMovieClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetClearLogo(SearchResultsContainer.MainClearLogos, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2865,8 +2900,8 @@ Public Class Images
             End If
         End If
 
-        'DiscArt
-        If DoDiscArt Then
+        'Main DiscArt
+        If DoMainDiscArt Then
             If DBElement.ImagesContainer.DiscArt.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
             Else
@@ -2886,8 +2921,8 @@ Public Class Images
             End If
         End If
 
-        'Fanart
-        If DoFanart Then
+        'Main Fanart
+        If DoMainFanart Then
             If DBElement.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Fanart = DBElement.ImagesContainer.Fanart
             Else
@@ -2898,6 +2933,8 @@ Public Class Images
                         Images.GetPreferredMovieFanart(SearchResultsContainer.MainFanarts, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetFanart(SearchResultsContainer.MainFanarts, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowFanart(SearchResultsContainer.MainFanarts, defImg)
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2907,8 +2944,8 @@ Public Class Images
             End If
         End If
 
-        'Landscape
-        If DoLandscape Then
+        'Main Landscape
+        If DoMainLandscape Then
             If DBElement.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Landscape = DBElement.ImagesContainer.Landscape
             Else
@@ -2919,6 +2956,8 @@ Public Class Images
                         Images.GetPreferredMovieLandscape(SearchResultsContainer.MainLandscapes, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetLandscape(SearchResultsContainer.MainLandscapes, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowLandscape(SearchResultsContainer.MainLandscapes, defImg)
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2928,8 +2967,8 @@ Public Class Images
             End If
         End If
 
-        'Poster
-        If DoPoster Then
+        'Main Poster
+        If DoMainPoster Then
             If DBElement.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
                 DefaultImagesContainer.Poster = DBElement.ImagesContainer.Poster
             Else
@@ -2940,6 +2979,8 @@ Public Class Images
                         Images.GetPreferredMoviePoster(SearchResultsContainer.MainPosters, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetPoster(SearchResultsContainer.MainPosters, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowPoster(SearchResultsContainer.MainPosters, defImg)
                 End Select
 
                 If defImg IsNot Nothing Then
