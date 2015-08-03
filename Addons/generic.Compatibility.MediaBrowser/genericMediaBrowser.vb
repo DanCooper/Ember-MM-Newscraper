@@ -130,23 +130,23 @@ Public Class genericMediaBrowser
         End Using
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Structures.DBMovieSet) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
         Dim doContinue As Boolean
-        Dim mMovie As Structures.DBMovie
+        Dim mMovie As Database.DBElement
         Dim _image As Images
         If Enabled Then
             Try
                 Select Case mType
                     Case Enums.ModuleEventType.OnNFOSave_Movie
                         If clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False) Then
-                            mMovie = DirectCast(_params(0), Structures.DBMovie)
+                            mMovie = DirectCast(_params(0), Database.DBElement)
                             doContinue = DirectCast(_refparam, Boolean)
                             XMLmymovies.SaveMovieDB(mMovie)
                             _refparam = doContinue
                         End If
                     Case Enums.ModuleEventType.OnFanartSave_Movie
                         If clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False) Then
-                            mMovie = DirectCast(_params(0), Structures.DBMovie)
+                            mMovie = DirectCast(_params(0), Database.DBElement)
                             _image = DirectCast(_refparam, Images)
                             Dim fPath As String = Path.Combine(Path.GetDirectoryName(mMovie.Filename), "backdrop.jpg")
                             Dim eimage As New Images
@@ -630,7 +630,7 @@ Public Class genericMediaBrowser
             Public Language As String
         End Class
 
-        Public Shared Function GetFromMovieDB(ByVal movie As Structures.DBMovie) As XMLmymovies
+        Public Shared Function GetFromMovieDB(ByVal movie As Database.DBElement) As XMLmymovies
             Dim myself As New XMLmymovies
             myself.ForcedTitle = String.Empty
             myself.CDUniverseId = String.Empty
@@ -657,7 +657,7 @@ Public Class genericMediaBrowser
             Return myself
         End Function
 
-        Public Shared Sub SaveMovieDB(ByVal movie As Structures.DBMovie, Optional ByVal tpath As String = "")
+        Public Shared Sub SaveMovieDB(ByVal movie As Database.DBElement, Optional ByVal tpath As String = "")
             Dim myself As XMLmymovies = GetFromMovieDB(movie)
             Dim xmlSer As New XmlSerializer(GetType(XMLmymovies))
             If tpath = String.Empty Then

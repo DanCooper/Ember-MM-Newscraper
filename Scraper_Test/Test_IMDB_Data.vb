@@ -34,8 +34,8 @@ Namespace EmberTests
     ''' <summary>
     ''' As an implementation of <c>EmberMovieScraperModule_Data</c>, at a minimum these tests should test the following interface items:
     ''' <code>
-    '''    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
-    '''    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
+    '''    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef sStudio As List(Of String)) As ModuleResult
+    '''    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
     ''' </code>
     ''' </summary>
     ''' <remarks></remarks>
@@ -194,7 +194,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub Test_IMDB_Data_GetMovieStudio_NothingDBMovie()
             'Arrange
-            Dim movie As Structures.DBMovie = Nothing
+            Dim movie As Database.DBElement = Nothing
             Dim studio As List(Of String) = New List(Of String)
 
             Dim provider As ScraperModule_Data_Movie = GetProvider()
@@ -212,7 +212,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub Test_IMDB_Data_GetMovieStudio_NothingMovie()
             'Arrange
-            Dim movie As Structures.DBMovie = New Structures.DBMovie()
+            Dim movie As Database.DBElement = New Database.DBElement()
             'Note that no movie.Movie is not defined
             Dim studio As List(Of String) = New List(Of String)
 
@@ -231,7 +231,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub Test_IMDB_Data_GetMovieStudio_EmptyMovieID()
             'Arrange
-            Dim movie As Structures.DBMovie = New Structures.DBMovie()
+            Dim movie As Database.DBElement = New Database.DBElement()
             movie.Movie = New MediaContainers.Movie()
             ' In this test, the Movie object is created, but no ID is assigned
             '            movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
@@ -256,7 +256,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub Test_IMDB_Data_GetMovieStudio_NothingStudio()
             'Arrange
-            Dim movie As Structures.DBMovie = New Structures.DBMovie()
+            Dim movie As Database.DBElement = New Database.DBElement()
             movie.Movie = New MediaContainers.Movie()
             movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
             Dim studio As List(Of String) = Nothing
@@ -284,7 +284,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub Test_IMDB_Data_GetMovieStudio_FullStudio()
             'Arrange
-            Dim movie As Structures.DBMovie = New Structures.DBMovie()
+            Dim movie As Database.DBElement = New Database.DBElement()
             movie.Movie = New MediaContainers.Movie()
             movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
             Dim studio As List(Of String) = New List(Of String)
@@ -322,7 +322,7 @@ Namespace EmberTests
         Public Sub Test_IMDB_Data_GetMovieStudio_MovieDoesNotExist()
             'TODO 2013/12/19 Dekker500 - This test should be changed. Wouldn't you expect a non-exsistant movie to generate a "Cancelled"?
             'Arrange
-            Dim movie As Structures.DBMovie = New Structures.DBMovie()
+            Dim movie As Database.DBElement = New Database.DBElement()
             movie.Movie = New MediaContainers.Movie()
             movie.Movie.IMDBID = 9194884    'This movie does not exist at IMDB
             Dim studio As List(Of String) = New List(Of String)
@@ -346,7 +346,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub Test_IMDB_Data_Scraper_HappyDay()
             'Arrange
-            Dim movie As Structures.DBMovie = New Structures.DBMovie()
+            Dim movie As Database.DBElement = New Database.DBElement()
             movie.Movie = New MediaContainers.Movie()
             movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
             Dim scrapeType As ScrapeType = Enums.ScrapeType.SingleScrape
@@ -360,7 +360,7 @@ Namespace EmberTests
             Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
-            '   Dim mmovie As Structures.DBMovie = Nothing
+            '   Dim mmovie As Database.DBElement = Nothing
             Dim mmovie As MediaContainers.Movie = Nothing
             Dim result As Interfaces.ModuleResult = provider.Scraper(movie, mmovie, ScrapeModifier, scrapeType, options)
 

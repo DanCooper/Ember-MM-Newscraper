@@ -76,7 +76,7 @@ Public Class MediaInfo
         Return Nothing
     End Function
 
-    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Structures.DBMovie)
+    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Database.DBElement)
         Try
             'DON'T clear it out
             'miMovie.Movie.FileInfo = New MediaInfo.Fileinfo

@@ -305,7 +305,7 @@ Namespace FileUtils
             End Try
         End Sub
 
-        Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Structures.DBMovie, ByVal showMessage As Boolean) As Boolean
+        Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbMovie.Filename)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
@@ -484,7 +484,7 @@ Namespace FileUtils
         ''' <param name="mMovie">DBMovie object to get paths from</param>        
         ''' <returns><c>True</c> if files were found that are to be deleted, <c>False</c> if not.</returns>
         ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
-        Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Structures.DBMovie) As List(Of IO.FileSystemInfo)
+        Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Database.DBElement) As List(Of IO.FileSystemInfo)
             Dim dPath As String = String.Empty
             Dim ItemsToDelete As New List(Of FileSystemInfo)
             Dim fScanner As New Scanner

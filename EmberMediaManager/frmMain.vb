@@ -1663,14 +1663,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner.FromFile(Master.currMovieSet.BannerPath)
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovieSet.ClearArtPath)
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo.FromFile(Master.currMovieSet.ClearLogoPath)
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt.FromFile(Master.currMovieSet.DiscArtPath)
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovieSet.FanartPath)
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovieSet.FanartPath)
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovieSet.LandscapePath)
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovieSet.PosterPath)
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovieSet.ImagesContainer.Banner.WebImage
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovieSet.ImagesContainer.ClearArt.WebImage
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovieSet.ImagesContainer.ClearLogo.WebImage
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovieSet.ImagesContainer.DiscArt.WebImage
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovieSet.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovieSet.ImagesContainer.Fanart.WebImage
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovieSet.ImagesContainer.Landscape.WebImage
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovieSet.ImagesContainer.Poster.WebImage
         'read nfo if it's there
 
         If bwLoadMovieSetInfo.CancellationPending Then
@@ -1701,9 +1701,9 @@ Public Class frmMain
         Dim Posters As New List(Of MovieInSetPoster)
 
         Try
-            If Master.currMovieSet.Movies IsNot Nothing AndAlso Master.currMovieSet.Movies.Count > 0 Then
+            If Master.currMovieSet.MovieList IsNot Nothing AndAlso Master.currMovieSet.MovieList.Count > 0 Then
                 Try
-                    For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
+                    For Each Movie As Database.DBElement In Master.currMovieSet.MovieList
                         If bwLoadMovieSetPosters.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -2011,7 +2011,7 @@ Public Class frmMain
     Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeMovie As New Structures.DBMovie
+        Dim DBScrapeMovie As New Database.DBElement
 
         logger.Trace("Starting MOVIE scrape")
 
@@ -2082,18 +2082,18 @@ Public Class frmMain
 
                 'remove all images/other content if needed and scrapeType is not SingleScrape (SingleScrape do remove that in Edit Movie" window)
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    If DBScrapeMovie.RemoveActorThumbs Then Images.DeleteMovieActorThumbs(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveBanner Then Images.DeleteMovieBanner(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveClearArt Then Images.DeleteMovieClearArt(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveClearLogo Then Images.DeleteMovieClearLogo(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveDiscArt Then Images.DeleteMovieDiscArt(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveEFanarts Then Images.DeleteMovieEFanarts(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveEThumbs Then Images.DeleteMovieEThumbs(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveFanart Then Images.DeleteMovieFanart(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveLandscape Then Images.DeleteMovieLandscape(DBScrapeMovie)
-                    If DBScrapeMovie.RemovePoster Then Images.DeleteMoviePoster(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveTheme Then Themes.DeleteMovieTheme(DBScrapeMovie)
-                    If DBScrapeMovie.RemoveTrailer Then Trailers.DeleteMovieTrailer(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveActorThumbs Then Images.DeleteMovieActorThumbs(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveBanner Then Images.DeleteMovieBanner(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveClearArt Then Images.DeleteMovieClearArt(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveClearLogo Then Images.DeleteMovieClearLogo(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveDiscArt Then Images.DeleteMovieDiscArt(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveEFanarts Then Images.DeleteMovieEFanarts(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveEThumbs Then Images.DeleteMovieEThumbs(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveFanart Then Images.DeleteMovieFanart(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveLandscape Then Images.DeleteMovieLandscape(DBScrapeMovie)
+                    'If DBScrapeMovie.RemovePoster Then Images.DeleteMoviePoster(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveTheme Then Themes.DeleteMovieTheme(DBScrapeMovie)
+                    'If DBScrapeMovie.RemoveTrailer Then Trailers.DeleteMovieTrailer(DBScrapeMovie)
                 End If
 
                 'get all images
@@ -2103,7 +2103,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainPoster Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainPoster) Then
+                            If Poster.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainPoster) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMoviePoster(aContainer.Posters, Poster) Then
                                     If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                         Poster.WebImage.FromWeb(Poster.URL)
@@ -2157,7 +2157,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainFanart Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainFanart) Then
+                            If Fanart.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainFanart) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aContainer.Fanarts, Fanart) Then
                                     If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                         Fanart.WebImage.FromWeb(Fanart.URL)
@@ -2215,7 +2215,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainBanner Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Banner.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainBanner) Then
+                            If Banner.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainBanner) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieBanner(aContainer.Banners, Banner) Then
                                     If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0)
                                     If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
@@ -2270,7 +2270,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainLandscape Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainLandscape) Then
+                            If Landscape.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainLandscape) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                     If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0)
                                     If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
@@ -2319,7 +2319,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainClearArt Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainClearArt) Then
+                            If ClearArt.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainClearArt) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                     If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0)
                                     If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
@@ -2368,7 +2368,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainClearLogo Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainClearLogo) Then
+                            If ClearLogo.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainClearLogo) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                     If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0)
                                     If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
@@ -2417,7 +2417,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainDiscArt Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieImagesDisplayImageSelect) Then
-                            If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainDiscArt) Then
+                            If DiscArt.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainDiscArt) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                     If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0)
                                     If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
@@ -2571,7 +2571,7 @@ Public Class frmMain
                 'Extrathumbs
                 If Args.ScrapeModifier.MainEThumbs Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                        If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainEThumbs) Then
+                        If Fanart.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainEThumbs) Then
                             If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                                 etList = Images.GetPreferredMovieEThumbs(aContainer.Fanarts)
                                 If etList.Count > 0 Then
@@ -2601,7 +2601,7 @@ Public Class frmMain
                 'Extrafanarts
                 If Args.ScrapeModifier.MainEFanarts Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                        If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ModifierType.MainEFanarts) Then
+                        If Fanart.WebImage.IsAllowedToDownload_Movie(DBScrapeMovie, Enums.ModifierType.MainEFanarts) Then
                             If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                                 efList = Images.GetPreferredMovieEFanarts(aContainer.Fanarts)
                                 If efList.Count > 0 Then
@@ -2707,8 +2707,8 @@ Public Class frmMain
 
     Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Dim DBScrapeMovieSet As New Structures.DBMovieSet
-        Dim cloneMovieSet As New Structures.DBMovieSet
+        Dim DBScrapeMovieSet As New Database.DBElement
+        Dim cloneMovieSet As New Database.DBElement
 
         logger.Trace("Starting MOVIE SET scrape")
 
@@ -2843,7 +2843,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainPoster Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Poster.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainPoster) Then
+                            If Poster.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainPoster) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetPoster(aContainer.Posters, Poster) Then
                                     If Not String.IsNullOrEmpty(Poster.URL) AndAlso Poster.WebImage.Image Is Nothing Then
                                         Poster.WebImage.FromWeb(Poster.URL)
@@ -2897,7 +2897,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainFanart Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainFanart) Then
+                            If Fanart.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainFanart) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetFanart(aContainer.Fanarts, Fanart) Then
                                     If Not String.IsNullOrEmpty(Fanart.URL) AndAlso Fanart.WebImage.Image Is Nothing Then
                                         Fanart.WebImage.FromWeb(Fanart.URL)
@@ -2953,7 +2953,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainBanner Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Banner.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainBanner) Then
+                            If Banner.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainBanner) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieSetBanner(aContainer.Banners, Banner) Then
                                     If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0)
                                     If Not String.IsNullOrEmpty(Banner.URL) AndAlso Banner.WebImage.Image Is Nothing Then
@@ -3008,7 +3008,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainLandscape Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainLandscape) Then
+                            If Landscape.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainLandscape) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
                                     If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0)
                                     If Not String.IsNullOrEmpty(Landscape.URL) AndAlso Landscape.WebImage.Image Is Nothing Then
@@ -3057,7 +3057,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainClearArt Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainClearArt) Then
+                            If ClearArt.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainClearArt) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
                                     If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0)
                                     If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso ClearArt.WebImage.Image Is Nothing Then
@@ -3106,7 +3106,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainClearLogo Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainClearLogo) Then
+                            If ClearLogo.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainClearLogo) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
                                     If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0)
                                     If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso ClearLogo.WebImage.Image Is Nothing Then
@@ -3155,7 +3155,7 @@ Public Class frmMain
                     If Args.ScrapeModifier.MainDiscArt Then
                         tURL = String.Empty
                         If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Master.eSettings.MovieSetImagesDisplayImageSelect) Then
-                            If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovieSet, Enums.ModifierType.MainDiscArt) Then
+                            If DiscArt.WebImage.IsAllowedToDownload_MovieSet(DBScrapeMovieSet, Enums.ModifierType.MainDiscArt) Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
                                     If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0)
                                     If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso DiscArt.WebImage.Image Is Nothing Then
@@ -4729,7 +4729,7 @@ Public Class frmMain
     End Sub
 
     Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
-        Dim scrapeMovie As Structures.DBMovie
+        Dim scrapeMovie As Database.DBElement
         Dim iCount As Integer = 0
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -6353,7 +6353,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-        Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(ID)
+        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
         Edit_Movie(tmpDBMovie)
     End Sub
 
@@ -7208,14 +7208,14 @@ doCancel:
 
         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
-        Dim tmpDBMovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
 
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
         Me.dgvMovieSets.ClearSelection()
 
-        Dim tmpDBMovieSet = New Structures.DBMovieSet
+        Dim tmpDBMovieSet = New Database.DBElement
         tmpDBMovieSet.MovieSet = New MediaContainers.MovieSet
         tmpDBMovieSet.ID = -1
 
@@ -7810,7 +7810,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-        Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(ID)
+        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
         Edit_Movie(tmpDBMovie)
     End Sub
 
@@ -8188,7 +8188,7 @@ doCancel:
 
                 Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-                Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(ID)
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
                 Edit_Movie(tmpDBMovie)
             End If
         Catch ex As Exception
@@ -8337,7 +8337,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
-        Dim tmpDBMovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
 
@@ -8629,7 +8629,7 @@ doCancel:
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
             Master.currMovieSet = Master.DB.LoadMovieSetFromDB(ID)
             Me.SetStatus(Master.currMovieSet.ListTitle)
-            Dim tmpDBMovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+            Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
             Edit_MovieSet(tmpDBMovieSet)
         End If
     End Sub
@@ -9904,7 +9904,7 @@ doCancel:
         drow.ItemArray = v.ItemArray
     End Sub
 
-    Private Sub Edit_Movie(ByRef DBMovie As Structures.DBMovie)
+    Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement)
         Me.SetControlsEnabled(False)
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
             Using dEditMovie As New dlgEditMovie
@@ -9933,7 +9933,7 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet)
+    Private Sub Edit_MovieSet(ByRef DBMovieSet As Database.DBElement)
         Me.SetControlsEnabled(False)
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEditMovieSet
@@ -11190,8 +11190,8 @@ doCancel:
     Private Sub FillScreenInfoWith_MovieSet()
         Try
             Me.SuspendLayout()
-            If Master.currMovieSet.MovieSet.TitleSpecified AndAlso Master.currMovieSet.Movies IsNot Nothing AndAlso Master.currMovieSet.Movies.Count > 0 Then
-                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.MovieSet.Title, Master.currMovieSet.Movies.Count)
+            If Master.currMovieSet.MovieSet.TitleSpecified AndAlso Master.currMovieSet.MovieList IsNot Nothing AndAlso Master.currMovieSet.MovieList.Count > 0 Then
+                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.MovieSet.Title, Master.currMovieSet.MovieList.Count)
             ElseIf Master.currMovieSet.MovieSet.TitleSpecified Then
                 Me.lblTitle.Text = Master.currMovieSet.MovieSet.Title
             Else
@@ -11200,107 +11200,10 @@ doCancel:
 
             Me.txtPlot.Text = Master.currMovieSet.MovieSet.Plot
 
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> Master.currMovie.Movie.Title Then
-            '    Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
-            'Else
-            '    Me.lblOriginalTitle.Text = String.Empty
-            'End If
-
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-            '    Me.lblVotes.Text = String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes)
-            'End If
-
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
-            '    Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
-            'End If
-
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) AndAlso IsNumeric(Master.currMovie.Movie.Top250) AndAlso (IsNumeric(Master.currMovie.Movie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
-            '    Me.pnlTop250.Visible = True
-            '    Me.lblTop250.Text = Master.currMovie.Movie.Top250
-            'Else
-            '    Me.pnlTop250.Visible = False
-            'End If
-
-            'Me.txtOutline.Text = Master.currMovie.Movie.Outline
-            'Me.lblTagline.Text = Master.currMovie.Movie.Tagline
-
-            'Me.alActors = New List(Of String)
-
-            'If Master.currMovie.Movie.Actors.Count > 0 Then
-            '    Me.pbActors.Image = My.Resources.actor_silhouette
-            '    For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
-            '        If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-            '            If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
-            '                Me.alActors.Add(imdbAct.Thumb)
-            '            Else
-            '                Me.alActors.Add("none")
-            '            End If
-            '        Else
-            '            Me.alActors.Add("none")
-            '        End If
-
-            '        If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-            '            Me.lstActors.Items.Add(imdbAct.Name.Trim)
-            '        Else
-            '            Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
-            '        End If
-            '    Next
-            '    Me.lstActors.SelectedIndex = 0
-            'End If
-
-            If Master.currMovieSet.Movies IsNot Nothing AndAlso Master.currMovieSet.Movies.Count > 0 Then
+            If Master.currMovieSet.MovieList IsNot Nothing AndAlso Master.currMovieSet.MovieList.Count > 0 Then
                 Me.bwLoadMovieSetPosters.WorkerSupportsCancellation = True
                 Me.bwLoadMovieSetPosters.RunWorkerAsync()
             End If
-
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
-            '    Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
-            '    If tmpRatingImg IsNot Nothing Then
-            '        Me.pbMPAA.Image = tmpRatingImg
-            '        Me.MoveMPAA()
-            '    End If
-            'End If
-
-            'Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
-            'If tmpRating > 0 Then
-            '    Me.BuildStars(tmpRating)
-            'End If
-
-            'If Master.currMovie.Movie.Genres.Count > 0 Then
-            '    Me.createGenreThumbs(Master.currMovie.Movie.Genres)
-            'End If
-
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-            '    Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
-            '    Me.pbStudio.Tag = Master.currMovie.Movie.Studio
-            'Else
-            '    Me.pbStudio.Image = APIXML.GetStudioImage("####")
-            '    Me.pbStudio.Tag = String.Empty
-            'End If
-            'If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
-            '    lblStudio.Text = pbStudio.Tag.ToString
-            'End If
-            'If Master.eSettings.MovieScraperMetaDataScan Then
-            '    'Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
-            '    Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False, Master.currMovie.FileSource))
-            '    Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
-            '    Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
-            'Else
-            '    Me.pnlInfoIcons.Width = pbStudio.Width + 1
-            '    Me.pbStudio.Left = 0
-            'End If
-
-            'Me.lblDirector.Text = Master.currMovie.Movie.Director
-
-            'Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
-            'Me.txtTMDBID.Text = Master.currMovie.Movie.TMDBID
-
-            'Me.txtFilePath.Text = Master.currMovie.Filename
-
-            'Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
-            'Me.txtCerts.Text = Master.currMovie.Movie.Certification
-
-            'Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
             FillScreenInfoWithImages()
 
@@ -14471,7 +14374,7 @@ doCancel:
         Me.pnlMPAA.Top = Me.pnlInfoPanel.Top - (Me.pnlMPAA.Height + 10)
     End Sub
 
-    Private Sub InfoDownloaded_Movie(ByRef DBMovie As Structures.DBMovie)
+    Private Sub InfoDownloaded_Movie(ByRef DBMovie As Database.DBElement)
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
             Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
             Application.DoEvents()
@@ -14631,7 +14534,7 @@ doCancel:
         bwMovieScraper.RunWorkerAsync(New Arguments With {.ScrapeModifier = ScrapeModifier, .scrapeType = sType, .Options_Movie = ScrapeOptions})
     End Sub
 
-    Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Structures.DBMovieSet)
+    Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Database.DBElement)
         If Not String.IsNullOrEmpty(DBMovieSet.ListTitle) Then
             Me.tslLoading.Text = Master.eLang.GetString(1205, "Verifying MovieSet Details:")
             Application.DoEvents()
@@ -15393,7 +15296,7 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-                        Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(ID)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer_Movie_MovieSet
                         Dim pResults As New MediaContainers.Image
@@ -16960,7 +16863,7 @@ doCancel:
     ''' <returns>reload list from database</returns>
     ''' <remarks></remarks>
     Private Function Reload_Movie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
-        Dim DBMovie As New Structures.DBMovie
+        Dim DBMovie As New Database.DBElement
 
         DBMovie = Master.DB.LoadMovieFromDB(ID)
 
@@ -16987,7 +16890,7 @@ doCancel:
     End Function
 
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
-        Dim DBMovieSet As New Structures.DBMovieSet
+        Dim DBMovieSet As New Database.DBElement
 
         DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
 
@@ -17104,6 +17007,30 @@ doCancel:
     End Function
 
     Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean) As Boolean
+        Dim DBTVShow As New Structures.DBTV
+
+        DBTVShow = Master.DB.LoadTVShowFromDB(ID, withSeasons, withEpisodes)
+
+        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, Not BatchMode) Then
+            fScanner.LoadTVShow(DBTVShow, False, BatchMode)
+        Else
+            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
+                                                     Master.eLang.GetString(776, "Remove tv show from library"), _
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                Master.DB.DeleteTVShowFromDB(ID, BatchMode)
+                Return True
+            Else
+                Return False
+            End If
+        End If
+
+        RefreshRow_TVShow(DBTVShow.ID)
+
+
+
+
+
         If Not BatchMode Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.tspbLoading.Value = 0
@@ -17248,7 +17175,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Function RewriteMovie(ByVal ID As Long) As Boolean
         Dim tmpMovie As New MediaContainers.Movie
-        Dim tmpMovieDB As New Structures.DBMovie
+        Dim tmpMovieDB As New Database.DBElement
         Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
@@ -18369,7 +18296,7 @@ doCancel:
                 Dim hasWatched As Boolean = False
                 Dim currPlaycount As String = String.Empty
 
-                Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
 
                 currPlaycount = tmpDBMovie.Movie.PlayCount
                 hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
@@ -18554,7 +18481,7 @@ doCancel:
     Private Sub cmnuMovieGenresAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresAdd.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
                 If Not tmpDBMovie.Movie.Genres.Contains(Me.cmnuMovieGenresGenre.Text.Trim) Then
                     tmpDBMovie.Movie.Genres.Add(Me.cmnuMovieGenresGenre.Text.Trim)
                     Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True)
@@ -18568,7 +18495,7 @@ doCancel:
     Private Sub cmnuMovieGenresRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresRemove.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
                 If tmpDBMovie.Movie.Genres.Contains(Me.cmnuMovieGenresGenre.Text.Trim) Then
                     tmpDBMovie.Movie.Genres.Remove(Me.cmnuMovieGenresGenre.Text.Trim)
                     Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True)
@@ -18582,7 +18509,7 @@ doCancel:
     Private Sub cmnuMovieGenresSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpDBMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
                 tmpDBMovie.Movie.Genres.Clear()
                 tmpDBMovie.Movie.Genres.Add(Me.cmnuMovieGenresGenre.Text.Trim)
                 Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True)
@@ -18607,7 +18534,7 @@ doCancel:
     Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                Dim tmpDBMovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt32(sRow.Cells("idSet").Value))
+                Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt32(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(Me.cmnuMovieSetSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
                 Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, True, True)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
@@ -21468,8 +21395,8 @@ doCancel:
 
         Dim ID As Integer
         Dim IsTV As Boolean
-        Dim Movie As Structures.DBMovie
-        Dim MovieSet As Structures.DBMovieSet
+        Dim Movie As Database.DBElement
+        Dim MovieSet As Database.DBElement
         Dim Options_Movie As Structures.ScrapeOptions_Movie
         Dim Options_MovieSet As Structures.ScrapeOptions_MovieSet
         Dim Options_TV As Structures.ScrapeOptions_TV
@@ -21492,8 +21419,8 @@ doCancel:
 
         Dim fileInfo As String
         Dim IsTV As Boolean
-        Dim Movie As Structures.DBMovie
-        Dim MovieSet As Structures.DBMovieSet
+        Dim Movie As Database.DBElement
+        Dim MovieSet As Database.DBElement
         Dim MovieInSetPosters As List(Of MovieInSetPoster)
         Dim ScrapeOptions_Movie As Structures.ScrapeOptions_Movie
         Dim ScrapeOptions_MovieSet As Structures.ScrapeOptions_MovieSet

@@ -152,7 +152,7 @@ Public Class FileManagerExternalModule
         _MySettings.TeraCopyPath = clsAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Structures.DBMovieSet) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -364,7 +364,7 @@ Public Class FileManagerExternalModule
                     If MessageBox.Show(String.Format(If(doMove, strMove, strCopy), _
                                             MediaToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         If ContentType = Enums.ContentType.Movie Then
-                            Dim mMovie As New Structures.DBMovie
+                            Dim mMovie As New Database.DBElement
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
                                 mMovie = Master.DB.LoadMovieFromDB(movieID)

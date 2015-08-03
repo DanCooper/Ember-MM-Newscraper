@@ -277,7 +277,7 @@ Public Class dlgTagManager
     Private Sub btnAddMovie_Click(sender As Object, e As EventArgs) Handles btnAddMovie.Click
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpMovie As New Structures.DBMovie
+                Dim tmpMovie As New Database.DBElement
                 tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
 
 
@@ -495,7 +495,7 @@ Public Class dlgTagManager
             If Not list.Name Is Nothing Then
 
                 'Step 1: create new DBTag object to store current tag in
-                Dim tmpDBMovieTag As New Structures.DBMovieTag
+                Dim tmpDBMovieTag As New Database.DBElementTag
                 If list.IsNew = True Then
                     'if tag is new and doesn't exist in Ember, create new one with basic information!
                     tmpDBMovieTag.ID = -1
@@ -538,7 +538,7 @@ Public Class dlgTagManager
     ''' Basically we need to figure out the movies which don't have specific tag anymore - in this module those movies are marked as "TODELETE" in title
     ''' </remarks>
     Private Sub SyncTagToMovies(ByVal tag As SyncTag)
-        For Each tmovie As Structures.DBMovie In tag.Movies
+        For Each tmovie As Database.DBElement In tag.Movies
             If tmovie.Movie.Title.EndsWith("_TODELETE") Then
                 tmovie.Movie.Tags.Remove(tag.Name)
                 tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", "")
@@ -568,7 +568,7 @@ Friend Class SyncTag
     Private _newTag As Boolean
     Private _modifiedTag As Boolean
     Private _deletedTag As Boolean
-    Private _movies As New List(Of Structures.DBMovie)
+    Private _movies As New List(Of Database.DBElement)
 #End Region 'Fields
 
 #Region "Constructors"
@@ -578,11 +578,11 @@ Friend Class SyncTag
 #End Region
 
 #Region "Properties"
-    Public Property Movies() As List(Of Structures.DBMovie)
+    Public Property Movies() As List(Of Database.DBElement)
         Get
             Return _Movies
         End Get
-        Set(ByVal value As List(Of Structures.DBMovie))
+        Set(ByVal value As List(Of Database.DBElement))
             _Movies = value
         End Set
     End Property
@@ -635,7 +635,7 @@ Friend Class SyncTag
 #End Region
 #Region "Methods"
     Public Sub Clear()
-        Me._Movies = New List(Of Structures.DBMovie)
+        Me._Movies = New List(Of Database.DBElement)
         Me._idTag = -1
         Me._strTag = String.Empty
         Me._newTag = False

@@ -44,7 +44,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByVal DBMovie As Structures.DBMovie, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie) As Structures.DBMovie
+    Public Shared Function MergeDataScraperResults(ByVal DBMovie As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -439,7 +439,7 @@ Public Class NFO
         Return DBMovie
     End Function
 
-    Public Shared Function MergeDataScraperResults(ByVal DBMovieSet As Structures.DBMovieSet, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Structures.DBMovieSet
+    Public Shared Function MergeDataScraperResults(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Plot As Boolean = False
@@ -2121,7 +2121,7 @@ Public Class NFO
         Return xmlShow
     End Function
 
-    Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Structures.DBMovie)
+    Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Database.DBElement)
 
         Try
             Try
@@ -2185,7 +2185,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Structures.DBMovieSet)
+    Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Database.DBElement)
 
         Try
             'Try

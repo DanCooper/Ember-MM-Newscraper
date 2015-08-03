@@ -62,8 +62,8 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="DBMovie">Structures.DBMovie object</param>
-    Public Sub GetMovieFolderContents(ByRef DBMovie As Structures.DBMovie)
+    ''' <param name="DBMovie">Database.DBElement object</param>
+    Public Sub GetMovieFolderContents(ByRef DBMovie As Database.DBElement)
         Dim currname As String = String.Empty
         Dim atList As New List(Of String)   'actor thumbs list
         Dim efList As New List(Of String)   'extrafanart list
@@ -290,7 +290,7 @@ Public Class Scanner
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
     ''' <param name="DBMovieSet">MovieSetContainer object.</param>
-    Public Sub GetMovieSetFolderContents(ByRef DBMovieSet As Structures.DBMovieSet)
+    Public Sub GetMovieSetFolderContents(ByRef DBMovieSet As Database.DBElement)
         Dim fList As New List(Of String)    'all other files list
         Dim fPath As String = Master.eSettings.MovieSetPathMSAA
 
@@ -563,115 +563,121 @@ Public Class Scanner
         Dim ShowPath As String = DBTVShow.ShowPath
         Dim efList As New List(Of String)
         Dim fList As New List(Of String)
-        Dim fName As String = String.Empty
+
+        'remove all known paths
+        DBTVShow.ActorThumbs.Clear()
+        DBTVShow.BannerPath = String.Empty
+        DBTVShow.CharacterArtPath = String.Empty
+        DBTVShow.ClearArtPath = String.Empty
+        DBTVShow.ClearLogoPath = String.Empty
+        DBTVShow.EFanartsPath = String.Empty
+        DBTVShow.FanartPath = String.Empty
+        DBTVShow.LandscapePath = String.Empty
+        DBTVShow.NfoPath = String.Empty
+        DBTVShow.PosterPath = String.Empty
+        DBTVShow.ThemePath = String.Empty
 
         Try
-            Try
-                fList.AddRange(Directory.GetFiles(DBTVShow.ShowPath))
+            fList.AddRange(Directory.GetFiles(DBTVShow.ShowPath))
 
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
-                    If Directory.Exists(a) Then
-                        efList.AddRange(Directory.GetFiles(a))
-                    End If
-                Next
-            Catch
-            End Try
-
-            'show actor thumbs
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainActorThumbs)
-                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
-                If Directory.Exists(parDir) Then
-                    DBTVShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
+                If Directory.Exists(a) Then
+                    efList.AddRange(Directory.GetFiles(a))
                 End If
             Next
-
-            'show banner
-            If String.IsNullOrEmpty(DBTVShow.BannerPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
-                    DBTVShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.BannerPath) Then Exit For
-                Next
-            End If
-
-            'show characterart
-            If String.IsNullOrEmpty(DBTVShow.CharacterArtPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
-                    DBTVShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.CharacterArtPath) Then Exit For
-                Next
-            End If
-
-            'show clearart
-            If String.IsNullOrEmpty(DBTVShow.ClearArtPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
-                    DBTVShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.ClearArtPath) Then Exit For
-                Next
-            End If
-
-            'show clearlogo
-            If String.IsNullOrEmpty(DBTVShow.ClearLogoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
-                    DBTVShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.ClearLogoPath) Then Exit For
-                Next
-            End If
-
-            'extrafanart
-            If String.IsNullOrEmpty(DBTVShow.EFanartsPath) Then
-                If efList.Count > 0 Then
-                    DBTVShow.EFanartsPath = efList.Item(0).ToString
-                End If
-            End If
-
-            'show fanart
-            If String.IsNullOrEmpty(DBTVShow.FanartPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
-                    DBTVShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.FanartPath) Then Exit For
-                Next
-            End If
-
-            'show landscape
-            If String.IsNullOrEmpty(DBTVShow.LandscapePath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
-                    DBTVShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.LandscapePath) Then Exit For
-                Next
-            End If
-
-            'show NFO
-            If String.IsNullOrEmpty(DBTVShow.NfoPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainNFO)
-                    DBTVShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.NfoPath) Then Exit For
-                Next
-            End If
-
-            'show poster
-            If String.IsNullOrEmpty(DBTVShow.PosterPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
-                    DBTVShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(DBTVShow.PosterPath) Then Exit For
-                Next
-            End If
-
-            'show theme
-            If String.IsNullOrEmpty(DBTVShow.ThemePath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainTheme)
-                    For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                        DBTVShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                        If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
-                    Next
-                    If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
-                Next
-            End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        fList = Nothing
+        'show actor thumbs
+        For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainActorThumbs)
+            Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+            If Directory.Exists(parDir) Then
+                DBTVShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+            End If
+        Next
+
+        'show banner
+        If String.IsNullOrEmpty(DBTVShow.BannerPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
+                DBTVShow.BannerPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.BannerPath) Then Exit For
+            Next
+        End If
+
+        'show characterart
+        If String.IsNullOrEmpty(DBTVShow.CharacterArtPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
+                DBTVShow.CharacterArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.CharacterArtPath) Then Exit For
+            Next
+        End If
+
+        'show clearart
+        If String.IsNullOrEmpty(DBTVShow.ClearArtPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
+                DBTVShow.ClearArtPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ClearArtPath) Then Exit For
+            Next
+        End If
+
+        'show clearlogo
+        If String.IsNullOrEmpty(DBTVShow.ClearLogoPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
+                DBTVShow.ClearLogoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ClearLogoPath) Then Exit For
+            Next
+        End If
+
+        'extrafanart
+        If String.IsNullOrEmpty(DBTVShow.EFanartsPath) Then
+            If efList.Count > 0 Then
+                DBTVShow.EFanartsPath = efList.Item(0).ToString
+            End If
+        End If
+
+        'show fanart
+        If String.IsNullOrEmpty(DBTVShow.FanartPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
+                DBTVShow.FanartPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.FanartPath) Then Exit For
+            Next
+        End If
+
+        'show landscape
+        If String.IsNullOrEmpty(DBTVShow.LandscapePath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
+                DBTVShow.LandscapePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.LandscapePath) Then Exit For
+            Next
+        End If
+
+        'show NFO
+        If String.IsNullOrEmpty(DBTVShow.NfoPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainNFO)
+                DBTVShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.NfoPath) Then Exit For
+            Next
+        End If
+
+        'show poster
+        If String.IsNullOrEmpty(DBTVShow.PosterPath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
+                DBTVShow.PosterPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.PosterPath) Then Exit For
+            Next
+        End If
+
+        'show theme
+        If String.IsNullOrEmpty(DBTVShow.ThemePath) Then
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainTheme)
+                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                    DBTVShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                    If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
+                Next
+                If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
+            Next
+        End If
     End Sub
 
     Public Function IsBusy() As Boolean
@@ -706,7 +712,7 @@ Public Class Scanner
         Return True 'This is the Else
     End Function
 
-    Public Sub LoadMovie(ByRef DBMovie As Structures.DBMovie, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
+    Public Sub LoadMovie(ByRef DBMovie As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
         Dim ToNfo As Boolean = False
 
         'first, lets get the contents
@@ -844,7 +850,7 @@ Public Class Scanner
         End If
     End Sub
 
-    Public Sub LoadMovieSet(ByRef DBMovieSet As Structures.DBMovieSet, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
+    Public Sub LoadMovieSet(ByRef DBMovieSet As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
         Dim ToNfo As Boolean = False
         Dim OldTitle As String = DBMovieSet.MovieSet.Title
 
@@ -875,15 +881,15 @@ Public Class Scanner
         DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, True)
     End Sub
 
-    Private Sub LoadTVShow(ByVal DBTVShow As Structures.DBTV)
+    Public Sub LoadTVShow(ByRef DBTVShow As Structures.DBTV, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
         Dim newSeasonsIndex As New List(Of Integer)
         Dim toNfo As Boolean = False
+
+
 
         If DBTVShow.Episodes.Count > 0 Then
             If Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) Then
                 GetTVShowFolderContents(DBTVShow)
-                DBTVShow.IsLock = False
-                DBTVShow.IsMark = False
 
                 If Not String.IsNullOrEmpty(DBTVShow.NfoPath) Then
                     DBTVShow.TVShow = NFO.LoadTVShowFromNFO(DBTVShow.NfoPath)
@@ -920,7 +926,7 @@ Public Class Scanner
                 End If
 
                 If Not String.IsNullOrEmpty(DBTVShow.ListTitle) Then
-                    Master.DB.SaveTVShowToDB(DBTVShow, True, False, True)
+                    Master.DB.SaveTVShowToDB(DBTVShow, isNew, False, Batchmode)
                 End If
             Else
                 Dim newEpisodes As List(Of Structures.DBTV) = DBTVShow.Episodes
@@ -933,8 +939,6 @@ Public Class Scanner
                     DBTVEpisode = Master.DB.FillTVShowFromDB(DBTVEpisode, DBTVShow)
                     If Not String.IsNullOrEmpty(DBTVEpisode.Filename) Then
                         GetTVEpisodeFolderContents(DBTVEpisode)
-                        DBTVEpisode.IsLock = False
-                        DBTVEpisode.IsMark = False
 
                         For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
                             If sEpisode.byDate Then
@@ -1020,7 +1024,7 @@ Public Class Scanner
                                 End If
 
                                 'Do the Save
-                                Master.DB.SaveTVEpToDB(DBTVEpisode, True, True, True, toNfo)
+                                Master.DB.SaveTVEpToDB(DBTVEpisode, isNew, True, Batchmode, toNfo)
 
                                 Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEp.Title)})
                             Else
@@ -1104,9 +1108,9 @@ Public Class Scanner
                                 End If
 
                                 'Do the Save
-                                Master.DB.SaveTVEpToDB(DBTVEpisode, True, False, True, toNfo)
+                                Master.DB.SaveTVEpToDB(DBTVEpisode, isNew, False, Batchmode, toNfo)
 
-                                Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEp.Title)})
+                                'Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEp.Title)})
                             End If
 
                             'add seasons
@@ -1315,7 +1319,7 @@ Public Class Scanner
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
     Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean)
-        Dim currMovieContainer As Structures.DBMovie
+        Dim currMovieContainer As Database.DBElement
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
         Dim fList As New List(Of String)
@@ -1381,7 +1385,7 @@ Public Class Scanner
                         Else
                             MoviePaths.Add(StringUtils.CleanStackingMarkers(tFile).ToLower)
                         End If
-                        currMovieContainer = New Structures.DBMovie
+                        currMovieContainer = New Database.DBElement
                         currMovieContainer.ActorThumbs = New List(Of String)
                         currMovieContainer.Filename = tFile
                         currMovieContainer.GetYear = bGetYear
@@ -1424,7 +1428,7 @@ Public Class Scanner
                     End If
 
                     For Each s As String In fList
-                        currMovieContainer = New Structures.DBMovie
+                        currMovieContainer = New Database.DBElement
                         currMovieContainer.ActorThumbs = New List(Of String)
                         currMovieContainer.Filename = s
                         currMovieContainer.GetYear = bGetYear
@@ -1580,7 +1584,7 @@ Public Class Scanner
                     Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                 Next
 
-                LoadTVShow(currShowContainer)
+                LoadTVShow(currShowContainer, True, True)
             Else
                 For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
 
@@ -1615,7 +1619,7 @@ Public Class Scanner
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                     Next
 
-                    LoadTVShow(currShowContainer)
+                    LoadTVShow(currShowContainer, True, True)
                 Next
 
             End If
@@ -1747,7 +1751,7 @@ Public Class Scanner
                                 Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                             Next
 
-                            LoadTVShow(currShowContainer)
+                            LoadTVShow(currShowContainer, True, True)
                         End If
                     End If
                     Exit For

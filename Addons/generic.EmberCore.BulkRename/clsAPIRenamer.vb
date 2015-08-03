@@ -153,7 +153,7 @@ Public Class FileFolderRenamer
     End Sub
 
     Public Sub DoRename_Movies(Optional ByVal sfunction As ShowProgress = Nothing)
-        Dim _movieDB As Structures.DBMovie = Nothing
+        Dim _movieDB As Database.DBElement = Nothing
         Dim iProg As Integer = 0
         Try
             For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
@@ -292,7 +292,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Shared Sub DoRenameSingle_Movie(ByVal _frename As FileRename, ByRef _movie As Structures.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
+    Private Shared Sub DoRenameSingle_Movie(ByVal _frename As FileRename, ByRef _movie As Database.DBElement, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
         Try
             If Not _movie.IsLock AndAlso Not _frename.FileExist Then
                 Dim getError As Boolean = False
@@ -949,7 +949,7 @@ Public Class FileFolderRenamer
         Return EpisodeFile
     End Function
 
-    Public Shared Function GetInfo_Movie(ByVal _tmpMovie As Structures.DBMovie) As FileFolderRenamer.FileRename
+    Public Shared Function GetInfo_Movie(ByVal _tmpMovie As Database.DBElement) As FileFolderRenamer.FileRename
         Dim MovieFile As New FileFolderRenamer.FileRename
 
         Try
@@ -1695,7 +1695,7 @@ Public Class FileFolderRenamer
         End If
     End Sub
 
-    Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Database.DBElement, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
         MovieFile = GetInfo_Movie(_tmpMovie)
@@ -1785,7 +1785,7 @@ Public Class FileFolderRenamer
         End If
     End Sub
 
-    Private Shared Sub UpdatePaths_Movie(ByRef _DBM As Structures.DBMovie, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
+    Private Shared Sub UpdatePaths_Movie(ByRef _DBM As Database.DBElement, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
         If Not String.IsNullOrEmpty(_DBM.BannerPath) Then _DBM.BannerPath = Path.Combine(Directory.GetParent(_DBM.BannerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.BannerPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.ClearArtPath) Then _DBM.ClearArtPath = Path.Combine(Directory.GetParent(_DBM.ClearArtPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ClearArtPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.ClearLogoPath) Then _DBM.ClearLogoPath = Path.Combine(Directory.GetParent(_DBM.ClearLogoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ClearLogoPath).Replace(oldFile, newFile))
@@ -1797,7 +1797,6 @@ Public Class FileFolderRenamer
         If Not String.IsNullOrEmpty(_DBM.LandscapePath) Then _DBM.LandscapePath = Path.Combine(Directory.GetParent(_DBM.LandscapePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.LandscapePath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.NfoPath) Then _DBM.NfoPath = Path.Combine(Directory.GetParent(_DBM.NfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.NfoPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.PosterPath) Then _DBM.PosterPath = Path.Combine(Directory.GetParent(_DBM.PosterPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.PosterPath).Replace(oldFile, newFile))
-        If Not String.IsNullOrEmpty(_DBM.SubPath) Then _DBM.SubPath = Path.Combine(Directory.GetParent(_DBM.SubPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.SubPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.ThemePath) Then _DBM.ThemePath = Path.Combine(Directory.GetParent(_DBM.ThemePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ThemePath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.TrailerPath) Then _DBM.TrailerPath = Path.Combine(Directory.GetParent(_DBM.TrailerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.TrailerPath).Replace(oldFile, newFile))
         If _DBM.Subtitles.Count > 0 Then

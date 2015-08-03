@@ -175,7 +175,7 @@ Public Class dlgDeleteConfirm
 
                 Select Case Me._deltype
                     Case Enums.DelType.Movies
-                        Dim mMovie As New Structures.DBMovie
+                        Dim mMovie As New Database.DBElement
 
                         For Each MovieId As Long In ItemsToDelete.Keys
                             hadError = False
@@ -423,9 +423,9 @@ Public Class dlgDeleteConfirm
         Try
             Select Case e.Node.ImageKey
                 Case "MOVIE"
-                    lblNodeSelected.Text = CType(e.Node.Tag, Structures.DBMovie).ListTitle
+                    lblNodeSelected.Text = CType(e.Node.Tag, Database.DBElement).ListTitle
                 Case "RECORD"
-                    lblNodeSelected.Text = CType(e.Node.Tag, Structures.DBMovie).ListTitle
+                    lblNodeSelected.Text = CType(e.Node.Tag, Database.DBElement).ListTitle
                 Case "FOLDER"
                     lblNodeSelected.Text = e.Node.Tag.ToString
                 Case "FILE"

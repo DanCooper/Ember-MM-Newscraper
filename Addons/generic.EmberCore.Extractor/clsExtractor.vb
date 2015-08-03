@@ -37,7 +37,7 @@ Public Class ThumbGenerator
     ''' <param name="ThumbCount">How many thumbs to extract</param>
     ''' <param name="isEdit"></param>
     ''' <returns>Fanart path if an extrathumb was set as fanart.</returns>
-    Public Shared Function CreateRandomThumbs(ByVal mMovie As Structures.DBMovie, ByVal ThumbCount As Integer, ByVal isEdit As Boolean) As String
+    Public Shared Function CreateRandomThumbs(ByVal mMovie As Database.DBElement, ByVal ThumbCount As Integer, ByVal isEdit As Boolean) As String
         Dim tThumb As New GeneratorThread
 
         tThumb.Movie = mMovie
@@ -58,7 +58,7 @@ Public Class ThumbGenerator
         #Region "Fields"
 
         Public _isedit As Boolean
-        Public _movie As Structures.DBMovie
+        Public _movie As Database.DBElement
         Public _setfa As String
         Public _thumbcount As Integer
 
@@ -75,8 +75,8 @@ Public Class ThumbGenerator
             End Set
         End Property
 
-        Public WriteOnly Property Movie() As Structures.DBMovie
-            Set(ByVal value As Structures.DBMovie)
+        Public WriteOnly Property Movie() As Database.DBElement
+            Set(ByVal value As Database.DBElement)
                 _movie = value
             End Set
         End Property

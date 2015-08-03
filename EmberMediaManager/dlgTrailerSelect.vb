@@ -32,7 +32,7 @@ Public Class dlgTrailerSelect
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwParseTrailer As New System.ComponentModel.BackgroundWorker
 
-    Private tMovie As New Structures.DBMovie
+    Private tMovie As New Database.DBElement
     Private _results As New MediaContainers.Trailer
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
@@ -87,7 +87,7 @@ Public Class dlgTrailerSelect
         Me.Activate()
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of MediaContainers.Trailer), ByVal OnlyToNFO As Boolean, Optional ByVal _isNew As Boolean = False, Optional ByVal WithPlayer As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement, ByRef tURLList As List(Of MediaContainers.Trailer), ByVal OnlyToNFO As Boolean, Optional ByVal _isNew As Boolean = False, Optional ByVal WithPlayer As Boolean = False) As DialogResult
         Me._noDownload = OnlyToNFO
         Me._withPlayer = WithPlayer
 

@@ -61,8 +61,8 @@ Public Class dlgImgSelectNew
     Private selIndex As Integer = -1
 
     Private tIsMovie As Boolean
-    Private tMovie As New Structures.DBMovie
-    Private tMovieSet As New Structures.DBMovieSet
+    Private tMovie As New Database.DBElement
+    Private tMovieSet As New Database.DBElement
     Private tmpImage As New MediaContainers.Image
     Private tmpImageEF As New MediaContainers.Image
     Private tmpImageET As New MediaContainers.Image

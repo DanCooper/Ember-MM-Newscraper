@@ -205,7 +205,7 @@ Public Class Themes
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieTheme(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieTheme(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -315,7 +315,7 @@ Public Class Themes
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
-    Public Function SaveAsMovieTheme(ByVal mMovie As Structures.DBMovie) As String
+    Public Function SaveAsMovieTheme(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -364,7 +364,7 @@ Public Class Themes
     ''' <param name="mMovie">The intended path to save the theme</param>
     ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie) As Boolean
+    Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
                 If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeOverwrite) AndAlso .MovieThemeTvTunesEnable AndAlso _

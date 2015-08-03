@@ -777,7 +777,7 @@ Public Class Database
     Public Function DeleteMovieSetFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             'first get a list of all movies in the movieset to remove the movieset information from NFO
-            Dim moviesToSave As New List(Of Structures.DBMovie)
+            Dim moviesToSave As New List(Of Database.DBElement)
 
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -786,7 +786,7 @@ Public Class Database
                                                        "WHERE SetID = ", ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Dim movie As New Structures.DBMovie
+                        Dim movie As New Database.DBElement
                         If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                         moviesToSave.Add(movie)
                     End While
@@ -803,7 +803,7 @@ Public Class Database
 
             'delete all movieset images and if this setting is enabled
             If Master.eSettings.MovieSetCleanFiles Then
-                Dim MovieSet As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+                Dim MovieSet As DBElement = Master.DB.LoadMovieSetFromDB(ID)
                 Images.DeleteMovieSetBanner(MovieSet)
                 Images.DeleteMovieSetClearArt(MovieSet)
                 Images.DeleteMovieSetClearLogo(MovieSet)
@@ -818,7 +818,7 @@ Public Class Database
                                                        "WHERE SetID = ", ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Dim movie As New Structures.DBMovie
+                        Dim movie As New Database.DBElement
                         If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                         moviesToSave.Add(movie)
                     End While
@@ -848,7 +848,7 @@ Public Class Database
     Public Function DeleteTagFromDB(ByVal ID As Long, ByVal Mode As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             'first get a list of all movies in the tag to remove the tag information from NFO
-            Dim moviesToSave As New List(Of Structures.DBMovie)
+            Dim moviesToSave As New List(Of Database.DBElement)
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             Dim tagName As String = ""
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -870,7 +870,7 @@ Public Class Database
                     While SQLreader.Read
                         If Mode = 1 Then
                             'tag is for movie
-                            Dim movie As New Structures.DBMovie
+                            Dim movie As New Database.DBElement
                             If Not DBNull.Value.Equals(SQLreader("idMedia")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("idMedia")))
                             moviesToSave.Add(movie)
                         End If
@@ -1370,9 +1370,9 @@ Public Class Database
     ''' Load all the information for a movie.
     ''' </summary>
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
-    ''' <returns>Structures.DBMovie object</returns>
-    Public Function LoadMovieFromDB(ByVal MovieID As Long) As Structures.DBMovie
-        Dim _movieDB As New Structures.DBMovie With {.ActorThumbs = New List(Of String)}
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadMovieFromDB(ByVal MovieID As Long) As Database.DBElement
+        Dim _movieDB As New Database.DBElement
 
         _movieDB.ID = MovieID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1586,8 +1586,8 @@ Public Class Database
     ''' Load all the information for a movie (by movie path)
     ''' </summary>
     ''' <param name="sPath">Full path to the movie file</param>
-    ''' <returns>Structures.DBMovie object</returns>
-    Public Function LoadMovieFromDB(ByVal sPath As String) As Structures.DBMovie
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadMovieFromDB(ByVal sPath As String) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Concat("SELECT idMovie FROM movie WHERE MoviePath = ", sPath, ";")
@@ -1595,80 +1595,86 @@ Public Class Database
                 If SQLreader.Read Then
                     Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")))
                 Else
-                    Return New Structures.DBMovie With {.Id = -1} ' No Movie Found
+                    Return New Database.DBElement
                 End If
             End Using
         End Using
 
-        Return New Structures.DBMovie With {.Id = -1}
+        Return New Database.DBElement
     End Function
 
     ''' <summary>
     ''' Load all the information for a movieset.
     ''' </summary>
     ''' <param name="MovieSetID">ID of the movieset to load, as stored in the database</param>
-    ''' <returns>Structures.DBMovie object</returns>
-    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long) As Structures.DBMovieSet
-        Dim _moviesetDB As New Structures.DBMovieSet
+    ''' <returns>Database.DBElement object</returns>
+    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional withImages As Boolean = True) As DBElement
+        Dim _moviesetDB As New DBElement
 
-        Try
-            _moviesetDB.ID = MovieSetID
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT * FROM sets WHERE idSet = ", MovieSetID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        SQLreader.Read()
-                        If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _moviesetDB.ListTitle = SQLreader("ListTitle").ToString
-                        If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
+        _moviesetDB.ID = MovieSetID
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT * FROM sets WHERE idSet = ", MovieSetID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    SQLreader.Read()
+                    If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _moviesetDB.ListTitle = SQLreader("ListTitle").ToString
+                    If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
 
-                        _moviesetDB.BannerPath = GetArtForItem(_moviesetDB.ID, "set", "banner")
-                        _moviesetDB.ClearArtPath = GetArtForItem(_moviesetDB.ID, "set", "clearart")
-                        _moviesetDB.ClearLogoPath = GetArtForItem(_moviesetDB.ID, "set", "clearlogo")
-                        _moviesetDB.DiscArtPath = GetArtForItem(_moviesetDB.ID, "set", "discart")
-                        _moviesetDB.FanartPath = GetArtForItem(_moviesetDB.ID, "set", "fanart")
-                        _moviesetDB.LandscapePath = GetArtForItem(_moviesetDB.ID, "set", "landscape")
-                        _moviesetDB.PosterPath = GetArtForItem(_moviesetDB.ID, "set", "poster")
+                    _moviesetDB.BannerPath = GetArtForItem(_moviesetDB.ID, "set", "banner")
+                    _moviesetDB.ClearArtPath = GetArtForItem(_moviesetDB.ID, "set", "clearart")
+                    _moviesetDB.ClearLogoPath = GetArtForItem(_moviesetDB.ID, "set", "clearlogo")
+                    _moviesetDB.DiscArtPath = GetArtForItem(_moviesetDB.ID, "set", "discart")
+                    _moviesetDB.FanartPath = GetArtForItem(_moviesetDB.ID, "set", "fanart")
+                    _moviesetDB.LandscapePath = GetArtForItem(_moviesetDB.ID, "set", "landscape")
+                    _moviesetDB.PosterPath = GetArtForItem(_moviesetDB.ID, "set", "poster")
 
-                        _moviesetDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
-                        _moviesetDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
-                        _moviesetDB.SortMethod = DirectCast(Convert.ToInt32(SQLreader("SortMethod")), Enums.SortMethod_MovieSet)
-                        _moviesetDB.MovieSet = New MediaContainers.MovieSet
-                        With _moviesetDB.MovieSet
-                            If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDB = SQLreader("TMDBColID").ToString
-                            If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
-                            If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
-                        End With
-                    End If
-                End Using
-            End Using
-
-            _moviesetDB.Movies = New List(Of Structures.DBMovie)
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
-                    If _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Year Then
-                        SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ", _
-                                                               "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movie.Year;")
-                    ElseIf _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Title Then
-                        SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
-                                                               "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
-                    End If
-                Else
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets ", _
-                                                           "WHERE SetID = ", _moviesetDB.ID, " ORDER BY SetOrder;")
+                    _moviesetDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
+                    _moviesetDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
+                    _moviesetDB.SortMethod = DirectCast(Convert.ToInt32(SQLreader("SortMethod")), Enums.SortMethod_MovieSet)
+                    _moviesetDB.MovieSet = New MediaContainers.MovieSet
+                    With _moviesetDB.MovieSet
+                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDB = SQLreader("TMDBColID").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
+                    End With
                 End If
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Dim movie As Structures.DBMovie
-                    While SQLreader.Read
-                        movie = New Structures.DBMovie
-                        movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
-                        _moviesetDB.Movies.Add(movie)
-                    End While
-                End Using
             End Using
+        End Using
 
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
+                If _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Year Then
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ", _
+                                                           "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movie.Year;")
+                ElseIf _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Title Then
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
+                                                           "WHERE SetID = ", _moviesetDB.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
+                End If
+            Else
+                SQLcommand.CommandText = String.Concat("SELECT MovieID FROM MoviesSets ", _
+                                                       "WHERE SetID = ", _moviesetDB.ID, " ORDER BY SetOrder;")
+            End If
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                Dim movie As DBElement
+                While SQLreader.Read
+                    movie = New DBElement
+                    movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                    _moviesetDB.MovieList.Add(movie)
+                End While
+            End Using
+        End Using
+
+        'ImagesContainer
+        If withImages Then
+            If Not String.IsNullOrEmpty(_moviesetDB.BannerPath) Then _moviesetDB.ImagesContainer.Banner.WebImage.FromFile(_moviesetDB.BannerPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath) Then _moviesetDB.ImagesContainer.ClearArt.WebImage.FromFile(_moviesetDB.ClearArtPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath) Then _moviesetDB.ImagesContainer.ClearLogo.WebImage.FromFile(_moviesetDB.ClearLogoPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath) Then _moviesetDB.ImagesContainer.DiscArt.WebImage.FromFile(_moviesetDB.DiscArtPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.FanartPath) Then _moviesetDB.ImagesContainer.Fanart.WebImage.FromFile(_moviesetDB.FanartPath)
+            If Not String.IsNullOrEmpty(_moviesetDB.LandscapePath) Then _moviesetDB.ImagesContainer.Landscape.WebImage.FromFile(_moviesetDB.LandscapePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.PosterPath) Then _moviesetDB.ImagesContainer.Poster.WebImage.FromFile(_moviesetDB.PosterPath)
+        End If
+
         Return _moviesetDB
     End Function
     ''' <summary>
@@ -1704,9 +1710,9 @@ Public Class Database
     ''' Load all the information for a movietag.
     ''' </summary>
     ''' <param name="TagID">ID of the movietag to load, as stored in the database</param>
-    ''' <returns>Structures.DBMovieTag object</returns>
-    Public Function LoadMovieTagFromDB(ByVal TagID As Integer) As Structures.DBMovieTag
-        Dim _tagDB As New Structures.DBMovieTag
+    ''' <returns>Database.DBElementTag object</returns>
+    Public Function LoadMovieTagFromDB(ByVal TagID As Integer) As Database.DBElementTag
+        Dim _tagDB As New Database.DBElementTag
         _tagDB.ID = TagID
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM tag WHERE idTag = ", TagID, ";")
@@ -1719,14 +1725,14 @@ Public Class Database
             End Using
         End Using
 
-        _tagDB.Movies = New List(Of Structures.DBMovie)
+        _tagDB.Movies = New List(Of Database.DBElement)
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM taglinks ", _
                         "WHERE idTag = ", _tagDB.ID, " AND media_type = 'movie';")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim movie As Structures.DBMovie
+                Dim movie As Database.DBElement
                 While SQLreader.Read
-                    movie = New Structures.DBMovie
+                    movie = New Database.DBElement
                     movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("idMedia")))
                     _tagDB.Movies.Add(movie)
                 End While
@@ -2836,14 +2842,14 @@ Public Class Database
     '  End Function
 
     ''' <summary>
-    ''' Saves all information from a Structures.DBMovie object to the database
+    ''' Saves all information from a Database.DBElement object to the database
     ''' </summary>
     ''' <param name="_movieDB">Media.Movie object to save to the database</param>
     ''' <param name="IsNew">Is this a new movie (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    ''' <returns>Structures.DBMovie object</returns>
-    Public Function SaveMovieToDB(ByVal _movieDB As Structures.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBMovie
+    ''' <returns>Database.DBElement object</returns>
+    Public Function SaveMovieToDB(ByVal _movieDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Database.DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3434,15 +3440,15 @@ Public Class Database
         Return _movieDB
     End Function
     ''' <summary>
-    ''' Saves all information from a Structures.DBMovieSet object to the database
+    ''' Saves all information from a Database.DBElement object to the database
     ''' </summary>
     ''' <param name="_moviesetDB">Media.Movie object to save to the database</param>
     ''' <param name="IsNew">Is this a new movieset (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
-    ''' <returns>Structures.DBMovieSet object</returns>
-    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieSet
+    ''' <returns>Database.DBElement object</returns>
+    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Database.DBElement
         If _moviesetDB.ID = -1 Then IsNew = True
 
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
@@ -3504,6 +3510,10 @@ Public Class Database
         End Using
 
         'Images
+        If _moviesetDB.ImagesContainer IsNot Nothing Then
+            _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB, Enums.ContentType.MovieSet)
+        End If
+
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, " AND media_type = 'set';")
             SQLcommand_art.ExecuteNonQuery()
@@ -3525,7 +3535,7 @@ Public Class Database
                                                        "WHERE SetID = ", _moviesetDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Dim movie As New Structures.DBMovie
+                        Dim movie As New Database.DBElement
                         Dim movieToSave As New MovieInSet
                         If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                         movieToSave.DBMovie = movie
@@ -3552,15 +3562,15 @@ Public Class Database
     End Function
 
     ''' <summary>
-    ''' Saves all information from a Structures.DBMovieSet object to the database
+    ''' Saves all information from a Database.DBElement object to the database
     ''' </summary>
     ''' <param name="_tagDB">Media.Movie object to save to the database</param>
     ''' <param name="IsNew">Is this a new movieset (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
-    ''' <returns>Structures.DBMovieSet object</returns>
-    Public Function SaveMovieTagToDB(ByVal _tagDB As Structures.DBMovieTag, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieTag
+    ''' <returns>Database.DBElement object</returns>
+    Public Function SaveMovieTagToDB(ByVal _tagDB As Database.DBElementTag, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Database.DBElementTag
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -3601,9 +3611,9 @@ Public Class Database
             'Update all movies for this tag: if there are movies in linktag-table which aren't in current tag.movies object then remove movie-tag link from linktable and nfo for those movies
 
             'old state of tag in database
-            Dim MoviesInTagOld As New List(Of Structures.DBMovie)
+            Dim MoviesInTagOld As New List(Of Database.DBElement)
             'new/updatend state of tag
-            Dim MoviesInTagNew As New List(Of Structures.DBMovie)
+            Dim MoviesInTagNew As New List(Of Database.DBElement)
             MoviesInTagNew.AddRange(_tagDB.Movies.ToArray)
 
 
@@ -3617,7 +3627,7 @@ Public Class Database
 
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Dim movie As New Structures.DBMovie
+                        Dim movie As New Database.DBElement
                         If Not DBNull.Value.Equals(SQLreader("idMedia")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("idMedia")))
                         MoviesInTagOld.Add(movie)
                     End While
@@ -3637,7 +3647,7 @@ Public Class Database
             'write tag information into nfo (add tag)
             If MoviesInTagNew.Count > 0 Then
                 For Each tMovie In MoviesInTagNew
-                    Dim mMovie As New Structures.DBMovie
+                    Dim mMovie As New Database.DBElement
                     mMovie = LoadMovieFromDB(tMovie.ID)
                     tMovie = mMovie
                     mMovie.Movie.AddTag(_tagDB.Title)
@@ -3647,7 +3657,7 @@ Public Class Database
             'clean nfo of movies who aren't part of tag anymore (remove tag)
             If MoviesInTagOld.Count > 0 Then
                 For Each tMovie In MoviesInTagOld
-                    Dim mMovie As New Structures.DBMovie
+                    Dim mMovie As New Database.DBElement
                     mMovie = LoadMovieFromDB(tMovie.ID)
                     tMovie = mMovie
                     mMovie.Movie.Tags.Remove(_tagDB.Title)
@@ -4634,7 +4644,7 @@ Public Class Database
 
 #Region "Fields"
 
-        Private _dbmovie As Structures.DBMovie
+        Private _dbmovie As Database.DBElement
         Private _id As Long
         Private _listtitle As String
         Private _order As Integer
@@ -4651,11 +4661,11 @@ Public Class Database
 
 #Region "Properties"
 
-        Public Property DBMovie() As Structures.DBMovie
+        Public Property DBMovie() As Database.DBElement
             Get
                 Return Me._dbmovie
             End Get
-            Set(ByVal value As Structures.DBMovie)
+            Set(ByVal value As Database.DBElement)
                 Me._dbmovie = value
             End Set
         End Property
@@ -4692,7 +4702,7 @@ Public Class Database
 #Region "Methods"
 
         Public Sub Clear()
-            Me._dbmovie = New Structures.DBMovie
+            Me._dbmovie = New Database.DBElement
             Me._id = -1
             Me._order = 0
             Me._listtitle = String.Empty
@@ -4765,49 +4775,46 @@ Public Class Database
         Private _clearartpath As String
         Private _clearlogopath As String
         Private _dateadded As Long
+        Private _datemodified As Long
+        Private _discartpath As String
+        Private _episodes As New List(Of DBElement)
+        Private _episodesorting As Enums.EpisodeSorting
         Private _extrafanarts As New List(Of String)
         Private _extrafanartspath As String
         Private _extrathumbs As New List(Of String)
         Private _extrathumbspath As String
-        Private _episodes As New List(Of DBElement)
-        Private _episodesorting As Enums.EpisodeSorting
         Private _fanartpath As String
         Private _filename As String
         Private _filenameid As Long
+        Private _getyear As Boolean
         Private _id As Long
-        Private _imagescontainer As MediaContainers.ImagesContainer
+        Private _imagescontainer As New MediaContainers.ImagesContainer
         Private _islock As Boolean
         Private _ismark As Boolean
         Private _isonline As Boolean
+        Private _issingle As Boolean
         Private _landscapepath As String
         Private _language As String
         Private _listtitle As String
+        Private _movie As MediaContainers.Movie
+        Private _movielist As List(Of DBElement)
+        Private _movieset As MediaContainers.MovieSet
         Private _needssave As Boolean
         Private _nfopath As String
         Private _ordering As Enums.Ordering
         Private _posterpath As String
-        Private _removeactorthumbs As Boolean
-        Private _removebanner As Boolean
-        Private _removecharacterart As Boolean
-        Private _removeclearart As Boolean
-        Private _removeclearlogo As Boolean
-        Private _removediscart As Boolean
-        Private _removeefanarts As Boolean
-        Private _removeethumbs As Boolean
-        Private _removefanart As Boolean
-        Private _removelandscape As Boolean
-        Private _removeposter As Boolean
-        Private _removetheme As Boolean
-        Private _removetrailer As Boolean
         Private _seasons As New List(Of DBElement)
         Private _showid As Long
         Private _showpath As String
+        Private _sortmethod As Enums.SortMethod_MovieSet
         Private _source As String
         Private _subtitles As New List(Of MediaInfo.Subtitle)
-        Private _tvep As MediaContainers.EpisodeDetails
+        Private _themepath As String
+        Private _trailerpath As String
+        Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
         Private _tvshow As MediaContainers.TVShow
-        Private _themepath As String
+        Private _usefolder As Boolean
         Private _videosource As String
 
 #End Region 'Fields
@@ -4876,12 +4883,427 @@ Public Class Database
             End Set
         End Property
 
+        Public Property DateModified() As Long
+            Get
+                Return Me._datemodified
+            End Get
+            Set(ByVal value As Long)
+                Me._datemodified = value
+            End Set
+        End Property
+
+        Public Property DiscArtPath() As String
+            Get
+                Return Me._discartpath
+            End Get
+            Set(ByVal value As String)
+                Me._discartpath = value
+            End Set
+        End Property
+
+        Public Property Episodes() As List(Of DBElement)
+            Get
+                Return Me._episodes
+            End Get
+            Set(ByVal value As List(Of DBElement))
+                Me._episodes = value
+            End Set
+        End Property
+
+        Public Property EpisodeSorting() As Enums.EpisodeSorting
+            Get
+                Return Me._episodesorting
+            End Get
+            Set(ByVal value As Enums.EpisodeSorting)
+                Me._episodesorting = value
+            End Set
+        End Property
+
+        Public Property ExtraFanarts() As List(Of String)
+            Get
+                Return Me._extrafanarts
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._extrafanarts = value
+            End Set
+        End Property
+
+        Public Property EFanartsPath() As String
+            Get
+                Return Me._extrafanartspath
+            End Get
+            Set(ByVal value As String)
+                Me._extrafanartspath = value
+            End Set
+        End Property
+
+        Public Property ExtraThumbs() As List(Of String)
+            Get
+                Return Me._extrathumbs
+            End Get
+            Set(ByVal value As List(Of String))
+                Me._extrathumbs = value
+            End Set
+        End Property
+
+        Public Property EThumbsPath() As String
+            Get
+                Return Me._extrathumbspath
+            End Get
+            Set(ByVal value As String)
+                Me._extrathumbspath = value
+            End Set
+        End Property
+
+        Public Property FanartPath() As String
+            Get
+                Return Me._fanartpath
+            End Get
+            Set(ByVal value As String)
+                Me._fanartpath = value
+            End Set
+        End Property
+
+        Public Property Filename() As String
+            Get
+                Return Me._filename
+            End Get
+            Set(ByVal value As String)
+                Me._filename = value
+            End Set
+        End Property
+
+        Public Property FilenameID() As Long
+            Get
+                Return Me._filenameid
+            End Get
+            Set(ByVal value As Long)
+                Me._filenameid = value
+            End Set
+        End Property
+
+        Public Property GetYear() As Boolean
+            Get
+                Return Me._getyear
+            End Get
+            Set(ByVal value As Boolean)
+                Me._getyear = value
+            End Set
+        End Property
+
+        Public Property ID() As Long
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Long)
+                Me._id = value
+            End Set
+        End Property
+
+        Public Property ImagesContainer() As MediaContainers.ImagesContainer
+            Get
+                Return Me._imagescontainer
+            End Get
+            Set(ByVal value As MediaContainers.ImagesContainer)
+                Me._imagescontainer = value
+            End Set
+        End Property
+
+        Public Property IsLock() As Boolean
+            Get
+                Return Me._islock
+            End Get
+            Set(ByVal value As Boolean)
+                Me._islock = value
+            End Set
+        End Property
+
+        Public Property IsMark() As Boolean
+            Get
+                Return Me._ismark
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ismark = value
+            End Set
+        End Property
+
+        Public Property IsOnline() As Boolean
+            Get
+                Return Me._isonline
+            End Get
+            Set(ByVal value As Boolean)
+                Me._isonline = value
+            End Set
+        End Property
+
+        Public Property IsSingle() As Boolean
+            Get
+                Return Me._issingle
+            End Get
+            Set(ByVal value As Boolean)
+                Me._issingle = value
+            End Set
+        End Property
+
+        Public Property LandscapePath() As String
+            Get
+                Return Me._landscapepath
+            End Get
+            Set(ByVal value As String)
+                Me._landscapepath = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+        Public Property ListTitle() As String
+            Get
+                Return Me._listtitle
+            End Get
+            Set(ByVal value As String)
+                Me._listtitle = value
+            End Set
+        End Property
+
+        Public Property Movie() As MediaContainers.Movie
+            Get
+                Return Me._movie
+            End Get
+            Set(ByVal value As MediaContainers.Movie)
+                Me._movie = value
+            End Set
+        End Property
+
+        Public Property MovieList() As List(Of DBElement)
+            Get
+                Return Me._movielist
+            End Get
+            Set(ByVal value As List(Of DBElement))
+                Me._movielist = value
+            End Set
+        End Property
+
+        Public Property MovieSet() As MediaContainers.MovieSet
+            Get
+                Return Me._movieset
+            End Get
+            Set(ByVal value As MediaContainers.MovieSet)
+                Me._movieset = value
+            End Set
+        End Property
+
+        Public Property NeedsSave() As Boolean
+            Get
+                Return Me._needssave
+            End Get
+            Set(ByVal value As Boolean)
+                Me._needssave = value
+            End Set
+        End Property
+
+        Public Property NfoPath() As String
+            Get
+                Return Me._nfopath
+            End Get
+            Set(ByVal value As String)
+                Me._nfopath = value
+            End Set
+        End Property
+
+        Public Property Ordering() As Enums.Ordering
+            Get
+                Return Me._ordering
+            End Get
+            Set(ByVal value As Enums.Ordering)
+                Me._ordering = value
+            End Set
+        End Property
+
+        Public Property PosterPath() As String
+            Get
+                Return Me._posterpath
+            End Get
+            Set(ByVal value As String)
+                Me._posterpath = value
+            End Set
+        End Property
+
+        Public Property Seasons() As List(Of DBElement)
+            Get
+                Return Me._seasons
+            End Get
+            Set(ByVal value As List(Of DBElement))
+                Me._seasons = value
+            End Set
+        End Property
+
+        Public Property ShowID() As Long
+            Get
+                Return Me._showid
+            End Get
+            Set(ByVal value As Long)
+                Me._showid = value
+            End Set
+        End Property
+
+        Public Property ShowPath() As String
+            Get
+                Return Me._showpath
+            End Get
+            Set(ByVal value As String)
+                Me._showpath = value
+            End Set
+        End Property
+
+        Public Property SortMethod() As Enums.SortMethod_MovieSet
+            Get
+                Return Me._sortmethod
+            End Get
+            Set(ByVal value As Enums.SortMethod_MovieSet)
+                Me._sortmethod = value
+            End Set
+        End Property
+
+        Public Property Source() As String
+            Get
+                Return Me._source
+            End Get
+            Set(ByVal value As String)
+                Me._source = value
+            End Set
+        End Property
+
+        Public Property Subtitles() As List(Of MediaInfo.Subtitle)
+            Get
+                Return Me._subtitles
+            End Get
+            Set(ByVal value As List(Of MediaInfo.Subtitle))
+                Me._subtitles = value
+            End Set
+        End Property
+
+        Public Property ThemePath() As String
+            Get
+                Return Me._themepath
+            End Get
+            Set(ByVal value As String)
+                Me._themepath = value
+            End Set
+        End Property
+
+        Public Property TrailerPath() As String
+            Get
+                Return Me._trailerpath
+            End Get
+            Set(ByVal value As String)
+                Me._trailerpath = value
+            End Set
+        End Property
+
+        Public Property TVEpisode() As MediaContainers.EpisodeDetails
+            Get
+                Return Me._tvepisode
+            End Get
+            Set(ByVal value As MediaContainers.EpisodeDetails)
+                Me._tvepisode = value
+            End Set
+        End Property
+
+        Public Property TVSeason() As MediaContainers.SeasonDetails
+            Get
+                Return Me._tvseason
+            End Get
+            Set(ByVal value As MediaContainers.SeasonDetails)
+                Me._tvseason = value
+            End Set
+        End Property
+
+        Public Property TVShow() As MediaContainers.TVShow
+            Get
+                Return Me._tvshow
+            End Get
+            Set(ByVal value As MediaContainers.TVShow)
+                Me._tvshow = value
+            End Set
+        End Property
+
+        Public Property UseFolder() As Boolean
+            Get
+                Return Me._usefolder
+            End Get
+            Set(ByVal value As Boolean)
+                Me._usefolder = value
+            End Set
+        End Property
+
+        Public Property VideoSource() As String
+            Get
+                Return Me._videosource
+            End Get
+            Set(ByVal value As String)
+                Me._videosource = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-
+            Me._actorthumbs = New List(Of String)
+            Me._bannerpath = String.Empty
+            Me._characterartpath = String.Empty
+            Me._clearartpath = String.Empty
+            Me._clearlogopath = String.Empty
+            Me._dateadded = -1
+            Me._datemodified = -1
+            Me._discartpath = String.Empty
+            Me._episodes = New List(Of DBElement)
+            Me._episodesorting = Enums.EpisodeSorting.Episode
+            Me._extrafanarts = New List(Of String)
+            Me._extrafanartspath = String.Empty
+            Me._extrathumbs = New List(Of String)
+            Me._extrathumbspath = String.Empty
+            Me._fanartpath = String.Empty
+            Me._filename = String.Empty
+            Me._filenameid = -1
+            Me._getyear = False
+            Me._id = -1
+            Me._imagescontainer = New MediaContainers.ImagesContainer
+            Me._islock = False
+            Me._ismark = False
+            Me._isonline = False
+            Me._issingle = False
+            Me._landscapepath = String.Empty
+            Me._language = String.Empty
+            Me._listtitle = String.Empty
+            Me._needssave = False
+            Me._movie = Nothing 'New MediaContainers.Movie
+            Me._movielist = New List(Of DBElement)
+            Me._movieset = Nothing 'New MediaContainers.MovieSet
+            Me._nfopath = String.Empty
+            Me._ordering = Enums.Ordering.Standard
+            Me._posterpath = String.Empty
+            Me._seasons = New List(Of DBElement)
+            Me._showid = -1
+            Me._showpath = String.Empty
+            Me._sortmethod = Enums.SortMethod_MovieSet.Year
+            Me._source = String.Empty
+            Me._subtitles = New List(Of MediaInfo.Subtitle)
+            Me._themepath = String.Empty
+            Me._trailerpath = String.Empty
+            Me._tvepisode = Nothing 'New MediaContainers.EpisodeDetails
+            Me._tvseason = Nothing 'New MediaContainers.SeasonDetails
+            Me._tvshow = Nothing 'New MediaContainers.TVShow
+            Me._usefolder = False
+            Me._videosource = String.Empty
         End Sub
 
 #End Region 'Methods

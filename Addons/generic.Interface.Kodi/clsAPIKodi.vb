@@ -210,7 +210,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateMovieInfo(ByVal EmbermovieID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(EmbermovieID)
+            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(EmbermovieID)
             Try
                 If _kodi Is Nothing Then
                     logger.Warn("[APIKodi] UpdateMovieInfo: No client initialized! Abort!")
@@ -415,7 +415,7 @@ Namespace Kodi
         ''' <param name="DBMovieSet"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Async Function SearchMovieSetByDetails(ByVal DBMovieSet As Structures.DBMovieSet) As Task(Of XBMCRPC.Video.Details.MovieSet)
+        Public Async Function SearchMovieSetByDetails(ByVal DBMovieSet As Database.DBElement) As Task(Of XBMCRPC.Video.Details.MovieSet)
             'get a list of all moviesets saved in Kodi DB
             Dim kMovies As VideoLibrary.GetMovieSetsResponse = Await GetAllMovieSets().ConfigureAwait(False)
 
@@ -429,7 +429,7 @@ Namespace Kodi
                 Next
 
                 'compare by movies inside movieset
-                For Each tMovie In DBMovieSet.Movies
+                For Each tMovie In DBMovieSet.MovieList
                     'search movie ID in Kodi DB
                     Dim MovieID As Integer = -1
                     Dim KodiMovie = Await SearchMovieByPath(Directory.GetParent(tMovie.Filename).FullName).ConfigureAwait(False)
@@ -462,7 +462,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateMovieSetInfo(ByVal EmbermoviesetID As Long, ByVal MovieSetArtworkPath As String, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uMovieset As Structures.DBMovieSet = Master.DB.LoadMovieSetFromDB(EmbermoviesetID)
+            Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(EmbermoviesetID)
             Try
                 If _kodi Is Nothing Then
                     logger.Warn("[APIKodi] UpdateMovieSetInfo: No client initialized! Abort!")
@@ -1161,7 +1161,7 @@ Namespace Kodi
                 End If
                 Select Case videotype
                     Case "movie"
-                        Dim uMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(EmbervideofileID)
+                        Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(EmbervideofileID)
 
                         'search movie ID in Kodi DB
                         Dim KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
@@ -1384,7 +1384,7 @@ Namespace Kodi
 
             Select Case videotype
                 Case Enums.ContentType.Movie
-                    Dim uMovie As Structures.DBMovie = Master.DB.LoadMovieFromDB(EmbervideofileID)
+                    Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(EmbervideofileID)
                     If FileUtils.Common.isBDRip(uMovie.Filename) Then
                         'filename must point to m2ts file! 
                         'Ember-Filepath i.e.  E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts

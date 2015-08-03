@@ -86,8 +86,8 @@ Public Class DVDProfiler
     ''' <param name="cMovie"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function MergeToDBMovie(ByVal cMovie As DVDProfiler.cDVD) As Structures.DBMovie
-        Dim tMovie As New Structures.DBMovie
+    Public Shared Function MergeToDBMovie(ByVal cMovie As DVDProfiler.cDVD) As Database.DBElement
+        Dim tMovie As New Database.DBElement
         tMovie.Movie = New MediaContainers.Movie
 
         tMovie.IsSingle = True

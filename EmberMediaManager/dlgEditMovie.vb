@@ -37,7 +37,7 @@ Public Class dlgEditMovie
     Friend WithEvents bwEThumbs As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
-    Private tmpDBMovie As New Structures.DBMovie
+    Private tmpDBMovie As New Database.DBElement
 
     Private CachePath As String = String.Empty
     Private fResults As New Containers.ImgResult
@@ -89,7 +89,7 @@ Public Class dlgEditMovie
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As Structures.DBMovie
+    Public ReadOnly Property Result As Database.DBElement
         Get
             Return tmpDBMovie
         End Get
@@ -107,7 +107,7 @@ Public Class dlgEditMovie
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBMovie As Structures.DBMovie) As DialogResult
+    Public Overloads Function ShowDialog(ByVal DBMovie As Database.DBElement) As DialogResult
         Me.tmpDBMovie = DBMovie
         Return MyBase.ShowDialog()
     End Function
@@ -1508,44 +1508,44 @@ Public Class dlgEditMovie
 
         Try
             ' load local Extrathumbs
-            If Not Me.tmpDBMovie.RemoveEThumbs Then
-                For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
-                    If Directory.Exists(a) Then
-                        ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
-                        If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
+            'If Not Me.tmpDBMovie.RemoveEThumbs Then
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
+                If Directory.Exists(a) Then
+                    ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
+                    If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
+                End If
+            Next
+
+            If ET_lFI.Count > 0 Then
+                For Each thumb As String In ET_lFI
+                    Dim ETImage As New Images
+                    If Me.bwEThumbs.CancellationPending Then Return
+                    If Not Me.etDeleteList.Contains(thumb) Then
+                        ETImage.FromFile(thumb)
+                        EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                        ET_i += 1
+                        If ET_i >= ET_max Then Exit For
                     End If
                 Next
-
-                If ET_lFI.Count > 0 Then
-                    For Each thumb As String In ET_lFI
-                        Dim ETImage As New Images
-                        If Me.bwEThumbs.CancellationPending Then Return
-                        If Not Me.etDeleteList.Contains(thumb) Then
-                            ETImage.FromFile(thumb)
-                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                            ET_i += 1
-                            If ET_i >= ET_max Then Exit For
-                        End If
-                    Next
-                End If
             End If
+            'End If
 
             ' load scraped Extrathumbs
-            If Not Me.tmpDBMovie.etList Is Nothing Then
-                If Not ET_i >= ET_max Then
-                    For Each thumb As String In Me.tmpDBMovie.etList
-                        Dim ETImage As New Images
-                        If Not String.IsNullOrEmpty(thumb) Then
-                            ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
-                        End If
-                        If ETImage.Image IsNot Nothing Then
-                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                            ET_i += 1
-                            If ET_i >= ET_max Then Exit For
-                        End If
-                    Next
-                End If
+            'If Not Me.tmpDBMovie.etList Is Nothing Then
+            If Not ET_i >= ET_max Then
+                For Each thumb As String In Me.tmpDBMovie.etList
+                    Dim ETImage As New Images
+                    If Not String.IsNullOrEmpty(thumb) Then
+                        ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
+                    End If
+                    If ETImage.Image IsNot Nothing Then
+                        EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                        ET_i += 1
+                        If ET_i >= ET_max Then Exit For
+                    End If
+                Next
             End If
+            'End If
 
             'load MovieExtractor Extrathumbs
             If EThumbsExtractor.Count > 0 Then
@@ -3051,51 +3051,6 @@ Public Class dlgEditMovie
                         iOrder += 1
                         Me.tmpDBMovie.Movie.Actors.Add(addActor)
                     Next
-                End If
-
-                If Me.tmpDBMovie.RemoveActorThumbs OrElse ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainActorThumbs)
-                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                        If Directory.Exists(tmpPath) Then
-                            FileUtils.Delete.DeleteDirectory(tmpPath)
-                        End If
-                    Next
-                End If
-
-                If Me.tmpDBMovie.RemoveBanner Then
-                    Images.DeleteMovieBanner(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveClearArt Then
-                    Images.DeleteMovieClearArt(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveClearLogo Then
-                    Images.DeleteMovieClearLogo(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveDiscArt Then
-                    Images.DeleteMovieDiscArt(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveFanart Then
-                    Images.DeleteMovieFanart(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveLandscape Then
-                    Images.DeleteMovieLandscape(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemovePoster Then
-                    Images.DeleteMoviePoster(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveTheme Then
-                    Themes.DeleteMovieTheme(Me.tmpDBMovie)
-                End If
-
-                If Me.tmpDBMovie.RemoveTrailer Then
-                    Trailers.DeleteMovieTrailer(Me.tmpDBMovie)
                 End If
 
                 If ActorThumbsHasChanged Then

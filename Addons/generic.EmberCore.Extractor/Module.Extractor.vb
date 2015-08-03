@@ -112,7 +112,7 @@ Public Class FrameExtrator
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Structures.DBMovieSet) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.FrameExtrator_Movie
                 frmMovie = New frmMovieExtractor
@@ -123,7 +123,7 @@ Public Class FrameExtrator
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
                 _params(0) = frmTV.pnlExtrator
             Case Enums.ModuleEventType.RandomFrameExtrator
-                Dim dbm As Structures.DBMovie = DirectCast(_params(0), Structures.DBMovie)
+                Dim dbm As Database.DBElement = DirectCast(_params(0), Database.DBElement)
                 Dim auto As Integer = DirectCast(_params(1), Integer)
                 Dim edit As Boolean = DirectCast(_params(2), Boolean)
                 _params(3) = ThumbGenerator.CreateRandomThumbs(dbm, auto, edit)

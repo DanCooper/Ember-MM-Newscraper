@@ -32,7 +32,7 @@ Public Class dlgEditMovieSet
 
     Friend WithEvents bwLoadMoviesInSet As New System.ComponentModel.BackgroundWorker
 
-    Private tmpDBMovieSet As New Structures.DBMovieSet
+    Private tmpDBMovieSet As New Database.DBElement
 
     Private CachePath As String = String.Empty
     Private fResults As New Containers.ImgResult
@@ -68,7 +68,7 @@ Public Class dlgEditMovieSet
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As Structures.DBMovieSet
+    Public ReadOnly Property Result As Database.DBElement
         Get
             Return tmpDBMovieSet
         End Get
@@ -86,7 +86,7 @@ Public Class dlgEditMovieSet
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBMovieSet As Structures.DBMovieSet) As DialogResult
+    Public Overloads Function ShowDialog(ByVal DBMovieSet As Database.DBElement) As DialogResult
         Me.tmpDBMovieSet = DBMovieSet
         Return MyBase.ShowDialog()
     End Function
@@ -225,7 +225,7 @@ Public Class dlgEditMovieSet
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False)
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpMovie As New Structures.DBMovie
+                Dim tmpMovie As New Database.DBElement
                 tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                     If String.IsNullOrEmpty(Me.txtCollectionID.Text) AndAlso tmpMovie.Movie.TMDBColIDSpecified Then
@@ -767,7 +767,7 @@ Public Class dlgEditMovieSet
         MoviesInSet.Clear()
 
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            Dim tmpMovie As New Structures.DBMovie
+            Dim tmpMovie As New Database.DBElement
             Dim iProg As Integer = 0
             If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
                 If Me.tmpDBMovieSet.SortMethod = Enums.SortMethod_MovieSet.Year Then
@@ -1360,34 +1360,6 @@ Public Class dlgEditMovieSet
                 End If
             End If
 
-            If Me.tmpDBMovieSet.RemoveBanner OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetBanner(Me.tmpDBMovieSet)
-            End If
-
-            If Me.tmpDBMovieSet.RemoveClearArt OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetClearArt(Me.tmpDBMovieSet)
-            End If
-
-            If Me.tmpDBMovieSet.RemoveClearLogo OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetClearLogo(Me.tmpDBMovieSet)
-            End If
-
-            If Me.tmpDBMovieSet.RemoveDiscArt OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetDiscArt(Me.tmpDBMovieSet)
-            End If
-
-            If Me.tmpDBMovieSet.RemoveFanart OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetFanart(Me.tmpDBMovieSet)
-            End If
-
-            If Me.tmpDBMovieSet.RemoveLandscape OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetLandscape(Me.tmpDBMovieSet)
-            End If
-
-            If Me.tmpDBMovieSet.RemovePoster OrElse needsMovieUpdate Then
-                Images.DeleteMovieSetPoster(Me.tmpDBMovieSet)
-            End If
-
             Me.tmpDBMovieSet.IsMark = Me.chkMark.Checked
             Me.tmpDBMovieSet.SortMethod = DirectCast(Me.cbMovieSorting.SelectedIndex, Enums.SortMethod_MovieSet)
 
@@ -1703,7 +1675,7 @@ Public Class dlgEditMovieSet
 
 #Region "Fields"
 
-        Private _dbmovie As Structures.DBMovie
+        Private _dbmovie As Database.DBElement
         Private _id As Long
         Private _listtitle As String
         Private _order As Integer
@@ -1720,11 +1692,11 @@ Public Class dlgEditMovieSet
 
 #Region "Properties"
 
-        Public Property DBMovie() As Structures.DBMovie
+        Public Property DBMovie() As Database.DBElement
             Get
                 Return Me._dbmovie
             End Get
-            Set(ByVal value As Structures.DBMovie)
+            Set(ByVal value As Database.DBElement)
                 Me._dbmovie = value
             End Set
         End Property
@@ -1761,7 +1733,7 @@ Public Class dlgEditMovieSet
 #Region "Methods"
 
         Public Sub Clear()
-            Me._dbmovie = New Structures.DBMovie
+            Me._dbmovie = New Database.DBElement
             Me._id = -1
             Me._order = 0
             Me._listtitle = String.Empty

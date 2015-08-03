@@ -24,7 +24,7 @@ Public Class dlgStudioSelect
 
 #Region "Fields"
 
-    Private _CurrMovie As Structures.DBMovie = Nothing
+    Private _CurrMovie As Database.DBElement = Nothing
     Private _studio As String = String.Empty
 
 #End Region 'Fields
@@ -39,7 +39,7 @@ Public Class dlgStudioSelect
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal CurrMovie As Structures.DBMovie) As String
+    Public Overloads Function ShowDialog(ByVal CurrMovie As Database.DBElement) As String
         '//
         ' Overload to pass data
         '\\
@@ -60,7 +60,7 @@ Public Class dlgStudioSelect
 
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        'Dim DBMovie As New Structures.DBMovie
+        'Dim DBMovie As New Database.DBElement
         'DBMovie.Movie = New MediaContainers.Movie
         'DBMovie.Movie.IMDBID = Me._MovieId
         Dim alStudio As List(Of String) = ModulesManager.Instance.GetMovieStudio(_CurrMovie)

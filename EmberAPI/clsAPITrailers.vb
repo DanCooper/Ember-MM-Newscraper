@@ -132,7 +132,7 @@ Public Class Trailers
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieTrailer(ByVal mMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieTrailer(ByVal mMovie As Database.DBElement)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -820,7 +820,7 @@ Public Class Trailers
         End Try
     End Function
 
-    Public Function SaveAsMovieTrailer(ByVal mMovie As Structures.DBMovie) As String
+    Public Function SaveAsMovieTrailer(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -874,7 +874,7 @@ Public Class Trailers
     ''' <param name="mMovie">The intended path to save the trailer</param>
     ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie) As Boolean
+    Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
                 If (String.IsNullOrEmpty(mMovie.TrailerPath) OrElse .MovieTrailerOverwrite) AndAlso .MovieTrailerEnable AndAlso _

@@ -30,7 +30,7 @@ Public Class dlgThemeSelect
 
     Friend WithEvents bwDownloadTheme As New System.ComponentModel.BackgroundWorker
 
-    Private tMovie As New Structures.DBMovie
+    Private tMovie As New Database.DBElement
     Private tShow As New Structures.DBTV
     Private _UrlList As List(Of Themes)
     Private tURL As String = String.Empty
@@ -119,7 +119,7 @@ Public Class dlgThemeSelect
         End If
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Themes)) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement, ByRef tURLList As List(Of Themes)) As DialogResult
         CreateTable(tURLList)
 
         Return MyBase.ShowDialog()

@@ -1792,105 +1792,13 @@ Public Class Structures
         Dim EpisodeSorting As Enums.EpisodeSorting
     End Structure
     ''' <summary>
-    ''' Structure representing a movie in the database
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure DBMovie
-        Dim ActorThumbs As List(Of String)
-        Dim BannerPath As String
-        Dim ClearArtPath As String
-        Dim ClearLogoPath As String
-        Dim DVDProfilerCaseType As String
-        Dim DVDProfilerLocation As String
-        Dim DVDProfilerMediaType As String
-        Dim DVDProfilerSlot As String
-        Dim DVDProfilerTitle As String
-        Dim DateAdded As Long
-        Dim DateModified As Long
-        Dim DiscArtPath As String
-        Dim EFanartsPath As String
-        Dim efList As List(Of String)
-        Dim etList As List(Of String)
-        Dim EThumbsPath As String
-        Dim FanartPath As String
-        Dim GetYear As Boolean
-        Dim VideoSource As String
-        Dim Filename As String
-        Dim ID As Long
-        Dim ImagesContainer As MediaContainers.ImagesContainer
-        Dim IsLock As Boolean
-        Dim IsMark As Boolean
-        Dim IsMarkCustom1 As Boolean
-        Dim IsMarkCustom2 As Boolean
-        Dim IsMarkCustom3 As Boolean
-        Dim IsMarkCustom4 As Boolean
-        Dim IsOnline As Boolean
-        Dim IsSingle As Boolean
-        Dim LandscapePath As String
-        Dim ListTitle As String
-        Dim Movie As MediaContainers.Movie
-        Dim NeedsSave As Boolean
-        Dim NfoPath As String
-        Dim OfflineHolderFoldername As String
-        Dim OriginalTitle As String
-        Dim OutOfTolerance As Boolean
-        Dim PosterPath As String
-        Dim RemoveActorThumbs As Boolean
-        Dim RemoveBanner As Boolean
-        Dim RemoveClearArt As Boolean
-        Dim RemoveClearLogo As Boolean
-        Dim RemoveDiscArt As Boolean
-        Dim RemoveEFanarts As Boolean
-        Dim RemoveEThumbs As Boolean
-        Dim RemoveFanart As Boolean
-        Dim RemoveLandscape As Boolean
-        Dim RemovePoster As Boolean
-        Dim RemoveTheme As Boolean
-        Dim RemoveTrailer As Boolean
-        Dim Source As String
-        Dim SubPath As String
-        Dim Subtitles As List(Of MediaInfo.Subtitle)
-        Dim ThemePath As String
-        Dim TrailerPath As String
-        Dim UseFolder As Boolean
-    End Structure
-    ''' <summary>
-    ''' Structure representing a movieset in the database
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure DBMovieSet
-        Dim BannerPath As String
-        Dim ClearArtPath As String
-        Dim ClearLogoPath As String
-        Dim DiscArtPath As String
-        Dim FanartPath As String
-        Dim ID As Long
-        Dim IsLock As Boolean
-        Dim IsMark As Boolean
-        Dim RemoveBanner As Boolean
-        Dim RemoveClearArt As Boolean
-        Dim RemoveClearLogo As Boolean
-        Dim RemoveDiscArt As Boolean
-        Dim RemoveFanart As Boolean
-        Dim RemoveLandscape As Boolean
-        Dim RemovePoster As Boolean
-        Dim ListTitle As String
-        Dim LandscapePath As String
-        Dim NfoPath As String
-        Dim PosterPath As String
-        Dim MovieSet As MediaContainers.MovieSet
-        Dim Movies As List(Of Structures.DBMovie)
-        Dim SortMethod As Enums.SortMethod_MovieSet
-    End Structure
-
-    ''' <summary>
     ''' Structure representing a tag in the database
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBMovieTag
         Dim ID As Integer
         Dim Title As String
-        Dim Movies As List(Of Structures.DBMovie)
+        Dim Movies As List(Of Database.DBElement)
     End Structure
     ''' <summary>
     ''' Structure representing a TV show in the database

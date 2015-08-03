@@ -175,7 +175,7 @@ Namespace TMDB
             End While
         End Sub
 
-        Public Sub GetMovieID(ByRef DBMovie As Structures.DBMovie)
+        Public Sub GetMovieID(ByRef DBMovie As Database.DBElement)
             Dim Movie As TMDbLib.Objects.Movies.Movie
 
             Movie = _TMDBApi.GetMovie(DBMovie.Movie.ID)
@@ -1047,7 +1047,7 @@ Namespace TMDB
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Structures.DBMovie, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_Movie) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_Movie) As MediaContainers.Movie
             Dim r As SearchResults_Movie = SearchMovie(sMovieName, CInt(If(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, Nothing)))
             Dim b As Boolean = False
 
@@ -1085,7 +1085,7 @@ Namespace TMDB
             Return nMovie
         End Function
 
-        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef oDBMovieSet As Structures.DBMovieSet, ByRef nMovieSet As MediaContainers.MovieSet, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
+        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef oDBMovieSet As Database.DBElement, ByRef nMovieSet As MediaContainers.MovieSet, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
             Dim r As SearchResults_MovieSet = SearchMovieSet(sMovieSetName, Nothing)
             Dim b As Boolean = False
 

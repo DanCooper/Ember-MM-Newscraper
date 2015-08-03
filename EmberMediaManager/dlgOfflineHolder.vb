@@ -59,7 +59,7 @@ Public Class dlgOfflineHolder
     Private RealImage_ratio As Double
     Private RealImage_W As Integer
     Private textHeight As SizeF
-    Private tMovieList As New List(Of Structures.DBMovie)
+    Private tMovieList As New List(Of Database.DBElement)
     Private txtTopPos As Integer
     Private Video_Height As Integer
     Private Video_Width As Integer
@@ -94,7 +94,7 @@ Public Class dlgOfflineHolder
         End Select
     End Sub
 
-    Private Sub AddDVDProfilerMovie(ByVal tMovie As Structures.DBMovie)
+    Private Sub AddDVDProfilerMovie(ByVal tMovie As Database.DBElement)
         txtCaseType.Text = tMovie.DVDProfilerCaseType
         txtDVDTitle.Text = tMovie.DVDProfilerTitle
         txtFolderNameDVDProfiler.Text = String.Concat(tMovie.DVDProfilerTitle, " [Offline]")
@@ -104,7 +104,7 @@ Public Class dlgOfflineHolder
         tMovieList.Add(tMovie)
     End Sub
 
-    Private Sub DisplaySelectedMovie(ByVal tMovie As Structures.DBMovie)
+    Private Sub DisplaySelectedMovie(ByVal tMovie As Database.DBElement)
         txtCaseType.Text = tMovie.DVDProfilerCaseType
         txtDVDTitle.Text = tMovie.DVDProfilerTitle
         txtFolderNameDVDProfiler.Text = tMovie.OfflineHolderFoldername
@@ -178,7 +178,7 @@ Public Class dlgOfflineHolder
         SetControlsEnabled(False)
 
         If rbHolderTypeDummyMovie.Checked Then
-            Dim Movie As Structures.DBMovie = tMovieList.Item(0)
+            Dim Movie As Database.DBElement = tMovieList.Item(0)
             'Need to avoid cross thread in BackgroundWorker
             'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
             Me.pbProgressSingle.Value = 100
@@ -265,7 +265,7 @@ Public Class dlgOfflineHolder
         Next
 
         Dim index As Integer = 0
-        For Each Movie As Structures.DBMovie In tMovieList
+        For Each Movie As Database.DBElement In tMovieList
             Dim Item As New ListViewItem
             index = lvStatusBatch.Items.Add(Movie.Movie.Title.ToString).Index
             lvStatusBatch.Items(index).SubItems.Add(Master.eLang.GetString(194, "Not Valid"))
@@ -289,7 +289,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub btnLoadSingleXML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadSingleXML.Click
-        Dim tMovie As Structures.DBMovie
+        Dim tMovie As Database.DBElement
 
         Try
             With ofdLoadXML
@@ -309,7 +309,7 @@ Public Class dlgOfflineHolder
 
     Private Sub btnSaveOfflineFolderName_Click(sender As Object, e As EventArgs) Handles btnSaveOfflineFolderName.Click
         Dim index As Integer
-        Dim ChangedItem As New Structures.DBMovie
+        Dim ChangedItem As New Database.DBElement
         If Not lvStatusBatch.SelectedItems.Count = 0 Then
             index = lvStatusBatch.SelectedItems.Item(0).Index
             ChangedItem = tMovieList.Item(index)
@@ -321,7 +321,7 @@ Public Class dlgOfflineHolder
     Private Sub btnSearchBatch_Click(sender As Object, e As EventArgs) Handles btnSearchBatch.Click
         If rbScraperTypeManually.Checked Then
             For index As Integer = 0 To tMovieList.Count - 1
-                Dim ScrapedMovie As New Structures.DBMovie
+                Dim ScrapedMovie As New Database.DBElement
                 ScrapedMovie = tMovieList.Item(index)
                 ScrapedMovie.Movie.ClearForOfflineHolder()
                 ScrapedMovie = SearchMovieManually(ScrapedMovie)
@@ -514,7 +514,7 @@ Public Class dlgOfflineHolder
     Private Sub bwMovieScraper_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
 
         For index As Integer = 0 To tMovieList.Count - 1
-            Dim ScrapedMovie As New Structures.DBMovie
+            Dim ScrapedMovie As New Database.DBElement
             ScrapedMovie = tMovieList.Item(index)
             ScrapedMovie.Movie.ClearForOfflineHolder()
 
@@ -546,7 +546,7 @@ Public Class dlgOfflineHolder
 
                 If ScrapeModifier.MainPoster Then
                     Poster.Clear()
-                    If Poster.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainPoster) Then
+                    If Poster.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainPoster) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.Posters.Count > 0 AndAlso Images.GetPreferredMoviePoster(aContainer.Posters, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) Then
@@ -561,7 +561,7 @@ Public Class dlgOfflineHolder
                     Fanart.Clear()
                     efList.Clear()
                     etList.Clear()
-                    If Fanart.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainFanart) Then
+                    If Fanart.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainFanart) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.Fanarts.Count > 0 AndAlso Images.GetPreferredMovieFanart(aContainer.Fanarts, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) Then
@@ -574,7 +574,7 @@ Public Class dlgOfflineHolder
 
                 If ScrapeModifier.MainBanner Then
                     Banner.Clear()
-                    If Banner.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainBanner) Then
+                    If Banner.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainBanner) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0) 'AndAlso Images.GetPreferredBanner(aList, Banner) Then
                             If Not String.IsNullOrEmpty(Banner.URL) Then
@@ -586,7 +586,7 @@ Public Class dlgOfflineHolder
 
                 If ScrapeModifier.MainLandscape Then
                     Landscape.Clear()
-                    If Landscape.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainLandscape) Then
+                    If Landscape.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainLandscape) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0) 'AndAlso Images.GetPreferredLandscape(aList, Landscape) Then
                             If Not String.IsNullOrEmpty(Landscape.URL) Then
@@ -598,7 +598,7 @@ Public Class dlgOfflineHolder
 
                 If ScrapeModifier.MainClearArt Then
                     ClearArt.Clear()
-                    If ClearArt.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainClearArt) Then
+                    If ClearArt.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainClearArt) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0) 'AndAlso Images.GetPreferredClearArt(aList, ClearArt) Then
                             If Not String.IsNullOrEmpty(ClearArt.URL) Then
@@ -610,7 +610,7 @@ Public Class dlgOfflineHolder
 
                 If ScrapeModifier.MainClearLogo Then
                     ClearLogo.Clear()
-                    If ClearLogo.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainClearLogo) Then
+                    If ClearLogo.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainClearLogo) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0) 'AndAlso Images.GetPreferredClearLogo(aList, ClearLogo) Then
                             If Not String.IsNullOrEmpty(ClearLogo.URL) Then
@@ -622,7 +622,7 @@ Public Class dlgOfflineHolder
 
                 If ScrapeModifier.MainDiscArt Then
                     DiscArt.Clear()
-                    If DiscArt.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.ModifierType.MainDiscArt) Then
+                    If DiscArt.WebImage.IsAllowedToDownload_Movie(ScrapedMovie, Enums.ModifierType.MainDiscArt) Then
                         If Not ModulesManager.Instance.ScrapeImage_Movie(ScrapedMovie, aContainer, ScrapeModifier, False) Then
                             If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0) 'AndAlso Images.GetPreferredDiscArt(aList, DiscArt) Then
                             If Not String.IsNullOrEmpty(DiscArt.URL) Then
@@ -710,7 +710,7 @@ Public Class dlgOfflineHolder
 
             Dim index As Integer = 0
             Dim NewMovieFoldername As String = String.Empty
-            For Each Movie As Structures.DBMovie In tMovieList
+            For Each Movie As Database.DBElement In tMovieList
                 If Movie.OfflineHolderFoldername.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
                     NewMovieFoldername = FileUtils.Common.MakeValidFilename(Movie.OfflineHolderFoldername)
                 Else
@@ -1046,7 +1046,7 @@ Public Class dlgOfflineHolder
         End Try
     End Sub
 
-    Private Sub CreateMediaStub(ByVal d As Structures.DBMovie, Optional ByVal mTitle As String = "")
+    Private Sub CreateMediaStub(ByVal d As Database.DBElement, Optional ByVal mTitle As String = "")
         Dim StubFile As String = String.Empty
         Dim StubPath As String = String.Empty
         Dim Title As String = String.Empty
@@ -1127,7 +1127,7 @@ Public Class dlgOfflineHolder
         End If
     End Sub
 
-    Private Sub EditMovie(ByRef tMovie As Structures.DBMovie)
+    Private Sub EditMovie(ByRef tMovie As Database.DBElement)
 
         Master.currMovie = tMovie
 
@@ -1136,31 +1136,7 @@ Public Class dlgOfflineHolder
                 Case Windows.Forms.DialogResult.OK
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Master.currMovie)
                 Case Windows.Forms.DialogResult.Retry
-                    Master.currMovie.RemoveActorThumbs = False
-                    Master.currMovie.RemoveBanner = False
-                    Master.currMovie.RemoveClearArt = False
-                    Master.currMovie.RemoveClearLogo = False
-                    Master.currMovie.RemoveDiscArt = False
-                    Master.currMovie.RemoveEThumbs = False
-                    Master.currMovie.RemoveEFanarts = False
-                    Master.currMovie.RemoveFanart = False
-                    Master.currMovie.RemoveLandscape = False
-                    Master.currMovie.RemovePoster = False
-                    Master.currMovie.RemoveTheme = False
-                    Master.currMovie.RemoveTrailer = False
                 Case Windows.Forms.DialogResult.Abort
-                    Master.currMovie.RemoveActorThumbs = False
-                    Master.currMovie.RemoveBanner = False
-                    Master.currMovie.RemoveClearArt = False
-                    Master.currMovie.RemoveClearLogo = False
-                    Master.currMovie.RemoveDiscArt = False
-                    Master.currMovie.RemoveEThumbs = False
-                    Master.currMovie.RemoveEFanarts = False
-                    Master.currMovie.RemoveFanart = False
-                    Master.currMovie.RemoveLandscape = False
-                    Master.currMovie.RemovePoster = False
-                    Master.currMovie.RemoveTheme = False
-                    Master.currMovie.RemoveTrailer = False
                 Case Else
                     'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
             End Select
@@ -1275,10 +1251,10 @@ Public Class dlgOfflineHolder
         Me.Activate()
     End Sub
 
-    Private Function LoadSingleXML(ByVal fPath As String) As Structures.DBMovie
+    Private Function LoadSingleXML(ByVal fPath As String) As Database.DBElement
         Dim xmlSer As XmlSerializer = Nothing
         Dim cMovie As DVDProfiler.cDVD
-        Dim tMovie As New Structures.DBMovie
+        Dim tMovie As New Database.DBElement
 
         Try
             If File.Exists(fPath) Then
@@ -1308,7 +1284,7 @@ Public Class dlgOfflineHolder
         lvStatusSingle.SelectedItems.Clear()
     End Sub
 
-    Public Function ProccessPattern(ByVal d As Structures.DBMovie, ByVal sMessage As String) As String
+    Public Function ProccessPattern(ByVal d As Database.DBElement, ByVal sMessage As String) As String
         Try
             Dim pattern As String = sMessage
             Dim message As String = sMessage
@@ -1472,8 +1448,8 @@ Public Class dlgOfflineHolder
         txtSlot.Text = String.Empty
     End Sub
 
-    Private Function SearchMovieAsk(ByVal tMovie As Structures.DBMovie) As Structures.DBMovie
-        Dim sMovie As Structures.DBMovie
+    Private Function SearchMovieAsk(ByVal tMovie As Database.DBElement) As Database.DBElement
+        Dim sMovie As Database.DBElement
         Dim Banner As New MediaContainers.Image
         Dim ClearArt As New MediaContainers.Image
         Dim ClearLogo As New MediaContainers.Image
@@ -1504,7 +1480,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainPoster Then
                 Poster.Clear()
-                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainPoster) Then
+                If Poster.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainPoster) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Posters.Count > 0 AndAlso Images.GetPreferredMoviePoster(aContainer.Posters, Poster) Then
                             If Not String.IsNullOrEmpty(Poster.URL) Then
@@ -1519,7 +1495,7 @@ Public Class dlgOfflineHolder
                 Fanart.Clear()
                 efList.Clear()
                 etList.Clear()
-                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainFanart) Then
+                If Fanart.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainFanart) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Fanarts.Count > 0 AndAlso Images.GetPreferredMovieFanart(aContainer.Fanarts, Fanart) Then
                             If Not String.IsNullOrEmpty(Fanart.URL) Then
@@ -1532,7 +1508,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainBanner Then
                 Banner.Clear()
-                If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainBanner) Then
+                If Banner.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainBanner) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Banners.Count > 0 Then Banner = aContainer.Banners.Item(0) 'AndAlso Images.GetPreferredBanner(aList, Banner) Then
                         If Not String.IsNullOrEmpty(Banner.URL) Then
@@ -1544,7 +1520,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainLandscape Then
                 Landscape.Clear()
-                If Landscape.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainLandscape) Then
+                If Landscape.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainLandscape) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Landscapes.Count > 0 Then Landscape = aContainer.Landscapes.Item(0) 'AndAlso Images.GetPreferredLandscape(aList, Landscape) Then
                         If Not String.IsNullOrEmpty(Landscape.URL) Then
@@ -1556,7 +1532,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainClearArt Then
                 ClearArt.Clear()
-                If ClearArt.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainClearArt) Then
+                If ClearArt.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainClearArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.ClearArts.Count > 0 Then ClearArt = aContainer.ClearArts.Item(0) 'AndAlso Images.GetPreferredClearArt(aList, ClearArt) Then
                         If Not String.IsNullOrEmpty(ClearArt.URL) Then
@@ -1568,7 +1544,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainClearLogo Then
                 ClearLogo.Clear()
-                If ClearLogo.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainClearLogo) Then
+                If ClearLogo.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainClearLogo) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.ClearLogos.Count > 0 Then ClearLogo = aContainer.ClearLogos.Item(0) 'AndAlso Images.GetPreferredClearLogo(aList, ClearLogo) Then
                         If Not String.IsNullOrEmpty(ClearLogo.URL) Then
@@ -1580,7 +1556,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainDiscArt Then
                 DiscArt.Clear()
-                If DiscArt.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainDiscArt) Then
+                If DiscArt.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainDiscArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.DiscArts.Count > 0 Then DiscArt = aContainer.DiscArts.Item(0) 'AndAlso Images.GetPreferredDiscArt(aList, DiscArt) Then
                         If Not String.IsNullOrEmpty(DiscArt.URL) Then
@@ -1599,8 +1575,8 @@ Public Class dlgOfflineHolder
         Return tMovie
     End Function
 
-    Private Function SearchMovieManually(ByVal tMovie As Structures.DBMovie) As Structures.DBMovie
-        Dim sMovie As Structures.DBMovie
+    Private Function SearchMovieManually(ByVal tMovie As Database.DBElement) As Database.DBElement
+        Dim sMovie As Database.DBElement
         Dim Banner As New MediaContainers.Image
         Dim ClearArt As New MediaContainers.Image
         Dim ClearLogo As New MediaContainers.Image
@@ -1631,7 +1607,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainPoster Then
                 Poster.Clear()
-                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainPoster) Then
+                If Poster.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainPoster) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Posters.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1649,7 +1625,7 @@ Public Class dlgOfflineHolder
                 Fanart.Clear()
                 efList.Clear()
                 etList.Clear()
-                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainFanart) Then
+                If Fanart.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainFanart) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Fanarts.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1658,8 +1634,8 @@ Public Class dlgOfflineHolder
                                     efList = dImgSelect.efList
                                     etList = dImgSelect.etList
                                     sMovie.FanartPath = ":" & Fanart.URL
-                                    sMovie.efList = efList
-                                    sMovie.etList = etList
+                                    'sMovie.efList = efList
+                                    'sMovie.etList = etList
 
                                     If Not String.IsNullOrEmpty(Fanart.URL) Then
                                         Fanart.WebImage.FromWeb(Fanart.URL)
@@ -1677,7 +1653,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainBanner Then
                 Banner.Clear()
-                If Banner.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainBanner) Then
+                If Banner.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainBanner) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Banners.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1697,7 +1673,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainLandscape Then
                 Landscape.Clear()
-                If Landscape.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainLandscape) Then
+                If Landscape.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainLandscape) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.Landscapes.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1717,7 +1693,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainClearArt Then
                 ClearArt.Clear()
-                If ClearArt.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainClearArt) Then
+                If ClearArt.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainClearArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.ClearArts.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1737,7 +1713,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainClearLogo Then
                 ClearLogo.Clear()
-                If ClearLogo.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainClearLogo) Then
+                If ClearLogo.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainClearLogo) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.ClearLogos.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1757,7 +1733,7 @@ Public Class dlgOfflineHolder
 
             If ScrapeModifier.MainDiscArt Then
                 DiscArt.Clear()
-                If DiscArt.WebImage.IsAllowedToDownload(sMovie, Enums.ModifierType.MainDiscArt) Then
+                If DiscArt.WebImage.IsAllowedToDownload_Movie(sMovie, Enums.ModifierType.MainDiscArt) Then
                     If Not ModulesManager.Instance.ScrapeImage_Movie(sMovie, aContainer, ScrapeModifier, False) Then
                         If aContainer.DiscArts.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
@@ -1964,7 +1940,7 @@ Public Class dlgOfflineHolder
 
 #Region "Fields"
 
-        Dim dMovie As Structures.DBMovie
+        Dim dMovie As Database.DBElement
 
 #End Region 'Fields
 

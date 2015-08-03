@@ -1379,7 +1379,7 @@ Public Class dlgTrakttvManager
                 i += 1
                 For Each srow As DataRow In dtMovies.Rows
                     If watchedMovieData.Movie.Ids.Imdb = srow.Item("Imdb").ToString Then
-                        Dim tmpMovie As New Structures.DBMovie
+                        Dim tmpMovie As New Database.DBElement
                         tmpMovie = Master.DB.LoadMovieFromDB(CLng(srow.Item("idMovie")))
                         tmpMovie.Movie.PlayCount = CStr(watchedMovieData.Plays)
                         tmpMovie.Movie.LastPlayed = CStr(watchedMovieData.LastWatchedAt)
@@ -1886,12 +1886,12 @@ Public Class dlgTrakttvManager
                     Next
 
                     'Step 2: create new DBTag object to store current trakt list in
-                    Dim currMovieTag As New Structures.DBMovieTag
+                    Dim currMovieTag As New Database.DBElementTag
                     If listDBID = -1 Then
                         'if tag is new and doesn't exist in Ember, create new one with basic information!
                         currMovieTag.ID = -1
                         currMovieTag.Title = list.Name
-                        currMovieTag.Movies = New List(Of Structures.DBMovie)
+                        currMovieTag.Movies = New List(Of Database.DBElement)
                     Else
                         'tag already in DB, just edit it! 
                         'load tag from database
@@ -1908,7 +1908,7 @@ Public Class dlgTrakttvManager
                         'If movie is part of DB in Ember (compare IMDB) add it - else ignore!
                         For Each sRow As DataRow In dtMovies.Rows
                             If Not String.IsNullOrEmpty(sRow.Item("idMovie").ToString) AndAlso "tt" & sRow.Item("Imdb").ToString = listmovie.Ids.Imdb Then
-                                Dim tmpMovie As New Structures.DBMovie
+                                Dim tmpMovie As New Database.DBElement
                                 tmpMovie = Master.DB.LoadMovieFromDB(CLng(sRow.Item("idMovie")))
                                 currMovieTag.Movies.Add(tmpMovie)
                                 Exit For
@@ -1981,7 +1981,7 @@ Public Class dlgTrakttvManager
 
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpMovie As New Structures.DBMovie
+                Dim tmpMovie As New Database.DBElement
                 tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) AndAlso Not Me.lbtraktListsMoviesinLists.Items.Contains(tmpMovie.Movie.Title) Then
                     'create new traktlistitem of selected movie
@@ -2038,7 +2038,7 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' 2015/02/09 Cocotus - Fixed for API v2
     ''' </remarks>
-    Private Function createTraktListItem(ByVal DBMovie As Structures.DBMovie) As TraktAPI.Model.TraktListItem
+    Private Function createTraktListItem(ByVal DBMovie As Database.DBElement) As TraktAPI.Model.TraktListItem
 
         Dim traktlistitem As New TraktAPI.Model.TraktListItem
         'now set necessary properties of new traktitem to create a valid list entry
@@ -2294,7 +2294,7 @@ Public Class dlgTrakttvManager
                     End If
                 Next
                 If TagID > -1 Then
-                    Dim tmpMovie As New Structures.DBMovie
+                    Dim tmpMovie As New Database.DBElement
                     Dim iProg As Integer = 0
                     Dim tmpTag = Master.DB.LoadMovieTagFromDB(TagID)
                     For Each tmpMovie In tmpTag.Movies

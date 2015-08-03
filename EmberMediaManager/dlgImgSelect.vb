@@ -60,8 +60,8 @@ Public Class dlgImgSelect
     Private selIndex As Integer = -1
 
     Private tIsMovie As Boolean
-    Private tMovie As New Structures.DBMovie
-    Private tMovieSet As New Structures.DBMovieSet
+    Private tMovie As New Database.DBElement
+    Private tMovieSet As New Database.DBElement
     Private tmpImage As New MediaContainers.Image
     Private tmpImageEF As New MediaContainers.Image
     Private tmpImageET As New MediaContainers.Image
@@ -129,7 +129,7 @@ Public Class dlgImgSelect
     ''' <param name="_isEdit"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tMovie = DBMovie
         Me.tIsMovie = True
         Me._ImageList = ImageList
@@ -142,7 +142,7 @@ Public Class dlgImgSelect
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovieSet As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tMovieSet = DBMovieSet
         Me.tIsMovie = False
         Me._ImageList = ImageList

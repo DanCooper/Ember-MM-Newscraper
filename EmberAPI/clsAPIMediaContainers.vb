@@ -3671,8 +3671,8 @@ Namespace MediaContainers
             Me._clearart = New MediaContainers.Image
             Me._clearlogo = New MediaContainers.Image
             Me._discart = New MediaContainers.Image
-            Me._extrafanarts.Clear()
-            Me._extrathumbs.Clear()
+            Me._extrafanarts = New List(Of Image)
+            Me._extrathumbs = New List(Of Image)
             Me._fanart = New MediaContainers.Image
             Me._landscape = New MediaContainers.Image
             Me._poster = New MediaContainers.Image
@@ -3936,6 +3936,113 @@ Namespace MediaContainers
                         Else
                             Images.DeleteTVShowPoster(DBTV)
                             DBTV.PosterPath = String.Empty
+                        End If
+                End Select
+            End With
+        End Sub
+
+        Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByRef Type As Enums.ContentType)
+            With DBElement.ImagesContainer
+
+                Select Case Type
+                    Case Enums.ContentType.MovieSet
+
+                        'Banner
+                        If .Banner.WebImage.Image IsNot Nothing Then
+                            DBElement.BannerPath = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Banner.URL) Then
+                            .Banner.WebImage.FromWeb(.Banner.URL)
+                            DBElement.BannerPath = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.BannerPath) Then
+                            .Banner.WebImage.FromFile(DBElement.BannerPath)
+                            DBElement.BannerPath = .Banner.WebImage.SaveAsMovieSetBanner(DBElement)
+                        Else
+                            Images.DeleteMovieSetBanner(DBElement)
+                            DBElement.BannerPath = String.Empty
+                        End If
+
+                        'Show ClearArt
+                        If .ClearArt.WebImage.Image IsNot Nothing Then
+                            DBElement.ClearArtPath = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URL) Then
+                            .ClearArt.WebImage.FromWeb(.ClearArt.URL)
+                            DBElement.ClearArtPath = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ClearArtPath) Then
+                            .ClearArt.WebImage.FromFile(DBElement.ClearArtPath)
+                            DBElement.ClearArtPath = .ClearArt.WebImage.SaveAsMovieSetClearArt(DBElement)
+                        Else
+                            Images.DeleteMovieSetClearArt(DBElement)
+                            DBElement.ClearArtPath = String.Empty
+                        End If
+
+                        'Show ClearLogo
+                        If .ClearLogo.WebImage.Image IsNot Nothing Then
+                            DBElement.ClearLogoPath = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URL) Then
+                            .ClearLogo.WebImage.FromWeb(.ClearLogo.URL)
+                            DBElement.ClearLogoPath = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.ClearLogoPath) Then
+                            .ClearLogo.WebImage.FromFile(DBElement.ClearLogoPath)
+                            DBElement.ClearLogoPath = .ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBElement)
+                        Else
+                            Images.DeleteMovieSetClearLogo(DBElement)
+                            DBElement.ClearLogoPath = String.Empty
+                        End If
+
+                        'DiscArt
+                        If .DiscArt.WebImage.Image IsNot Nothing Then
+                            DBElement.DiscArtPath = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.DiscArt.URL) Then
+                            .DiscArt.WebImage.FromWeb(.DiscArt.URL)
+                            DBElement.DiscArtPath = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.DiscArtPath) Then
+                            .DiscArt.WebImage.FromFile(DBElement.DiscArtPath)
+                            DBElement.DiscArtPath = .DiscArt.WebImage.SaveAsMovieSetDiscArt(DBElement)
+                        Else
+                            Images.DeleteMovieSetDiscArt(DBElement)
+                            DBElement.DiscArtPath = String.Empty
+                        End If
+
+                        'Fanart
+                        If .Fanart.WebImage.Image IsNot Nothing Then
+                            DBElement.FanartPath = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Fanart.URL) Then
+                            .Fanart.WebImage.FromWeb(.Fanart.URL)
+                            DBElement.FanartPath = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.FanartPath) Then
+                            .Fanart.WebImage.FromFile(DBElement.FanartPath)
+                            DBElement.FanartPath = .Fanart.WebImage.SaveAsMovieSetFanart(DBElement)
+                        Else
+                            Images.DeleteMovieSetFanart(DBElement)
+                            DBElement.FanartPath = String.Empty
+                        End If
+
+                        'Landscape
+                        If .Landscape.WebImage.Image IsNot Nothing Then
+                            DBElement.LandscapePath = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Landscape.URL) Then
+                            .Landscape.WebImage.FromWeb(.Landscape.URL)
+                            DBElement.LandscapePath = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.LandscapePath) Then
+                            .Landscape.WebImage.FromFile(DBElement.LandscapePath)
+                            DBElement.LandscapePath = .Landscape.WebImage.SaveAsMovieSetLandscape(DBElement)
+                        Else
+                            Images.DeleteMovieSetLandscape(DBElement)
+                            DBElement.LandscapePath = String.Empty
+                        End If
+
+                        'Poster
+                        If .Poster.WebImage.Image IsNot Nothing Then
+                            DBElement.PosterPath = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(.Poster.URL) Then
+                            .Poster.WebImage.FromWeb(.Poster.URL)
+                            DBElement.PosterPath = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
+                        ElseIf Not String.IsNullOrEmpty(DBElement.PosterPath) Then
+                            .Poster.WebImage.FromFile(DBElement.PosterPath)
+                            DBElement.PosterPath = .Poster.WebImage.SaveAsMovieSetPoster(DBElement)
+                        Else
+                            Images.DeleteMovieSetPoster(DBElement)
+                            DBElement.PosterPath = String.Empty
                         End If
                 End Select
             End With

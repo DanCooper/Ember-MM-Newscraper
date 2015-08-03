@@ -326,7 +326,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie">Movie database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieActorThumbs(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieActorThumbs(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -345,7 +345,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieBanner(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieBanner(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -363,7 +363,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieClearArt(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieClearArt(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -381,7 +381,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieClearLogo(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieClearLogo(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -399,7 +399,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieDiscArt(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieDiscArt(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -417,7 +417,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie">Movie database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieEFanarts(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieEFanarts(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -435,7 +435,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie">Movie database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieEThumbs(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieEThumbs(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -453,7 +453,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieFanart(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieFanart(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -471,7 +471,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieLandscape(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMovieLandscape(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -487,9 +487,9 @@ Public Class Images
     ''' <summary>
     ''' Delete the movie's posters
     ''' </summary>
-    ''' <param name="DBMovie">Structures.DBMovie representing the movie to be worked on</param>
+    ''' <param name="DBMovie">Database.DBElement representing the movie to be worked on</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMoviePoster(ByVal DBMovie As Structures.DBMovie)
+    Public Shared Sub DeleteMoviePoster(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -507,7 +507,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetBanner(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetBanner(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -525,7 +525,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetClearArt(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetClearArt(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -543,7 +543,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetClearLogo(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetClearLogo(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -561,7 +561,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetDiscArt(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetDiscArt(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -579,7 +579,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetFanart(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetFanart(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -597,7 +597,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetLandscape(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetLandscape(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -615,7 +615,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetPoster(ByVal DBMovieSet As Structures.DBMovieSet)
+    Public Shared Sub DeleteMovieSetPoster(ByVal DBMovieSet As Database.DBElement)
         If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
 
         Try
@@ -998,7 +998,7 @@ Public Class Images
         End Try
     End Sub
 
-    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
+    Public Function IsAllowedToDownload_Movie(ByVal mMovie As Database.DBElement, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
@@ -1066,7 +1066,7 @@ Public Class Images
     ''' <param name="isChange"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovieSet As Structures.DBMovieSet, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
+    Public Function IsAllowedToDownload_MovieSet(ByVal mMovieSet As Database.DBElement, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
@@ -1266,10 +1266,10 @@ Public Class Images
     ''' </summary>
     ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
     ''' <param name="fpath"><c>String</c> representing the movie path</param>
-    ''' <param name="aMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="aMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String, ByVal aMovie As Structures.DBMovie) As String
+    Public Function SaveAsMovieActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String, ByVal aMovie As Database.DBElement) As String
         'TODO 2013/11/26 Dekker500 - This should be re-factored to remove the fPath argument. All callers pass the same string derived from the provided DBMovie, so why do it twice?
         Dim tPath As String = String.Empty
 
@@ -1285,11 +1285,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie banner
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieBanner(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieBanner(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieBannerResize AndAlso (_image.Width > Master.eSettings.MovieBannerWidth OrElse _image.Height > Master.eSettings.MovieBannerHeight)
@@ -1322,11 +1322,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie ClearArt
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieClearArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieClearArt(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1351,11 +1351,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie ClearLogo
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieClearLogo(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieClearLogo(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1380,11 +1380,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie landscape
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieDiscArt(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieDiscArt(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1409,12 +1409,12 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie's extrafanart
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Structures.DBMovie, ByVal sName As String, Optional sURL As String = "") As String
+    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Database.DBElement, ByVal sName As String, Optional sURL As String = "") As String
         Dim efPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -1448,11 +1448,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie's extrathumb
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim etPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -1492,7 +1492,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieFanart(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieFanart(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieFanartResize AndAlso (_image.Width > Master.eSettings.MovieFanartWidth OrElse _image.Height > Master.eSettings.MovieFanartHeight)
@@ -1530,11 +1530,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie landscape
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieLandscape(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMovieLandscape(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1559,11 +1559,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie poster
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMoviePoster(ByVal mMovie As Structures.DBMovie, Optional sURL As String = "") As String
+    Public Function SaveAsMoviePoster(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MoviePosterResize AndAlso (_image.Width > Master.eSettings.MoviePosterWidth OrElse _image.Height > Master.eSettings.MoviePosterHeight)
@@ -1596,11 +1596,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset banner
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieSetBannerResize AndAlso (_image.Width > Master.eSettings.MovieSetBannerWidth OrElse _image.Height > Master.eSettings.MovieSetBannerHeight)
@@ -1633,11 +1633,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset ClearArt
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1662,11 +1662,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset ClearLogo
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1691,11 +1691,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset DiscArt
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1720,11 +1720,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset Fanart
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieSetFanartResize AndAlso (_image.Width > Master.eSettings.MovieSetFanartWidth OrElse _image.Height > Master.eSettings.MovieSetFanartHeight)
@@ -1757,11 +1757,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset Landscape
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1786,11 +1786,11 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movieset Poster
     ''' </summary>
-    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieSetPosterResize AndAlso (_image.Width > Master.eSettings.MovieSetPosterWidth OrElse _image.Height > Master.eSettings.MovieSetPosterHeight)

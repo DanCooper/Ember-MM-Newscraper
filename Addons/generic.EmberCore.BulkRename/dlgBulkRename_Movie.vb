@@ -91,7 +91,7 @@ Public Class dlgBulkRenamer_Movie
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Try
             Dim MovieFile As New FileFolderRenamer.FileRename
-            Dim _currMovie As New Structures.DBMovie
+            Dim _currMovie As New Database.DBElement
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
 

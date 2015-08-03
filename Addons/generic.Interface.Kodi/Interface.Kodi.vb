@@ -131,7 +131,7 @@ Public Class KodiInterface
     ''' - RunGeneric is a synched function, so we can't use Await in conjunction with async KodiAPI here (which is preferred). For Ember 1.5 I suggest to change RunGeneric to Public Async Function
     ''' - As soon as RunGeneric is Async, switch all API calling subs/function in here to async to so we can use await and enable result notification in Ember (see commented code below)
     ''' </remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Structures.DBMovie, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Structures.DBMovieSet) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Structures.DBTV, ByRef _dbmovieset As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
 
         'check if at least one host is configured, else skip
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
@@ -139,7 +139,7 @@ Public Class KodiInterface
 
                 'Movie syncing
                 Case Enums.ModuleEventType.Sync_Movie
-                    Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
+                    Dim tDBMovie As EmberAPI.Database.DBElement = DirectCast(_refparam, EmberAPI.Database.DBElement)
                     If tDBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBMovie, True) Then
                         If Not String.IsNullOrEmpty(tDBMovie.NfoPath) Then
                             For Each host In MySettings.KodiHosts.host.ToList
@@ -189,8 +189,8 @@ Public Class KodiInterface
                     If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
                         logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No Remote MoviesetPath configured!")
                     Else
-                        Dim tDBMovieset As EmberAPI.Structures.DBMovieSet = DirectCast(_refparam, EmberAPI.Structures.DBMovieSet)
-                        If tDBMovieset.Movies.Count > 0 Then
+                        Dim tDBMovieset As EmberAPI.Database.DBElement = DirectCast(_refparam, EmberAPI.Database.DBElement)
+                        If tDBMovieset.MovieList.Count > 0 Then
                             If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
                                 For Each host In MySettings.KodiHosts.host.ToList
                                     'only update movie if realtimesync of host is enabled
@@ -660,7 +660,7 @@ Public Class KodiInterface
             Exit Sub
         End If
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            If Master.currMovieSet.Movies.Count > 0 Then
+            If Master.currMovieSet.MovieList.Count > 0 Then
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currMovieSet.ID.ToString) Then
                     For Each host In MySettings.KodiHosts.host.ToList

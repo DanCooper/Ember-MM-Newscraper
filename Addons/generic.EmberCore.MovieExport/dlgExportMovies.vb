@@ -48,7 +48,7 @@ Public Class dlgExportMovies
     Private TempPath As String = Path.Combine(Master.TempPath, "Export")
     Private use_filter As Boolean = False
     Private workerCanceled As Boolean = False
-    Private _movies As New List(Of Structures.DBMovie)
+    Private _movies As New List(Of Database.DBElement)
 
 #End Region 'Fields
 
@@ -279,7 +279,7 @@ Public Class dlgExportMovies
                 If part.isLooped Then
                     Dim counter As Integer = 1
                     FilterMovies.Clear()
-                    For Each _curMovie As Structures.DBMovie In _movies
+                    For Each _curMovie As Database.DBElement In _movies
                         Dim _vidDetails As String = String.Empty
                         Dim _vidDimensions As String = String.Empty
 
@@ -523,7 +523,7 @@ Public Class dlgExportMovies
         End Try
     End Sub
 
-    Private Function GetMovieSets(_curMovie As Structures.DBMovie) As String
+    Private Function GetMovieSets(_curMovie As Database.DBElement) As String
         Dim ReturnString As String = ""
         Try
 
@@ -683,7 +683,7 @@ Public Class dlgExportMovies
         _movies.Clear()
         ' Load nfo movies using path from DB
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            Dim _tmpMovie As New Structures.DBMovie
+            Dim _tmpMovie As New Database.DBElement
             Dim _ID As Integer
             Dim iProg As Integer = 0
             SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie;")
@@ -893,7 +893,7 @@ Public Class dlgExportMovies
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
 
-            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
+            For Each _curMovie As Database.DBElement In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
                 Try
                     Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
                     If File.Exists(_curMovie.FanartPath) Then
@@ -947,7 +947,7 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             Dim finalpath As String = Path.Combine(fpath, "export")
             Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Structures.DBMovie In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
+            For Each _curMovie As Database.DBElement In _movies.Where(Function(y) FilterMovies.Contains(y.ID))
                 Try
                     Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
                     If File.Exists(_curMovie.PosterPath) Then                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
@@ -1002,7 +1002,7 @@ Public Class dlgExportMovies
         End Try
     End Sub
 
-    Private Function GetAVImages(ByVal AVMovie As Structures.DBMovie, ByVal line As String) As String
+    Private Function GetAVImages(ByVal AVMovie As Database.DBElement, ByVal line As String) As String
         If APIXML.lFlags.Count > 0 Then
             Try
                 Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
