@@ -365,53 +365,53 @@ Namespace TVDBs
             If EpisodeInfo.IMDBId IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.IMDBId) Then nEpisode.IMDB = EpisodeInfo.IMDBId
 
             'Episode # Absolute
-            If EpisodeInfo.AbsoluteNumber >= 0 Then
+            If Not EpisodeInfo.AbsoluteNumber = -1 Then
                 nEpisode.EpisodeAbsolute = EpisodeInfo.AbsoluteNumber
             End If
 
             'Episode # AirsBeforeEpisode (DisplayEpisode)
-            If EpisodeInfo.AirsBeforeEpisode >= 0 Then
+            If Not EpisodeInfo.AirsBeforeEpisode = -1 Then
                 nEpisode.DisplayEpisode = EpisodeInfo.AirsBeforeEpisode
             End If
 
             'Episode # Combined
-            If EpisodeInfo.CombinedEpisodeNumber >= 0 Then
+            If Not EpisodeInfo.CombinedEpisodeNumber = -1 Then
                 nEpisode.EpisodeCombined = EpisodeInfo.CombinedEpisodeNumber
             End If
 
             'Episode # DVD
-            If EpisodeInfo.DVDEpisodeNumber >= 0 Then
+            If Not EpisodeInfo.DVDEpisodeNumber = -1 Then
                 nEpisode.EpisodeDVD = EpisodeInfo.DVDEpisodeNumber
             End If
 
             'Episode # Standard
-            If EpisodeInfo.Number >= 0 Then
+            If Not EpisodeInfo.Number = -1 Then
                 nEpisode.Episode = EpisodeInfo.Number
             End If
 
             'Season # AirsBeforeSeason (DisplaySeason)
-            If EpisodeInfo.AirsBeforeSeason >= 0 Then
+            If Not EpisodeInfo.AirsBeforeSeason = -1 Then
                 nEpisode.DisplaySeason = EpisodeInfo.AirsBeforeSeason
             End If
 
             'Season # AirsAfterSeason (DisplaySeason, DisplayEpisode; Special handling like in Kodi)
-            If CDbl(EpisodeInfo.AirsAfterSeason) >= 0 Then
+            If Not CDbl(EpisodeInfo.AirsAfterSeason) = -1 Then
                 nEpisode.DisplaySeason = CInt(EpisodeInfo.AirsAfterSeason)
                 nEpisode.DisplayEpisode = 4096
             End If
 
             'Season # Combined
-            If CInt(EpisodeInfo.CombinedSeason) >= 0 Then
+            If Not CInt(EpisodeInfo.CombinedSeason) = -1 Then
                 nEpisode.SeasonCombined = EpisodeInfo.CombinedSeason
             End If
 
             'Season # DVD
-            If CInt(EpisodeInfo.DVDSeason) >= 0 Then
+            If Not CInt(EpisodeInfo.DVDSeason) = -1 Then
                 nEpisode.SeasonDVD = EpisodeInfo.DVDSeason
             End If
 
             'Season # Standard
-            If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
+            If Not CInt(EpisodeInfo.SeasonNumber) = -1 Then
                 nEpisode.Season = EpisodeInfo.SeasonNumber
             End If
 

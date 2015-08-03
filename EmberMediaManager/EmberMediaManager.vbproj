@@ -157,10 +157,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TMDbLib.0.8.3\lib\net45\TMDbLib.dll</HintPath>
     </Reference>
-    <Reference Include="TVDB, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TheTVDBApi.1.1.1.0\lib\net45\TVDB.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
