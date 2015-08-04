@@ -22,46 +22,49 @@ Partial Class dlgImgSelectNew
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelectNew))
         Me.btnRemoveSubImage = New System.Windows.Forms.Button()
         Me.btnRestoreSubImage = New System.Windows.Forms.Button()
         Me.pnlImgSelect = New System.Windows.Forms.Panel()
-        Me.pnlImgSelectTop = New System.Windows.Forms.Panel()
-        Me.pnlImgSelectBottom = New System.Windows.Forms.Panel()
-        Me.pnlImgSelectLeft = New System.Windows.Forms.Panel()
         Me.pnlImgSelectMain = New System.Windows.Forms.Panel()
+        Me.pnlImgSelectLeft = New System.Windows.Forms.Panel()
         Me.tblImgSelectLeft = New System.Windows.Forms.TableLayoutPanel()
         Me.cbSubImageType = New System.Windows.Forms.ComboBox()
         Me.pnlSubImages = New System.Windows.Forms.Panel()
-        Me.tblImgSelectTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnRestoreTopImage = New System.Windows.Forms.Button()
-        Me.btnRemoveTopImage = New System.Windows.Forms.Button()
-        Me.pnlTopImages = New System.Windows.Forms.Panel()
+        Me.pnlImgSelectBottom = New System.Windows.Forms.Panel()
         Me.tblImgSelectBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pnlFilter = New System.Windows.Forms.Panel()
-        Me.pnlSelectButtons = New System.Windows.Forms.Panel()
         Me.tblFilter = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSelectButtons = New System.Windows.Forms.Panel()
         Me.tblSelectButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSelectAll = New System.Windows.Forms.Button()
         Me.btnSelectNone = New System.Windows.Forms.Button()
+        Me.pnlImgSelectTop = New System.Windows.Forms.Panel()
+        Me.tblImgSelectTop = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnRestoreTopImage = New System.Windows.Forms.Button()
+        Me.btnRemoveTopImage = New System.Windows.Forms.Button()
+        Me.pnlTopImages = New System.Windows.Forms.Panel()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.tmrReorderMainList = New System.Windows.Forms.Timer(Me.components)
         Me.pnlImgSelect.SuspendLayout()
-        Me.pnlImgSelectTop.SuspendLayout()
-        Me.pnlImgSelectBottom.SuspendLayout()
         Me.pnlImgSelectLeft.SuspendLayout()
         Me.tblImgSelectLeft.SuspendLayout()
-        Me.tblImgSelectTop.SuspendLayout()
+        Me.pnlImgSelectBottom.SuspendLayout()
         Me.tblImgSelectBottom.SuspendLayout()
         Me.pnlFilter.SuspendLayout()
         Me.pnlSelectButtons.SuspendLayout()
         Me.tblSelectButtons.SuspendLayout()
+        Me.pnlImgSelectTop.SuspendLayout()
+        Me.tblImgSelectTop.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnRemoveSubImage
         '
         Me.btnRemoveSubImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRemoveSubImage.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
+        Me.btnRemoveSubImage.Image = CType(resources.GetObject("btnRemoveSubImage.Image"), System.Drawing.Image)
         Me.btnRemoveSubImage.Location = New System.Drawing.Point(130, 280)
         Me.btnRemoveSubImage.Name = "btnRemoveSubImage"
         Me.btnRemoveSubImage.Size = New System.Drawing.Size(23, 23)
@@ -71,7 +74,7 @@ Partial Class dlgImgSelectNew
         'btnRestoreSubImage
         '
         Me.btnRestoreSubImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRestoreSubImage.Image = Global.Ember_Media_Manager.My.Resources.Resources.undo
+        Me.btnRestoreSubImage.Image = CType(resources.GetObject("btnRestoreSubImage.Image"), System.Drawing.Image)
         Me.btnRestoreSubImage.Location = New System.Drawing.Point(3, 280)
         Me.btnRestoreSubImage.Name = "btnRestoreSubImage"
         Me.btnRestoreSubImage.Size = New System.Drawing.Size(23, 23)
@@ -90,24 +93,14 @@ Partial Class dlgImgSelectNew
         Me.pnlImgSelect.Size = New System.Drawing.Size(1264, 585)
         Me.pnlImgSelect.TabIndex = 3
         '
-        'pnlImgSelectTop
+        'pnlImgSelectMain
         '
-        Me.pnlImgSelectTop.AutoSize = True
-        Me.pnlImgSelectTop.Controls.Add(Me.tblImgSelectTop)
-        Me.pnlImgSelectTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlImgSelectTop.Location = New System.Drawing.Point(0, 0)
-        Me.pnlImgSelectTop.Name = "pnlImgSelectTop"
-        Me.pnlImgSelectTop.Size = New System.Drawing.Size(1264, 179)
-        Me.pnlImgSelectTop.TabIndex = 0
-        '
-        'pnlImgSelectBottom
-        '
-        Me.pnlImgSelectBottom.Controls.Add(Me.tblImgSelectBottom)
-        Me.pnlImgSelectBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlImgSelectBottom.Location = New System.Drawing.Point(0, 485)
-        Me.pnlImgSelectBottom.Name = "pnlImgSelectBottom"
-        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1264, 100)
-        Me.pnlImgSelectBottom.TabIndex = 1
+        Me.pnlImgSelectMain.AutoScroll = True
+        Me.pnlImgSelectMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlImgSelectMain.Location = New System.Drawing.Point(155, 179)
+        Me.pnlImgSelectMain.Name = "pnlImgSelectMain"
+        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1109, 306)
+        Me.pnlImgSelectMain.TabIndex = 3
         '
         'pnlImgSelectLeft
         '
@@ -117,15 +110,6 @@ Partial Class dlgImgSelectNew
         Me.pnlImgSelectLeft.Name = "pnlImgSelectLeft"
         Me.pnlImgSelectLeft.Size = New System.Drawing.Size(155, 306)
         Me.pnlImgSelectLeft.TabIndex = 2
-        '
-        'pnlImgSelectMain
-        '
-        Me.pnlImgSelectMain.AutoScroll = True
-        Me.pnlImgSelectMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlImgSelectMain.Location = New System.Drawing.Point(155, 179)
-        Me.pnlImgSelectMain.Name = "pnlImgSelectMain"
-        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1109, 306)
-        Me.pnlImgSelectMain.TabIndex = 3
         '
         'tblImgSelectLeft
         '
@@ -166,56 +150,14 @@ Partial Class dlgImgSelectNew
         Me.pnlSubImages.Size = New System.Drawing.Size(150, 244)
         Me.pnlSubImages.TabIndex = 4
         '
-        'tblImgSelectTop
+        'pnlImgSelectBottom
         '
-        Me.tblImgSelectTop.AutoSize = True
-        Me.tblImgSelectTop.ColumnCount = 2
-        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectTop.Controls.Add(Me.btnRestoreTopImage, 1, 0)
-        Me.tblImgSelectTop.Controls.Add(Me.btnRemoveTopImage, 1, 1)
-        Me.tblImgSelectTop.Controls.Add(Me.pnlTopImages, 0, 0)
-        Me.tblImgSelectTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblImgSelectTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblImgSelectTop.Name = "tblImgSelectTop"
-        Me.tblImgSelectTop.RowCount = 2
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblImgSelectTop.Size = New System.Drawing.Size(1264, 179)
-        Me.tblImgSelectTop.TabIndex = 0
-        '
-        'btnRestoreTopImage
-        '
-        Me.btnRestoreTopImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRestoreTopImage.Image = Global.Ember_Media_Manager.My.Resources.Resources.undo
-        Me.btnRestoreTopImage.Location = New System.Drawing.Point(1238, 6)
-        Me.btnRestoreTopImage.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
-        Me.btnRestoreTopImage.Name = "btnRestoreTopImage"
-        Me.btnRestoreTopImage.Size = New System.Drawing.Size(23, 23)
-        Me.btnRestoreTopImage.TabIndex = 1
-        Me.btnRestoreTopImage.UseVisualStyleBackColor = True
-        '
-        'btnRemoveTopImage
-        '
-        Me.btnRemoveTopImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRemoveTopImage.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.btnRemoveTopImage.Location = New System.Drawing.Point(1238, 133)
-        Me.btnRemoveTopImage.Margin = New System.Windows.Forms.Padding(3, 3, 3, 23)
-        Me.btnRemoveTopImage.Name = "btnRemoveTopImage"
-        Me.btnRemoveTopImage.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveTopImage.TabIndex = 2
-        Me.btnRemoveTopImage.UseVisualStyleBackColor = True
-        '
-        'pnlTopImages
-        '
-        Me.pnlTopImages.AutoScroll = True
-        Me.pnlTopImages.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlTopImages.Location = New System.Drawing.Point(3, 3)
-        Me.pnlTopImages.Name = "pnlTopImages"
-        Me.tblImgSelectTop.SetRowSpan(Me.pnlTopImages, 2)
-        Me.pnlTopImages.Size = New System.Drawing.Size(1229, 173)
-        Me.pnlTopImages.TabIndex = 3
+        Me.pnlImgSelectBottom.Controls.Add(Me.tblImgSelectBottom)
+        Me.pnlImgSelectBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlImgSelectBottom.Location = New System.Drawing.Point(0, 485)
+        Me.pnlImgSelectBottom.Name = "pnlImgSelectBottom"
+        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1264, 100)
+        Me.pnlImgSelectBottom.TabIndex = 1
         '
         'tblImgSelectBottom
         '
@@ -266,16 +208,6 @@ Partial Class dlgImgSelectNew
         Me.pnlFilter.Size = New System.Drawing.Size(200, 100)
         Me.pnlFilter.TabIndex = 2
         '
-        'pnlSelectButtons
-        '
-        Me.pnlSelectButtons.AutoSize = True
-        Me.pnlSelectButtons.Controls.Add(Me.tblSelectButtons)
-        Me.pnlSelectButtons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlSelectButtons.Location = New System.Drawing.Point(209, 3)
-        Me.pnlSelectButtons.Name = "pnlSelectButtons"
-        Me.pnlSelectButtons.Size = New System.Drawing.Size(82, 100)
-        Me.pnlSelectButtons.TabIndex = 3
-        '
         'tblFilter
         '
         Me.tblFilter.ColumnCount = 2
@@ -289,6 +221,16 @@ Partial Class dlgImgSelectNew
         Me.tblFilter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblFilter.Size = New System.Drawing.Size(200, 100)
         Me.tblFilter.TabIndex = 0
+        '
+        'pnlSelectButtons
+        '
+        Me.pnlSelectButtons.AutoSize = True
+        Me.pnlSelectButtons.Controls.Add(Me.tblSelectButtons)
+        Me.pnlSelectButtons.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSelectButtons.Location = New System.Drawing.Point(209, 3)
+        Me.pnlSelectButtons.Name = "pnlSelectButtons"
+        Me.pnlSelectButtons.Size = New System.Drawing.Size(82, 100)
+        Me.pnlSelectButtons.TabIndex = 3
         '
         'tblSelectButtons
         '
@@ -328,6 +270,67 @@ Partial Class dlgImgSelectNew
         Me.btnSelectNone.Text = "Select None"
         Me.btnSelectNone.UseVisualStyleBackColor = True
         '
+        'pnlImgSelectTop
+        '
+        Me.pnlImgSelectTop.AutoSize = True
+        Me.pnlImgSelectTop.Controls.Add(Me.tblImgSelectTop)
+        Me.pnlImgSelectTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlImgSelectTop.Location = New System.Drawing.Point(0, 0)
+        Me.pnlImgSelectTop.Name = "pnlImgSelectTop"
+        Me.pnlImgSelectTop.Size = New System.Drawing.Size(1264, 179)
+        Me.pnlImgSelectTop.TabIndex = 0
+        '
+        'tblImgSelectTop
+        '
+        Me.tblImgSelectTop.AutoSize = True
+        Me.tblImgSelectTop.ColumnCount = 2
+        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblImgSelectTop.Controls.Add(Me.btnRestoreTopImage, 1, 0)
+        Me.tblImgSelectTop.Controls.Add(Me.btnRemoveTopImage, 1, 1)
+        Me.tblImgSelectTop.Controls.Add(Me.pnlTopImages, 0, 0)
+        Me.tblImgSelectTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblImgSelectTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblImgSelectTop.Name = "tblImgSelectTop"
+        Me.tblImgSelectTop.RowCount = 2
+        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblImgSelectTop.Size = New System.Drawing.Size(1264, 179)
+        Me.tblImgSelectTop.TabIndex = 0
+        '
+        'btnRestoreTopImage
+        '
+        Me.btnRestoreTopImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnRestoreTopImage.Image = CType(resources.GetObject("btnRestoreTopImage.Image"), System.Drawing.Image)
+        Me.btnRestoreTopImage.Location = New System.Drawing.Point(1238, 6)
+        Me.btnRestoreTopImage.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
+        Me.btnRestoreTopImage.Name = "btnRestoreTopImage"
+        Me.btnRestoreTopImage.Size = New System.Drawing.Size(23, 23)
+        Me.btnRestoreTopImage.TabIndex = 1
+        Me.btnRestoreTopImage.UseVisualStyleBackColor = True
+        '
+        'btnRemoveTopImage
+        '
+        Me.btnRemoveTopImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnRemoveTopImage.Image = CType(resources.GetObject("btnRemoveTopImage.Image"), System.Drawing.Image)
+        Me.btnRemoveTopImage.Location = New System.Drawing.Point(1238, 133)
+        Me.btnRemoveTopImage.Margin = New System.Windows.Forms.Padding(3, 3, 3, 23)
+        Me.btnRemoveTopImage.Name = "btnRemoveTopImage"
+        Me.btnRemoveTopImage.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveTopImage.TabIndex = 2
+        Me.btnRemoveTopImage.UseVisualStyleBackColor = True
+        '
+        'pnlTopImages
+        '
+        Me.pnlTopImages.AutoScroll = True
+        Me.pnlTopImages.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlTopImages.Location = New System.Drawing.Point(3, 3)
+        Me.pnlTopImages.Name = "pnlTopImages"
+        Me.tblImgSelectTop.SetRowSpan(Me.pnlTopImages, 2)
+        Me.pnlTopImages.Size = New System.Drawing.Size(1229, 173)
+        Me.pnlTopImages.TabIndex = 3
+        '
         'StatusStrip1
         '
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 563)
@@ -336,6 +339,9 @@ Partial Class dlgImgSelectNew
         Me.StatusStrip1.TabIndex = 4
         Me.StatusStrip1.Text = "StatusStrip1"
         '
+        'tmrReorderMainList
+        '
+        '
         'dlgImgSelectNew
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -343,17 +349,15 @@ Partial Class dlgImgSelectNew
         Me.ClientSize = New System.Drawing.Size(1264, 585)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.pnlImgSelect)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "dlgImgSelectNew"
         Me.Text = "Image Select"
         Me.pnlImgSelect.ResumeLayout(False)
         Me.pnlImgSelect.PerformLayout()
-        Me.pnlImgSelectTop.ResumeLayout(False)
-        Me.pnlImgSelectTop.PerformLayout()
-        Me.pnlImgSelectBottom.ResumeLayout(False)
         Me.pnlImgSelectLeft.ResumeLayout(False)
         Me.tblImgSelectLeft.ResumeLayout(False)
         Me.tblImgSelectLeft.PerformLayout()
-        Me.tblImgSelectTop.ResumeLayout(False)
+        Me.pnlImgSelectBottom.ResumeLayout(False)
         Me.tblImgSelectBottom.ResumeLayout(False)
         Me.tblImgSelectBottom.PerformLayout()
         Me.pnlFilter.ResumeLayout(False)
@@ -361,6 +365,9 @@ Partial Class dlgImgSelectNew
         Me.pnlSelectButtons.PerformLayout()
         Me.tblSelectButtons.ResumeLayout(False)
         Me.tblSelectButtons.PerformLayout()
+        Me.pnlImgSelectTop.ResumeLayout(False)
+        Me.pnlImgSelectTop.PerformLayout()
+        Me.tblImgSelectTop.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -389,4 +396,5 @@ Partial Class dlgImgSelectNew
     Friend WithEvents btnSelectAll As System.Windows.Forms.Button
     Friend WithEvents btnSelectNone As System.Windows.Forms.Button
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
+    Friend WithEvents tmrReorderMainList As System.Windows.Forms.Timer
 End Class
