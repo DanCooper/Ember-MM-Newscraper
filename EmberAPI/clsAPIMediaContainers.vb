@@ -3210,6 +3210,7 @@ Namespace MediaContainers
         Private _moviebannersize As Enums.MovieBannerSize
         Private _moviefanartsize As Enums.MovieFanartSize
         Private _moviepostersize As Enums.MoviePosterSize
+        Private _scraper As String
         Private _season As Integer
         Private _shortlang As String
         Private _thumburl As String
@@ -3336,6 +3337,15 @@ Namespace MediaContainers
             Get
                 Return Me._moviepostersize
             End Get
+        End Property
+
+        Public Property Scraper() As String
+            Get
+                Return Me._scraper
+            End Get
+            Set(ByVal value As String)
+                Me._scraper = value
+            End Set
         End Property
 
         Public Property Season() As Integer
@@ -3475,6 +3485,7 @@ Namespace MediaContainers
             Me._moviebannersize = Enums.MovieBannerSize.Any
             Me._moviefanartsize = Enums.MovieFanartSize.Any
             Me._moviepostersize = Enums.MoviePosterSize.Any
+            Me._scraper = String.Empty
             Me._season = -1
             Me._shortlang = String.Empty
             Me._thumburl = String.Empty
@@ -4481,7 +4492,7 @@ Namespace MediaContainers
             Me._maincharacterarts = SortImages(Me._maincharacterarts, cSettings)
             Me._maincleararts = SortImages(Me._maincleararts, cSettings)
             Me._mainclearlogos = SortImages(Me._mainclearlogos, cSettings)
-            Me._maindiscarts = SortImages(Me._maincleararts, cSettings)
+            Me._maindiscarts = SortImages(Me._maindiscarts, cSettings)
             Me._mainlandscapes = SortImages(Me._mainlandscapes, cSettings)
             Me._mainposters = SortImages(Me._mainposters, cSettings)
         End Sub

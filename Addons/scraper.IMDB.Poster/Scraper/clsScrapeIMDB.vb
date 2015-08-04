@@ -90,7 +90,7 @@ Namespace IMDB
                     Dim aSP As String() = Regex.Split(mcIMDB(0).Value, "._V\d+?_S(?:X|Y)\d+?_CR\d+?,\d+?,\d+?,\d+?_")
                     If aSP.Length > 1 Then
                         Dim sUrl1 = aSP(0) + aSP(1)
-                        alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = sUrl1, .Width = "n/a", .Height = "n/a"})
+                        alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = sUrl1, .Width = "n/a", .Height = "n/a", .Scraper = "IMDB"})
                     End If
                 End If
             Catch ex As Exception

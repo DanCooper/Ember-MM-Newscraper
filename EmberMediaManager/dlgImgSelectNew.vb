@@ -33,7 +33,6 @@ Public Class dlgImgSelectNew
 
     Friend WithEvents bwImgDefaults As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwImgDownload As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwImgLoading As New System.ComponentModel.BackgroundWorker
 
     Public Delegate Sub LoadImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
     Public Delegate Sub Delegate_MeActivate()
@@ -43,34 +42,40 @@ Public Class dlgImgSelectNew
     Private isWorkerDone As Boolean = False
     'Private ETHashes As New List(Of String)
     Private iImageCounter As Integer = 0
+    Private SelSeason As Integer = -1
+    Private isEdit As Boolean = False
+    'Private isShown As Boolean = False
 
-    'MainImageList
-    Private iMainImage_Left As Integer = 5
-    Private iMainImage_Top As Integer = 5
-    Private iMainImage_Counter As Integer = 0
-    Private lblMainImageDetails() As Label
-    Private pbMainImage() As PictureBox
-    Private pnlMainImage() As Panel
+    'ImageList
+    Private iImageList_Counter As Integer = 0
+    Private iImageList_Left As Integer = 5
+    Private iImageList_Top As Integer = 5
+    Private lblImageList_Details() As Label
+    Private pbImageList_Image() As PictureBox
+    Private pnlImageList_Panel() As Panel
+
+    'SubImage
+    Private iSubImage_Top As Integer = 3
+    Private lblSubImage_Resolution() As Label
+    Private lblSubImage_Title() As Label
+    Private pbSubImage_Image() As PictureBox
+    Private pnlSubImage_Panel() As Panel
 
     'TopImage
     Private iTopImage_Left As Integer = 3
-
-    Private isEdit As Boolean = False
-    'Private isShown As Boolean = False
-    Private lblTopImageType() As Label
-    Private lblTopImageDetails() As Label
+    Private lblTopImage_Resolution() As Label
+    Private lblTopImage_Title() As Label
+    Private pbTopImage_Image() As PictureBox
+    Private pnlTopImage_Panel() As Panel
 
     'Private noImages As Boolean = False
-    Private pbTopImage() As PictureBox
-    Private pnlTopImage() As Panel
     'Private PreDL As Boolean = False
     Private selIndex As Integer = -1
-    Private currListImageType As Enums.ModifierType = Enums.ModifierType.All
-    Private currSubImageType As Enums.ModifierType = Enums.ModifierType.All
-    Private currTopImageType As Enums.ModifierType = Enums.ModifierType.All
+    Private currListImageType As New iTag
+    Private currSubImage As New iTag
+    Private currTopImage As New iTag
 
     Private tIsMovie As Boolean
-    Private tDBElement As New Database.DBElement
     Private tmpImage As New MediaContainers.Image
     Private tmpImageEF As New MediaContainers.Image
     Private tmpImageET As New MediaContainers.Image
@@ -79,7 +84,7 @@ Public Class dlgImgSelectNew
     Private tDefaultEpisodeImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
     Private tDefaultSeasonImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
     Private tSearchResultsContainer As New MediaContainers.SearchResultsContainer
-    Private tmpResultDBElement As New Database.DBElement
+    Private tDBElementResult As New Database.DBElement
 
     Private tScrapeModifier As New Structures.ScrapeModifier
     Private tContentType As Enums.ContentType
@@ -90,10 +95,10 @@ Public Class dlgImgSelectNew
 
     Public Property Result As Database.DBElement
         Get
-            Return tmpResultDBElement
+            Return tDBElementResult
         End Get
         Set(value As Database.DBElement)
-            tmpResultDBElement = value
+            tDBElementResult = value
         End Set
     End Property
 
@@ -111,7 +116,7 @@ Public Class dlgImgSelectNew
 
     Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType, Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tSearchResultsContainer = SearchResultsContainer
-        Me.tDBElement = DBElement
+        Me.tDBElementResult = DBElement
         Me.tScrapeModifier = ScrapeModifier
         Me.tContentType = ContentType
 
@@ -119,17 +124,22 @@ Public Class dlgImgSelectNew
     End Function
 
     Private Sub dlgImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        'AddHandler pnlImages.MouseWheel, AddressOf MouseWheelEvent
+        AddHandler Me.MouseWheel, AddressOf MouseWheelEvent
         'AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
         'AddHandler tvList.MouseWheel, AddressOf MouseWheelEvent
 
-        Functions.PNLDoubleBuffer(Me.pnlImgSelectMain)
+        Functions.PNLDoubleBuffer(Me.pnlImageList)
 
         Me.SetUp()
     End Sub
 
     Private Sub dlgImageSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.bwImgDefaults.WorkerReportsProgress = True
+        Me.lblStatus.Text = Master.eLang.GetString(953, "Loading Current Images...")
+        Me.pbStatus.Style = ProgressBarStyle.Marquee
+        Me.lblStatus.Visible = True
+        Me.pbStatus.Visible = True
+
+        Me.bwImgDefaults.WorkerReportsProgress = False
         Me.bwImgDefaults.WorkerSupportsCancellation = True
         Me.bwImgDefaults.RunWorkerAsync()
     End Sub
@@ -150,24 +160,12 @@ Public Class dlgImgSelectNew
         e.Cancel = Me.DownloadDefaultImages
     End Sub
 
-    Private Sub bwImgDefaults_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwImgDefaults.ProgressChanged
-        If e.UserState.ToString = "progress" Then
-            'Me.pbStatus.Value = e.ProgressPercentage
-        ElseIf e.UserState.ToString = "current" Then
-            'Me.lblStatus.Text = Master.eLang.GetString(953, "Loading Current Images...")
-            'Me.pbStatus.Value = 0
-            'Me.pbStatus.Maximum = e.ProgressPercentage
-        Else
-            'Me.pbStatus.Value = 0
-            'Me.pbStatus.Maximum = e.ProgressPercentage
-        End If
-    End Sub
-
     Private Sub bwImgDefaults_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwImgDefaults.RunWorkerCompleted
         If Not e.Cancelled Then
             Me.GenerateList()
 
-            'Me.lblStatus.Text = Master.eLang.GetString(954, "(Down)Loading New Images...")
+            Me.lblStatus.Text = Master.eLang.GetString(954, "(Down)Loading New Images...")
+            Me.pbStatus.Style = ProgressBarStyle.Continuous
             Me.bwImgDownload.WorkerReportsProgress = True
             Me.bwImgDownload.WorkerSupportsCancellation = True
             Me.bwImgDownload.RunWorkerAsync()
@@ -179,222 +177,258 @@ Public Class dlgImgSelectNew
     End Sub
 
     Private Sub bwImgDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwImgDownload.ProgressChanged
-        'If e.UserState.ToString = "progress" Then
-        '    Me.pbStatus.Value = e.ProgressPercentage
-        'ElseIf e.UserState.ToString = "defaults" Then
-        '    Me.lblStatus.Text = Master.eLang.GetString(955, "Setting Defaults...")
-        '    Me.pbStatus.Value = 0
-        '    Me.pbStatus.Maximum = e.ProgressPercentage
-        'Else
-        '    Me.pbStatus.Value = 0
-        '    Me.pbStatus.Maximum = e.ProgressPercentage
-        'End If
+        If e.UserState.ToString = "progress" Then
+            Me.pbStatus.Value = e.ProgressPercentage
+        ElseIf e.UserState.ToString = "max" Then
+            Me.pbStatus.Value = 0
+            Me.pbStatus.Maximum = e.ProgressPercentage
+        ElseIf DirectCast(e.UserState, Enums.ModifierType) = Me.currTopImage.ImageType Then
+            'todo: add reload
+        End If
+    End Sub
+
+    Private Sub bwImgDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwImgDownload.RunWorkerCompleted
+        Me.lblStatus.Visible = False
+        Me.pbStatus.Visible = False
     End Sub
 
     Public Function SetDefaults() As Boolean
-        Images.SetDefaultImages(tDBElement, tDefaultImagesContainer, tSearchResultsContainer, tScrapeModifier, tContentType, tDefaultSeasonImagesContainer, tDefaultEpisodeImagesContainer)
+        Images.SetDefaultImages(tDBElementResult, tDefaultImagesContainer, tSearchResultsContainer, tScrapeModifier, tContentType, tDefaultSeasonImagesContainer, tDefaultEpisodeImagesContainer)
         Return False
     End Function
 
     Private Function DownloadDefaultImages() As Boolean
 
         'Banner
-        If Me.tScrapeModifier.MainBanner AndAlso Me.tDBElement.ImagesContainer.Banner.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.Banner, False)
+        If Me.tScrapeModifier.MainBanner AndAlso Me.tDBElementResult.ImagesContainer.Banner.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Banner, False)
         End If
 
         'CharacterArt
-        If Me.tScrapeModifier.MainCharacterArt AndAlso Me.tDBElement.ImagesContainer.CharacterArt.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.CharacterArt, False)
+        If Me.tScrapeModifier.MainCharacterArt AndAlso Me.tDBElementResult.ImagesContainer.CharacterArt.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.CharacterArt, False)
         End If
 
         'ClearArt
-        If Me.tScrapeModifier.MainClearArt AndAlso Me.tDBElement.ImagesContainer.ClearArt.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.ClearArt, False)
+        If Me.tScrapeModifier.MainClearArt AndAlso Me.tDBElementResult.ImagesContainer.ClearArt.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.ClearArt, False)
         End If
 
         'ClearLogo
-        If Me.tScrapeModifier.MainClearLogo AndAlso Me.tDBElement.ImagesContainer.ClearLogo.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.ClearLogo, False)
+        If Me.tScrapeModifier.MainClearLogo AndAlso Me.tDBElementResult.ImagesContainer.ClearLogo.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.ClearLogo, False)
         End If
 
         'DiscArt
-        If Me.tScrapeModifier.MainDiscArt AndAlso Me.tDBElement.ImagesContainer.DiscArt.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.DiscArt, False)
+        If Me.tScrapeModifier.MainDiscArt AndAlso Me.tDBElementResult.ImagesContainer.DiscArt.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.DiscArt, False)
         End If
 
         'Fanart
-        If Me.tScrapeModifier.MainFanart AndAlso Me.tDBElement.ImagesContainer.Fanart.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.Fanart, False)
+        If Me.tScrapeModifier.MainFanart AndAlso Me.tDBElementResult.ImagesContainer.Fanart.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Fanart, False)
         End If
 
         'Landscape
-        If Me.tScrapeModifier.MainLandscape AndAlso Me.tDBElement.ImagesContainer.Landscape.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.Landscape, False)
+        If Me.tScrapeModifier.MainLandscape AndAlso Me.tDBElementResult.ImagesContainer.Landscape.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Landscape, False)
         End If
 
         'Poster
-        If Me.tScrapeModifier.MainPoster AndAlso Me.tDBElement.ImagesContainer.Poster.WebImage.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElement.ImagesContainer.Poster, False)
+        If Me.tScrapeModifier.MainPoster AndAlso Me.tDBElementResult.ImagesContainer.Poster.WebImage.Image Is Nothing Then
+            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Poster, False)
         End If
     End Function
 
     Private Function DownloadAllImages() As Boolean
+        Dim iProgress As Integer = 1
+
+        Me.bwImgDownload.ReportProgress(tSearchResultsContainer.EpisodeFanarts.Count + tSearchResultsContainer.EpisodePosters.Count + tSearchResultsContainer.SeasonBanners.Count + _
+                                       tSearchResultsContainer.SeasonFanarts.Count + tSearchResultsContainer.SeasonLandscapes.Count + tSearchResultsContainer.SeasonPosters.Count + _
+                                       tSearchResultsContainer.MainBanners.Count + tSearchResultsContainer.MainCharacterArts.Count + tSearchResultsContainer.MainClearArts.Count + _
+                                       tSearchResultsContainer.MainClearLogos.Count + tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count + _
+                                       tSearchResultsContainer.MainLandscapes.Count + tSearchResultsContainer.MainPosters.Count, "max")
 
         'Episode Fanarts
         If Me.tScrapeModifier.EpisodeFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
         End If
 
         'Episode Posters
         If Me.tScrapeModifier.EpisodePoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodePoster)
         End If
 
         'Season Poster / AllSeasons Poster
         If Me.tScrapeModifier.SeasonPoster OrElse Me.tScrapeModifier.AllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonPoster)
         End If
 
         'Season Banner / AllSeasons Banner
         If Me.tScrapeModifier.SeasonBanner OrElse Me.tScrapeModifier.AllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonBanner)
         End If
 
         'Season Fanart  /AllSeasons Fanart
         If Me.tScrapeModifier.SeasonFanart OrElse Me.tScrapeModifier.AllSeasonsFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
         End If
 
         'Season Landscape  /AllSeasons Landscape
         If Me.tScrapeModifier.SeasonLandscape OrElse Me.tScrapeModifier.AllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonLandscape)
         End If
 
         'Show Poster / AllSeasons Poster
         If Me.tScrapeModifier.MainPoster OrElse Me.tScrapeModifier.AllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
         End If
 
         'Show Banner / AllSeasons Banner
         If Me.tScrapeModifier.MainBanner OrElse Me.tScrapeModifier.AllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainBanners
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainBanner)
         End If
 
         'Show CharacterArt
         If Me.tScrapeModifier.MainCharacterArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainCharacterArt)
         End If
 
         'Show ClearArt
         If Me.tScrapeModifier.MainClearArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearArts
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearArt)
         End If
 
         'Show ClearLogo
         If Me.tScrapeModifier.MainClearLogo Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearLogo)
+        End If
+
+        'Main Discart
+        If Me.tScrapeModifier.MainDiscArt Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainDiscArt)
         End If
 
         'Show Landscape / AllSeasons Landscape
         If Me.tScrapeModifier.MainLandscape OrElse Me.tScrapeModifier.AllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainLandscape)
         End If
 
         'Show Fanart / AllSeasons Fanart / Season Fanart / Episode Fanart
         If Me.tScrapeModifier.MainFanart OrElse Me.tScrapeModifier.AllSeasonsFanart OrElse Me.tScrapeModifier.SeasonFanart OrElse Me.tScrapeModifier.EpisodeFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
                 DownloadAndCache(tImg, False)
-                'If Me.bwLoadImages.CancellationPending Then
-                '    Return True
-                'End If
-                'Me.bwLoadImages.ReportProgress(IProgress, "progress")
-                'IProgress += 1
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
             Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainFanart)
         End If
 
         Return False
@@ -432,165 +466,103 @@ Public Class dlgImgSelectNew
     Private Sub GenerateList()
         Dim iCount As Integer = 0
         If tScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.Poster, iCount, Enums.ModifierType.MainPoster)
+            AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.MainPoster)
             iCount += 1
         End If
         If tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.Fanart, iCount, Enums.ModifierType.MainFanart)
+            AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.MainFanart)
             iCount += 1
         End If
         If tScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.Banner, iCount, Enums.ModifierType.MainBanner)
+            AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.MainBanner)
             iCount += 1
         End If
         If tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.ClearArt, iCount, Enums.ModifierType.MainClearArt)
+            AddTopImage(tDBElementResult.ImagesContainer.ClearArt, iCount, Enums.ModifierType.MainClearArt)
             iCount += 1
         End If
         If tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.ClearLogo, iCount, Enums.ModifierType.MainClearLogo)
+            AddTopImage(tDBElementResult.ImagesContainer.ClearLogo, iCount, Enums.ModifierType.MainClearLogo)
             iCount += 1
         End If
         If tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.DiscArt, iCount, Enums.ModifierType.MainDiscArt)
+            AddTopImage(tDBElementResult.ImagesContainer.DiscArt, iCount, Enums.ModifierType.MainDiscArt)
             iCount += 1
         End If
         If tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled Then
-            AddTopImage(tDBElement.ImagesContainer.Landscape, iCount, Enums.ModifierType.MainLandscape)
+            AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.MainLandscape)
             iCount += 1
+        End If
+
+        If tContentType = Enums.ContentType.Movie Then
+            Me.cbSubImageType.Items.Add("Extrafanarts")
+            Me.cbSubImageType.Items.Add("Extrathumbs")
+            Me.cbSubImageType.SelectedIndex = 0
         End If
     End Sub
 
     Private Sub AddTopImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
-        Dim strImageType As String = String.Empty
-        Dim strDescription As String = String.Empty
-        Dim tTag As New iTag
+        Dim tTag As iTag = CreateTag(tImage, ModifierType)
 
-        Select Case ModifierType
-            Case Enums.ModifierType.MainBanner
-                strImageType = "Banner"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainBanner}
-            Case Enums.ModifierType.MainCharacterArt
-                strImageType = "CharacterArt"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainCharacterArt}
-            Case Enums.ModifierType.MainClearArt
-                strImageType = "ClearArt"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainClearArt}
-            Case Enums.ModifierType.MainClearLogo
-                strImageType = "ClearLogo"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainClearLogo}
-            Case Enums.ModifierType.MainDiscArt
-                strImageType = "DiscArt"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainDiscArt}
-            Case Enums.ModifierType.MainFanart
-                strImageType = "Fanart"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainFanart}
-            Case Enums.ModifierType.MainLandscape
-                strImageType = "Landscape"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainLandscape}
-            Case Enums.ModifierType.MainPoster
-                strImageType = "Poster"
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainPoster}
-        End Select
-
-        If tImage IsNot Nothing AndAlso tImage.WebImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-            Dim imgText As String = String.Empty
-            If String.IsNullOrEmpty(tImage.Width) OrElse String.IsNullOrEmpty(tImage.Height) Then
-                strDescription = String.Format("{0}x{1}", tImage.WebImage.Image.Size.Width, tImage.WebImage.Image.Size.Height)
-            Else
-                strDescription = String.Format("{0}x{1}", tImage.Width, tImage.Height)
-            End If
-        ElseIf tImage IsNot Nothing AndAlso tImage.WebThumb IsNot Nothing AndAlso tImage.WebThumb.Image IsNot Nothing Then
-            Dim imgText As String = String.Empty
-            If CDbl(tImage.Width) = 0 OrElse CDbl(tImage.Height) = 0 Then
-                strDescription = String.Concat("unknown", Environment.NewLine, tImage.LongLang)
-            Else
-                strDescription = String.Format("{0}x{1}", tImage.Width, tImage.Height)
-            End If
-        End If
-
-        ReDim Preserve Me.pnlTopImage(iIndex)
-        ReDim Preserve Me.pbTopImage(iIndex)
-        ReDim Preserve Me.lblTopImageType(iIndex)
-        ReDim Preserve Me.lblTopImageDetails(iIndex)
-        Me.pnlTopImage(iIndex) = New Panel()
-        Me.pbTopImage(iIndex) = New PictureBox()
-        Me.lblTopImageType(iIndex) = New Label()
-        Me.lblTopImageDetails(iIndex) = New Label()
-        Me.pbTopImage(iIndex).Name = iIndex.ToString
-        Me.pnlTopImage(iIndex).Name = iIndex.ToString
-        Me.lblTopImageType(iIndex).Name = iIndex.ToString
-        Me.lblTopImageDetails(iIndex).Name = iIndex.ToString
-        Me.pnlTopImage(iIndex).Size = New Size(150, 150)
-        Me.pbTopImage(iIndex).Size = New Size(142, 102)
-        Me.lblTopImageType(iIndex).Size = New Size(142, 20)
-        Me.lblTopImageDetails(iIndex).Size = New Size(142, 20)
-        Me.pnlTopImage(iIndex).BackColor = Color.White
-        Me.pnlTopImage(iIndex).BorderStyle = BorderStyle.FixedSingle
-        Me.pbTopImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-        Me.lblTopImageType(iIndex).AutoSize = False
-        Me.lblTopImageType(iIndex).BackColor = Color.White
+        ReDim Preserve Me.pnlTopImage_Panel(iIndex)
+        ReDim Preserve Me.pbTopImage_Image(iIndex)
+        ReDim Preserve Me.lblTopImage_Title(iIndex)
+        ReDim Preserve Me.lblTopImage_Resolution(iIndex)
+        Me.pnlTopImage_Panel(iIndex) = New Panel()
+        Me.pbTopImage_Image(iIndex) = New PictureBox()
+        Me.lblTopImage_Title(iIndex) = New Label()
+        Me.lblTopImage_Resolution(iIndex) = New Label()
+        Me.pbTopImage_Image(iIndex).Name = iIndex.ToString
+        Me.pnlTopImage_Panel(iIndex).Name = iIndex.ToString
+        Me.lblTopImage_Title(iIndex).Name = iIndex.ToString
+        Me.lblTopImage_Resolution(iIndex).Name = iIndex.ToString
+        Me.pnlTopImage_Panel(iIndex).Size = New Size(150, 150)
+        Me.pbTopImage_Image(iIndex).Size = New Size(142, 102)
+        Me.lblTopImage_Title(iIndex).Size = New Size(142, 20)
+        Me.lblTopImage_Resolution(iIndex).Size = New Size(142, 20)
+        Me.pnlTopImage_Panel(iIndex).BackColor = Color.White
+        Me.pnlTopImage_Panel(iIndex).BorderStyle = BorderStyle.FixedSingle
+        Me.pbTopImage_Image(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+        Me.lblTopImage_Title(iIndex).AutoSize = False
+        Me.lblTopImage_Title(iIndex).BackColor = Color.White
         'Me.lblTopImageType(iIndex).Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTopImageType(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblTopImageType(iIndex).Text = strImageType
-        Me.lblTopImageDetails(iIndex).AutoSize = False
-        Me.lblTopImageDetails(iIndex).BackColor = Color.White
-        Me.lblTopImageDetails(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblTopImageDetails(iIndex).Text = strDescription
-        Me.pbTopImage(iIndex).Image = If(tImage.WebImage.Image IsNot Nothing, CType(tImage.WebImage.Image.Clone(), Image), _
+        Me.lblTopImage_Title(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblTopImage_Title(iIndex).Text = tTag.strTitle
+        Me.lblTopImage_Resolution(iIndex).AutoSize = False
+        Me.lblTopImage_Resolution(iIndex).BackColor = Color.White
+        Me.lblTopImage_Resolution(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblTopImage_Resolution(iIndex).Text = tTag.strResolution
+        Me.pbTopImage_Image(iIndex).Image = If(tImage.WebImage.Image IsNot Nothing, CType(tImage.WebImage.Image.Clone(), Image), _
                                          If(tImage.WebThumb.Image IsNot Nothing, CType(tImage.WebThumb.Image.Clone(), Image), Nothing))
-        Me.pnlTopImage(iIndex).Left = iTopImage_Left
-        Me.pbTopImage(iIndex).Left = 3
-        Me.lblTopImageType(iIndex).Left = 3
-        Me.lblTopImageDetails(iIndex).Left = 3
-        Me.pnlTopImage(iIndex).Top = 3
-        Me.pbTopImage(iIndex).Top = 23
-        Me.lblTopImageType(iIndex).Top = 0
-        Me.lblTopImageDetails(iIndex).Top = 128
-        Me.pnlTopImage(iIndex).Tag = tTag
-        Me.pbTopImage(iIndex).Tag = tTag
-        Me.lblTopImageType(iIndex).Tag = tTag
-        Me.lblTopImageDetails(iIndex).Tag = tTag
-        Me.pnlTopImages.Controls.Add(Me.pnlTopImage(iIndex))
-        Me.pnlTopImage(iIndex).Controls.Add(Me.pbTopImage(iIndex))
-        Me.pnlTopImage(iIndex).Controls.Add(Me.lblTopImageType(iIndex))
-        Me.pnlTopImage(iIndex).Controls.Add(Me.lblTopImageDetails(iIndex))
-        Me.pnlTopImage(iIndex).BringToFront()
-        AddHandler pbTopImage(iIndex).Click, AddressOf pbTopImage_Click
-        AddHandler pbTopImage(iIndex).DoubleClick, AddressOf Image_DoubleClick
-        AddHandler pnlTopImage(iIndex).Click, AddressOf pnlTopImage_Click
-        AddHandler lblTopImageType(iIndex).Click, AddressOf lblTopImage_Click
-        AddHandler lblTopImageDetails(iIndex).Click, AddressOf lblTopImage_Click
-
-        'AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
-        'AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
-        'AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+        Me.pnlTopImage_Panel(iIndex).Left = iTopImage_Left
+        Me.pbTopImage_Image(iIndex).Left = 3
+        Me.lblTopImage_Title(iIndex).Left = 3
+        Me.lblTopImage_Resolution(iIndex).Left = 3
+        Me.pnlTopImage_Panel(iIndex).Top = 3
+        Me.pbTopImage_Image(iIndex).Top = 23
+        Me.lblTopImage_Title(iIndex).Top = 0
+        Me.lblTopImage_Resolution(iIndex).Top = 128
+        Me.pnlTopImage_Panel(iIndex).Tag = tTag
+        Me.pbTopImage_Image(iIndex).Tag = tTag
+        Me.lblTopImage_Title(iIndex).Tag = tTag
+        Me.lblTopImage_Resolution(iIndex).Tag = tTag
+        Me.pnlTopImages.Controls.Add(Me.pnlTopImage_Panel(iIndex))
+        Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.pbTopImage_Image(iIndex))
+        Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.lblTopImage_Title(iIndex))
+        Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.lblTopImage_Resolution(iIndex))
+        Me.pnlTopImage_Panel(iIndex).BringToFront()
+        AddHandler pbTopImage_Image(iIndex).Click, AddressOf pbTopImage_Click
+        AddHandler pbTopImage_Image(iIndex).DoubleClick, AddressOf Image_DoubleClick
+        AddHandler pnlTopImage_Panel(iIndex).Click, AddressOf pnlTopImage_Click
+        AddHandler lblTopImage_Title(iIndex).Click, AddressOf lblTopImage_Click
+        AddHandler lblTopImage_Resolution(iIndex).Click, AddressOf lblTopImage_Click
 
         Me.iTopImage_Left += 156
     End Sub
 
     Private Sub AddMainImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
         Dim sDescription As String = String.Empty
-        Dim tTag As New iTag
-
-        Select Case ModifierType
-            Case Enums.ModifierType.MainBanner
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainBanner}
-            Case Enums.ModifierType.MainCharacterArt
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainCharacterArt}
-            Case Enums.ModifierType.MainClearArt
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainClearArt}
-            Case Enums.ModifierType.MainClearLogo
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainClearLogo}
-            Case Enums.ModifierType.MainDiscArt
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainDiscArt}
-            Case Enums.ModifierType.MainFanart
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainFanart}
-            Case Enums.ModifierType.MainLandscape
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainLandscape}
-            Case Enums.ModifierType.MainPoster
-                tTag = New iTag With {.Image = tImage, .ImageType = Enums.ModifierType.MainPoster}
-        End Select
+        Dim tTag As iTag = CreateTag(tImage, ModifierType)
 
         If tImage IsNot Nothing AndAlso tImage.WebImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
             Dim imgText As String = String.Empty
@@ -608,86 +580,91 @@ Public Class dlgImgSelectNew
             End If
         End If
 
-        ReDim Preserve Me.pnlMainImage(iIndex)
-        ReDim Preserve Me.pbMainImage(iIndex)
-        ReDim Preserve Me.lblMainImageDetails(iIndex)
-        Me.pnlMainImage(iIndex) = New Panel()
-        Me.pbMainImage(iIndex) = New PictureBox()
-        Me.lblMainImageDetails(iIndex) = New Label()
-        Me.pbMainImage(iIndex).Name = iIndex.ToString
-        Me.pnlMainImage(iIndex).Name = iIndex.ToString
-        Me.lblMainImageDetails(iIndex).Name = iIndex.ToString
-        Me.pnlMainImage(iIndex).Size = New Size(187, 187)
-        Me.pbMainImage(iIndex).Size = New Size(181, 151)
-        Me.lblMainImageDetails(iIndex).Size = New Size(181, 30)
-        Me.pnlMainImage(iIndex).BackColor = Color.White
-        Me.pnlMainImage(iIndex).BorderStyle = BorderStyle.FixedSingle
-        Me.pbMainImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-        Me.lblMainImageDetails(iIndex).AutoSize = False
-        Me.lblMainImageDetails(iIndex).BackColor = Color.White
-        Me.lblMainImageDetails(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblMainImageDetails(iIndex).Text = sDescription
-        Me.pbMainImage(iIndex).Image = If(tImage.WebImage.Image IsNot Nothing, CType(tImage.WebImage.Image.Clone(), Image), _
+        ReDim Preserve Me.pnlImageList_Panel(iIndex)
+        ReDim Preserve Me.pbImageList_Image(iIndex)
+        ReDim Preserve Me.lblImageList_Details(iIndex)
+        Me.pnlImageList_Panel(iIndex) = New Panel()
+        Me.pbImageList_Image(iIndex) = New PictureBox()
+        Me.lblImageList_Details(iIndex) = New Label()
+        Me.pbImageList_Image(iIndex).Name = iIndex.ToString
+        Me.pnlImageList_Panel(iIndex).Name = iIndex.ToString
+        Me.lblImageList_Details(iIndex).Name = iIndex.ToString
+        Me.pnlImageList_Panel(iIndex).Size = New Size(187, 187)
+        Me.pbImageList_Image(iIndex).Size = New Size(181, 151)
+        Me.lblImageList_Details(iIndex).Size = New Size(181, 30)
+        Me.pnlImageList_Panel(iIndex).BackColor = Color.White
+        Me.pnlImageList_Panel(iIndex).BorderStyle = BorderStyle.FixedSingle
+        Me.pbImageList_Image(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+        Me.lblImageList_Details(iIndex).AutoSize = False
+        Me.lblImageList_Details(iIndex).BackColor = Color.White
+        Me.lblImageList_Details(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblImageList_Details(iIndex).Text = sDescription
+        Me.pbImageList_Image(iIndex).Image = If(tImage.WebImage.Image IsNot Nothing, CType(tImage.WebImage.Image.Clone(), Image), _
                                           If(tImage.WebThumb.Image IsNot Nothing, CType(tImage.WebThumb.Image.Clone(), Image), Nothing))
-        Me.pnlMainImage(iIndex).Left = iMainImage_Left
-        Me.pbMainImage(iIndex).Left = 3
-        Me.lblMainImageDetails(iIndex).Left = 0
-        Me.pnlMainImage(iIndex).Top = iMainImage_Top
-        Me.pbMainImage(iIndex).Top = 3
-        Me.lblMainImageDetails(iIndex).Top = 151
-        Me.pnlMainImage(iIndex).Tag = tTag
-        Me.pbMainImage(iIndex).Tag = tTag
-        Me.lblMainImageDetails(iIndex).Tag = tTag
-        Me.pnlImgSelectMain.Controls.Add(Me.pnlMainImage(iIndex))
-        Me.pnlMainImage(iIndex).Controls.Add(Me.pbMainImage(iIndex))
-        Me.pnlMainImage(iIndex).Controls.Add(Me.lblMainImageDetails(iIndex))
-        Me.pnlMainImage(iIndex).BringToFront()
-        'AddHandler pbMainImage(iIndex).Click, AddressOf pbImage_Click
-        AddHandler pbMainImage(iIndex).DoubleClick, AddressOf Image_DoubleClick
-        'AddHandler pnlMainImage(iIndex).Click, AddressOf pnlImage_Click
-        'AddHandler lblMainImageDetails(iIndex).Click, AddressOf lblImage_Click
+        Me.pnlImageList_Panel(iIndex).Left = iImageList_Left
+        Me.pbImageList_Image(iIndex).Left = 3
+        Me.lblImageList_Details(iIndex).Left = 0
+        Me.pnlImageList_Panel(iIndex).Top = iImageList_Top
+        Me.pbImageList_Image(iIndex).Top = 3
+        Me.lblImageList_Details(iIndex).Top = 151
+        Me.pnlImageList_Panel(iIndex).Tag = tTag
+        Me.pbImageList_Image(iIndex).Tag = tTag
+        Me.lblImageList_Details(iIndex).Tag = tTag
+        Me.pnlImageList.Controls.Add(Me.pnlImageList_Panel(iIndex))
+        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.pbImageList_Image(iIndex))
+        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_Details(iIndex))
+        Me.pnlImageList_Panel(iIndex).BringToFront()
+        AddHandler pbImageList_Image(iIndex).Click, AddressOf pbMainImage_Click
+        AddHandler pbImageList_Image(iIndex).DoubleClick, AddressOf Image_DoubleClick
+        AddHandler pnlImageList_Panel(iIndex).Click, AddressOf pnlMainImage_Click
+        AddHandler lblImageList_Details(iIndex).Click, AddressOf lblMainImage_Click
 
-        'AddHandler pbMainImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
-        'AddHandler pnlMainImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
-        'AddHandler lblMainImageDetails(iIndex).MouseWheel, AddressOf MouseWheelEvent
+        Me.iImageList_Counter += 1
 
-        Me.iMainImage_Counter += 1
-
-        If Me.iMainImage_Left + 192 + 187 > Me.pnlImgSelectMain.Width - 20 Then
-            Me.iMainImage_Counter = 0
-            Me.iMainImage_Left = 5
-            Me.iMainImage_Top += 192
+        If Me.iImageList_Left + 192 + 187 > Me.pnlImageList.Width - 20 Then
+            Me.iImageList_Counter = 0
+            Me.iImageList_Left = 5
+            Me.iImageList_Top += 192
         Else
-            Me.iMainImage_Left += 192
+            Me.iImageList_Left += 192
         End If
     End Sub
 
+    Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+        Dim vScrollPosition As Integer = pnlImageList.VerticalScroll.Value
+        vScrollPosition -= Math.Sign(e.Delta) * 50
+        vScrollPosition = Math.Max(0, vScrollPosition)
+        vScrollPosition = Math.Min(vScrollPosition, pnlImageList.VerticalScroll.Maximum)
+        pnlImageList.AutoScrollPosition = New Point(pnlImageList.AutoScrollPosition.X, vScrollPosition)
+        pnlImageList.Invalidate()
+    End Sub
+
     Private Sub ReorderMainList()
-        Me.iMainImage_Counter = 0
-        Me.iMainImage_Left = 5
-        Me.iMainImage_Top = 5
+        Me.iImageList_Counter = 0
+        Me.iImageList_Left = 5
+        Me.iImageList_Top = 5
 
-        If Me.pnlImgSelectMain.Controls.Count > 0 Then
-            Me.pnlImgSelectMain.SuspendLayout()
-            Me.pnlImgSelectMain.AutoScrollPosition = New Point With {.X = 0, .Y = 0}
-            For iIndex As Integer = 0 To Me.pnlMainImage.Count - 1
-                If Me.pnlMainImage(iIndex) IsNot Nothing Then
-                    Me.pnlMainImage(iIndex).Left = iMainImage_Left
-                    Me.pnlMainImage(iIndex).Top = iMainImage_Top
+        If Me.pnlImageList.Controls.Count > 0 Then
+            Me.pnlImageList.SuspendLayout()
+            Me.pnlImageList.AutoScrollPosition = New Point With {.X = 0, .Y = 0}
+            For iIndex As Integer = 0 To Me.pnlImageList_Panel.Count - 1
+                If Me.pnlImageList_Panel(iIndex) IsNot Nothing Then
+                    Me.pnlImageList_Panel(iIndex).Left = iImageList_Left
+                    Me.pnlImageList_Panel(iIndex).Top = iImageList_Top
 
-                    Me.iMainImage_Counter += 1
+                    Me.iImageList_Counter += 1
 
-                    If Me.iMainImage_Left + 192 + 187 > Me.pnlImgSelectMain.Width - 20 Then
-                        Me.iMainImage_Counter = 0
-                        Me.iMainImage_Left = 5
-                        Me.iMainImage_Top += 192
+                    If Me.iImageList_Left + 192 + 187 > Me.pnlImageList.Width - 20 Then
+                        Me.iImageList_Counter = 0
+                        Me.iImageList_Left = 5
+                        Me.iImageList_Top += 192
                     Else
-                        Me.iMainImage_Left += 192
+                        Me.iImageList_Left += 192
                     End If
                 End If
             Next
-            Me.pnlImgSelectMain.ResumeLayout()
-            Me.pnlImgSelectMain.Update()
+            Me.pnlImageList.ResumeLayout()
+            Me.pnlImageList.Update()
         End If
 
     End Sub
@@ -696,11 +673,17 @@ Public Class dlgImgSelectNew
         Me.DoSelectTopImage(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, iTag))
     End Sub
 
+    Private Sub pbMainImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectMainImage(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, iTag))
+    End Sub
+
     Private Sub Image_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim tImage As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, iTag).Image
         DownloadAndCache(tImage, False, True)
 
-        ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.WebImage.Image)
+        If tImage.WebImage.Image IsNot Nothing Then
+            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.WebImage.Image)
+        End If
     End Sub
 
     Private Sub pnlTopImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -708,40 +691,114 @@ Public Class dlgImgSelectNew
         Me.DoSelectTopImage(iIndex, DirectCast(DirectCast(sender, Panel).Tag, iTag))
     End Sub
 
+    Private Sub pnlMainImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Panel).Name)
+        Me.DoSelectMainImage(iIndex, DirectCast(DirectCast(sender, Panel).Tag, iTag))
+    End Sub
+
     Private Sub lblTopImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Label).Name)
         Me.DoSelectTopImage(iIndex, DirectCast(DirectCast(sender, Label).Tag, iTag))
     End Sub
 
+    Private Sub lblMainImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Label).Name)
+        Me.DoSelectMainImage(iIndex, DirectCast(DirectCast(sender, Label).Tag, iTag))
+    End Sub
+
     Private Sub DoSelectTopImage(ByVal iIndex As Integer, ByVal tTag As iTag)
-        For i As Integer = 0 To Me.pnlTopImage.Count - 1
-            Me.pnlTopImage(i).BackColor = Color.White
-            Me.lblTopImageDetails(i).BackColor = Color.White
-            Me.lblTopImageDetails(i).ForeColor = Color.Black
-            Me.lblTopImageType(i).BackColor = Color.White
-            Me.lblTopImageType(i).ForeColor = Color.Black
+        For i As Integer = 0 To Me.pnlTopImage_Panel.Count - 1
+            Me.pnlTopImage_Panel(i).BackColor = Color.White
+            Me.lblTopImage_Resolution(i).BackColor = Color.White
+            Me.lblTopImage_Resolution(i).ForeColor = Color.Black
+            Me.lblTopImage_Title(i).BackColor = Color.White
+            Me.lblTopImage_Title(i).ForeColor = Color.Black
         Next
 
-        Me.pnlTopImage(iIndex).BackColor = Color.Blue
-        Me.lblTopImageDetails(iIndex).BackColor = Color.Blue
-        Me.lblTopImageDetails(iIndex).ForeColor = Color.White
-        Me.lblTopImageType(iIndex).BackColor = Color.Blue
-        Me.lblTopImageType(iIndex).ForeColor = Color.White
+        Me.pnlTopImage_Panel(iIndex).BackColor = Color.Gray
+        Me.lblTopImage_Resolution(iIndex).BackColor = Color.Gray
+        Me.lblTopImage_Resolution(iIndex).ForeColor = Color.White
+        Me.lblTopImage_Title(iIndex).BackColor = Color.Gray
+        Me.lblTopImage_Title(iIndex).ForeColor = Color.White
 
-        Me.currTopImageType = tTag.ImageType
+        If Not Me.currTopImage.ImageType = tTag.ImageType Then
+            Me.currTopImage = tTag
+            CreateImageList(tTag)
+        End If
+    End Sub
 
-        ShowImageList(tTag)
+    Private Sub DoSelectMainImage(ByVal iIndex As Integer, ByVal tTag As iTag)
+        For i As Integer = 0 To Me.pnlImageList_Panel.Count - 1
+            Me.pnlImageList_Panel(i).BackColor = Color.White
+            Me.lblImageList_Details(i).BackColor = Color.White
+            Me.lblImageList_Details(i).ForeColor = Color.Black
+        Next
 
-        'Me.CheckCurrentImage()
+        Me.pnlImageList_Panel(iIndex).BackColor = Color.Gray
+        Me.lblImageList_Details(iIndex).BackColor = Color.Gray
+        Me.lblImageList_Details(iIndex).ForeColor = Color.White
+
+        SetImage(tTag)
+    End Sub
+
+    Private Sub SetImage(ByVal tTag As iTag)
+        If Me.SelSeason = -1 Then
+            If tTag.ImageType = Enums.ModifierType.MainBanner Then
+                tDBElementResult.ImagesContainer.Banner = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
+                tDBElementResult.ImagesContainer.CharacterArt = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.MainClearArt Then
+                tDBElementResult.ImagesContainer.ClearArt = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.MainClearLogo Then
+                tDBElementResult.ImagesContainer.ClearLogo = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
+                tDBElementResult.ImagesContainer.Landscape = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
+                tDBElementResult.ImagesContainer.Fanart = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.MainPoster Then
+                tDBElementResult.ImagesContainer.Poster = tTag.Image
+            End If
+            RefreshTopImage(tTag)
+        Else
+            If tTag.ImageType = Enums.ModifierType.AllSeasonsBanner OrElse tTag.ImageType = Enums.ModifierType.SeasonBanner Then
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsFanart OrElse tTag.ImageType = Enums.ModifierType.SeasonFanart Then
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsLandscape OrElse tTag.ImageType = Enums.ModifierType.SeasonLandscape Then
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape = tTag.Image
+            ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsPoster OrElse tTag.ImageType = Enums.ModifierType.SeasonPoster Then
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster = tTag.Image
+            End If
+        End If
+    End Sub
+
+    Private Sub RefreshTopImage(ByVal tTag As iTag)
+        If Me.pnlTopImages.Controls.Count > 0 Then
+            For iIndex As Integer = 0 To Me.pnlTopImage_Panel.Count - 1
+                If DirectCast(Me.pnlTopImage_Panel(iIndex).Tag, iTag).ImageType = tTag.ImageType Then
+                    If Me.pnlTopImage_Panel(iIndex) IsNot Nothing AndAlso Me.pnlTopImage_Panel(iIndex).Contains(Me.pbTopImage_Image(iIndex)) Then
+                        'tTag = CreateTag(tTag.Image, tTag.ImageType)
+                        Me.lblTopImage_Resolution(iIndex).Text = tTag.strResolution
+                        Me.pnlTopImage_Panel(iIndex).Tag = tTag
+                        Me.pbTopImage_Image(iIndex).Tag = tTag
+                        Me.lblTopImage_Title(iIndex).Tag = tTag
+                        Me.lblTopImage_Resolution(iIndex).Tag = tTag
+                        Me.pbTopImage_Image(iIndex).Image = If(tTag.Image.WebImage.Image IsNot Nothing, CType(tTag.Image.WebImage.Image.Clone(), Image), _
+                                                         If(tTag.Image.WebThumb.Image IsNot Nothing, CType(tTag.Image.WebThumb.Image.Clone(), Image), Nothing))
+                    End If
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub DownloadFullsizeImage(ByRef iTag As MediaContainers.Image, ByRef tImage As Images)
         If Not String.IsNullOrEmpty(iTag.LocalFile) AndAlso File.Exists(iTag.LocalFile) Then
             tImage.FromFile(iTag.LocalFile)
         ElseIf Not String.IsNullOrEmpty(iTag.LocalFile) AndAlso Not String.IsNullOrEmpty(iTag.URL) Then
-            'Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
-            'Me.pbStatus.Style = ProgressBarStyle.Marquee
-            'Me.pnlStatus.Visible = True
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.lblStatus.Visible = True
+            Me.pbStatus.Visible = True
 
             Application.DoEvents()
 
@@ -751,82 +808,298 @@ Public Class dlgImgSelectNew
                 tImage.Save(iTag.LocalFile)
             End If
 
-            'Me.pnlStatus.Visible = False
+            Me.lblStatus.Visible = False
+            Me.pbStatus.Visible = False
         End If
     End Sub
 
-    Private Sub ShowImageList(ByRef tTag As iTag)
-        If Not Me.currListImageType = tTag.ImageType Then
-            Dim iCount As Integer = 0
+    Private Sub CreateImageList(ByRef tTag As iTag)
+        Dim iCount As Integer = 0
 
-            ClearMainImages()
+        ClearImageList()
 
-            If tTag.ImageType = Enums.ModifierType.MainBanner Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainBanner)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainCharacterArt)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainClearArt Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearArts
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainClearArt)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainClearLogo Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainClearLogo)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainDiscArt Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainFanart)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainLandscape)
-                    iCount += 1
-                Next
-            ElseIf tTag.ImageType = Enums.ModifierType.MainPoster Then
-                iCount = 0
-                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                    Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainPoster)
-                    iCount += 1
-                Next
+        If tTag.ImageType = Enums.ModifierType.MainBanner Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainBanner)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainCharacterArt)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainClearArt Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearArts
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainClearArt)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainClearLogo Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainClearLogo)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainDiscArt Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainLandscape)
+                iCount += 1
+            Next
+        ElseIf tTag.ImageType = Enums.ModifierType.MainPoster Then
+            iCount = 0
+            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
+                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainPoster)
+                iCount += 1
+            Next
+        End If
+    End Sub
+
+    Private Sub ClearImageList()
+        Me.iImageList_Counter = 0
+        Me.iImageList_Left = 5
+        Me.iImageList_Top = 5
+
+        If Me.pnlImageList.Controls.Count > 0 Then
+            For iIndex As Integer = 0 To Me.pnlImageList_Panel.Count - 1
+                If Me.pnlImageList_Panel(iIndex) IsNot Nothing Then
+                    If Me.lblImageList_Details(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.lblImageList_Details(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.lblImageList_Details(iIndex))
+                    If Me.pbImageList_Image(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.pbImageList_Image(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.pbImageList_Image(iIndex))
+                    If Me.pnlImageList.Contains(Me.pnlImageList_Panel(iIndex)) Then Me.pnlImageList.Controls.Remove(Me.pnlImageList_Panel(iIndex))
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Function CreateTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType) As iTag
+        Dim nTag As New iTag
+
+        nTag.Image = tImage
+        nTag.ImageType = ModifierType
+
+        'Description
+        If tImage IsNot Nothing AndAlso tImage.WebImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+            Dim imgText As String = String.Empty
+            If String.IsNullOrEmpty(tImage.Width) OrElse String.IsNullOrEmpty(tImage.Height) Then
+                nTag.strResolution = String.Format("{0}x{1}", tImage.WebImage.Image.Size.Width, tImage.WebImage.Image.Size.Height)
+            Else
+                nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)
+            End If
+        ElseIf tImage IsNot Nothing AndAlso tImage.WebThumb IsNot Nothing AndAlso tImage.WebThumb.Image IsNot Nothing Then
+            Dim imgText As String = String.Empty
+            If CDbl(tImage.Width) = 0 OrElse CDbl(tImage.Height) = 0 Then
+                nTag.strResolution = String.Concat("unknown", Environment.NewLine, tImage.LongLang)
+            Else
+                nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)
+            End If
+        End If
+
+        'Title
+        Select Case ModifierType
+            Case Enums.ModifierType.MainBanner
+                nTag.strTitle = Master.eLang.GetString(838, "Banner")
+            Case Enums.ModifierType.MainCharacterArt
+                nTag.strTitle = Master.eLang.GetString(1140, "CharacterArt")
+            Case Enums.ModifierType.MainClearArt
+                nTag.strTitle = Master.eLang.GetString(1096, "ClearArt")
+            Case Enums.ModifierType.MainClearLogo
+                nTag.strTitle = Master.eLang.GetString(1097, "ClearLogo")
+            Case Enums.ModifierType.MainDiscArt
+                nTag.strTitle = Master.eLang.GetString(1098, "DiscArt")
+            Case Enums.ModifierType.MainFanart
+                nTag.strTitle = Master.eLang.GetString(149, "Fanart")
+            Case Enums.ModifierType.MainLandscape
+                nTag.strTitle = Master.eLang.GetString(1035, "Landscape")
+            Case Enums.ModifierType.MainPoster
+                nTag.strTitle = Master.eLang.GetString(148, "Poster")
+        End Select
+
+        Return nTag
+    End Function
+
+    Private Sub btnRestoreTopImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRestoreTopImage.Click
+        If Me.SelSeason = -1 Then
+            If Me.currTopImage.ImageType = Enums.ModifierType.MainBanner Then
+                tDBElementResult.ImagesContainer.Banner = tDefaultImagesContainer.Banner
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.Banner, Enums.ModifierType.MainBanner)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainCharacterArt Then
+                tDBElementResult.ImagesContainer.CharacterArt = tDefaultImagesContainer.CharacterArt
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.CharacterArt, Enums.ModifierType.MainCharacterArt)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearArt Then
+                tDBElementResult.ImagesContainer.ClearArt = tDefaultImagesContainer.ClearArt
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.ClearArt, Enums.ModifierType.MainClearArt)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearLogo Then
+                tDBElementResult.ImagesContainer.ClearLogo = tDefaultImagesContainer.ClearLogo
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.ClearLogo, Enums.ModifierType.MainClearLogo)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainDiscArt Then
+                tDBElementResult.ImagesContainer.DiscArt = tDefaultImagesContainer.DiscArt
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.DiscArt, Enums.ModifierType.MainDiscArt)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainFanart Then
+                tDBElementResult.ImagesContainer.Fanart = tDefaultImagesContainer.Fanart
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.Fanart, Enums.ModifierType.MainFanart)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainLandscape Then
+                tDBElementResult.ImagesContainer.Fanart = tDefaultImagesContainer.Landscape
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.Landscape, Enums.ModifierType.MainLandscape)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainPoster Then
+                tDBElementResult.ImagesContainer.Poster = tDefaultImagesContainer.Poster
+                Me.currTopImage = CreateTag(tDefaultImagesContainer.Poster, Enums.ModifierType.MainPoster)
+                RefreshTopImage(Me.currTopImage)
+            End If
+        Else
+            If Me.currSubImage.ImageType = Enums.ModifierType.SeasonBanner Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner = sImg
+
+            ElseIf Me.currSubImage.ImageType = Enums.ModifierType.SeasonFanart Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart = sImg
+
+            ElseIf Me.currSubImage.ImageType = Enums.ModifierType.SeasonLandscape Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape = sImg
+
+            ElseIf Me.currSubImage.ImageType = Enums.ModifierType.SeasonPoster Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster = sImg
+
             End If
         End If
     End Sub
 
-    Private Sub ClearMainImages()
-        Me.iMainImage_Counter = 0
-        Me.iMainImage_Left = 5
-        Me.iMainImage_Top = 5
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        If Me.bwImgDefaults.IsBusy Then Me.bwImgDefaults.CancelAsync()
+        If Me.bwImgDownload.IsBusy Then Me.bwImgDownload.CancelAsync()
 
-        If Me.pnlImgSelectMain.Controls.Count > 0 Then
-            For iIndex As Integer = 0 To Me.pnlMainImage.Count - 1
-                If Me.pnlMainImage(iIndex) IsNot Nothing Then
-                    If Me.lblMainImageDetails(iIndex) IsNot Nothing AndAlso Me.pnlMainImage(iIndex).Contains(Me.lblMainImageDetails(iIndex)) Then Me.pnlMainImage(iIndex).Controls.Remove(Me.lblMainImageDetails(iIndex))
-                    If Me.pbMainImage(iIndex) IsNot Nothing AndAlso Me.pnlMainImage(iIndex).Contains(Me.pbMainImage(iIndex)) Then Me.pnlMainImage(iIndex).Controls.Remove(Me.pbMainImage(iIndex))
-                    If Me.pnlImgSelectMain.Contains(Me.pnlMainImage(iIndex)) Then Me.pnlImgSelectMain.Controls.Remove(Me.pnlMainImage(iIndex))
-                End If
-            Next
+        Me.lblStatus.Text = Master.eLang.GetString(99, "Canceling All Processes...")
+        Me.pbStatus.Style = ProgressBarStyle.Marquee
+        Me.lblStatus.Visible = True
+        Me.pbStatus.Visible = True
+
+        While Me.bwImgDefaults.IsBusy OrElse Me.bwImgDownload.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        DoneAndClose()
+    End Sub
+    ''' <summary>
+    ''' Downloading fullsize images for preview in Edit Episode / Season / Show dialog
+    ''' </summary>
+    ''' <remarks>All other images will be downloaded while saving to DB</remarks>
+    Private Sub DoneAndClose()
+        Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+        Me.pbStatus.Style = ProgressBarStyle.Marquee
+        Me.lblStatus.Visible = True
+        Me.pbStatus.Visible = True
+
+        If Me.bwImgDefaults.IsBusy Then Me.bwImgDefaults.CancelAsync()
+        If Me.bwImgDownload.IsBusy Then Me.bwImgDownload.CancelAsync()
+
+        While Me.bwImgDefaults.IsBusy OrElse Me.bwImgDownload.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        'Banner
+        If tDBElementResult.ImagesContainer.Banner.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Banner.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.Banner.LocalFile) Then
+                tDBElementResult.ImagesContainer.Banner.WebImage.FromFile(tDBElementResult.ImagesContainer.Banner.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Banner.URL) Then
+                tDBElementResult.ImagesContainer.Banner.WebImage.FromWeb(tDBElementResult.ImagesContainer.Banner.URL)
+            End If
         End If
+
+        'CharacterArt
+        If tDBElementResult.ImagesContainer.CharacterArt.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.CharacterArt.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.CharacterArt.LocalFile) Then
+                tDBElementResult.ImagesContainer.CharacterArt.WebImage.FromFile(tDBElementResult.ImagesContainer.CharacterArt.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.CharacterArt.URL) Then
+                tDBElementResult.ImagesContainer.CharacterArt.WebImage.FromWeb(tDBElementResult.ImagesContainer.CharacterArt.URL)
+            End If
+        End If
+
+        'ClearArt
+        If tDBElementResult.ImagesContainer.ClearArt.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearArt.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.ClearArt.LocalFile) Then
+                tDBElementResult.ImagesContainer.ClearArt.WebImage.FromFile(tDBElementResult.ImagesContainer.ClearArt.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearArt.URL) Then
+                tDBElementResult.ImagesContainer.ClearArt.WebImage.FromWeb(tDBElementResult.ImagesContainer.ClearArt.URL)
+            End If
+        End If
+
+        'ClearLogo
+        If tDBElementResult.ImagesContainer.ClearLogo.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearLogo.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.ClearLogo.LocalFile) Then
+                tDBElementResult.ImagesContainer.ClearLogo.WebImage.FromFile(tDBElementResult.ImagesContainer.ClearLogo.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearLogo.URL) Then
+                tDBElementResult.ImagesContainer.ClearLogo.WebImage.FromWeb(tDBElementResult.ImagesContainer.ClearLogo.URL)
+            End If
+        End If
+
+        'DiscArt
+        If tDBElementResult.ImagesContainer.DiscArt.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.DiscArt.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.DiscArt.LocalFile) Then
+                tDBElementResult.ImagesContainer.DiscArt.WebImage.FromFile(tDBElementResult.ImagesContainer.DiscArt.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.DiscArt.URL) Then
+                tDBElementResult.ImagesContainer.DiscArt.WebImage.FromWeb(tDBElementResult.ImagesContainer.DiscArt.URL)
+            End If
+        End If
+
+        'Fanart
+        If tDBElementResult.ImagesContainer.Fanart.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Fanart.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.Fanart.LocalFile) Then
+                tDBElementResult.ImagesContainer.Fanart.WebImage.FromFile(tDBElementResult.ImagesContainer.Fanart.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Fanart.URL) Then
+                tDBElementResult.ImagesContainer.Fanart.WebImage.FromWeb(tDBElementResult.ImagesContainer.Fanart.URL)
+            End If
+        End If
+
+        'Landscape
+        If tDBElementResult.ImagesContainer.Landscape.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Landscape.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.Landscape.LocalFile) Then
+                tDBElementResult.ImagesContainer.Landscape.WebImage.FromFile(tDBElementResult.ImagesContainer.Landscape.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Landscape.URL) Then
+                tDBElementResult.ImagesContainer.Landscape.WebImage.FromWeb(tDBElementResult.ImagesContainer.Landscape.URL)
+            End If
+        End If
+
+        'Poster
+        If tDBElementResult.ImagesContainer.Poster.WebImage.Image Is Nothing Then
+            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Poster.LocalFile) AndAlso File.Exists(tDBElementResult.ImagesContainer.Poster.LocalFile) Then
+                tDBElementResult.ImagesContainer.Poster.WebImage.FromFile(tDBElementResult.ImagesContainer.Poster.LocalFile)
+            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Poster.URL) Then
+                tDBElementResult.ImagesContainer.Poster.WebImage.FromWeb(tDBElementResult.ImagesContainer.Poster.URL)
+            End If
+        End If
+
+        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
 #End Region 'Methods
@@ -839,6 +1112,9 @@ Public Class dlgImgSelectNew
 
         Dim Image As MediaContainers.Image
         Dim ImageType As Enums.ModifierType
+        Dim iIndex As Integer
+        Dim strResolution As String
+        Dim strTitle As String
 
 #End Region 'Fields
 

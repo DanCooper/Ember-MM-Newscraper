@@ -85,6 +85,7 @@ Namespace TMDB
                             .Height = image.Height.ToString, _
                             .Likes = 0, _
                             .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                            .Scraper = "TMDB", _
                             .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
                             .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w300" & image.FilePath, _
                             .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
@@ -103,6 +104,7 @@ Namespace TMDB
                                 .Height = image.Height.ToString, _
                                 .Likes = 0, _
                                 .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                                .Scraper = "TMDB", _
                                 .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
                                 .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
                                 .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
@@ -144,6 +146,7 @@ Namespace TMDB
                             .Height = image.Height.ToString, _
                             .Likes = 0, _
                             .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                            .Scraper = "TMDB", _
                             .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
                             .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w300" & image.FilePath, _
                             .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
@@ -162,6 +165,7 @@ Namespace TMDB
                                 .Height = image.Height.ToString, _
                                 .Likes = 0, _
                                 .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                                .Scraper = "TMDB", _
                                 .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
                                 .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
                                 .URL = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
@@ -204,6 +208,7 @@ Namespace TMDB
                             .Height = image.Height.ToString, _
                             .Likes = 0, _
                             .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
+                            .Scraper = "TMDB", _
                             .Season = iSeason, _
                             .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
                             .ThumbURL = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
