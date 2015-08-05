@@ -3253,7 +3253,7 @@ Namespace MediaContainers
                 Return Me._disctype
             End Get
             Set(ByVal value As String)
-                Me._disctype = value
+                Me._disctype = If(value.ToLower = "cd", "CD", If(value.ToLower = "dvd", "DVD", If(value.ToLower = "bluray", "BluRay", value)))
             End Set
         End Property
 

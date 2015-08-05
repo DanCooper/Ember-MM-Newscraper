@@ -125,7 +125,7 @@ Public Class dlgEditMovie
             Me.pbETImage(iIndex).Left = 0
             Me.pnlETImage(iIndex).Top = iETTop
             Me.pbETImage(iIndex).Top = 0
-            Me.pnlMovieEThumbsBG.Controls.Add(Me.pnlETImage(iIndex))
+            Me.pnlEThumbsBG.Controls.Add(Me.pnlETImage(iIndex))
             Me.pnlETImage(iIndex).Controls.Add(Me.pbETImage(iIndex))
             Me.pnlETImage(iIndex).BringToFront()
             AddHandler pbETImage(iIndex).Click, AddressOf pbETImage_Click
@@ -158,7 +158,7 @@ Public Class dlgEditMovie
             Me.pbEFImage(iIndex).Left = 0
             Me.pnlEFImage(iIndex).Top = iEFTop
             Me.pbEFImage(iIndex).Top = 0
-            Me.pnlMovieEFanartsBG.Controls.Add(Me.pnlEFImage(iIndex))
+            Me.pnlEFanartsBG.Controls.Add(Me.pnlEFImage(iIndex))
             Me.pnlEFImage(iIndex).Controls.Add(Me.pbEFImage(iIndex))
             Me.pnlEFImage(iIndex).BringToFront()
             AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
@@ -189,12 +189,12 @@ Public Class dlgEditMovie
 
     Private Sub DoSelectET(ByVal iIndex As Integer, tPoster As Images)
         Try
-            Me.pbMovieEThumbs.Image = tPoster.Image
-            Me.pbMovieEThumbs.Tag = tPoster
-            Me.btnMovieEThumbsSetAsFanart.Enabled = True
+            Me.pbEThumbs.Image = tPoster.Image
+            Me.pbEThumbs.Tag = tPoster
+            Me.btnEThumbsSetAsFanart.Enabled = True
             Me.EThumbsIndex = iIndex
-            Me.lblMovieEThumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieEThumbs.Image.Width, Me.pbMovieEThumbs.Image.Height)
-            Me.lblMovieEThumbsSize.Visible = True
+            Me.lblEThumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEThumbs.Image.Width, Me.pbEThumbs.Image.Height)
+            Me.lblEThumbsSize.Visible = True
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -202,12 +202,12 @@ Public Class dlgEditMovie
 
     Private Sub DoSelectEF(ByVal iIndex As Integer, tPoster As Images)
         Try
-            Me.pbMovieEFanarts.Image = tPoster.Image
-            Me.pbMovieEFanarts.Tag = tPoster
-            Me.btnMovieEFanartsSetAsFanart.Enabled = True
+            Me.pbEFanarts.Image = tPoster.Image
+            Me.pbEFanarts.Tag = tPoster
+            Me.btnEFanartsSetAsFanart.Enabled = True
             Me.EFanartsIndex = iIndex
-            Me.lblMovieEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieEFanarts.Image.Width, Me.pbMovieEFanarts.Image.Height)
-            Me.lblMovieEFanartsSize.Visible = True
+            Me.lblEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEFanarts.Image.Width, Me.pbEFanarts.Image.Height)
+            Me.lblEFanartsSize.Visible = True
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -384,78 +384,78 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnRemoveMovieBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieBanner.Click
-        Me.pbMovieBanner.Image = Nothing
-        Me.pbMovieBanner.Tag = Nothing
+    Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
+        Me.pbBanner.Image = Nothing
+        Me.pbBanner.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMovieClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieClearArt.Click
-        Me.pbMovieClearArt.Image = Nothing
-        Me.pbMovieClearArt.Tag = Nothing
+    Private Sub btnRemoveClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearArt.Click
+        Me.pbClearArt.Image = Nothing
+        Me.pbClearArt.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.ClearArt = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMovieClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieClearLogo.Click
-        Me.pbMovieClearLogo.Image = Nothing
-        Me.pbMovieClearLogo.Tag = Nothing
+    Private Sub btnRemoveClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearLogo.Click
+        Me.pbClearLogo.Image = Nothing
+        Me.pbClearLogo.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.ClearLogo = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMovieDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieDiscArt.Click
-        Me.pbMovieDiscArt.Image = Nothing
-        Me.pbMovieDiscArt.Tag = Nothing
+    Private Sub btnRemoveDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveDiscArt.Click
+        Me.pbDiscArt.Image = Nothing
+        Me.pbDiscArt.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.DiscArt = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMovieFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieFanart.Click
-        Me.pbMovieFanart.Image = Nothing
-        Me.pbMovieFanart.Tag = Nothing
+    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+        Me.pbFanart.Image = Nothing
+        Me.pbFanart.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMovieLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieLandscape.Click
-        Me.pbMovieLandscape.Image = Nothing
-        Me.pbMovieLandscape.Tag = Nothing
+    Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
+        Me.pbLandscape.Image = Nothing
+        Me.pbLandscape.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMoviePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMoviePoster.Click
-        Me.pbMoviePoster.Image = Nothing
-        Me.pbMoviePoster.Tag = Nothing
+    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+        Me.pbPoster.Image = Nothing
+        Me.pbPoster.Tag = Nothing
         Me.tmpDBMovie.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveMovieSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieSubtitle.Click
+    Private Sub btnRemoveSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSubtitle.Click
         Me.DeleteSubtitle()
     End Sub
 
-    Private Sub btnRemoveMovieTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTheme.Click
+    Private Sub btnRemoveTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTheme.Click
         Me.ThemeStop()
         'Me.axVLCTheme.playlist.items.clear()
         Me.MovieTheme.Dispose()
         Me.MovieTheme.toRemove = True
     End Sub
 
-    Private Sub btnRemoveMovieTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTrailer.Click
+    Private Sub btnRemoveTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTrailer.Click
         Me.TrailerStop()
         Me.TrailerPlaylistClear()
         Me.MovieTrailer.WebTrailer.Dispose()
         Me.MovieTrailer.WebTrailer.toRemove = True
     End Sub
 
-    Private Sub btnMovieEThumbsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEThumbsRemove.Click
+    Private Sub btnEThumbsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsRemove.Click
         Me.DeleteEThumbs()
         Me.RefreshEThumbs()
-        Me.lblMovieEThumbsSize.Text = ""
-        Me.lblMovieEThumbsSize.Visible = False
+        Me.lblEThumbsSize.Text = ""
+        Me.lblEThumbsSize.Visible = False
     End Sub
 
-    Private Sub btnMovieEFanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEFanartsRemove.Click
+    Private Sub btnEFanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRemove.Click
         Me.DeleteEFanarts()
         Me.RefreshEFanarts()
-        Me.lblMovieEFanartsSize.Text = ""
-        Me.lblMovieEFanartsSize.Visible = False
+        Me.lblEFanartsSize.Text = ""
+        Me.lblEFanartsSize.Visible = False
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -471,7 +471,7 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub btnSetMovieBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerDL.Click
+    Private Sub btnSetBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -479,11 +479,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.Banner = tImage
-                        Me.pbMovieBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
-                        Me.pbMovieBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
+                        Me.pbBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
+                        Me.pbBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
 
-                        Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
-                        Me.lblMovieBannerSize.Visible = True
+                        Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
+                        Me.lblBannerSize.Visible = True
                     End If
                 End If
             End Using
@@ -492,43 +492,31 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerScrape.Click
-        Dim pResults As New MediaContainers.Image
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
 
-        Try
-            Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                If aContainer.MainBanners.Count > 0 Then
-                    dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainBanner, aContainer.MainBanners, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                        pResults = dlgImgS.Results
-                        If Not String.IsNullOrEmpty(pResults.URL) Then
-                            Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
-                            If pResults.WebImage.Image IsNot Nothing Then
-                                pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
-                                Me.lblMovieBannerSize.Visible = True
-                            End If
-                            Cursor = Cursors.Default
-                        End If
-                        Me.tmpDBMovie.ImagesContainer.Banner = pResults
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainBanners.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Banner
+                    Me.tmpDBMovie.ImagesContainer.Banner = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
+                        Me.lblBannerSize.Visible = True
                     End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Cursor = Cursors.Default
                 End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
-    Private Sub btnSetMovieBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerLocal.Click
+    Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -538,18 +526,18 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.Banner.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMovieBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
-                Me.pbMovieBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
+                Me.pbBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
+                Me.pbBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
 
-                Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
-                Me.lblMovieBannerSize.Visible = True
+                Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
+                Me.lblBannerSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtDL.Click
+    Private Sub btnSetClearArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -557,11 +545,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.ClearArt = tImage
-                        Me.pbMovieClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
-                        Me.pbMovieClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
+                        Me.pbClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
+                        Me.pbClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
 
-                        Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
-                        Me.lblMovieClearArtSize.Visible = True
+                        Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
+                        Me.lblClearArtSize.Visible = True
                     End If
                 End If
             End Using
@@ -570,43 +558,31 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtScrape.Click
-        Dim pResults As New MediaContainers.Image
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
 
-        Try
-            Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                If aContainer.MainClearArts.Count > 0 Then
-                    dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainClearArt, aContainer.MainClearArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                        pResults = dlgImgS.Results
-                        If Not String.IsNullOrEmpty(pResults.URL) Then
-                            Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
-                            If pResults.WebImage.Image IsNot Nothing Then
-                                pbMovieClearArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
-                                Me.lblMovieClearArtSize.Visible = True
-                            End If
-                            Cursor = Cursors.Default
-                        End If
-                        Me.tmpDBMovie.ImagesContainer.ClearArt = pResults
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainClearArts.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearArt
+                    Me.tmpDBMovie.ImagesContainer.ClearArt = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbClearArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
+                        Me.lblClearArtSize.Visible = True
                     End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Cursor = Cursors.Default
                 End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
-    Private Sub btnSetMovieClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtLocal.Click
+    Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -616,18 +592,18 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMovieClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
-                Me.pbMovieClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
+                Me.pbClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
+                Me.pbClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
 
-                Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
-                Me.lblMovieClearArtSize.Visible = True
+                Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
+                Me.lblClearArtSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearLogoDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoDL.Click
+    Private Sub btnSetClearLogoDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -635,11 +611,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.ClearLogo = tImage
-                        Me.pbMovieClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
-                        Me.pbMovieClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
+                        Me.pbClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
+                        Me.pbClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
 
-                        Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
-                        Me.lblMovieClearLogoSize.Visible = True
+                        Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
+                        Me.lblClearLogoSize.Visible = True
                     End If
                 End If
             End Using
@@ -648,43 +624,31 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoScrape.Click
-        Dim pResults As New MediaContainers.Image
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
 
-        Try
-            Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                If aContainer.MainClearLogos.Count > 0 Then
-                    dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainClearLogo, aContainer.MainClearLogos, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                        pResults = dlgImgS.Results
-                        If Not String.IsNullOrEmpty(pResults.URL) Then
-                            Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
-                            If pResults.WebImage.Image IsNot Nothing Then
-                                pbMovieClearLogo.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
-                                Me.lblMovieClearLogoSize.Visible = True
-                            End If
-                            Cursor = Cursors.Default
-                        End If
-                        Me.tmpDBMovie.ImagesContainer.ClearLogo = pResults
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainClearLogos.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearLogo
+                    Me.tmpDBMovie.ImagesContainer.ClearLogo = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbClearLogo.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
+                        Me.lblClearLogoSize.Visible = True
                     End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Cursor = Cursors.Default
                 End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
-    Private Sub btnSetMovieClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoLocal.Click
+    Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -694,18 +658,18 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMovieClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
-                Me.pbMovieClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
+                Me.pbClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
+                Me.pbClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
 
-                Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
-                Me.lblMovieClearLogoSize.Visible = True
+                Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
+                Me.lblClearLogoSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetMovieDiscArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtDL.Click
+    Private Sub btnSetDiscArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -713,11 +677,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.DiscArt = tImage
-                        Me.pbMovieDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
-                        Me.pbMovieDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
+                        Me.pbDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
+                        Me.pbDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
 
-                        Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
-                        Me.lblMovieDiscArtSize.Visible = True
+                        Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
+                        Me.lblDiscArtSize.Visible = True
                     End If
                 End If
             End Using
@@ -726,43 +690,31 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtScrape.Click
-        Dim pResults As New MediaContainers.Image
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
 
-        Try
-            Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                If aContainer.MainDiscArts.Count > 0 Then
-                    dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainDiscArt, aContainer.MainDiscArts, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                        pResults = dlgImgS.Results
-                        If Not String.IsNullOrEmpty(pResults.URL) Then
-                            Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
-                            If pResults.WebImage.Image IsNot Nothing Then
-                                pbMovieDiscArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
-                                Me.lblMovieDiscArtSize.Visible = True
-                            End If
-                            Cursor = Cursors.Default
-                        End If
-                        Me.tmpDBMovie.ImagesContainer.DiscArt = pResults
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainDiscArts.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.DiscArt
+                    Me.tmpDBMovie.ImagesContainer.DiscArt = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbDiscArt.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
+                        Me.lblDiscArtSize.Visible = True
                     End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Cursor = Cursors.Default
                 End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
-    Private Sub btnSetMovieDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtLocal.Click
+    Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -772,48 +724,48 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMovieDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
-                Me.pbMovieDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
+                Me.pbDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
+                Me.pbDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
 
-                Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
-                Me.lblMovieDiscArtSize.Visible = True
+                Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
+                Me.lblDiscArtSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnMovieEThumbsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEThumbsSetAsFanart.Click
+    Private Sub btnEThumbsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsSetAsFanart.Click
         If Not String.IsNullOrEmpty(Me.EThumbsList.Item(Me.EThumbsIndex).Path) AndAlso Me.EThumbsList.Item(Me.EThumbsIndex).Path.Substring(0, 1) = ":" Then
             Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.FromWeb(Me.EThumbsList.Item(Me.EThumbsIndex).Path.Substring(1, Me.EThumbsList.Item(Me.EThumbsIndex).Path.Length - 1))
         Else
             Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.FromFile(Me.EThumbsList.Item(Me.EThumbsIndex).Path)
         End If
         If Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-            Me.pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-            Me.pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+            Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+            Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
-            Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-            Me.lblMovieFanartSize.Visible = True
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
         End If
     End Sub
 
-    Private Sub btnMovieEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEFanartsSetAsFanart.Click
+    Private Sub btnEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsSetAsFanart.Click
         If Not String.IsNullOrEmpty(Me.EFanartsList.Item(Me.EFanartsIndex).Path) AndAlso Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(0, 1) = ":" Then
             Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
         Else
             Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
         End If
         If Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-            Me.pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-            Me.pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+            Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+            Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
-            Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-            Me.lblMovieFanartSize.Visible = True
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
         End If
     End Sub
 
-    Private Sub btnSetMovieFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartDL.Click
+    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -821,11 +773,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.Fanart = tImage
-                        Me.pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-                        Me.pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+                        Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+                        Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
-                        Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-                        Me.lblMovieFanartSize.Visible = True
+                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                        Me.lblFanartSize.Visible = True
                     End If
                 End If
             End Using
@@ -834,47 +786,34 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartScrape.Click
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim pResults As New MediaContainers.Image
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
 
-        Try
-            Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                If aContainer.MainFanarts.Count > 0 Then
-                    dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainFanart, aContainer.MainFanarts, efList, etList, True) = DialogResult.OK Then
-                        pResults = dlgImgS.Results
-                        'Me.tmpDBMovie.etList = dlgImgS.etList
-                        'Me.tmpDBMovie.efList = dlgImgS.efList
-                        If Not String.IsNullOrEmpty(pResults.URL) Then
-                            Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
-                            pbMovieFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                            Cursor = Cursors.Default
-
-                            Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-                            Me.lblMovieFanartSize.Visible = True
-                        End If
-                        Me.tmpDBMovie.ImagesContainer.Fanart = pResults
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainFanarts.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
+                    Me.tmpDBMovie.ImagesContainer.Fanart = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                        Me.lblFanartSize.Visible = True
                     End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Cursor = Cursors.Default
                 End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
+        End If
 
-            RefreshEFanarts()
-            RefreshEThumbs()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        RefreshEFanarts()
+        RefreshEThumbs()
     End Sub
 
-    Private Sub btnSetMovieFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartLocal.Click
+    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -884,18 +823,18 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-                Me.pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+                Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+                Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
-                Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-                Me.lblMovieFanartSize.Visible = True
+                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetMovieLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeDL.Click
+    Private Sub btnSetLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -903,11 +842,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.Landscape = tImage
-                        Me.pbMovieLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
-                        Me.pbMovieLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
+                        Me.pbLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
+                        Me.pbLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
 
-                        Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
-                        Me.lblMovieLandscapeSize.Visible = True
+                        Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
+                        Me.lblLandscapeSize.Visible = True
                     End If
                 End If
             End Using
@@ -916,43 +855,31 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
-        Dim pResults As New MediaContainers.Image
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
 
-        Try
-            Dim ScrapeModifier As New Structures.ScrapeModifier
-            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-            If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
-                If aContainer.MainLandscapes.Count > 0 Then
-                    dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainLandscape, aContainer.MainLandscapes, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                        pResults = dlgImgS.Results
-                        If Not String.IsNullOrEmpty(pResults.URL) Then
-                            Cursor = Cursors.WaitCursor
-                            pResults.WebImage.FromWeb(pResults.URL)
-                            If pResults.WebImage.Image IsNot Nothing Then
-                                pbMovieLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                                Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
-                                Me.lblMovieLandscapeSize.Visible = True
-                            End If
-                            Cursor = Cursors.Default
-                        End If
-                        Me.tmpDBMovie.ImagesContainer.Landscape = pResults
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainLandscapes.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Landscape
+                    Me.tmpDBMovie.ImagesContainer.Landscape = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
+                        Me.lblLandscapeSize.Visible = True
                     End If
-                Else
-                    MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Cursor = Cursors.Default
                 End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        End If
     End Sub
 
-    Private Sub btnSetMovieLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeLocal.Click
+    Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -962,18 +889,18 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMovieLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
-                Me.pbMovieLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
+                Me.pbLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
+                Me.pbLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
 
-                Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
-                Me.lblMovieLandscapeSize.Visible = True
+                Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
+                Me.lblLandscapeSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub btnSetMoviePosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterDL.Click
+    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -981,11 +908,11 @@ Public Class dlgEditMovie
                     tImage = dImgManual.Results
                     If tImage.WebImage.Image IsNot Nothing Then
                         Me.tmpDBMovie.ImagesContainer.Poster = tImage
-                        Me.pbMoviePoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
-                        Me.pbMoviePoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
+                        Me.pbPoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
+                        Me.pbPoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
 
-                        Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
-                        Me.lblMoviePosterSize.Visible = True
+                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                        Me.lblPosterSize.Visible = True
                     End If
                 End If
             End Using
@@ -994,31 +921,23 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMoviePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterScrape.Click
-        Dim pResults As New MediaContainers.Image
-        Dim dlgImgS As dlgImgSelect
+    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim efList As New List(Of String)
-        Dim etList As New List(Of String)
-
         Dim ScrapeModifier As New Structures.ScrapeModifier
+
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainPosters.Count > 0 Then
-                dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBMovie, Enums.ModifierType.MainPoster, aContainer.MainPosters, efList, etList, True) = Windows.Forms.DialogResult.OK Then
-                    pResults = dlgImgS.Results
-                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                        Cursor = Cursors.WaitCursor
-                        pResults.WebImage.FromWeb(pResults.URL)
-                        If pResults.WebImage.Image IsNot Nothing Then
-                            pbMoviePoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                            Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
-                            Me.lblMoviePosterSize.Visible = True
-                        End If
-                        Cursor = Cursors.Default
-                    End If
+                Dim dlgImgS = New dlgImgSelectNew()
+                If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
                     Me.tmpDBMovie.ImagesContainer.Poster = pResults
+                    If pResults.WebImage.Image IsNot Nothing Then
+                        Me.pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                        Me.lblPosterSize.Visible = True
+                    End If
+                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -1026,7 +945,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnSetMoviePosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterLocal.Click
+    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Me.tmpDBMovie.Filename).FullName
@@ -1036,11 +955,11 @@ Public Class dlgEditMovie
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
                 Me.tmpDBMovie.ImagesContainer.Poster.WebImage.FromFile(ofdLocalFiles.FileName)
-                Me.pbMoviePoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
-                Me.pbMoviePoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
+                Me.pbPoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
+                Me.pbPoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
 
-                Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
-                Me.lblMoviePosterSize.Visible = True
+                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1065,7 +984,7 @@ Public Class dlgEditMovie
     '    End Try
     'End Sub
 
-    Private Sub btnSetMovieThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeScrape.Click
+    Private Sub btnSetThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeScrape.Click
         Dim dlgThmS As dlgThemeSelect
         Dim aUrlList As New List(Of Themes)
 
@@ -1089,7 +1008,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieThemeLocal.Click
+    Private Sub btnSetThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeLocal.Click
         Try
             Me.ThemeStop()
             With ofdLocalFiles
@@ -1108,7 +1027,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieTrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerDL.Click
+    Private Sub btnSetTrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerDL.Click
         Dim tResults As New MediaContainers.Trailer
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of MediaContainers.Trailer)
@@ -1126,7 +1045,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieTrailerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerScrape.Click
+    Private Sub btnSetTrailerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerScrape.Click
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of MediaContainers.Trailer)
 
@@ -1142,7 +1061,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnSetMovieTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerLocal.Click
+    Private Sub btnSetTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerLocal.Click
         Try
             Me.TrailerStop()
             With ofdLocalFiles
@@ -1170,11 +1089,11 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnMovieEThumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEThumbsRefresh.Click
+    Private Sub btnEThumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsRefresh.Click
         Me.RefreshEThumbs()
     End Sub
 
-    Private Sub btnMovieEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEFanartsRefresh.Click
+    Private Sub btnEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRefresh.Click
         Me.RefreshEFanarts()
     End Sub
 
@@ -1760,8 +1679,8 @@ Public Class dlgEditMovie
                     etDeleteList.Add(Me.EThumbsList.Item(iIndex).Path)
                     EThumbsList.Remove(EThumbsList.Item(iIndex))
                 End If
-                pbMovieEThumbs.Image = Nothing
-                btnMovieEThumbsSetAsFanart.Enabled = False
+                pbEThumbs.Image = Nothing
+                btnEThumbsSetAsFanart.Enabled = False
             End If
             RenumberEThumbs()
         Catch ex As Exception
@@ -1782,8 +1701,8 @@ Public Class dlgEditMovie
                     efDeleteList.Add(Me.EFanartsList.Item(iIndex).Path)
                     EFanartsList.Remove(EFanartsList.Item(iIndex))
                 End If
-                pbMovieEFanarts.Image = Nothing
-                btnMovieEFanartsSetAsFanart.Enabled = False
+                pbEFanarts.Image = Nothing
+                btnEFanartsSetAsFanart.Enabled = False
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1830,13 +1749,13 @@ Public Class dlgEditMovie
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.pbMovieBanner.AllowDrop = True
-            Me.pbMovieClearArt.AllowDrop = True
-            Me.pbMovieClearLogo.AllowDrop = True
-            Me.pbMovieDiscArt.AllowDrop = True
-            Me.pbMovieFanart.AllowDrop = True
-            Me.pbMovieLandscape.AllowDrop = True
-            Me.pbMoviePoster.AllowDrop = True
+            Me.pbBanner.AllowDrop = True
+            Me.pbClearArt.AllowDrop = True
+            Me.pbClearLogo.AllowDrop = True
+            Me.pbDiscArt.AllowDrop = True
+            Me.pbFanart.AllowDrop = True
+            Me.pbLandscape.AllowDrop = True
+            Me.pbPoster.AllowDrop = True
 
             Me.SetUp()
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Me.tmpDBMovie)
@@ -1871,7 +1790,7 @@ Public Class dlgEditMovie
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
             pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
             If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-                tcEditMovie.TabPages.Remove(tpFrameExtraction)
+                tcEdit.TabPages.Remove(tpFrameExtraction)
             End If
 
             Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
@@ -2098,10 +2017,10 @@ Public Class dlgEditMovie
                     If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                     pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
                     pExt = ".disc" Then
-                        tcEditMovie.TabPages.Remove(tpFrameExtraction)
+                        tcEdit.TabPages.Remove(tpFrameExtraction)
                     Else
                         If Not pExt = ".disc" Then
-                            tcEditMovie.TabPages.Remove(tpMediaStub)
+                            tcEdit.TabPages.Remove(tpMediaStub)
                         End If
                     End If
                     .bwEThumbs.WorkerSupportsCancellation = True
@@ -2113,107 +2032,107 @@ Public Class dlgEditMovie
 
                     If Master.eSettings.MovieBannerAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainBanner) Then
-                            .btnSetMovieBannerScrape.Enabled = False
+                            .btnSetBannerScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
-                            .pbMovieBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
-                            .pbMovieBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
+                            .pbBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
+                            .pbBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
 
-                            .lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieBanner.Image.Width, .pbMovieBanner.Image.Height)
-                            .lblMovieBannerSize.Visible = True
+                            .lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbBanner.Image.Width, .pbBanner.Image.Height)
+                            .lblBannerSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpBanner)
+                        tcEdit.TabPages.Remove(tpBanner)
                     End If
 
                     If Master.eSettings.MovieClearArtAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearArt) Then
-                            .btnSetMovieClearArtScrape.Enabled = False
+                            .btnSetClearArtScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
-                            .pbMovieClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
-                            .pbMovieClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
+                            .pbClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
+                            .pbClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
 
-                            .lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieClearArt.Image.Width, .pbMovieClearArt.Image.Height)
-                            .lblMovieClearArtSize.Visible = True
+                            .lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbClearArt.Image.Width, .pbClearArt.Image.Height)
+                            .lblClearArtSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpClearArt)
+                        tcEdit.TabPages.Remove(tpClearArt)
                     End If
 
                     If Master.eSettings.MovieClearLogoAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearLogo) Then
-                            .btnSetMovieClearLogoScrape.Enabled = False
+                            .btnSetClearLogoScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
-                            .pbMovieClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
-                            .pbMovieClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
+                            .pbClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
+                            .pbClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
 
-                            .lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieClearLogo.Image.Width, .pbMovieClearLogo.Image.Height)
-                            .lblMovieClearLogoSize.Visible = True
+                            .lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbClearLogo.Image.Width, .pbClearLogo.Image.Height)
+                            .lblClearLogoSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpClearLogo)
+                        tcEdit.TabPages.Remove(tpClearLogo)
                     End If
 
                     If Master.eSettings.MovieDiscArtAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainDiscArt) Then
-                            .btnSetMovieDiscArtScrape.Enabled = False
+                            .btnSetDiscArtScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image IsNot Nothing Then
-                            .pbMovieDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
-                            .pbMovieDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
+                            .pbDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
+                            .pbDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
 
-                            .lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieDiscArt.Image.Width, .pbMovieDiscArt.Image.Height)
-                            .lblMovieDiscArtSize.Visible = True
+                            .lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbDiscArt.Image.Width, .pbDiscArt.Image.Height)
+                            .lblDiscArtSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpDiscArt)
+                        tcEdit.TabPages.Remove(tpDiscArt)
                     End If
 
                     If Master.eSettings.MovieFanartAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart) Then
-                            .btnSetMovieFanartScrape.Enabled = False
+                            .btnSetFanartScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                            .pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-                            .pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+                            .pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+                            .pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
-                            .lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieFanart.Image.Width, .pbMovieFanart.Image.Height)
-                            .lblMovieFanartSize.Visible = True
+                            .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
+                            .lblFanartSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpFanart)
+                        tcEdit.TabPages.Remove(tpFanart)
                     End If
 
                     If Master.eSettings.MovieLandscapeAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainLandscape) Then
-                            .btnSetMovieLandscapeScrape.Enabled = False
+                            .btnSetLandscapeScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
-                            .pbMovieLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
-                            .pbMovieLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
+                            .pbLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
+                            .pbLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
 
-                            .lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieLandscape.Image.Width, .pbMovieLandscape.Image.Height)
-                            .lblMovieLandscapeSize.Visible = True
+                            .lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbLandscape.Image.Width, .pbLandscape.Image.Height)
+                            .lblLandscapeSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpLandscape)
+                        tcEdit.TabPages.Remove(tpLandscape)
                     End If
 
                     If Master.eSettings.MoviePosterAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster) Then
-                            .btnSetMoviePosterScrape.Enabled = False
+                            .btnSetPosterScrape.Enabled = False
                         End If
                         If Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
-                            .pbMoviePoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
-                            .pbMoviePoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
+                            .pbPoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
+                            .pbPoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
 
-                            .lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMoviePoster.Image.Width, .pbMoviePoster.Image.Height)
-                            .lblMoviePosterSize.Visible = True
+                            .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
+                            .lblPosterSize.Visible = True
                         End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpPoster)
+                        tcEdit.TabPages.Remove(tpPoster)
                     End If
 
 
@@ -2224,7 +2143,7 @@ Public Class dlgEditMovie
                         '    .btnSetMovieEFanarstScrape.Enabled = False
                         'End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpEFanarts)
+                        tcEdit.TabPages.Remove(tpEFanarts)
                     End If
 
                     If Master.eSettings.MovieEThumbsAnyEnabled Then 'TODO: add buttons for extrathumbs
@@ -2232,15 +2151,15 @@ Public Class dlgEditMovie
                         '    .btnSetMovieEThumbsScrape.Enabled = False
                         'End If
                     Else
-                        tcEditMovie.TabPages.Remove(tpEThumbs)
+                        tcEdit.TabPages.Remove(tpEThumbs)
                     End If
 
                     If Not Master.eSettings.MovieTrailerAnyEnabled Then
-                        tcEditMovie.TabPages.Remove(tpTrailer)
+                        tcEdit.TabPages.Remove(tpTrailer)
                     End If
 
                     If Not Master.eSettings.MovieThemeAnyEnabled Then
-                        tcEditMovie.TabPages.Remove(tpTheme)
+                        tcEdit.TabPages.Remove(tpTheme)
                     End If
 
                     If Not String.IsNullOrEmpty(Me.tmpDBMovie.ThemePath) AndAlso Me.tmpDBMovie.ThemePath.Substring(0, 1) = ":" Then
@@ -2361,18 +2280,18 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragDrop
+    Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.Banner = tImage
-            Me.pbMovieBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
-            Me.pbMovieBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
-            Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
-            Me.lblMovieBannerSize.Visible = True
+            Me.pbBanner.Image = Me.tmpDBMovie.ImagesContainer.Banner.WebImage.Image
+            Me.pbBanner.Tag = Me.tmpDBMovie.ImagesContainer.Banner
+            Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
+            Me.lblBannerSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMovieBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragEnter
+    Private Sub pbMovieBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbBanner.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2380,18 +2299,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearArt.DragDrop
+    Private Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.ClearArt = tImage
-            Me.pbMovieClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
-            Me.pbMovieClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
-            Me.lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearArt.Image.Width, Me.pbMovieClearArt.Image.Height)
-            Me.lblMovieClearArtSize.Visible = True
+            Me.pbClearArt.Image = Me.tmpDBMovie.ImagesContainer.ClearArt.WebImage.Image
+            Me.pbClearArt.Tag = Me.tmpDBMovie.ImagesContainer.ClearArt
+            Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
+            Me.lblClearArtSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMovieClearArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieClearArt.DragEnter
+    Private Sub pbMovieClearArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbClearArt.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2399,18 +2318,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieClearLogo.DragDrop
+    Private Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.ClearLogo = tImage
-            Me.pbMovieClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
-            Me.pbMovieClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
-            Me.lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieClearLogo.Image.Width, Me.pbMovieClearLogo.Image.Height)
-            Me.lblMovieClearLogoSize.Visible = True
+            Me.pbClearLogo.Image = Me.tmpDBMovie.ImagesContainer.ClearLogo.WebImage.Image
+            Me.pbClearLogo.Tag = Me.tmpDBMovie.ImagesContainer.ClearLogo
+            Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
+            Me.lblClearLogoSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMovieClearLogo_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieClearLogo.DragEnter
+    Private Sub pbMovieClearLogo_DragEnter(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2418,18 +2337,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieDiscArt.DragDrop
+    Private Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.DiscArt = tImage
-            Me.pbMovieDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
-            Me.pbMovieDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
-            Me.lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieDiscArt.Image.Width, Me.pbMovieDiscArt.Image.Height)
-            Me.lblMovieDiscArtSize.Visible = True
+            Me.pbDiscArt.Image = Me.tmpDBMovie.ImagesContainer.DiscArt.WebImage.Image
+            Me.pbDiscArt.Tag = Me.tmpDBMovie.ImagesContainer.DiscArt
+            Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
+            Me.lblDiscArtSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMovieDiscArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieDiscArt.DragEnter
+    Private Sub pbMovieDiscArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2437,18 +2356,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragDrop
+    Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.Fanart = tImage
-            Me.pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-            Me.pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
-            Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-            Me.lblMovieFanartSize.Visible = True
+            Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+            Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMovieFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragEnter
+    Private Sub pbMovieFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbFanart.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2456,18 +2375,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragDrop
+    Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.Landscape = tImage
-            Me.pbMovieLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
-            Me.pbMovieLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
-            Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
-            Me.lblMovieLandscapeSize.Visible = True
+            Me.pbLandscape.Image = Me.tmpDBMovie.ImagesContainer.Landscape.WebImage.Image
+            Me.pbLandscape.Tag = Me.tmpDBMovie.ImagesContainer.Landscape
+            Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
+            Me.lblLandscapeSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMovieLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragEnter
+    Private Sub pbMovieLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbLandscape.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2475,18 +2394,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbMoviePoster.DragDrop
+    Private Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.WebImage.Image IsNot Nothing Then
             Me.tmpDBMovie.ImagesContainer.Poster = tImage
-            Me.pbMoviePoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
-            Me.pbMoviePoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
-            Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
-            Me.lblMoviePosterSize.Visible = True
+            Me.pbPoster.Image = Me.tmpDBMovie.ImagesContainer.Poster.WebImage.Image
+            Me.pbPoster.Tag = Me.tmpDBMovie.ImagesContainer.Poster
+            Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+            Me.lblPosterSize.Visible = True
         End If
     End Sub
 
-    Private Sub pbMoviePoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbMoviePoster.DragEnter
+    Private Sub pbMoviePoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbPoster.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2784,8 +2703,8 @@ Public Class dlgEditMovie
 
             Me.iETTop = 1 ' set first image top position back to 1
             Me.EThumbsList.Clear()
-            While Me.pnlMovieEThumbsBG.Controls.Count > 0
-                Me.pnlMovieEThumbsBG.Controls(0).Dispose()
+            While Me.pnlEThumbsBG.Controls.Count > 0
+                Me.pnlEThumbsBG.Controls(0).Dispose()
             End While
 
             Me.bwEThumbs.WorkerSupportsCancellation = True
@@ -2805,8 +2724,8 @@ Public Class dlgEditMovie
 
             Me.iEFTop = 1 ' set first image top position back to 1
             Me.EFanartsList.Clear()
-            While Me.pnlMovieEFanartsBG.Controls.Count > 0
-                Me.pnlMovieEFanartsBG.Controls(0).Dispose()
+            While Me.pnlEFanartsBG.Controls.Count > 0
+                Me.pnlEFanartsBG.Controls(0).Dispose()
             End While
 
             Me.bwEFanarts.WorkerSupportsCancellation = True
@@ -3065,40 +2984,40 @@ Public Class dlgEditMovie
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.btnMovieEFanartsSetAsFanart.Text = Me.btnMovieEThumbsSetAsFanart.Text
+        Me.btnEFanartsSetAsFanart.Text = Me.btnEThumbsSetAsFanart.Text
         Me.btnMovieEFanartsTransfer.Text = Me.btnMovieEThumbsTransfer.Text
-        Me.btnMovieEThumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
+        Me.btnEThumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
         Me.btnMovieEThumbsTransfer.Text = Master.eLang.GetString(254, "Transfer Now")
-        Me.btnRemoveMovieBanner.Text = Master.eLang.GetString(1024, "Remove Banner")
-        Me.btnRemoveMovieClearArt.Text = Master.eLang.GetString(1087, "Remove ClearArt")
-        Me.btnRemoveMovieClearLogo.Text = Master.eLang.GetString(1091, "Remove ClearLogo")
-        Me.btnRemoveMovieDiscArt.Text = Master.eLang.GetString(1095, "Remove DiscArt")
-        Me.btnRemoveMovieFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
-        Me.btnRemoveMovieLandscape.Text = Master.eLang.GetString(1034, "Remove Landscape")
-        Me.btnRemoveMoviePoster.Text = Master.eLang.GetString(247, "Remove Poster")
-        Me.btnRemoveMovieTrailer.Text = Master.eLang.GetString(1196, "Remove Trailer")
+        Me.btnRemoveBanner.Text = Master.eLang.GetString(1024, "Remove Banner")
+        Me.btnRemoveClearArt.Text = Master.eLang.GetString(1087, "Remove ClearArt")
+        Me.btnRemoveClearLogo.Text = Master.eLang.GetString(1091, "Remove ClearLogo")
+        Me.btnRemoveDiscArt.Text = Master.eLang.GetString(1095, "Remove DiscArt")
+        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnRemoveLandscape.Text = Master.eLang.GetString(1034, "Remove Landscape")
+        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnRemoveTrailer.Text = Master.eLang.GetString(1196, "Remove Trailer")
         Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
-        Me.btnSetMovieBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
-        Me.btnSetMovieBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")
-        Me.btnSetMovieBannerScrape.Text = Master.eLang.GetString(1022, "Change Banner (Scrape)")
-        Me.btnSetMovieClearArtDL.Text = Master.eLang.GetString(1086, "Change ClearArt (Download)")
-        Me.btnSetMovieClearArtLocal.Text = Master.eLang.GetString(1084, "Change ClearArt (Local)")
-        Me.btnSetMovieClearArtScrape.Text = Master.eLang.GetString(1085, "Change ClearArt (Scrape)")
-        Me.btnSetMovieClearLogoDL.Text = Master.eLang.GetString(1090, "Change ClearLogo (Download)")
-        Me.btnSetMovieClearLogoLocal.Text = Master.eLang.GetString(1088, "Change ClearLogo (Local)")
-        Me.btnSetMovieClearLogoScrape.Text = Master.eLang.GetString(1089, "Change ClearLogo (Scrape)")
-        Me.btnSetMovieDiscArtDL.Text = Master.eLang.GetString(1094, "Change DiscArt (Download)")
-        Me.btnSetMovieDiscArtLocal.Text = Master.eLang.GetString(1092, "Change DiscArt (Local)")
-        Me.btnSetMovieDiscArtScrape.Text = Master.eLang.GetString(1093, "Change DiscArt (Scrape)")
-        Me.btnSetMovieFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.btnSetMovieFanartLocal.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.btnSetMovieFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
-        Me.btnSetMovieLandscapeDL.Text = Master.eLang.GetString(1033, "Change Landscape (Download)")
-        Me.btnSetMovieLandscapeLocal.Text = Master.eLang.GetString(1031, "Change Landscape (Local)")
-        Me.btnSetMovieLandscapeScrape.Text = Master.eLang.GetString(1032, "Change Landscape (Scrape)")
-        Me.btnSetMoviePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.btnSetMoviePosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.btnSetMoviePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.btnSetBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
+        Me.btnSetBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")
+        Me.btnSetBannerScrape.Text = Master.eLang.GetString(1022, "Change Banner (Scrape)")
+        Me.btnSetClearArtDL.Text = Master.eLang.GetString(1086, "Change ClearArt (Download)")
+        Me.btnSetClearArtLocal.Text = Master.eLang.GetString(1084, "Change ClearArt (Local)")
+        Me.btnSetClearArtScrape.Text = Master.eLang.GetString(1085, "Change ClearArt (Scrape)")
+        Me.btnSetClearLogoDL.Text = Master.eLang.GetString(1090, "Change ClearLogo (Download)")
+        Me.btnSetClearLogoLocal.Text = Master.eLang.GetString(1088, "Change ClearLogo (Local)")
+        Me.btnSetClearLogoScrape.Text = Master.eLang.GetString(1089, "Change ClearLogo (Scrape)")
+        Me.btnSetDiscArtDL.Text = Master.eLang.GetString(1094, "Change DiscArt (Download)")
+        Me.btnSetDiscArtLocal.Text = Master.eLang.GetString(1092, "Change DiscArt (Local)")
+        Me.btnSetDiscArtScrape.Text = Master.eLang.GetString(1093, "Change DiscArt (Scrape)")
+        Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+        Me.btnSetFanartLocal.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetLandscapeDL.Text = Master.eLang.GetString(1033, "Change Landscape (Download)")
+        Me.btnSetLandscapeLocal.Text = Master.eLang.GetString(1031, "Change Landscape (Local)")
+        Me.btnSetLandscapeScrape.Text = Master.eLang.GetString(1032, "Change Landscape (Scrape)")
+        Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.btnSetPosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
         Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
@@ -3145,7 +3064,7 @@ Public Class dlgEditMovie
         Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
     End Sub
 
-    Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEditMovie.SelectedIndexChanged
+    Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEdit.SelectedIndexChanged
         Me.lvSubtitles.SelectedItems.Clear()
         Me.ThemeStop()
         Me.TrailerStop()
@@ -3172,11 +3091,11 @@ Public Class dlgEditMovie
             If _params(0).ToString = "FanartToSave" Then
                 Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
                 If Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                    Me.pbMovieFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
-                    Me.pbMovieFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
+                    Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.WebImage.Image
+                    Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
-                    Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
-                    Me.lblMovieFanartSize.Visible = True
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
                 End If
             ElseIf _params(0).ToString = "EFanartToSave" Then
                 Dim fPath As String = _params(1).ToString
@@ -3222,14 +3141,14 @@ Public Class dlgEditMovie
         If lvSubtitles.SelectedItems.Count > 0 Then
             If lvSubtitles.SelectedItems.Item(0).Tag.ToString = "Header" Then
                 lvSubtitles.SelectedItems.Clear()
-                btnRemoveMovieSubtitle.Enabled = False
+                btnRemoveSubtitle.Enabled = False
                 txtSubtitlesPreview.Clear()
             Else
-                btnRemoveMovieSubtitle.Enabled = True
+                btnRemoveSubtitle.Enabled = True
                 txtSubtitlesPreview.Text = ReadSubtitle(Me.lvSubtitles.SelectedItems.Item(0).SubItems(1).Text.ToString)
             End If
         Else
-            btnRemoveMovieSubtitle.Enabled = False
+            btnRemoveSubtitle.Enabled = False
             txtSubtitlesPreview.Clear()
         End If
     End Sub

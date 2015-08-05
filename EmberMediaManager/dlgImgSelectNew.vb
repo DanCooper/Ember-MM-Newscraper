@@ -37,48 +37,62 @@ Public Class dlgImgSelectNew
     Public Delegate Sub LoadImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
     Public Delegate Sub Delegate_MeActivate()
 
-    'Private CachePath As String = String.Empty
-    'Private DLType As Enums.ModifierType
-    Private isWorkerDone As Boolean = False
-    'Private ETHashes As New List(Of String)
-    Private iImageCounter As Integer = 0
     Private SelSeason As Integer = -1
-    Private isEdit As Boolean = False
-    'Private isShown As Boolean = False
 
     'ImageList
-    Private iImageList_Counter As Integer = 0
-    Private iImageList_Left As Integer = 5
-    Private iImageList_Top As Integer = 5
-    Private lblImageList_Details() As Label
+    Private iImageList_DistanceLeft As Integer = 3
+    Private iImageList_DistanceTop As Integer = 3
+    Private iImageList_NextLeft As Integer = 3
+    Private iImageList_NextTop As Integer = 3
+    Private iImageList_Location_DiscType As Point = New Point(3, 150)
+    Private iImageList_Location_Image As Point = New Point(3, 15)
+    Private iImageList_Location_Language As Point = New Point(3, 180)
+    Private iImageList_Location_Resolution As Point = New Point(3, 165)
+    Private iImageList_Location_Scraper As Point = New Point(3, 0)
+    Private iImageList_Size_DiscType As Size = New Size(174, 15)
+    Private iImageList_Size_Image As Size = New Size(174, 135)
+    Private iImageList_Size_Language As Size = New Size(174, 15)
+    Private iImageList_Size_Panel As Size = New Size(180, 200)
+    Private iImageList_Size_Resolution As Size = New Size(174, 15)
+    Private iImageList_Size_Scraper As Size = New Size(174, 15)
+
+    Private lblImageList_DiscType() As Label
+    Private lblImageList_Language() As Label
+    Private lblImageList_Resolution() As Label
+    Private lblImageList_Scraper() As Label
     Private pbImageList_Image() As PictureBox
     Private pnlImageList_Panel() As Panel
 
     'SubImage
-    Private iSubImage_Top As Integer = 3
+    Private iSubImage_DistanceLeft As Integer = 3
+    Private iSubImage_DistanceTop As Integer = 3
+    Private iSubImage_NextTop As Integer = 3
+
     Private lblSubImage_Resolution() As Label
     Private lblSubImage_Title() As Label
     Private pbSubImage_Image() As PictureBox
     Private pnlSubImage_Panel() As Panel
 
     'TopImage
-    Private iTopImage_Left As Integer = 3
+    Private iTopImage_DistanceLeft As Integer = 3
+    Private iTopImage_DistanceTop As Integer = 3
+    Private iTopImage_NextLeft As Integer = 3
+    Private iTopImage_Location_Image As Point = New Point(3, 15)
+    Private iTopImage_Location_Resolution As Point = New Point(3, 155)
+    Private iTopImage_Location_Title As Point = New Point(3, 0)
+    Private iTopImage_Size_Image As Size = New Size(174, 135)
+    Private iTopImage_Size_Panel As Size = New Size(180, 175)
+    Private iTopImage_Size_Resolution As Size = New Size(174, 15)
+    Private iTopImage_Size_Title As Size = New Size(174, 15)
+
     Private lblTopImage_Resolution() As Label
     Private lblTopImage_Title() As Label
     Private pbTopImage_Image() As PictureBox
     Private pnlTopImage_Panel() As Panel
 
-    'Private noImages As Boolean = False
-    'Private PreDL As Boolean = False
-    Private selIndex As Integer = -1
-    Private currListImageType As New iTag
+    Private currListImage As New iTag
     Private currSubImage As New iTag
     Private currTopImage As New iTag
-
-    Private tIsMovie As Boolean
-    Private tmpImage As New MediaContainers.Image
-    Private tmpImageEF As New MediaContainers.Image
-    Private tmpImageET As New MediaContainers.Image
 
     Private tDefaultImagesContainer As New MediaContainers.ImagesContainer
     Private tDefaultEpisodeImagesContainer As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
@@ -112,6 +126,9 @@ Public Class dlgImgSelectNew
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
+
+        'Set panel sizes based on "Fields" settings
+        Me.pnlTopImages.Height = iTopImage_DistanceTop + iTopImage_Size_Panel.Height + 20
     End Sub
 
     Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType, Optional ByVal _isEdit As Boolean = False) As DialogResult
@@ -125,8 +142,6 @@ Public Class dlgImgSelectNew
 
     Private Sub dlgImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         AddHandler Me.MouseWheel, AddressOf MouseWheelEvent
-        'AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
-        'AddHandler tvList.MouseWheel, AddressOf MouseWheelEvent
 
         Functions.PNLDoubleBuffer(Me.pnlImageList)
 
@@ -147,7 +162,6 @@ Public Class dlgImgSelectNew
     Private Sub dlgImgSelectNew_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         tmrReorderMainList.Stop()
         tmrReorderMainList.Start()
-        Debug.WriteLine(String.Concat(Me.Size.Width, "x", Me.Size.Height))
     End Sub
 
     Private Sub tmrReorderMainList_Tick(sender As Object, e As EventArgs) Handles tmrReorderMainList.Tick
@@ -506,127 +520,138 @@ Public Class dlgImgSelectNew
 
         ReDim Preserve Me.pnlTopImage_Panel(iIndex)
         ReDim Preserve Me.pbTopImage_Image(iIndex)
-        ReDim Preserve Me.lblTopImage_Title(iIndex)
         ReDim Preserve Me.lblTopImage_Resolution(iIndex)
+        ReDim Preserve Me.lblTopImage_Title(iIndex)
         Me.pnlTopImage_Panel(iIndex) = New Panel()
         Me.pbTopImage_Image(iIndex) = New PictureBox()
-        Me.lblTopImage_Title(iIndex) = New Label()
         Me.lblTopImage_Resolution(iIndex) = New Label()
+        Me.lblTopImage_Title(iIndex) = New Label()
         Me.pbTopImage_Image(iIndex).Name = iIndex.ToString
         Me.pnlTopImage_Panel(iIndex).Name = iIndex.ToString
-        Me.lblTopImage_Title(iIndex).Name = iIndex.ToString
         Me.lblTopImage_Resolution(iIndex).Name = iIndex.ToString
-        Me.pnlTopImage_Panel(iIndex).Size = New Size(150, 150)
-        Me.pbTopImage_Image(iIndex).Size = New Size(142, 102)
-        Me.lblTopImage_Title(iIndex).Size = New Size(142, 20)
-        Me.lblTopImage_Resolution(iIndex).Size = New Size(142, 20)
+        Me.lblTopImage_Title(iIndex).Name = iIndex.ToString
+        Me.pnlTopImage_Panel(iIndex).Size = iTopImage_Size_Panel
+        Me.pbTopImage_Image(iIndex).Size = iTopImage_Size_Image
+        Me.lblTopImage_Resolution(iIndex).Size = iTopImage_Size_Resolution
+        Me.lblTopImage_Title(iIndex).Size = iTopImage_Size_Title
         Me.pnlTopImage_Panel(iIndex).BackColor = Color.White
         Me.pnlTopImage_Panel(iIndex).BorderStyle = BorderStyle.FixedSingle
         Me.pbTopImage_Image(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+        Me.lblTopImage_Resolution(iIndex).AutoSize = False
+        Me.lblTopImage_Resolution(iIndex).BackColor = Color.White
+        Me.lblTopImage_Resolution(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblTopImage_Resolution(iIndex).Text = tTag.strResolution
         Me.lblTopImage_Title(iIndex).AutoSize = False
         Me.lblTopImage_Title(iIndex).BackColor = Color.White
         'Me.lblTopImageType(iIndex).Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTopImage_Title(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblTopImage_Title(iIndex).Text = tTag.strTitle
-        Me.lblTopImage_Resolution(iIndex).AutoSize = False
-        Me.lblTopImage_Resolution(iIndex).BackColor = Color.White
-        Me.lblTopImage_Resolution(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblTopImage_Resolution(iIndex).Text = tTag.strResolution
         Me.pbTopImage_Image(iIndex).Image = If(tImage.WebImage.Image IsNot Nothing, CType(tImage.WebImage.Image.Clone(), Image), _
                                          If(tImage.WebThumb.Image IsNot Nothing, CType(tImage.WebThumb.Image.Clone(), Image), Nothing))
-        Me.pnlTopImage_Panel(iIndex).Left = iTopImage_Left
-        Me.pbTopImage_Image(iIndex).Left = 3
-        Me.lblTopImage_Title(iIndex).Left = 3
-        Me.lblTopImage_Resolution(iIndex).Left = 3
-        Me.pnlTopImage_Panel(iIndex).Top = 3
-        Me.pbTopImage_Image(iIndex).Top = 23
-        Me.lblTopImage_Title(iIndex).Top = 0
-        Me.lblTopImage_Resolution(iIndex).Top = 128
+        Me.pnlTopImage_Panel(iIndex).Left = iTopImage_NextLeft
+        Me.pbTopImage_Image(iIndex).Location = iTopImage_Location_Image
+        Me.lblTopImage_Resolution(iIndex).Location = iTopImage_Location_Resolution
+        Me.lblTopImage_Title(iIndex).Location = iTopImage_Location_Title
+        Me.pnlTopImage_Panel(iIndex).Top = iTopImage_DistanceTop
         Me.pnlTopImage_Panel(iIndex).Tag = tTag
         Me.pbTopImage_Image(iIndex).Tag = tTag
-        Me.lblTopImage_Title(iIndex).Tag = tTag
         Me.lblTopImage_Resolution(iIndex).Tag = tTag
+        Me.lblTopImage_Title(iIndex).Tag = tTag
         Me.pnlTopImages.Controls.Add(Me.pnlTopImage_Panel(iIndex))
         Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.pbTopImage_Image(iIndex))
-        Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.lblTopImage_Title(iIndex))
         Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.lblTopImage_Resolution(iIndex))
+        Me.pnlTopImage_Panel(iIndex).Controls.Add(Me.lblTopImage_Title(iIndex))
         Me.pnlTopImage_Panel(iIndex).BringToFront()
         AddHandler pbTopImage_Image(iIndex).Click, AddressOf pbTopImage_Click
         AddHandler pbTopImage_Image(iIndex).DoubleClick, AddressOf Image_DoubleClick
         AddHandler pnlTopImage_Panel(iIndex).Click, AddressOf pnlTopImage_Click
-        AddHandler lblTopImage_Title(iIndex).Click, AddressOf lblTopImage_Click
         AddHandler lblTopImage_Resolution(iIndex).Click, AddressOf lblTopImage_Click
+        AddHandler lblTopImage_Title(iIndex).Click, AddressOf lblTopImage_Click
 
-        Me.iTopImage_Left += 156
+        Me.iTopImage_NextLeft = Me.iTopImage_NextLeft + Me.iTopImage_Size_Panel.Width + Me.iTopImage_DistanceLeft
     End Sub
 
-    Private Sub AddMainImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
-        Dim sDescription As String = String.Empty
+    Private Sub AddListImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
         Dim tTag As iTag = CreateTag(tImage, ModifierType)
-
-        If tImage IsNot Nothing AndAlso tImage.WebImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-            Dim imgText As String = String.Empty
-            If CDbl(tImage.Width) = 0 OrElse CDbl(tImage.Height) = 0 Then
-                sDescription = String.Format("{0}x{1}", tImage.WebImage.Image.Size.Width, tImage.WebImage.Image.Size.Height & Environment.NewLine & tImage.LongLang)
-            Else
-                sDescription = String.Format("{0}x{1}", tImage.Width, tImage.Height & Environment.NewLine & tImage.LongLang)
-            End If
-        ElseIf tImage IsNot Nothing AndAlso tImage.WebThumb IsNot Nothing AndAlso tImage.WebThumb.Image IsNot Nothing Then
-            Dim imgText As String = String.Empty
-            If CDbl(tImage.Width) = 0 OrElse CDbl(tImage.Height) = 0 Then
-                sDescription = String.Concat("unknown", Environment.NewLine, tImage.LongLang)
-            Else
-                sDescription = String.Format("{0}x{1}", tImage.Width, tImage.Height & Environment.NewLine & tImage.LongLang)
-            End If
-        End If
 
         ReDim Preserve Me.pnlImageList_Panel(iIndex)
         ReDim Preserve Me.pbImageList_Image(iIndex)
-        ReDim Preserve Me.lblImageList_Details(iIndex)
+        ReDim Preserve Me.lblImageList_DiscType(iIndex)
+        ReDim Preserve Me.lblImageList_Language(iIndex)
+        ReDim Preserve Me.lblImageList_Resolution(iIndex)
+        ReDim Preserve Me.lblImageList_Scraper(iIndex)
         Me.pnlImageList_Panel(iIndex) = New Panel()
         Me.pbImageList_Image(iIndex) = New PictureBox()
-        Me.lblImageList_Details(iIndex) = New Label()
+        Me.lblImageList_DiscType(iIndex) = New Label()
+        Me.lblImageList_Language(iIndex) = New Label()
+        Me.lblImageList_Resolution(iIndex) = New Label()
+        Me.lblImageList_Scraper(iIndex) = New Label()
         Me.pbImageList_Image(iIndex).Name = iIndex.ToString
         Me.pnlImageList_Panel(iIndex).Name = iIndex.ToString
-        Me.lblImageList_Details(iIndex).Name = iIndex.ToString
-        Me.pnlImageList_Panel(iIndex).Size = New Size(187, 187)
-        Me.pbImageList_Image(iIndex).Size = New Size(181, 151)
-        Me.lblImageList_Details(iIndex).Size = New Size(181, 30)
+        Me.lblImageList_DiscType(iIndex).Name = iIndex.ToString
+        Me.lblImageList_Language(iIndex).Name = iIndex.ToString
+        Me.lblImageList_Resolution(iIndex).Name = iIndex.ToString
+        Me.lblImageList_Scraper(iIndex).Name = iIndex.ToString
+        Me.pnlImageList_Panel(iIndex).Size = Me.iImageList_Size_Panel
+        Me.pbImageList_Image(iIndex).Size = Me.iImageList_Size_Image
+        Me.lblImageList_DiscType(iIndex).Size = Me.iImageList_Size_DiscType
+        Me.lblImageList_Language(iIndex).Size = Me.iImageList_Size_Language
+        Me.lblImageList_Resolution(iIndex).Size = Me.iImageList_Size_Resolution
+        Me.lblImageList_Scraper(iIndex).Size = Me.iImageList_Size_Scraper
         Me.pnlImageList_Panel(iIndex).BackColor = Color.White
         Me.pnlImageList_Panel(iIndex).BorderStyle = BorderStyle.FixedSingle
         Me.pbImageList_Image(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-        Me.lblImageList_Details(iIndex).AutoSize = False
-        Me.lblImageList_Details(iIndex).BackColor = Color.White
-        Me.lblImageList_Details(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblImageList_Details(iIndex).Text = sDescription
+        Me.lblImageList_DiscType(iIndex).AutoSize = False
+        Me.lblImageList_DiscType(iIndex).BackColor = Color.White
+        Me.lblImageList_DiscType(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblImageList_DiscType(iIndex).Text = tImage.DiscType
+        Me.lblImageList_Language(iIndex).AutoSize = False
+        Me.lblImageList_Language(iIndex).BackColor = Color.White
+        Me.lblImageList_Language(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblImageList_Language(iIndex).Text = tTag.Image.LongLang
+        Me.lblImageList_Resolution(iIndex).AutoSize = False
+        Me.lblImageList_Resolution(iIndex).BackColor = Color.White
+        Me.lblImageList_Resolution(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblImageList_Resolution(iIndex).Text = tTag.strResolution
+        Me.lblImageList_Scraper(iIndex).AutoSize = False
+        Me.lblImageList_Scraper(iIndex).BackColor = Color.White
+        Me.lblImageList_Scraper(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblImageList_Scraper(iIndex).Text = tTag.Image.Scraper
         Me.pbImageList_Image(iIndex).Image = If(tImage.WebImage.Image IsNot Nothing, CType(tImage.WebImage.Image.Clone(), Image), _
                                           If(tImage.WebThumb.Image IsNot Nothing, CType(tImage.WebThumb.Image.Clone(), Image), Nothing))
-        Me.pnlImageList_Panel(iIndex).Left = iImageList_Left
-        Me.pbImageList_Image(iIndex).Left = 3
-        Me.lblImageList_Details(iIndex).Left = 0
-        Me.pnlImageList_Panel(iIndex).Top = iImageList_Top
-        Me.pbImageList_Image(iIndex).Top = 3
-        Me.lblImageList_Details(iIndex).Top = 151
+        Me.pnlImageList_Panel(iIndex).Left = iImageList_NextLeft
+        Me.pnlImageList_Panel(iIndex).Top = iImageList_NextTop
+        Me.pbImageList_Image(iIndex).Location = Me.iImageList_Location_Image
+        Me.lblImageList_DiscType(iIndex).Location = Me.iImageList_Location_DiscType
+        Me.lblImageList_Language(iIndex).Location = Me.iImageList_Location_Language
+        Me.lblImageList_Resolution(iIndex).Location = Me.iImageList_Location_Resolution
+        Me.lblImageList_Scraper(iIndex).Location = Me.iImageList_Location_Scraper
         Me.pnlImageList_Panel(iIndex).Tag = tTag
         Me.pbImageList_Image(iIndex).Tag = tTag
-        Me.lblImageList_Details(iIndex).Tag = tTag
+        Me.lblImageList_DiscType(iIndex).Tag = tTag
+        Me.lblImageList_Language(iIndex).Tag = tTag
+        Me.lblImageList_Resolution(iIndex).Tag = tTag
+        Me.lblImageList_Scraper(iIndex).Tag = tTag
         Me.pnlImageList.Controls.Add(Me.pnlImageList_Panel(iIndex))
         Me.pnlImageList_Panel(iIndex).Controls.Add(Me.pbImageList_Image(iIndex))
-        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_Details(iIndex))
+        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_DiscType(iIndex))
+        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_Language(iIndex))
+        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_Resolution(iIndex))
+        Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_Scraper(iIndex))
         Me.pnlImageList_Panel(iIndex).BringToFront()
         AddHandler pbImageList_Image(iIndex).Click, AddressOf pbMainImage_Click
         AddHandler pbImageList_Image(iIndex).DoubleClick, AddressOf Image_DoubleClick
         AddHandler pnlImageList_Panel(iIndex).Click, AddressOf pnlMainImage_Click
-        AddHandler lblImageList_Details(iIndex).Click, AddressOf lblMainImage_Click
+        AddHandler lblImageList_DiscType(iIndex).Click, AddressOf lblMainImage_Click
+        AddHandler lblImageList_Language(iIndex).Click, AddressOf lblMainImage_Click
+        AddHandler lblImageList_Resolution(iIndex).Click, AddressOf lblMainImage_Click
+        AddHandler lblImageList_Scraper(iIndex).Click, AddressOf lblMainImage_Click
 
-        Me.iImageList_Counter += 1
-
-        If Me.iImageList_Left + 192 + 187 > Me.pnlImageList.Width - 20 Then
-            Me.iImageList_Counter = 0
-            Me.iImageList_Left = 5
-            Me.iImageList_Top += 192
+        If Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft + Me.iImageList_Size_Panel.Width > Me.pnlImageList.Width - 20 Then
+            Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
+            Me.iImageList_NextTop = Me.iImageList_NextTop + Me.iImageList_Size_Panel.Height + Me.iImageList_DistanceTop
         Else
-            Me.iImageList_Left += 192
+            Me.iImageList_NextLeft = Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft
         End If
     End Sub
 
@@ -640,26 +665,22 @@ Public Class dlgImgSelectNew
     End Sub
 
     Private Sub ReorderMainList()
-        Me.iImageList_Counter = 0
-        Me.iImageList_Left = 5
-        Me.iImageList_Top = 5
+        Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
+        Me.iImageList_NextTop = Me.iImageList_DistanceTop
 
         If Me.pnlImageList.Controls.Count > 0 Then
             Me.pnlImageList.SuspendLayout()
             Me.pnlImageList.AutoScrollPosition = New Point With {.X = 0, .Y = 0}
             For iIndex As Integer = 0 To Me.pnlImageList_Panel.Count - 1
                 If Me.pnlImageList_Panel(iIndex) IsNot Nothing Then
-                    Me.pnlImageList_Panel(iIndex).Left = iImageList_Left
-                    Me.pnlImageList_Panel(iIndex).Top = iImageList_Top
+                    Me.pnlImageList_Panel(iIndex).Left = iImageList_NextLeft
+                    Me.pnlImageList_Panel(iIndex).Top = iImageList_NextTop
 
-                    Me.iImageList_Counter += 1
-
-                    If Me.iImageList_Left + 192 + 187 > Me.pnlImageList.Width - 20 Then
-                        Me.iImageList_Counter = 0
-                        Me.iImageList_Left = 5
-                        Me.iImageList_Top += 192
+                    If Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft + Me.iImageList_Size_Panel.Width > Me.pnlImageList.Width - 20 Then
+                        Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
+                        Me.iImageList_NextTop = Me.iImageList_NextTop + Me.iImageList_Size_Panel.Height + Me.iImageList_DistanceTop
                     Else
-                        Me.iImageList_Left += 192
+                        Me.iImageList_NextLeft = Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft
                     End If
                 End If
             Next
@@ -674,7 +695,7 @@ Public Class dlgImgSelectNew
     End Sub
 
     Private Sub pbMainImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectMainImage(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, iTag))
+        Me.DoSelectListImage(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, iTag))
     End Sub
 
     Private Sub Image_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -693,7 +714,7 @@ Public Class dlgImgSelectNew
 
     Private Sub pnlMainImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Panel).Name)
-        Me.DoSelectMainImage(iIndex, DirectCast(DirectCast(sender, Panel).Tag, iTag))
+        Me.DoSelectListImage(iIndex, DirectCast(DirectCast(sender, Panel).Tag, iTag))
     End Sub
 
     Private Sub lblTopImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -703,7 +724,7 @@ Public Class dlgImgSelectNew
 
     Private Sub lblMainImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Label).Name)
-        Me.DoSelectMainImage(iIndex, DirectCast(DirectCast(sender, Label).Tag, iTag))
+        Me.DoSelectListImage(iIndex, DirectCast(DirectCast(sender, Label).Tag, iTag))
     End Sub
 
     Private Sub DoSelectTopImage(ByVal iIndex As Integer, ByVal tTag As iTag)
@@ -727,18 +748,26 @@ Public Class dlgImgSelectNew
         End If
     End Sub
 
-    Private Sub DoSelectMainImage(ByVal iIndex As Integer, ByVal tTag As iTag)
+    Private Sub DoSelectListImage(ByVal iIndex As Integer, ByVal tTag As iTag)
         For i As Integer = 0 To Me.pnlImageList_Panel.Count - 1
             Me.pnlImageList_Panel(i).BackColor = Color.White
-            Me.lblImageList_Details(i).BackColor = Color.White
-            Me.lblImageList_Details(i).ForeColor = Color.Black
+            Me.lblImageList_Resolution(i).BackColor = Color.White
+            Me.lblImageList_Resolution(i).ForeColor = Color.Black
         Next
 
         Me.pnlImageList_Panel(iIndex).BackColor = Color.Gray
-        Me.lblImageList_Details(iIndex).BackColor = Color.Gray
-        Me.lblImageList_Details(iIndex).ForeColor = Color.White
+        Me.lblImageList_Resolution(iIndex).BackColor = Color.Gray
+        Me.lblImageList_Resolution(iIndex).ForeColor = Color.White
 
         SetImage(tTag)
+    End Sub
+
+    Private Sub DeselectAllListImages()
+        For i As Integer = 0 To Me.pnlImageList_Panel.Count - 1
+            Me.pnlImageList_Panel(i).BackColor = Color.White
+            Me.lblImageList_Resolution(i).BackColor = Color.White
+            Me.lblImageList_Resolution(i).ForeColor = Color.Black
+        Next
     End Sub
 
     Private Sub SetImage(ByVal tTag As iTag)
@@ -821,63 +850,62 @@ Public Class dlgImgSelectNew
         If tTag.ImageType = Enums.ModifierType.MainBanner Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainBanner)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainCharacterArt)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainCharacterArt)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainClearArt Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearArts
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainClearArt)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainClearArt)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainClearLogo Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainClearLogo)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainClearLogo)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainDiscArt Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainLandscape)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
                 iCount += 1
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainPoster Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                Me.AddMainImage(tImage, iCount, Enums.ModifierType.MainPoster)
+                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
                 iCount += 1
             Next
         End If
     End Sub
 
     Private Sub ClearImageList()
-        Me.iImageList_Counter = 0
-        Me.iImageList_Left = 5
-        Me.iImageList_Top = 5
+        Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
+        Me.iImageList_NextTop = Me.iImageList_DistanceTop
 
         If Me.pnlImageList.Controls.Count > 0 Then
             For iIndex As Integer = 0 To Me.pnlImageList_Panel.Count - 1
                 If Me.pnlImageList_Panel(iIndex) IsNot Nothing Then
-                    If Me.lblImageList_Details(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.lblImageList_Details(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.lblImageList_Details(iIndex))
+                    If Me.lblImageList_Resolution(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.lblImageList_Resolution(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.lblImageList_Resolution(iIndex))
                     If Me.pbImageList_Image(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.pbImageList_Image(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.pbImageList_Image(iIndex))
                     If Me.pnlImageList.Contains(Me.pnlImageList_Panel(iIndex)) Then Me.pnlImageList.Controls.Remove(Me.pnlImageList_Panel(iIndex))
                 End If
@@ -931,7 +959,65 @@ Public Class dlgImgSelectNew
         Return nTag
     End Function
 
+    Private Sub btnRemoveTopImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTopImage.Click
+        DeselectAllListImages()
+        If Me.SelSeason = -1 Then
+            If Me.currTopImage.ImageType = Enums.ModifierType.MainBanner Then
+                tDBElementResult.ImagesContainer.Banner = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainBanner)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainCharacterArt Then
+                tDBElementResult.ImagesContainer.CharacterArt = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainCharacterArt)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearArt Then
+                tDBElementResult.ImagesContainer.ClearArt = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainClearArt)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearLogo Then
+                tDBElementResult.ImagesContainer.ClearLogo = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainClearLogo)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainDiscArt Then
+                tDBElementResult.ImagesContainer.DiscArt = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainDiscArt)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainFanart Then
+                tDBElementResult.ImagesContainer.Fanart = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainFanart)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainLandscape Then
+                tDBElementResult.ImagesContainer.Fanart = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainLandscape)
+                RefreshTopImage(Me.currTopImage)
+            ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainPoster Then
+                tDBElementResult.ImagesContainer.Poster = New MediaContainers.Image
+                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainPoster)
+                RefreshTopImage(Me.currTopImage)
+            End If
+        Else
+            If Me.currSubImage.ImageType = Enums.ModifierType.SeasonBanner Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Banner = sImg
+
+            ElseIf Me.currSubImage.ImageType = Enums.ModifierType.SeasonFanart Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Fanart = sImg
+
+            ElseIf Me.currSubImage.ImageType = Enums.ModifierType.SeasonLandscape Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Landscape
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Landscape = sImg
+
+            ElseIf Me.currSubImage.ImageType = Enums.ModifierType.SeasonPoster Then
+                Dim sImg As MediaContainers.Image = tDefaultSeasonImagesContainer.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Poster
+                tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster = sImg
+
+            End If
+        End If
+    End Sub
+
     Private Sub btnRestoreTopImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRestoreTopImage.Click
+        DeselectAllListImages()
         If Me.SelSeason = -1 Then
             If Me.currTopImage.ImageType = Enums.ModifierType.MainBanner Then
                 tDBElementResult.ImagesContainer.Banner = tDefaultImagesContainer.Banner

@@ -13893,32 +13893,20 @@ doCancel:
                         Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBMovie, Enums.ModifierType.MainBanner, aContainer.MainBanners, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        tmpDBMovie.ImagesContainer.Banner.WebImage = newImage
-                                        Master.DB.SaveMovieToDB(tmpDBMovie, False)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13927,33 +13915,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainBanner, aContainer.MainBanners, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetBanner(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieSet.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -14095,33 +14073,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
-                            If aContainer.MainClearArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainClearArt, aContainer.MainClearArts, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieClearArt(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
+                            If aContainer.MainBanners.Count > 0 Then
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14130,33 +14098,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
-                            If aContainer.MainClearArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainClearArt, aContainer.MainClearArts, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetClearArt(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
+                            If aContainer.MainBanners.Count > 0 Then
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieSet.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -14214,33 +14172,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainClearLogos.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainClearLogo, aContainer.MainClearLogos, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieClearLogo(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14249,33 +14197,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieset, aContainer, ScrapeModifier) Then
                             If aContainer.MainClearLogos.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainClearLogo, aContainer.MainClearLogos, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetClearLogo(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieset, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieset.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieset, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -14333,33 +14271,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainDiscArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainDiscArt, aContainer.MainDiscArts, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieDiscArt(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14368,33 +14296,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainDiscArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainDiscArt, aContainer.MainDiscArts, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetDiscArt(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieSet.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -14443,33 +14361,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainFanarts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainFanart, aContainer.MainFanarts, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieFanart(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14478,33 +14386,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainFanarts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainFanart, aContainer.MainFanarts, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetFanart(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieSet.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -14616,33 +14514,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainLandscapes.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainLandscape, aContainer.MainLandscapes, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieLandscape(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14651,33 +14539,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainLandscapes.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainLandscape, aContainer.MainLandscapes, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetLandscape(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieSet.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -14766,33 +14644,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
+                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(Master.currMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainPosters.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.ModifierType.MainPoster, aContainer.MainPosters, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMoviePoster(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_Movie(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBMovie.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                    Me.RefreshRow_Movie(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14801,33 +14669,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
+                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images
-
                         Dim ScrapeModifier As New Structures.ScrapeModifier
+
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainPosters.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.ModifierType.MainPoster, aContainer.MainPosters, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.IsEdit = True
-                                        newImage.SaveAsMovieSetPoster(Master.currMovieSet)
-                                        Cursor = Cursors.Default
-                                        Me.RefreshRow_MovieSet(ID)
-                                    End If
+                                Dim dlgImgS As New dlgImgSelectNew()
+                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBMovieSet.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                    Me.RefreshRow_MovieSet(ID)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
+                        Else
+                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
