@@ -3000,25 +3000,23 @@ Public Class Images
 
         'Season Banner
         If DoSeasonBanner Then
-            If DBElement.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
-                DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
+            'For Each sSeason As Database.DBElement In DBElement.Seasons
+            '    If sSeason.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+            '        DefaultSeasonImagesContainer.Banner = DBElement.ImagesContainer.Banner
+            '    Else
+            '        Dim defImg As MediaContainers.Image = Nothing
+            '        If sSeason.TVSeason.Season = 999 Then
+            '            Images.GetPreferredTVASBanner(SearchResultsContainer.MainBanners, defImg)
+            '        Else
+            '            Images.GetPreferredTVASBanner(SearchResultsContainer.MainBanners, defImg)
+            '        End If
 
-                Select Case ContentType
-                    Case Enums.ContentType.Movie
-                        Images.GetPreferredMovieBanner(SearchResultsContainer.MainBanners, defImg)
-                    Case Enums.ContentType.MovieSet
-                        Images.GetPreferredMovieSetBanner(SearchResultsContainer.MainBanners, defImg)
-                    Case Enums.ContentType.TV
-                        Images.GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
-                End Select
-
-                If defImg IsNot Nothing Then
-                    DBElement.ImagesContainer.Banner = defImg
-                    DefaultImagesContainer.Banner = defImg
-                End If
-            End If
+            '        If defImg IsNot Nothing Then
+            '            DBElement.ImagesContainer.Banner = defImg
+            '            DefaultImagesContainer.Banner = defImg
+            '        End If
+            '    End If
+            'Next
         End If
     End Sub
 

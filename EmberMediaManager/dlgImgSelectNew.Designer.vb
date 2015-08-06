@@ -68,7 +68,8 @@ Partial Class dlgImgSelectNew
         '
         Me.btnRemoveSubImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRemoveSubImage.Image = CType(resources.GetObject("btnRemoveSubImage.Image"), System.Drawing.Image)
-        Me.btnRemoveSubImage.Location = New System.Drawing.Point(174, 352)
+        Me.btnRemoveSubImage.Location = New System.Drawing.Point(154, 352)
+        Me.btnRemoveSubImage.Margin = New System.Windows.Forms.Padding(3, 3, 23, 3)
         Me.btnRemoveSubImage.Name = "btnRemoveSubImage"
         Me.btnRemoveSubImage.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveSubImage.TabIndex = 2
@@ -78,7 +79,8 @@ Partial Class dlgImgSelectNew
         '
         Me.btnRestoreSubImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnRestoreSubImage.Image = CType(resources.GetObject("btnRestoreSubImage.Image"), System.Drawing.Image)
-        Me.btnRestoreSubImage.Location = New System.Drawing.Point(3, 352)
+        Me.btnRestoreSubImage.Location = New System.Drawing.Point(6, 352)
+        Me.btnRestoreSubImage.Margin = New System.Windows.Forms.Padding(6, 3, 3, 3)
         Me.btnRestoreSubImage.Name = "btnRestoreSubImage"
         Me.btnRestoreSubImage.Size = New System.Drawing.Size(23, 23)
         Me.btnRestoreSubImage.TabIndex = 1
@@ -107,6 +109,7 @@ Partial Class dlgImgSelectNew
         '
         'pnlImgSelectLeft
         '
+        Me.pnlImgSelectLeft.AutoSize = True
         Me.pnlImgSelectLeft.Controls.Add(Me.tblImgSelectLeft)
         Me.pnlImgSelectLeft.Dock = System.Windows.Forms.DockStyle.Left
         Me.pnlImgSelectLeft.Location = New System.Drawing.Point(0, 203)
@@ -116,6 +119,7 @@ Partial Class dlgImgSelectNew
         '
         'tblImgSelectLeft
         '
+        Me.tblImgSelectLeft.AutoSize = True
         Me.tblImgSelectLeft.ColumnCount = 2
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -146,7 +150,7 @@ Partial Class dlgImgSelectNew
         '
         'pnlSubImages
         '
-        Me.pnlSubImages.AutoSize = True
+        Me.pnlSubImages.AutoScroll = True
         Me.tblImgSelectLeft.SetColumnSpan(Me.pnlSubImages, 2)
         Me.pnlSubImages.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSubImages.Location = New System.Drawing.Point(3, 30)
@@ -377,8 +381,8 @@ Partial Class dlgImgSelectNew
         Me.pnlImgSelect.ResumeLayout(False)
         Me.pnlImgSelect.PerformLayout()
         Me.pnlImgSelectLeft.ResumeLayout(False)
+        Me.pnlImgSelectLeft.PerformLayout()
         Me.tblImgSelectLeft.ResumeLayout(False)
-        Me.tblImgSelectLeft.PerformLayout()
         Me.pnlImgSelectBottom.ResumeLayout(False)
         Me.tblImgSelectBottom.ResumeLayout(False)
         Me.tblImgSelectBottom.PerformLayout()

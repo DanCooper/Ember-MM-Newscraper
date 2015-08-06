@@ -2630,7 +2630,6 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVEpisode
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer
             Dim OldListTitle As String = String.Empty
             Dim NewListTitle As String = String.Empty
 
@@ -2679,14 +2678,15 @@ Public Class frmMain
                 End If
 
                 'get all images
-                If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeEpisode, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
-
+                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                     If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelectTV()
-                            If dImgSelect.ShowDialog(DBScrapeEpisode, aContainer, Args.ScrapeModifier, True) = DialogResult.OK Then
-                                DBScrapeEpisode = dImgSelect.Results
+                        Using dImgSelect As New dlgImgSelectNew()
+                            If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.TVEpisode, True) = DialogResult.OK Then
+                                DBScrapeEpisode = dImgSelect.Result
                             End If
                         End Using
+
 
                     Else 'autoscraping
                         '    If ShowPoster.WebImage.IsAllowedToDownload(DBScrapeEpisode, Enums.ModifierType.ShowPoster) Then

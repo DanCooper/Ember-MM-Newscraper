@@ -248,10 +248,10 @@
     <Compile Include="dlgImgManual.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgImgSelect.Designer.vb">
-      <DependentUpon>dlgImgSelect.vb</DependentUpon>
+    <Compile Include="dlgImgSelectTV.Designer.vb">
+      <DependentUpon>dlgImgSelectTV.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgImgSelect.vb">
+    <Compile Include="dlgImgSelectTV.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgImgView.Designer.vb">
@@ -324,12 +324,6 @@
       <DependentUpon>dlgTrailerSelect.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgTrailerSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgImgSelectTV.Designer.vb">
-      <DependentUpon>dlgImgSelectTV.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgImgSelectTV.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgTVRegExProfiles.Designer.vb">
@@ -428,8 +422,8 @@
     <EmbeddedResource Include="dlgImgManual.resx">
       <DependentUpon>dlgImgManual.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgSelect.resx">
-      <DependentUpon>dlgImgSelect.vb</DependentUpon>
+    <EmbeddedResource Include="dlgImgSelectTV.resx">
+      <DependentUpon>dlgImgSelectTV.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgImgView.resx">
@@ -469,10 +463,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTrailerSelect.resx">
       <DependentUpon>dlgTrailerSelect.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgImgSelectTV.resx">
-      <DependentUpon>dlgImgSelectTV.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVRegExProfiles.resx">

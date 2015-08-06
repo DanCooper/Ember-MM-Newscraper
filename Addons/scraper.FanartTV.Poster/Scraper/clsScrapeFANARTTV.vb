@@ -117,6 +117,7 @@ Namespace FanartTVs
                             .Height = "185", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .URL = image.Url, _
@@ -134,6 +135,7 @@ Namespace FanartTVs
                                 .Height = "562", _
                                 .Likes = CInt(image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
                                 .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = image.Url, _
@@ -148,6 +150,7 @@ Namespace FanartTVs
                                 .Height = "281", _
                                 .Likes = CInt(image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
                                 .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = image.Url, _
@@ -166,6 +169,7 @@ Namespace FanartTVs
                                 .Height = "310", _
                                 .Likes = CInt(image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
                                 .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = image.Url, _
@@ -181,6 +185,7 @@ Namespace FanartTVs
                                 .Height = "155", _
                                 .Likes = CInt(image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
                                 .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = image.Url, _
@@ -200,6 +205,7 @@ Namespace FanartTVs
                             .Height = "1000", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .URL = image.Url, _
@@ -212,7 +218,7 @@ Namespace FanartTVs
                 'Fanart
                 If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
                     For Each image In Results.List.Moviebackground
-                        alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
@@ -223,6 +229,7 @@ Namespace FanartTVs
                             .Height = "562", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .URL = image.Url, _
@@ -239,6 +246,7 @@ Namespace FanartTVs
                             .Height = "1426", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .URL = image.Url, _
@@ -278,6 +286,7 @@ Namespace FanartTVs
                             .Height = "185", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
@@ -295,6 +304,7 @@ Namespace FanartTVs
                             .Height = "185", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .Season = If(image.Season = "all", 999, CInt(image.Season)), _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
@@ -313,6 +323,7 @@ Namespace FanartTVs
                             .Height = "512", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .URL = image.Url, _
@@ -330,6 +341,7 @@ Namespace FanartTVs
                                 .Height = "562", _
                                 .Likes = CInt(image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
                                 .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = image.Url, _
@@ -344,6 +356,7 @@ Namespace FanartTVs
                                 .Height = "281", _
                                 .Likes = CInt(image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
                                 .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = image.Url, _
@@ -362,6 +375,7 @@ Namespace FanartTVs
                                 .Height = "310", _
                                 .Likes = CInt(Image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = Image.Lang, _
                                 .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = Image.Url, _
@@ -376,6 +390,7 @@ Namespace FanartTVs
                                 .Height = "155", _
                                 .Likes = CInt(Image.Likes), _
                                 .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                                .Scraper = "Fanart.tv", _
                                 .ShortLang = Image.Lang, _
                                 .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
                                 .URL = Image.Url, _
@@ -389,7 +404,7 @@ Namespace FanartTVs
                 'Fanart Show / AllSeasons / Season / Episode
                 If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
-                        alContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
@@ -400,6 +415,7 @@ Namespace FanartTVs
                             .Height = "281", _
                             .Likes = CInt(Image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = Image.Lang, _
                             .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
                             .URL = Image.Url, _
@@ -416,6 +432,7 @@ Namespace FanartTVs
                             .Height = "281", _
                             .Likes = CInt(Image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .Season = If(Image.Season = "all", 999, CInt(Image.Season)), _
                             .ShortLang = Image.Lang, _
                             .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
@@ -434,6 +451,7 @@ Namespace FanartTVs
                             .Height = "1426", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
@@ -451,6 +469,7 @@ Namespace FanartTVs
                             .Height = "1426", _
                             .Likes = CInt(image.Likes), _
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
+                            .Scraper = "Fanart.tv", _
                             .Season = If(image.Season = "all", 999, CInt(image.Season)), _
                             .ShortLang = image.Lang, _
                             .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _

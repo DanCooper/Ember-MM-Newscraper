@@ -776,7 +776,7 @@ Public Class dlgImgSelectTV
                 If Master.eSettings.TVSeasonBannerAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1017, "Season Banner"), .Tag = String.Concat("b", cSeason.TVSeason.Season), .ImageIndex = 0, .SelectedImageIndex = 0})
                 If Master.eSettings.TVSeasonFanartAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.TVSeason.Season), .ImageIndex = 4, .SelectedImageIndex = 4})
                 If Master.eSettings.TVSeasonLandscapeAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(1018, "Season Landscape"), .Tag = String.Concat("l", cSeason.TVSeason.Season), .ImageIndex = 5, .SelectedImageIndex = 5})
-                If Master.eSettings.TVSeasonPosterAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Posters"), .Tag = String.Concat("p", cSeason.TVSeason.Season), .ImageIndex = 6, .SelectedImageIndex = 6})
+                If Master.eSettings.TVSeasonPosterAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(685, "Season Poster"), .Tag = String.Concat("p", cSeason.TVSeason.Season), .ImageIndex = 6, .SelectedImageIndex = 6})
                 Me.tvList.Nodes.Add(TnS)
             Next
         ElseIf Me._ScrapeModifier.SeasonBanner Then
