@@ -1071,7 +1071,7 @@ Public Class Database
     Public Function FillTVShowFromDB(ByVal _TVDB As Database.DBElement, Optional _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
         Dim _tmpTVDBShow As New Database.DBElement
 
-        If _TVDBShow.TVShow Is Nothing Then
+        If _TVDBShow Is Nothing OrElse _TVDBShow.TVShow Is Nothing Then
             _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False)
         Else
             _tmpTVDBShow = _TVDBShow

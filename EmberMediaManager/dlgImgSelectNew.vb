@@ -90,6 +90,22 @@ Public Class dlgImgSelectNew
     Private pbTopImage_Image() As PictureBox
     Private pnlTopImage_Panel() As Panel
 
+    'Parameters
+    Private DoEpisodeFanart As Boolean = False
+    Private DoEpisodePoster As Boolean = False
+    Private DoMainBanner As Boolean = False
+    Private DoMainCharacterArt As Boolean = False
+    Private DoMainClearArt As Boolean = False
+    Private DoMainClearLogo As Boolean = False
+    Private DoMainDiscArt As Boolean = False
+    Private DoMainFanart As Boolean = False
+    Private DoMainLandscape As Boolean = False
+    Private DoMainPoster As Boolean = False
+    Private DoSeasonBanner As Boolean = False
+    Private DoSeasonFanart As Boolean = False
+    Private DoSeasonLandscape As Boolean = False
+    Private DoSeasonPoster As Boolean = False
+
     Private currListImage As New iTag
     Private currSubImage As New iTag
     Private currTopImage As New iTag
@@ -136,6 +152,7 @@ Public Class dlgImgSelectNew
         Me.tDBElementResult = DBElement
         Me.tScrapeModifier = ScrapeModifier
         Me.tContentType = ContentType
+        SetParameters()
 
         Return MyBase.ShowDialog()
     End Function
@@ -176,7 +193,7 @@ Public Class dlgImgSelectNew
 
     Private Sub bwImgDefaults_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwImgDefaults.RunWorkerCompleted
         If Not e.Cancelled Then
-            Me.GenerateList()
+            Me.GenerateTopImages()
 
             Me.lblStatus.Text = Master.eLang.GetString(954, "(Down)Loading New Images...")
             Me.pbStatus.Style = ProgressBarStyle.Continuous
@@ -197,7 +214,7 @@ Public Class dlgImgSelectNew
             Me.pbStatus.Value = 0
             Me.pbStatus.Maximum = e.ProgressPercentage
         ElseIf DirectCast(e.UserState, Enums.ModifierType) = Me.currTopImage.ImageType Then
-            'todo: add reload
+            CreateImageList(Me.currTopImage)
         End If
     End Sub
 
@@ -214,42 +231,42 @@ Public Class dlgImgSelectNew
     Private Function DownloadDefaultImages() As Boolean
 
         'Banner
-        If Me.tScrapeModifier.MainBanner AndAlso Me.tDBElementResult.ImagesContainer.Banner.WebImage.Image Is Nothing Then
+        If DoMainBanner AndAlso Me.tDBElementResult.ImagesContainer.Banner.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.Banner, False)
         End If
 
         'CharacterArt
-        If Me.tScrapeModifier.MainCharacterArt AndAlso Me.tDBElementResult.ImagesContainer.CharacterArt.WebImage.Image Is Nothing Then
+        If DoMainCharacterArt AndAlso Me.tDBElementResult.ImagesContainer.CharacterArt.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.CharacterArt, False)
         End If
 
         'ClearArt
-        If Me.tScrapeModifier.MainClearArt AndAlso Me.tDBElementResult.ImagesContainer.ClearArt.WebImage.Image Is Nothing Then
+        If DoMainClearArt AndAlso Me.tDBElementResult.ImagesContainer.ClearArt.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.ClearArt, False)
         End If
 
         'ClearLogo
-        If Me.tScrapeModifier.MainClearLogo AndAlso Me.tDBElementResult.ImagesContainer.ClearLogo.WebImage.Image Is Nothing Then
+        If DoMainClearLogo AndAlso Me.tDBElementResult.ImagesContainer.ClearLogo.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.ClearLogo, False)
         End If
 
         'DiscArt
-        If Me.tScrapeModifier.MainDiscArt AndAlso Me.tDBElementResult.ImagesContainer.DiscArt.WebImage.Image Is Nothing Then
+        If DoMainDiscArt AndAlso Me.tDBElementResult.ImagesContainer.DiscArt.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.DiscArt, False)
         End If
 
         'Fanart
-        If Me.tScrapeModifier.MainFanart AndAlso Me.tDBElementResult.ImagesContainer.Fanart.WebImage.Image Is Nothing Then
+        If DoMainFanart AndAlso Me.tDBElementResult.ImagesContainer.Fanart.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.Fanart, False)
         End If
 
         'Landscape
-        If Me.tScrapeModifier.MainLandscape AndAlso Me.tDBElementResult.ImagesContainer.Landscape.WebImage.Image Is Nothing Then
+        If DoMainLandscape AndAlso Me.tDBElementResult.ImagesContainer.Landscape.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.Landscape, False)
         End If
 
         'Poster
-        If Me.tScrapeModifier.MainPoster AndAlso Me.tDBElementResult.ImagesContainer.Poster.WebImage.Image Is Nothing Then
+        If DoMainPoster AndAlso Me.tDBElementResult.ImagesContainer.Poster.WebImage.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.Poster, False)
         End If
     End Function
@@ -264,7 +281,7 @@ Public Class dlgImgSelectNew
                                        tSearchResultsContainer.MainLandscapes.Count + tSearchResultsContainer.MainPosters.Count, "max")
 
         'Episode Fanarts
-        If Me.tScrapeModifier.EpisodeFanart Then
+        If DoEpisodeFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -277,7 +294,7 @@ Public Class dlgImgSelectNew
         End If
 
         'Episode Posters
-        If Me.tScrapeModifier.EpisodePoster Then
+        If DoEpisodePoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -289,73 +306,8 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodePoster)
         End If
 
-        'Season Poster / AllSeasons Poster
-        If Me.tScrapeModifier.SeasonPoster OrElse Me.tScrapeModifier.AllSeasonsPoster Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonPoster)
-        End If
-
-        'Season Banner / AllSeasons Banner
-        If Me.tScrapeModifier.SeasonBanner OrElse Me.tScrapeModifier.AllSeasonsBanner Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonBanner)
-        End If
-
-        'Season Fanart  /AllSeasons Fanart
-        If Me.tScrapeModifier.SeasonFanart OrElse Me.tScrapeModifier.AllSeasonsFanart Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
-        End If
-
-        'Season Landscape  /AllSeasons Landscape
-        If Me.tScrapeModifier.SeasonLandscape OrElse Me.tScrapeModifier.AllSeasonsLandscape Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonLandscape)
-        End If
-
-        'Show Poster / AllSeasons Poster
-        If Me.tScrapeModifier.MainPoster OrElse Me.tScrapeModifier.AllSeasonsPoster Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
-        End If
-
-        'Show Banner / AllSeasons Banner
-        If Me.tScrapeModifier.MainBanner OrElse Me.tScrapeModifier.AllSeasonsBanner Then
+        'Main Banners
+        If DoMainBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainBanners
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -367,8 +319,8 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainBanner)
         End If
 
-        'Show CharacterArt
-        If Me.tScrapeModifier.MainCharacterArt Then
+        'Main CharacterArts
+        If DoMainCharacterArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -380,8 +332,8 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainCharacterArt)
         End If
 
-        'Show ClearArt
-        If Me.tScrapeModifier.MainClearArt Then
+        'Main ClearArts
+        If DoMainClearArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearArts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -393,8 +345,8 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearArt)
         End If
 
-        'Show ClearLogo
-        If Me.tScrapeModifier.MainClearLogo Then
+        'Main ClearLogos
+        If DoMainClearLogo Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -406,8 +358,8 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearLogo)
         End If
 
-        'Main Discart
-        If Me.tScrapeModifier.MainDiscArt Then
+        'Main Discarts
+        If DoMainDiscArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -419,8 +371,21 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainDiscArt)
         End If
 
-        'Show Landscape / AllSeasons Landscape
-        If Me.tScrapeModifier.MainLandscape OrElse Me.tScrapeModifier.AllSeasonsLandscape Then
+        'Main Fanarts
+        If DoMainFanart Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainFanart)
+        End If
+
+        'Main Landscapes
+        If DoMainLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -432,9 +397,9 @@ Public Class dlgImgSelectNew
             Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainLandscape)
         End If
 
-        'Show Fanart / AllSeasons Fanart / Season Fanart / Episode Fanart
-        If Me.tScrapeModifier.MainFanart OrElse Me.tScrapeModifier.AllSeasonsFanart OrElse Me.tScrapeModifier.SeasonFanart OrElse Me.tScrapeModifier.EpisodeFanart Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+        'Main Posters
+        If DoMainPoster Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
@@ -442,7 +407,59 @@ Public Class dlgImgSelectNew
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainFanart)
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
+        End If
+
+        'Season Banners
+        If DoSeasonBanner Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonBanner)
+        End If
+
+        'Season Fanarts
+        If DoSeasonFanart Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
+        End If
+
+        'Season Landscapes
+        If DoSeasonLandscape Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonLandscape)
+        End If
+
+        'Season Posters
+        If DoSeasonPoster Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonPoster)
         End If
 
         Return False
@@ -477,33 +494,37 @@ Public Class dlgImgSelectNew
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Private Sub GenerateList()
+    Private Sub GenerateTopImages()
         Dim iCount As Integer = 0
-        If tScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled Then
+        If DoMainPoster Then
             AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.MainPoster)
             iCount += 1
         End If
-        If tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled Then
+        If DoMainFanart Then
             AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.MainFanart)
             iCount += 1
         End If
-        If tScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled Then
+        If DoMainBanner Then
             AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.MainBanner)
             iCount += 1
         End If
-        If tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled Then
+        If DoMainCharacterArt Then
+            AddTopImage(tDBElementResult.ImagesContainer.CharacterArt, iCount, Enums.ModifierType.MainCharacterArt)
+            iCount += 1
+        End If
+        If DoMainClearArt Then
             AddTopImage(tDBElementResult.ImagesContainer.ClearArt, iCount, Enums.ModifierType.MainClearArt)
             iCount += 1
         End If
-        If tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled Then
+        If DoMainClearLogo Then
             AddTopImage(tDBElementResult.ImagesContainer.ClearLogo, iCount, Enums.ModifierType.MainClearLogo)
             iCount += 1
         End If
-        If tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled Then
+        If DoMainDiscArt Then
             AddTopImage(tDBElementResult.ImagesContainer.DiscArt, iCount, Enums.ModifierType.MainDiscArt)
             iCount += 1
         End If
-        If tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled Then
+        If DoMainLandscape Then
             AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.MainLandscape)
             iCount += 1
         End If
@@ -516,7 +537,7 @@ Public Class dlgImgSelectNew
     End Sub
 
     Private Sub AddTopImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
-        Dim tTag As iTag = CreateTag(tImage, ModifierType)
+        Dim tTag As iTag = CreateImageTag(tImage, ModifierType)
 
         ReDim Preserve Me.pnlTopImage_Panel(iIndex)
         ReDim Preserve Me.pbTopImage_Image(iIndex)
@@ -572,7 +593,7 @@ Public Class dlgImgSelectNew
     End Sub
 
     Private Sub AddListImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
-        Dim tTag As iTag = CreateTag(tImage, ModifierType)
+        Dim tTag As iTag = CreateImageTag(tImage, ModifierType)
 
         ReDim Preserve Me.pnlImageList_Panel(iIndex)
         ReDim Preserve Me.pbImageList_Image(iIndex)
@@ -751,13 +772,25 @@ Public Class dlgImgSelectNew
     Private Sub DoSelectListImage(ByVal iIndex As Integer, ByVal tTag As iTag)
         For i As Integer = 0 To Me.pnlImageList_Panel.Count - 1
             Me.pnlImageList_Panel(i).BackColor = Color.White
+            Me.lblImageList_DiscType(i).BackColor = Color.White
+            Me.lblImageList_DiscType(i).ForeColor = Color.Black
+            Me.lblImageList_Language(i).BackColor = Color.White
+            Me.lblImageList_Language(i).ForeColor = Color.Black
             Me.lblImageList_Resolution(i).BackColor = Color.White
             Me.lblImageList_Resolution(i).ForeColor = Color.Black
+            Me.lblImageList_Scraper(i).BackColor = Color.White
+            Me.lblImageList_Scraper(i).ForeColor = Color.Black
         Next
 
         Me.pnlImageList_Panel(iIndex).BackColor = Color.Gray
+        Me.lblImageList_DiscType(iIndex).BackColor = Color.Gray
+        Me.lblImageList_DiscType(iIndex).ForeColor = Color.White
+        Me.lblImageList_Language(iIndex).BackColor = Color.Gray
+        Me.lblImageList_Language(iIndex).ForeColor = Color.White
         Me.lblImageList_Resolution(iIndex).BackColor = Color.Gray
         Me.lblImageList_Resolution(iIndex).ForeColor = Color.White
+        Me.lblImageList_Scraper(iIndex).BackColor = Color.Gray
+        Me.lblImageList_Scraper(iIndex).ForeColor = Color.White
 
         SetImage(tTag)
     End Sub
@@ -765,8 +798,14 @@ Public Class dlgImgSelectNew
     Private Sub DeselectAllListImages()
         For i As Integer = 0 To Me.pnlImageList_Panel.Count - 1
             Me.pnlImageList_Panel(i).BackColor = Color.White
+            Me.lblImageList_DiscType(i).BackColor = Color.White
+            Me.lblImageList_DiscType(i).ForeColor = Color.Black
+            Me.lblImageList_Language(i).BackColor = Color.White
+            Me.lblImageList_Language(i).ForeColor = Color.Black
             Me.lblImageList_Resolution(i).BackColor = Color.White
             Me.lblImageList_Resolution(i).ForeColor = Color.Black
+            Me.lblImageList_Scraper(i).BackColor = Color.White
+            Me.lblImageList_Scraper(i).ForeColor = Color.Black
         Next
     End Sub
 
@@ -799,6 +838,41 @@ Public Class dlgImgSelectNew
                 tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = Me.SelSeason).ImagesContainer.Poster = tTag.Image
             End If
         End If
+    End Sub
+
+    Private Sub SetParameters()
+        Select Case Me.tContentType
+            Case Enums.ContentType.Movie
+                Me.DoMainBanner = Me.tScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
+                Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
+                Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
+                Me.DoMainDiscArt = Me.tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
+                Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
+                Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
+                Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
+            Case Enums.ContentType.MovieSet
+                Me.DoMainBanner = Me.tScrapeModifier.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
+                Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
+                Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
+                Me.DoMainDiscArt = Me.tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
+                Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
+                Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
+                Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
+            Case Enums.ContentType.TV
+                Me.DoEpisodeFanart = Me.tScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                Me.DoEpisodePoster = Me.tScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
+                Me.DoMainBanner = Me.tScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
+                Me.DoMainCharacterArt = Me.tScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
+                Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
+                Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
+                Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
+                Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+                Me.DoSeasonBanner = Me.tScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                Me.DoSeasonFanart = Me.tScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                Me.DoSeasonLandscape = Me.tScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                Me.DoSeasonPoster = Me.tScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+        End Select
     End Sub
 
     Private Sub RefreshTopImage(ByVal tTag As iTag)
@@ -913,7 +987,7 @@ Public Class dlgImgSelectNew
         End If
     End Sub
 
-    Private Function CreateTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType) As iTag
+    Private Function CreateImageTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType) As iTag
         Dim nTag As New iTag
 
         nTag.Image = tImage
@@ -964,35 +1038,35 @@ Public Class dlgImgSelectNew
         If Me.SelSeason = -1 Then
             If Me.currTopImage.ImageType = Enums.ModifierType.MainBanner Then
                 tDBElementResult.ImagesContainer.Banner = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainBanner)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainBanner)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainCharacterArt Then
                 tDBElementResult.ImagesContainer.CharacterArt = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainCharacterArt)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainCharacterArt)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearArt Then
                 tDBElementResult.ImagesContainer.ClearArt = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainClearArt)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainClearArt)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearLogo Then
                 tDBElementResult.ImagesContainer.ClearLogo = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainClearLogo)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainClearLogo)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainDiscArt Then
                 tDBElementResult.ImagesContainer.DiscArt = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainDiscArt)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainDiscArt)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainFanart Then
                 tDBElementResult.ImagesContainer.Fanart = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainFanart)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainFanart)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainLandscape Then
                 tDBElementResult.ImagesContainer.Fanart = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainLandscape)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainLandscape)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainPoster Then
                 tDBElementResult.ImagesContainer.Poster = New MediaContainers.Image
-                Me.currTopImage = CreateTag(New MediaContainers.Image, Enums.ModifierType.MainPoster)
+                Me.currTopImage = CreateImageTag(New MediaContainers.Image, Enums.ModifierType.MainPoster)
                 RefreshTopImage(Me.currTopImage)
             End If
         Else
@@ -1021,35 +1095,35 @@ Public Class dlgImgSelectNew
         If Me.SelSeason = -1 Then
             If Me.currTopImage.ImageType = Enums.ModifierType.MainBanner Then
                 tDBElementResult.ImagesContainer.Banner = tDefaultImagesContainer.Banner
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.Banner, Enums.ModifierType.MainBanner)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.Banner, Enums.ModifierType.MainBanner)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainCharacterArt Then
                 tDBElementResult.ImagesContainer.CharacterArt = tDefaultImagesContainer.CharacterArt
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.CharacterArt, Enums.ModifierType.MainCharacterArt)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.CharacterArt, Enums.ModifierType.MainCharacterArt)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearArt Then
                 tDBElementResult.ImagesContainer.ClearArt = tDefaultImagesContainer.ClearArt
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.ClearArt, Enums.ModifierType.MainClearArt)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.ClearArt, Enums.ModifierType.MainClearArt)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainClearLogo Then
                 tDBElementResult.ImagesContainer.ClearLogo = tDefaultImagesContainer.ClearLogo
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.ClearLogo, Enums.ModifierType.MainClearLogo)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.ClearLogo, Enums.ModifierType.MainClearLogo)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainDiscArt Then
                 tDBElementResult.ImagesContainer.DiscArt = tDefaultImagesContainer.DiscArt
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.DiscArt, Enums.ModifierType.MainDiscArt)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.DiscArt, Enums.ModifierType.MainDiscArt)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainFanart Then
                 tDBElementResult.ImagesContainer.Fanart = tDefaultImagesContainer.Fanart
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.Fanart, Enums.ModifierType.MainFanart)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.Fanart, Enums.ModifierType.MainFanart)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainLandscape Then
                 tDBElementResult.ImagesContainer.Fanart = tDefaultImagesContainer.Landscape
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.Landscape, Enums.ModifierType.MainLandscape)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.Landscape, Enums.ModifierType.MainLandscape)
                 RefreshTopImage(Me.currTopImage)
             ElseIf Me.currTopImage.ImageType = Enums.ModifierType.MainPoster Then
                 tDBElementResult.ImagesContainer.Poster = tDefaultImagesContainer.Poster
-                Me.currTopImage = CreateTag(tDefaultImagesContainer.Poster, Enums.ModifierType.MainPoster)
+                Me.currTopImage = CreateImageTag(tDefaultImagesContainer.Poster, Enums.ModifierType.MainPoster)
                 RefreshTopImage(Me.currTopImage)
             End If
         Else

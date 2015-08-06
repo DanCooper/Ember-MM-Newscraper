@@ -2488,7 +2488,6 @@ Public Class frmMain
         AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVShow
 
         For Each dRow As DataRow In ScrapeList
-            Dim aContainer As New MediaContainers.SearchResultsContainer
             Dim ShowTheme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
             Dim tUrlList As New List(Of Themes)
@@ -2535,12 +2534,12 @@ Public Class frmMain
                 End If
 
                 'get all images
-                If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, aContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
-
+                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                     If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelectTV()
-                            If dImgSelect.ShowDialog(DBScrapeShow, aContainer, Args.ScrapeModifier, True) = DialogResult.OK Then
-                                DBScrapeShow = dImgSelect.Results
+                        Using dImgSelect As New dlgImgSelectNew()
+                            If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.TV, True) = DialogResult.OK Then
+                                DBScrapeShow = dImgSelect.Result
                             End If
                         End Using
 

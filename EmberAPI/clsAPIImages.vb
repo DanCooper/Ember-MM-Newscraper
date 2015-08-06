@@ -2784,6 +2784,10 @@ Public Class Images
         Dim DoMainFanart As Boolean = False
         Dim DoMainLandscape As Boolean = False
         Dim DoMainPoster As Boolean = False
+        Dim DoSeasonBanner As Boolean = False
+        Dim DoSeasonFanart As Boolean = False
+        Dim DoSeasonLandscape As Boolean = False
+        Dim DoSeasonPoster As Boolean = False
 
         Select Case ContentType
             Case Enums.ContentType.Movie
@@ -2810,6 +2814,10 @@ Public Class Images
                 DoMainFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
                 DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+                DoSeasonBanner = ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                DoSeasonFanart = ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                DoSeasonLandscape = ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                DoSeasonPoster = ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
         End Select
 
         'Main Banner
@@ -2986,6 +2994,29 @@ Public Class Images
                 If defImg IsNot Nothing Then
                     DBElement.ImagesContainer.Poster = defImg
                     DefaultImagesContainer.Poster = defImg
+                End If
+            End If
+        End If
+
+        'Season Banner
+        If DoSeasonBanner Then
+            If DBElement.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+                DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
+            Else
+                Dim defImg As MediaContainers.Image = Nothing
+
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        Images.GetPreferredMovieBanner(SearchResultsContainer.MainBanners, defImg)
+                    Case Enums.ContentType.MovieSet
+                        Images.GetPreferredMovieSetBanner(SearchResultsContainer.MainBanners, defImg)
+                    Case Enums.ContentType.TV
+                        Images.GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
+                End Select
+
+                If defImg IsNot Nothing Then
+                    DBElement.ImagesContainer.Banner = defImg
+                    DefaultImagesContainer.Banner = defImg
                 End If
             End If
         End If
