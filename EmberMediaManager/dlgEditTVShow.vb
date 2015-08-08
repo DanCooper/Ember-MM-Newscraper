@@ -237,9 +237,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainBanner, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Banner, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Banner = tImage
-            Me.pbBanner.Image = tImage.WebImage.Image
+            Me.pbBanner.Image = tImage.ImageOriginal.Image
             Me.pbBanner.Tag = tImage
 
             Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
@@ -257,10 +257,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.Banner = tImage
-                    Me.pbBanner.Image = tImage.WebImage.Image
+                    Me.pbBanner.Image = tImage.ImageOriginal.Image
                     Me.pbBanner.Tag = tImage
 
                     Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
@@ -277,9 +277,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.Banner = tImage
-                        Me.pbBanner.Image = tImage.WebImage.Image
+                        Me.pbBanner.Image = tImage.ImageOriginal.Image
                         Me.pbBanner.Tag = tImage
 
                         Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
@@ -295,9 +295,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetCharacterArtScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainCharacterArt, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.CharacterArt, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.CharacterArt = tImage
-            Me.pbCharacterArt.Image = tImage.WebImage.Image
+            Me.pbCharacterArt.Image = tImage.ImageOriginal.Image
             Me.pbCharacterArt.Tag = tImage
 
             Me.lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbCharacterArt.Image.Width, Me.pbCharacterArt.Image.Height)
@@ -315,10 +315,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.CharacterArt = tImage
-                    Me.pbCharacterArt.Image = tImage.WebImage.Image
+                    Me.pbCharacterArt.Image = tImage.ImageOriginal.Image
                     Me.pbCharacterArt.Tag = tImage
 
                     Me.lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbCharacterArt.Image.Width, Me.pbCharacterArt.Image.Height)
@@ -335,9 +335,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.CharacterArt = tImage
-                        Me.pbCharacterArt.Image = tImage.WebImage.Image
+                        Me.pbCharacterArt.Image = tImage.ImageOriginal.Image
                         Me.pbCharacterArt.Tag = tImage
 
                         Me.lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbCharacterArt.Image.Width, Me.pbCharacterArt.Image.Height)
@@ -355,9 +355,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.Fanart = tImage
-                        Me.pbFanart.Image = tImage.WebImage.Image
+                        Me.pbFanart.Image = tImage.ImageOriginal.Image
                         Me.pbFanart.Tag = tImage
 
                         Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
@@ -373,9 +373,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainClearArt, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.ClearArt, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.ClearArt = tImage
-            Me.pbClearArt.Image = tImage.WebImage.Image
+            Me.pbClearArt.Image = tImage.ImageOriginal.Image
             Me.pbClearArt.Tag = tImage
 
             Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
@@ -393,10 +393,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.ClearArt = tImage
-                    Me.pbClearArt.Image = tImage.WebImage.Image
+                    Me.pbClearArt.Image = tImage.ImageOriginal.Image
                     Me.pbClearArt.Tag = tImage
 
                     Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
@@ -413,9 +413,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.ClearArt = tImage
-                        Me.pbClearArt.Image = tImage.WebImage.Image
+                        Me.pbClearArt.Image = tImage.ImageOriginal.Image
                         Me.pbClearArt.Tag = tImage
 
                         Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
@@ -431,9 +431,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainClearLogo, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.ClearLogo, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.ClearLogo = tImage
-            Me.pbClearLogo.Image = tImage.WebImage.Image
+            Me.pbClearLogo.Image = tImage.ImageOriginal.Image
             Me.pbClearLogo.Tag = tImage
 
             Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
@@ -451,10 +451,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.ClearLogo = tImage
-                    Me.pbClearLogo.Image = tImage.WebImage.Image
+                    Me.pbClearLogo.Image = tImage.ImageOriginal.Image
                     Me.pbClearLogo.Tag = tImage
 
                     Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
@@ -471,9 +471,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.ClearLogo = tImage
-                        Me.pbClearLogo.Image = tImage.WebImage.Image
+                        Me.pbClearLogo.Image = tImage.ImageOriginal.Image
                         Me.pbClearLogo.Tag = tImage
 
                         Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
@@ -489,9 +489,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainFanart, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Fanart, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Fanart = tImage
-            Me.pbFanart.Image = tImage.WebImage.Image
+            Me.pbFanart.Image = tImage.ImageOriginal.Image
             Me.pbFanart.Tag = tImage
 
             Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
@@ -509,10 +509,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.Fanart = tImage
-                    Me.pbFanart.Image = tImage.WebImage.Image
+                    Me.pbFanart.Image = tImage.ImageOriginal.Image
                     Me.pbFanart.Tag = tImage
 
                     Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
@@ -527,9 +527,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainLandscape, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Landscape, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Landscape = tImage
-            Me.pbLandscape.Image = tImage.WebImage.Image
+            Me.pbLandscape.Image = tImage.ImageOriginal.Image
             Me.pbLandscape.Tag = tImage
 
             Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
@@ -547,10 +547,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.Landscape = tImage
-                    Me.pbLandscape.Image = tImage.WebImage.Image
+                    Me.pbLandscape.Image = tImage.ImageOriginal.Image
                     Me.pbLandscape.Tag = tImage
 
                     Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
@@ -567,9 +567,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.Landscape = tImage
-                        Me.pbLandscape.Image = tImage.WebImage.Image
+                        Me.pbLandscape.Image = tImage.ImageOriginal.Image
                         Me.pbLandscape.Tag = tImage
 
                         Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
@@ -587,9 +587,9 @@ Public Class dlgEditTVShow
             Using dImgManual As New dlgImgManual
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     Dim tImage As MediaContainers.Image = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVShow.ImagesContainer.Poster = tImage
-                        Me.pbPoster.Image = tImage.WebImage.Image
+                        Me.pbPoster.Image = tImage.ImageOriginal.Image
                         Me.pbPoster.Tag = tImage
 
                         Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -605,9 +605,9 @@ Public Class dlgEditTVShow
     Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
         Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVShow.TVShow.Title, Convert.ToInt32(Me.tmpDBTVShow.ShowID), Me.tmpDBTVShow.TVShow.TVDB, Enums.ModifierType.MainPoster, 0, 0, Me.tmpDBTVShow.Language, Me.tmpDBTVShow.Ordering, CType(Me.tmpDBTVShow.ImagesContainer.Poster, MediaContainers.Image))
 
-        If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
+        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Poster = tImage
-            Me.pbPoster.Image = tImage.WebImage.Image
+            Me.pbPoster.Image = tImage.ImageOriginal.Image
             Me.pbPoster.Tag = tImage
 
             Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -625,10 +625,10 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.WebImage.FromFile(ofdImage.FileName)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(ofdImage.FileName)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Me.tmpDBTVShow.ImagesContainer.Poster = tImage
-                    Me.pbPoster.Image = tImage.WebImage.Image
+                    Me.pbPoster.Image = tImage.ImageOriginal.Image
                     Me.pbPoster.Tag = tImage
 
                     Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -653,12 +653,12 @@ Public Class dlgEditTVShow
 
     Private Sub btnEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsSetAsFanart.Click
         If Not String.IsNullOrEmpty(Me.EFanartsList.Item(Me.EFanartsIndex).Path) AndAlso Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(0, 1) = ":" Then
-            Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
+            Me.tmpDBTVShow.ImagesContainer.Fanart.ImageOriginal.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
         Else
-            Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
+            Me.tmpDBTVShow.ImagesContainer.Fanart.ImageOriginal.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
         End If
-        If Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-            Me.pbFanart.Image = Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.Image
+        If Me.tmpDBTVShow.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+            Me.pbFanart.Image = Me.tmpDBTVShow.ImagesContainer.Fanart.ImageOriginal.Image
             Me.pbFanart.Tag = Me.tmpDBTVShow.ImagesContainer.Fanart
 
             Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
@@ -1033,7 +1033,7 @@ Public Class dlgEditTVShow
 
     Private Sub DoSelectEF(ByVal iIndex As Integer, tPoster As MediaContainers.Image)
         Try
-            Me.pbEFanarts.Image = tPoster.WebImage.Image
+            Me.pbEFanarts.Image = tPoster.ImageOriginal.Image
             Me.pbEFanarts.Tag = tPoster
             Me.btnEFanartsSetAsFanart.Enabled = True
             Me.EFanartsIndex = iIndex
@@ -1134,8 +1134,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainBanner) Then
                     .btnSetBannerScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
-                    .pbBanner.Image = Me.tmpDBTVShow.ImagesContainer.Banner.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
+                    .pbBanner.Image = Me.tmpDBTVShow.ImagesContainer.Banner.ImageOriginal.Image
                     .pbBanner.Tag = Me.tmpDBTVShow.ImagesContainer.Banner
 
                     .lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbBanner.Image.Width, .pbBanner.Image.Height)
@@ -1149,8 +1149,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainCharacterArt) Then
                     .btnSetCharacterArtScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
-                    .pbCharacterArt.Image = Me.tmpDBTVShow.ImagesContainer.CharacterArt.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing Then
+                    .pbCharacterArt.Image = Me.tmpDBTVShow.ImagesContainer.CharacterArt.ImageOriginal.Image
                     .pbCharacterArt.Tag = Me.tmpDBTVShow.ImagesContainer.CharacterArt
 
                     .lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbCharacterArt.Image.Width, .pbCharacterArt.Image.Height)
@@ -1164,8 +1164,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearArt) Then
                     .btnSetClearArtScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
-                    .pbClearArt.Image = Me.tmpDBTVShow.ImagesContainer.ClearArt.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing Then
+                    .pbClearArt.Image = Me.tmpDBTVShow.ImagesContainer.ClearArt.ImageOriginal.Image
                     .pbClearArt.Tag = Me.tmpDBTVShow.ImagesContainer.ClearArt
 
                     .lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbClearArt.Image.Width, .pbClearArt.Image.Height)
@@ -1179,8 +1179,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearLogo) Then
                     .btnSetClearLogoScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
-                    .pbClearLogo.Image = Me.tmpDBTVShow.ImagesContainer.ClearLogo.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing Then
+                    .pbClearLogo.Image = Me.tmpDBTVShow.ImagesContainer.ClearLogo.ImageOriginal.Image
                     .pbClearLogo.Tag = Me.tmpDBTVShow.ImagesContainer.ClearLogo
 
                     .lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbClearLogo.Image.Width, .pbClearLogo.Image.Height)
@@ -1194,8 +1194,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainFanart) Then
                     .btnSetFanartScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                    .pbFanart.Image = Me.tmpDBTVShow.ImagesContainer.Fanart.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    .pbFanart.Image = Me.tmpDBTVShow.ImagesContainer.Fanart.ImageOriginal.Image
                     .pbFanart.Tag = Me.tmpDBTVShow.ImagesContainer.Fanart
 
                     .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
@@ -1209,8 +1209,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainLandscape) Then
                     .btnSetLandscapeScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
-                    .pbLandscape.Image = Me.tmpDBTVShow.ImagesContainer.Landscape.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
+                    .pbLandscape.Image = Me.tmpDBTVShow.ImagesContainer.Landscape.ImageOriginal.Image
                     .pbLandscape.Tag = Me.tmpDBTVShow.ImagesContainer.Landscape
 
                     .lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbLandscape.Image.Width, .pbLandscape.Image.Height)
@@ -1224,8 +1224,8 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainPoster) Then
                     .btnSetPosterScrape.Enabled = False
                 End If
-                If Me.tmpDBTVShow.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
-                    .pbPoster.Image = Me.tmpDBTVShow.ImagesContainer.Poster.WebImage.Image
+                If Me.tmpDBTVShow.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                    .pbPoster.Image = Me.tmpDBTVShow.ImagesContainer.Poster.ImageOriginal.Image
                     .pbPoster.Tag = Me.tmpDBTVShow.ImagesContainer.Poster
 
                     .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
@@ -1377,9 +1377,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Banner = tImage
-            Me.pbBanner.Image = tImage.WebImage.Image
+            Me.pbBanner.Image = tImage.ImageOriginal.Image
             Me.pbBanner.Tag = tImage
             Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
             Me.lblBannerSize.Visible = True
@@ -1396,9 +1396,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbCharacterArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbCharacterArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.CharacterArt = tImage
-            Me.pbCharacterArt.Image = tImage.WebImage.Image
+            Me.pbCharacterArt.Image = tImage.ImageOriginal.Image
             Me.pbCharacterArt.Tag = tImage
             Me.lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbCharacterArt.Image.Width, Me.pbCharacterArt.Image.Height)
             Me.lblCharacterArtSize.Visible = True
@@ -1415,9 +1415,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.ClearArt = tImage
-            Me.pbClearArt.Image = tImage.WebImage.Image
+            Me.pbClearArt.Image = tImage.ImageOriginal.Image
             Me.pbClearArt.Tag = tImage
             Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
             Me.lblClearArtSize.Visible = True
@@ -1434,9 +1434,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.ClearLogo = tImage
-            Me.pbClearLogo.Image = tImage.WebImage.Image
+            Me.pbClearLogo.Image = tImage.ImageOriginal.Image
             Me.pbClearLogo.Tag = tImage
             Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
             Me.lblClearLogoSize.Visible = True
@@ -1453,9 +1453,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Fanart = tImage
-            Me.pbFanart.Image = tImage.WebImage.Image
+            Me.pbFanart.Image = tImage.ImageOriginal.Image
             Me.pbFanart.Tag = tImage
             Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
             Me.lblFanartSize.Visible = True
@@ -1472,9 +1472,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Landscape = tImage
-            Me.pbLandscape.Image = tImage.WebImage.Image
+            Me.pbLandscape.Image = tImage.ImageOriginal.Image
             Me.pbLandscape.Tag = tImage
             Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
             Me.lblLandscapeSize.Visible = True
@@ -1491,9 +1491,9 @@ Public Class dlgEditTVShow
 
     Private Sub pbPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVShow.ImagesContainer.Poster = tImage
-            Me.pbPoster.Image = tImage.WebImage.Image
+            Me.pbPoster.Image = tImage.ImageOriginal.Image
             Me.pbPoster.Tag = tImage
             Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
             Me.lblPosterSize.Visible = True

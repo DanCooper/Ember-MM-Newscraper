@@ -950,9 +950,12 @@ Public Class Enums
 End Class 'Enums
 
 Public Class Functions
+
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-#End Region
+
+#End Region 'Fields
 
 #Region "Methods"
 

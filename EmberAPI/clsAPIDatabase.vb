@@ -1375,13 +1375,13 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _movieDB.ThemePath = SQLreader("ThemePath").ToString
                     If Not DBNull.Value.Equals(SQLreader("Source")) Then _movieDB.Source = SQLreader("Source").ToString
 
-                    _movieDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_movieDB.ID, "movie", "banner")
-                    _movieDB.ImagesContainer.ClearArt.LocalFile = GetArtForItem(_movieDB.ID, "movie", "clearart")
-                    _movieDB.ImagesContainer.ClearLogo.LocalFile = GetArtForItem(_movieDB.ID, "movie", "clearlogo")
-                    _movieDB.ImagesContainer.DiscArt.LocalFile = GetArtForItem(_movieDB.ID, "movie", "discart")
-                    _movieDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_movieDB.ID, "movie", "fanart")
-                    _movieDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_movieDB.ID, "movie", "landscape")
-                    _movieDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_movieDB.ID, "movie", "poster")
+                    _movieDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "banner")
+                    _movieDB.ImagesContainer.ClearArt.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "clearart")
+                    _movieDB.ImagesContainer.ClearLogo.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "clearlogo")
+                    _movieDB.ImagesContainer.DiscArt.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "discart")
+                    _movieDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "fanart")
+                    _movieDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "landscape")
+                    _movieDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "poster")
 
                     _movieDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _movieDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
@@ -1559,13 +1559,13 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFile) Then _movieDB.ImagesContainer.Banner.WebImage.FromFile(_movieDB.ImagesContainer.Banner.LocalFile)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFile) Then _movieDB.ImagesContainer.ClearArt.WebImage.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFile)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFile) Then _movieDB.ImagesContainer.ClearLogo.WebImage.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFile)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFile) Then _movieDB.ImagesContainer.DiscArt.WebImage.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFile)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFile) Then _movieDB.ImagesContainer.Fanart.WebImage.FromFile(_movieDB.ImagesContainer.Fanart.LocalFile)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFile) Then _movieDB.ImagesContainer.Landscape.WebImage.FromFile(_movieDB.ImagesContainer.Landscape.LocalFile)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFile) Then _movieDB.ImagesContainer.Poster.WebImage.FromFile(_movieDB.ImagesContainer.Poster.LocalFile)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFilePath) Then _movieDB.ImagesContainer.Banner.ImageOriginal.FromFile(_movieDB.ImagesContainer.Banner.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFilePath) Then _movieDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFilePath) Then _movieDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFilePath) Then _movieDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath)
         End If
 
         'Check if the file is available and ready to edit
@@ -1612,13 +1612,13 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _moviesetDB.ListTitle = SQLreader("ListTitle").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
 
-                    _moviesetDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "banner")
-                    _moviesetDB.ImagesContainer.ClearArt.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "clearart")
-                    _moviesetDB.ImagesContainer.ClearLogo.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "clearlogo")
-                    _moviesetDB.ImagesContainer.DiscArt.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "discart")
-                    _moviesetDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "fanart")
-                    _moviesetDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "landscape")
-                    _moviesetDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_moviesetDB.ID, "set", "poster")
+                    _moviesetDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "banner")
+                    _moviesetDB.ImagesContainer.ClearArt.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "clearart")
+                    _moviesetDB.ImagesContainer.ClearLogo.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "clearlogo")
+                    _moviesetDB.ImagesContainer.DiscArt.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "discart")
+                    _moviesetDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "fanart")
+                    _moviesetDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "landscape")
+                    _moviesetDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "poster")
 
                     _moviesetDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _moviesetDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
@@ -1658,13 +1658,13 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFile) Then _moviesetDB.ImagesContainer.Banner.WebImage.FromFile(_moviesetDB.ImagesContainer.Banner.LocalFile)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFile) Then _moviesetDB.ImagesContainer.ClearArt.WebImage.FromFile(_moviesetDB.ImagesContainer.ClearArt.LocalFile)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFile) Then _moviesetDB.ImagesContainer.ClearLogo.WebImage.FromFile(_moviesetDB.ImagesContainer.ClearLogo.LocalFile)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFile) Then _moviesetDB.ImagesContainer.DiscArt.WebImage.FromFile(_moviesetDB.ImagesContainer.DiscArt.LocalFile)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFile) Then _moviesetDB.ImagesContainer.Fanart.WebImage.FromFile(_moviesetDB.ImagesContainer.Fanart.LocalFile)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFile) Then _moviesetDB.ImagesContainer.Landscape.WebImage.FromFile(_moviesetDB.ImagesContainer.Landscape.LocalFile)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFile) Then _moviesetDB.ImagesContainer.Poster.WebImage.FromFile(_moviesetDB.ImagesContainer.Poster.LocalFile)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFilePath) Then _moviesetDB.ImagesContainer.Banner.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Banner.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath) Then _moviesetDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath) Then _moviesetDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath) Then _moviesetDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFilePath) Then _moviesetDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Fanart.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFilePath) Then _moviesetDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Landscape.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then _moviesetDB.ImagesContainer.Poster.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Poster.LocalFilePath)
         End If
 
         Return _moviesetDB
@@ -1843,10 +1843,10 @@ Public Class Database
                     SQLReader.Read()
                     If Not DBNull.Value.Equals(SQLReader("idSeason")) Then _TVDB.ID = Convert.ToInt64(SQLReader("idSeason"))
 
-                    _TVDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_TVDB.ID, "season", "banner")
-                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "season", "fanart")
-                    _TVDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_TVDB.ID, "season", "landscape")
-                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "season", "poster")
+                    _TVDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "banner")
+                    _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "fanart")
+                    _TVDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "landscape")
+                    _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "poster")
                 End If
             End Using
         End Using
@@ -1878,8 +1878,8 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _TVDB.VideoSource = SQLreader("VideoSource").ToString
                     PathID = Convert.ToInt64(SQLreader("TVEpPathid"))
 
-                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "episode", "fanart")
-                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "episode", "thumb")
+                    _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "episode", "fanart")
+                    _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "episode", "thumb")
 
                     _TVDB.FilenameID = PathID
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
@@ -2023,8 +2023,8 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFile) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.ImagesContainer.Fanart.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFile) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.ImagesContainer.Poster.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
         End If
 
         If withShow Then
@@ -2120,20 +2120,20 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLReader("SeasonText")) Then .Title = CStr(SQLReader("SeasonText"))
                     End With
 
-                    _TVDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_TVDB.ID, "season", "banner")
-                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "season", "fanart")
-                    _TVDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_TVDB.ID, "season", "landscape")
-                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "season", "poster")
+                    _TVDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "banner")
+                    _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "fanart")
+                    _TVDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "landscape")
+                    _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "poster")
                 End If
             End Using
         End Using
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFile) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.ImagesContainer.Banner.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFile) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.ImagesContainer.Fanart.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFile) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.ImagesContainer.Landscape.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFile) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.ImagesContainer.Poster.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFilePath) Then _TVDB.ImagesContainer.Banner.ImageOriginal.FromFile(_TVDB.ImagesContainer.Banner.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
         End If
 
         If withShow Then
@@ -2195,13 +2195,13 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("TVShowPath")) Then _TVDB.ShowPath = SQLreader("TVShowPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _TVDB.ThemePath = SQLreader("ThemePath").ToString
 
-                    _TVDB.ImagesContainer.Banner.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "banner")
-                    _TVDB.ImagesContainer.CharacterArt.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "characterart")
-                    _TVDB.ImagesContainer.ClearArt.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "clearart")
-                    _TVDB.ImagesContainer.ClearLogo.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "clearlogo")
-                    _TVDB.ImagesContainer.Fanart.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "fanart")
-                    _TVDB.ImagesContainer.Landscape.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "landscape")
-                    _TVDB.ImagesContainer.Poster.LocalFile = GetArtForItem(_TVDB.ID, "tvshow", "poster")
+                    _TVDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "banner")
+                    _TVDB.ImagesContainer.CharacterArt.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "characterart")
+                    _TVDB.ImagesContainer.ClearArt.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "clearart")
+                    _TVDB.ImagesContainer.ClearLogo.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "clearlogo")
+                    _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "fanart")
+                    _TVDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "landscape")
+                    _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "poster")
 
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _TVDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
@@ -2267,13 +2267,13 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFile) Then _TVDB.ImagesContainer.Banner.WebImage.FromFile(_TVDB.ImagesContainer.Banner.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.CharacterArt.LocalFile) Then _TVDB.ImagesContainer.CharacterArt.WebImage.FromFile(_TVDB.ImagesContainer.CharacterArt.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearArt.LocalFile) Then _TVDB.ImagesContainer.ClearArt.WebImage.FromFile(_TVDB.ImagesContainer.ClearArt.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearLogo.LocalFile) Then _TVDB.ImagesContainer.ClearLogo.WebImage.FromFile(_TVDB.ImagesContainer.ClearLogo.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFile) Then _TVDB.ImagesContainer.Fanart.WebImage.FromFile(_TVDB.ImagesContainer.Fanart.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFile) Then _TVDB.ImagesContainer.Landscape.WebImage.FromFile(_TVDB.ImagesContainer.Landscape.LocalFile)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFile) Then _TVDB.ImagesContainer.Poster.WebImage.FromFile(_TVDB.ImagesContainer.Poster.LocalFile)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFilePath) Then _TVDB.ImagesContainer.Banner.ImageOriginal.FromFile(_TVDB.ImagesContainer.Banner.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.CharacterArt.LocalFilePath) Then _TVDB.ImagesContainer.CharacterArt.ImageOriginal.FromFile(_TVDB.ImagesContainer.CharacterArt.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearArt.LocalFilePath) Then _TVDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_TVDB.ImagesContainer.ClearArt.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearLogo.LocalFilePath) Then _TVDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_TVDB.ImagesContainer.ClearLogo.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
         End If
 
         'Seasons
@@ -3101,13 +3101,13 @@ Public Class Database
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'movie';", _movieDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.ImagesContainer.Banner.LocalFile)
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ImagesContainer.ClearArt.LocalFile)
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ImagesContainer.ClearLogo.LocalFile)
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "discart", _movieDB.ImagesContainer.DiscArt.LocalFile)
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.ImagesContainer.Fanart.LocalFile)
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.ImagesContainer.Landscape.LocalFile)
-                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.ImagesContainer.Poster.LocalFile)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "banner", _movieDB.ImagesContainer.Banner.LocalFilePath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "clearart", _movieDB.ImagesContainer.ClearArt.LocalFilePath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "clearlogo", _movieDB.ImagesContainer.ClearLogo.LocalFilePath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "discart", _movieDB.ImagesContainer.DiscArt.LocalFilePath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.ImagesContainer.Fanart.LocalFilePath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.ImagesContainer.Landscape.LocalFilePath)
+                If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.ImagesContainer.Poster.LocalFilePath)
 
                 'Studios
                 Using SQLcommand_studiolinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3494,13 +3494,13 @@ Public Class Database
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, " AND media_type = 'set';")
             SQLcommand_art.ExecuteNonQuery()
         End Using
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.ImagesContainer.Banner.LocalFile)
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ImagesContainer.ClearArt.LocalFile)
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ImagesContainer.ClearLogo.LocalFile)
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.ImagesContainer.DiscArt.LocalFile)
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.ImagesContainer.Fanart.LocalFile)
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.ImagesContainer.Landscape.LocalFile)
-        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.ImagesContainer.Poster.LocalFile)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "banner", _moviesetDB.ImagesContainer.Banner.LocalFilePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "clearart", _moviesetDB.ImagesContainer.ClearArt.LocalFilePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "clearlogo", _moviesetDB.ImagesContainer.ClearLogo.LocalFilePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "discart", _moviesetDB.ImagesContainer.DiscArt.LocalFilePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "fanart", _moviesetDB.ImagesContainer.Fanart.LocalFilePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.ImagesContainer.Landscape.LocalFilePath)
+        If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.ImagesContainer.Poster.LocalFilePath)
 
         If withMovies Then
             Dim MoviesInSet As New List(Of MovieInSet)
@@ -3880,8 +3880,8 @@ Public Class Database
                     SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVEpDB.ID, " AND media_type = 'episode';")
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_TVEpDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_TVEpDB.ID, "episode", "fanart", _TVEpDB.ImagesContainer.Fanart.LocalFile)
-                If Not String.IsNullOrEmpty(_TVEpDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_TVEpDB.ID, "episode", "thumb", _TVEpDB.ImagesContainer.Poster.LocalFile)
+                If Not String.IsNullOrEmpty(_TVEpDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_TVEpDB.ID, "episode", "fanart", _TVEpDB.ImagesContainer.Fanart.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVEpDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_TVEpDB.ID, "episode", "thumb", _TVEpDB.ImagesContainer.Poster.LocalFilePath)
 
                 'Writers
                 Using SQLcommand_writerlinkepisode As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4100,10 +4100,10 @@ Public Class Database
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVSeasonDB.ID, " AND media_type = 'season';")
             SQLcommand_art.ExecuteNonQuery()
         End Using
-        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "banner", _TVSeasonDB.ImagesContainer.Banner.LocalFile)
-        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "fanart", _TVSeasonDB.ImagesContainer.Fanart.LocalFile)
-        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "landscape", _TVSeasonDB.ImagesContainer.Landscape.LocalFile)
-        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_TVSeasonDB.ID, "season", "poster", _TVSeasonDB.ImagesContainer.Poster.LocalFile)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Banner.LocalFilePath) Then SetArtForItem(_TVSeasonDB.ID, "season", "banner", _TVSeasonDB.ImagesContainer.Banner.LocalFilePath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_TVSeasonDB.ID, "season", "fanart", _TVSeasonDB.ImagesContainer.Fanart.LocalFilePath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_TVSeasonDB.ID, "season", "landscape", _TVSeasonDB.ImagesContainer.Landscape.LocalFilePath)
+        If Not String.IsNullOrEmpty(_TVSeasonDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_TVSeasonDB.ID, "season", "poster", _TVSeasonDB.ImagesContainer.Poster.LocalFilePath)
 
         If Not BatchMode Then SQLtransaction.Commit()
 
@@ -4262,13 +4262,13 @@ Public Class Database
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
                 End Using
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Banner.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "banner", _TVShowDB.ImagesContainer.Banner.LocalFile)
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.CharacterArt.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "characterart", _TVShowDB.ImagesContainer.CharacterArt.LocalFile)
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.ClearArt.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearart", _TVShowDB.ImagesContainer.ClearArt.LocalFile)
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.ClearLogo.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearlogo", _TVShowDB.ImagesContainer.ClearLogo.LocalFile)
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Fanart.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "fanart", _TVShowDB.ImagesContainer.Fanart.LocalFile)
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Landscape.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "landscape", _TVShowDB.ImagesContainer.Landscape.LocalFile)
-                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Poster.LocalFile) Then SetArtForItem(_TVShowDB.ID, "tvshow", "poster", _TVShowDB.ImagesContainer.Poster.LocalFile)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Banner.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "banner", _TVShowDB.ImagesContainer.Banner.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.CharacterArt.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "characterart", _TVShowDB.ImagesContainer.CharacterArt.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.ClearArt.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearart", _TVShowDB.ImagesContainer.ClearArt.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.ClearLogo.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "clearlogo", _TVShowDB.ImagesContainer.ClearLogo.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "fanart", _TVShowDB.ImagesContainer.Fanart.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "landscape", _TVShowDB.ImagesContainer.Landscape.LocalFilePath)
+                If Not String.IsNullOrEmpty(_TVShowDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_TVShowDB.ID, "tvshow", "poster", _TVShowDB.ImagesContainer.Poster.LocalFilePath)
 
                 'Studios
                 Using SQLcommand_studiolinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()

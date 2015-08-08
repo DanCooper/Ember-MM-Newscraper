@@ -167,34 +167,34 @@ Public Class Scanner
         End If
 
         'banner
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Banner.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Banner.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainBanner)
-                DBMovie.ImagesContainer.Banner.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Banner.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
         End If
 
         'clearart
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearArt.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainClearArt)
-                DBMovie.ImagesContainer.ClearArt.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearArt.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
             Next
         End If
 
         'clearlogo
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearLogo.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearLogo.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainClearLogo)
-                DBMovie.ImagesContainer.ClearLogo.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearLogo.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
             Next
         End If
 
         'discart
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.DiscArt.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.DiscArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainDiscArt)
-                DBMovie.ImagesContainer.DiscArt.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.DiscArt.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -213,18 +213,18 @@ Public Class Scanner
         End If
 
         'fanart
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Fanart.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Fanart.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainFanart)
-                DBMovie.ImagesContainer.Fanart.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Fanart.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         End If
 
         'landscape
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Landscape.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Landscape.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainLandscape)
-                DBMovie.ImagesContainer.Landscape.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Landscape.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -237,10 +237,10 @@ Public Class Scanner
         End If
 
         'poster
-        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Poster.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovie.ImagesContainer.Poster.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainPoster)
-                DBMovie.ImagesContainer.Poster.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Poster.LocalFile) Then Exit For
+                DBMovie.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -297,50 +297,50 @@ Public Class Scanner
         End Try
 
         'banner
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Banner.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Banner.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainBanner)
-                DBMovieSet.ImagesContainer.Banner.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Banner.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
         End If
 
         'clearart
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearArt.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearArt)
-                DBMovieSet.ImagesContainer.ClearArt.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearArt.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
             Next
         End If
 
         'clearlogo
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearLogo.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearLogo)
-                DBMovieSet.ImagesContainer.ClearLogo.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearLogo.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
             Next
         End If
 
         'discart
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.DiscArt.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.DiscArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainDiscArt)
-                DBMovieSet.ImagesContainer.DiscArt.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.DiscArt.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
             Next
         End If
 
         'fanart
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Fanart.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Fanart.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainFanart)
-                DBMovieSet.ImagesContainer.Fanart.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Fanart.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         End If
 
         'landscape
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Landscape.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Landscape.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainLandscape)
-                DBMovieSet.ImagesContainer.Landscape.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Landscape.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -353,10 +353,10 @@ Public Class Scanner
         End If
 
         'poster
-        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Poster.LocalFile) Then
+        If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Poster.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainPoster)
-                DBMovieSet.ImagesContainer.Poster.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Poster.LocalFile) Then Exit For
+                DBMovieSet.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         End If
     End Sub
@@ -388,18 +388,18 @@ Public Class Scanner
         Next
 
         'episode fanart
-        If String.IsNullOrEmpty(Episode.ImagesContainer.Fanart.LocalFile) Then
+        If String.IsNullOrEmpty(Episode.ImagesContainer.Fanart.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModifierType.EpisodeFanart)
-                Episode.ImagesContainer.Fanart.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(Episode.ImagesContainer.Fanart.LocalFile) Then Exit For
+                Episode.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(Episode.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         End If
 
         'episode poster
-        If String.IsNullOrEmpty(Episode.ImagesContainer.Poster.LocalFile) Then
+        If String.IsNullOrEmpty(Episode.ImagesContainer.Poster.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.ModifierType.EpisodePoster)
-                Episode.ImagesContainer.Poster.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(Episode.ImagesContainer.Poster.LocalFile) Then Exit For
+                Episode.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(Episode.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -464,65 +464,65 @@ Public Class Scanner
         End Try
 
         'season banner
-        If String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFile) Then
+        If String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFilePath) Then
             'all-seasons
             If Season = 999 Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsBanner)
-                    TVDB.ImagesContainer.Banner.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFilePath) Then Exit For
                 Next
             Else
                 For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonBanner)
-                    TVDB.ImagesContainer.Banner.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFilePath) Then Exit For
                 Next
             End If
         End If
 
         'season fanart
-        If String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFile) Then
+        If String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFilePath) Then
             'all-seasons
             If Season = 999 Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsFanart)
-                    TVDB.ImagesContainer.Fanart.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFilePath) Then Exit For
                 Next
             Else
                 For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonFanart)
-                    TVDB.ImagesContainer.Fanart.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFilePath) Then Exit For
                 Next
             End If
         End If
 
         'season landscape
-        If String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFile) Then
+        If String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFilePath) Then
             'all-seasons
             If Season = 999 Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsLandscape)
-                    TVDB.ImagesContainer.Landscape.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFilePath) Then Exit For
                 Next
             Else
                 For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonLandscape)
-                    TVDB.ImagesContainer.Landscape.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFilePath) Then Exit For
                 Next
             End If
         End If
 
         'season poster
-        If String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFile) Then
+        If String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFilePath) Then
             'all-seasons
             If Season = 999 Then
                 For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsPoster)
-                    TVDB.ImagesContainer.Poster.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFilePath) Then Exit For
                 Next
             Else
                 For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonPoster)
-                    TVDB.ImagesContainer.Poster.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFile) Then Exit For
+                    TVDB.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFilePath) Then Exit For
                 Next
             End If
         End If
@@ -564,34 +564,34 @@ Public Class Scanner
         Next
 
         'show banner
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Banner.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Banner.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainBanner)
-                DBTVShow.ImagesContainer.Banner.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Banner.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
         End If
 
         'show characterart
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.CharacterArt.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.CharacterArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainCharacterArt)
-                DBTVShow.ImagesContainer.CharacterArt.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.CharacterArt.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.CharacterArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.CharacterArt.LocalFilePath) Then Exit For
             Next
         End If
 
         'show clearart
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearArt.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearArt)
-                DBTVShow.ImagesContainer.ClearArt.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearArt.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
             Next
         End If
 
         'show clearlogo
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearLogo.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearLogo.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainClearLogo)
-                DBTVShow.ImagesContainer.ClearLogo.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearLogo.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -603,18 +603,18 @@ Public Class Scanner
         End If
 
         'show fanart
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Fanart.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Fanart.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainFanart)
-                DBTVShow.ImagesContainer.Fanart.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Fanart.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         End If
 
         'show landscape
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Landscape.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Landscape.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainLandscape)
-                DBTVShow.ImagesContainer.Landscape.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Landscape.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -627,10 +627,10 @@ Public Class Scanner
         End If
 
         'show poster
-        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Poster.LocalFile) Then
+        If String.IsNullOrEmpty(DBTVShow.ImagesContainer.Poster.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainPoster)
-                DBTVShow.ImagesContainer.Poster.LocalFile = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Poster.LocalFile) Then Exit For
+                DBTVShow.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         End If
 
@@ -851,9 +851,7 @@ Public Class Scanner
         Dim newSeasonsIndex As New List(Of Integer)
         Dim toNfo As Boolean = False
 
-
-
-        If DBTVShow.Episodes.Count > 0 Then
+        If DBTVShow.Episodes.Count > 0 OrElse Not DBTVShow.ID = -1 Then
             If Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) Then
                 GetTVShowFolderContents(DBTVShow)
 
@@ -929,18 +927,18 @@ Public Class Scanner
                                                 End If
                                             End If
 
-                                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFile) Then
+                                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then
                                                 If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEpisode.LocalFile) Then
-                                                    DBTVEpisode.TVEpisode.Poster.WebImage.FromFile(DBTVEpisode.TVEpisode.LocalFile)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.WebImage.Image) Then
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFile = DBTVEpisode.TVEpisode.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromFile(DBTVEpisode.TVEpisode.LocalFile)
+                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
+                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
                                                     End If
                                                 ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.PosterURL) Then
-                                                    DBTVEpisode.TVEpisode.Poster.WebImage.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.WebImage.Image) Then
+                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
+                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
                                                         Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEpisode.LocalFile).FullName)
-                                                        DBTVEpisode.TVEpisode.Poster.WebImage.Save(DBTVEpisode.TVEpisode.LocalFile)
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFile = DBTVEpisode.TVEpisode.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                        DBTVEpisode.TVEpisode.Poster.ImageOriginal.Save(DBTVEpisode.TVEpisode.LocalFile)
+                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
                                                     End If
                                                 End If
                                             End If
@@ -1017,18 +1015,18 @@ Public Class Scanner
                                                 End If
                                             End If
 
-                                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFile) Then
+                                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then
                                                 If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEpisode.LocalFile) Then
-                                                    DBTVEpisode.TVEpisode.Poster.WebImage.FromFile(DBTVEpisode.TVEpisode.LocalFile)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.WebImage.Image) Then
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFile = DBTVEpisode.TVEpisode.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromFile(DBTVEpisode.TVEpisode.LocalFile)
+                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
+                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
                                                     End If
                                                 ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.PosterURL) Then
-                                                    DBTVEpisode.TVEpisode.Poster.WebImage.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.WebImage.Image) Then
+                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
+                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
                                                         Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEpisode.LocalFile).FullName)
-                                                        DBTVEpisode.TVEpisode.Poster.WebImage.Save(DBTVEpisode.TVEpisode.LocalFile)
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFile = DBTVEpisode.TVEpisode.Poster.WebImage.SaveAsTVEpisodePoster(DBTVEpisode)
+                                                        DBTVEpisode.TVEpisode.Poster.ImageOriginal.Save(DBTVEpisode.TVEpisode.LocalFile)
+                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
                                                     End If
                                                 End If
                                             End If
@@ -1085,7 +1083,7 @@ Public Class Scanner
                             End If
 
                             Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = DBTVEpisode.TVEpisode.Season)
-                            If tmpSeason.TVSeason Is Nothing Then
+                            If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
                                 tmpSeason = New Database.DBElement
                                 tmpSeason.Filename = DBTVEpisode.Filename
                                 tmpSeason.ID = -1
@@ -1102,7 +1100,7 @@ Public Class Scanner
 
             'create the All Seasons entry if needed
             Dim tmpAllSeasons As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
-            If tmpAllSeasons.TVSeason Is Nothing Then
+            If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
                 tmpAllSeasons = New Database.DBElement
                 tmpAllSeasons.Filename = Path.Combine(DBTVShow.ShowPath, "file.ext")
                 tmpAllSeasons.ID = -1

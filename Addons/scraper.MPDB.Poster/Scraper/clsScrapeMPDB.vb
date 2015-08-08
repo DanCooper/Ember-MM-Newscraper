@@ -65,7 +65,7 @@ Namespace MPDB
                             ' url are like> http://www.movieposterdb.com/posters/10_08/2009/499549/l_499549_43475538.jpg
                             'the parent id is the part AFTER the l_
                             ' all poster have the same size
-                            alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = PosterURL, .ThumbURL = ThumbURL, .Width = "n/a", .Height = "n/a", .Scraper = "MPDB"})
+                            alContainer.MainPosters.Add(New MediaContainers.Image With {.URLOriginal = PosterURL, .URLThumb = ThumbURL, .Width = "n/a", .Height = "n/a", .Scraper = "MPDB"})
                         End If
                     Next
                 End If

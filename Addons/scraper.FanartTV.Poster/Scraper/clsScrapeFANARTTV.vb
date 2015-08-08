@@ -119,8 +119,8 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alImagesContainer.MainBanners.Add(tmpPoster)
@@ -137,8 +137,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
-                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = image.Url, _
+                                .URLOriginal = image.Url, _
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "1000"}
 
                             alImagesContainer.MainClearArts.Add(tmpPoster)
@@ -152,8 +152,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
-                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = image.Url, _
+                                .URLOriginal = image.Url, _
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "500"}
 
                             alImagesContainer.MainClearArts.Add(tmpPoster)
@@ -171,8 +171,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
-                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = image.Url, _
+                                .URLOriginal = image.Url, _
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "800"}
 
                             alImagesContainer.MainClearLogos.Add(tmpPoster)
@@ -187,8 +187,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
-                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = image.Url, _
+                                .URLOriginal = image.Url, _
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "400"}
 
                             alImagesContainer.MainClearLogos.Add(tmpPoster)
@@ -207,8 +207,8 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alImagesContainer.MainDiscArts.Add(tmpPoster)
@@ -218,7 +218,7 @@ Namespace FanartTVs
                 'Fanart
                 If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
                     For Each image In Results.List.Moviebackground
-                        alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URLOriginal = image.Url, .URLThumb = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
@@ -231,8 +231,8 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alImagesContainer.MainLandscapes.Add(tmpPoster)
@@ -248,8 +248,8 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alImagesContainer.MainPosters.Add(tmpPoster)
@@ -288,9 +288,9 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alContainer.MainBanners.Add(tmpPoster)
@@ -307,9 +307,9 @@ Namespace FanartTVs
                             .Scraper = "Fanart.tv", _
                             .Season = If(image.Season = "all", 999, CInt(image.Season)), _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alContainer.SeasonBanners.Add(tmpPoster)
@@ -325,8 +325,8 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "512"}
 
                         alContainer.MainCharacterArts.Add(tmpPoster)
@@ -343,8 +343,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
-                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = image.Url, _
+                                .URLOriginal = image.Url, _
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "1000"}
 
                             alContainer.MainClearArts.Add(tmpPoster)
@@ -358,8 +358,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = image.Lang, _
-                                .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = image.Url, _
+                                .URLOriginal = image.Url, _
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "500"}
 
                             alContainer.MainClearArts.Add(tmpPoster)
@@ -377,8 +377,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = Image.Lang, _
-                                .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = Image.Url, _
+                                .URLOriginal = Image.Url, _
+                                .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "800"}
 
                             alContainer.MainClearLogos.Add(tmpPoster)
@@ -392,8 +392,8 @@ Namespace FanartTVs
                                 .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
                                 .Scraper = "Fanart.tv", _
                                 .ShortLang = Image.Lang, _
-                                .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
-                                .URL = Image.Url, _
+                                .URLOriginal = Image.Url, _
+                                .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
                                 .Width = "400"}
 
                             alContainer.MainClearLogos.Add(tmpPoster)
@@ -404,7 +404,7 @@ Namespace FanartTVs
                 'Fanart Show / AllSeasons / Season / Episode
                 If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
-                        alContainer.MainFanarts.Add(New MediaContainers.Image With {.URL = image.Url, .Width = "1920", .Height = "1080", .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
+                        alContainer.MainFanarts.Add(New MediaContainers.Image With {.URLOriginal = image.Url, .Width = "1920", .Height = "1080", .URLThumb = image.Url.Replace("/fanart/", "/preview/"), .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
@@ -417,8 +417,8 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = Image.Lang, _
-                            .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
-                            .URL = Image.Url, _
+                            .URLOriginal = Image.Url, _
+                            .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "500"}
 
                         alContainer.MainLandscapes.Add(tmpPoster)
@@ -435,9 +435,9 @@ Namespace FanartTVs
                             .Scraper = "Fanart.tv", _
                             .Season = If(Image.Season = "all", 999, CInt(Image.Season)), _
                             .ShortLang = Image.Lang, _
-                            .ThumbURL = Image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
-                            .URL = Image.Url, _
+                            .URLOriginal = Image.Url, _
+                            .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "500"}
 
                         alContainer.SeasonLandscapes.Add(tmpPoster)
@@ -453,9 +453,9 @@ Namespace FanartTVs
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
                             .Scraper = "Fanart.tv", _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alContainer.MainPosters.Add(tmpPoster)
@@ -472,9 +472,9 @@ Namespace FanartTVs
                             .Scraper = "Fanart.tv", _
                             .Season = If(image.Season = "all", 999, CInt(image.Season)), _
                             .ShortLang = image.Lang, _
-                            .ThumbURL = image.Url.Replace("/fanart/", "/preview/"), _
                             .TVBannerType = Enums.TVBannerType.Any, _
-                            .URL = image.Url, _
+                            .URLOriginal = image.Url, _
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
                             .Width = "1000"}
 
                         alContainer.SeasonPosters.Add(tmpPoster)

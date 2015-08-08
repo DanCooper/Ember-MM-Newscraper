@@ -524,7 +524,7 @@ Namespace FileUtils
                 Else
 
                     If Not isCleaner Then
-                        Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFile
+                        Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFilePath
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                             If Common.isVideoTS(fPath) Then
@@ -731,20 +731,20 @@ Namespace FileUtils
                 Dim baseURL As String = parseBaseURL(clipboardHtml)
 
                 If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
-                    tImage.WebImage.FromWeb(imageSrc)
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    tImage.ImageOriginal.FromWeb(imageSrc)
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Return tImage
                     End If
                 Else
-                    tImage.WebImage.FromWeb(baseURL + imageSrc.Substring(1))
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    tImage.ImageOriginal.FromWeb(baseURL + imageSrc.Substring(1))
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Return tImage
                     End If
                 End If
             ElseIf e.Data.GetDataPresent(DataFormats.FileDrop, False) Then
                 Dim localImage() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-                tImage.WebImage.FromFile(localImage(0).ToString)
-                If tImage.WebImage.Image IsNot Nothing Then
+                tImage.ImageOriginal.FromFile(localImage(0).ToString)
+                If tImage.ImageOriginal.Image IsNot Nothing Then
                     Return tImage
                 End If
             End If

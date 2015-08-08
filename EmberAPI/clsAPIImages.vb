@@ -1002,25 +1002,25 @@ Public Class Images
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Banner.LocalFile) OrElse .MovieBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Banner.LocalFilePath) OrElse .MovieBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearArt.LocalFile) OrElse .MovieClearArtOverwrite) AndAlso .MovieClearArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearArt.LocalFilePath) OrElse .MovieClearArtOverwrite) AndAlso .MovieClearArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearLogo.LocalFile) OrElse .MovieClearLogoOverwrite) AndAlso .MovieClearLogoAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearLogo.LocalFilePath) OrElse .MovieClearLogoOverwrite) AndAlso .MovieClearLogoAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainDiscArt
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.DiscArt.LocalFile) OrElse .MovieDiscArtOverwrite) AndAlso .MovieDiscArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.DiscArt.LocalFilePath) OrElse .MovieDiscArtOverwrite) AndAlso .MovieDiscArtAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1038,19 +1038,19 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Fanart.LocalFile) OrElse .MovieFanartOverwrite) AndAlso .MovieFanartAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Fanart.LocalFilePath) OrElse .MovieFanartOverwrite) AndAlso .MovieFanartAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Landscape.LocalFile) OrElse .MovieLandscapeOverwrite) AndAlso .MovieLandscapeAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Landscape.LocalFilePath) OrElse .MovieLandscapeOverwrite) AndAlso .MovieLandscapeAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Poster.LocalFile) OrElse .MoviePosterOverwrite) AndAlso .MoviePosterAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Poster.LocalFilePath) OrElse .MoviePosterOverwrite) AndAlso .MoviePosterAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1070,43 +1070,43 @@ Public Class Images
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Banner.LocalFile) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Banner.LocalFilePath) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearArt.LocalFile) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearArt.LocalFilePath) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearLogo.LocalFile) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearLogo.LocalFilePath) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainDiscArt
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.DiscArt.LocalFile) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.DiscArt.LocalFilePath) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Fanart.LocalFile) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Fanart.LocalFilePath) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Landscape.LocalFile) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Landscape.LocalFilePath) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Poster.LocalFile) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Poster.LocalFilePath) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
                         Return True
                     Else
                         Return False
@@ -1119,25 +1119,25 @@ Public Class Images
         With Master.eSettings
             Select Case fType
                 Case Enums.ModifierType.MainBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Banner.LocalFile) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Banner.LocalFilePath) OrElse .TVShowBannerOverwrite) AndAlso .MovieBannerAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainCharacterArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.CharacterArt.LocalFile) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.CharacterArt.LocalFilePath) OrElse .TVShowCharacterArtOverwrite) AndAlso .TVShowCharacterArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearArt.LocalFile) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearArt.LocalFilePath) OrElse .TVShowClearArtOverwrite) AndAlso .TVShowClearArtAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearLogo.LocalFile) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearLogo.LocalFilePath) OrElse .TVShowClearLogoOverwrite) AndAlso .TVShowClearLogoAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1149,19 +1149,19 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Fanart.LocalFile) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Fanart.LocalFilePath) OrElse .TVShowFanartOverwrite) AndAlso .TVShowFanartAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Landscape.LocalFile) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Landscape.LocalFilePath) OrElse .TVShowLandscapeOverwrite) AndAlso .TVShowLandscapeAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Poster.LocalFile) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Poster.LocalFilePath) OrElse .TVShowPosterOverwrite) AndAlso .TVShowPosterAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -2822,7 +2822,7 @@ Public Class Images
 
         'Main Banner
         If DoMainBanner Then
-            If DBElement.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2845,7 +2845,7 @@ Public Class Images
 
         'Main CharacterArt
         If DoMainClearArt Then
-            If DBElement.ImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.CharacterArt = DBElement.ImagesContainer.CharacterArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2864,7 +2864,7 @@ Public Class Images
 
         'Main ClearArt
         If DoMainClearArt Then
-            If DBElement.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearArt = DBElement.ImagesContainer.ClearArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2887,7 +2887,7 @@ Public Class Images
 
         'Main ClearLogo
         If DoMainClearLogo Then
-            If DBElement.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearLogo = DBElement.ImagesContainer.ClearLogo
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2910,7 +2910,7 @@ Public Class Images
 
         'Main DiscArt
         If DoMainDiscArt Then
-            If DBElement.ImagesContainer.DiscArt.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.DiscArt.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2931,7 +2931,7 @@ Public Class Images
 
         'Main Fanart
         If DoMainFanart Then
-            If DBElement.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Fanart = DBElement.ImagesContainer.Fanart
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2954,7 +2954,7 @@ Public Class Images
 
         'Main Landscape
         If DoMainLandscape Then
-            If DBElement.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Landscape = DBElement.ImagesContainer.Landscape
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2977,7 +2977,7 @@ Public Class Images
 
         'Main Poster
         If DoMainPoster Then
-            If DBElement.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+            If DBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Poster = DBElement.ImagesContainer.Poster
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -2998,26 +2998,88 @@ Public Class Images
             End If
         End If
 
-        'Season Banner
-        If DoSeasonBanner Then
-            'For Each sSeason As Database.DBElement In DBElement.Seasons
-            '    If sSeason.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
-            '        DefaultSeasonImagesContainer.Banner = DBElement.ImagesContainer.Banner
-            '    Else
-            '        Dim defImg As MediaContainers.Image = Nothing
-            '        If sSeason.TVSeason.Season = 999 Then
-            '            Images.GetPreferredTVASBanner(SearchResultsContainer.MainBanners, defImg)
-            '        Else
-            '            Images.GetPreferredTVASBanner(SearchResultsContainer.MainBanners, defImg)
-            '        End If
+        'Seasons
+        For Each sSeason As Database.DBElement In DBElement.Seasons
+            Dim sContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = sSeason.TVSeason.Season}
 
-            '        If defImg IsNot Nothing Then
-            '            DBElement.ImagesContainer.Banner = defImg
-            '            DefaultImagesContainer.Banner = defImg
-            '        End If
-            '    End If
-            'Next
-        End If
+            'Banner
+            If DoSeasonBanner Then
+                If sSeason.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
+                    sContainer.Banner = sSeason.ImagesContainer.Banner
+                Else
+                    Dim defImg As MediaContainers.Image = Nothing
+                    If sSeason.TVSeason.Season = 999 Then
+                        Images.GetPreferredTVASBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
+                    Else
+                        Images.GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, sContainer.Season)
+                    End If
+
+                    If defImg IsNot Nothing Then
+                        sSeason.ImagesContainer.Banner = defImg
+                        sContainer.Banner = defImg
+                    End If
+                End If
+            End If
+
+            'Fanart
+            If DoSeasonFanart Then
+                If sSeason.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    sContainer.Fanart = sSeason.ImagesContainer.Fanart
+                Else
+                    Dim defImg As MediaContainers.Image = Nothing
+                    If sSeason.TVSeason.Season = 999 Then
+                        Images.GetPreferredTVASFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
+                    Else
+                        Images.GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, sContainer.Season)
+                    End If
+
+                    If defImg IsNot Nothing Then
+                        sSeason.ImagesContainer.Fanart = defImg
+                        sContainer.Fanart = defImg
+                    End If
+                End If
+            End If
+
+            'Landscape
+            If DoSeasonLandscape Then
+                If sSeason.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
+                    sContainer.Landscape = sSeason.ImagesContainer.Landscape
+                Else
+                    Dim defImg As MediaContainers.Image = Nothing
+                    If sSeason.TVSeason.Season = 999 Then
+                        Images.GetPreferredTVASLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
+                    Else
+                        Images.GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, sContainer.Season)
+                    End If
+
+                    If defImg IsNot Nothing Then
+                        sSeason.ImagesContainer.Landscape = defImg
+                        sContainer.Landscape = defImg
+                    End If
+                End If
+            End If
+
+            'Poster
+            If DoSeasonPoster Then
+                If sSeason.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                    sContainer.Poster = sSeason.ImagesContainer.Poster
+                Else
+                    Dim defImg As MediaContainers.Image = Nothing
+                    If sSeason.TVSeason.Season = 999 Then
+                        Images.GetPreferredTVASPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
+                    Else
+                        Images.GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, sContainer.Season)
+                    End If
+
+                    If defImg IsNot Nothing Then
+                        sSeason.ImagesContainer.Poster = defImg
+                        sContainer.Poster = defImg
+                    End If
+                End If
+            End If
+
+            DefaultSeasonImagesContainer.Add(sContainer)
+        Next
     End Sub
 
     Public Shared Sub SetDefaultImages_TV(ByRef DBTV As Database.DBElement, _
@@ -3029,7 +3091,7 @@ Public Class Images
 
         'Banner Show
         If ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled Then
-            If DBTV.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Banner = DBTV.ImagesContainer.Banner
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3044,7 +3106,7 @@ Public Class Images
 
         'CharacterArt Show
         If ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then
-            If DBTV.ImagesContainer.CharacterArt.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.CharacterArt = DBTV.ImagesContainer.CharacterArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3059,7 +3121,7 @@ Public Class Images
 
         'ClearArt Show
         If ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then
-            If DBTV.ImagesContainer.ClearArt.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearArt = DBTV.ImagesContainer.ClearArt
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3074,7 +3136,7 @@ Public Class Images
 
         'ClearLogo Show
         If ScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then
-            If DBTV.ImagesContainer.ClearLogo.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.ClearLogo = DBTV.ImagesContainer.ClearLogo
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3089,7 +3151,7 @@ Public Class Images
 
         'Fanart Show
         If (ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.MainFanart) Then
-            If DBTV.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Fanart = DBTV.ImagesContainer.Fanart
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3104,7 +3166,7 @@ Public Class Images
 
         'Landscape Show
         If ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then
-            If DBTV.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Landscape = DBTV.ImagesContainer.Landscape
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3119,7 +3181,7 @@ Public Class Images
 
         'Poster Show
         If ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled Then
-            If DBTV.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+            If DBTV.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Poster = DBTV.ImagesContainer.Poster
             Else
                 Dim defImg As MediaContainers.Image = Nothing
@@ -3142,7 +3204,7 @@ Public Class Images
                 If iSeason = 999 Then
                     'Banner AllSeasons 
                     If ScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVASBannerAnyEnabled Then
-                        If cSeason.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
                             SIC.Banner = cSeason.ImagesContainer.Banner
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3157,7 +3219,7 @@ Public Class Images
                 Else
                     'Banner Season
                     If ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled Then
-                        If cSeason.ImagesContainer.Banner.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
                             SIC.Banner = cSeason.ImagesContainer.Banner
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3174,7 +3236,7 @@ Public Class Images
                 If iSeason = 999 Then
                     'Fanart AllSeasons
                     If ScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVASFanartAnyEnabled Then
-                        If cSeason.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                             SIC.Fanart = cSeason.ImagesContainer.Fanart
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3189,7 +3251,7 @@ Public Class Images
                 Else
                     'Fanart Season
                     If ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled Then
-                        If cSeason.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                             SIC.Fanart = cSeason.ImagesContainer.Fanart
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3206,7 +3268,7 @@ Public Class Images
                 If iSeason = 999 Then
                     'Landscape AllSeasons
                     If ScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then
-                        If cSeason.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
                             SIC.Landscape = cSeason.ImagesContainer.Landscape
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3221,7 +3283,7 @@ Public Class Images
                 Else
                     ' Landscape Season
                     If ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled Then
-                        If cSeason.ImagesContainer.Landscape.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
                             SIC.Landscape = cSeason.ImagesContainer.Landscape
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3238,7 +3300,7 @@ Public Class Images
                 If iSeason = 999 Then
                     'Poster AllSeasons
                     If ScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
-                        If cSeason.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                             SIC.Poster = cSeason.ImagesContainer.Poster
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3253,7 +3315,7 @@ Public Class Images
                 Else
                     'Poster Season
                     If ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled Then
-                        If cSeason.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+                        If cSeason.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                             SIC.Poster = cSeason.ImagesContainer.Poster
                         Else
                             Dim defImg As MediaContainers.Image = Nothing
@@ -3279,7 +3341,7 @@ Public Class Images
 
                 'Fanart Episode
                 If ScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    If cEpisode.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+                    If cEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                         EIC.Fanart = cEpisode.ImagesContainer.Fanart
                     Else
                         Dim defImg As MediaContainers.Image = Nothing
@@ -3294,7 +3356,7 @@ Public Class Images
 
                 'Poster Episode
                 If ScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then
-                    If cEpisode.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
+                    If cEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                         EIC.Poster = cEpisode.ImagesContainer.Poster
                     Else
                         Dim defImg As MediaContainers.Image = Nothing
@@ -3607,20 +3669,20 @@ Public Class Images
         If ImageList.Count = 0 Then Return imgList
 
         If Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Any Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL))
-                imgList.Add(img.URL)
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+                imgList.Add(img.URLOriginal)
             Next
         ElseIf Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Thumb Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.ThumbURL))
-                imgList.Add(img.ThumbURL)
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLThumb))
+                imgList.Add(img.URLThumb)
             Next
         Else
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
-                imgList.Add(img.URL)
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal) AndAlso f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
+                imgList.Add(img.URLOriginal)
             Next
             If Not Master.eSettings.MovieEThumbsPrefSizeOnly Then
-                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
-                    imgList.Add(img.URL)
+                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
+                    imgList.Add(img.URLOriginal)
                 Next
             End If
         End If
@@ -3638,20 +3700,20 @@ Public Class Images
         If ImageList.Count = 0 Then Return imgList
 
         If Master.eSettings.MovieEFanartsPrefSize = Enums.MovieFanartSize.Any Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL))
-                imgList.Add(img.URL)
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+                imgList.Add(img.URLOriginal)
             Next
         ElseIf Master.eSettings.MovieEFanartsPrefSize = Enums.MovieFanartSize.Thumb Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.ThumbURL))
-                imgList.Add(img.ThumbURL)
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLThumb))
+                imgList.Add(img.URLThumb)
             Next
         Else
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso f.MovieFanartSize = Master.eSettings.MovieEFanartsPrefSize)
-                imgList.Add(img.URL)
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal) AndAlso f.MovieFanartSize = Master.eSettings.MovieEFanartsPrefSize)
+                imgList.Add(img.URLOriginal)
             Next
             If Not Master.eSettings.MovieEFanartsPrefSizeOnly Then
-                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URL) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEFanartsPrefSize)
-                    imgList.Add(img.URL)
+                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEFanartsPrefSize)
+                    imgList.Add(img.URLOriginal)
                 Next
             End If
         End If

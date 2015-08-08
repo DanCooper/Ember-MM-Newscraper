@@ -67,12 +67,12 @@ Public Class dlgImgManual
 
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
         Try
-            tImage.WebImage.FromWeb(Me.txtURL.Text)
+            tImage.ImageOriginal.FromWeb(Me.txtURL.Text)
 
-            If tImage.WebImage.Image IsNot Nothing Then
+            If tImage.ImageOriginal.Image IsNot Nothing Then
 
                 Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(tImage.WebImage.Image)
+                    dImgView.ShowDialog(tImage.ImageOriginal.Image)
                 End Using
 
             End If
@@ -110,8 +110,8 @@ Public Class dlgImgManual
 
         Try
 
-            If tImage.WebImage.Image Is Nothing Then
-                tImage.WebImage.FromWeb(Me.txtURL.Text)
+            If tImage.ImageOriginal.Image Is Nothing Then
+                tImage.ImageOriginal.FromWeb(Me.txtURL.Text)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)

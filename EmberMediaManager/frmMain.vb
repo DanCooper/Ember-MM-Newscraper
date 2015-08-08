@@ -1521,8 +1521,8 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.WebImage
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
@@ -1531,10 +1531,10 @@ Public Class frmMain
 
         If Not Master.eSettings.GeneralHideFanart Then
             Dim NeedsGS As Boolean = False
-            If Master.currShow.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage
+            If Master.currShow.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal
             Else
-                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage 'TODO: find a fallback methode
+                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal 'TODO: find a fallback methode
                 NeedsGS = True
             End If
 
@@ -1598,14 +1598,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovie.ImagesContainer.Banner.WebImage
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovie.ImagesContainer.ClearArt.WebImage
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovie.ImagesContainer.ClearLogo.WebImage
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovie.ImagesContainer.DiscArt.WebImage
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovie.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovie.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovie.ImagesContainer.Landscape.WebImage
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovie.ImagesContainer.Poster.WebImage
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovie.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovie.ImagesContainer.ClearArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovie.ImagesContainer.ClearLogo.ImageOriginal
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovie.ImagesContainer.DiscArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovie.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovie.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovie.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovie.ImagesContainer.Poster.ImageOriginal
         'read nfo if it's there
 
         'wait for mediainfo to update the nfo
@@ -1663,14 +1663,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovieSet.ImagesContainer.Banner.WebImage
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovieSet.ImagesContainer.ClearArt.WebImage
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovieSet.ImagesContainer.ClearLogo.WebImage
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovieSet.ImagesContainer.DiscArt.WebImage
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovieSet.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovieSet.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovieSet.ImagesContainer.Landscape.WebImage
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovieSet.ImagesContainer.Poster.WebImage
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovieSet.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovieSet.ImagesContainer.ClearArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovieSet.ImagesContainer.DiscArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovieSet.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovieSet.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovieSet.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovieSet.ImagesContainer.Poster.ImageOriginal
         'read nfo if it's there
 
         If bwLoadMovieSetInfo.CancellationPending Then
@@ -1711,12 +1711,12 @@ Public Class frmMain
 
                         Dim ResImg As Image
                         Dim Poster As New Images
-                        If Movie.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
-                            Poster = Movie.ImagesContainer.Poster.WebImage
-                        ElseIf Not String.IsNullOrEmpty(Movie.ImagesContainer.Poster.LocalFile) Then
-                            Poster.FromFile(Movie.ImagesContainer.Poster.LocalFile)
+                        If Movie.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                            Poster = Movie.ImagesContainer.Poster.ImageOriginal
+                        ElseIf Not String.IsNullOrEmpty(Movie.ImagesContainer.Poster.LocalFilePath) Then
+                            Poster.FromFile(Movie.ImagesContainer.Poster.LocalFilePath)
                         End If
-                        If Movie.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
+                        If Movie.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                             ResImg = CType(Poster.Image.Clone(), Image)
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
                             Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
@@ -1787,10 +1787,10 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.WebImage
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.WebImage
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.WebImage
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
@@ -1799,10 +1799,10 @@ Public Class frmMain
 
         If Not Master.eSettings.GeneralHideFanart Then
             Dim NeedsGS As Boolean = False
-            If Master.currShow.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage
+            If Master.currShow.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal
             Else
-                Me.MainFanart.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFile) 'TODO: find a fallback methode
+                Me.MainFanart.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFilePath) 'TODO: find a fallback methode
                 NeedsGS = True
             End If
 
@@ -1859,14 +1859,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.WebImage
-        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt = Master.currShow.ImagesContainer.CharacterArt.WebImage
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currShow.ImagesContainer.ClearArt.WebImage
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currShow.ImagesContainer.ClearLogo.WebImage
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currShow.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.WebImage
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.WebImage
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.WebImage
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt = Master.currShow.ImagesContainer.CharacterArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currShow.ImagesContainer.ClearArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currShow.ImagesContainer.ClearLogo.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True
@@ -2306,13 +2306,13 @@ Public Class frmMain
                 DBScrapeMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(dRow.Item("idSet")))
 
                 'clone the existing MovieSet with old paths and title to remove old images if the title is changed during the scraping
-                cloneMovieSet.ImagesContainer.Banner.LocalFile = DBScrapeMovieSet.ImagesContainer.Banner.LocalFile
-                cloneMovieSet.ImagesContainer.ClearArt.LocalFile = DBScrapeMovieSet.ImagesContainer.ClearArt.LocalFile
-                cloneMovieSet.ImagesContainer.ClearLogo.LocalFile = DBScrapeMovieSet.ImagesContainer.ClearLogo.LocalFile
-                cloneMovieSet.ImagesContainer.DiscArt.LocalFile = DBScrapeMovieSet.ImagesContainer.DiscArt.LocalFile
-                cloneMovieSet.ImagesContainer.Fanart.LocalFile = DBScrapeMovieSet.ImagesContainer.Fanart.LocalFile
-                cloneMovieSet.ImagesContainer.Landscape.LocalFile = DBScrapeMovieSet.ImagesContainer.Landscape.LocalFile
-                cloneMovieSet.ImagesContainer.Poster.LocalFile = DBScrapeMovieSet.ImagesContainer.Poster.LocalFile
+                cloneMovieSet.ImagesContainer.Banner.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Banner.LocalFilePath
+                cloneMovieSet.ImagesContainer.ClearArt.LocalFilePath = DBScrapeMovieSet.ImagesContainer.ClearArt.LocalFilePath
+                cloneMovieSet.ImagesContainer.ClearLogo.LocalFilePath = DBScrapeMovieSet.ImagesContainer.ClearLogo.LocalFilePath
+                cloneMovieSet.ImagesContainer.DiscArt.LocalFilePath = DBScrapeMovieSet.ImagesContainer.DiscArt.LocalFilePath
+                cloneMovieSet.ImagesContainer.Fanart.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Fanart.LocalFilePath
+                cloneMovieSet.ImagesContainer.Landscape.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Landscape.LocalFilePath
+                cloneMovieSet.ImagesContainer.Poster.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Poster.LocalFilePath
                 cloneMovieSet.MovieSet = New MediaContainers.MovieSet
                 cloneMovieSet.MovieSet.Title = DBScrapeMovieSet.MovieSet.Title
 
@@ -13948,8 +13948,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowBanner(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -13974,16 +13974,16 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASBanner(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonBanner, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonBanner(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
@@ -14032,8 +14032,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainCharacterArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.CharacterArt)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowCharacterArt(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -14131,8 +14131,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainClearArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.ClearArt)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearArt(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -14230,8 +14230,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainClearLogo, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.ClearLogo)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowClearLogo(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -14419,8 +14419,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowFanart(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -14445,16 +14445,16 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASFanart(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonFanart, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonFanart(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
@@ -14475,14 +14475,14 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Fanart.LocalFile) Then
-                                oldImage.WebImage.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFile)
+                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Fanart.LocalFilePath) Then
+                                oldImage.ImageOriginal.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFilePath)
                             End If
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodeFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, oldImage)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodeFanart(Master.currShow)
                                 Me.RefreshRow_TVEpisode(EpisodeID)
@@ -14572,8 +14572,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainLandscape, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Landscape)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowLandscape(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -14598,16 +14598,16 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsLandscape, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Landscape)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASLandscape(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonLandscape, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Landscape)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonLandscape(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
@@ -14702,8 +14702,8 @@ doCancel:
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVShowPoster(Master.currShow)
                                 Me.RefreshRow_TVShow(ShowID)
@@ -14728,16 +14728,16 @@ doCancel:
 
                             If Season = 999 Then
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVASPoster(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
                                 End If
                             Else
                                 tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonPoster, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
-                                If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                    newImage = tImage.WebImage
+                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                    newImage = tImage.ImageOriginal
                                     newImage.IsEdit = True
                                     newImage.SaveAsTVSeasonPoster(Master.currShow)
                                     Me.RefreshRow_TVSeason(SeasonID)
@@ -14757,14 +14757,14 @@ doCancel:
 
                             Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Poster.LocalFile) Then
-                                oldImage.WebImage.FromFile(Master.currShow.ImagesContainer.Poster.LocalFile)
+                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Poster.LocalFilePath) Then
+                                oldImage.ImageOriginal.FromFile(Master.currShow.ImagesContainer.Poster.LocalFilePath)
                             End If
 
                             Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodePoster, Master.currShow.TVEpisode.Season, Master.currShow.TVEpisode.Episode, Master.currShow.Language, Master.currShow.Ordering, oldImage)
 
-                            If tImage IsNot Nothing AndAlso tImage.WebImage.Image IsNot Nothing Then
-                                newImage = tImage.WebImage
+                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                                newImage = tImage.ImageOriginal
                                 newImage.IsEdit = True
                                 newImage.SaveAsTVEpisodePoster(Master.currShow)
                                 Me.RefreshRow_TVEpisode(EpisodeID)
@@ -15482,139 +15482,139 @@ doCancel:
 
 
 
-        If Not BatchMode Then
-            Me.tspbLoading.Style = ProgressBarStyle.Continuous
-            Me.tspbLoading.Value = 0
+        'If Not BatchMode Then
+        '    Me.tspbLoading.Style = ProgressBarStyle.Continuous
+        '    Me.tspbLoading.Value = 0
 
-            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLCommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS COUNT FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
-                Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar)
-                SQLCommand.CommandText = String.Concat("SELECT COUNT(idSeason) AS COUNT FROM seasons WHERE idShow = ", ID, ";")
-                Me.tspbLoading.Maximum = Me.tspbLoading.Maximum + Convert.ToInt32(SQLCommand.ExecuteScalar)
-            End Using
+        '    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+        '        SQLCommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS COUNT FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
+        '        Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar)
+        '        SQLCommand.CommandText = String.Concat("SELECT COUNT(idSeason) AS COUNT FROM seasons WHERE idShow = ", ID, ";")
+        '        Me.tspbLoading.Maximum = Me.tspbLoading.Maximum + Convert.ToInt32(SQLCommand.ExecuteScalar)
+        '    End Using
 
-            Me.tslLoading.Text = String.Concat(Master.eLang.GetString(562, "Reloading Show"), ":")
-            Me.tslLoading.Visible = True
-            Me.tspbLoading.Visible = True
-            Application.DoEvents()
-        End If
+        '    Me.tslLoading.Text = String.Concat(Master.eLang.GetString(562, "Reloading Show"), ":")
+        '    Me.tslLoading.Visible = True
+        '    Me.tspbLoading.Visible = True
+        '    Application.DoEvents()
+        'End If
 
-        Dim tmpShowDb As New Database.DBElement
-        Dim tmpShow As New MediaContainers.TVShow
-        Dim newTable As New DataTable
+        'Dim tmpShowDb As New Database.DBElement
+        'Dim tmpShow As New MediaContainers.TVShow
+        'Dim newTable As New DataTable
 
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        'Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
-        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        'Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        'If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
 
-        tmpShowDb = Master.DB.LoadTVFullShowFromDB(ID)
+        'tmpShowDb = Master.DB.LoadTVFullShowFromDB(ID)
 
-        If tmpShowDb.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpShowDb, Not BatchMode) Then
+        'If tmpShowDb.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpShowDb, Not BatchMode) Then
 
-            If String.IsNullOrEmpty(tmpShowDb.NfoPath) Then
-                Dim sNFO As String = NFO.GetShowNfoPath(tmpShowDb.ShowPath)
-                tmpShowDb.NfoPath = sNFO
-                tmpShow = NFO.LoadTVShowFromNFO(sNFO)
-            Else
-                tmpShow = NFO.LoadTVShowFromNFO(tmpShowDb.NfoPath)
-            End If
-            tmpShowDb.TVShow = tmpShow
+        '    If String.IsNullOrEmpty(tmpShowDb.NfoPath) Then
+        '        Dim sNFO As String = NFO.GetShowNfoPath(tmpShowDb.ShowPath)
+        '        tmpShowDb.NfoPath = sNFO
+        '        tmpShow = NFO.LoadTVShowFromNFO(sNFO)
+        '    Else
+        '        tmpShow = NFO.LoadTVShowFromNFO(tmpShowDb.NfoPath)
+        '    End If
+        '    tmpShowDb.TVShow = tmpShow
 
-            If String.IsNullOrEmpty(tmpShowDb.TVShow.Title) Then
-                tmpShowDb.ListTitle = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath))
-                tmpShowDb.TVShow.Title = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
-            Else
-                Dim tTitle As String = StringUtils.SortTokens_TV(tmpShowDb.TVShow.Title)
-                If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpShowDb.TVShow.Status) Then
-                    tmpShowDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpShowDb.TVShow.Status)
-                Else
-                    tmpShowDb.ListTitle = tTitle
-                End If
-            End If
+        '    If String.IsNullOrEmpty(tmpShowDb.TVShow.Title) Then
+        '        tmpShowDb.ListTitle = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath))
+        '        tmpShowDb.TVShow.Title = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
+        '    Else
+        '        Dim tTitle As String = StringUtils.SortTokens_TV(tmpShowDb.TVShow.Title)
+        '        If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpShowDb.TVShow.Status) Then
+        '            tmpShowDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpShowDb.TVShow.Status)
+        '        Else
+        '            tmpShowDb.ListTitle = tTitle
+        '        End If
+        '    End If
 
-            fScanner.GetTVShowFolderContents(tmpShowDb)
+        '    fScanner.GetTVShowFolderContents(tmpShowDb)
 
-            Master.DB.SaveTVShowToDB(tmpShowDb, False, withEpisodes, BatchMode)
-            RefreshRow_TVShow(tmpShowDb.ID)
+        '    Master.DB.SaveTVShowToDB(tmpShowDb, False, withEpisodes, BatchMode)
+        '    RefreshRow_TVShow(tmpShowDb.ID)
 
-            'If Not BatchMode Then
-            '    Me.tspbLoading.Value += 1
-            '    Application.DoEvents()
-            'End If
+        '    'If Not BatchMode Then
+        '    '    Me.tspbLoading.Value += 1
+        '    '    Application.DoEvents()
+        '    'End If
 
-            If withSeasons Then
-                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ID, ";")
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                        While SQLReader.Read
-                            If Not BatchMode Then
-                                Me.tspbLoading.Value += 1
-                                Application.DoEvents()
-                                Threading.Thread.Sleep(50)
-                            End If
-                            Me.Reload_TVSeason(Convert.ToInt32(SQLReader("idSeason")), True)
-                        End While
-                    End Using
-                End Using
-            End If
+        '    If withSeasons Then
+        '        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+        '            SQLCommand.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ID, ";")
+        '            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+        '                While SQLReader.Read
+        '                    If Not BatchMode Then
+        '                        Me.tspbLoading.Value += 1
+        '                        Application.DoEvents()
+        '                        Threading.Thread.Sleep(50)
+        '                    End If
+        '                    Me.Reload_TVSeason(Convert.ToInt32(SQLReader("idSeason")), True)
+        '                End While
+        '            End Using
+        '        End Using
+        '    End If
 
-            If withEpisodes Then
-                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                        While SQLReader.Read
-                            If Not BatchMode Then
-                                Me.tspbLoading.Value += 1
-                                Application.DoEvents()
-                                Threading.Thread.Sleep(50)
-                            End If
-                            Me.Reload_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), True, True)
-                        End While
-                    End Using
-                End Using
+        '    If withEpisodes Then
+        '        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+        '            SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
+        '            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+        '                While SQLReader.Read
+        '                    If Not BatchMode Then
+        '                        Me.tspbLoading.Value += 1
+        '                        Application.DoEvents()
+        '                        Threading.Thread.Sleep(50)
+        '                    End If
+        '                    Me.Reload_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), True, True)
+        '                End While
+        '            End Using
+        '        End Using
 
-                Master.DB.CleanSeasons(True)
-            End If
-        Else
-            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
-                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
-                                                     Master.eLang.GetString(776, "Remove tv show from library"), _
-                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                Master.DB.DeleteTVShowFromDB(ID, withEpisodes)
-                Return True
-            Else
-                Return False
-            End If
-        End If
+        '        Master.DB.CleanSeasons(True)
+        '    End If
+        'Else
+        '    If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
+        '                                                 Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
+        '                                             Master.eLang.GetString(776, "Remove tv show from library"), _
+        '                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        '        Master.DB.DeleteTVShowFromDB(ID, withEpisodes)
+        '        Return True
+        '    Else
+        '        Return False
+        '    End If
+        'End If
 
-        If Not BatchMode Then
-            SQLtransaction.Commit()
-            SQLtransaction = Nothing
+        'If Not BatchMode Then
+        '    SQLtransaction.Commit()
+        '    SQLtransaction = Nothing
 
-            Dim selI As Integer = 0
+        '    Dim selI As Integer = 0
 
-            If Me.dgvTVShows.SelectedRows.Count > 0 Then selI = Me.dgvTVShows.SelectedRows(0).Index
+        '    If Me.dgvTVShows.SelectedRows.Count > 0 Then selI = Me.dgvTVShows.SelectedRows(0).Index
 
-            Me.dgvTVShows.ClearSelection()
-            Me.dgvTVShows.CurrentCell = Nothing
+        '    Me.dgvTVShows.ClearSelection()
+        '    Me.dgvTVShows.CurrentCell = Nothing
 
-            If Me.dgvTVShows.RowCount - 1 < selI Then selI = Me.dgvTVShows.RowCount
+        '    If Me.dgvTVShows.RowCount - 1 < selI Then selI = Me.dgvTVShows.RowCount
 
-            Me.ClearInfo()
-            Me.dgvTVSeasons.DataSource = Nothing
-            Me.dgvTVEpisodes.DataSource = Nothing
-            Me.prevRow_TVShow = -2
-            Me.currRow_TVShow = -1
+        '    Me.ClearInfo()
+        '    Me.dgvTVSeasons.DataSource = Nothing
+        '    Me.dgvTVEpisodes.DataSource = Nothing
+        '    Me.prevRow_TVShow = -2
+        '    Me.currRow_TVShow = -1
 
-            If Me.dgvTVShows.RowCount > 0 Then
-                Me.dgvTVShows.Rows(selI).Cells("ListTitle").Selected = True
-                Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(selI).Cells("ListTitle")
-            End If
+        '    If Me.dgvTVShows.RowCount > 0 Then
+        '        Me.dgvTVShows.Rows(selI).Cells("ListTitle").Selected = True
+        '        Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(selI).Cells("ListTitle")
+        '    End If
 
-            Me.tslLoading.Visible = False
-            Me.tspbLoading.Visible = False
-        End If
+        '    Me.tslLoading.Visible = False
+        '    Me.tspbLoading.Visible = False
+        'End If
 
         Return False
     End Function

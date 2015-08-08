@@ -583,8 +583,8 @@ Public Class dlgEditTVEpisode
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.EpisodeFanart) Then
                     .btnSetFanartScrape.Enabled = False
                 End If
-                If Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                    .pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.Image
+                If Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    .pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.Image
                     .pbFanart.Tag = Me.tmpDBTVEpisode.ImagesContainer.Fanart
 
                     .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
@@ -598,8 +598,8 @@ Public Class dlgEditTVEpisode
                 If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.EpisodePoster) Then
                     .btnSetPosterScrape.Enabled = False
                 End If
-                If Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
-                    .pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image
+                If Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                    .pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image
                     .pbPoster.Tag = Me.tmpDBTVEpisode.ImagesContainer.Poster
 
                     .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
@@ -651,9 +651,9 @@ Public Class dlgEditTVEpisode
 
     Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVEpisode.ImagesContainer.Fanart = tImage
-            Me.pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.Image
+            Me.pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.Image
             Me.pbFanart.Tag = Me.tmpDBTVEpisode.ImagesContainer.Fanart
             Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
             Me.lblFanartSize.Visible = True
@@ -670,9 +670,9 @@ Public Class dlgEditTVEpisode
 
     Private Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
-        If tImage.WebImage.Image IsNot Nothing Then
+        If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBTVEpisode.ImagesContainer.Poster = tImage
-            Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image
+            Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image
             Me.pbPoster.Tag = Me.tmpDBTVEpisode.ImagesContainer.Poster
             Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
             Me.lblPosterSize.Visible = True
@@ -1101,9 +1101,9 @@ Public Class dlgEditTVEpisode
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.FrameExtrator_TVEpisode Then
-            Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
-            If Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
-                Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image
+            Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+            If Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image
                 Me.pbPoster.Tag = Me.tmpDBTVEpisode.ImagesContainer.Poster
 
                 Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -1124,9 +1124,9 @@ Public Class dlgEditTVEpisode
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.FromFile(ofdImage.FileName)
-                If Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image IsNot Nothing Then
-                    Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image
+                Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.FromFile(ofdImage.FileName)
+                If Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                    Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image
                     Me.pbPoster.Tag = Me.tmpDBTVEpisode.ImagesContainer.Poster
 
                     Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -1144,9 +1144,9 @@ Public Class dlgEditTVEpisode
                 Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVEpisode.ImagesContainer.Poster = tImage
-                        Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.WebImage.Image
+                        Me.pbPoster.Image = Me.tmpDBTVEpisode.ImagesContainer.Poster.ImageOriginal.Image
                         Me.pbPoster.Tag = Me.tmpDBTVEpisode.ImagesContainer.Poster
 
                         Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
@@ -1168,9 +1168,9 @@ Public Class dlgEditTVEpisode
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.FromFile(ofdImage.FileName)
-                If Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.Image IsNot Nothing Then
-                    Me.pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.Image
+                Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdImage.FileName)
+                If Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    Me.pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.Image
                     Me.pbFanart.Tag = Me.tmpDBTVEpisode.ImagesContainer.Fanart
 
                     Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
@@ -1188,9 +1188,9 @@ Public Class dlgEditTVEpisode
                 Dim tImage As MediaContainers.Image
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
-                    If tImage.WebImage.Image IsNot Nothing Then
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
                         Me.tmpDBTVEpisode.ImagesContainer.Fanart = tImage
-                        Me.pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.WebImage.Image
+                        Me.pbFanart.Image = Me.tmpDBTVEpisode.ImagesContainer.Fanart.ImageOriginal.Image
                         Me.pbFanart.Tag = Me.tmpDBTVEpisode.ImagesContainer.Fanart
 
                         Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)

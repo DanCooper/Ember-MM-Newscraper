@@ -72,7 +72,7 @@ Namespace IMDB
                             aParentID = aPar2(0)
                             Dim mSYSX As Match = Regex.Match(aPar(0), "\._V\d+?_SY(\d+?)_SX(\d+?)_")
                             If mSYSX.Success Then
-                                alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value})
+                                alContainer.MainPosters.Add(New MediaContainers.Image With {.URLOriginal = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value})
                             Else
                                 logger.Error("Unknown IMDB Poster URL")
                             End If
@@ -80,7 +80,7 @@ Namespace IMDB
                             aPar2 = aPar(0).Split("."c)
                             aParentID = aPar2(0)
                             aPar(3) = aPar(3).Substring(0, aPar(3).LastIndexOf("_"))
-                            alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = mcIMDB(0).Value, .Width = aPar(2), .Height = aPar(3)})
+                            alContainer.MainPosters.Add(New MediaContainers.Image With {.URLOriginal = mcIMDB(0).Value, .Width = aPar(2), .Height = aPar(3)})
                         End If
                     End If
                     'The URLs can contain SY or SX in them like this:
@@ -90,7 +90,7 @@ Namespace IMDB
                     Dim aSP As String() = Regex.Split(mcIMDB(0).Value, "._V\d+?_S(?:X|Y)\d+?_CR\d+?,\d+?,\d+?,\d+?_")
                     If aSP.Length > 1 Then
                         Dim sUrl1 = aSP(0) + aSP(1)
-                        alContainer.MainPosters.Add(New MediaContainers.Image With {.URL = sUrl1, .Width = "n/a", .Height = "n/a", .Scraper = "IMDB"})
+                        alContainer.MainPosters.Add(New MediaContainers.Image With {.URLOriginal = sUrl1, .Width = "n/a", .Height = "n/a", .Scraper = "IMDB"})
                     End If
                 End If
             Catch ex As Exception
