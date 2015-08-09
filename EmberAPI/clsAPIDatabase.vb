@@ -2274,6 +2274,19 @@ Public Class Database
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
+
+            If Not String.IsNullOrEmpty(_TVDB.EFanartsPath) Then
+                For Each a In FileUtils.GetFilenameList.TVShow(_TVDB.ShowPath, Enums.ModifierType.MainEFanarts)
+                    If Directory.Exists(a) Then
+                        Dim List = (Directory.GetFiles(a))
+                        For Each efFile In List
+                            Dim newEFanart As New MediaContainers.Image
+                            newEFanart.ImageOriginal.FromFile(efFile)
+                            _TVDB.ImagesContainer.ExtraFanarts.Add(newEFanart)
+                        Next
+                    End If
+                Next
+            End If
         End If
 
         'Seasons
@@ -4744,9 +4757,7 @@ Public Class Database
         Private _datemodified As Long
         Private _episodes As New List(Of DBElement)
         Private _episodesorting As Enums.EpisodeSorting
-        Private _extrafanarts As New List(Of String)
         Private _extrafanartspath As String
-        Private _extrathumbs As New List(Of String)
         Private _extrathumbspath As String
         Private _filename As String
         Private _filenameid As Long
@@ -4841,30 +4852,12 @@ Public Class Database
             End Set
         End Property
 
-        Public Property ExtraFanarts() As List(Of String)
-            Get
-                Return Me._extrafanarts
-            End Get
-            Set(ByVal value As List(Of String))
-                Me._extrafanarts = value
-            End Set
-        End Property
-
         Public Property EFanartsPath() As String
             Get
                 Return Me._extrafanartspath
             End Get
             Set(ByVal value As String)
                 Me._extrafanartspath = value
-            End Set
-        End Property
-
-        Public Property ExtraThumbs() As List(Of String)
-            Get
-                Return Me._extrathumbs
-            End Get
-            Set(ByVal value As List(Of String))
-                Me._extrathumbs = value
             End Set
         End Property
 
@@ -5202,9 +5195,7 @@ Public Class Database
             Me._datemodified = -1
             Me._episodes = New List(Of DBElement)
             Me._episodesorting = Enums.EpisodeSorting.Episode
-            Me._extrafanarts = New List(Of String)
             Me._extrafanartspath = String.Empty
-            Me._extrathumbs = New List(Of String)
             Me._extrathumbspath = String.Empty
             Me._filename = String.Empty
             Me._filenameid = -1

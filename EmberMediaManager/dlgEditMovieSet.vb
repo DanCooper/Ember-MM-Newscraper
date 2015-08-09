@@ -326,7 +326,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainBanners.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Banner
                     Me.tmpDBMovieSet.ImagesContainer.Banner = pResults
@@ -384,7 +384,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainClearArts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearArt
                     Me.tmpDBMovieSet.ImagesContainer.ClearArt = pResults
@@ -442,7 +442,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainClearLogos.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearLogo
                     Me.tmpDBMovieSet.ImagesContainer.ClearLogo = pResults
@@ -500,7 +500,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainDiscArts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.DiscArt
                     Me.tmpDBMovieSet.ImagesContainer.DiscArt = pResults
@@ -558,7 +558,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainFanarts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
                     Me.tmpDBMovieSet.ImagesContainer.Fanart = pResults
@@ -616,7 +616,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainLandscapes.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Landscape
                     Me.tmpDBMovieSet.ImagesContainer.Landscape = pResults
@@ -674,7 +674,7 @@ Public Class dlgEditMovieSet
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(Me.tmpDBMovieSet, aContainer, ScrapeModifier) Then
             If aContainer.MainPosters.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
                     Me.tmpDBMovieSet.ImagesContainer.Poster = pResults

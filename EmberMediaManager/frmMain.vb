@@ -2076,7 +2076,7 @@ Public Class frmMain
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                     If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelectNew()
+                        Using dImgSelect As New dlgImgSelect()
                             If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
                                 DBScrapeMovie = dImgSelect.Result
                             End If
@@ -2392,7 +2392,7 @@ Public Class frmMain
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, Args.ScrapeModifier) Then
                     If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelectNew()
+                        Using dImgSelect As New dlgImgSelect()
                             If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
                                 DBScrapeMovieSet = dImgSelect.Result
                             End If
@@ -2537,7 +2537,7 @@ Public Class frmMain
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                     If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelectNew()
+                        Using dImgSelect As New dlgImgSelect()
                             If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.TV, True) = DialogResult.OK Then
                                 DBScrapeShow = dImgSelect.Result
                             End If
@@ -2681,7 +2681,7 @@ Public Class frmMain
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, Args.ScrapeModifier, ScrapeList.Count = 1) Then
                     If Args.scrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelectNew()
+                        Using dImgSelect As New dlgImgSelect()
                             If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, Args.ScrapeModifier, Enums.ContentType.TVEpisode, True) = DialogResult.OK Then
                                 DBScrapeEpisode = dImgSelect.Result
                             End If
@@ -13897,7 +13897,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -13922,7 +13922,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieSet.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
@@ -14080,7 +14080,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -14105,7 +14105,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainBanners.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieSet.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
@@ -14179,7 +14179,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainClearLogos.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -14204,7 +14204,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieset, aContainer, ScrapeModifier) Then
                             If aContainer.MainClearLogos.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieset, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieset.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieset, False)
@@ -14278,7 +14278,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainDiscArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -14303,7 +14303,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainDiscArts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieSet.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
@@ -14368,7 +14368,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainFanarts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -14393,7 +14393,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainFanarts.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieSet.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
@@ -14521,7 +14521,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainLandscapes.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -14546,7 +14546,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainLandscapes.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieSet.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
@@ -14651,7 +14651,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainPosters.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBMovie.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
@@ -14676,7 +14676,7 @@ doCancel:
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
                             If aContainer.MainPosters.Count > 0 Then
-                                Dim dlgImgS As New dlgImgSelectNew()
+                                Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBMovieSet.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)

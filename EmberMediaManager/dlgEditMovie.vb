@@ -35,7 +35,6 @@ Public Class dlgEditMovie
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwEThumbs As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
     Private tmpDBMovie As New Database.DBElement
 
@@ -67,9 +66,6 @@ Public Class dlgEditMovie
     Private pnlETImage() As Panel
 
     'Extrafanarts
-    Private efDeleteList As New List(Of String)
-    Private EFanartsIndex As Integer = -1
-    Private EFanartsList As New List(Of ExtraImages)
     Private EFanartsExtractor As New List(Of String)
     Private EFanartsWarning As Boolean = True
     Private iEFCounter As Integer = 0
@@ -105,7 +101,40 @@ Public Class dlgEditMovie
         Return MyBase.ShowDialog()
     End Function
 
-    Private Sub AddETImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrathumb As ExtraImages)
+    Private Sub AddExtrafanartImage(ByVal sDescription As String, ByVal iIndex As Integer, tImage As MediaContainers.Image)
+        Try
+            ReDim Preserve Me.pnlEFImage(iIndex)
+            ReDim Preserve Me.pbEFImage(iIndex)
+            Me.pnlEFImage(iIndex) = New Panel()
+            Me.pbEFImage(iIndex) = New PictureBox()
+            Me.pbEFImage(iIndex).Name = iIndex.ToString
+            Me.pnlEFImage(iIndex).Name = iIndex.ToString
+            Me.pnlEFImage(iIndex).Size = New Size(128, 72)
+            Me.pbEFImage(iIndex).Size = New Size(128, 72)
+            Me.pnlEFImage(iIndex).BackColor = Color.White
+            Me.pnlEFImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            Me.pbEFImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            Me.pnlEFImage(iIndex).Tag = tImage
+            Me.pbEFImage(iIndex).Tag = tImage
+            Me.pbEFImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            Me.pnlEFImage(iIndex).Left = iEFLeft
+            Me.pbEFImage(iIndex).Left = 0
+            Me.pnlEFImage(iIndex).Top = iEFTop
+            Me.pbEFImage(iIndex).Top = 0
+            Me.pnlEFanarts.Controls.Add(Me.pnlEFImage(iIndex))
+            Me.pnlEFImage(iIndex).Controls.Add(Me.pbEFImage(iIndex))
+            Me.pnlEFImage(iIndex).BringToFront()
+            AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
+            AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Me.iEFTop += 74
+
+    End Sub
+
+    Private Sub AddExtrathumbImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrathumb As ExtraImages)
         Try
             ReDim Preserve Me.pnlETImage(iIndex)
             ReDim Preserve Me.pbETImage(iIndex)
@@ -125,7 +154,7 @@ Public Class dlgEditMovie
             Me.pbETImage(iIndex).Left = 0
             Me.pnlETImage(iIndex).Top = iETTop
             Me.pbETImage(iIndex).Top = 0
-            Me.pnlEThumbsBG.Controls.Add(Me.pnlETImage(iIndex))
+            Me.pnlEThumbs.Controls.Add(Me.pnlETImage(iIndex))
             Me.pnlETImage(iIndex).Controls.Add(Me.pbETImage(iIndex))
             Me.pnlETImage(iIndex).BringToFront()
             AddHandler pbETImage(iIndex).Click, AddressOf pbETImage_Click
@@ -138,79 +167,37 @@ Public Class dlgEditMovie
 
     End Sub
 
-    Private Sub AddEFImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrafanart As ExtraImages)
-        Try
-            ReDim Preserve Me.pnlEFImage(iIndex)
-            ReDim Preserve Me.pbEFImage(iIndex)
-            Me.pnlEFImage(iIndex) = New Panel()
-            Me.pbEFImage(iIndex) = New PictureBox()
-            Me.pbEFImage(iIndex).Name = iIndex.ToString
-            Me.pnlEFImage(iIndex).Name = iIndex.ToString
-            Me.pnlEFImage(iIndex).Size = New Size(128, 72)
-            Me.pbEFImage(iIndex).Size = New Size(128, 72)
-            Me.pnlEFImage(iIndex).BackColor = Color.White
-            Me.pnlEFImage(iIndex).BorderStyle = BorderStyle.FixedSingle
-            Me.pbEFImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-            Me.pnlEFImage(iIndex).Tag = Extrafanart.Image
-            Me.pbEFImage(iIndex).Tag = Extrafanart.Image
-            Me.pbEFImage(iIndex).Image = CType(Extrafanart.Image.Image.Clone(), Image)
-            Me.pnlEFImage(iIndex).Left = iEFLeft
-            Me.pbEFImage(iIndex).Left = 0
-            Me.pnlEFImage(iIndex).Top = iEFTop
-            Me.pbEFImage(iIndex).Top = 0
-            Me.pnlEFanartsBG.Controls.Add(Me.pnlEFImage(iIndex))
-            Me.pnlEFImage(iIndex).Controls.Add(Me.pbEFImage(iIndex))
-            Me.pnlEFImage(iIndex).BringToFront()
-            AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
-            AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Me.iEFTop += 74
-
-    End Sub
-
     Private Sub pbETImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectET(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
+        Me.DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
     End Sub
 
     Private Sub pnlETImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectET(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, Images))
+        Me.DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, Images))
     End Sub
 
     Private Sub pbEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
+        Me.DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub pnlEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, Images))
+        Me.DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
     End Sub
 
-    Private Sub DoSelectET(ByVal iIndex As Integer, tPoster As Images)
-        Try
-            Me.pbEThumbs.Image = tPoster.Image
-            Me.pbEThumbs.Tag = tPoster
-            Me.btnEThumbsSetAsFanart.Enabled = True
-            Me.EThumbsIndex = iIndex
-            Me.lblEThumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEThumbs.Image.Width, Me.pbEThumbs.Image.Height)
-            Me.lblEThumbsSize.Visible = True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+    Private Sub DoSelectExtrathumb(ByVal iIndex As Integer, tPoster As Images)
+        Me.pbEThumbs.Image = tPoster.Image
+        Me.pbEThumbs.Tag = tPoster
+        Me.btnEThumbsSetAsFanart.Enabled = True
+        Me.EThumbsIndex = iIndex
+        Me.lblEThumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEThumbs.Image.Width, Me.pbEThumbs.Image.Height)
+        Me.lblEThumbsSize.Visible = True
     End Sub
 
-    Private Sub DoSelectEF(ByVal iIndex As Integer, tPoster As Images)
-        Try
-            Me.pbEFanarts.Image = tPoster.Image
-            Me.pbEFanarts.Tag = tPoster
-            Me.btnEFanartsSetAsFanart.Enabled = True
-            Me.EFanartsIndex = iIndex
-            Me.lblEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEFanarts.Image.Width, Me.pbEFanarts.Image.Height)
-            Me.lblEFanartsSize.Visible = True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+    Private Sub DoSelectExtrafanart(ByVal iIndex As Integer, tPoster As MediaContainers.Image)
+        Me.pbEFanarts.Image = tPoster.ImageOriginal.Image
+        Me.pbEFanarts.Tag = tPoster
+        Me.btnEFanartsSetAsFanart.Enabled = True
+        Me.lblEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEFanarts.Image.Width, Me.pbEFanarts.Image.Height)
+        Me.lblEFanartsSize.Visible = True
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
@@ -452,10 +439,16 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnEFanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRemove.Click
-        Me.DeleteEFanarts()
-        Me.RefreshEFanarts()
-        Me.lblEFanartsSize.Text = ""
-        Me.lblEFanartsSize.Visible = False
+        RemoveExtrafanart()
+    End Sub
+
+    Private Sub RemoveExtrafanart()
+        If pbEFanarts.Tag IsNot Nothing Then
+            Me.tmpDBMovie.ImagesContainer.ExtraFanarts.Remove(DirectCast(Me.pbEFanarts.Tag, MediaContainers.Image))
+            Me.RefreshEFanarts()
+            Me.lblEFanartsSize.Text = ""
+            Me.lblEFanartsSize.Visible = False
+        End If
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -499,7 +492,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainBanners.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Banner
                     Me.tmpDBMovie.ImagesContainer.Banner = pResults
@@ -565,7 +558,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearArts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearArt
                     Me.tmpDBMovie.ImagesContainer.ClearArt = pResults
@@ -631,7 +624,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearLogo
                     Me.tmpDBMovie.ImagesContainer.ClearLogo = pResults
@@ -697,7 +690,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainDiscArts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.DiscArt
                     Me.tmpDBMovie.ImagesContainer.DiscArt = pResults
@@ -751,12 +744,8 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsSetAsFanart.Click
-        If Not String.IsNullOrEmpty(Me.EFanartsList.Item(Me.EFanartsIndex).Path) AndAlso Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(0, 1) = ":" Then
-            Me.tmpDBMovie.ImagesContainer.Fanart.ImageOriginal.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
-        Else
-            Me.tmpDBMovie.ImagesContainer.Fanart.ImageOriginal.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
-        End If
-        If Me.tmpDBMovie.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+        If Me.pbEFanarts.Tag IsNot Nothing Then
+            Me.tmpDBMovie.ImagesContainer.Fanart = DirectCast(Me.pbEFanarts.Tag, MediaContainers.Image)
             Me.pbFanart.Image = Me.tmpDBMovie.ImagesContainer.Fanart.ImageOriginal.Image
             Me.pbFanart.Tag = Me.tmpDBMovie.ImagesContainer.Fanart
 
@@ -793,7 +782,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
                     Me.tmpDBMovie.ImagesContainer.Fanart = pResults
@@ -808,9 +797,6 @@ Public Class dlgEditMovie
                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
-
-        RefreshEFanarts()
-        RefreshEThumbs()
     End Sub
 
     Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
@@ -862,7 +848,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Landscape
                     Me.tmpDBMovie.ImagesContainer.Landscape = pResults
@@ -928,7 +914,7 @@ Public Class dlgEditMovie
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBMovie, aContainer, ScrapeModifier, True) Then
             If aContainer.MainPosters.Count > 0 Then
-                Dim dlgImgS = New dlgImgSelectNew()
+                Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(Me.tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
                     Me.tmpDBMovie.ImagesContainer.Poster = pResults
@@ -1487,97 +1473,11 @@ Public Class dlgEditMovie
         ET_lFI = Nothing
     End Sub
 
-    Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
-        Dim EF_lFI As New List(Of String)
-        Dim EF_i As Integer = 0
-        Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
-
-        Try
-            ' load local Extrafanarts
-            ' Not Me.tmpDBMovie.RemoveEFanarts Then
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEFanarts)
-                If Directory.Exists(a) Then
-                    EF_lFI.AddRange(Directory.GetFiles(a, "*.jpg"))
-                    If EF_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
-                End If
-            Next
-
-            If EF_lFI.Count > 0 Then
-                For Each fanart As String In EF_lFI
-                    Dim EFImage As New Images
-                    If Me.bwEFanarts.CancellationPending Then Return
-                    If Not Me.efDeleteList.Contains(fanart) Then
-                        EFImage.FromFile(fanart)
-                        EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                        EF_i += 1
-                        If EF_i >= EF_max Then Exit For
-                    End If
-                Next
-            End If
-            'End If
-
-            ' load scraped Extrafanarts
-            'If Not Me.tmpDBMovie.efList Is Nothing Then
-            If Not EF_i >= EF_max Then
-                'For Each fanart As String In Me.tmpDBMovie.efList
-                '    Dim EFImage As New Images
-                '    If Not String.IsNullOrEmpty(fanart) Then
-                '        EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
-                '    End If
-                '    If EFImage.Image IsNot Nothing Then
-                '        EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                '        EF_i += 1
-                '        If EF_i >= EF_max Then Exit For
-                '    End If
-                'Next
-            End If
-            'End If
-
-            'load MovieExtractor Extrafanarts
-            If EFanartsExtractor.Count > 0 Then
-                If Not EF_i >= EF_max Then
-                    For Each thumb As String In EFanartsExtractor
-                        Dim EFImage As New Images
-                        If Me.bwEThumbs.CancellationPending Then Return
-                        If Not Me.etDeleteList.Contains(thumb) Then
-                            EFImage.FromFile(thumb)
-                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(thumb), .Index = EF_i, .Path = thumb})
-                            EF_i += 1
-                            If EF_i >= EF_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            If EF_i >= EF_max AndAlso EFanartsWarning Then
-                MessageBox.Show(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                EFanartsWarning = False 'show warning only one time
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        EF_lFI = Nothing
-    End Sub
-
     Private Sub bwEThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEThumbs.RunWorkerCompleted
         Try
             If EThumbsList.Count > 0 Then
                 For Each tEThumb As ExtraImages In EThumbsList
-                    AddETImage(tEThumb.Name, tEThumb.Index, tEThumb)
-                Next
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub bwEFanarts_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEFanarts.RunWorkerCompleted
-        Try
-            If EFanartsList.Count > 0 Then
-                For Each tEFanart As ExtraImages In EFanartsList
-                    AddEFImage(tEFanart.Name, tEFanart.Index, tEFanart)
+                    AddExtrathumbImage(tEThumb.Name, tEThumb.Index, tEThumb)
                 Next
             End If
         Catch ex As Exception
@@ -1688,41 +1588,12 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub DeleteEFanarts()
-        Try
-            Dim iIndex As Integer = EFanartsIndex
-
-            If iIndex >= 0 Then
-                Dim tPath As String = Me.EFanartsList.Item(iIndex).Path
-                If Me.EFanartsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
-                    'Me.tmpDBMovie.efList.RemoveAll(Function(Str) Str = tPath)
-                    EFanartsList.Remove(EFanartsList.Item(iIndex))
-                Else
-                    efDeleteList.Add(Me.EFanartsList.Item(iIndex).Path)
-                    EFanartsList.Remove(EFanartsList.Item(iIndex))
-                End If
-                pbEFanarts.Image = Nothing
-                btnEFanartsSetAsFanart.Enabled = False
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
     Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Me.MovieTheme.Dispose()
         Me.MovieTheme = Nothing
 
         Me.MovieTrailer.WebTrailer.Dispose()
         Me.MovieTrailer = Nothing
-
-        If EFanartsList IsNot Nothing Then
-            For Each Image In Me.EFanartsList
-                Image.Image.Dispose()
-                Image.Image = Nothing
-            Next
-            EFanartsList = Nothing
-        End If
 
         If EThumbsList IsNot Nothing Then
             For Each Image In Me.EThumbsList
@@ -1731,20 +1602,6 @@ Public Class dlgEditMovie
             Next
             EThumbsList = Nothing
         End If
-    End Sub
-
-    Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Me.bwEThumbs.IsBusy Then Me.bwEThumbs.CancelAsync()
-        While Me.bwEThumbs.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-
-        If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
-        While Me.bwEFanarts.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -2023,13 +1880,10 @@ Public Class dlgEditMovie
                             tcEdit.TabPages.Remove(tpMediaStub)
                         End If
                     End If
-                    .bwEThumbs.WorkerSupportsCancellation = True
-                    .bwEThumbs.RunWorkerAsync()
-                    .bwEFanarts.WorkerSupportsCancellation = True
-                    .bwEFanarts.RunWorkerAsync()
 
                     'Images and TabPages
 
+                    'Banner
                     If Master.eSettings.MovieBannerAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainBanner) Then
                             .btnSetBannerScrape.Enabled = False
@@ -2045,6 +1899,7 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpBanner)
                     End If
 
+                    'ClearArt
                     If Master.eSettings.MovieClearArtAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearArt) Then
                             .btnSetClearArtScrape.Enabled = False
@@ -2060,6 +1915,7 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpClearArt)
                     End If
 
+                    'ClearLogo
                     If Master.eSettings.MovieClearLogoAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearLogo) Then
                             .btnSetClearLogoScrape.Enabled = False
@@ -2075,6 +1931,7 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpClearLogo)
                     End If
 
+                    'DiscArt
                     If Master.eSettings.MovieDiscArtAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainDiscArt) Then
                             .btnSetDiscArtScrape.Enabled = False
@@ -2090,6 +1947,34 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpDiscArt)
                     End If
 
+                    'Extrafanarts
+                    If Master.eSettings.MovieEFanartsAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart) Then
+                            '.btnSetFanartScrape.Enabled = False
+                        End If
+                        If Me.tmpDBMovie.ImagesContainer.ExtraFanarts.Count > 0 Then
+                            Dim iIndex As Integer = 0
+                            For Each img As MediaContainers.Image In Me.tmpDBMovie.ImagesContainer.ExtraFanarts
+                                AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                                iIndex += 1
+                            Next
+                        End If
+                    Else
+                        tcEdit.TabPages.Remove(tpEFanarts)
+                    End If
+
+                    'Extrafanarts
+                    If Master.eSettings.MovieEThumbsAnyEnabled Then
+                        If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart) Then
+                            '.btnSetFanartScrape.Enabled = False
+                        End If
+                        .bwEThumbs.WorkerSupportsCancellation = True
+                        .bwEThumbs.RunWorkerAsync()
+                    Else
+                        tcEdit.TabPages.Remove(tpEThumbs)
+                    End If
+
+                    'Fanart
                     If Master.eSettings.MovieFanartAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart) Then
                             .btnSetFanartScrape.Enabled = False
@@ -2105,6 +1990,7 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpFanart)
                     End If
 
+                    'Landscape
                     If Master.eSettings.MovieLandscapeAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainLandscape) Then
                             .btnSetLandscapeScrape.Enabled = False
@@ -2120,6 +2006,7 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpLandscape)
                     End If
 
+                    'Poster
                     If Master.eSettings.MoviePosterAnyEnabled Then
                         If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster) Then
                             .btnSetPosterScrape.Enabled = False
@@ -2135,29 +2022,7 @@ Public Class dlgEditMovie
                         tcEdit.TabPages.Remove(tpPoster)
                     End If
 
-
-
-
-                    If Master.eSettings.MovieEFanartsAnyEnabled Then 'TODO: add buttons for extrafanarts
-                        'If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
-                        '    .btnSetMovieEFanarstScrape.Enabled = False
-                        'End If
-                    Else
-                        tcEdit.TabPages.Remove(tpEFanarts)
-                    End If
-
-                    If Master.eSettings.MovieEThumbsAnyEnabled Then 'TODO: add buttons for extrathumbs
-                        'If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
-                        '    .btnSetMovieEThumbsScrape.Enabled = False
-                        'End If
-                    Else
-                        tcEdit.TabPages.Remove(tpEThumbs)
-                    End If
-
-                    If Not Master.eSettings.MovieTrailerAnyEnabled Then
-                        tcEdit.TabPages.Remove(tpTrailer)
-                    End If
-
+                    'Theme
                     If Not Master.eSettings.MovieThemeAnyEnabled Then
                         tcEdit.TabPages.Remove(tpTheme)
                     End If
@@ -2170,6 +2035,11 @@ Public Class dlgEditMovie
                         ThemeAddToPlayer(MovieTheme)
                     End If
 
+                    'Trailer
+                    If Not Master.eSettings.MovieTrailerAnyEnabled Then
+                        tcEdit.TabPages.Remove(tpTrailer)
+                    End If
+
                     If Not String.IsNullOrEmpty(Me.tmpDBMovie.TrailerPath) AndAlso Me.tmpDBMovie.TrailerPath.Substring(0, 1) = ":" Then
                         MovieTrailer.WebTrailer.FromWeb(Me.tmpDBMovie.TrailerPath.Substring(1, Me.tmpDBMovie.TrailerPath.Length - 1))
                         TrailerPlaylistAdd(MovieTrailer)
@@ -2178,6 +2048,7 @@ Public Class dlgEditMovie
                         TrailerPlaylistAdd(MovieTrailer)
                     End If
 
+                    'DiscStub
                     If Path.GetExtension(Me.tmpDBMovie.Filename).ToLower = ".disc" Then
                         Dim DiscStub As New MediaStub.DiscStub
                         DiscStub = MediaStub.LoadDiscStub(Me.tmpDBMovie.Filename)
@@ -2266,7 +2137,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub lvEFanart_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Delete Then Me.DeleteEFanarts()
+        If e.KeyCode = Keys.Delete Then RemoveExtrafanart()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -2703,8 +2574,8 @@ Public Class dlgEditMovie
 
             Me.iETTop = 1 ' set first image top position back to 1
             Me.EThumbsList.Clear()
-            While Me.pnlEThumbsBG.Controls.Count > 0
-                Me.pnlEThumbsBG.Controls(0).Dispose()
+            While Me.pnlEThumbs.Controls.Count > 0
+                Me.pnlEThumbs.Controls(0).Dispose()
             End While
 
             Me.bwEThumbs.WorkerSupportsCancellation = True
@@ -2715,64 +2586,25 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub RefreshEFanarts()
-        Try
-            If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
-            While Me.bwEFanarts.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+        'Me.pnlEFanarts.AutoScrollPosition = New Point(0, 0)
+        iEFTop = 1
+        While Me.pnlEFanarts.Controls.Count > 0
+            Me.pnlEFanarts.Controls(0).Dispose()
+        End While
 
-            Me.iEFTop = 1 ' set first image top position back to 1
-            Me.EFanartsList.Clear()
-            While Me.pnlEFanartsBG.Controls.Count > 0
-                Me.pnlEFanartsBG.Controls(0).Dispose()
-            End While
-
-            Me.bwEFanarts.WorkerSupportsCancellation = True
-            Me.bwEFanarts.RunWorkerAsync()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        If Me.tmpDBMovie.ImagesContainer.ExtraFanarts.Count > 0 Then
+            Dim iIndex As Integer = 0
+            For Each img As MediaContainers.Image In Me.tmpDBMovie.ImagesContainer.ExtraFanarts
+                AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                iIndex += 1
+            Next
+        End If
     End Sub
 
     Private Sub RenumberEThumbs()
         For i As Integer = 0 To EThumbsList.Count - 1
             EThumbsList.Item(i).Index = i + 1
         Next
-    End Sub
-
-    Private Sub SaveEThumbsList()
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
-                If Directory.Exists(a) Then
-                    FileUtils.Delete.DeleteDirectory(a)
-                End If
-            Next
-
-            For Each eThumb As ExtraImages In EThumbsList
-                Me.tmpDBMovie.EThumbsPath = eThumb.Image.SaveAsMovieExtrathumb(Me.tmpDBMovie)
-            Next
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub SaveEFanartsList()
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBMovie.Filename, Me.tmpDBMovie.IsSingle, Enums.ModifierType.MainEFanarts)
-                If Directory.Exists(a) Then
-                    FileUtils.Delete.DeleteDirectory(a)
-                End If
-            Next
-
-            For Each eFanart As ExtraImages In EFanartsList
-                Me.tmpDBMovie.EFanartsPath = eFanart.Image.SaveAsMovieExtrafanart(Me.tmpDBMovie, eFanart.Name)
-            Next
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub SelectMPAA()
@@ -2964,10 +2796,6 @@ Public Class dlgEditMovie
                     End If
                     Me.tmpDBMovie.Subtitles.Remove(Subtitle)
                 Next
-
-                .SaveEThumbsList()
-
-                .SaveEFanartsList()
 
             End With
         Catch ex As Exception

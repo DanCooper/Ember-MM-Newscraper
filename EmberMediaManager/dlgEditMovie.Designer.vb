@@ -154,7 +154,7 @@ Partial Class dlgEditMovie
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tpEFanarts = New System.Windows.Forms.TabPage()
         Me.lblEFanartsSize = New System.Windows.Forms.Label()
-        Me.pnlEFanartsBG = New System.Windows.Forms.Panel()
+        Me.pnlEFanarts = New System.Windows.Forms.Panel()
         Me.pnlEFanartsSetAsFanart = New System.Windows.Forms.Panel()
         Me.btnEFanartsSetAsFanart = New System.Windows.Forms.Button()
         Me.btnEFanartsRefresh = New System.Windows.Forms.Button()
@@ -165,7 +165,7 @@ Partial Class dlgEditMovie
         Me.pbEFanarts = New System.Windows.Forms.PictureBox()
         Me.tpEThumbs = New System.Windows.Forms.TabPage()
         Me.lblEThumbsSize = New System.Windows.Forms.Label()
-        Me.pnlEThumbsBG = New System.Windows.Forms.Panel()
+        Me.pnlEThumbs = New System.Windows.Forms.Panel()
         Me.pnlMovieETQueue = New System.Windows.Forms.Panel()
         Me.lbMovieEThumbsQueue = New System.Windows.Forms.Label()
         Me.btnMovieEThumbsTransfer = New System.Windows.Forms.Button()
@@ -1714,7 +1714,7 @@ Partial Class dlgEditMovie
         'tpEFanarts
         '
         Me.tpEFanarts.Controls.Add(Me.lblEFanartsSize)
-        Me.tpEFanarts.Controls.Add(Me.pnlEFanartsBG)
+        Me.tpEFanarts.Controls.Add(Me.pnlEFanarts)
         Me.tpEFanarts.Controls.Add(Me.pnlEFanartsSetAsFanart)
         Me.tpEFanarts.Controls.Add(Me.btnEFanartsRefresh)
         Me.tpEFanarts.Controls.Add(Me.btnEFanartsRemove)
@@ -1739,14 +1739,14 @@ Partial Class dlgEditMovie
         Me.lblEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblEFanartsSize.Visible = False
         '
-        'pnlEFanartsBG
+        'pnlEFanarts
         '
-        Me.pnlEFanartsBG.AutoScroll = True
-        Me.pnlEFanartsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEFanartsBG.Location = New System.Drawing.Point(5, 8)
-        Me.pnlEFanartsBG.Name = "pnlEFanartsBG"
-        Me.pnlEFanartsBG.Size = New System.Drawing.Size(165, 408)
-        Me.pnlEFanartsBG.TabIndex = 15
+        Me.pnlEFanarts.AutoScroll = True
+        Me.pnlEFanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlEFanarts.Location = New System.Drawing.Point(5, 8)
+        Me.pnlEFanarts.Name = "pnlEFanarts"
+        Me.pnlEFanarts.Size = New System.Drawing.Size(165, 408)
+        Me.pnlEFanarts.TabIndex = 15
         '
         'pnlEFanartsSetAsFanart
         '
@@ -1838,7 +1838,7 @@ Partial Class dlgEditMovie
         'tpEThumbs
         '
         Me.tpEThumbs.Controls.Add(Me.lblEThumbsSize)
-        Me.tpEThumbs.Controls.Add(Me.pnlEThumbsBG)
+        Me.tpEThumbs.Controls.Add(Me.pnlEThumbs)
         Me.tpEThumbs.Controls.Add(Me.pnlMovieETQueue)
         Me.tpEThumbs.Controls.Add(Me.pnlEThumbsSetAsFanart)
         Me.tpEThumbs.Controls.Add(Me.btnEThumbsRefresh)
@@ -1864,14 +1864,14 @@ Partial Class dlgEditMovie
         Me.lblEThumbsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblEThumbsSize.Visible = False
         '
-        'pnlEThumbsBG
+        'pnlEThumbs
         '
-        Me.pnlEThumbsBG.AutoScroll = True
-        Me.pnlEThumbsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEThumbsBG.Location = New System.Drawing.Point(5, 8)
-        Me.pnlEThumbsBG.Name = "pnlEThumbsBG"
-        Me.pnlEThumbsBG.Size = New System.Drawing.Size(165, 408)
-        Me.pnlEThumbsBG.TabIndex = 7
+        Me.pnlEThumbs.AutoScroll = True
+        Me.pnlEThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlEThumbs.Location = New System.Drawing.Point(5, 8)
+        Me.pnlEThumbs.Name = "pnlEThumbs"
+        Me.pnlEThumbs.Size = New System.Drawing.Size(165, 408)
+        Me.pnlEThumbs.TabIndex = 7
         '
         'pnlMovieETQueue
         '
@@ -2694,8 +2694,8 @@ Partial Class dlgEditMovie
     Friend WithEvents lbMovieEFanartsQueue As System.Windows.Forms.Label
     Friend WithEvents btnMovieEFanartsTransfer As System.Windows.Forms.Button
     Friend WithEvents pbEFanarts As System.Windows.Forms.PictureBox
-    Friend WithEvents pnlEThumbsBG As System.Windows.Forms.Panel
-    Friend WithEvents pnlEFanartsBG As System.Windows.Forms.Panel
+    Friend WithEvents pnlEThumbs As System.Windows.Forms.Panel
+    Friend WithEvents pnlEFanarts As System.Windows.Forms.Panel
     Friend WithEvents lblEFanartsSize As System.Windows.Forms.Label
     Friend WithEvents lblEThumbsSize As System.Windows.Forms.Label
     Friend WithEvents tpMediaStub As System.Windows.Forms.TabPage
