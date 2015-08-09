@@ -163,6 +163,7 @@ Namespace FileUtils
             'Return filename/path of the largest file that is over 1 GB in size.
             Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
         End Function
+
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>
@@ -351,6 +352,94 @@ Namespace FileUtils
             End While
             dbTV.IsOnline = True
             Return True
+        End Function
+
+        ''' <summary>
+        ''' Gets total size in bytes for given subtree specified by directory path
+        ''' </summary>
+        ''' <param name="spathDirectory">Path represented the location of the directory</param>
+        ''' <returns>Total size in bytes for the given folder</returns>
+        ''' <remarks></remarks>
+        Public Shared Function GetFolderSize(ByVal spathDirectory As String) As Long
+            Dim size As Long = 0
+            If System.IO.Directory.Exists(spathDirectory) Then
+                ' Take a snapshot of the file system.
+                Dim dir As New System.IO.DirectoryInfo(spathDirectory)
+                ' This method assumes that the application has discovery permissions
+                ' for all folders under the specified path.
+                Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
+
+                For Each fi As FileInfo In fileList
+                    size += GetFileLength(fi)
+                Next
+            Else
+                logger.Debug("Can't calculate foldersize! Not a valid directory: ", spathDirectory)
+            End If
+            'Return the size of the smallest file
+            Return size
+        End Function
+
+        ''' <summary>
+        ''' Get filename of largest file for given subtree specified by directory path
+        ''' </summary>
+        ''' <param name="spathDirectory">Path represented the location of the directory</param>
+        ''' <returns>Filename of largest file for the given folder</returns>
+        ''' <remarks></remarks>
+        Public Shared Function GetLargestFilePathFromDir(spathDirectory As String) As String
+            ' Take a snapshot of the file system.
+            Dim dir As New System.IO.DirectoryInfo(spathDirectory)
+            ' This method assumes that the application has discovery permissions
+            ' for all folders under the specified path.
+            Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
+            'Return the size of the largest file
+            Dim maxSize As Long = (From file In fileList Let len = GetFileLength(file) Select len).Max()
+            logger.Debug("The length of the largest file under {0} is {1}", spathDirectory, maxSize)
+            ' Return the FileInfo object for the largest file
+            ' by sorting and selecting from beginning of list
+            Dim longestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Descending Select file).First()
+            logger.Debug("The largest file under {0} is {1} with a length of {2} bytes", spathDirectory, longestFile.FullName, longestFile.Length)
+            Return longestFile.FullName
+        End Function
+
+        ''' <summary>
+        ''' Get filename of smallest file for given subtree specified by directory path
+        ''' </summary>
+        ''' <param name="spathDirectory">Path represented the location of the directory</param>
+        ''' <returns>Filename of smallest file for the given folder</returns>
+        ''' <remarks></remarks>
+        Public Shared Function GetSmallestFilePathFromDir(spathDirectory As String) As String
+            ' Take a snapshot of the file system.
+            Dim dir As New System.IO.DirectoryInfo(spathDirectory)
+            ' This method assumes that the application has discovery permissions
+            ' for all folders under the specified path.
+            Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
+            'Return the FileInfo of the smallest file
+            Dim smallestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Ascending Select file).First()
+            logger.Debug("The smallest file under {0} is {1} with a length of {2} bytes", spathDirectory, smallestFile.FullName, smallestFile.Length)
+            Return smallestFile.FullName
+        End Function
+
+        ''' <summary>
+        ''' Helper: Get filesize of specific file, handling exception
+        ''' </summary>
+        ''' <param name="fi">FileInfo of specific file</param>
+        ''' <returns>FileSize of the given file</returns>
+        ''' <remarks>
+        ''' ' This method is used to swallow the possible exception
+        ''' ' that can be raised when accessing the FileInfo.Length property.
+        ''' ' In this particular case, it is safe to swallow the exception.
+        ''' </remarks>
+        Private Shared Function GetFileLength(fi As System.IO.FileInfo) As Long
+            Dim retval As Long
+            Try
+                retval = fi.Length
+            Catch ex As System.IO.FileNotFoundException
+                ' If a file is no longer present,
+                ' just add zero bytes to the total.
+                logger.Error(String.Concat("Specific file is no longer present!", ex))
+                retval = 0
+            End Try
+            Return retval
         End Function
 
 #End Region 'Methods

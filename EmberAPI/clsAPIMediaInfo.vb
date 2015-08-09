@@ -718,6 +718,7 @@ Public Class MediaInfo
                             If Directory.Exists(driveletter & "VIDEO_TS") Then
                                 sPath = driveletter & "VIDEO_TS"
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
+                                'get foldersize information
                             ElseIf Directory.Exists(driveletter & "BDMV\STREAM") Then
                                 sPath = driveletter & "BDMV\STREAM"
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
@@ -789,7 +790,7 @@ Public Class MediaInfo
                     'MultiViewLayout (http://matroska.org/technical/specs/index.html#StereoMode)
                     miVideo.MultiViewLayout = Me.Get_(StreamKind.Visual, v, "MultiView_Layout")
                     'Encoder-settings
-                    miVideo.EncodedSettings = Me.Get_(StreamKind.Visual, v, "Encoded_Library_Settings")
+                    'miVideo.EncodedSettings = Me.Get_(StreamKind.Visual, v, "Encoded_Library_Settings")
                     'cocotus end
                     miVideo.StereoMode = ConvertVStereoMode(miVideo.MultiViewLayout)
 
@@ -829,6 +830,12 @@ Public Class MediaInfo
                         If Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage) <> "" Then
                             miVideo.Language = Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage)
                         End If
+                    End If
+
+                    If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
+                        miVideo.Filesize = FileUtils.Common.GetFolderSize(Directory.GetParent(sPath).FullName)
+                    Else
+                        miVideo.Filesize = If(Double.TryParse(Me.Get_(StreamKind.General, 0, "FileSize"), 0), CDbl(Me.Get_(StreamKind.General, 0, "FileSize")), 0)
                     End If
 
                     'With miVideo
@@ -901,6 +908,8 @@ Public Class MediaInfo
                         fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                     End If
                 Next
+
+
 
                 Me.Close()
             End If
@@ -1479,7 +1488,7 @@ Public Class MediaInfo
         'XBMC multiview layout type (http://wiki.xbmc.org/index.php?title=3D)
         Private _stereomode As String = String.Empty
         Private _width As String = String.Empty
-
+        Private _filesize As Double = 0
 
 #End Region 'Fields
 
@@ -1550,23 +1559,6 @@ Public Class MediaInfo
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._duration)
-            End Get
-        End Property
-
-        <XmlElement("encodedsettings")> _
-        Public Property EncodedSettings() As String
-            Get
-                Return Me._encoded_Settings.Trim()
-            End Get
-            Set(ByVal Value As String)
-                Me._encoded_Settings = Value
-            End Set
-        End Property
-
-        <XmlIgnore> _
-        Public ReadOnly Property EncodedSettingsSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._encoded_Settings)
             End Get
         End Property
 
@@ -1703,6 +1695,28 @@ Public Class MediaInfo
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._width)
+            End Get
+        End Property
+
+        <XmlElement("filesize")> _
+        Public Property Filesize() As Double
+            Get
+                Return Me._filesize
+            End Get
+            Set(ByVal Value As Double)
+                'for now save filesize in bytes(default)
+                Me._filesize = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property FilesizeSpecified() As Boolean
+            Get
+                If Me._filesize = 0 Then
+                    Return False
+                Else
+                    Return True
+                End If
             End Get
         End Property
 
