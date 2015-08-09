@@ -79,6 +79,42 @@ Public Class NumUtils
         End If
     End Function
 
+
+    ''' <summary>
+    ''' Converts a value in bytes to a value represented in megabytes/gigabytes/terabytes/petabytes. Rounds the value to the desired accuracy.
+    ''' </summary>
+    ''' <param name="lengthInBytes">Initial byte value</param>
+    ''' <param name="desiredPrecision">Desired value precision</param>
+    ''' <returns>Value in megabyte/gigabyte/terabytes/petabytes with desired accuracy</returns>
+    Public Shared Function ConvertBytesTo(lengthInBytes As Long, unitName As FileSizeUnit, desiredPrecision As Integer) As Double
+        Dim Factor As Long = 1024
+        Select Case unitName
+            Case FileSizeUnit.[Byte]
+                Return lengthInBytes
+            Case FileSizeUnit.Kilobyte
+                Return Math.Round((lengthInBytes / Factor), desiredPrecision)
+            Case FileSizeUnit.Megabyte
+                Return Math.Round((lengthInBytes / Factor / Factor), desiredPrecision)
+            Case FileSizeUnit.Gigabyte
+                Return Math.Round((lengthInBytes / Factor / Factor / Factor), desiredPrecision)
+            Case FileSizeUnit.Terabyte
+                Return Math.Round((lengthInBytes / Factor / Factor / Factor / Factor), desiredPrecision)
+            Case FileSizeUnit.Petabyte
+                Return Math.Round((lengthInBytes / Factor / Factor / Factor / Factor / Factor), desiredPrecision)
+            Case Else
+                Return Math.Round((lengthInBytes / Factor / Factor / Factor / Factor / Factor / Factor), desiredPrecision)
+        End Select
+    End Function
+    Public Enum FileSizeUnit
+        [Byte] = 0
+        Kilobyte = 2
+        Megabyte = 4
+        Gigabyte = 8
+        Terabyte = 16
+        Petabyte = 32
+        Exabyte = 64
+    End Enum
+
 #End Region 'Methods
 
 End Class

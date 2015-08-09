@@ -288,7 +288,7 @@ Public Class dlgExportMovies
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         'We want to use new mediainfo fields in template to -> make them avalaible here!
                         Dim _vidBitrate As String = String.Empty
-                        Dim _vidEncodedSettings As String = String.Empty
+                        Dim _vidFileSize As String = String.Empty
                         Dim _vidMultiViewCount As String = String.Empty
                         Dim _vidMultiViewLayout As String = String.Empty
                         Dim _audBitrate As String = String.Empty
@@ -320,8 +320,8 @@ Public Class dlgExportMovies
                                 If Not String.IsNullOrEmpty(tVid.Bitrate) Then
                                     _vidBitrate = tVid.Bitrate
                                 End If
-                                If Not String.IsNullOrEmpty(tVid.EncodedSettings) Then
-                                    _vidEncodedSettings = tVid.EncodedSettings
+                                If tVid.Filesize <> 0 Then
+                                    _vidFileSize = CStr(tVid.Filesize)
                                 End If
                                 If Not String.IsNullOrEmpty(tVid.MultiViewCount) Then
                                     _vidMultiViewCount = tVid.MultiViewCount
@@ -466,7 +466,7 @@ Public Class dlgExportMovies
                         row = row.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(_curMovie))) 'All sets which movie belongs to, seperated with ;!
                         row = row.Replace("<$VIDEOBITRATE>", _vidBitrate)
                         row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiViewCount)
-                        row = row.Replace("<$VIDEOENCODINGSETTINGS>", _vidEncodedSettings)
+                        row = row.Replace("<$VIDEOFILESIZE>", _vidFileSize)
                         row = row.Replace("<$AUDIOBITRATE>", _audBitrate)
                         'Unlocking more fields to use in templates!
                         row = row.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!

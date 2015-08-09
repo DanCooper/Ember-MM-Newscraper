@@ -1289,10 +1289,13 @@ Public Class NFO
                         If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, Environment.NewLine)
                         If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, Environment.NewLine)
                         If Not String.IsNullOrEmpty(miVideo.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(609, "Duration"), miVideo.Duration, Environment.NewLine)
+                        'for now return filesize in mbytes instead of bytes(default)
+                        If miVideo.Filesize > 0 Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1455, "Filesize [MB]"), CStr(NumUtils.ConvertBytesTo(CLng(miVideo.Filesize), NumUtils.FileSizeUnit.Megabyte, 0)), Environment.NewLine)
+                        If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(610, "Language"), miVideo.LongLanguage, Environment.NewLine)
                         If Not String.IsNullOrEmpty(miVideo.MultiViewCount) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, Environment.NewLine)
                         If Not String.IsNullOrEmpty(miVideo.MultiViewLayout) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, Environment.NewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(609, "Duration"), miVideo.Duration)
-                        If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("{0}- {1}: {2}", Environment.NewLine, Master.eLang.GetString(610, "Language"), miVideo.LongLanguage)
+                        If Not String.IsNullOrEmpty(miVideo.StereoMode) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(1286, "StereoMode"), miVideo.StereoMode)
                         iVS += 1
                     Next
 
@@ -1444,7 +1447,7 @@ Public Class NFO
             fivOut.Bitrate = String.Empty
             fivOut.MultiViewCount = String.Empty
             fivOut.MultiViewLayout = String.Empty
-            fivOut.EncodedSettings = String.Empty
+            fivOut.Filesize = 0
             'cocotus end
 
             For Each miVideo As MediaInfo.Video In miFIV.StreamDetails.Video
@@ -1468,8 +1471,8 @@ Public Class NFO
                         'MultiViewLayout (3D) handling, simply map field
                         fivOut.MultiViewLayout = miVideo.MultiViewLayout
 
-                        'EncodedSettings handling, simply map field
-                        fivOut.EncodedSettings = miVideo.EncodedSettings
+                        'FileSize handling, simply map field
+                        fivOut.Filesize = miVideo.Filesize
 
                         'Bitrate handling, simply map field
                         fivOut.Bitrate = miVideo.Bitrate

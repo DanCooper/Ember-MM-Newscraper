@@ -238,13 +238,12 @@ Public Class dlgFileInfo
                 i.SubItems.Add(Master.eLang.GetString(607, "Height"))
                 i.SubItems.Add(Master.eLang.GetString(608, "Aspect"))
                 i.SubItems.Add(Master.eLang.GetString(609, "Duration"))
+                i.SubItems.Add(Master.eLang.GetString(1455, "Filesize [MB]"))
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
                 i.SubItems.Add(Master.eLang.GetString(1158, "Bitrate"))
                 i.SubItems.Add(Master.eLang.GetString(1156, "MultiView Count"))
                 i.SubItems.Add(Master.eLang.GetString(1157, "MultiView Layout"))
                 i.SubItems.Add(Master.eLang.GetString(1286, "StereoMode"))
-                i.SubItems.Add(Master.eLang.GetString(1159, "Encoding Settings"))
-
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
 
@@ -261,13 +260,12 @@ Public Class dlgFileInfo
                         i.SubItems.Add(v.Height)
                         i.SubItems.Add(v.Aspect)
                         i.SubItems.Add(v.Duration)
+                        i.SubItems.Add(CStr(NumUtils.ConvertBytesTo(CLng(v.Filesize), NumUtils.FileSizeUnit.Megabyte, 0)))
                         i.SubItems.Add(v.LongLanguage)
                         i.SubItems.Add(v.Bitrate)
                         i.SubItems.Add(v.MultiViewCount)
                         i.SubItems.Add(v.MultiViewLayout)
                         i.SubItems.Add(v.StereoMode)
-                        i.SubItems.Add(v.EncodedSettings)
-
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)
                     End If

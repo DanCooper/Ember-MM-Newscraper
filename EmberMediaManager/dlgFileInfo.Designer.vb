@@ -31,19 +31,19 @@ Partial Class dlgFileInfo
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.lvStreams = New System.Windows.Forms.ListView()
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colIndex = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colCodec = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colScanType = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colWidth = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colHeight = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colAspect = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colFileSize = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colLanguage = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colBitrate = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMultiView_Count = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMultiView_Layout = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colStereoMode = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnRemoveSet = New System.Windows.Forms.Button()
         Me.btnEditSet = New System.Windows.Forms.Button()
         Me.btnNewSet = New System.Windows.Forms.Button()
@@ -66,7 +66,7 @@ Partial Class dlgFileInfo
         Me.lvStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13})
+        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colIndex, Me.colCodec, Me.colScanType, Me.colWidth, Me.colHeight, Me.colAspect, Me.colDuration, Me.colFileSize, Me.colLanguage, Me.colBitrate, Me.colMultiView_Count, Me.colMultiView_Layout, Me.colStereoMode})
         Me.lvStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvStreams.FullRowSelect = True
         ListViewGroup1.Header = "Video Streams"
@@ -84,63 +84,70 @@ Partial Class dlgFileInfo
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
-        Me.lvStreams.Size = New System.Drawing.Size(862, 315)
+        Me.lvStreams.Size = New System.Drawing.Size(932, 315)
         Me.lvStreams.TabIndex = 1
         Me.lvStreams.UseCompatibleStateImageBehavior = False
         Me.lvStreams.View = System.Windows.Forms.View.Details
         '
-        'ColumnHeader1
+        'colIndex
         '
-        Me.ColumnHeader1.Width = 25
+        Me.colIndex.Width = 20
         '
-        'ColumnHeader2
+        'colCodec
         '
-        Me.ColumnHeader2.Width = 90
+        Me.colCodec.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colCodec.Width = 85
         '
-        'ColumnHeader3
+        'colScanType
         '
-        Me.ColumnHeader3.Width = 90
+        Me.colScanType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colScanType.Width = 85
         '
-        'ColumnHeader4
+        'colWidth
         '
-        Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'ColumnHeader5
+        'colHeight
         '
-        Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'ColumnHeader6
+        'colAspect
         '
-        Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colAspect.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'ColumnHeader7
+        'colDuration
         '
-        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colDuration.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'ColumnHeader8
+        'colFileSize
         '
-        Me.ColumnHeader8.Width = 90
+        Me.colFileSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colFileSize.Width = 80
         '
-        'ColumnHeader9
+        'colLanguage
         '
-        Me.ColumnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader9.Width = 78
+        Me.colLanguage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colLanguage.Width = 70
         '
-        'ColumnHeader10
+        'colBitrate
         '
-        Me.ColumnHeader10.Width = 100
+        Me.colBitrate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colBitrate.Width = 50
         '
-        'ColumnHeader11
+        'colMultiView_Count
         '
-        Me.ColumnHeader11.Width = 120
+        Me.colMultiView_Count.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colMultiView_Count.Width = 100
         '
-        'ColumnHeader12
+        'colMultiView_Layout
         '
-        Me.ColumnHeader12.Width = 120
+        Me.colMultiView_Layout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colMultiView_Layout.Width = 100
         '
-        'ColumnHeader13
+        'colStereoMode
         '
-        Me.ColumnHeader13.Width = 120
+        Me.colStereoMode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colStereoMode.Width = 80
         '
         'btnRemoveSet
         '
@@ -208,7 +215,7 @@ Partial Class dlgFileInfo
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(874, 354)
+        Me.ClientSize = New System.Drawing.Size(944, 354)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.lblStreamType)
         Me.Controls.Add(Me.cbStreamType)
@@ -229,23 +236,23 @@ Partial Class dlgFileInfo
     End Sub
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents lvStreams As System.Windows.Forms.ListView
-    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colIndex As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colCodec As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colScanType As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colWidth As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colHeight As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
     Friend WithEvents btnEditSet As System.Windows.Forms.Button
     Friend WithEvents btnNewSet As System.Windows.Forms.Button
     Friend WithEvents lblStreamType As System.Windows.Forms.Label
     Friend WithEvents cbStreamType As System.Windows.Forms.ComboBox
-    Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader8 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader9 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader10 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader11 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader12 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader13 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colAspect As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colDuration As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colFileSize As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colLanguage As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colBitrate As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colMultiView_Count As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colMultiView_Layout As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colStereoMode As System.Windows.Forms.ColumnHeader
 
 End Class
