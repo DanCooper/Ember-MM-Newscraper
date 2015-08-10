@@ -2814,6 +2814,8 @@ Public Class Images
                     DefaultImagesContainer.Banner = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
         End If
 
         'Main CharacterArt
@@ -2833,6 +2835,8 @@ Public Class Images
                     DefaultImagesContainer.CharacterArt = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.CharacterArt = DBElement.ImagesContainer.CharacterArt
         End If
 
         'Main ClearArt
@@ -2856,6 +2860,8 @@ Public Class Images
                     DefaultImagesContainer.ClearArt = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.ClearArt = DBElement.ImagesContainer.ClearArt
         End If
 
         'Main ClearLogo
@@ -2879,6 +2885,8 @@ Public Class Images
                     DefaultImagesContainer.ClearLogo = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.ClearLogo = DBElement.ImagesContainer.ClearLogo
         End If
 
         'Main DiscArt
@@ -2900,6 +2908,8 @@ Public Class Images
                     DefaultImagesContainer.DiscArt = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
         End If
 
         'Main Extrafanarts
@@ -2931,6 +2941,8 @@ Public Class Images
                     End If
                 End If
             End If
+        Else
+            DefaultImagesContainer.ExtraFanarts = DBElement.ImagesContainer.ExtraFanarts
         End If
 
         'Main Fanart
@@ -2962,6 +2974,8 @@ Public Class Images
                     DefaultImagesContainer.Fanart = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.Fanart = DBElement.ImagesContainer.Fanart
         End If
 
         'Main Landscape
@@ -2991,6 +3005,8 @@ Public Class Images
                     DefaultImagesContainer.Landscape = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.Landscape = DBElement.ImagesContainer.Landscape
         End If
 
         'Main Poster
@@ -3022,6 +3038,8 @@ Public Class Images
                     DefaultImagesContainer.Poster = defImg
                 End If
             End If
+        Else
+            DefaultImagesContainer.Poster = DBElement.ImagesContainer.Poster
         End If
 
         'Episodes while tv show scraping
@@ -3041,6 +3059,8 @@ Public Class Images
                         sContainer.Fanart = defImg
                     End If
                 End If
+            Else
+                sContainer.Fanart = sEpisode.ImagesContainer.Fanart
             End If
 
             'Poster
@@ -3056,6 +3076,8 @@ Public Class Images
                         sContainer.Poster = defImg
                     End If
                 End If
+            Else
+                sContainer.Poster = sEpisode.ImagesContainer.Poster
             End If
 
             DefaultEpisodeImagesContainer.Add(sContainer)
@@ -3082,6 +3104,8 @@ Public Class Images
                         sContainer.Banner = defImg
                     End If
                 End If
+            Else
+                sContainer.Banner = sSeason.ImagesContainer.Banner
             End If
 
             'Fanart
@@ -3101,6 +3125,8 @@ Public Class Images
                         sContainer.Fanart = defImg
                     End If
                 End If
+            Else
+                sContainer.Fanart = sSeason.ImagesContainer.Fanart
             End If
 
             'Landscape
@@ -3120,6 +3146,8 @@ Public Class Images
                         sContainer.Landscape = defImg
                     End If
                 End If
+            Else
+                sContainer.Landscape = sSeason.ImagesContainer.Landscape
             End If
 
             'Poster
@@ -3139,300 +3167,12 @@ Public Class Images
                         sContainer.Poster = defImg
                     End If
                 End If
+            Else
+                sContainer.Poster = sSeason.ImagesContainer.Poster
             End If
 
             DefaultSeasonImagesContainer.Add(sContainer)
         Next
-    End Sub
-
-    Public Shared Sub SetDefaultImages_TV(ByRef DBTV As Database.DBElement, _
-                                          ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
-                                          ByRef DefaultSeasonImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer), _
-                                          ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer), _
-                                          ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, _
-                                          ByRef ScrapeModifier As Structures.ScrapeModifier)
-
-        'Banner Show
-        If ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled Then
-            If DBTV.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.Banner = DBTV.ImagesContainer.Banner
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.Banner = defImg
-                    DefaultImagesContainer.Banner = defImg
-                End If
-            End If
-        End If
-
-        'CharacterArt Show
-        If ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled Then
-            If DBTV.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.CharacterArt = DBTV.ImagesContainer.CharacterArt
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowCharacterArt(SearchResultsContainer.MainCharacterArts, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.CharacterArt = defImg
-                    DefaultImagesContainer.CharacterArt = defImg
-                End If
-            End If
-        End If
-
-        'ClearArt Show
-        If ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled Then
-            If DBTV.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.ClearArt = DBTV.ImagesContainer.ClearArt
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowClearArt(SearchResultsContainer.MainClearArts, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.ClearArt = defImg
-                    DefaultImagesContainer.ClearArt = defImg
-                End If
-            End If
-        End If
-
-        'ClearLogo Show
-        If ScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled Then
-            If DBTV.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.ClearLogo = DBTV.ImagesContainer.ClearLogo
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowClearLogo(SearchResultsContainer.MainClearLogos, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.ClearLogo = defImg
-                    DefaultImagesContainer.ClearLogo = defImg
-                End If
-            End If
-        End If
-
-        'Fanart Show
-        If (ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.MainFanart) Then
-            If DBTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.Fanart = DBTV.ImagesContainer.Fanart
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowFanart(SearchResultsContainer.MainFanarts, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.Fanart = defImg
-                    DefaultImagesContainer.Fanart = defImg
-                End If
-            End If
-        End If
-
-        'Landscape Show
-        If ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled Then
-            If DBTV.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.Landscape = DBTV.ImagesContainer.Landscape
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowLandscape(SearchResultsContainer.MainLandscapes, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.Landscape = defImg
-                    DefaultImagesContainer.Landscape = defImg
-                End If
-            End If
-        End If
-
-        'Poster Show
-        If ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled Then
-            If DBTV.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                DefaultImagesContainer.Poster = DBTV.ImagesContainer.Poster
-            Else
-                Dim defImg As MediaContainers.Image = Nothing
-                Images.GetPreferredTVShowPoster(SearchResultsContainer.MainPosters, defImg)
-
-                If defImg IsNot Nothing Then
-                    DBTV.ImagesContainer.Poster = defImg
-                    DefaultImagesContainer.Poster = defImg
-                End If
-            End If
-        End If
-
-        'Season / AllSeasons Banner/Fanart/Poster
-        If (ScrapeModifier.SeasonBanner OrElse ScrapeModifier.SeasonFanart _
-            OrElse ScrapeModifier.SeasonLandscape OrElse ScrapeModifier.SeasonPoster) AndAlso DBTV.Seasons IsNot Nothing Then
-            For Each cSeason As Database.DBElement In DBTV.Seasons.OrderBy(Function(f) f.TVSeason.Season)
-                Dim iSeason As Integer = cSeason.TVSeason.Season
-                Dim SIC As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = iSeason}
-
-                If iSeason = 999 Then
-                    'Banner AllSeasons 
-                    If ScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVASBannerAnyEnabled Then
-                        If cSeason.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Banner = cSeason.ImagesContainer.Banner
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Banner = defImg
-                                SIC.Banner = defImg
-                            End If
-                        End If
-                    End If
-                Else
-                    'Banner Season
-                    If ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled Then
-                        If cSeason.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Banner = cSeason.ImagesContainer.Banner
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, iSeason)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Banner = defImg
-                                SIC.Banner = defImg
-                            End If
-                        End If
-                    End If
-                End If
-
-                If iSeason = 999 Then
-                    'Fanart AllSeasons
-                    If ScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVASFanartAnyEnabled Then
-                        If cSeason.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Fanart = cSeason.ImagesContainer.Fanart
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Fanart = defImg
-                                SIC.Fanart = defImg
-                            End If
-                        End If
-                    End If
-                Else
-                    'Fanart Season
-                    If ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled Then
-                        If cSeason.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Fanart = cSeason.ImagesContainer.Fanart
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, iSeason)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Fanart = defImg
-                                SIC.Fanart = defImg
-                            End If
-                        End If
-                    End If
-                End If
-
-                If iSeason = 999 Then
-                    'Landscape AllSeasons
-                    If ScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVASLandscapeAnyEnabled Then
-                        If cSeason.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Landscape = cSeason.ImagesContainer.Landscape
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Landscape = defImg
-                                SIC.Landscape = defImg
-                            End If
-                        End If
-                    End If
-                Else
-                    ' Landscape Season
-                    If ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled Then
-                        If cSeason.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Landscape = cSeason.ImagesContainer.Landscape
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, iSeason)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Landscape = defImg
-                                SIC.Landscape = defImg
-                            End If
-                        End If
-                    End If
-                End If
-
-                If iSeason = 999 Then
-                    'Poster AllSeasons
-                    If ScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
-                        If cSeason.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Poster = cSeason.ImagesContainer.Poster
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVASPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Poster = defImg
-                                SIC.Poster = defImg
-                            End If
-                        End If
-                    End If
-                Else
-                    'Poster Season
-                    If ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled Then
-                        If cSeason.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                            SIC.Poster = cSeason.ImagesContainer.Poster
-                        Else
-                            Dim defImg As MediaContainers.Image = Nothing
-                            Images.GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, iSeason)
-
-                            If defImg IsNot Nothing Then
-                                cSeason.ImagesContainer.Poster = defImg
-                                SIC.Poster = defImg
-                            End If
-                        End If
-                    End If
-                End If
-                DefaultSeasonImagesContainer.Add(SIC)
-            Next
-        End If
-
-        'Episode Fanart/Poster
-        If (ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.EpisodePoster) AndAlso DBTV.Episodes IsNot Nothing Then
-            For Each cEpisode As Database.DBElement In DBTV.Episodes
-                Dim iEpisode As Integer = cEpisode.TVEpisode.Episode
-                Dim iSeason As Integer = cEpisode.TVEpisode.Season
-                Dim EIC As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Episode = iEpisode, .Season = iSeason}
-
-                'Fanart Episode
-                If ScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    If cEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                        EIC.Fanart = cEpisode.ImagesContainer.Fanart
-                    Else
-                        Dim defImg As MediaContainers.Image = Nothing
-                        Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, iSeason, iEpisode)
-
-                        If defImg IsNot Nothing Then
-                            cEpisode.ImagesContainer.Fanart = defImg
-                            EIC.Fanart = defImg
-                        End If
-                    End If
-                End If
-
-                'Poster Episode
-                If ScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then
-                    If cEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                        EIC.Poster = cEpisode.ImagesContainer.Poster
-                    Else
-                        Dim defImg As MediaContainers.Image = Nothing
-                        Images.GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, iSeason, iEpisode)
-
-                        If defImg IsNot Nothing Then
-                            cEpisode.ImagesContainer.Poster = defImg
-                            EIC.Poster = defImg
-                        End If
-                    End If
-                End If
-            Next
-        End If
     End Sub
     ''' <summary>
     ''' Determines the <c>ImageCodecInfo</c> from a given <c>ImageFormat</c>

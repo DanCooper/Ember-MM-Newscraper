@@ -1893,23 +1893,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieTrailerEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTrailerEnable.CheckedChanged
-        Me.SetApplyButton(True)
-
-        Me.chkMovieTrailerOverwrite.Enabled = Me.chkMovieTrailerEnable.Checked
-        Me.chkMovieTrailerDeleteExisting.Enabled = Me.chkMovieTrailerEnable.Checked
-
-        If Not Me.chkMovieTrailerEnable.Checked Then
-            Me.chkMovieTrailerOverwrite.Checked = False
-            Me.chkMovieTrailerDeleteExisting.Checked = False
-            Me.cbMovieTrailerMinVideoQual.Enabled = False
-            Me.cbMovieTrailerPrefVideoQual.Enabled = False
-        Else
-            Me.cbMovieTrailerMinVideoQual.Enabled = True
-            Me.cbMovieTrailerPrefVideoQual.Enabled = True
-        End If
-    End Sub
-
     Private Sub chkProxyCredsEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProxyCredsEnable.CheckedChanged
         Me.SetApplyButton(True)
         Me.txtProxyUsername.Enabled = Me.chkProxyCredsEnable.Checked
@@ -3008,7 +2991,6 @@ Public Class dlgSettings
             Me.chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
             Me.chkMovieThemeOverwrite.Checked = .MovieThemeOverwrite
             Me.chkMovieTrailerDeleteExisting.Checked = .MovieTrailerDeleteExisting
-            Me.chkMovieTrailerEnable.Checked = .MovieTrailerEnable
             Me.chkMovieTrailerOverwrite.Checked = .MovieTrailerOverwrite
             Me.chkTVASBannerOverwrite.Checked = .TVASBannerOverwrite
             Me.chkTVASBannerPrefSizeOnly.Checked = .TVASBannerPrefSizeOnly
@@ -4821,7 +4803,6 @@ Public Class dlgSettings
             .MovieThemeOverwrite = Me.chkMovieThemeOverwrite.Checked
             .MovieTrailerDefaultSearch = Me.txtMovieTrailerDefaultSearch.Text
             .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
-            .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
             .MovieTrailerOverwrite = Me.chkMovieTrailerOverwrite.Checked
             .MovieTrailerMinVideoQual = CType(Me.cbMovieTrailerMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
             .MovieTrailerPrefVideoQual = CType(Me.cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
@@ -6359,7 +6340,6 @@ Public Class dlgSettings
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack {0}filename{1}"), "<", ">")
         Me.chkMovieTrailerDeleteExisting.Text = Master.eLang.GetString(522, "Delete All Existing")
-        Me.chkMovieTrailerEnable.Text = Master.eLang.GetString(529, "Enable Trailer Support")
         Me.chkMovieUnstackExpertMulti.Text = Master.eLang.GetString(1179, "also save unstacked")
         Me.chkMovieUseBaseDirectoryExpertBDMV.Text = Master.eLang.GetString(1180, "Use Base Directory")
         Me.chkMovieXBMCProtectVTSBDMV.Text = Master.eLang.GetString(1176, "Protect DVD/Bluray Structure")

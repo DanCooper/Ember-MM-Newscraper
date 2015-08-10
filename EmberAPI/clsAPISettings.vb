@@ -4052,15 +4052,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieTrailerEnable() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieTrailerEnable
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieTrailerEnable = value
-        End Set
-    End Property
-
     Public Property MovieScraperCertForMPAA() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCertForMPAA
@@ -6828,7 +6819,6 @@ Public Class Settings
         Me.MovieThemeOverwrite = True
         Me.MovieTrailerDefaultSearch = "trailer"
         Me.MovieTrailerDeleteExisting = True
-        Me.MovieTrailerEnable = True
         Me.MovieTrailerOverwrite = True
         Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.Any
         Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any

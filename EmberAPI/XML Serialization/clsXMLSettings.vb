@@ -285,7 +285,6 @@ Partial Public Class clsXMLSettings
     Private _moviethemeoverwrite As Boolean
     Private _movietrailerdefaultsearch As String
     Private _movietrailerdeleteexisting As Boolean
-    Private _movietrailerenable As Boolean
     Private _movietraileroverwrite As Boolean
     Private _movietrailerminvideoqual As Enums.TrailerVideoQuality
     Private _movietrailerprefvideoqual As Enums.TrailerVideoQuality
@@ -4953,15 +4952,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._generaltvshowtheme = value
-        End Set
-    End Property
-
-    Public Property MovieTrailerEnable() As Boolean
-        Get
-            Return Me._movietrailerenable
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movietrailerenable = value
         End Set
     End Property
 
