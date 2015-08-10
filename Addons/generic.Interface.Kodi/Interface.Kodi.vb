@@ -369,7 +369,7 @@ Public Class KodiInterface
         MySettings.Moviesetartpath = clsAdvancedSettings.GetSetting("Moviesetartpath", "")
         'load XML configuration of hosts
         Dim hostsPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Hosts.xml")
-        Dim tmphosts As New EmberAPI.clsXMLHosts
+        Dim tmphosts As New clsXMLHosts
         Dim xHosts As New Xml.Serialization.XmlSerializer(tmphosts.GetType)
         If IO.File.Exists(hostsPath) Then
             Dim objStreamReader As StreamReader
@@ -377,7 +377,17 @@ Public Class KodiInterface
             MySettings.KodiHosts = CType(xHosts.Deserialize(objStreamReader), clsXMLHosts)
             objStreamReader.Close()
         Else
-            'setting file is missing, should not be happening at all...
+            'setting file is missing
+            Dim hostsPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultHosts.xml")
+            Dim objStreamReader As StreamReader
+            objStreamReader = New StreamReader(hostsPathD)
+            MySettings.KodiHosts = CType(xHosts.Deserialize(objStreamReader), clsXMLHosts)
+            objStreamReader.Close()
+            Try
+                File.Copy(hostsPathD, hostsPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
         End If
     End Sub
     ''' <summary>
@@ -583,18 +593,14 @@ Public Class KodiInterface
         End If
         If Not String.IsNullOrEmpty(aPath) Then
 
-            'get up to date host configuration
+            'get up to date host configuration/save host file
             MySettings.KodiHosts = _setup.xmlHosts
-            Dim tmpKodiHosts As New EmberAPI.clsXMLHosts
+            Dim tmpKodiHosts As New clsXMLHosts
             tmpKodiHosts = _setup.xmlHosts
             Dim xmlSer As New Xml.Serialization.XmlSerializer(MySettings.KodiHosts.GetType)
             Using xmlSW As New StreamWriter(aPath)
                 xmlSer.Serialize(xmlSW, MySettings.KodiHosts)
             End Using
-            Dim objStreamReader As New StreamReader(aPath)
-            Dim xHosts As New Xml.Serialization.XmlSerializer(APIXML.HostsXML.GetType)
-            APIXML.HostsXML = CType(xHosts.Deserialize(objStreamReader), clsXMLHosts)
-            objStreamReader.Close()
         End If
     End Sub
     ''' <summary>
@@ -1000,7 +1006,7 @@ Public Class KodiInterface
 
 #Region "Fields"
         'Kodi Host type already declared in EmberAPI (XML serialization)
-        Dim KodiHosts As EmberAPI.clsXMLHosts
+        Dim KodiHosts As clsXMLHosts
         Dim SendNotifications As Boolean
         Dim SyncPlayCountHost As String
         Dim SyncPlayCount As Boolean

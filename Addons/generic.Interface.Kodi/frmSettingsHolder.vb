@@ -26,7 +26,7 @@ Public Class frmSettingsHolder
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     'reflects the current host(s) settings/setup configured in settings, will be filled at module startup from XML settings (and is used to write changes of settings back into XML)
-    Public xmlHosts As New EmberAPI.clsXMLHosts
+    Public xmlHosts As New clsXMLHosts
 #End Region 'Fields
 
 #Region "Events"
@@ -147,8 +147,8 @@ Public Class frmSettingsHolder
             dlg.lstAllHosts.Clear()
             dlg.lstAllHosts = xmlHosts.host.ToList
             If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Dim tmphost As EmberAPI.Host
-                tmphost = New EmberAPI.Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked}
+                Dim tmphost As Host
+                tmphost = New Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked}
                 If dlg.rbHostWindows.Checked Then
                     tmphost.remotepathseparator = "\"
                 Else
@@ -156,7 +156,7 @@ Public Class frmSettingsHolder
                 End If
                 For i = 0 To dlg.dgvHostSources.Rows.Count - 1
                     If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
-                        Dim tmpsource As New EmberAPI.HostSource
+                        Dim tmpsource As New HostSource
                         tmpsource.type = CStr(dlg.dgvHostSources.Rows(i).Cells(2).FormattedValue)
                         tmpsource.applicationpath = CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)
                         tmpsource.remotepath = CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)
@@ -190,7 +190,7 @@ Public Class frmSettingsHolder
                 dlg.lstAllHosts = xmlHosts.host.Where(Function(y) y.name <> Me.lbHosts.SelectedItem.ToString).ToList
                 dlg.currentHost = xmlHosts.host.FirstOrDefault(Function(y) y.name = Me.lbHosts.SelectedItem.ToString)
                 If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Dim tmphost As EmberAPI.Host
+                    Dim tmphost As Host
                     tmphost = xmlHosts.host.FirstOrDefault(Function(y) y.name = Me.lbHosts.SelectedItem.ToString)
                     tmphost.name = dlg.txtLabel.Text
                     tmphost.address = dlg.txtHostIP.Text
@@ -208,7 +208,7 @@ Public Class frmSettingsHolder
                     ReDim tmphost.source(0)
                     For i = 0 To dlg.dgvHostSources.Rows.Count - 1
                         If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
-                            Dim tmpsource As New EmberAPI.HostSource
+                            Dim tmpsource As New HostSource
                             tmpsource.type = CStr(dlg.dgvHostSources.Rows(i).Cells(2).FormattedValue)
                             tmpsource.applicationpath = CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)
                             tmpsource.remotepath = CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)

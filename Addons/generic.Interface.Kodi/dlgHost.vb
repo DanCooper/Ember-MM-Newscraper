@@ -31,9 +31,9 @@ Public Class dlgHost
     'backgroundworker used for JSON request(s) like Populate Sources/Check Connection in this form
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     'current edited host
-    Public currentHost As New EmberAPI.Host
+    Public currentHost As New Host
     'list of all configured KodiHosts (beside currentHost)
-    Public lstAllHosts As New List(Of EmberAPI.Host)
+    Public lstAllHosts As New List(Of Host)
     'all sources of current host
     Private currentHostSources As New List(Of XBMCRPC.List.Items.SourcesItem)
     'JSONRPC version of host - may be retrieved manually if user hits "Check Connection" button
@@ -191,7 +191,7 @@ Public Class dlgHost
         txtUsername.Enabled = False
         dgvHostSources.Enabled = False
         'set currentHost
-        currentHost = New EmberAPI.Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked}
+        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked}
         'start request in backgroundworker -> getSources
         bwLoadInfo.RunWorkerAsync(1)
         While bwLoadInfo.IsBusy
@@ -273,7 +273,7 @@ Public Class dlgHost
 
         JsonHostversion = ""
         'set currentHost
-        currentHost = New EmberAPI.Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked}
+        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked}
         'start backgroundworker: check for JSONversion
         bwLoadInfo.RunWorkerAsync(2)
         While bwLoadInfo.IsBusy
