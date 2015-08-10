@@ -38,6 +38,8 @@ Partial Public Class Host
 
     Private realtimesyncField As Boolean
 
+    Private moviesetpathField As String
+
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute("source")> _
     Public Property source() As HostSource()
@@ -123,6 +125,17 @@ Partial Public Class Host
         End Get
         Set(value As Boolean)
             Me.realtimesyncField = value
+        End Set
+    End Property
+
+    '''<remarks/>
+    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    Public Property moviesetpath() As String
+        Get
+            Return Me.moviesetpathField
+        End Get
+        Set(value As String)
+            Me.moviesetpathField = value
         End Set
     End Property
 End Class

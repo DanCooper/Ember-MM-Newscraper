@@ -77,6 +77,7 @@ Public Class dlgHost
                 Me.rbHostLinux.Checked = True
             End If
             chkHostRealTimeSync.Checked = currentHost.realtimesync
+            Me.txtHostMoviesetPath.Text = currentHost.moviesetpath
         Else
             'new host entry
             currentHost = New Host
@@ -103,6 +104,7 @@ Public Class dlgHost
 
         Me.gbHostDetails.Text = Master.eLang.GetString(1425, "Kodi Host")
         Me.gbHostSourceType.Text = Master.eLang.GetString(1426, "Kodi Source type")
+        Me.gbHostMoviesetPath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder")
         Me.rbHostLinux.Text = Master.eLang.GetString(1427, "Windows UNC/Linux/MacOS X/Openelec")
         Me.rbHostWindows.Text = Master.eLang.GetString(1428, "Windows Drive Letter (X:\)")
 
@@ -191,7 +193,7 @@ Public Class dlgHost
         txtUsername.Enabled = False
         dgvHostSources.Enabled = False
         'set currentHost
-        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked}
+        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked, .moviesetpath = txtHostMoviesetPath.Text}
         'start request in backgroundworker -> getSources
         bwLoadInfo.RunWorkerAsync(1)
         While bwLoadInfo.IsBusy
@@ -273,7 +275,7 @@ Public Class dlgHost
 
         JsonHostversion = ""
         'set currentHost
-        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked}
+        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked, .moviesetpath = txtHostMoviesetPath.Text}
         'start backgroundworker: check for JSONversion
         bwLoadInfo.RunWorkerAsync(2)
         While bwLoadInfo.IsBusy

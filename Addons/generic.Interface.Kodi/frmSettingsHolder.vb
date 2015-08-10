@@ -62,7 +62,6 @@ Public Class frmSettingsHolder
         Me.btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
         Me.chkNotification.Text = Master.eLang.GetString(1441, "Send Notifications")
         Me.chkPlayCount.Text = Master.eLang.GetString(1454, "Retrieve PlayCount from") & ":"
-        Me.lblmoviesetartpath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder") & ":"
     End Sub
 
     ''' <summary>
@@ -148,7 +147,7 @@ Public Class frmSettingsHolder
             dlg.lstAllHosts = xmlHosts.host.ToList
             If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 Dim tmphost As Host
-                tmphost = New Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked}
+                tmphost = New Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked, .moviesetpath = dlg.txtHostMoviesetPath.Text}
                 If dlg.rbHostWindows.Checked Then
                     tmphost.remotepathseparator = "\"
                 Else
@@ -198,6 +197,7 @@ Public Class frmSettingsHolder
                     tmphost.username = dlg.txtUsername.Text
                     tmphost.password = dlg.txtPassword.Text
                     tmphost.realtimesync = dlg.chkHostRealTimeSync.Checked
+                    tmphost.moviesetpath = dlg.txtHostMoviesetPath.Text
                     If dlg.rbHostWindows.Checked Then
                         tmphost.remotepathseparator = "\"
                     Else
@@ -260,17 +260,6 @@ Public Class frmSettingsHolder
     ''' </remarks>
     Private Sub chkPlayCount_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlayCount.CheckedChanged
         cbPlayCountHost.Enabled = chkPlayCount.Checked
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    ''' <summary>
-    '''  Setting "Kodi MovieSet Artwork Folder" changed
-    ''' </summary>
-    ''' <param name="sender">"Kodi MovieSet Artwork Folder"-textbox in Form</param>
-    ''' <remarks>
-    ''' 2015/07/08 Cocotus - First implementation
-    ''' </remarks>
-    Private Sub txtmoviesetartpath_TextChanged(sender As Object, e As EventArgs) Handles txtmoviesetartpath.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

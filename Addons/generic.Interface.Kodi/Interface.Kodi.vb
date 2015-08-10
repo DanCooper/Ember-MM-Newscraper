@@ -186,18 +186,17 @@ Public Class KodiInterface
 
                     'MovieSet syncing
                 Case Enums.ModuleEventType.Sync_MovieSet
-                    If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
-                        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No Remote MoviesetPath configured!")
-                    Else
-                        Dim tDBMovieset As EmberAPI.Database.DBElement = DirectCast(_refparam, EmberAPI.Database.DBElement)
-                        If tDBMovieset.MovieList.Count > 0 Then
-                            If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
-                                For Each host In MySettings.KodiHosts.host.ToList
-                                    'only update movie if realtimesync of host is enabled
-                                    If host.realtimesync Then
+                    Dim tDBMovieset As EmberAPI.Database.DBElement = DirectCast(_refparam, EmberAPI.Database.DBElement)
+                    If tDBMovieset.MovieList.Count > 0 Then
+                        If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
+                            For Each host In MySettings.KodiHosts.host.ToList
+                                'only update movie if realtimesync of host is enabled
+                                If host.realtimesync Then
+                                    'only update movie if moviesetpath of host is set
+                                    If Not String.IsNullOrEmpty(host.moviesetpath) Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, MySettings.Moviesetartpath, MySettings.SendNotifications))
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, host.moviesetpath, MySettings.SendNotifications))
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
                                         '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
@@ -206,16 +205,19 @@ Public Class KodiInterface
                                         '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
                                         '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
                                         'End If
+                                    Else
+                                        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: " & host.name & " | No Remote MoviesetPath configured!")
                                     End If
-                                Next
-                            Else
-                                logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: Please Scrape In Ember First!")
-                                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
-                            End If
+                                End If
+                            Next
                         Else
-                            logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No movies in set!")
+                            logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: Please Scrape In Ember First!")
+                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                         End If
+                    Else
+                        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No movies in set!")
                     End If
+
 
                     'Episode syncing
                 Case Enums.ModuleEventType.Sync_TVEpisode
@@ -366,7 +368,6 @@ Public Class KodiInterface
         MySettings.SendNotifications = clsAdvancedSettings.GetBooleanSetting("HostNotifications", False)
         MySettings.SyncPlayCount = clsAdvancedSettings.GetBooleanSetting("SyncPlayCount", False)
         MySettings.SyncPlayCountHost = clsAdvancedSettings.GetSetting("SyncPlayCountHost", "")
-        MySettings.Moviesetartpath = clsAdvancedSettings.GetSetting("Moviesetartpath", "")
         'load XML configuration of hosts
         Dim hostsPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Hosts.xml")
         Dim tmphosts As New clsXMLHosts
@@ -522,7 +523,6 @@ Public Class KodiInterface
         Me._setup.chkEnabled.Checked = Me._enabled
 
         'consider user settings
-        Me._setup.txtmoviesetartpath.Text = MySettings.Moviesetartpath
         Me._setup.chkNotification.Checked = MySettings.SendNotifications
         Me._setup.chkPlayCount.Checked = MySettings.SyncPlayCount
         Me._setup.xmlHosts = MySettings.KodiHosts
@@ -561,7 +561,6 @@ Public Class KodiInterface
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.SendNotifications = Me._setup.chkNotification.Checked
-        MySettings.Moviesetartpath = Me._setup.txtmoviesetartpath.Text
         MySettings.SyncPlayCount = _setup.chkPlayCount.Checked
         MySettings.SyncPlayCountHost = If(Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing, Me._setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
         SaveSettings()
@@ -583,7 +582,6 @@ Public Class KodiInterface
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("HostNotifications", MySettings.SendNotifications)
             settings.SetBooleanSetting("SyncPlayCount", MySettings.SyncPlayCount)
-            settings.SetSetting("Moviesetartpath", MySettings.Moviesetartpath)
             settings.SetSetting("SyncPlayCountHost", MySettings.SyncPlayCountHost)
         End Using
         'XML host configuration will be saved/updated
@@ -661,21 +659,22 @@ Public Class KodiInterface
     ''' Update details of movieset in Kodi DB
     ''' </remarks>
     Private Async Sub cmnuKodiSync_Movieset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_Movieset.Click
-        If String.IsNullOrEmpty(MySettings.Moviesetartpath) Then
-            logger.Warn("[KodiInterface] cmnuKodiSync_Movieset_Click: No Remote MoviesetPath configured!")
-            Exit Sub
-        End If
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             If Master.currMovieSet.MovieList.Count > 0 Then
                 Cursor.Current = Cursors.WaitCursor
                 If Not String.IsNullOrEmpty(Master.currMovieSet.ID.ToString) Then
                     For Each host In MySettings.KodiHosts.host.ToList
-                        Dim _APIKodi As New Kodi.APIKodi(host)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                        If Await _APIKodi.UpdateMovieSetInfo(Master.currMovieSet.ID, MySettings.Moviesetartpath, MySettings.SendNotifications) Then
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                        'only update movie if moviesetpath of host is set
+                        If Not String.IsNullOrEmpty(host.moviesetpath) Then
+                            Dim _APIKodi As New Kodi.APIKodi(host)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                            If Await _APIKodi.UpdateMovieSetInfo(Master.currMovieSet.ID, host.moviesetpath, MySettings.SendNotifications) Then
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                            Else
+                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovieSet.MovieSet.Title, Nothing}))
+                            End If
                         Else
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovieSet.MovieSet.Title, Nothing}))
+                            logger.Warn("[KodiInterface] cmnuKodiSync_Movieset_Click: " & host.name & " | No Remote MoviesetPath configured!")
                         End If
                     Next
                 Else
@@ -1010,7 +1009,6 @@ Public Class KodiInterface
         Dim SendNotifications As Boolean
         Dim SyncPlayCountHost As String
         Dim SyncPlayCount As Boolean
-        Dim Moviesetartpath As String
 #End Region 'Fields
 
     End Structure
