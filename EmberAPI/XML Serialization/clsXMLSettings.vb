@@ -42,8 +42,10 @@ Partial Public Class clsXMLSettings
     Private _generalfilterpanelstatemovieset As Boolean
     Private _generalfilterpanelstateshow As Boolean
     Private _generalmainfiltersortcolumn_movies As Integer
+    Private _generalmainfiltersortcolumn_moviesets As Integer
     Private _generalmainfiltersortcolumn_shows As Integer
     Private _generalmainfiltersortorder_movies As Integer
+    Private _generalmainfiltersortorder_moviesets As Integer
     Private _generalmainfiltersortorder_shows As Integer
     Private _generalhidebanner As Boolean
     Private _generalhidecharacterart As Boolean
@@ -4792,6 +4794,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property GeneralMainFilterSortColumn_MovieSets() As Integer
+        Get
+            Return Me._generalmainfiltersortcolumn_moviesets
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmainfiltersortcolumn_moviesets = value
+        End Set
+    End Property
+
     Public Property GeneralMainFilterSortColumn_Shows() As Integer
         Get
             Return Me._generalmainfiltersortcolumn_shows
@@ -4807,6 +4818,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._generalmainfiltersortorder_movies = value
+        End Set
+    End Property
+
+    Public Property GeneralMainFilterSortOrder_MovieSets() As Integer
+        Get
+            Return Me._generalmainfiltersortorder_moviesets
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmainfiltersortorder_moviesets = value
         End Set
     End Property
 

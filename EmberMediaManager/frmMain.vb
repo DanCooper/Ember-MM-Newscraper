@@ -6651,6 +6651,8 @@ doCancel:
             Me.dgvMovieSets.Rows(0).Selected = True
             Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(0).Cells("ListTitle")
         End If
+
+        Me.SaveFilter_MovieSets()
     End Sub
 
     Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
@@ -8760,6 +8762,9 @@ doCancel:
             Me.EnableFilters_Shows(True)
             If doMovies Then
                 Me.RestoreFilter_Movies()
+            End If
+            If doMovieSets Then
+                Me.RestoreFilter_MovieSets()
             End If
             If doTVShows Then
                 Me.RestoreFilter_Shows()
@@ -15317,6 +15322,19 @@ doCancel:
         End With
     End Sub
 
+    Private Sub RestoreFilter_MovieSets()
+        With Master.eSettings
+            If .GeneralMainFilterSortColumn_MovieSets = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
+                .GeneralMainFilterSortColumn_MovieSets = 3         'ListTitle in movielist
+                .GeneralMainFilterSortOrder_MovieSets = 0          'ASC
+            End If
+
+            If Me.dgvMovieSets.DataSource IsNot Nothing Then
+                Me.dgvMovieSets.Sort(Me.dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
+            End If
+        End With
+    End Sub
+
     Private Sub RestoreFilter_Shows()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_Shows = 0 AndAlso .GeneralMainFilterSortOrder_Shows = 0 Then
@@ -15338,6 +15356,16 @@ doCancel:
 
         Master.eSettings.GeneralMainFilterSortColumn_Movies = Me.dgvMovies.SortedColumn.Index
         Master.eSettings.GeneralMainFilterSortOrder_Movies = Order
+    End Sub
+
+    Private Sub SaveFilter_MovieSets()
+        Dim Order As Integer
+        If Me.dgvMovieSets.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
+        If Me.dgvMovieSets.SortOrder = SortOrder.Ascending Then Order = 0
+        If Me.dgvMovieSets.SortOrder = SortOrder.Descending Then Order = 1
+
+        Master.eSettings.GeneralMainFilterSortColumn_MovieSets = Me.dgvMovieSets.SortedColumn.Index
+        Master.eSettings.GeneralMainFilterSortOrder_MovieSets = Order
     End Sub
 
     Private Sub SaveFilter_Shows()
