@@ -33,16 +33,11 @@ Public Class TVDB_Data
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
-    ''' <summary>
-    ''' Scraping Here
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private strPrivateAPIKey As String = String.Empty
     Private _MySettings As New sMySettings
     Private _Name As String = "TVDB_Data"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
-    Private _TVDBMirror As String
+    Private strPrivateAPIKey As String = String.Empty
 
 #End Region 'Fields
 
@@ -241,7 +236,7 @@ Public Class TVDB_Data
     ''' </summary>
     ''' <param name="oDBTV">TV Show to be scraped. DBTV as ByRef to use existing data for identifing tv show and to fill with IMDB/TVDB ID for next scraper</param>
     ''' <param name="nShow">New scraped TV Show data</param>
-    ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper(ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_TV) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow

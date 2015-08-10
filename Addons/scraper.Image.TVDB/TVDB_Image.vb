@@ -36,7 +36,6 @@ Public Class TVDB_Image
     Private _Name As String = "TVDB_Image"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
-    Private _scraper As New TVDBs.Scraper
     Private strPrivateAPIKey As String = String.Empty
 
 #End Region 'Fields
@@ -201,6 +200,7 @@ Public Class TVDB_Image
         Dim Settings As TVDBs.Scraper.MySettings
         Settings.ApiKey = _MySettings.ApiKey
 
+        Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier)
 
         If DBTV.TVEpisode IsNot Nothing Then

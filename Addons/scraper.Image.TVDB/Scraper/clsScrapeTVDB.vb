@@ -31,9 +31,14 @@ Namespace TVDBs
     Public Class Scraper
 
 #Region "Fields"
+
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
+
+        Private _TVDBApi As TVDB.Web.WebInterface
+        Private _TVDBMirror As TVDB.Model.Mirror
+        Private _MySettings As MySettings
 
 #End Region 'Fields
 
@@ -47,14 +52,24 @@ Namespace TVDBs
 
 #Region "Methods"
 
+        Public Sub New(ByVal Settings As MySettings)
+            Try
+                _MySettings = Settings
+
+                If Not Directory.Exists(Path.Combine(Master.TempPath, "Shows")) Then Directory.CreateDirectory(Path.Combine(Master.TempPath, "Shows"))
+                _TVDBApi = New TVDB.Web.WebInterface(_MySettings.ApiKey, Path.Combine(Master.TempPath, "Shows"))
+                _TVDBMirror = New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Sub
+
         Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
-                Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
-
-                Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(tvdbID), tvdbMirror).Result
+                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(tvdbID), _TVDBMirror).Result
                 If Results Is Nothing Then
                     Return Nothing
                 End If
@@ -71,8 +86,8 @@ Namespace TVDBs
                                                                        .Scraper = "TVDB", _
                                                                        .Season = image.Season, _
                                                                        .ShortLang = image.Language, _
-                                                                       .URLOriginal = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
                                                                        .VoteAverage = CStr(image.Rating), _
                                                                        .VoteCount = image.RatingCount, _
                                                                        .Width = "758"}
@@ -88,8 +103,8 @@ Namespace TVDBs
                                                                        .Scraper = "TVDB", _
                                                                        .Season = image.Season, _
                                                                        .ShortLang = image.Language, _
-                                                                       .URLOriginal = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
                                                                        .VoteAverage = CStr(image.Rating), _
                                                                        .VoteCount = image.RatingCount, _
                                                                        .Width = "758"}
@@ -105,8 +120,8 @@ Namespace TVDBs
                                                                                         .Scraper = "TVDB", _
                                                                                         .Season = image.Season, _
                                                                                         .ShortLang = image.Language, _
-                                                                                        .URLOriginal = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
+                                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
+                                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
                                                                                         .VoteAverage = CStr(image.Rating), _
                                                                                         .VoteCount = image.RatingCount, _
                                                                                         .Width = StringUtils.StringToSize(image.Dimension).Width.ToString})
@@ -121,8 +136,8 @@ Namespace TVDBs
                                                                        .Scraper = "TVDB", _
                                                                        .Season = image.Season, _
                                                                        .ShortLang = image.Language, _
-                                                                       .URLOriginal = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
                                                                        .VoteAverage = CStr(image.Rating), _
                                                                        .VoteCount = image.RatingCount, _
                                                                        .Width = StringUtils.StringToSize(image.Dimension).Width.ToString}
@@ -138,8 +153,8 @@ Namespace TVDBs
                                                                        .Scraper = "TVDB", _
                                                                        .Season = image.Season, _
                                                                        .ShortLang = image.Language, _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(tvdbMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .URLOriginal = String.Concat(tvdbMirror.Address, "/banners/", image.BannerPath), _
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
                                                                        .VoteAverage = CStr(image.Rating), _
                                                                        .VoteCount = image.RatingCount, _
                                                                        .Width = "400"}
@@ -160,10 +175,7 @@ Namespace TVDBs
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim tvdbAPI = New TVDB.Web.WebInterface(Settings.ApiKey)
-                Dim tvdbMirror As New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
-
-                Dim Results As TVDB.Model.SeriesDetails = tvdbAPI.GetFullSeriesById(CInt(tvdbID), tvdbMirror).Result
+                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(tvdbID), _TVDBMirror).Result
                 If Results Is Nothing Then
                     Return Nothing
                 End If
@@ -180,8 +192,8 @@ Namespace TVDBs
                             .Scraper = "TVDB", _
                             .Season = tEpisode.SeasonNumber, _
                             .ShortLang = tEpisode.Language, _
-                            .URLOriginal = String.Concat(tvdbMirror.Address, "/banners/", tEpisode.PictureFilename), _
-                            .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(tvdbMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty), _
+                            .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", tEpisode.PictureFilename), _
+                            .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(_TVDBMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty), _
                             .Width = CStr(tEpisode.ThumbWidth)}
 
                         alContainer.EpisodePosters.Add(img)
