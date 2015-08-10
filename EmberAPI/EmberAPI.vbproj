@@ -200,7 +200,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="XML Serialization\clsXMLFilter.vb" />
-    <Compile Include="XML Serialization\clsXMLHosts.vb" />
     <Compile Include="XML Serialization\clsXMLAdvancedSettings.vb" />
     <Compile Include="XML Serialization\clsXMLGenres.vb" />
     <Compile Include="XML Serialization\clsXMLLanguage.vb" />

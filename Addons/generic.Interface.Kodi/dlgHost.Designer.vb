@@ -49,11 +49,14 @@ Partial Class dlgHost
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.gbHostMoviesetPath = New System.Windows.Forms.GroupBox()
+        Me.txtHostMoviesetPath = New System.Windows.Forms.TextBox()
         Me.gbHostDetails.SuspendLayout()
         Me.tblHostDetails.SuspendLayout()
         Me.gbHostSourceType.SuspendLayout()
         CType(Me.dgvHostSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
+        Me.gbHostMoviesetPath.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnHostPopulateSources
@@ -236,6 +239,7 @@ Partial Class dlgHost
         Me.txtLabel.Name = "txtLabel"
         Me.txtLabel.Size = New System.Drawing.Size(293, 20)
         Me.txtLabel.TabIndex = 0
+        Me.txtLabel.Text = "My Kodi"
         '
         'gbHostSourceType
         '
@@ -365,6 +369,26 @@ Partial Class dlgHost
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
+        'gbHostMoviesetPath
+        '
+        Me.gbHostMoviesetPath.Controls.Add(Me.txtHostMoviesetPath)
+        Me.gbHostMoviesetPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbHostMoviesetPath.Location = New System.Drawing.Point(372, 112)
+        Me.gbHostMoviesetPath.Name = "gbHostMoviesetPath"
+        Me.gbHostMoviesetPath.Size = New System.Drawing.Size(275, 59)
+        Me.gbHostMoviesetPath.TabIndex = 90
+        Me.gbHostMoviesetPath.TabStop = False
+        Me.gbHostMoviesetPath.Text = "Kodi MovieSet Artwork Folder"
+        '
+        'txtHostMoviesetPath
+        '
+        Me.txtHostMoviesetPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtHostMoviesetPath.Location = New System.Drawing.Point(6, 31)
+        Me.txtHostMoviesetPath.Name = "txtHostMoviesetPath"
+        Me.txtHostMoviesetPath.Size = New System.Drawing.Size(263, 22)
+        Me.txtHostMoviesetPath.TabIndex = 1
+        Me.txtHostMoviesetPath.Text = "- Path to movieset artwork (based on host) -"
+        '
         'dlgHost
         '
         Me.AcceptButton = Me.btnOK
@@ -372,6 +396,7 @@ Partial Class dlgHost
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(665, 412)
+        Me.Controls.Add(Me.gbHostMoviesetPath)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.pnlLoading)
@@ -393,6 +418,8 @@ Partial Class dlgHost
         Me.gbHostSourceType.ResumeLayout(False)
         CType(Me.dgvHostSources, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoading.ResumeLayout(False)
+        Me.gbHostMoviesetPath.ResumeLayout(False)
+        Me.gbHostMoviesetPath.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -424,4 +451,6 @@ Partial Class dlgHost
     Friend WithEvents colHostEmberSource As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colHostSource As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents colHostType As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents gbHostMoviesetPath As System.Windows.Forms.GroupBox
+    Friend WithEvents txtHostMoviesetPath As System.Windows.Forms.TextBox
 End Class

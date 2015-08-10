@@ -36,8 +36,6 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
-        Me.txtmoviesetartpath = New System.Windows.Forms.TextBox()
-        Me.lblmoviesetartpath = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.gbSettingsGeneral.SuspendLayout()
@@ -70,8 +68,6 @@ Partial Class frmSettingsHolder
         'gbSettingsGeneral
         '
         Me.gbSettingsGeneral.AutoSize = True
-        Me.gbSettingsGeneral.Controls.Add(Me.lblmoviesetartpath)
-        Me.gbSettingsGeneral.Controls.Add(Me.txtmoviesetartpath)
         Me.gbSettingsGeneral.Controls.Add(Me.cbPlayCountHost)
         Me.gbSettingsGeneral.Controls.Add(Me.chkNotification)
         Me.gbSettingsGeneral.Controls.Add(Me.chkPlayCount)
@@ -206,22 +202,6 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'txtmoviesetartpath
-        '
-        Me.txtmoviesetartpath.Location = New System.Drawing.Point(318, 126)
-        Me.txtmoviesetartpath.Name = "txtmoviesetartpath"
-        Me.txtmoviesetartpath.Size = New System.Drawing.Size(316, 22)
-        Me.txtmoviesetartpath.TabIndex = 87
-        '
-        'lblmoviesetartpath
-        '
-        Me.lblmoviesetartpath.AutoSize = True
-        Me.lblmoviesetartpath.Location = New System.Drawing.Point(315, 110)
-        Me.lblmoviesetartpath.Name = "lblmoviesetartpath"
-        Me.lblmoviesetartpath.Size = New System.Drawing.Size(163, 13)
-        Me.lblmoviesetartpath.TabIndex = 88
-        Me.lblmoviesetartpath.Text = "Kodi MovieSet Artwork Folder:"
-        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -265,6 +245,4 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnAddHost As System.Windows.Forms.Button
     Friend WithEvents cbPlayCountHost As System.Windows.Forms.ComboBox
     Friend WithEvents chkPlayCount As System.Windows.Forms.CheckBox
-    Friend WithEvents lblmoviesetartpath As System.Windows.Forms.Label
-    Friend WithEvents txtmoviesetartpath As System.Windows.Forms.TextBox
 End Class

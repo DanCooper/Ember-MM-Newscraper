@@ -32,12 +32,13 @@ Namespace Kodi
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
-        Private _currenthost As New EmberAPI.Host
+        Private _currenthost As New Host
         'current selected client
         Private _kodi As XBMCRPC.Client
         'helper object, needed for communication client (notification, eventhandler support)
         Private platformServices As IPlatformServices = New PlatformServices
         'Private NotificationsEnabled As Boolean
+
 
 #End Region 'Fields
 
@@ -48,7 +49,8 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Sub New(ByVal host As EmberAPI.Host)
+        Public Sub New(ByVal host As Host)
+
             _currenthost = Nothing
             _currenthost = host
             Init()

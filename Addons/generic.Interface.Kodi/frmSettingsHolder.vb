@@ -26,7 +26,7 @@ Public Class frmSettingsHolder
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     'reflects the current host(s) settings/setup configured in settings, will be filled at module startup from XML settings (and is used to write changes of settings back into XML)
-    Public xmlHosts As New EmberAPI.clsXMLHosts
+    Public xmlHosts As New clsXMLHosts
 #End Region 'Fields
 
 #Region "Events"
@@ -62,7 +62,6 @@ Public Class frmSettingsHolder
         Me.btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
         Me.chkNotification.Text = Master.eLang.GetString(1441, "Send Notifications")
         Me.chkPlayCount.Text = Master.eLang.GetString(1454, "Retrieve PlayCount from") & ":"
-        Me.lblmoviesetartpath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder") & ":"
     End Sub
 
     ''' <summary>
@@ -147,8 +146,8 @@ Public Class frmSettingsHolder
             dlg.lstAllHosts.Clear()
             dlg.lstAllHosts = xmlHosts.host.ToList
             If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Dim tmphost As EmberAPI.Host
-                tmphost = New EmberAPI.Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked}
+                Dim tmphost As Host
+                tmphost = New Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked, .moviesetpath = dlg.txtHostMoviesetPath.Text}
                 If dlg.rbHostWindows.Checked Then
                     tmphost.remotepathseparator = "\"
                 Else
@@ -156,7 +155,7 @@ Public Class frmSettingsHolder
                 End If
                 For i = 0 To dlg.dgvHostSources.Rows.Count - 1
                     If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
-                        Dim tmpsource As New EmberAPI.HostSource
+                        Dim tmpsource As New HostSource
                         tmpsource.type = CStr(dlg.dgvHostSources.Rows(i).Cells(2).FormattedValue)
                         tmpsource.applicationpath = CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)
                         tmpsource.remotepath = CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)
@@ -190,7 +189,7 @@ Public Class frmSettingsHolder
                 dlg.lstAllHosts = xmlHosts.host.Where(Function(y) y.name <> Me.lbHosts.SelectedItem.ToString).ToList
                 dlg.currentHost = xmlHosts.host.FirstOrDefault(Function(y) y.name = Me.lbHosts.SelectedItem.ToString)
                 If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Dim tmphost As EmberAPI.Host
+                    Dim tmphost As Host
                     tmphost = xmlHosts.host.FirstOrDefault(Function(y) y.name = Me.lbHosts.SelectedItem.ToString)
                     tmphost.name = dlg.txtLabel.Text
                     tmphost.address = dlg.txtHostIP.Text
@@ -198,6 +197,7 @@ Public Class frmSettingsHolder
                     tmphost.username = dlg.txtUsername.Text
                     tmphost.password = dlg.txtPassword.Text
                     tmphost.realtimesync = dlg.chkHostRealTimeSync.Checked
+                    tmphost.moviesetpath = dlg.txtHostMoviesetPath.Text
                     If dlg.rbHostWindows.Checked Then
                         tmphost.remotepathseparator = "\"
                     Else
@@ -208,7 +208,7 @@ Public Class frmSettingsHolder
                     ReDim tmphost.source(0)
                     For i = 0 To dlg.dgvHostSources.Rows.Count - 1
                         If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
-                            Dim tmpsource As New EmberAPI.HostSource
+                            Dim tmpsource As New HostSource
                             tmpsource.type = CStr(dlg.dgvHostSources.Rows(i).Cells(2).FormattedValue)
                             tmpsource.applicationpath = CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)
                             tmpsource.remotepath = CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)
@@ -260,17 +260,6 @@ Public Class frmSettingsHolder
     ''' </remarks>
     Private Sub chkPlayCount_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlayCount.CheckedChanged
         cbPlayCountHost.Enabled = chkPlayCount.Checked
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    ''' <summary>
-    '''  Setting "Kodi MovieSet Artwork Folder" changed
-    ''' </summary>
-    ''' <param name="sender">"Kodi MovieSet Artwork Folder"-textbox in Form</param>
-    ''' <remarks>
-    ''' 2015/07/08 Cocotus - First implementation
-    ''' </remarks>
-    Private Sub txtmoviesetartpath_TextChanged(sender As Object, e As EventArgs) Handles txtmoviesetartpath.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
