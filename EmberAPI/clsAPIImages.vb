@@ -2717,6 +2717,8 @@ Public Class Images
                                        Optional ByRef DefaultSeasonImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing, _
                                        Optional ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing)
 
+        Dim DoEpisodeFanart As Boolean = False
+        Dim DoEpisodePoster As Boolean = False
         Dim DoMainBanner As Boolean = False
         Dim DoMainCharacterArt As Boolean = False
         Dim DoMainClearArt As Boolean = False
@@ -2752,6 +2754,8 @@ Public Class Images
                 DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
                 DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
             Case Enums.ContentType.TV
+                DoEpisodeFanart = ScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                DoEpisodePoster = ScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
                 DoMainBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
                 DoMainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
                 DoMainClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
@@ -2764,10 +2768,27 @@ Public Class Images
                 DoSeasonFanart = ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
                 DoSeasonLandscape = ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
                 DoSeasonPoster = ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+            Case Enums.ContentType.TVShow
+                DoMainBanner = ScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
+                DoMainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
+                DoMainClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
+                DoMainClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
+                DoMainExtrafanarts = ScrapeModifier.MainEFanarts AndAlso Master.eSettings.TVShowEFanartsAnyEnabled
+                DoMainFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
+                DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+            Case Enums.ContentType.TVEpisode
+                DoEpisodeFanart = ScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                DoEpisodePoster = ScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
+            Case Enums.ContentType.TVSeason
+                DoMainBanner = ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                DoMainFanart = ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                DoMainLandscape = ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                DoMainPoster = ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
         End Select
 
         'Main Banner
-        If DoMainBanner Then
+        If DoMainBanner OrElse DoSeasonBanner Then
             If DBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Banner = DBElement.ImagesContainer.Banner
             Else
@@ -2778,8 +2799,14 @@ Public Class Images
                         Images.GetPreferredMovieBanner(SearchResultsContainer.MainBanners, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetBanner(SearchResultsContainer.MainBanners, defImg)
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
+                    Case Enums.ContentType.TVSeason
+                        If DBElement.TVSeason.Season = 999 Then
+                            Images.GetPreferredTVASBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
+                        Else
+                            Images.GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, DBElement.TVSeason.Season)
+                        End If
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2797,7 +2824,7 @@ Public Class Images
                 Dim defImg As MediaContainers.Image = Nothing
 
                 Select Case ContentType
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowCharacterArt(SearchResultsContainer.MainCharacterArts, defImg)
                 End Select
 
@@ -2820,7 +2847,7 @@ Public Class Images
                         Images.GetPreferredMovieClearArt(SearchResultsContainer.MainClearArts, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetClearArt(SearchResultsContainer.MainClearArts, defImg)
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowClearArt(SearchResultsContainer.MainClearArts, defImg)
                 End Select
 
@@ -2843,7 +2870,7 @@ Public Class Images
                         Images.GetPreferredMovieClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetClearLogo(SearchResultsContainer.MainClearLogos, defImg)
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowClearLogo(SearchResultsContainer.MainClearLogos, defImg)
                 End Select
 
@@ -2882,7 +2909,7 @@ Public Class Images
             Select Case ContentType
                 Case Enums.ContentType.Movie
                     iLimit = Master.eSettings.MovieEFanartsLimit
-                Case Enums.ContentType.TV
+                Case Enums.ContentType.TV, Enums.ContentType.TVShow
                     iLimit = Master.eSettings.TVShowEFanartsLimit
             End Select
 
@@ -2894,6 +2921,8 @@ Public Class Images
                     Select Case ContentType
                         Case Enums.ContentType.Movie
                             Images.GetPreferredMovieExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(iLimit = 0, iLimit, iDifference))
+                        Case Enums.ContentType.TV, Enums.ContentType.TVShow
+                            Images.GetPreferredTVShowExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(iLimit = 0, iLimit, iDifference))
                     End Select
 
                     If defImgList IsNot Nothing AndAlso defImgList.Count > 0 Then
@@ -2905,7 +2934,7 @@ Public Class Images
         End If
 
         'Main Fanart
-        If DoMainFanart Then
+        If DoMainFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             If DBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Fanart = DBElement.ImagesContainer.Fanart
             Else
@@ -2916,8 +2945,16 @@ Public Class Images
                         Images.GetPreferredMovieFanart(SearchResultsContainer.MainFanarts, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetFanart(SearchResultsContainer.MainFanarts, defImg)
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowFanart(SearchResultsContainer.MainFanarts, defImg)
+                    Case Enums.ContentType.TVEpisode
+                        Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, DBElement.TVEpisode.Season, DBElement.TVEpisode.Episode)
+                    Case Enums.ContentType.TVSeason
+                        If DBElement.TVSeason.Season = 999 Then
+                            Images.GetPreferredTVASFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
+                        Else
+                            Images.GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, DBElement.TVSeason.Season)
+                        End If
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2928,7 +2965,7 @@ Public Class Images
         End If
 
         'Main Landscape
-        If DoMainLandscape Then
+        If DoMainLandscape OrElse DoSeasonLandscape Then
             If DBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Landscape = DBElement.ImagesContainer.Landscape
             Else
@@ -2939,8 +2976,14 @@ Public Class Images
                         Images.GetPreferredMovieLandscape(SearchResultsContainer.MainLandscapes, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetLandscape(SearchResultsContainer.MainLandscapes, defImg)
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowLandscape(SearchResultsContainer.MainLandscapes, defImg)
+                    Case Enums.ContentType.TVSeason
+                        If DBElement.TVSeason.Season = 999 Then
+                            Images.GetPreferredTVASLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
+                        Else
+                            Images.GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, DBElement.TVSeason.Season)
+                        End If
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2951,7 +2994,7 @@ Public Class Images
         End If
 
         'Main Poster
-        If DoMainPoster Then
+        If DoMainPoster OrElse DoEpisodePoster OrElse DoSeasonPoster Then
             If DBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                 DefaultImagesContainer.Poster = DBElement.ImagesContainer.Poster
             Else
@@ -2962,8 +3005,16 @@ Public Class Images
                         Images.GetPreferredMoviePoster(SearchResultsContainer.MainPosters, defImg)
                     Case Enums.ContentType.MovieSet
                         Images.GetPreferredMovieSetPoster(SearchResultsContainer.MainPosters, defImg)
-                    Case Enums.ContentType.TV
+                    Case Enums.ContentType.TV, Enums.ContentType.TVShow
                         Images.GetPreferredTVShowPoster(SearchResultsContainer.MainPosters, defImg)
+                    Case Enums.ContentType.TVEpisode
+                        Images.GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, DBElement.TVEpisode.Season, DBElement.TVEpisode.Episode)
+                    Case Enums.ContentType.TVSeason
+                        If DBElement.TVSeason.Season = 999 Then
+                            Images.GetPreferredTVASPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
+                        Else
+                            Images.GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, DBElement.TVSeason.Season)
+                        End If
                 End Select
 
                 If defImg IsNot Nothing Then
@@ -2973,7 +3024,44 @@ Public Class Images
             End If
         End If
 
-        'Seasons
+        'Episodes while tv show scraping
+        For Each sEpisode As Database.DBElement In DBElement.Episodes
+            Dim sContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Episode = sEpisode.TVEpisode.Episode, .Season = sEpisode.TVEpisode.Season}
+
+            'Fanart
+            If DoEpisodeFanart Then
+                If sEpisode.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    sContainer.Fanart = sEpisode.ImagesContainer.Fanart
+                Else
+                    Dim defImg As MediaContainers.Image = Nothing
+                    Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, sContainer.Season, sContainer.Episode)
+
+                    If defImg IsNot Nothing Then
+                        sEpisode.ImagesContainer.Fanart = defImg
+                        sContainer.Fanart = defImg
+                    End If
+                End If
+            End If
+
+            'Poster
+            If DoEpisodePoster Then
+                If sEpisode.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                    sContainer.Poster = sEpisode.ImagesContainer.Poster
+                Else
+                    Dim defImg As MediaContainers.Image = Nothing
+                    Images.GetPreferredTVEpisodePoster(SearchResultsContainer.SeasonPosters, defImg, sContainer.Season, sContainer.Episode)
+
+                    If defImg IsNot Nothing Then
+                        sEpisode.ImagesContainer.Poster = defImg
+                        sContainer.Poster = defImg
+                    End If
+                End If
+            End If
+
+            DefaultEpisodeImagesContainer.Add(sContainer)
+        Next
+
+        'Seasons while tv show scraping
         For Each sSeason As Database.DBElement In DBElement.Seasons
             Dim sContainer As New MediaContainers.EpisodeOrSeasonImagesContainer With {.Season = sSeason.TVSeason.Season}
 
@@ -3320,7 +3408,7 @@ Public Class Images
                         EIC.Fanart = cEpisode.ImagesContainer.Fanart
                     Else
                         Dim defImg As MediaContainers.Image = Nothing
-                        Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, iEpisode, iSeason)
+                        Images.GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, iSeason, iEpisode)
 
                         If defImg IsNot Nothing Then
                             cEpisode.ImagesContainer.Fanart = defImg
@@ -3849,7 +3937,7 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVEpisodeFanart(ByRef EpisodeImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iEpisode As Integer, ByVal iSeason As Integer) As Boolean
+    Public Shared Function GetPreferredTVEpisodeFanart(ByRef EpisodeImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
         If EpisodeImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
         If Not EpisodeImageList.Count = 0 Then
@@ -4067,6 +4155,54 @@ Public Class Images
         imgResult = ImageList.First
 
         If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredTVShowExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        If Master.eSettings.TVShowEFanartsPrefSize = Enums.TVFanartSize.Any Then
+            For Each img As MediaContainers.Image In ImageList
+                imgResultList.Add(img)
+                iLimit -= 1
+                If iLimit = 0 Then Exit For
+            Next
+        End If
+
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.TVShowEFanartsPrefSizeOnly Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.TVFanartSize = Master.eSettings.TVShowEFanartsPrefSize)
+                imgResultList.Add(img)
+                iLimit -= 1
+                If iLimit = 0 Then Exit For
+            Next
+        End If
+
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.TVShowEFanartsPrefSizeOnly AndAlso Not Master.eSettings.TVShowEFanartsPrefSize = Enums.TVFanartSize.Any Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+                imgResultList.Add(img)
+                iLimit -= 1
+                If iLimit = 0 Then Exit For
+            Next
+        End If
+
+
+
+        'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+        '    imgResult = ImageList.First
+        'End If
+
+        'If imgResult Is Nothing Then
+        '    imgResult = ImageList.Find(Function(f) f.MovieFanartSize = Master.eSettings.MovieFanartPrefSize)
+        'End If
+
+        'If imgResult Is Nothing AndAlso Not Master.eSettings.MovieFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+        '    imgResult = ImageList.First
+        'End If
+
+        If imgResultList IsNot Nothing AndAlso imgResultList.Count > 0 Then
             Return True
         Else
             Return False

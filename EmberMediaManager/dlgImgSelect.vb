@@ -247,6 +247,20 @@ Public Class dlgImgSelect
 
     Private Function DownloadDefaultImages() As Boolean
 
+        'Episode Fanart
+        If DoEpisodeFanart Then
+            For Each sEpisode As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+                DownloadAndCache(sEpisode.ImagesContainer.Fanart, False)
+            Next
+        End If
+
+        'Episode Poster
+        If DoEpisodePoster Then
+            For Each sEpisode As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+                DownloadAndCache(sEpisode.ImagesContainer.Poster, False)
+            Next
+        End If
+
         'Main Banner
         If DoMainBanner AndAlso Me.tDBElementResult.ImagesContainer.Banner.ImageOriginal.Image Is Nothing Then
             DownloadAndCache(Me.tDBElementResult.ImagesContainer.Banner, False)
@@ -366,7 +380,7 @@ Public Class dlgImgSelect
         End If
 
         'Main Banners
-        If DoMainBanner Then
+        If DoMainBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainBanners
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -432,7 +446,7 @@ Public Class dlgImgSelect
         End If
 
         'Main Fanarts
-        If DoMainFanart Then
+        If DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -449,7 +463,7 @@ Public Class dlgImgSelect
         End If
 
         'Main Landscapes
-        If DoMainLandscape Then
+        If DoMainLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -463,7 +477,7 @@ Public Class dlgImgSelect
         End If
 
         'Main Posters
-        If DoMainPoster Then
+        If DoMainPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -477,7 +491,7 @@ Public Class dlgImgSelect
         End If
 
         'Season Banners
-        If DoSeasonBanner Then
+        If DoSeasonBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -491,7 +505,7 @@ Public Class dlgImgSelect
         End If
 
         'Season Fanarts
-        If DoSeasonFanart Then
+        If DoSeasonFanart OrElse DoAllSeasonsFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -505,7 +519,7 @@ Public Class dlgImgSelect
         End If
 
         'Season Landscapes
-        If DoSeasonLandscape Then
+        If DoSeasonLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -519,7 +533,7 @@ Public Class dlgImgSelect
         End If
 
         'Season Posters
-        If DoSeasonPoster Then
+        If DoSeasonPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
@@ -611,10 +625,18 @@ Public Class dlgImgSelect
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainBanner Then
             iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
-                iCount += 1
-            Next
+            Select Case Me.tContentType
+                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
+                        iCount += 1
+                    Next
+                Case Enums.ContentType.TVSeason
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
+                        iCount += 1
+                    Next
+            End Select
         ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
             iCount = 0
             For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
@@ -653,22 +675,64 @@ Public Class dlgImgSelect
             Next
         ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
             iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
-                iCount += 1
-            Next
+            Select Me.tContentType
+                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                        iCount += 1
+                    Next
+                Case Enums.ContentType.TVEpisode
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                        iCount += 1
+                    Next
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                        iCount += 1
+                    Next
+                Case Enums.ContentType.TVSeason
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                        iCount += 1
+                    Next
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                        iCount += 1
+                    Next
+            End Select
         ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
             iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
-                iCount += 1
-            Next
+            Select Case Me.tContentType
+                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
+                        iCount += 1
+                    Next
+                Case Enums.ContentType.TVSeason
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
+                        iCount += 1
+                    Next
+            End Select
         ElseIf tTag.ImageType = Enums.ModifierType.MainPoster Then
             iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
-                iCount += 1
-            Next
+            Select Case Me.tContentType
+                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
+                        iCount += 1
+                    Next
+                Case Enums.ContentType.TVEpisode
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
+                        iCount += 1
+                    Next
+                Case Enums.ContentType.TVSeason
+                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
+                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
+                        iCount += 1
+                    Next
+            End Select
         ElseIf tTag.ImageType = Enums.ModifierType.SeasonBanner Then
             Dim iSeason As Integer = tTag.iSeason
             iCount = 0
@@ -760,6 +824,14 @@ Public Class dlgImgSelect
 
     Private Sub CreateTopImages()
         Dim iCount As Integer = 0
+        If DoEpisodePoster Then
+            AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.EpisodePoster)
+            iCount += 1
+        End If
+        If DoEpisodeFanart Then
+            AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.EpisodeFanart)
+            iCount += 1
+        End If
         If DoMainPoster Then
             AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.MainPoster)
             iCount += 1
@@ -1077,7 +1149,7 @@ Public Class dlgImgSelect
             ClearImageList()
             CreateSubImages()
             If Me.currSubImageSelectedType = Enums.ModifierType.MainEFanarts OrElse Me.currSubImageSelectedType = Enums.ModifierType.MainEThumbs Then
-                Me.currSubImage = New iTag With {.ImageType = Me.currSubImageSelectedType}
+                Me.currSubImage = New iTag With {.ImageType = Me.currSubImageSelectedType, .iSeason = -1}
                 DeselectAllTopImages()
                 CreateImageList(Me.currSubImage)
             End If
@@ -1336,6 +1408,23 @@ Public Class dlgImgSelect
                 Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
                 Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+                Me.DoSeasonBanner = Me.tScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                Me.DoSeasonFanart = Me.tScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                Me.DoSeasonLandscape = Me.tScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                Me.DoSeasonPoster = Me.tScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+            Case Enums.ContentType.TVShow
+                Me.DoMainBanner = Me.tScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
+                Me.DoMainCharacterArt = Me.tScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
+                Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
+                Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
+                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainEFanarts AndAlso Master.eSettings.TVShowEFanartsAnyEnabled
+                Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
+                Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+            Case Enums.ContentType.TVEpisode
+                Me.DoEpisodeFanart = Me.tScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                Me.DoEpisodePoster = Me.tScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
+            Case Enums.ContentType.TVSeason
                 Me.DoSeasonBanner = Me.tScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
                 Me.DoSeasonFanart = Me.tScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
                 Me.DoSeasonLandscape = Me.tScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled

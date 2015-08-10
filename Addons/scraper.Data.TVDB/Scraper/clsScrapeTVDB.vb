@@ -95,7 +95,7 @@ Namespace TVDBs
             Try
                 _MySettings = Settings
 
-                _TVDBApi = New TVDB.Web.WebInterface(_MySettings.ApiKey)
+                _TVDBApi = New TVDB.Web.WebInterface(_MySettings.ApiKey, Path.Combine(Master.TempPath, "Shows"))
                 _TVDBMirror = New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
 
             Catch ex As Exception
