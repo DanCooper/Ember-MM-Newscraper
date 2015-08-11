@@ -462,7 +462,7 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation, main code by DanCooper
         ''' updates all movieset fields which are filled/set in Ember (also paths of images)
         ''' </remarks>
-        Public Async Function UpdateMovieSetInfo(ByVal EmbermoviesetID As Long, ByVal MovieSetArtworkPath As String, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateMovieSetInfo(ByVal EmbermoviesetID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
             Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(EmbermoviesetID)
             Try
@@ -491,19 +491,19 @@ Namespace Kodi
 
                     'string or null/nothing
                     Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Banner.LocalFilePath), _
-                                                  GetRemoteFilePath(uMovieset.ImagesContainer.Banner.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                  GetRemoteMovieSetPath(uMovieset.ImagesContainer.Banner.LocalFilePath), Nothing)
                     Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearArt.LocalFilePath), _
-                                                  GetRemoteFilePath(uMovieset.ImagesContainer.ClearArt.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                  GetRemoteMovieSetPath(uMovieset.ImagesContainer.ClearArt.LocalFilePath), Nothing)
                     Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearLogo.LocalFilePath), _
-                                                  GetRemoteFilePath(uMovieset.ImagesContainer.ClearLogo.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                  GetRemoteMovieSetPath(uMovieset.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
                     Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.DiscArt.LocalFilePath), _
-                                                  GetRemoteFilePath(uMovieset.ImagesContainer.DiscArt.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                  GetRemoteMovieSetPath(uMovieset.ImagesContainer.DiscArt.LocalFilePath), Nothing)
                     Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Fanart.LocalFilePath), _
-                                                 GetRemoteFilePath(uMovieset.ImagesContainer.Fanart.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                 GetRemoteMovieSetPath(uMovieset.ImagesContainer.Fanart.LocalFilePath), Nothing)
                     Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Landscape.LocalFilePath), _
-                                                  GetRemoteFilePath(uMovieset.ImagesContainer.Landscape.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                  GetRemoteMovieSetPath(uMovieset.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Poster.LocalFilePath), _
-                                                  GetRemoteFilePath(uMovieset.ImagesContainer.Poster.LocalFilePath, MovieSetArtworkPath), Nothing)
+                                                  GetRemoteMovieSetPath(uMovieset.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -529,7 +529,7 @@ Namespace Kodi
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this MovieSet
-                        Dim resTextures = Await RemoveTextures(MovieSetArtworkPath)
+                        Dim resTextures = Await RemoveTextures(_currenthost.moviesetpath)
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
@@ -1534,89 +1534,6 @@ Namespace Kodi
 
 #Region "Helper functions/methods"
         ''' <summary>
-        ''' Get remotepath of any file using the file's corresponding localpath in Ember
-        ''' </summary>
-        ''' <param name="localpath">local path to file (as defined in Ember)</param>
-        ''' <returns>remote path of file (=path in Kodi), no success: Nothing</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' This might not work for all kind of paths!? 
-        ''' For now its necessary that last fragment in remotesource is also part of localfilepath, so I can build the remotepath for the local file
-        ''' this means root path won't work for now, i.e remotesource: "Z:\", but this will work: "Z:\Movies"
-        ''' </remarks>
-        Function GetRemoteFilePath(ByVal localpath As String, Optional ByVal remotesource As String = "") As String
-            logger.Trace(String.Concat("[APIKodi] GetRemoteFilePath: Localpath: " & localpath))
-            If remotesource = "" Then
-                For Each kodisource In _currenthost.source
-                    If localpath.StartsWith(kodisource.applicationpath) Then
-                        logger.Trace(String.Concat("[APIKodi] GetRemoteFilePath: Found KodiSource: """ & kodisource.remotepath, """"))
-                        remotesource = kodisource.remotepath
-                        Exit For
-                    End If
-                Next
-            End If
-
-            If remotesource = String.Empty Then
-                logger.Warn("[APIKodi] GetRemoteFilePath: KodiSource NOT Found! Abort!")
-                Return Nothing
-            End If
-
-            'if no seperator is specified use pathseperator of current system (=Windows)
-            Dim remotepathseparator = _currenthost.remotepathseparator
-            If String.IsNullOrEmpty(remotepathseparator) Then remotepathseparator = Path.DirectorySeparatorChar
-
-            'example remotesources: 
-            'nfs://192.168.2.200/Media_1/
-            'nfs://192.168.0.2/mnt/share/media/Video/Media_1/, 
-            'sftp://name:password@192.168.0.2:22/home/media/Media_1/
-            'smb://PC/Share/
-            '
-            'example localpath:  
-            'E:\MyMovies\Media_1\Movie\Action\11.14 - Elevenfourteen\poster.jpg
-
-            'first strip driveletter (since it will probably not be identical between Kodi and Ember (i.e. mapped drive))
-            Dim tmpremotepath As String = localpath.Replace(Directory.GetDirectoryRoot(localpath), "")
-            'result: MyMovies\Media_1\Movie\Action\11.14 - Elevenfourteen\poster.jpg
-            tmpremotepath = tmpremotepath.Replace(Path.DirectorySeparatorChar, remotepathseparator)
-            'result: MyMovies/Media_1/Movie/Action/11.14 - Elevenfourteen/poster.jpg
-
-            'split remotesource at each seperator and check last part, as this part is used to identify correct source
-            Dim pathsplitsremote As String() = remotesource.Split(New String() {remotepathseparator}, StringSplitOptions.RemoveEmptyEntries)
-            Dim matchfolder As String = ""
-            'should be at least 2 fragment, one= wrong seperator saved in configuration
-            If pathsplitsremote.Count > 1 Then
-                'example: matchfolder: Media_1
-                matchfolder = pathsplitsremote(pathsplitsremote.Count - 1)
-            Else
-                logger.Warn(String.Concat("[APIKodi] GetRemoteFilePath: Wrong Remotepathseparator, Abort process: " & remotepathseparator))
-                Return Nothing
-            End If
-
-            If matchfolder <> "" Then
-                'split localpath at each seperator and check each part if its identical to matchfolder - if match is found we put new remotepath together
-                Dim pathsplitslocal As String() = tmpremotepath.Split(New String() {remotepathseparator}, StringSplitOptions.RemoveEmptyEntries)
-                Dim strhelper As String = ""
-                For i = 0 To pathsplitslocal.Count - 1
-                    If pathsplitslocal(i) = matchfolder Then
-                        For z = i + 1 To pathsplitslocal.Count - 1
-                            strhelper = strhelper & remotepathseparator & pathsplitslocal(z)
-                        Next
-                        'for above example strhelper should look like this now: /Movie/Action/11.14 - Elevenfourteen/poster.jpg
-                        Exit For
-                    End If
-                Next
-                'remove last seperator because strhelper already starts with one
-                If remotesource.EndsWith(remotepathseparator) Then
-                    'example: nfs://192.168.2.200/Media_1
-                    remotesource = remotesource.Substring(0, remotesource.LastIndexOf(remotepathseparator))
-                End If
-                'the final string, example: nfs://192.168.2.200/Media_1/Movie/Action/11.14 - Elevenfourteen/poster.jpg
-                tmpremotepath = remotesource & strhelper
-                logger.Trace(String.Concat("[APIKodi] GetRemoteFilePath: Constructed Remotepath: " & tmpremotepath))
-            End If
-            Return tmpremotepath
-        End Function
-        ''' <summary>
         ''' 
         ''' </summary>
         ''' <param name="LocalPath"></param>
@@ -1628,7 +1545,7 @@ Namespace Kodi
 
             For Each Source In _currenthost.source
                 Dim tLocalSource As String = String.Empty
-                'add a directory separator at the end of the path to distinguish between)
+                'add a directory separator at the end of the path to distinguish between
                 'D:\Movies
                 'D:\Movies Shared
                 '(needed for "LocalPath.ToLower.StartsWith(tLocalSource)"
@@ -1643,6 +1560,48 @@ Namespace Kodi
                         tRemoteSource = If(Source.remotepath.EndsWith(Path.DirectorySeparatorChar), Source.remotepath, String.Concat(Source.remotepath, Path.DirectorySeparatorChar)).Trim
                     ElseIf Source.remotepath.Contains(Path.AltDirectorySeparatorChar) Then
                         tRemoteSource = If(Source.remotepath.EndsWith(Path.AltDirectorySeparatorChar), Source.remotepath, String.Concat(Source.remotepath, Path.AltDirectorySeparatorChar)).Trim
+                        RemoteIsUNC = True
+                    End If
+                    RemotePath = LocalPath.Replace(tLocalSource, tRemoteSource)
+                    If RemoteIsUNC Then
+                        RemotePath = RemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    Else
+                        RemotePath = RemotePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+                    End If
+                    Exit For
+                End If
+            Next
+
+            Return RemotePath
+        End Function
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="LocalPath"></param>
+        ''' <returns></returns>
+        ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)</remarks>
+        Function GetRemoteMovieSetPath(ByVal LocalPath As String) As String
+            Dim HostPath As String = _currenthost.moviesetpath
+            Dim RemotePath As String = String.Empty
+            Dim RemoteIsUNC As Boolean = False
+
+            For Each Source In Master.eSettings.GetMovieSetsArtworkPaths()
+                Dim tLocalSource As String = String.Empty
+                'add a directory separator at the end of the path to distinguish between
+                'D:\MovieSetsArtwork
+                'D:\MovieSetsArtwork Shared
+                '(needed for "LocalPath.ToLower.StartsWith(tLocalSource)"
+                If Source.Contains(Path.DirectorySeparatorChar) Then
+                    tLocalSource = If(Source.EndsWith(Path.DirectorySeparatorChar), Source, String.Concat(Source, Path.DirectorySeparatorChar)).Trim
+                ElseIf Source.Contains(Path.AltDirectorySeparatorChar) Then
+                    tLocalSource = If(Source.EndsWith(Path.AltDirectorySeparatorChar), Source, String.Concat(Source, Path.AltDirectorySeparatorChar)).Trim
+                End If
+                If LocalPath.ToLower.StartsWith(tLocalSource.ToLower) Then
+                    Dim tRemoteSource As String = String.Empty
+                    If HostPath.Contains(Path.DirectorySeparatorChar) Then
+                        tRemoteSource = If(HostPath.EndsWith(Path.DirectorySeparatorChar), HostPath, String.Concat(HostPath, Path.DirectorySeparatorChar)).Trim
+                    ElseIf HostPath.Contains(Path.AltDirectorySeparatorChar) Then
+                        tRemoteSource = If(HostPath.EndsWith(Path.AltDirectorySeparatorChar), HostPath, String.Concat(HostPath, Path.AltDirectorySeparatorChar)).Trim
                         RemoteIsUNC = True
                     End If
                     RemotePath = LocalPath.Replace(tLocalSource, tRemoteSource)

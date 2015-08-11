@@ -196,7 +196,7 @@ Public Class KodiInterface
                                     If Not String.IsNullOrEmpty(host.moviesetpath) Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, host.moviesetpath, MySettings.SendNotifications))
+                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, MySettings.SendNotifications))
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
                                         '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
@@ -668,7 +668,7 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(host.moviesetpath) Then
                             Dim _APIKodi As New Kodi.APIKodi(host)
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                            If Await _APIKodi.UpdateMovieSetInfo(Master.currMovieSet.ID, host.moviesetpath, MySettings.SendNotifications) Then
+                            If Await _APIKodi.UpdateMovieSetInfo(Master.currMovieSet.ID, MySettings.SendNotifications) Then
                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & Master.currMovieSet.MovieSet.Title, New Bitmap(My.Resources.logo)}))
                             Else
                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & Master.currMovieSet.MovieSet.Title, Nothing}))

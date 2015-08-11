@@ -37,9 +37,6 @@ Partial Class dlgHost
         Me.txtHostIP = New System.Windows.Forms.TextBox()
         Me.lblHostLabel = New System.Windows.Forms.Label()
         Me.txtLabel = New System.Windows.Forms.TextBox()
-        Me.gbHostSourceType = New System.Windows.Forms.GroupBox()
-        Me.rbHostLinux = New System.Windows.Forms.RadioButton()
-        Me.rbHostWindows = New System.Windows.Forms.RadioButton()
         Me.dgvHostSources = New System.Windows.Forms.DataGridView()
         Me.colHostEmberSource = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colHostSource = New System.Windows.Forms.DataGridViewComboBoxColumn()
@@ -51,17 +48,20 @@ Partial Class dlgHost
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.gbHostMoviesetPath = New System.Windows.Forms.GroupBox()
         Me.txtHostMoviesetPath = New System.Windows.Forms.TextBox()
+        Me.tblHost = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblHostMoviesetPath = New System.Windows.Forms.TableLayoutPanel()
         Me.gbHostDetails.SuspendLayout()
         Me.tblHostDetails.SuspendLayout()
-        Me.gbHostSourceType.SuspendLayout()
         CType(Me.dgvHostSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.gbHostMoviesetPath.SuspendLayout()
+        Me.tblHost.SuspendLayout()
+        Me.tblHostMoviesetPath.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnHostPopulateSources
         '
-        Me.btnHostPopulateSources.Location = New System.Drawing.Point(566, 292)
+        Me.btnHostPopulateSources.Location = New System.Drawing.Point(570, 164)
         Me.btnHostPopulateSources.Name = "btnHostPopulateSources"
         Me.btnHostPopulateSources.Size = New System.Drawing.Size(87, 45)
         Me.btnHostPopulateSources.TabIndex = 8
@@ -71,11 +71,13 @@ Partial Class dlgHost
         'gbHostDetails
         '
         Me.gbHostDetails.AutoSize = True
+        Me.tblHost.SetColumnSpan(Me.gbHostDetails, 2)
         Me.gbHostDetails.Controls.Add(Me.tblHostDetails)
+        Me.gbHostDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbHostDetails.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbHostDetails.Location = New System.Drawing.Point(12, 12)
+        Me.gbHostDetails.Location = New System.Drawing.Point(3, 3)
         Me.gbHostDetails.Name = "gbHostDetails"
-        Me.gbHostDetails.Size = New System.Drawing.Size(635, 100)
+        Me.gbHostDetails.Size = New System.Drawing.Size(561, 100)
         Me.gbHostDetails.TabIndex = 5
         Me.gbHostDetails.TabStop = False
         Me.gbHostDetails.Text = "Kodi Host"
@@ -83,7 +85,8 @@ Partial Class dlgHost
         'tblHostDetails
         '
         Me.tblHostDetails.AutoSize = True
-        Me.tblHostDetails.ColumnCount = 5
+        Me.tblHostDetails.ColumnCount = 6
+        Me.tblHostDetails.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblHostDetails.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblHostDetails.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblHostDetails.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -109,16 +112,17 @@ Partial Class dlgHost
         Me.tblHostDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblHostDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblHostDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblHostDetails.Size = New System.Drawing.Size(629, 81)
+        Me.tblHostDetails.Size = New System.Drawing.Size(555, 81)
         Me.tblHostDetails.TabIndex = 0
         '
         'btnHostCheck
         '
         Me.btnHostCheck.AutoSize = True
+        Me.btnHostCheck.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnHostCheck.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnHostCheck.Location = New System.Drawing.Point(363, 3)
         Me.btnHostCheck.Name = "btnHostCheck"
-        Me.btnHostCheck.Size = New System.Drawing.Size(130, 23)
+        Me.btnHostCheck.Size = New System.Drawing.Size(189, 23)
         Me.btnHostCheck.TabIndex = 19
         Me.btnHostCheck.Text = "Check Connection"
         Me.btnHostCheck.UseVisualStyleBackColor = True
@@ -132,7 +136,6 @@ Partial Class dlgHost
         Me.txtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPassword.Size = New System.Drawing.Size(100, 20)
         Me.txtPassword.TabIndex = 4
-        Me.txtPassword.Text = "kodi"
         '
         'lblHostPassword
         '
@@ -150,7 +153,7 @@ Partial Class dlgHost
         Me.chkHostRealTimeSync.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.chkHostRealTimeSync.AutoSize = True
         Me.chkHostRealTimeSync.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkHostRealTimeSync.Location = New System.Drawing.Point(437, 61)
+        Me.chkHostRealTimeSync.Location = New System.Drawing.Point(363, 61)
         Me.chkHostRealTimeSync.Name = "chkHostRealTimeSync"
         Me.chkHostRealTimeSync.Size = New System.Drawing.Size(189, 17)
         Me.chkHostRealTimeSync.TabIndex = 5
@@ -241,48 +244,16 @@ Partial Class dlgHost
         Me.txtLabel.TabIndex = 0
         Me.txtLabel.Text = "My Kodi"
         '
-        'gbHostSourceType
-        '
-        Me.gbHostSourceType.Controls.Add(Me.rbHostLinux)
-        Me.gbHostSourceType.Controls.Add(Me.rbHostWindows)
-        Me.gbHostSourceType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbHostSourceType.Location = New System.Drawing.Point(15, 112)
-        Me.gbHostSourceType.Name = "gbHostSourceType"
-        Me.gbHostSourceType.Size = New System.Drawing.Size(281, 59)
-        Me.gbHostSourceType.TabIndex = 12
-        Me.gbHostSourceType.TabStop = False
-        Me.gbHostSourceType.Text = "Kodi Source type"
-        '
-        'rbHostLinux
-        '
-        Me.rbHostLinux.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbHostLinux.Location = New System.Drawing.Point(14, 37)
-        Me.rbHostLinux.Name = "rbHostLinux"
-        Me.rbHostLinux.Size = New System.Drawing.Size(261, 19)
-        Me.rbHostLinux.TabIndex = 7
-        Me.rbHostLinux.Text = "Windows UNC/Linux/MacOS X/Openelec"
-        Me.rbHostLinux.UseVisualStyleBackColor = True
-        '
-        'rbHostWindows
-        '
-        Me.rbHostWindows.Checked = True
-        Me.rbHostWindows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbHostWindows.Location = New System.Drawing.Point(14, 15)
-        Me.rbHostWindows.Name = "rbHostWindows"
-        Me.rbHostWindows.Size = New System.Drawing.Size(261, 23)
-        Me.rbHostWindows.TabIndex = 6
-        Me.rbHostWindows.TabStop = True
-        Me.rbHostWindows.Text = "Windows Drive Letter (X:\)"
-        Me.rbHostWindows.UseVisualStyleBackColor = True
-        '
         'dgvHostSources
         '
         Me.dgvHostSources.AllowUserToAddRows = False
         Me.dgvHostSources.AllowUserToDeleteRows = False
         Me.dgvHostSources.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvHostSources.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colHostEmberSource, Me.colHostSource, Me.colHostType})
+        Me.tblHost.SetColumnSpan(Me.dgvHostSources, 2)
+        Me.dgvHostSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvHostSources.Enabled = False
-        Me.dgvHostSources.Location = New System.Drawing.Point(12, 187)
+        Me.dgvHostSources.Location = New System.Drawing.Point(3, 164)
         Me.dgvHostSources.MultiSelect = False
         Me.dgvHostSources.Name = "dgvHostSources"
         Me.dgvHostSources.RowHeadersVisible = False
@@ -290,7 +261,7 @@ Partial Class dlgHost
         Me.dgvHostSources.ShowCellErrors = False
         Me.dgvHostSources.ShowCellToolTips = False
         Me.dgvHostSources.ShowRowErrors = False
-        Me.dgvHostSources.Size = New System.Drawing.Size(548, 150)
+        Me.dgvHostSources.Size = New System.Drawing.Size(561, 150)
         Me.dgvHostSources.TabIndex = 14
         '
         'colHostEmberSource
@@ -325,7 +296,7 @@ Partial Class dlgHost
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.lblCompiling)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(121, 234)
+        Me.pnlLoading.Location = New System.Drawing.Point(178, 212)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 15
@@ -352,7 +323,8 @@ Partial Class dlgHost
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(497, 384)
+        Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnOK.Location = New System.Drawing.Point(489, 320)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 9
@@ -362,7 +334,7 @@ Partial Class dlgHost
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(578, 384)
+        Me.btnCancel.Location = New System.Drawing.Point(570, 320)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 10
@@ -371,39 +343,79 @@ Partial Class dlgHost
         '
         'gbHostMoviesetPath
         '
-        Me.gbHostMoviesetPath.Controls.Add(Me.txtHostMoviesetPath)
+        Me.gbHostMoviesetPath.AutoSize = True
+        Me.tblHost.SetColumnSpan(Me.gbHostMoviesetPath, 2)
+        Me.gbHostMoviesetPath.Controls.Add(Me.tblHostMoviesetPath)
+        Me.gbHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbHostMoviesetPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbHostMoviesetPath.Location = New System.Drawing.Point(372, 112)
+        Me.gbHostMoviesetPath.Location = New System.Drawing.Point(3, 109)
         Me.gbHostMoviesetPath.Name = "gbHostMoviesetPath"
-        Me.gbHostMoviesetPath.Size = New System.Drawing.Size(275, 59)
+        Me.gbHostMoviesetPath.Size = New System.Drawing.Size(561, 49)
         Me.gbHostMoviesetPath.TabIndex = 90
         Me.gbHostMoviesetPath.TabStop = False
         Me.gbHostMoviesetPath.Text = "Kodi MovieSet Artwork Folder"
         '
         'txtHostMoviesetPath
         '
+        Me.txtHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtHostMoviesetPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtHostMoviesetPath.Location = New System.Drawing.Point(6, 31)
+        Me.txtHostMoviesetPath.Location = New System.Drawing.Point(3, 3)
         Me.txtHostMoviesetPath.Name = "txtHostMoviesetPath"
-        Me.txtHostMoviesetPath.Size = New System.Drawing.Size(263, 22)
+        Me.txtHostMoviesetPath.Size = New System.Drawing.Size(549, 22)
         Me.txtHostMoviesetPath.TabIndex = 1
         Me.txtHostMoviesetPath.Text = "- Path to movieset artwork (based on host) -"
+        '
+        'tblHost
+        '
+        Me.tblHost.AutoSize = True
+        Me.tblHost.ColumnCount = 3
+        Me.tblHost.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHost.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHost.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHost.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblHost.Controls.Add(Me.gbHostDetails, 0, 0)
+        Me.tblHost.Controls.Add(Me.gbHostMoviesetPath, 0, 1)
+        Me.tblHost.Controls.Add(Me.dgvHostSources, 0, 2)
+        Me.tblHost.Controls.Add(Me.btnOK, 1, 3)
+        Me.tblHost.Controls.Add(Me.btnCancel, 2, 3)
+        Me.tblHost.Controls.Add(Me.btnHostPopulateSources, 2, 2)
+        Me.tblHost.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblHost.Location = New System.Drawing.Point(0, 0)
+        Me.tblHost.Name = "tblHost"
+        Me.tblHost.RowCount = 4
+        Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHost.Size = New System.Drawing.Size(734, 447)
+        Me.tblHost.TabIndex = 91
+        '
+        'tblHostMoviesetPath
+        '
+        Me.tblHostMoviesetPath.AutoSize = True
+        Me.tblHostMoviesetPath.ColumnCount = 1
+        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblHostMoviesetPath.Controls.Add(Me.txtHostMoviesetPath, 0, 0)
+        Me.tblHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblHostMoviesetPath.Location = New System.Drawing.Point(3, 18)
+        Me.tblHostMoviesetPath.Name = "tblHostMoviesetPath"
+        Me.tblHostMoviesetPath.RowCount = 1
+        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblHostMoviesetPath.Size = New System.Drawing.Size(555, 28)
+        Me.tblHostMoviesetPath.TabIndex = 2
         '
         'dlgHost
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSize = True
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(665, 412)
-        Me.Controls.Add(Me.gbHostMoviesetPath)
-        Me.Controls.Add(Me.btnCancel)
-        Me.Controls.Add(Me.btnOK)
+        Me.ClientSize = New System.Drawing.Size(734, 447)
         Me.Controls.Add(Me.pnlLoading)
-        Me.Controls.Add(Me.dgvHostSources)
-        Me.Controls.Add(Me.gbHostSourceType)
-        Me.Controls.Add(Me.gbHostDetails)
-        Me.Controls.Add(Me.btnHostPopulateSources)
+        Me.Controls.Add(Me.tblHost)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -415,11 +427,14 @@ Partial Class dlgHost
         Me.gbHostDetails.PerformLayout()
         Me.tblHostDetails.ResumeLayout(False)
         Me.tblHostDetails.PerformLayout()
-        Me.gbHostSourceType.ResumeLayout(False)
         CType(Me.dgvHostSources, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoading.ResumeLayout(False)
         Me.gbHostMoviesetPath.ResumeLayout(False)
         Me.gbHostMoviesetPath.PerformLayout()
+        Me.tblHost.ResumeLayout(False)
+        Me.tblHost.PerformLayout()
+        Me.tblHostMoviesetPath.ResumeLayout(False)
+        Me.tblHostMoviesetPath.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -435,9 +450,6 @@ Partial Class dlgHost
     Friend WithEvents lblHostIP As System.Windows.Forms.Label
     Friend WithEvents txtWebPort As System.Windows.Forms.TextBox
     Friend WithEvents txtHostIP As System.Windows.Forms.TextBox
-    Friend WithEvents gbHostSourceType As System.Windows.Forms.GroupBox
-    Friend WithEvents rbHostLinux As System.Windows.Forms.RadioButton
-    Friend WithEvents rbHostWindows As System.Windows.Forms.RadioButton
     Friend WithEvents dgvHostSources As System.Windows.Forms.DataGridView
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
     Friend WithEvents lblCompiling As System.Windows.Forms.Label
@@ -453,4 +465,6 @@ Partial Class dlgHost
     Friend WithEvents colHostType As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents gbHostMoviesetPath As System.Windows.Forms.GroupBox
     Friend WithEvents txtHostMoviesetPath As System.Windows.Forms.TextBox
+    Friend WithEvents tblHost As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblHostMoviesetPath As System.Windows.Forms.TableLayoutPanel
 End Class

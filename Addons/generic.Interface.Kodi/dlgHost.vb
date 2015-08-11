@@ -71,11 +71,6 @@ Public Class dlgHost
             Me.txtWebPort.Text = CStr(currentHost.port)
             Me.txtUsername.Text = currentHost.username
             Me.txtPassword.Text = currentHost.password
-            If currentHost.remotepathseparator = "\" Then
-                Me.rbHostWindows.Checked = True
-            Else
-                Me.rbHostLinux.Checked = True
-            End If
             chkHostRealTimeSync.Checked = currentHost.realtimesync
             Me.txtHostMoviesetPath.Text = currentHost.moviesetpath
         Else
@@ -103,10 +98,7 @@ Public Class dlgHost
         Me.btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Populate Sources")
 
         Me.gbHostDetails.Text = Master.eLang.GetString(1425, "Kodi Host")
-        Me.gbHostSourceType.Text = Master.eLang.GetString(1426, "Kodi Source type")
         Me.gbHostMoviesetPath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder")
-        Me.rbHostLinux.Text = Master.eLang.GetString(1427, "Windows UNC/Linux/MacOS X/Openelec")
-        Me.rbHostWindows.Text = Master.eLang.GetString(1428, "Windows Drive Letter (X:\)")
 
         Me.chkHostRealTimeSync.Text = Master.eLang.GetString(1429, "Enable Real Time synchronization")
         Me.lblHostLabel.Text = Master.eLang.GetString(232, "Name") & ":"
@@ -287,28 +279,6 @@ Public Class dlgHost
         Else
             MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostversion, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
-    End Sub
-
-    ''' <summary>
-    '''  Setting "Linux Path" enabled/disabled
-    ''' </summary>
-    ''' <param name="sender">"Linux Paths"-radio button in dialog</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' </remarks>
-    Private Sub rbLinux_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbHostLinux.CheckedChanged
-        Me.currentHost.remotepathseparator = If(rbHostLinux.Checked, "\", "/")
-    End Sub
-
-    ''' <summary>
-    '''  Setting "Windows Path" enabled/disabled
-    ''' </summary>
-    ''' <param name="sender">"Windows Paths"-radio button in dialog</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' </remarks>
-    Private Sub rbWindows_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbHostWindows.CheckedChanged
-        Me.currentHost.remotepathseparator = If(rbHostWindows.Checked, "/", "\")
     End Sub
 
     ''' <summary>

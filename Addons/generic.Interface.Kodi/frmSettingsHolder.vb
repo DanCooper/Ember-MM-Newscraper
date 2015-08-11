@@ -148,11 +148,6 @@ Public Class frmSettingsHolder
             If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 Dim tmphost As Host
                 tmphost = New Host With {.name = dlg.txtLabel.Text, .address = dlg.txtHostIP.Text, .port = CInt(dlg.txtWebPort.Text), .username = dlg.txtUsername.Text, .password = dlg.txtPassword.Text, .realtimesync = dlg.chkHostRealTimeSync.Checked, .moviesetpath = dlg.txtHostMoviesetPath.Text}
-                If dlg.rbHostWindows.Checked Then
-                    tmphost.remotepathseparator = "\"
-                Else
-                    tmphost.remotepathseparator = "/"
-                End If
                 For i = 0 To dlg.dgvHostSources.Rows.Count - 1
                     If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
                         Dim tmpsource As New HostSource
@@ -198,11 +193,6 @@ Public Class frmSettingsHolder
                     tmphost.password = dlg.txtPassword.Text
                     tmphost.realtimesync = dlg.chkHostRealTimeSync.Checked
                     tmphost.moviesetpath = dlg.txtHostMoviesetPath.Text
-                    If dlg.rbHostWindows.Checked Then
-                        tmphost.remotepathseparator = "\"
-                    Else
-                        tmphost.remotepathseparator = "/"
-                    End If
                     'clear  all sources, we will add them again...
                     '' Array.Clear(tmphost.source, 0, tmphost.source.Length)
                     ReDim tmphost.source(0)

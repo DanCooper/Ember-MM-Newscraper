@@ -34,8 +34,6 @@ Partial Public Class Host
 
     Private passwordField As String
 
-    Private remotepathseparatorField As String
-
     Private realtimesyncField As Boolean
 
     Private moviesetpathField As String
@@ -103,17 +101,6 @@ Partial Public Class Host
         End Get
         Set(value As String)
             Me.passwordField = value
-        End Set
-    End Property
-
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property remotepathseparator() As String
-        Get
-            Return Me.remotepathseparatorField
-        End Get
-        Set(value As String)
-            Me.remotepathseparatorField = value
         End Set
     End Property
 
