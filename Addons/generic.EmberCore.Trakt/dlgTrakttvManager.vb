@@ -1073,83 +1073,102 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountSyncDeleteItem_Click(sender As Object, e As EventArgs) Handles btntraktPlaycountSyncDeleteItem.Click
 
-        Dim ID As String = ""
+        Dim ID As New Dictionary(Of String, String)
         Dim response As String = ""
         Dim IsMovie As Boolean = True
         If myWatchedMovies Is Nothing Then
             IsMovie = False
         End If
 
+        ID.Clear()
         'if isMovie=false then it's a single TvShow to delete, else a single movie
         If IsMovie = True Then
             If Not myWatchedMovies Is Nothing Then
-                For Each watchedMovieData In myWatchedMovies
-                    'lookup for movie title (since we don't have a IMDB column in datagrid)
-                    If watchedMovieData.Movie.Title = dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString Then
-                        response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "? ID: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString & Environment.NewLine
-                        If Integer.TryParse(watchedMovieData.Movie.Ids.Imdb, 0) Then
-                            ID = "tt" & watchedMovieData.Movie.Ids.Imdb
-                        Else
-                            ID = watchedMovieData.Movie.Ids.Imdb
+                'lookup for movie title (since we don't have a IMDB column in datagrid)
+                response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "?" & Environment.NewLine
+                For Each selectedcell As DataGridViewCell In dgvtraktPlaycount.SelectedCells
+                    For Each watchedMovieData In myWatchedMovies
+                        If watchedMovieData.Movie.Title = selectedcell.Value.ToString Then
+                            response = response + "ID: " & selectedcell.Value.ToString & Environment.NewLine
+                            If Integer.TryParse(watchedMovieData.Movie.Ids.Imdb, 0) Then
+                                ID.Add("tt" & watchedMovieData.Movie.Ids.Imdb, watchedMovieData.Movie.Title)
+                            Else
+                                ID.Add(watchedMovieData.Movie.Ids.Imdb, watchedMovieData.Movie.Title)
+                            End If
+                            Exit For
                         End If
-                        Exit For
-                    End If
+                    Next
                 Next
             End If
         Else
             If Not myWatchedShows Is Nothing Then
                 'lookup for show title (since we don't have a TVDBID column in datagrid)
-                For Each watchedShowData In myWatchedShows
-                    If watchedShowData.ShowTitle = dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString Then
-                        response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "? ID: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString & Environment.NewLine
-                        ID = watchedShowData.ShowID
+                response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "?" & Environment.NewLine
+                For Each selectedcell As DataGridViewCell In dgvtraktPlaycount.SelectedCells
+                    For Each watchedShowData In myWatchedShows
+                        If watchedShowData.ShowTitle = selectedcell.Value.ToString Then
+                            response = response + "ID: " & selectedcell.Value.ToString & Environment.NewLine
+                            ID.Add(watchedShowData.ShowID, watchedShowData.ShowTitle)
+                        End If
                         Exit For
-                    End If
+                    Next
                 Next
             End If
         End If
 
-        If Not String.IsNullOrEmpty(ID) Then
+        If ID.Count > 0 Then
             ' Use new Trakttv wrapper class to get watched data!
             traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
             If Not String.IsNullOrEmpty(traktToken) Then
 
                 Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                 If result = Windows.Forms.DialogResult.Yes Then
+                    Dim tmpresponse As String = ""
                     If IsMovie = True Then
-                        Dim tmpTraktItemToDELETE As New TraktAPI.Model.TraktMovie
-                        tmpTraktItemToDELETE.Ids = New TraktAPI.Model.TraktMovieBase
-                        tmpTraktItemToDELETE.Ids.Imdb = ID
-                        Dim traktResponse = TrakttvAPI.RemoveMovieFromWatchedHistory(tmpTraktItemToDELETE)
-                        If Not traktResponse Is Nothing Then
-                            If traktResponse.Deleted.Movies > 0 Then
-                                logger.Info("Deleted Item: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString)
-                                response = Master.eLang.GetString(1407, "Deleted: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString)
+                        For Each itemtodelete In ID
+                            Dim tmpTraktItemToDELETE As New TraktAPI.Model.TraktMovie
+                            tmpTraktItemToDELETE.Ids = New TraktAPI.Model.TraktMovieBase
+                            tmpTraktItemToDELETE.Ids.Imdb = itemtodelete.Key
+                            Dim traktResponse = TrakttvAPI.RemoveMovieFromWatchedHistory(tmpTraktItemToDELETE)
+                            If Not traktResponse Is Nothing Then
+                                If traktResponse.Deleted.Movies > 0 Then
+                                    logger.Info("Deleted Item: " & itemtodelete.Value)
+                                    tmpresponse = tmpresponse + Master.eLang.GetString(1407, "Deleted") & ": " & itemtodelete.Value & Environment.NewLine
+                                Else
+                                    logger.Info("Nothing deleted!")
+                                End If
                             Else
-                                logger.Info("Nothing deleted!")
-                                response = Master.eLang.GetString(1365, "No changes made!")
+                                response = Master.eLang.GetString(1134, "Error!")
                             End If
+                        Next
+                        If Not String.IsNullOrEmpty(tmpresponse) Then
+                            response = Master.eLang.GetString(1407, "Deleted") & ": " & Environment.NewLine & tmpresponse
                         Else
-                            response = Master.eLang.GetString(1134, "Error!")
+                            response = Master.eLang.GetString(1365, "No changes made!")
                         End If
                     Else
-                        Dim tmpTraktItemToDELETE As New TraktAPI.Model.TraktSyncShowEx
-                        tmpTraktItemToDELETE.Ids = New TraktAPI.Model.TraktShowBase
-                        tmpTraktItemToDELETE.Ids.Tvdb = CType(ID, Integer?)
-                        Dim traktResponse = TrakttvAPI.RemoveShowFromWatchedHistoryEx(tmpTraktItemToDELETE)
-                        If Not traktResponse Is Nothing Then
-                            If traktResponse.Deleted.Shows > 0 OrElse traktResponse.Deleted.Episodes > 0 Then
-                                logger.Info("Deleted Item: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString)
-                                response = Master.eLang.GetString(1407, "Deleted: " & dgvtraktPlaycount.CurrentRow.Cells(0).Value.ToString)
+                        For Each itemtodelete In ID
+                            Dim tmpTraktItemToDELETE As New TraktAPI.Model.TraktSyncShowEx
+                            tmpTraktItemToDELETE.Ids = New TraktAPI.Model.TraktShowBase
+                            tmpTraktItemToDELETE.Ids.Tvdb = CType(itemtodelete.Key, Integer?)
+                            Dim traktResponse = TrakttvAPI.RemoveShowFromWatchedHistoryEx(tmpTraktItemToDELETE)
+                            If Not traktResponse Is Nothing Then
+                                If traktResponse.Deleted.Shows > 0 OrElse traktResponse.Deleted.Episodes > 0 Then
+                                    logger.Info("Deleted Item: " & itemtodelete.Value)
+                                    tmpresponse = tmpresponse + Master.eLang.GetString(1407, "Deleted") & ": " & itemtodelete.Value & Environment.NewLine
+                                Else
+                                    logger.Info("Nothing deleted!")
+                                End If
                             Else
-                                logger.Info("Nothing deleted!")
-                                response = Master.eLang.GetString(1365, "No changes made!")
+                                response = Master.eLang.GetString(1134, "Error!")
                             End If
+                        Next
+                        If Not String.IsNullOrEmpty(tmpresponse) Then
+                            response = Master.eLang.GetString(1407, "Deleted") & ": " & Environment.NewLine & tmpresponse
                         Else
-                            response = Master.eLang.GetString(1134, "Error!")
+                            response = Master.eLang.GetString(1365, "No changes made!")
                         End If
                     End If
-
                     MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
                 End If
             End If
