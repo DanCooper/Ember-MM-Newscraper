@@ -673,14 +673,23 @@ Partial Public Class clsXMLSettings
     '***************** MovieSet Part *******************
     '***************************************************
 
-    '*************** XBMC MSAA settings ***************
+    '*************** Kodi Extended settings ***************
+    Private _moviesetbannerextended As Boolean
+    Private _moviesetclearartextended As Boolean
+    Private _moviesetclearlogoextended As Boolean
+    Private _moviesetdiscartextended As Boolean
+    Private _moviesetfanartextended As Boolean
+    Private _moviesetlandscapeextended As Boolean
+    Private _moviesetpathextended As String
+    Private _moviesetposterextended As Boolean
+
+    '*************** Kodi MSAA settings ***************
     Private _moviesetusemsaa As Boolean
     Private _moviesetbannermsaa As Boolean
     Private _moviesetclearartmsaa As Boolean
     Private _moviesetclearlogomsaa As Boolean
     Private _moviesetfanartmsaa As Boolean
     Private _moviesetlandscapemsaa As Boolean
-    Private _moviesetnfomsaa As Boolean
     Private _moviesetpathmsaa As String
     Private _moviesetpostermsaa As Boolean
 
@@ -5162,6 +5171,78 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieSetBannerExtended() As Boolean
+        Get
+            Return Me._moviesetbannerextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbannerextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtExtended() As Boolean
+        Get
+            Return Me._moviesetclearartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoExtended() As Boolean
+        Get
+            Return Me._moviesetclearlogoextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogoextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtExtended() As Boolean
+        Get
+            Return Me._moviesetdiscartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartExtended() As Boolean
+        Get
+            Return Me._moviesetfanartextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeExtended() As Boolean
+        Get
+            Return Me._moviesetlandscapeextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapeextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetPathExtended() As String
+        Get
+            Return Me._moviesetpathextended
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetpathextended = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterExtended() As Boolean
+        Get
+            Return Me._moviesetposterextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetposterextended = value
+        End Set
+    End Property
+
     Public Property MovieUseFrodo() As Boolean
         Get
             Return Me._movieusefrodo
@@ -5222,15 +5303,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesetlandscapemsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetNFOMSAA() As Boolean
-        Get
-            Return Me._moviesetnfomsaa
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviesetnfomsaa = value
         End Set
     End Property
 

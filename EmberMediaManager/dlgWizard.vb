@@ -833,7 +833,6 @@ Public Class dlgWizard
             Me.chkMovieSetClearLogoMSAA.Checked = .MovieSetClearLogoMSAA
             Me.chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
             Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
-            Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
             Me.txtMovieSetPathMSAA.Text = .MovieSetPathMSAA
             Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
 
@@ -1228,7 +1227,6 @@ Public Class dlgWizard
             .MovieSetClearLogoMSAA = Me.chkMovieSetClearLogoMSAA.Checked
             .MovieSetFanartMSAA = Me.chkMovieSetFanartMSAA.Checked
             .MovieSetLandscapeMSAA = Me.chkMovieSetLandscapeMSAA.Checked
-            .MovieSetNFOMSAA = Me.chkMovieSetNFOMSAA.Checked
             .MovieSetPathMSAA = Me.txtMovieSetPathMSAA.Text
             .MovieSetPosterMSAA = Me.chkMovieSetPosterMSAA.Checked
 

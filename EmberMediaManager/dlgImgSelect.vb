@@ -1394,10 +1394,10 @@ Public Class dlgImgSelect
                 Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
                 Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
             Case Enums.ContentType.TV
-                Me.DoAllSeasonsBanner = Me.tScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVASBannerAnyEnabled
-                Me.DoAllSeasonsFanart = Me.tScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVASFanartAnyEnabled
-                Me.DoAllSeasonsLandscape = Me.tScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVASLandscapeAnyEnabled
-                Me.DoAllSeasonsPoster = Me.tScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVASPosterAnyEnabled
+                Me.DoAllSeasonsBanner = Me.tScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled
+                Me.DoAllSeasonsFanart = Me.tScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled
+                Me.DoAllSeasonsLandscape = Me.tScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled
+                Me.DoAllSeasonsPoster = Me.tScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled
                 Me.DoEpisodeFanart = Me.tScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
                 Me.DoEpisodePoster = Me.tScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
                 Me.DoMainBanner = Me.tScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled

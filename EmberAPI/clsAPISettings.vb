@@ -5420,6 +5420,78 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetBannerExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetBannerExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetBannerExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetClearArtExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetClearArtExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetClearLogoExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetClearLogoExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetDiscArtExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetDiscArtExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetFanartExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetFanartExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetLandscapeExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetLandscapeExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetPathExtended() As String
+        Get
+            Return Settings._XMLSettings.MovieSetPathExtended
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetPathExtended = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetPosterExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetPosterExtended = value
+        End Set
+    End Property
+
     Public Property MovieSetUseMSAA() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetUseMSAA
@@ -5471,15 +5543,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieSetLandscapeMSAA = value
-        End Set
-    End Property
-
-    Public Property MovieSetNFOMSAA() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetNFOMSAA
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetNFOMSAA = value
         End Set
     End Property
 
@@ -7272,6 +7335,14 @@ Public Class Settings
         End If
     End Sub
 
+    Public Function GetMovieSetsArtworkPaths() As List(Of String)
+        Dim Paths As New List(Of String)
+        If Not String.IsNullOrEmpty(MovieSetPathExpertSingle) Then Paths.Add(MovieSetPathExpertSingle)
+        If Not String.IsNullOrEmpty(MovieSetPathExtended) Then Paths.Add(MovieSetPathExtended)
+        If Not String.IsNullOrEmpty(MovieSetPathExtended) Then Paths.Add(MovieSetPathExtended)
+        Return Paths
+    End Function
+
     Public Function MovieActorThumbsAnyEnabled() As Boolean
         Return MovieActorThumbsEden OrElse MovieActorThumbsFrodo OrElse _
             (MovieUseExpert AndAlso ((MovieActorThumbsExpertBDMV AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertBDMV)) OrElse (MovieActorThumbsExpertMulti AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertMulti)) OrElse (MovieActorThumbsExpertSingle AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertSingle)) OrElse (MovieActorThumbsExpertVTS AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertVTS))))
@@ -7338,31 +7409,37 @@ Public Class Settings
     End Function
 
     Public Function MovieSetBannerAnyEnabled() As Boolean
-        Return (MovieSetUseMSAA AndAlso MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseMSAA AndAlso MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
     Public Function MovieSetClearArtAnyEnabled() As Boolean
-        Return (MovieSetUseMSAA AndAlso MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseMSAA AndAlso MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
     End Function
 
     Public Function MovieSetClearLogoAnyEnabled() As Boolean
-        Return (MovieSetUseMSAA AndAlso MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseMSAA AndAlso MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
     End Function
 
     Public Function MovieSetDiscArtAnyEnabled() As Boolean
-        Return (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
+        Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
     End Function
 
     Public Function MovieSetFanartAnyEnabled() As Boolean
-        Return (MovieSetUseMSAA AndAlso MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseMSAA AndAlso MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
     End Function
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
-        Return (MovieSetUseMSAA AndAlso MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseMSAA AndAlso MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
     End Function
 
@@ -7372,30 +7449,31 @@ Public Class Settings
     End Function
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
-        Return (MovieSetUseMSAA AndAlso MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+            (MovieSetUseMSAA AndAlso MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
-    Public Function TVASAnyEnabled() As Boolean
-        Return TVASBannerAnyEnabled() OrElse TVASFanartAnyEnabled() OrElse TVASLandscapeAnyEnabled() OrElse TVASPosterAnyEnabled()
+    Public Function TVAllSeasonsAnyEnabled() As Boolean
+        Return TVAllSeasonsBannerAnyEnabled() OrElse TVAllSeasonsFanartAnyEnabled() OrElse TVAllSeasonsLandscapeAnyEnabled() OrElse TVAllSeasonsPosterAnyEnabled()
     End Function
 
-    Public Function TVASBannerAnyEnabled() As Boolean
+    Public Function TVAllSeasonsBannerAnyEnabled() As Boolean
         Return TVSeasonBannerFrodo OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsBannerExpert))
     End Function
 
-    Public Function TVASFanartAnyEnabled() As Boolean
+    Public Function TVAllSeasonsFanartAnyEnabled() As Boolean
         Return TVSeasonFanartFrodo OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsFanartExpert))
     End Function
 
-    Public Function TVASLandscapeAnyEnabled() As Boolean
+    Public Function TVAllSeasonsLandscapeAnyEnabled() As Boolean
         Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
     End Function
 
-    Public Function TVASPosterAnyEnabled() As Boolean
+    Public Function TVAllSeasonsPosterAnyEnabled() As Boolean
         Return TVSeasonPosterFrodo OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsPosterExpert))
     End Function

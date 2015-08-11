@@ -1723,20 +1723,80 @@ Namespace FileUtils
             Dim FilenameList As New List(Of String)
 
             Dim fSetName As String = SetName
-            Dim fPath As String = Master.eSettings.MovieSetPathMSAA
-
-            If String.IsNullOrEmpty(fPath) Then
-                Return FilenameList
-            End If
 
             For Each Invalid As Char In Path.GetInvalidFileNameChars
                 fSetName = fSetName.Replace(Invalid, "-")
             Next
 
             Select Case mType
+                Case Enums.ModifierType.MainBanner
+                    With Master.eSettings
+                        If .MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-banner.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetName, "-banner.jpg")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetBannerExpertSingle) Then
+                            For Each a In .MovieSetBannerExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
+                    End With
+
+                Case Enums.ModifierType.MainClearArt
+                    With Master.eSettings
+                        If .MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-clearart.png")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetName, "-clearart.png")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearArtExpertSingle) Then
+                            For Each a In .MovieSetClearArtExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
+                    End With
+
+                Case Enums.ModifierType.MainClearLogo
+                    With Master.eSettings
+                        If .MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-clearlogo.png")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetName, "-logo.png")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearLogoExpertSingle) Then
+                            For Each a In .MovieSetClearLogoExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
+                    End With
+
+                Case Enums.ModifierType.MainDiscArt
+                    With Master.eSettings
+                        If .MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-discart.png")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetDiscArtExpertSingle) Then
+                            For Each a In .MovieSetDiscArtExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
+                    End With
+
+                Case Enums.ModifierType.MainFanart
+                    With Master.eSettings
+                        If .MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-fanart.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetName, "-fanart.jpg")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetFanartExpertSingle) Then
+                            For Each a In .MovieSetFanartExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
+                    End With
+
+                Case Enums.ModifierType.MainLandscape
+                    With Master.eSettings
+                        If .MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-landscape.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetName, "-landscape.jpg")))
+                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetLandscapeExpertSingle) Then
+                            For Each a In .MovieSetLandscapeExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
+                            Next
+                        End If
+                    End With
+
                 Case Enums.ModifierType.MainNFO
                     With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetNFOMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
+                        'If .MovieSetUseMSAA AndAlso .MovieSetNFOMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetNFOExpertSingle) Then
                             For Each a In .MovieSetNFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
@@ -1746,7 +1806,8 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainPoster
                     With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetPosterMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-poster.jpg")))
+                        If .MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetName, "-poster.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetName, "-poster.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetPosterExpertSingle) Then
                             For Each a In .MovieSetPosterExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
@@ -1757,66 +1818,6 @@ Namespace FileUtils
                         '        FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
                         '    Next
                         'End If
-                    End With
-
-                Case Enums.ModifierType.MainFanart
-                    With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetFanartMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-fanart.jpg")))
-                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetFanartExpertSingle) Then
-                            For Each a In .MovieSetFanartExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
-                            Next
-                        End If
-                    End With
-
-                Case Enums.ModifierType.MainBanner
-                    With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetBannerMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-banner.jpg")))
-                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetBannerExpertSingle) Then
-                            For Each a In .MovieSetBannerExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
-                            Next
-                        End If
-                    End With
-
-                Case Enums.ModifierType.MainClearLogo
-                    With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetClearLogoMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-logo.png")))
-                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearLogoExpertSingle) Then
-                            For Each a In .MovieSetClearLogoExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
-                            Next
-                        End If
-                    End With
-
-                Case Enums.ModifierType.MainClearArt
-                    With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetClearArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.png")))
-                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearArtExpertSingle) Then
-                            For Each a In .MovieSetClearArtExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
-                            Next
-                        End If
-                    End With
-
-                Case Enums.ModifierType.MainDiscArt
-                    With Master.eSettings
-                        'If .MovieSetUseMSAA AndAlso .MovieSetDiscArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.png")))
-                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetDiscArtExpertSingle) Then
-                            For Each a In .MovieSetDiscArtExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
-                            Next
-                        End If
-                    End With
-
-                Case Enums.ModifierType.MainLandscape
-                    With Master.eSettings
-                        If .MovieSetUseMSAA AndAlso .MovieSetLandscapeMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-landscape.jpg")))
-                        If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetLandscapeExpertSingle) Then
-                            For Each a In .MovieSetLandscapeExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(.MovieSetPathExpertSingle, a.Replace("<setname>", fSetName)))
-                            Next
-                        End If
                     End With
             End Select
 
