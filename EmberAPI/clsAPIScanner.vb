@@ -900,7 +900,7 @@ Public Class Scanner
 
             If DBTVShow.ShowID > -1 Then
                 For Each DBTVEpisode As Database.DBElement In DBTVShow.Episodes
-                    DBTVEpisode = Master.DB.FillTVShowFromDB(DBTVEpisode, DBTVShow)
+                    DBTVEpisode = Master.DB.AddTVShowInfoToDBElement(DBTVEpisode, DBTVShow)
                     If Not String.IsNullOrEmpty(DBTVEpisode.Filename) Then
                         GetTVEpisodeFolderContents(DBTVEpisode)
 
@@ -1088,7 +1088,7 @@ Public Class Scanner
                                 tmpSeason.Filename = DBTVEpisode.Filename
                                 tmpSeason.ID = -1
                                 tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = DBTVEpisode.TVEpisode.Season}
-                                tmpSeason = Master.DB.FillTVShowFromDB(tmpSeason, DBTVEpisode)
+                                tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVEpisode)
                                 GetTVSeasonFolderContents(tmpSeason, tmpSeason.TVSeason.Season)
                                 DBTVShow.Seasons.Add(tmpSeason)
                                 newSeasonsIndex.Add(tmpSeason.TVSeason.Season)
@@ -1105,7 +1105,7 @@ Public Class Scanner
                 tmpAllSeasons.Filename = Path.Combine(DBTVShow.ShowPath, "file.ext")
                 tmpAllSeasons.ID = -1
                 tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
-                tmpAllSeasons = Master.DB.FillTVShowFromDB(tmpAllSeasons, DBTVShow)
+                tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTVShow)
                 GetTVSeasonFolderContents(tmpAllSeasons, tmpAllSeasons.TVSeason.Season)
                 DBTVShow.Seasons.Add(tmpAllSeasons)
                 newSeasonsIndex.Add(tmpAllSeasons.TVSeason.Season)

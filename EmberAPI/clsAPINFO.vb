@@ -864,7 +864,7 @@ Public Class NFO
                     .ShowID = DBTV.ShowID, _
                     .ShowPath = DBTV.ShowPath, _
                     .TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
-                mSeason = Master.DB.FillTVShowFromDB(mSeason, DBTV)
+                mSeason = Master.DB.AddTVShowInfoToDBElement(mSeason, DBTV)
                 DBTV.Seasons.Add(MergeDataScraperResults(mSeason, ScrapedSeasonList, ScrapeOptions))
             End If
         Next
@@ -873,7 +873,7 @@ Public Class NFO
         If withEpisodes Then
             'update the tvshow information for each local episode
             For Each lEpisode In DBTV.Episodes
-                lEpisode = Master.DB.FillTVShowFromDB(lEpisode, DBTV)
+                lEpisode = Master.DB.AddTVShowInfoToDBElement(lEpisode, DBTV)
             Next
 
             For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex
@@ -914,7 +914,7 @@ Public Class NFO
                         .ID = -1, _
                         .ImagesContainer = New MediaContainers.ImagesContainer, _
                         .TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
-                    mEpisode = Master.DB.FillTVShowFromDB(mEpisode, DBTV)
+                    mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
                     DBTV.Episodes.Add(MergeDataScraperResults(mEpisode, ScrapedEpisodeList, ScrapeOptions))
                 End If
             Next

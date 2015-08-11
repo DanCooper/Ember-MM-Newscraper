@@ -1068,7 +1068,7 @@ Public Class Database
     ''' <param name="_TVDB">Database.DBElement container to fill with TVShow informations</param>
     ''' <param name="_TVDBShow">Optional the TVShow informations to add to _TVDB</param>
     ''' <remarks></remarks>
-    Public Function FillTVShowFromDB(ByVal _TVDB As Database.DBElement, Optional _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
+    Public Function AddTVShowInfoToDBElement(ByVal _TVDB As Database.DBElement, Optional _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
         Dim _tmpTVDBShow As New Database.DBElement
 
         If _TVDBShow Is Nothing OrElse _TVDBShow.TVShow Is Nothing Then
@@ -1851,7 +1851,7 @@ Public Class Database
             End Using
         End Using
 
-        If WithShow Then Master.DB.FillTVShowFromDB(_TVDB)
+        If WithShow Then Master.DB.AddTVShowInfoToDBElement(_TVDB)
 
         Return _TVDB
     End Function
@@ -2028,7 +2028,7 @@ Public Class Database
         End If
 
         If withShow Then
-            _TVDB = Master.DB.FillTVShowFromDB(_TVDB)
+            _TVDB = Master.DB.AddTVShowInfoToDBElement(_TVDB)
         End If
 
         'Check if the file is available and ready to edit
@@ -2137,7 +2137,7 @@ Public Class Database
         End If
 
         If withShow Then
-            _TVDB = Master.DB.FillTVShowFromDB(_TVDB)
+            _TVDB = Master.DB.AddTVShowInfoToDBElement(_TVDB)
         End If
 
         Return _TVDB
@@ -2156,7 +2156,7 @@ Public Class Database
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         _TVDB.ShowID = ShowID
-        If WithShow Then FillTVShowFromDB(_TVDB)
+        If WithShow Then AddTVShowInfoToDBElement(_TVDB)
 
         Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
@@ -2298,7 +2298,7 @@ Public Class Database
         'Episodes
         If withEpisodes Then
             For Each tEpisode As Database.DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False)
-                tEpisode = Master.DB.FillTVShowFromDB(tEpisode, _TVDB)
+                tEpisode = Master.DB.AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
         End If
