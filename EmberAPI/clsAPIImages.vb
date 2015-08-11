@@ -2708,7 +2708,17 @@ Public Class Images
         End Try
         Return strReturn
     End Function
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="DBElement"></param>
+    ''' <param name="DefaultImagesContainer">Contains all original or new images (determined on the basis of preferences) of DBElement. This Container is required for resetting an image.</param>
+    ''' <param name="SearchResultsContainer">Contains all new scraped images</param>
+    ''' <param name="ScrapeModifier">Defines which images are to be redetermined</param>
+    ''' <param name="ContentType"></param>
+    ''' <param name="DefaultSeasonImagesContainer">Contains all original or new images (determined on the basis of preferences) of each season. This Container is required for resetting an image.</param>
+    ''' <param name="DefaultEpisodeImagesContainer">Contains all original or new images (determined on the basis of preferences) of each episode. This Container is required for resetting an image.</param>
+    ''' <remarks></remarks>
     Public Shared Sub SetDefaultImages(ByRef DBElement As Database.DBElement, _
                                        ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
                                        ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, _
@@ -2781,10 +2791,10 @@ Public Class Images
                 DoEpisodeFanart = ScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
                 DoEpisodePoster = ScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
             Case Enums.ContentType.TVSeason
-                DoMainBanner = ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
-                DoMainFanart = ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
-                DoMainLandscape = ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
-                DoMainPoster = ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+                DoSeasonBanner = ScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                DoSeasonFanart = ScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                DoSeasonLandscape = ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                DoSeasonPoster = ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
         End Select
 
         'Main Banner
@@ -3069,7 +3079,7 @@ Public Class Images
                     sContainer.Poster = sEpisode.ImagesContainer.Poster
                 Else
                     Dim defImg As MediaContainers.Image = Nothing
-                    Images.GetPreferredTVEpisodePoster(SearchResultsContainer.SeasonPosters, defImg, sContainer.Season, sContainer.Episode)
+                    Images.GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, sContainer.Season, sContainer.Episode)
 
                     If defImg IsNot Nothing Then
                         sEpisode.ImagesContainer.Poster = defImg
@@ -3718,15 +3728,15 @@ Public Class Images
     Public Shared Function GetPreferredTVEpisodePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVEpisodePosterPrefSize = Enums.TVPosterSize.Any Then
+        If Master.eSettings.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any Then
             imgResult = ImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
         End If
 
         If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.TVPosterSize = Master.eSettings.TVEpisodePosterPrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = iSeason)
+            imgResult = ImageList.Find(Function(f) f.TVEpisodePosterSize = Master.eSettings.TVEpisodePosterPrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = iSeason)
         End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodePosterPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodePosterPrefSize = Enums.TVPosterSize.Any Then
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodePosterPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any Then
             imgResult = ImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
         End If
 
