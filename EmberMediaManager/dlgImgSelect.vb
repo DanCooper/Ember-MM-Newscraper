@@ -583,196 +583,156 @@ Public Class dlgImgSelect
 
         ClearImageList()
 
-        If tTag.ImageType = Enums.ModifierType.AllSeasonsBanner Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) f.Season = 999)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner)
-                iCount += 1
-            Next
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner, 999)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsFanart Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) f.Season = 999)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart)
-                iCount += 1
-            Next
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart, 999)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsLandscape Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) f.Season = 999)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape)
-                iCount += 1
-            Next
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape, 999)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsPoster Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) f.Season = 999)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster)
-                iCount += 1
-            Next
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster, 999)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.EpisodePoster Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.EpisodePoster)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.EpisodeFanart Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.EpisodeFanart)
-                iCount += 1
-            Next
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.EpisodeFanart)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainBanner Then
-            iCount = 0
-            Select Case Me.tContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
-                        iCount += 1
-                    Next
-                Case Enums.ContentType.TVSeason
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
-                        iCount += 1
-                    Next
-            End Select
-        ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainCharacterArt)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainClearArt Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearArts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainClearArt)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainClearLogo Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainClearLogo)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainDiscArt Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainEFanarts Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainEFanarts)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainEThumbs Then
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.MainEThumbs)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
-            iCount = 0
-            Select Me.tContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
-                        iCount += 1
-                    Next
-                Case Enums.ContentType.TVSeason
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
-                        iCount += 1
-                    Next
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
-                        iCount += 1
-                    Next
-            End Select
-        ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
-            iCount = 0
-            Select Case Me.tContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
-                        iCount += 1
-                    Next
-                Case Enums.ContentType.TVSeason
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
-                        iCount += 1
-                    Next
-            End Select
-        ElseIf tTag.ImageType = Enums.ModifierType.MainPoster Then
-            iCount = 0
-            Select Case Me.tContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet, Enums.ContentType.TV, Enums.ContentType.TVShow
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
-                        iCount += 1
-                    Next
-                Case Enums.ContentType.TVEpisode
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
-                        iCount += 1
-                    Next
-                Case Enums.ContentType.TVSeason
-                    For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
-                        Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
-                        iCount += 1
-                    Next
-            End Select
-        ElseIf tTag.ImageType = Enums.ModifierType.SeasonBanner Then
-            Dim iSeason As Integer = tTag.iSeason
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) f.Season = iSeason)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonBanner)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.SeasonFanart Then
-            Dim iSeason As Integer = tTag.iSeason
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) f.Season = iSeason)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonFanart)
-                iCount += 1
-            Next
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonFanart, iSeason)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.SeasonLandscape Then
-            Dim iSeason As Integer = tTag.iSeason
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) f.Season = iSeason)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonLandscape)
-                iCount += 1
-            Next
-        ElseIf tTag.ImageType = Enums.ModifierType.SeasonPoster Then
-            Dim iSeason As Integer = tTag.iSeason
-            iCount = 0
-            For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) f.Season = iSeason)
-                Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonPoster)
-                iCount += 1
-            Next
-        End If
+        Select Case tTag.ImageType
+            Case Enums.ModifierType.AllSeasonsBanner
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) f.Season = 999)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner)
+                    iCount += 1
+                Next
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsBanner, 999)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.AllSeasonsFanart
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) f.Season = 999)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart)
+                    iCount += 1
+                Next
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsFanart, 999)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.AllSeasonsLandscape
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) f.Season = 999)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape)
+                    iCount += 1
+                Next
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsLandscape, 999)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.AllSeasonsPoster
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) f.Season = 999)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster)
+                    iCount += 1
+                Next
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.AllSeasonsPoster, 999)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.EpisodeFanart
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.EpisodeFanart)
+                    iCount += 1
+                Next
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.EpisodeFanart)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.EpisodePoster
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.EpisodePoster)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainBanner
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainBanners
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainBanner)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainCharacterArt
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainCharacterArt)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainClearArt
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearArts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainClearArt)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainClearLogo
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainClearLogo)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainDiscArt
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainEFanarts
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainEFanarts)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainEThumbs
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainEThumbs)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainFanart
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainFanart)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainLandscape
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainLandscape)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.MainPoster
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainPosters
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainPoster)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.SeasonBanner
+                Dim iSeason As Integer = tTag.iSeason
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) f.Season = iSeason)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonBanner)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.SeasonFanart
+                Dim iSeason As Integer = tTag.iSeason
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) f.Season = iSeason)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonFanart)
+                    iCount += 1
+                Next
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonFanart, iSeason)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.SeasonLandscape
+                Dim iSeason As Integer = tTag.iSeason
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) f.Season = iSeason)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonLandscape)
+                    iCount += 1
+                Next
+            Case Enums.ModifierType.SeasonPoster
+                Dim iSeason As Integer = tTag.iSeason
+                iCount = 0
+                For Each tImage As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) f.Season = iSeason)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.SeasonPoster)
+                    iCount += 1
+                Next
+        End Select
     End Sub
 
     Private Sub CreateSubImages()
@@ -878,19 +838,19 @@ Public Class dlgImgSelect
 
         'While TVSeason scraping
         If DoSeasonPoster AndAlso tContentType = Enums.ContentType.TVSeason Then
-            AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.SeasonPoster)
+            AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.SeasonPoster, tDBElementResult.TVSeason.Season)
             iCount += 1
         End If
         If DoSeasonFanart AndAlso tContentType = Enums.ContentType.TVSeason Then
-            AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.SeasonFanart)
+            AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.SeasonFanart, tDBElementResult.TVSeason.Season)
             iCount += 1
         End If
         If DoSeasonBanner AndAlso tContentType = Enums.ContentType.TVSeason Then
-            AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.SeasonBanner)
+            AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.SeasonBanner, tDBElementResult.TVSeason.Season)
             iCount += 1
         End If
         If DoSeasonLandscape AndAlso tContentType = Enums.ContentType.TVSeason Then
-            AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.SeasonLandscape)
+            AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.SeasonLandscape, tDBElementResult.TVSeason.Season)
             iCount += 1
         End If
 
@@ -1064,8 +1024,8 @@ Public Class dlgImgSelect
         Me.iSubImage_NextTop = Me.iSubImage_NextTop + Me.iSubImage_Size_Panel.Height + Me.iSubImage_DistanceTop
     End Sub
 
-    Private Sub AddTopImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType)
-        Dim tTag As iTag = CreateImageTag(tImage, ModifierType)
+    Private Sub AddTopImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1)
+        Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason)
 
         ReDim Preserve Me.pnlTopImage_Panel(iIndex)
         ReDim Preserve Me.pbTopImage_Image(iIndex)
@@ -1361,47 +1321,74 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub SetImage(ByVal tTag As iTag)
-        If tTag.ImageType = Enums.ModifierType.EpisodeFanart AndAlso tContentType = Enums.ContentType.TVEpisode Then
-            tDBElementResult.ImagesContainer.Fanart = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.EpisodePoster AndAlso tContentType = Enums.ContentType.TVEpisode Then
-            tDBElementResult.ImagesContainer.Poster = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainBanner Then
-            tDBElementResult.ImagesContainer.Banner = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainCharacterArt Then
-            tDBElementResult.ImagesContainer.CharacterArt = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainClearArt Then
-            tDBElementResult.ImagesContainer.ClearArt = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainClearLogo Then
-            tDBElementResult.ImagesContainer.ClearLogo = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainLandscape Then
-            tDBElementResult.ImagesContainer.Landscape = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainFanart Then
-            tDBElementResult.ImagesContainer.Fanart = tTag.Image
-            RefreshTopImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainEFanarts Then
-            AddExtraImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.MainEThumbs Then
-            AddExtraImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsBanner OrElse tTag.ImageType = Enums.ModifierType.SeasonBanner Then
-            tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Banner = tTag.Image
-            RefreshSubImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsFanart OrElse tTag.ImageType = Enums.ModifierType.SeasonFanart Then
-            tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Fanart = tTag.Image
-            RefreshSubImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsLandscape OrElse tTag.ImageType = Enums.ModifierType.SeasonLandscape Then
-            tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Landscape = tTag.Image
-            RefreshSubImage(tTag)
-        ElseIf tTag.ImageType = Enums.ModifierType.AllSeasonsPoster OrElse tTag.ImageType = Enums.ModifierType.SeasonPoster Then
-            tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Poster = tTag.Image
-            RefreshSubImage(tTag)
-        End If
+        Select Case tTag.ImageType
+            Case Enums.ModifierType.AllSeasonsBanner, Enums.ModifierType.SeasonBanner
+                If tContentType = Enums.ContentType.TV Then
+                    tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Banner = tTag.Image
+                    RefreshSubImage(tTag)
+                ElseIf tContentType = Enums.ContentType.TVSeason Then
+                    tDBElementResult.ImagesContainer.Banner = tTag.Image
+                    RefreshTopImage(tTag)
+                End If
+            Case Enums.ModifierType.AllSeasonsFanart, Enums.ModifierType.SeasonFanart
+                If tContentType = Enums.ContentType.TV Then
+                    tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Fanart = tTag.Image
+                    RefreshSubImage(tTag)
+                ElseIf tContentType = Enums.ContentType.TVSeason Then
+                    tDBElementResult.ImagesContainer.Fanart = tTag.Image
+                    RefreshTopImage(tTag)
+                End If
+            Case Enums.ModifierType.AllSeasonsLandscape, Enums.ModifierType.SeasonLandscape
+                If tContentType = Enums.ContentType.TV Then
+                    tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Landscape = tTag.Image
+                    RefreshSubImage(tTag)
+                ElseIf tContentType = Enums.ContentType.TVSeason Then
+                    tDBElementResult.ImagesContainer.Landscape = tTag.Image
+                    RefreshTopImage(tTag)
+                End If
+            Case Enums.ModifierType.AllSeasonsPoster, Enums.ModifierType.SeasonPoster
+                If tContentType = Enums.ContentType.TV Then
+                    tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = tTag.iSeason).ImagesContainer.Poster = tTag.Image
+                    RefreshSubImage(tTag)
+                ElseIf tContentType = Enums.ContentType.TVSeason Then
+                    tDBElementResult.ImagesContainer.Poster = tTag.Image
+                    RefreshTopImage(tTag)
+                End If
+            Case Enums.ModifierType.EpisodeFanart
+                tDBElementResult.ImagesContainer.Fanart = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.EpisodePoster
+                tDBElementResult.ImagesContainer.Poster = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainBanner
+                tDBElementResult.ImagesContainer.Banner = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainCharacterArt
+                tDBElementResult.ImagesContainer.CharacterArt = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainClearArt
+                tDBElementResult.ImagesContainer.ClearArt = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainClearLogo
+                tDBElementResult.ImagesContainer.ClearLogo = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainDiscArt
+                tDBElementResult.ImagesContainer.DiscArt = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainEFanarts
+                AddExtraImage(tTag)
+            Case Enums.ModifierType.MainEThumbs
+                AddExtraImage(tTag)
+            Case Enums.ModifierType.MainFanart
+                tDBElementResult.ImagesContainer.Fanart = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainLandscape
+                tDBElementResult.ImagesContainer.Landscape = tTag.Image
+                RefreshTopImage(tTag)
+            Case Enums.ModifierType.MainPoster
+                tDBElementResult.ImagesContainer.Poster = tTag.Image
+                RefreshTopImage(tTag)
+        End Select
     End Sub
 
     Private Sub SetParameters()

@@ -2013,8 +2013,6 @@ Public Class frmMain
 
         logger.Trace("Starting MOVIE scrape")
 
-        AddHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf ScraperEvent_Movie
-
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim Theme As New MediaContainers.Theme
             Dim Trailer As New MediaContainers.Trailer
@@ -2112,7 +2110,6 @@ Public Class frmMain
                                             tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 DBScrapeMovie.ThemePath = tURL
-                                                ScraperEvent_Movie(Enums.ScraperEventType.ThemeItem, DBScrapeMovie.ThemePath)
                                             End If
                                         End If
                                         'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
@@ -2162,7 +2159,6 @@ Public Class frmMain
                                                 tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                 If Not String.IsNullOrEmpty(tURL) Then
                                                     DBScrapeMovie.TrailerPath = tURL
-                                                    ScraperEvent_Movie(Enums.ScraperEventType.TrailerItem, DBScrapeMovie.TrailerPath)
                                                     logger.Info("[" & DBScrapeMovie.Movie.Title & "] " & _trailer.Quality & " Downloaded trailer: " & _trailer.VideoURL)
                                                     'since trailer was downloaded we can leave loop, all good!
                                                     Exit For
@@ -2187,7 +2183,6 @@ Public Class frmMain
                                                 tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                                 If Not String.IsNullOrEmpty(tURL) Then
                                                     DBScrapeMovie.TrailerPath = tURL
-                                                    ScraperEvent_Movie(Enums.ScraperEventType.TrailerItem, DBScrapeMovie.TrailerPath)
                                                 End If
                                             End If
                                         End If
@@ -2227,7 +2222,7 @@ Public Class frmMain
             End If
             logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
         Next
-        RemoveHandler ModulesManager.Instance.ScraperEvent_Movie, AddressOf ScraperEvent_Movie
+
         e.Result = New Results With {.DBElement = DBScrapeMovie, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieScraper.CancellationPending}
         logger.Trace("Ended MOVIE scrape")
     End Sub
@@ -2284,8 +2279,6 @@ Public Class frmMain
         Dim cloneMovieSet As New Database.DBElement
 
         logger.Trace("Starting MOVIE SET scrape")
-
-        AddHandler ModulesManager.Instance.ScraperEvent_MovieSet, AddressOf ScraperEvent_MovieSet
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -2395,20 +2388,30 @@ Public Class frmMain
                 End If
 
                 'get all images
-                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) Then
-                    If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
-                                DBScrapeMovieSet = dImgSelect.Result
-                            End If
-                        End Using
+                If tScrapeItem.ScrapeModifier.MainBanner OrElse _
+                    tScrapeItem.ScrapeModifier.MainClearArt OrElse _
+                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
+                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
+                    tScrapeItem.ScrapeModifier.MainEFanarts OrElse _
+                    tScrapeItem.ScrapeModifier.MainFanart OrElse _
+                    tScrapeItem.ScrapeModifier.MainLandscape OrElse _
+                    tScrapeItem.ScrapeModifier.MainPoster Then
 
-                        'autoscraping
-                    ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        Dim newPreferredImages As New MediaContainers.ImagesContainer
-                        Images.SetDefaultImages(DBScrapeMovieSet, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.MovieSet)
-                        DBScrapeMovieSet.ImagesContainer = newPreferredImages
+                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
+                            Using dImgSelect As New dlgImgSelect()
+                                If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
+                                    DBScrapeMovieSet = dImgSelect.Result
+                                End If
+                            End Using
+
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredImages As New MediaContainers.ImagesContainer
+                            Images.SetDefaultImages(DBScrapeMovieSet, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.MovieSet)
+                            DBScrapeMovieSet.ImagesContainer = newPreferredImages
+                        End If
                     End If
                 End If
 
@@ -2425,7 +2428,7 @@ Public Class frmMain
                 End If
             End If
         Next
-        RemoveHandler ModulesManager.Instance.ScraperEvent_MovieSet, AddressOf ScraperEvent_MovieSet
+
         e.Result = New Results With {.DBElement = DBScrapeMovieSet, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieSetScraper.CancellationPending}
         logger.Trace("Ended MOVIESET scrape")
     End Sub
@@ -2483,8 +2486,6 @@ Public Class frmMain
 
         logger.Trace("Starting TV Show scrape")
 
-        AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVShow
-
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim ShowTheme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
@@ -2532,30 +2533,43 @@ Public Class frmMain
                 End If
 
                 'get all images
-                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
-                    If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                        Using dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, True) = DialogResult.OK Then
-                                DBScrapeShow = dImgSelect.Result
-                            End If
-                        End Using
+                If tScrapeItem.ScrapeModifier.MainBanner OrElse _
+                    tScrapeItem.ScrapeModifier.MainClearArt OrElse _
+                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
+                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
+                    tScrapeItem.ScrapeModifier.MainEFanarts OrElse _
+                    tScrapeItem.ScrapeModifier.MainFanart OrElse _
+                    tScrapeItem.ScrapeModifier.MainLandscape OrElse _
+                    tScrapeItem.ScrapeModifier.MainPoster Then
 
-                    Else 'autoscraping
+                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
+                            Using dImgSelect As New dlgImgSelect()
+                                If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, True) = DialogResult.OK Then
+                                    DBScrapeShow = dImgSelect.Result
+                                End If
+                            End Using
 
-                        For Each tEpisode In DBScrapeShow.Episodes
-                            Dim epImagesContainer As New MediaContainers.SearchResultsContainer
-                            Dim imgResult As New MediaContainers.Image
-                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, epImagesContainer, tScrapeItem.ScrapeModifier, False)
-                            Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEpisode.Season, tEpisode.TVEpisode.Episode)
-                            tEpisode.ImagesContainer.Poster = imgResult
-                        Next
+                        Else 'autoscraping
+
+                            For Each tEpisode In DBScrapeShow.Episodes
+                                Dim epImagesContainer As New MediaContainers.SearchResultsContainer
+                                Dim imgResult As New MediaContainers.Image
+                                ModulesManager.Instance.ScrapeImage_TV(tEpisode, epImagesContainer, tScrapeItem.ScrapeModifier, False)
+                                Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEpisode.Season, tEpisode.TVEpisode.Episode)
+                                tEpisode.ImagesContainer.Poster = imgResult
+                            Next
+                        End If
                     End If
                 End If
 
-                '-----
-
                 If bwTVScraper.CancellationPending Then Exit For
+
+                'Theme
+                If tScrapeItem.ScrapeModifier.MainTheme Then
+
+                End If
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , DBScrapeShow)
@@ -2567,7 +2581,7 @@ Public Class frmMain
 
             logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
         Next
-        RemoveHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVShow
+
         e.Result = New Results With {.DBElement = DBScrapeShow, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVScraper.CancellationPending}
         logger.Trace("Ended TV SHOW scrape")
     End Sub
@@ -2624,8 +2638,6 @@ Public Class frmMain
         Dim DBScrapeEpisode As New Database.DBElement
 
         logger.Trace("Starting EPISODE scrape")
-
-        AddHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVEpisode
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim OldListTitle As String = String.Empty
@@ -2703,7 +2715,7 @@ Public Class frmMain
 
             logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
         Next
-        RemoveHandler ModulesManager.Instance.ScraperEvent_TV, AddressOf ScraperEvent_TVShow
+
         e.Result = New Results With {.DBElement = DBScrapeEpisode, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVEpisodeScraper.CancellationPending}
         logger.Trace("Ended EPISODE scrape")
     End Sub
@@ -12445,33 +12457,45 @@ doCancel:
         'create ScrapeList of movies acording to scrapetype
         For Each drvRow As DataRow In DataRowList
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
+
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
+            sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
+            sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
+            sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
+            sModifier.MainDiscArt = ScrapeModifier.MainDiscArt AndAlso DiscArtAllowed
+            sModifier.MainEFanarts = ScrapeModifier.MainEFanarts AndAlso EFanartsAllowed
+            sModifier.MainEThumbs = ScrapeModifier.MainEThumbs AndAlso EThumbsAllowed
+            sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
+            sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso LandscapeAllowed
+            sModifier.MainMeta = ScrapeModifier.MainMeta
+            sModifier.MainNFO = ScrapeModifier.MainNFO
+            sModifier.MainPoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
+            'sModifier.MainSubtitles = ScrapeModifier.MainSubtitles AndAlso SubtitlesAllowed
+            sModifier.MainTheme = ScrapeModifier.MainTheme AndAlso ThemeAllowed
+            sModifier.MainTrailer = ScrapeModifier.MainTrailer AndAlso TrailerAllowed
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsMovies.Find("idMovie", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                    If ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed Then sModifier.MainActorThumbs = True
-                    If ScrapeModifier.MainBanner AndAlso BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = True
-                    If ScrapeModifier.MainClearArt AndAlso ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = True
-                    If ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = True
-                    If ScrapeModifier.MainDiscArt AndAlso DiscArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = True
-                    If ScrapeModifier.MainEFanarts AndAlso EFanartsAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainEFanarts = True
-                    If ScrapeModifier.MainEThumbs AndAlso EThumbsAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString) Then sModifier.MainEThumbs = True
-                    If ScrapeModifier.MainFanart AndAlso FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = True
-                    If ScrapeModifier.MainLandscape AndAlso LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = True
-                    If ScrapeModifier.MainNFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = True
-                    If ScrapeModifier.MainPoster AndAlso PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = True
-                    If ScrapeModifier.MainTheme AndAlso ThemeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = True
-                    If ScrapeModifier.MainTrailer AndAlso TrailerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("TrailerPath").ToString) Then sModifier.MainTrailer = True
+                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainEFanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString) Then sModifier.MainEThumbs = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("TrailerPath").ToString) Then sModifier.MainTrailer = False
             End Select
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifier = sModifier})
         Next
@@ -12607,28 +12631,34 @@ doCancel:
         'create ScrapeList of moviesets acording to scrapetype
         For Each drvRow As DataRow In DataRowList
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
+
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
+            sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
+            sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
+            sModifier.MainDiscArt = ScrapeModifier.MainDiscArt AndAlso DiscArtAllowed
+            sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
+            sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso LandscapeAllowed
+            sModifier.MainNFO = ScrapeModifier.MainNFO
+            sModifier.MainPoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsMovieSets.Find("idSet", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                    If ScrapeModifier.MainBanner AndAlso BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = True
-                    If ScrapeModifier.MainClearArt AndAlso ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = True
-                    If ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = True
-                    If ScrapeModifier.MainDiscArt AndAlso DiscArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = True
-                    If ScrapeModifier.MainFanart AndAlso FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = True
-                    If ScrapeModifier.MainLandscape AndAlso LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = True
-                    If ScrapeModifier.MainNFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = True
-                    If ScrapeModifier.MainPoster AndAlso PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = True
+                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
             End Select
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifier = sModifier})
         Next
@@ -12765,31 +12795,39 @@ doCancel:
         'create ScrapeList of tv shows acording to scrapetype
         For Each drvRow As DataRow In DataRowList
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
+
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
+            sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
+            sModifier.MainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso CharacterArtAllowed
+            sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
+            sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
+            sModifier.MainEFanarts = ScrapeModifier.MainEFanarts AndAlso EFanartsAllowed
+            sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
+            sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso LandscapeAllowed
+            sModifier.MainNFO = ScrapeModifier.MainNFO
+            sModifier.MainPoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
+            sModifier.MainTheme = ScrapeModifier.MainTheme AndAlso ThemeAllowed
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsTVShows.Find("idShow", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                    sModifier = ScrapeModifier
                 Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                    If ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed Then sModifier.MainActorThumbs = True
-                    If ScrapeModifier.MainBanner AndAlso BannerAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = True
-                    If ScrapeModifier.MainCharacterArt AndAlso CharacterArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("CharacterArtPath").ToString) Then sModifier.MainCharacterArt = True
-                    If ScrapeModifier.MainClearArt AndAlso ClearArtAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = True
-                    If ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = True
-                    If ScrapeModifier.MainEFanarts AndAlso EFanartsAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainEFanarts = True
-                    If ScrapeModifier.MainFanart AndAlso FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = True
-                    If ScrapeModifier.MainLandscape AndAlso LandscapeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = True
-                    If ScrapeModifier.MainNFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = True
-                    If ScrapeModifier.MainPoster AndAlso PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = True
-                    If ScrapeModifier.MainTheme AndAlso ThemeAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = True
+                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("CharacterArtPath").ToString) Then sModifier.MainCharacterArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainEFanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = False
             End Select
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifier = sModifier})
         Next
@@ -12922,38 +12960,26 @@ doCancel:
         'create ScrapeList of episodes acording to scrapetype
         For Each drvRow As DataRow In DataRowList
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
+
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.EpisodeActorThumbs = ScrapeModifier.EpisodeActorThumbs AndAlso ActorThumbsAllowed
+            sModifier.EpisodeFanart = ScrapeModifier.EpisodeFanart AndAlso FanartAllowed
+            sModifier.EpisodeMeta = ScrapeModifier.EpisodeMeta
+            sModifier.EpisodeNFO = ScrapeModifier.EpisodeNFO
+            sModifier.EpisodePoster = ScrapeModifier.EpisodePoster AndAlso PosterAllowed
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                    sModifier.EpisodeActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
-                    sModifier.EpisodeFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
-                    sModifier.EpisodeNFO = ScrapeModifier.MainNFO
-                    sModifier.EpisodePoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
                 Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
-                    sModifier.EpisodeActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
-                    sModifier.EpisodeFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
-                    sModifier.EpisodeNFO = ScrapeModifier.MainNFO
-                    sModifier.EpisodePoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsTVEpisodes.Find("idEpisode", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                    sModifier.EpisodeActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
-                    sModifier.EpisodeFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
-                    sModifier.EpisodeNFO = ScrapeModifier.MainNFO
-                    sModifier.EpisodePoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
                 Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
-                    sModifier.EpisodeActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
-                    sModifier.EpisodeFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString)
-                    sModifier.EpisodeNFO = ScrapeModifier.MainNFO AndAlso String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString)
-                    sModifier.EpisodePoster = ScrapeModifier.MainPoster AndAlso PosterAllowed AndAlso String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString)
-                Case Else
-                    sModifier.EpisodeActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
-                    sModifier.EpisodeFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
-                    sModifier.EpisodeNFO = ScrapeModifier.MainNFO
-                    sModifier.EpisodePoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
+                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.EpisodeFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.EpisodeNFO = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.EpisodePoster = False
             End Select
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifier = sModifier})
         Next
@@ -13034,112 +13060,6 @@ doCancel:
         bwTVEpisodeScraper.WorkerSupportsCancellation = True
         bwTVEpisodeScraper.WorkerReportsProgress = True
         bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
-    End Sub
-
-    Private Sub ScraperEvent_Movie(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateEvent_Movie(AddressOf ScraperEvent_Movie), New Object() {eType, Parameter})
-        Else
-            Select Case eType
-                Case Enums.ScraperEventType.BannerItem
-                    dScrapeRow("BannerPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ClearArtItem
-                    dScrapeRow("ClearArtPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ClearLogoItem
-                    dScrapeRow("ClearLogoPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.DiscArtItem
-                    dScrapeRow("DiscArtPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.EFanartsItem
-                    dScrapeRow("EFanartsPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.EThumbsItem
-                    dScrapeRow("EThumbsPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.FanartItem
-                    dScrapeRow("FanartPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.LandscapeItem
-                    dScrapeRow("LandscapePath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.NFOItem
-                    dScrapeRow("NFOPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.PosterItem
-                    dScrapeRow("PosterPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ThemeItem
-                    dScrapeRow("ThemePath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.TrailerItem
-                    dScrapeRow("TrailerPath") = DirectCast(Parameter, String)
-            End Select
-            Me.dgvMovies.Invalidate()
-        End If
-    End Sub
-
-    Private Sub ScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateEvent_MovieSet(AddressOf ScraperEvent_MovieSet), New Object() {eType, Parameter})
-        Else
-            Select Case eType
-                Case Enums.ScraperEventType.BannerItem
-                    dScrapeRow("BannerPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ClearArtItem
-                    dScrapeRow("ClearArtPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ClearLogoItem
-                    dScrapeRow("ClearLogoPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.DiscArtItem
-                    dScrapeRow("DiscArtPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.FanartItem
-                    dScrapeRow("FanartPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.LandscapeItem
-                    dScrapeRow("LandscapePath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.NFOItem
-                    dScrapeRow("NfoPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.PosterItem
-                    dScrapeRow("PosterPath") = DirectCast(Parameter, String)
-            End Select
-            Me.dgvMovieSets.Invalidate()
-        End If
-    End Sub
-
-    Private Sub ScraperEvent_TVEpisode(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateEvent_TVShow(AddressOf ScraperEvent_TVShow), New Object() {eType, Parameter})
-        Else
-            Select Case eType
-                Case Enums.ScraperEventType.FanartItem
-                    dScrapeRow("FanartPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.NFOItem
-                    dScrapeRow("NFOPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.PosterItem
-                    dScrapeRow("PosterPath") = DirectCast(Parameter, String)
-            End Select
-            Me.dgvTVShows.Invalidate()
-        End If
-    End Sub
-
-    Private Sub ScraperEvent_TVShow(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateEvent_TVShow(AddressOf ScraperEvent_TVShow), New Object() {eType, Parameter})
-        Else
-            Select Case eType
-                Case Enums.ScraperEventType.BannerItem
-                    dScrapeRow("BannerPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.CharacterArtItem
-                    dScrapeRow("CharacterArtPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ClearArtItem
-                    dScrapeRow("ClearArtPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ClearLogoItem
-                    dScrapeRow("ClearLogoPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.EFanartsItem
-                    dScrapeRow("EFanartsPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.FanartItem
-                    dScrapeRow("FanartPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.LandscapeItem
-                    dScrapeRow("LandscapePath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.NFOItem
-                    dScrapeRow("NFOPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.PosterItem
-                    dScrapeRow("PosterPath") = DirectCast(Parameter, String)
-                Case Enums.ScraperEventType.ThemeItem
-                    dScrapeRow("ThemePath") = DirectCast(Parameter, String)
-            End Select
-            Me.dgvTVShows.Invalidate()
-        End If
     End Sub
 
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
@@ -13398,66 +13318,66 @@ doCancel:
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        'If Me.dgvTVShows.Focused Then
+                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
+                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowBanner(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVShowBanner(Master.currShow)
+                        '        Me.RefreshRow_TVShow(ShowID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        '    'TV Season list
+                        'ElseIf Me.dgvTVSeasons.Focused Then
+                        '    If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
-                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                        '    Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                        '    Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+                        '    Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            Dim tImage As New MediaContainers.Image
+                        '    Dim tImage As New MediaContainers.Image
 
-                            If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVASBanner(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
-                            Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonBanner, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonBanner(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If Season = 999 Then
+                        '        'tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
+                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '            newImage = tImage.ImageOriginal
+                        '            newImage.IsEdit = True
+                        '            newImage.SaveAsTVASBanner(Master.currShow)
+                        '            Me.RefreshRow_TVSeason(SeasonID)
+                        '        End If
+                        '    Else
+                        '        'tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonBanner, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
+                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '            newImage = tImage.ImageOriginal
+                        '            newImage.IsEdit = True
+                        '            newImage.SaveAsTVSeasonBanner(Master.currShow)
+                        '            Me.RefreshRow_TVSeason(SeasonID)
+                        '        End If
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            Return
-                        End If
+                        '    'TV Episode list
+                        'ElseIf Me.dgvTVEpisodes.Focused Then
+                        '    Return
+                        'End If
                 End Select
             End If
         Catch ex As Exception
@@ -13482,35 +13402,35 @@ doCancel:
                         Return
                     Case 2 'TV list
                         'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        'If Me.dgvTVShows.Focused Then
+                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainCharacterArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.CharacterArt)
+                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainCharacterArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.CharacterArt)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowCharacterArt(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVShowCharacterArt(Master.currShow)
+                        '        Me.RefreshRow_TVShow(ShowID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            Return
+                        '    'TV Season list
+                        'ElseIf Me.dgvTVSeasons.Focused Then
+                        '    Return
 
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            Return
-                        End If
+                        '    'TV Episode list
+                        'ElseIf Me.dgvTVEpisodes.Focused Then
+                        '    Return
+                        'End If
                 End Select
             End If
         Catch ex As Exception
@@ -13581,35 +13501,35 @@ doCancel:
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        'If Me.dgvTVShows.Focused Then
+                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainClearArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.ClearArt)
+                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainClearArt, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.ClearArt)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowClearArt(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVShowClearArt(Master.currShow)
+                        '        Me.RefreshRow_TVShow(ShowID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            Return
+                        '    'TV Season list
+                        'ElseIf Me.dgvTVSeasons.Focused Then
+                        '    Return
 
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            Return
-                        End If
+                        '    'TV Episode list
+                        'ElseIf Me.dgvTVEpisodes.Focused Then
+                        '    Return
+                        'End If
                 End Select
             End If
         Catch ex As Exception
@@ -13680,35 +13600,35 @@ doCancel:
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        'If Me.dgvTVShows.Focused Then
+                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainClearLogo, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.ClearLogo)
+                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainClearLogo, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.ClearLogo)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowClearLogo(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVShowClearLogo(Master.currShow)
+                        '        Me.RefreshRow_TVShow(ShowID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            Return
+                        '    'TV Season list
+                        'ElseIf Me.dgvTVSeasons.Focused Then
+                        '    Return
 
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            Return
-                        End If
+                        '    'TV Episode list
+                        'ElseIf Me.dgvTVEpisodes.Focused Then
+                        '    Return
+                        'End If
                 End Select
             End If
         Catch ex As Exception
@@ -13869,89 +13789,89 @@ doCancel:
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        'If Me.dgvTVShows.Focused Then
+                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
+                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowFanart(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVShowFanart(Master.currShow)
+                        '        Me.RefreshRow_TVShow(ShowID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        '    'TV Season list
+                        'ElseIf Me.dgvTVSeasons.Focused Then
+                        '    If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
-                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                        '    Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                        '    Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+                        '    Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            Dim tImage As New MediaContainers.Image
+                        '    Dim tImage As New MediaContainers.Image
 
-                            If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVASFanart(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
-                            Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonFanart, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonFanart(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
-                            End If
+                        '    If Season = 999 Then
+                        '        'tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
+                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '            newImage = tImage.ImageOriginal
+                        '            newImage.IsEdit = True
+                        '            newImage.SaveAsTVASFanart(Master.currShow)
+                        '            Me.RefreshRow_TVSeason(SeasonID)
+                        '        End If
+                        '    Else
+                        '        'tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonFanart, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Fanart)
+                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '            newImage = tImage.ImageOriginal
+                        '            newImage.IsEdit = True
+                        '            newImage.SaveAsTVSeasonFanart(Master.currShow)
+                        '            Me.RefreshRow_TVSeason(SeasonID)
+                        '        End If
+                        '    End If
 
-                            Me.SetControlsEnabled(True)
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        '    'TV Episode list
+                        'ElseIf Me.dgvTVEpisodes.Focused Then
+                        '    If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New MediaContainers.Image
-                            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New MediaContainers.Image
+                        '    Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+                        '    Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
+                        '    Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Fanart.LocalFilePath) Then
-                                oldImage.ImageOriginal.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFilePath)
-                            End If
+                        '    If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Fanart.LocalFilePath) Then
+                        '        oldImage.ImageOriginal.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFilePath)
+                        '    End If
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodeFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, oldImage)
+                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodeFanart, 0, 0, Master.currShow.Language, Master.currShow.Ordering, oldImage)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVEpisodeFanart(Master.currShow)
-                                Me.RefreshRow_TVEpisode(EpisodeID)
-                            End If
-                            Me.SetControlsEnabled(True)
-                        End If
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVEpisodeFanart(Master.currShow)
+                        '        Me.RefreshRow_TVEpisode(EpisodeID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
+                        'End If
                 End Select
             End If
         Catch ex As Exception
@@ -13976,18 +13896,18 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifier As New Structures.ScrapeModifier
 
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainLandscapes.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
-                                    tmpDBMovie.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             End If
@@ -14001,18 +13921,18 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifier As New Structures.ScrapeModifier
 
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainLandscapes.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
-                                    tmpDBMovieSet.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             End If
@@ -14026,20 +13946,25 @@ doCancel:
                             If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
                             Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                            Dim aContainer As New MediaContainers.SearchResultsContainer
+                            Dim ScrapeModifier As New Structures.ScrapeModifier
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainLandscape, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Landscape)
-
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowLandscape(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
+                            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
+                            If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+                                If aContainer.MainLandscapes.Count > 0 Then
+                                    Dim dlgImgS As New dlgImgSelect()
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                        tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Me.RefreshRow_TVShow(ID)
+                                    End If
+                                End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14048,33 +13973,25 @@ doCancel:
                             If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
                             Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
                             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
-                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
 
-                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+                            Dim aContainer As New MediaContainers.SearchResultsContainer
+                            Dim ScrapeModifier As New Structures.ScrapeModifier
 
-                            Dim tImage As New MediaContainers.Image
-
-                            If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsLandscape, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Landscape)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVASLandscape(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
+                            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
+                            If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+                                If aContainer.SeasonLandscapes.Count > 0 Then
+                                    Dim dlgImgS As New dlgImgSelect()
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                        tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement)
+                                        Me.RefreshRow_TVSeason(ID)
+                                    End If
                                 End If
                             Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonLandscape, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Landscape)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonLandscape(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
+                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14152,88 +14069,88 @@ doCancel:
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
-                        If Me.dgvTVShows.Focused Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        'If Me.dgvTVShows.Focused Then
+                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
+                        '    Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVShowPoster(Master.currShow)
-                                Me.RefreshRow_TVShow(ShowID)
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVShowPoster(Master.currShow)
+                        '        Me.RefreshRow_TVShow(ShowID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Season list
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        '    'TV Season list
+                        'ElseIf Me.dgvTVSeasons.Focused Then
+                        '    If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New Images
-                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
-                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
-                            Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New Images
+                        '    Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
+                        '    Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
+                        '    Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+                        '    Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
 
-                            Dim tImage As New MediaContainers.Image
+                        '    Dim tImage As New MediaContainers.Image
 
-                            If Season = 999 Then
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVASPoster(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
-                            Else
-                                tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonPoster, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
-                                If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                    newImage = tImage.ImageOriginal
-                                    newImage.IsEdit = True
-                                    newImage.SaveAsTVSeasonPoster(Master.currShow)
-                                    Me.RefreshRow_TVSeason(SeasonID)
-                                End If
-                            End If
-                            Me.SetControlsEnabled(True)
+                        '    If Season = 999 Then
+                        '        tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsPoster, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
+                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '            newImage = tImage.ImageOriginal
+                        '            newImage.IsEdit = True
+                        '            newImage.SaveAsTVASPoster(Master.currShow)
+                        '            Me.RefreshRow_TVSeason(SeasonID)
+                        '        End If
+                        '    Else
+                        '        tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonPoster, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Poster)
+                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '            newImage = tImage.ImageOriginal
+                        '            newImage.IsEdit = True
+                        '            newImage.SaveAsTVSeasonPoster(Master.currShow)
+                        '            Me.RefreshRow_TVSeason(SeasonID)
+                        '        End If
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
 
-                            'TV Episode list
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
-                            Me.SetControlsEnabled(False)
+                        '    'TV Episode list
+                        'ElseIf Me.dgvTVEpisodes.Focused Then
+                        '    If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                        '    Me.SetControlsEnabled(False)
 
-                            Dim newImage As New Images
-                            Dim oldImage As New MediaContainers.Image
-                            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
+                        '    Dim newImage As New Images
+                        '    Dim oldImage As New MediaContainers.Image
+                        '    Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+                        '    Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
-                            Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
+                        '    Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
 
-                            If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Poster.LocalFilePath) Then
-                                oldImage.ImageOriginal.FromFile(Master.currShow.ImagesContainer.Poster.LocalFilePath)
-                            End If
+                        '    If Not String.IsNullOrEmpty(Master.currShow.ImagesContainer.Poster.LocalFilePath) Then
+                        '        oldImage.ImageOriginal.FromFile(Master.currShow.ImagesContainer.Poster.LocalFilePath)
+                        '    End If
 
-                            Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodePoster, Master.currShow.TVEpisode.Season, Master.currShow.TVEpisode.Episode, Master.currShow.Language, Master.currShow.Ordering, oldImage)
+                        '    Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.EpisodePoster, Master.currShow.TVEpisode.Season, Master.currShow.TVEpisode.Episode, Master.currShow.Language, Master.currShow.Ordering, oldImage)
 
-                            If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                                newImage = tImage.ImageOriginal
-                                newImage.IsEdit = True
-                                newImage.SaveAsTVEpisodePoster(Master.currShow)
-                                Me.RefreshRow_TVEpisode(EpisodeID)
-                            End If
-                            Me.SetControlsEnabled(True)
-                        End If
+                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
+                        '        newImage = tImage.ImageOriginal
+                        '        newImage.IsEdit = True
+                        '        newImage.SaveAsTVEpisodePoster(Master.currShow)
+                        '        Me.RefreshRow_TVEpisode(EpisodeID)
+                        '    End If
+                        '    Me.SetControlsEnabled(True)
+                        'End If
                 End Select
             End If
         Catch ex As Exception

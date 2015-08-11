@@ -31,31 +31,31 @@ Partial Class dlgEditTVSeason
         Me.tpSeasonPoster = New System.Windows.Forms.TabPage()
         Me.btnSetSeasonPosterDL = New System.Windows.Forms.Button()
         Me.btnRemoveSeasonPoster = New System.Windows.Forms.Button()
-        Me.lblSeasonPosterSize = New System.Windows.Forms.Label()
+        Me.lblPosterSize = New System.Windows.Forms.Label()
         Me.btnSetSeasonPosterScrape = New System.Windows.Forms.Button()
         Me.btnSetSeasonPosterLocal = New System.Windows.Forms.Button()
-        Me.pbSeasonPoster = New System.Windows.Forms.PictureBox()
+        Me.pbPoster = New System.Windows.Forms.PictureBox()
         Me.tpSeasonBanner = New System.Windows.Forms.TabPage()
         Me.btnSetSeasonBannerDL = New System.Windows.Forms.Button()
         Me.btnRemoveSeasonBanner = New System.Windows.Forms.Button()
-        Me.lblSeasonBannerSize = New System.Windows.Forms.Label()
+        Me.lblBannerSize = New System.Windows.Forms.Label()
         Me.btnSetSeasonBannerScrape = New System.Windows.Forms.Button()
         Me.btnSetSeasonBannerLocal = New System.Windows.Forms.Button()
-        Me.pbSeasonBanner = New System.Windows.Forms.PictureBox()
+        Me.pbBanner = New System.Windows.Forms.PictureBox()
         Me.tpSeasonLandscape = New System.Windows.Forms.TabPage()
         Me.btnSetSeasonLandscapeDL = New System.Windows.Forms.Button()
         Me.btnRemoveSeasonLandscape = New System.Windows.Forms.Button()
-        Me.lblSeasonLandscapeSize = New System.Windows.Forms.Label()
+        Me.lblLandscapeSize = New System.Windows.Forms.Label()
         Me.btnSetSeasonLandscapeScrape = New System.Windows.Forms.Button()
         Me.btnSetSeasonLandscapeLocal = New System.Windows.Forms.Button()
-        Me.pbSeasonLandscape = New System.Windows.Forms.PictureBox()
+        Me.pbLandscape = New System.Windows.Forms.PictureBox()
         Me.tpSeasonFanart = New System.Windows.Forms.TabPage()
         Me.btnSetSeasonFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveSeasonFanart = New System.Windows.Forms.Button()
-        Me.lblSeasonFanartSize = New System.Windows.Forms.Label()
+        Me.lblFanartSize = New System.Windows.Forms.Label()
         Me.btnSetSeasonFanartScrape = New System.Windows.Forms.Button()
         Me.btnSetSeasonFanartLocal = New System.Windows.Forms.Button()
-        Me.pbSeasonFanart = New System.Windows.Forms.PictureBox()
+        Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
@@ -63,13 +63,13 @@ Partial Class dlgEditTVSeason
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditSeason.SuspendLayout()
         Me.tpSeasonPoster.SuspendLayout()
-        CType(Me.pbSeasonPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpSeasonBanner.SuspendLayout()
-        CType(Me.pbSeasonBanner, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpSeasonLandscape.SuspendLayout()
-        CType(Me.pbSeasonLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpSeasonFanart.SuspendLayout()
-        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -137,10 +137,10 @@ Partial Class dlgEditTVSeason
         '
         Me.tpSeasonPoster.Controls.Add(Me.btnSetSeasonPosterDL)
         Me.tpSeasonPoster.Controls.Add(Me.btnRemoveSeasonPoster)
-        Me.tpSeasonPoster.Controls.Add(Me.lblSeasonPosterSize)
+        Me.tpSeasonPoster.Controls.Add(Me.lblPosterSize)
         Me.tpSeasonPoster.Controls.Add(Me.btnSetSeasonPosterScrape)
         Me.tpSeasonPoster.Controls.Add(Me.btnSetSeasonPosterLocal)
-        Me.tpSeasonPoster.Controls.Add(Me.pbSeasonPoster)
+        Me.tpSeasonPoster.Controls.Add(Me.pbPoster)
         Me.tpSeasonPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpSeasonPoster.Name = "tpSeasonPoster"
         Me.tpSeasonPoster.Padding = New System.Windows.Forms.Padding(3)
@@ -177,14 +177,14 @@ Partial Class dlgEditTVSeason
         '
         'lblSeasonPosterSize
         '
-        Me.lblSeasonPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblSeasonPosterSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblSeasonPosterSize.Name = "lblSeasonPosterSize"
-        Me.lblSeasonPosterSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblSeasonPosterSize.TabIndex = 0
-        Me.lblSeasonPosterSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblSeasonPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblSeasonPosterSize.Visible = False
+        Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblPosterSize.Name = "lblSeasonPosterSize"
+        Me.lblPosterSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblPosterSize.TabIndex = 0
+        Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblPosterSize.Visible = False
         '
         'btnSetSeasonPosterScrape
         '
@@ -214,23 +214,23 @@ Partial Class dlgEditTVSeason
         '
         'pbSeasonPoster
         '
-        Me.pbSeasonPoster.BackColor = System.Drawing.Color.DimGray
-        Me.pbSeasonPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbSeasonPoster.Location = New System.Drawing.Point(6, 6)
-        Me.pbSeasonPoster.Name = "pbSeasonPoster"
-        Me.pbSeasonPoster.Size = New System.Drawing.Size(724, 440)
-        Me.pbSeasonPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSeasonPoster.TabIndex = 0
-        Me.pbSeasonPoster.TabStop = False
+        Me.pbPoster.BackColor = System.Drawing.Color.DimGray
+        Me.pbPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbPoster.Location = New System.Drawing.Point(6, 6)
+        Me.pbPoster.Name = "pbSeasonPoster"
+        Me.pbPoster.Size = New System.Drawing.Size(724, 440)
+        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbPoster.TabIndex = 0
+        Me.pbPoster.TabStop = False
         '
         'tpSeasonBanner
         '
         Me.tpSeasonBanner.Controls.Add(Me.btnSetSeasonBannerDL)
         Me.tpSeasonBanner.Controls.Add(Me.btnRemoveSeasonBanner)
-        Me.tpSeasonBanner.Controls.Add(Me.lblSeasonBannerSize)
+        Me.tpSeasonBanner.Controls.Add(Me.lblBannerSize)
         Me.tpSeasonBanner.Controls.Add(Me.btnSetSeasonBannerScrape)
         Me.tpSeasonBanner.Controls.Add(Me.btnSetSeasonBannerLocal)
-        Me.tpSeasonBanner.Controls.Add(Me.pbSeasonBanner)
+        Me.tpSeasonBanner.Controls.Add(Me.pbBanner)
         Me.tpSeasonBanner.Location = New System.Drawing.Point(4, 22)
         Me.tpSeasonBanner.Name = "tpSeasonBanner"
         Me.tpSeasonBanner.Padding = New System.Windows.Forms.Padding(3)
@@ -267,14 +267,14 @@ Partial Class dlgEditTVSeason
         '
         'lblSeasonBannerSize
         '
-        Me.lblSeasonBannerSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblSeasonBannerSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblSeasonBannerSize.Name = "lblSeasonBannerSize"
-        Me.lblSeasonBannerSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblSeasonBannerSize.TabIndex = 5
-        Me.lblSeasonBannerSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblSeasonBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblSeasonBannerSize.Visible = False
+        Me.lblBannerSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblBannerSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblBannerSize.Name = "lblSeasonBannerSize"
+        Me.lblBannerSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblBannerSize.TabIndex = 5
+        Me.lblBannerSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblBannerSize.Visible = False
         '
         'btnSetSeasonBannerScrape
         '
@@ -304,23 +304,23 @@ Partial Class dlgEditTVSeason
         '
         'pbSeasonBanner
         '
-        Me.pbSeasonBanner.BackColor = System.Drawing.Color.DimGray
-        Me.pbSeasonBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbSeasonBanner.Location = New System.Drawing.Point(6, 6)
-        Me.pbSeasonBanner.Name = "pbSeasonBanner"
-        Me.pbSeasonBanner.Size = New System.Drawing.Size(724, 440)
-        Me.pbSeasonBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSeasonBanner.TabIndex = 6
-        Me.pbSeasonBanner.TabStop = False
+        Me.pbBanner.BackColor = System.Drawing.Color.DimGray
+        Me.pbBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbBanner.Location = New System.Drawing.Point(6, 6)
+        Me.pbBanner.Name = "pbSeasonBanner"
+        Me.pbBanner.Size = New System.Drawing.Size(724, 440)
+        Me.pbBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbBanner.TabIndex = 6
+        Me.pbBanner.TabStop = False
         '
         'tpSeasonLandscape
         '
         Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeDL)
         Me.tpSeasonLandscape.Controls.Add(Me.btnRemoveSeasonLandscape)
-        Me.tpSeasonLandscape.Controls.Add(Me.lblSeasonLandscapeSize)
+        Me.tpSeasonLandscape.Controls.Add(Me.lblLandscapeSize)
         Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeScrape)
         Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeLocal)
-        Me.tpSeasonLandscape.Controls.Add(Me.pbSeasonLandscape)
+        Me.tpSeasonLandscape.Controls.Add(Me.pbLandscape)
         Me.tpSeasonLandscape.Location = New System.Drawing.Point(4, 22)
         Me.tpSeasonLandscape.Name = "tpSeasonLandscape"
         Me.tpSeasonLandscape.Size = New System.Drawing.Size(836, 452)
@@ -356,14 +356,14 @@ Partial Class dlgEditTVSeason
         '
         'lblSeasonLandscapeSize
         '
-        Me.lblSeasonLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblSeasonLandscapeSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblSeasonLandscapeSize.Name = "lblSeasonLandscapeSize"
-        Me.lblSeasonLandscapeSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblSeasonLandscapeSize.TabIndex = 11
-        Me.lblSeasonLandscapeSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblSeasonLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblSeasonLandscapeSize.Visible = False
+        Me.lblLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblLandscapeSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblLandscapeSize.Name = "lblSeasonLandscapeSize"
+        Me.lblLandscapeSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblLandscapeSize.TabIndex = 11
+        Me.lblLandscapeSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblLandscapeSize.Visible = False
         '
         'btnSetSeasonLandscapeScrape
         '
@@ -393,23 +393,23 @@ Partial Class dlgEditTVSeason
         '
         'pbSeasonLandscape
         '
-        Me.pbSeasonLandscape.BackColor = System.Drawing.Color.DimGray
-        Me.pbSeasonLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbSeasonLandscape.Location = New System.Drawing.Point(6, 6)
-        Me.pbSeasonLandscape.Name = "pbSeasonLandscape"
-        Me.pbSeasonLandscape.Size = New System.Drawing.Size(724, 440)
-        Me.pbSeasonLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSeasonLandscape.TabIndex = 12
-        Me.pbSeasonLandscape.TabStop = False
+        Me.pbLandscape.BackColor = System.Drawing.Color.DimGray
+        Me.pbLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbLandscape.Location = New System.Drawing.Point(6, 6)
+        Me.pbLandscape.Name = "pbSeasonLandscape"
+        Me.pbLandscape.Size = New System.Drawing.Size(724, 440)
+        Me.pbLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbLandscape.TabIndex = 12
+        Me.pbLandscape.TabStop = False
         '
         'tpSeasonFanart
         '
         Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartDL)
         Me.tpSeasonFanart.Controls.Add(Me.btnRemoveSeasonFanart)
-        Me.tpSeasonFanart.Controls.Add(Me.lblSeasonFanartSize)
+        Me.tpSeasonFanart.Controls.Add(Me.lblFanartSize)
         Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartScrape)
         Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartLocal)
-        Me.tpSeasonFanart.Controls.Add(Me.pbSeasonFanart)
+        Me.tpSeasonFanart.Controls.Add(Me.pbFanart)
         Me.tpSeasonFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpSeasonFanart.Name = "tpSeasonFanart"
         Me.tpSeasonFanart.Size = New System.Drawing.Size(836, 452)
@@ -445,14 +445,14 @@ Partial Class dlgEditTVSeason
         '
         'lblSeasonFanartSize
         '
-        Me.lblSeasonFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblSeasonFanartSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblSeasonFanartSize.Name = "lblSeasonFanartSize"
-        Me.lblSeasonFanartSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblSeasonFanartSize.TabIndex = 0
-        Me.lblSeasonFanartSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblSeasonFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblSeasonFanartSize.Visible = False
+        Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblFanartSize.Name = "lblSeasonFanartSize"
+        Me.lblFanartSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblFanartSize.TabIndex = 0
+        Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblFanartSize.Visible = False
         '
         'btnSetSeasonFanartScrape
         '
@@ -482,14 +482,14 @@ Partial Class dlgEditTVSeason
         '
         'pbSeasonFanart
         '
-        Me.pbSeasonFanart.BackColor = System.Drawing.Color.DimGray
-        Me.pbSeasonFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbSeasonFanart.Location = New System.Drawing.Point(6, 6)
-        Me.pbSeasonFanart.Name = "pbSeasonFanart"
-        Me.pbSeasonFanart.Size = New System.Drawing.Size(724, 440)
-        Me.pbSeasonFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSeasonFanart.TabIndex = 1
-        Me.pbSeasonFanart.TabStop = False
+        Me.pbFanart.BackColor = System.Drawing.Color.DimGray
+        Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbFanart.Location = New System.Drawing.Point(6, 6)
+        Me.pbFanart.Name = "pbSeasonFanart"
+        Me.pbFanart.Size = New System.Drawing.Size(724, 440)
+        Me.pbFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbFanart.TabIndex = 1
+        Me.pbFanart.TabStop = False
         '
         'Cancel_Button
         '
@@ -531,13 +531,13 @@ Partial Class dlgEditTVSeason
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tcEditSeason.ResumeLayout(False)
         Me.tpSeasonPoster.ResumeLayout(False)
-        CType(Me.pbSeasonPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpSeasonBanner.ResumeLayout(False)
-        CType(Me.pbSeasonBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpSeasonLandscape.ResumeLayout(False)
-        CType(Me.pbSeasonLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpSeasonFanart.ResumeLayout(False)
-        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -549,33 +549,33 @@ Partial Class dlgEditTVSeason
     Friend WithEvents tpSeasonPoster As System.Windows.Forms.TabPage
     Friend WithEvents btnSetSeasonPosterDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveSeasonPoster As System.Windows.Forms.Button
-    Friend WithEvents lblSeasonPosterSize As System.Windows.Forms.Label
+    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
     Friend WithEvents btnSetSeasonPosterScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetSeasonPosterLocal As System.Windows.Forms.Button
-    Friend WithEvents pbSeasonPoster As System.Windows.Forms.PictureBox
+    Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents tpSeasonFanart As System.Windows.Forms.TabPage
     Friend WithEvents btnSetSeasonFanartDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveSeasonFanart As System.Windows.Forms.Button
-    Friend WithEvents lblSeasonFanartSize As System.Windows.Forms.Label
+    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
     Friend WithEvents btnSetSeasonFanartScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetSeasonFanartLocal As System.Windows.Forms.Button
-    Friend WithEvents pbSeasonFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
     Friend WithEvents tpSeasonBanner As System.Windows.Forms.TabPage
     Friend WithEvents btnSetSeasonBannerDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveSeasonBanner As System.Windows.Forms.Button
-    Friend WithEvents lblSeasonBannerSize As System.Windows.Forms.Label
+    Friend WithEvents lblBannerSize As System.Windows.Forms.Label
     Friend WithEvents btnSetSeasonBannerScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetSeasonBannerLocal As System.Windows.Forms.Button
-    Friend WithEvents pbSeasonBanner As System.Windows.Forms.PictureBox
+    Friend WithEvents pbBanner As System.Windows.Forms.PictureBox
     Friend WithEvents tpSeasonLandscape As System.Windows.Forms.TabPage
     Friend WithEvents btnSetSeasonLandscapeDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveSeasonLandscape As System.Windows.Forms.Button
-    Friend WithEvents lblSeasonLandscapeSize As System.Windows.Forms.Label
+    Friend WithEvents lblLandscapeSize As System.Windows.Forms.Label
     Friend WithEvents btnSetSeasonLandscapeScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetSeasonLandscapeLocal As System.Windows.Forms.Button
-    Friend WithEvents pbSeasonLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents pbLandscape As System.Windows.Forms.PictureBox
 
 End Class
