@@ -65,7 +65,7 @@ Namespace TVDBs
             End Try
         End Sub
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
@@ -171,7 +171,7 @@ Namespace TVDBs
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try

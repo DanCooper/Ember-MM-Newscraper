@@ -205,13 +205,13 @@ Public Class TVDB_Image
 
         If DBTV.TVEpisode IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) AndAlso DBTV.TVEpisode IsNot Nothing Then
-                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, Settings)
+                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
         Else
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifier, Settings)
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifier)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
