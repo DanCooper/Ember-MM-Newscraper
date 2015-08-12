@@ -413,20 +413,32 @@ Public Class TMDB_Image
         Dim _scraper As New TMDB.Scraper
         Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
-        If String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
+        If DBTV.TVShow IsNot Nothing AndAlso String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                 DBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(DBTV.TVShow.TVDB, Settings)
             End If
         End If
 
-        If DBTV.TVEpisode IsNot Nothing Then
+        If DBTV.TVEpisode IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
                 ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, Settings)
+            Else
+                logger.Trace(String.Concat("No TMDB ID exist to search: ", DBTV.ListTitle))
             End If
-        Else
+        ElseIf DBTV.TVSeason IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
                 ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, FilteredModifier, Settings)
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
+        ElseIf DBTV.TVShow IsNot Nothing Then
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
+                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, FilteredModifier, Settings)
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            End If
+        Else
+            logger.Error(String.Concat("No DBElement.TVShow was loaded"))
         End If
 
         logger.Trace("Finished TMDB Scraper")

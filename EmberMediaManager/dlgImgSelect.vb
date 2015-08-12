@@ -1509,7 +1509,7 @@ Public Class dlgImgSelect
         If Not String.IsNullOrEmpty(iTag.LocalFilePath) AndAlso File.Exists(iTag.LocalFilePath) Then
             tImage.FromFile(iTag.LocalFilePath)
         ElseIf Not String.IsNullOrEmpty(iTag.LocalFilePath) AndAlso Not String.IsNullOrEmpty(iTag.URLOriginal) Then
-            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+            Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image(s)...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
             Me.lblStatus.Visible = True
             Me.pbStatus.Visible = True
@@ -1800,7 +1800,7 @@ Public Class dlgImgSelect
     ''' <remarks>All other images will be downloaded while saving to DB</remarks>
     Private Sub DoneAndClose()
         Me.btnOK.Enabled = False
-        Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image...")
+        Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image(s)...")
         Me.pbStatus.Style = ProgressBarStyle.Marquee
         Me.lblStatus.Visible = True
         Me.pbStatus.Visible = True

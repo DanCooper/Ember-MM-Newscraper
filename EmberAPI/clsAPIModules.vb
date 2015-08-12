@@ -825,8 +825,6 @@ Public Class ModulesManager
                 DBTV.NfoPath = String.Empty
                 DBTV.ThemePath = String.Empty
                 DBTV.ImagesContainer = New MediaContainers.ImagesContainer
-                DBTV.TVEpisode = New MediaContainers.EpisodeDetails
-                DBTV.TVSeason = New MediaContainers.SeasonDetails
                 DBTV.TVShow = New MediaContainers.TVShow
 
                 Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTV.ShowPath), False)
@@ -835,7 +833,6 @@ Public Class ModulesManager
             End If
 
             'create a copy of DBTV
-            oShow.Filename = DBTV.Filename
             oShow.Ordering = DBTV.Ordering
             oShow.Language = DBTV.Language
             oShow.ShowID = DBTV.ShowID

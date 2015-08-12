@@ -12459,6 +12459,7 @@ doCancel:
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.DoSearch = ScrapeModifier.DoSearch
             sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
             sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
             sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
@@ -12633,6 +12634,7 @@ doCancel:
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.DoSearch = ScrapeModifier.DoSearch
             sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
             sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
             sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
@@ -12797,6 +12799,7 @@ doCancel:
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.DoSearch = ScrapeModifier.DoSearch
             sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
             sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
             sModifier.MainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso CharacterArtAllowed
@@ -12962,6 +12965,7 @@ doCancel:
             If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
 
             Dim sModifier As New Structures.ScrapeModifier
+            sModifier.DoSearch = ScrapeModifier.DoSearch
             sModifier.EpisodeActorThumbs = ScrapeModifier.EpisodeActorThumbs AndAlso ActorThumbsAllowed
             sModifier.EpisodeFanart = ScrapeModifier.EpisodeFanart AndAlso FanartAllowed
             sModifier.EpisodeMeta = ScrapeModifier.EpisodeMeta
@@ -13272,23 +13276,23 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-                        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifier As New Structures.ScrapeModifier
 
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBMovie, aContainer, ScrapeModifier, True) Then
+                        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainBanners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBMovie, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
-                                    tmpDBMovie.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.SaveMovieToDB(tmpDBMovie, False)
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13297,87 +13301,84 @@ doCancel:
 
                         Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifier As New Structures.ScrapeModifier
 
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBMovieSet, aContainer, ScrapeModifier) Then
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainBanners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBMovieSet, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
-                                    tmpDBMovieSet.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
-                        'If Me.dgvTVShows.Focused Then
-                        '    If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                        '    Me.SetControlsEnabled(False)
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
 
-                        '    Dim newImage As New Images
-                        '    Dim oldImage As New Images
-                        '    Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False)
 
-                        '    Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+                            Dim aContainer As New MediaContainers.SearchResultsContainer
+                            Dim ScrapeModifier As New Structures.ScrapeModifier
 
-                        '    'Dim tImage As MediaContainers.Image = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.MainBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
+                            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
+                            If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+                                If aContainer.MainBanners.Count > 0 Then
+                                    Dim dlgImgS As New dlgImgSelect()
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                        tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Me.RefreshRow_TVShow(ID)
+                                    End If
+                                Else
+                                    MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
 
-                        '    If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                        '        newImage = tImage.ImageOriginal
-                        '        newImage.IsEdit = True
-                        '        newImage.SaveAsTVShowBanner(Master.currShow)
-                        '        Me.RefreshRow_TVShow(ShowID)
-                        '    End If
-                        '    Me.SetControlsEnabled(True)
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
 
-                        '    'TV Season list
-                        'ElseIf Me.dgvTVSeasons.Focused Then
-                        '    If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                        '    Me.SetControlsEnabled(False)
+                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                            Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
-                        '    Dim newImage As New Images
-                        '    Dim oldImage As New Images
-                        '    Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
-                        '    Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", indX).Value)
-                        '    Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", indX).Value)
-                        '    Dim SeasonID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim aContainer As New MediaContainers.SearchResultsContainer
+                            Dim ScrapeModifier As New Structures.ScrapeModifier
 
-                        '    Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+                            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonBanner, True)
+                            If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+                                If aContainer.SeasonBanners.Count > 0 Then
+                                    Dim dlgImgS As New dlgImgSelect()
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                        tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement)
+                                        Me.RefreshRow_TVSeason(ID)
+                                    End If
+                                Else
+                                    MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
 
-                        '    Dim tImage As New MediaContainers.Image
-
-                        '    If Season = 999 Then
-                        '        'tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.AllSeasonsBanner, 0, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
-                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                        '            newImage = tImage.ImageOriginal
-                        '            newImage.IsEdit = True
-                        '            newImage.SaveAsTVASBanner(Master.currShow)
-                        '            Me.RefreshRow_TVSeason(SeasonID)
-                        '        End If
-                        '    Else
-                        '        'tImage = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Enums.ModifierType.SeasonBanner, Master.currShow.TVSeason.Season, 0, Master.currShow.Language, Master.currShow.Ordering, Master.currShow.ImagesContainer.Banner)
-                        '        If tImage IsNot Nothing AndAlso tImage.ImageOriginal.Image IsNot Nothing Then
-                        '            newImage = tImage.ImageOriginal
-                        '            newImage.IsEdit = True
-                        '            newImage.SaveAsTVSeasonBanner(Master.currShow)
-                        '            Me.RefreshRow_TVSeason(SeasonID)
-                        '        End If
-                        '    End If
-                        '    Me.SetControlsEnabled(True)
-
-                        '    'TV Episode list
-                        'ElseIf Me.dgvTVEpisodes.Focused Then
-                        '    Return
-                        'End If
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            Return
+                        End If
                 End Select
             End If
         Catch ex As Exception
@@ -13469,9 +13470,9 @@ doCancel:
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13494,9 +13495,9 @@ doCancel:
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -13568,9 +13569,9 @@ doCancel:
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13593,9 +13594,9 @@ doCancel:
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieset, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -13667,9 +13668,9 @@ doCancel:
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13692,9 +13693,9 @@ doCancel:
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -13757,9 +13758,9 @@ doCancel:
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13782,9 +13783,9 @@ doCancel:
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -13910,9 +13911,9 @@ doCancel:
                                     Master.DB.SaveMovieToDB(tmpDBElement, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -13935,9 +13936,9 @@ doCancel:
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -13962,9 +13963,9 @@ doCancel:
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
+                                Else
+                                    MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -13989,9 +13990,9 @@ doCancel:
                                         Master.DB.SaveTVSeasonToDB(tmpDBElement)
                                         Me.RefreshRow_TVSeason(ID)
                                     End If
+                                Else
+                                    MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                                 End If
-                            Else
-                                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
                             Me.SetControlsEnabled(True)
 
@@ -14037,9 +14038,9 @@ doCancel:
                                     Master.DB.SaveMovieToDB(tmpDBMovie, False)
                                     Me.RefreshRow_Movie(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
@@ -14062,9 +14063,9 @@ doCancel:
                                     Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
+                            Else
+                                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                             End If
-                        Else
-                            MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                         Me.SetControlsEnabled(True)
                     Case 2 'TV list
@@ -15812,7 +15813,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("DiscArtPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("PosterPath", iRow).Value.ToString) Then
-                Me.ShowNoInfo(True, 3)
+                Me.ShowNoInfo(True, Enums.ContentType.MovieSet)
                 Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item("idSet", iRow).Value))
                 Me.FillScreenInfoWith_MovieSet()
 
@@ -15835,7 +15836,7 @@ doCancel:
             If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
                 Me.ClearInfo()
-                Me.ShowNoInfo(True, 2)
+                Me.ShowNoInfo(True, Enums.ContentType.TVEpisode)
 
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
                 Me.FillScreenInfoWith_TVEpisode()
@@ -15866,7 +15867,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso _
                 Not Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", iRow).Value) Then
                 If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
-                Me.ShowNoInfo(True, 1)
+                Me.ShowNoInfo(True, Enums.ContentType.TVSeason)
                 Master.currShow = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), True)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
 
@@ -15901,7 +15902,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("FanartPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("NfoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
-                Me.ShowNoInfo(True, 1)
+                Me.ShowNoInfo(True, Enums.ContentType.TVShow)
                 Master.currShow = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value))
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item("idShow", iRow).Value))
 
@@ -18236,21 +18237,24 @@ doCancel:
     ''' <param name="ShowIt"><c>Boolean</c> indicating whether the panel should be shown or not</param>
     ''' <param name="tType"></param>
     ''' <remarks></remarks>
-    Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Integer = 0)
+    Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Enums.ContentType = Enums.ContentType.Movie)
         If ShowIt Then
             Select Case tType
-                Case 0
-                    Me.lblNoInfo.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
+                Case Enums.ContentType.Movie
+                    Me.lblNoInfo.Text = Master.eLang.GetString(55, "No information is available for this Movie")
                     If Not Me.currThemeType = Theming.ThemeType.Movie Then Me.ApplyTheme(Theming.ThemeType.Movie)
-                Case 1
-                    Me.lblNoInfo.Text = Master.eLang.GetString(651, "No Information is Available for This Show")
-                    If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
-                Case 2
-                    Me.lblNoInfo.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
-                    If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
-                Case 3
-                    Me.lblNoInfo.Text = Master.eLang.GetString(1154, "No Information is Available for This MovieSet")
+                Case Enums.ContentType.MovieSet
+                    Me.lblNoInfo.Text = Master.eLang.GetString(1154, "No information is available for this MovieSet")
                     If Not Me.currThemeType = Theming.ThemeType.MovieSet Then Me.ApplyTheme(Theming.ThemeType.MovieSet)
+                Case Enums.ContentType.TVEpisode
+                    Me.lblNoInfo.Text = Master.eLang.GetString(652, "No information is available for this Episode")
+                    If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
+                Case Enums.ContentType.TVSeason
+                    Me.lblNoInfo.Text = Master.eLang.GetString(1161, "No information is available for this Season")
+                    If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
+                Case Enums.ContentType.TVShow
+                    Me.lblNoInfo.Text = Master.eLang.GetString(651, "No information is available for this Show")
+                    If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Case Else
                     logger.Warn("Invalid media type <{0}>", tType)
             End Select

@@ -57,13 +57,13 @@ Namespace TVDBs
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+        Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
+
         Private _TVDBApi As TVDB.Web.WebInterface
         Private _TVDBMirror As TVDB.Model.Mirror
         Private _MySettings As MySettings
-        Private strPrivateAPIKey As String = String.Empty
         Private _sPoster As String
 
-        Friend WithEvents bwTVDB As New System.ComponentModel.BackgroundWorker
 
 #End Region 'Fields
 
