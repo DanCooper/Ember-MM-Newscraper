@@ -31,10 +31,11 @@ Public Class dlgIMDBSearchResults_Movie
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-    Private IMDB As New IMDB.Scraper
+    Private _IMDB As IMDB.Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
+    Private _SpecialSettings As IMDB_Data.SpecialSettings
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
@@ -46,12 +47,14 @@ Public Class dlgIMDBSearchResults_Movie
 
 #Region "Methods"
 
-    Public Sub New()
+    Public Sub New(ByVal SpecialSettings As IMDB_Data.SpecialSettings, ByRef IMDB As IMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
+        _SpecialSettings = SpecialSettings
+        _IMDB = IMDB
     End Sub
 
     Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieYear As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie) As Windows.Forms.DialogResult
@@ -72,7 +75,7 @@ Public Class dlgIMDBSearchResults_Movie
         'chkManual.Enabled = False
         chkManual.Enabled = True
 
-        IMDB.SearchMovieAsync(sMovieTitle, sMovieYear, _filterOptions)
+        _IMDB.SearchMovieAsync(sMovieTitle, sMovieYear, _filterOptions)
 
         Return MyBase.ShowDialog()
     End Function
@@ -105,8 +108,8 @@ Public Class dlgIMDBSearchResults_Movie
 
             chkManual.Enabled = False
 
-            IMDB.CancelAsync()
-            IMDB.SearchMovieAsync(Me.txtSearch.Text, String.Empty, _filterOptions)
+            _IMDB.CancelAsync()
+            _IMDB.SearchMovieAsync(Me.txtSearch.Text, String.Empty, _filterOptions)
         End If
     End Sub
 
@@ -115,8 +118,8 @@ Public Class dlgIMDBSearchResults_Movie
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             Me.pnlLoading.Visible = True
-            IMDB.CancelAsync()
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
+            _IMDB.CancelAsync()
+            _IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nMovie, pOpt)
         Else
             MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
@@ -155,8 +158,8 @@ Public Class dlgIMDBSearchResults_Movie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If IMDB.bwIMDB.IsBusy Then
-            IMDB.CancelAsync()
+        If _IMDB.bwIMDB.IsBusy Then
+            _IMDB.CancelAsync()
         End If
 
         _nMovie.Clear()
@@ -177,7 +180,7 @@ Public Class dlgIMDBSearchResults_Movie
         Me.ClearInfo()
         If Me.chkManual.Enabled Then
             Me.pnlLoading.Visible = False
-            IMDB.CancelAsync()
+            _IMDB.CancelAsync()
         End If
         Me.OK_Button.Enabled = False
         Me.txtIMDBID.Enabled = Me.chkManual.Checked
@@ -202,7 +205,7 @@ Public Class dlgIMDBSearchResults_Movie
 
         _nMovie.Clear()
 
-        IMDB.CancelAsync()
+        _IMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
@@ -228,8 +231,8 @@ Public Class dlgIMDBSearchResults_Movie
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
-        AddHandler IMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
-        AddHandler IMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
+        AddHandler _IMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
+        AddHandler _IMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
         Try
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -498,7 +501,7 @@ Public Class dlgIMDBSearchResults_Movie
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
+        _IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick

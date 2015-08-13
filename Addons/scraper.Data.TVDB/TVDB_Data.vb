@@ -33,7 +33,7 @@ Public Class TVDB_Data
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
-    Private _MySettings As New sMySettings
+    Private _SpecialSettings As New SpecialSettings
     Private _Name As String = "TVDB_Data"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
@@ -90,7 +90,7 @@ Public Class TVDB_Data
         RaiseEvent ScraperSetupChanged(String.Concat(Me._Name, "_TV"), state, difforder)
     End Sub
 
-    Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_TV.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_TV.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
@@ -170,7 +170,7 @@ Public Class TVDB_Data
         ConfigOptions.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVShow)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "")
-        _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
+        _SpecialSettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.EpisodeMeta = True
         ConfigScrapeModifier.MainNFO = True
@@ -244,8 +244,8 @@ Public Class TVDB_Data
 
         LoadSettings()
 
-        Dim Settings As TVDBs.Scraper.MySettings
-        Settings.ApiKey = _MySettings.APIKey
+        Dim Settings As New SpecialSettings
+        Settings.APIKey = _SpecialSettings.APIKey
         Settings.Language = oDBTV.Language
 
         Dim _scraper As New TVDBs.Scraper(Settings)
@@ -308,8 +308,8 @@ Public Class TVDB_Data
 
         LoadSettings()
 
-        Dim Settings As TVDBs.Scraper.MySettings
-        Settings.ApiKey = _MySettings.APIKey
+        Dim Settings As New SpecialSettings
+        Settings.APIKey = _SpecialSettings.APIKey
         Settings.Language = oDBTVEpisode.Language
 
         Dim _scraper As New TVDBs.Scraper(Settings)
@@ -337,7 +337,7 @@ Public Class TVDB_Data
 
 #Region "Nested Types"
 
-    Structure sMySettings
+    Structure SpecialSettings
 
 #Region "Fields"
 

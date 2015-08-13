@@ -32,11 +32,11 @@ Public Class dlgTMDBSearchResults_Movie
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-    Private TMDB As TMDB.Scraper
+    Private _TMDB As TMDB.Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TMDB.Scraper.sMySettings_ForScraper
+    Private _SpecialSettings As TMDB_Data.SpecialSettings
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
@@ -48,14 +48,14 @@ Public Class dlgTMDBSearchResults_Movie
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB.Scraper.sMySettings_ForScraper, _TMDB As TMDB.Scraper)
+    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, ByRef TMDB As TMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
-        MySettings = _MySettings
-        TMDB = _TMDB
+        _SpecialSettings = SpecialSettings
+        _TMDB = TMDB
     End Sub
 
     Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, ByVal sMovieYear As String) As Windows.Forms.DialogResult
@@ -73,7 +73,7 @@ Public Class dlgTMDBSearchResults_Movie
         Me.txtYear.Text = sMovieYear
         chkManual.Enabled = False
 
-        TMDB.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
+        _TMDB.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
 
         Return MyBase.ShowDialog()
     End Function
@@ -104,9 +104,9 @@ Public Class dlgTMDBSearchResults_Movie
             Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
             Me.pnlLoading.Visible = True
             chkManual.Enabled = False
-            TMDB.CancelAsync()
+            _TMDB.CancelAsync()
 
-            TMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions, Me.txtYear.Text)
+            _TMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions, Me.txtYear.Text)
         End If
     End Sub
 
@@ -114,7 +114,7 @@ Public Class dlgTMDBSearchResults_Movie
         Dim pOpt As New Structures.ScrapeOptions_Movie
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        TMDB.GetSearchMovieInfoAsync(Me.txtTMDBID.Text, _nMovie, pOpt)
+        _TMDB.GetSearchMovieInfoAsync(Me.txtTMDBID.Text, _nMovie, pOpt)
 
     End Sub
 
@@ -143,16 +143,16 @@ Public Class dlgTMDBSearchResults_Movie
         Dim Res As Results = DirectCast(e.Result, Results)
 
         Me.pbPoster.Image = Res.Result
-            If Not _PosterCache.ContainsKey(Res.IMDBId) Then
-                _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
-            End If
+        If Not _PosterCache.ContainsKey(Res.IMDBId) Then
+            _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
+        End If
 
         pnlPicStatus.Visible = False
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If TMDB.bwTMDB.IsBusy Then
-            TMDB.CancelAsync()
+        If _TMDB.bwTMDB.IsBusy Then
+            _TMDB.CancelAsync()
         End If
         _nMovie.Clear()
 
@@ -185,7 +185,7 @@ Public Class dlgTMDBSearchResults_Movie
 
         _nMovie.Clear()
 
-        TMDB.CancelAsync()
+        _TMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
@@ -212,8 +212,8 @@ Public Class dlgTMDBSearchResults_Movie
         Me.SetUp()
         pnlPicStatus.Visible = False
 
-        AddHandler TMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
-        AddHandler TMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
+        AddHandler _TMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
+        AddHandler _TMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
@@ -350,7 +350,7 @@ Public Class dlgTMDBSearchResults_Movie
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        TMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
+        _TMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -412,12 +412,12 @@ Public Class dlgTMDBSearchResults_Movie
     End Sub
 
     Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
-       Using mem As New IO.MemoryStream()
-                Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
-                bin.Serialize(mem, original)
-                mem.Seek(0, IO.SeekOrigin.Begin)
-                Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
-            End Using
+        Using mem As New IO.MemoryStream()
+            Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
+            bin.Serialize(mem, original)
+            mem.Seek(0, IO.SeekOrigin.Begin)
+            Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
+        End Using
 
         Return Nothing
     End Function

@@ -32,7 +32,7 @@ Public Class TVDB_Image
     Public Shared ConfigModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
-    Private _MySettings As New sMySettings
+    Private _SpecialSettings As New SpecialSettings
     Private _Name As String = "TVDB_Image"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
@@ -125,10 +125,9 @@ Public Class TVDB_Image
         _setup.chkScrapeShowBanner.Checked = ConfigModifier.MainBanner
         _setup.chkScrapeShowFanart.Checked = ConfigModifier.MainFanart
         _setup.chkScrapeShowPoster.Checked = ConfigModifier.MainPoster
+        _setup.txtApiKey.Text = strPrivateAPIKey
 
-        _setup.txtApiKey.Text = _MySettings.ApiKey
-
-        If Not String.IsNullOrEmpty(_MySettings.ApiKey) Then
+        If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
             _setup.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
             _setup.lblEMMAPI.Visible = False
             _setup.txtApiKey.Enabled = True
@@ -160,7 +159,7 @@ Public Class TVDB_Image
         ConfigModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("ApiKey", "")
-        _MySettings.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
+        _SpecialSettings.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
     End Sub
 
     Sub SaveSettings()
@@ -196,11 +195,8 @@ Public Class TVDB_Image
         logger.Trace("Started scrape TVDB")
 
         LoadSettings()
+        Dim _scraper As New TVDBs.Scraper(_SpecialSettings)
 
-        Dim Settings As TVDBs.Scraper.MySettings
-        Settings.ApiKey = _MySettings.ApiKey
-
-        Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier)
 
         If DBTV.TVEpisode IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
@@ -237,7 +233,7 @@ Public Class TVDB_Image
 
 #Region "Nested Types"
 
-    Structure sMySettings
+    Structure SpecialSettings
 
 #Region "Fields"
 

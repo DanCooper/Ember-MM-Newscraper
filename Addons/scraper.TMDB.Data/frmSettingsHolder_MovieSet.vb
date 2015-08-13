@@ -36,49 +36,15 @@ Public Class frmSettingsHolder_MovieSet
 
 #Region "Fields"
 
-    Private _api As String
-    Private _language As String
-    Private _getadultitems As Boolean
-
 #End Region 'Fields
 
 #Region "Properties"
-
-    Public Property API() As String
-        Get
-            Return Me._api
-        End Get
-        Set(ByVal value As String)
-            Me._api = value
-        End Set
-    End Property
-
-    Public Property Lang() As String
-        Get
-            Return Me._language
-        End Get
-        Set(ByVal value As String)
-            Me._language = value
-        End Set
-    End Property
-
-    Public Property GetAdultItems() As Boolean
-        Get
-            Return Me._getadultitems
-        End Get
-        Set(ByVal value As Boolean)
-            Me._getadultitems = value
-        End Set
-    End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
     Public Sub New()
-        _api = String.Empty
-        _language = String.Empty
-        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
         InitializeComponent()
         Me.SetUp()
     End Sub
@@ -144,8 +110,7 @@ Public Class frmSettingsHolder_MovieSet
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
-        _api = txtApiKey.Text
+    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

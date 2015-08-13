@@ -86,13 +86,13 @@ Public Class Interfaces
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="oDBMovie">Clone of original DBMovie. To fill with new IMDB or TMDB ID's for subsequent scrapers.</param>
+        ''' <param name="oDBElement">Clone of original DBMovie. To fill with new IMDB or TMDB ID's for subsequent scrapers.</param>
         ''' <param name="nMovie">New and empty Movie container to fill with new scraped data</param>
         ''' <param name="ScrapeType">What kind of data is being requested from the scrape(global scraper settings)</param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As ModuleResult
+        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As ModuleResult
 
 #End Region 'Methods
 
@@ -127,14 +127,14 @@ Public Class Interfaces
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="oDBMovieSet">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param>
+        ''' <param name="oDBElement">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param>
         ''' <param name="nMovieSet">New and empty MovieSet container to fill with new scraped data</param>
         ''' <param name="ScrapeModifier"></param>
         ''' <param name="ScrapeType"></param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBMovieSet As Database.DBElement, ByRef nMovieSet As MediaContainers.MovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As ModuleResult
+        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef nMovieSet As MediaContainers.MovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_MovieSet) As ModuleResult
 
 #End Region 'Methods
 
@@ -178,12 +178,12 @@ Public Class Interfaces
         ''' <summary>
         ''' Get single episode information
         ''' </summary>
-        ''' <param name="oDBTVEpisode"></param>
+        ''' <param name="oDBElement"></param>
         ''' <param name="nEpisode"></param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVEpisode(ByRef oDBTVEpisode As Database.DBElement, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
+        Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As ModuleResult
 
 #End Region 'Methods
 

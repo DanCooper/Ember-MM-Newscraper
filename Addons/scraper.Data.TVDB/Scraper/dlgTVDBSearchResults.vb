@@ -36,7 +36,7 @@ Public Class dlgTVDBSearchResults
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TVDBs.Scraper.MySettings
+    Private MySettings As TVDB_Data.SpecialSettings
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
@@ -48,7 +48,7 @@ Public Class dlgTVDBSearchResults
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TVDBs.Scraper.MySettings, _TVDB As TVDBs.Scraper)
+    Public Sub New(_MySettings As TVDB_Data.SpecialSettings, _TVDB As TVDBs.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2

@@ -61,7 +61,7 @@ Namespace TVDBs
 
         Private _TVDBApi As TVDB.Web.WebInterface
         Private _TVDBMirror As TVDB.Model.Mirror
-        Private _MySettings As MySettings
+        Private _SpecialSettings As TVDB_Data.SpecialSettings
         Private _sPoster As String
 
 
@@ -91,12 +91,12 @@ Namespace TVDBs
 
 #Region "Methods"
 
-        Public Sub New(ByVal Settings As MySettings)
+        Public Sub New(ByVal Settings As TVDB_Data.SpecialSettings)
             Try
-                _MySettings = Settings
+                _SpecialSettings = Settings
 
                 If Not Directory.Exists(Path.Combine(Master.TempPath, "Shows")) Then Directory.CreateDirectory(Path.Combine(Master.TempPath, "Shows"))
-                _TVDBApi = New TVDB.Web.WebInterface(_MySettings.ApiKey, Path.Combine(Master.TempPath, "Shows"))
+                _TVDBApi = New TVDB.Web.WebInterface(_SpecialSettings.APIKey, Path.Combine(Master.TempPath, "Shows"))
                 _TVDBMirror = New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
 
             Catch ex As Exception
@@ -123,7 +123,7 @@ Namespace TVDBs
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     Else
                         nShow.Clear()
-                        Using dTVDB As New dlgTVDBSearchResults(_MySettings, Me)
+                        Using dTVDB As New dlgTVDBSearchResults(_SpecialSettings, Me)
                             If dTVDB.ShowDialog(nShow, r, sShowName, oDBTV.ShowPath) = Windows.Forms.DialogResult.OK Then
                                 If String.IsNullOrEmpty(nShow.TVDB) Then
                                     b = False
@@ -153,7 +153,7 @@ Namespace TVDBs
             Dim R As New SearchResults
             Dim Shows As List(Of TVDB.Model.Series)
 
-            Shows = _TVDBApi.GetSeriesByName(sShow, _MySettings.Language, _TVDBMirror).Result
+            Shows = _TVDBApi.GetSeriesByName(sShow, _SpecialSettings.Language, _TVDBMirror).Result
             If Shows Is Nothing Then
                 Return Nothing
             End If
@@ -195,7 +195,7 @@ Namespace TVDBs
 
             If bwTVDB.CancellationPending Then Return Nothing
 
-            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(strID), _MySettings.Language, _TVDBMirror).Result
+            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(strID), _SpecialSettings.Language, _TVDBMirror).Result
             If Results Is Nothing Then
                 Return Nothing
             End If
@@ -332,7 +332,7 @@ Namespace TVDBs
 
         Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Try
-                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _MySettings.Language, _TVDBMirror).Result
+                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror).Result
                 Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.Number = EpisodeNumber AndAlso f.SeasonNumber = SeasonNumber)
                 If Not EpisodeInfo Is Nothing Then
                     Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
@@ -347,7 +347,7 @@ Namespace TVDBs
         End Function
 
         Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
-            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _MySettings.Language, _TVDBMirror).Result
+            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror).Result
             If Results Is Nothing Then
                 Return Nothing
             End If
@@ -580,17 +580,6 @@ Namespace TVDBs
             Dim Result As Object
             Dim ResultType As SearchType
             Dim Success As Boolean
-
-#End Region 'Fields
-
-        End Structure
-
-        Structure MySettings
-
-#Region "Fields"
-
-            Dim ApiKey As String
-            Dim Language As String
 
 #End Region 'Fields
 

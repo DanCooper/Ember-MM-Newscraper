@@ -174,7 +174,7 @@ Public Class frmSettingsHolder_MovieSet
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
-    Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+    Private Sub txtApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
         _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub

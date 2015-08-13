@@ -30,11 +30,11 @@ Public Class dlgTMDBSearchResults_MovieSet
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-    Private TMDBg As TMDB.Scraper
+    Private _TMDB As TMDB.Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TMDB.Scraper.sMySettings_ForScraper
+    Private _SpecialSettings As TMDB_Data.SpecialSettings
     'Private TMDBConf As V3.TmdbConfiguration
     'Private TMDBApi As V3.Tmdb
 
@@ -48,15 +48,15 @@ Public Class dlgTMDBSearchResults_MovieSet
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB.Scraper.sMySettings_ForScraper, _TMDBg As TMDB.Scraper)
+    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, TMDB As TMDB.Scraper)
 
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
-        MySettings = _MySettings
-        TMDBg = _TMDBg
+        _SpecialSettings = SpecialSettings
+        _TMDB = TMDB
     End Sub
 
     Public Overloads Function ShowDialog(ByRef nMovieSet As MediaContainers.MovieSet, ByVal sMovieSetTitle As String, ByVal filterOptions As Structures.ScrapeOptions_MovieSet) As Windows.Forms.DialogResult
@@ -72,7 +72,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Me.txtSearch.Text = sMovieSetTitle
         Me.txtFileName.Text = String.Empty
         chkManual.Enabled = False
-        TMDBg.SearchMovieSetAsync(sMovieSetTitle, _filterOptions)
+        _TMDB.SearchMovieSetAsync(sMovieSetTitle, _filterOptions)
 
         Return MyBase.ShowDialog()
     End Function
@@ -103,9 +103,9 @@ Public Class dlgTMDBSearchResults_MovieSet
             Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
             Me.pnlLoading.Visible = True
             chkManual.Enabled = False
-            TMDBg.CancelAsync()
+            _TMDB.CancelAsync()
             'IMDB.IMDBURL = IMDBURL
-            TMDBg.SearchMovieSetAsync(Me.txtSearch.Text, _filterOptions)
+            _TMDB.SearchMovieSetAsync(Me.txtSearch.Text, _filterOptions)
         End If
     End Sub
 
@@ -113,7 +113,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Dim pOpt As New Structures.ScrapeOptions_MovieSet
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        TMDBg.GetSearchMovieSetInfoAsync(Me.txtTMDBID.Text, _nMovieSet, pOpt)
+        _TMDB.GetSearchMovieSetInfoAsync(Me.txtTMDBID.Text, _nMovieSet, pOpt)
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
@@ -149,8 +149,8 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If TMDBg.bwTMDB.IsBusy Then
-            TMDBg.CancelAsync()
+        If _TMDB.bwTMDB.IsBusy Then
+            _TMDB.CancelAsync()
         End If
         _nMovieSet.Clear()
 
@@ -179,7 +179,7 @@ Public Class dlgTMDBSearchResults_MovieSet
 
         _nMovieSet.Clear()
 
-        TMDBg.CancelAsync()
+        _TMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
@@ -198,8 +198,8 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
-        AddHandler TMDBg.SearchInfoDownloaded_MovieSet, AddressOf SearchMovieSetInfoDownloaded
-        AddHandler TMDBg.SearchResultsDownloaded_MovieSet, AddressOf SearchResultsDownloaded_MovieSet
+        AddHandler _TMDB.SearchInfoDownloaded_MovieSet, AddressOf SearchMovieSetInfoDownloaded
+        AddHandler _TMDB.SearchResultsDownloaded_MovieSet, AddressOf SearchResultsDownloaded_MovieSet
 
         Try
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -223,7 +223,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
-       Me.pnlLoading.Visible = False
+        Me.pnlLoading.Visible = False
         Me.OK_Button.Enabled = True
 
         If bSuccess Then
@@ -312,7 +312,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        TMDBg.GetSearchMovieSetInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovieSet, pOpt)
+        _TMDB.GetSearchMovieSetInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovieSet, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick

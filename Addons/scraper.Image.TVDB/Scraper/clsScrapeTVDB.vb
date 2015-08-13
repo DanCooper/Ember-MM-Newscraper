@@ -38,7 +38,6 @@ Namespace TVDBs
 
         Private _TVDBApi As TVDB.Web.WebInterface
         Private _TVDBMirror As TVDB.Model.Mirror
-        Private _MySettings As MySettings
 
 #End Region 'Fields
 
@@ -52,12 +51,11 @@ Namespace TVDBs
 
 #Region "Methods"
 
-        Public Sub New(ByVal Settings As MySettings)
+        Public Sub New(ByVal SpecialSettings As TVDB_Image.SpecialSettings)
             Try
-                _MySettings = Settings
 
                 If Not Directory.Exists(Path.Combine(Master.TempPath, "Shows")) Then Directory.CreateDirectory(Path.Combine(Master.TempPath, "Shows"))
-                _TVDBApi = New TVDB.Web.WebInterface(_MySettings.ApiKey, Path.Combine(Master.TempPath, "Shows"))
+                _TVDBApi = New TVDB.Web.WebInterface(SpecialSettings.ApiKey, Path.Combine(Master.TempPath, "Shows"))
                 _TVDBMirror = New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
 
             Catch ex As Exception
@@ -229,16 +227,6 @@ Namespace TVDBs
 
             Dim Result As Object
             Dim ResultList As List(Of MediaContainers.Image)
-
-#End Region 'Fields
-
-        End Structure
-
-        Structure MySettings
-
-#Region "Fields"
-
-            Dim ApiKey As String
 
 #End Region 'Fields
 

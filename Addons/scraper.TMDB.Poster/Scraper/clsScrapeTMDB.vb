@@ -29,7 +29,9 @@ Namespace TMDB
 #Region "Fields"
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Private _MySettings As TMDB.Scraper.MySettings
+
+        Private _TMDBApi As TMDbLib.Client.TMDbClient
+        Private _sPoster As String
 
         Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
@@ -37,41 +39,28 @@ Namespace TMDB
 
 #Region "Methods"
 
-        'Public Sub Cancel()
-        '	If bwTMDB.IsBusy Then bwTMDB.CancelAsync()
+        Public Sub New(ByVal SpecialSettings As TMDB_Image.SpecialSettings)
+            Try
 
-        '	While bwTMDB.IsBusy
-        '		Application.DoEvents()
-        '		Threading.Thread.Sleep(50)
-        '	End While
-        'End Sub
+                _TMDBApi = New TMDbLib.Client.TMDbClient(SpecialSettings.APIKey)
+                _TMDBApi.GetConfig()
 
-        'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.ScraperCapabilities)
-        '    Try
-        '        If Not bwTMDB.IsBusy Then
-        '            bwTMDB.WorkerSupportsCancellation = True
-        '            bwTMDB.WorkerReportsProgress = True
-        '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
-        '        End If
-        '    Catch ex As Exception
-        '        logger.Error(New StackFrame().GetMethod().Name,ex)
-        '    End Try
-        'End Sub
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
             Try
-                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
-                TMDBClient.GetConfig()
-
                 Dim Results As TMDbLib.Objects.General.Images = Nothing
                 If ContentType = Enums.ContentType.Movie Then
-                    Results = TMDBClient.GetMovieImages(CInt(TMDBID))
+                    Results = _TMDBApi.GetMovieImages(CInt(TMDBID))
                 ElseIf ContentType = Enums.ContentType.MovieSet Then
-                    Results = TMDBClient.GetCollectionImages(CInt(TMDBID))
+                    Results = _TMDBApi.GetCollectionImages(CInt(TMDBID))
                 End If
 
                 If Results Is Nothing Then
@@ -87,8 +76,8 @@ Namespace TMDB
                             .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
                             .Scraper = "TMDB", _
                             .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                            .URLOriginal = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
-                            .URLThumb = TMDBClient.Config.Images.BaseUrl & "w300" & image.FilePath, _
+                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
+                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & image.FilePath, _
                             .VoteAverage = image.VoteAverage.ToString, _
                             .VoteCount = image.VoteCount, _
                             .Width = image.Width.ToString}
@@ -106,8 +95,8 @@ Namespace TMDB
                                 .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
                                 .Scraper = "TMDB", _
                                 .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                                .URLOriginal = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
-                                .URLThumb = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
+                                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
+                                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath, _
                                 .VoteAverage = image.VoteAverage.ToString, _
                                 .VoteCount = image.VoteCount, _
                                 .Width = image.Width.ToString}
@@ -123,17 +112,14 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
             Try
-                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
-                TMDBClient.GetConfig()
-
                 Dim Results As TMDbLib.Objects.General.ImagesWithId = Nothing
-                Results = TMDBClient.GetTvShowImages(CInt(tmdbID))
+                Results = _TMDBApi.GetTvShowImages(CInt(tmdbID))
 
                 If Results Is Nothing Then
                     Return Nothing
@@ -148,8 +134,8 @@ Namespace TMDB
                             .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
                             .Scraper = "TMDB", _
                             .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                            .URLOriginal = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
-                            .URLThumb = TMDBClient.Config.Images.BaseUrl & "w300" & image.FilePath, _
+                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
+                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & image.FilePath, _
                             .VoteAverage = image.VoteAverage.ToString, _
                             .VoteCount = image.VoteCount, _
                             .Width = image.Width.ToString}
@@ -167,8 +153,8 @@ Namespace TMDB
                                 .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
                                 .Scraper = "TMDB", _
                                 .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                                .URLOriginal = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
-                                .URLThumb = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
+                                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
+                                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath, _
                                 .VoteAverage = image.VoteAverage.ToString, _
                                 .VoteCount = image.VoteCount, _
                                 .Width = image.Width.ToString}
@@ -184,17 +170,14 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
             Try
-                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
-                TMDBClient.GetConfig()
-
                 Dim Results As TMDbLib.Objects.General.StillImages = Nothing
-                Results = TMDBClient.GetTvEpisodeImages(CInt(tmdbID), iSeason, iEpisode)
+                Results = _TMDBApi.GetTvEpisodeImages(CInt(tmdbID), iSeason, iEpisode)
 
                 If Results Is Nothing Then
                     Return Nothing
@@ -211,8 +194,8 @@ Namespace TMDB
                             .Scraper = "TMDB", _
                             .Season = iSeason, _
                             .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                            .URLOriginal = TMDBClient.Config.Images.BaseUrl & "original" & image.FilePath, _
-                            .URLThumb = TMDBClient.Config.Images.BaseUrl & "w185" & image.FilePath, _
+                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
+                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath, _
                             .VoteAverage = image.VoteAverage.ToString, _
                             .VoteCount = image.VoteCount, _
                             .Width = image.Width.ToString}
@@ -228,12 +211,11 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetTMDBbyTVDB(ByRef tvdbID As String, ByRef Settings As MySettings) As String
+        Public Function GetTMDBbyTVDB(ByRef tvdbID As String) As String
             Dim tmdbID As String = String.Empty
 
             Try
-                Dim TMDBClient = New TMDbLib.Client.TMDbClient(Settings.APIKey)
-                tmdbID = TMDBClient.Find(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID).TvResults.Item(0).Id.ToString
+                tmdbID = _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID).TvResults.Item(0).Id.ToString
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -252,16 +234,6 @@ Namespace TMDB
 
             Dim Parameter As String
             Dim Type As Enums.ModifierType
-
-#End Region 'Fields
-
-        End Structure
-
-        Structure MySettings
-
-#Region "Fields"
-
-            Dim APIKey As String
 
 #End Region 'Fields
 

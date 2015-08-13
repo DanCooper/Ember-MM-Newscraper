@@ -41,9 +41,8 @@ Public Class IMDB_Data
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
     Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
 
-    Private _MySettings_Movie As New sMySettings
-    Private _MySettings_TV As New sMySettings
-    Private _scraper As New IMDB.Scraper
+    Private _SpecialSettings_Movie As New SpecialSettings
+    Private _SpecialSettings_TV As New SpecialSettings
     Private _Name As String = "IMDB_Data"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_TV As Boolean = False
@@ -171,14 +170,14 @@ Public Class IMDB_Data
         _setup_Movie.chkWriters.Checked = ConfigOptions_Movie.bWriters
         _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
 
-        _setup_Movie.cbForceTitleLanguage.Text = _MySettings_Movie.ForceTitleLanguage
-        _setup_Movie.chkCountryAbbreviation.Checked = _MySettings_Movie.CountryAbbreviation
-        _setup_Movie.chkFallBackworldwide.Checked = _MySettings_Movie.FallBackWorldwide
-        _setup_Movie.chkPartialTitles.Checked = _MySettings_Movie.SearchPartialTitles
-        _setup_Movie.chkPopularTitles.Checked = _MySettings_Movie.SearchPopularTitles
-        _setup_Movie.chkTvTitles.Checked = _MySettings_Movie.SearchTvTitles
-        _setup_Movie.chkVideoTitles.Checked = _MySettings_Movie.SearchVideoTitles
-        _setup_Movie.chkShortTitles.Checked = _MySettings_Movie.SearchShortTitles
+        _setup_Movie.cbForceTitleLanguage.Text = _SpecialSettings_Movie.ForceTitleLanguage
+        _setup_Movie.chkCountryAbbreviation.Checked = _SpecialSettings_Movie.CountryAbbreviation
+        _setup_Movie.chkFallBackworldwide.Checked = _SpecialSettings_Movie.FallBackWorldwide
+        _setup_Movie.chkPartialTitles.Checked = _SpecialSettings_Movie.SearchPartialTitles
+        _setup_Movie.chkPopularTitles.Checked = _SpecialSettings_Movie.SearchPopularTitles
+        _setup_Movie.chkTvTitles.Checked = _SpecialSettings_Movie.SearchTvTitles
+        _setup_Movie.chkVideoTitles.Checked = _SpecialSettings_Movie.SearchVideoTitles
+        _setup_Movie.chkShortTitles.Checked = _SpecialSettings_Movie.SearchShortTitles
 
         _setup_Movie.orderChanged()
 
@@ -266,17 +265,14 @@ Public Class IMDB_Data
         ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
         ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
 
-        ConfigScrapeModifier_Movie.DoSearch = True
-        ConfigScrapeModifier_Movie.MainNFO = True
-
-        _MySettings_Movie.CountryAbbreviation = clsAdvancedSettings.GetBooleanSetting("CountryAbbreviation", False)
-        _MySettings_Movie.FallBackWorldwide = clsAdvancedSettings.GetBooleanSetting("FallBackWorldwide", False)
-        _MySettings_Movie.ForceTitleLanguage = clsAdvancedSettings.GetSetting("ForceTitleLanguage", "")
-        _MySettings_Movie.SearchPartialTitles = clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True)
-        _MySettings_Movie.SearchPopularTitles = clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
-        _MySettings_Movie.SearchTvTitles = clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
-        _MySettings_Movie.SearchVideoTitles = clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
-        _MySettings_Movie.SearchShortTitles = clsAdvancedSettings.GetBooleanSetting("SearchShortTitles", False)
+        _SpecialSettings_Movie.CountryAbbreviation = clsAdvancedSettings.GetBooleanSetting("CountryAbbreviation", False)
+        _SpecialSettings_Movie.FallBackWorldwide = clsAdvancedSettings.GetBooleanSetting("FallBackWorldwide", False)
+        _SpecialSettings_Movie.ForceTitleLanguage = clsAdvancedSettings.GetSetting("ForceTitleLanguage", "")
+        _SpecialSettings_Movie.SearchPartialTitles = clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True)
+        _SpecialSettings_Movie.SearchPopularTitles = clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
+        _SpecialSettings_Movie.SearchTvTitles = clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
+        _SpecialSettings_Movie.SearchVideoTitles = clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
+        _SpecialSettings_Movie.SearchShortTitles = clsAdvancedSettings.GetBooleanSetting("SearchShortTitles", False)
     End Sub
 
     Sub LoadSettings_TV()
@@ -303,9 +299,6 @@ Public Class IMDB_Data
         ConfigOptions_TV.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVShow)
-
-        ConfigScrapeModifier_TV.DoSearch = True
-        ConfigScrapeModifier_TV.MainNFO = True
     End Sub
 
     Sub SaveSettings_Movie()
@@ -334,14 +327,14 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes)
             settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters)
             settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear)
-            settings.SetBooleanSetting("CountryAbbreviation", _MySettings_Movie.CountryAbbreviation)
-            settings.SetBooleanSetting("FallBackWorldwide", _MySettings_Movie.FallBackWorldwide)
-            settings.SetBooleanSetting("SearchPartialTitles", _MySettings_Movie.SearchPartialTitles)
-            settings.SetBooleanSetting("SearchPopularTitles", _MySettings_Movie.SearchPopularTitles)
-            settings.SetBooleanSetting("SearchTvTitles", _MySettings_Movie.SearchTvTitles)
-            settings.SetBooleanSetting("SearchVideoTitles", _MySettings_Movie.SearchVideoTitles)
-            settings.SetBooleanSetting("SearchShortTitles", _MySettings_Movie.SearchShortTitles)
-            settings.SetSetting("ForceTitleLanguage", _MySettings_Movie.ForceTitleLanguage)
+            settings.SetBooleanSetting("CountryAbbreviation", _SpecialSettings_Movie.CountryAbbreviation)
+            settings.SetBooleanSetting("FallBackWorldwide", _SpecialSettings_Movie.FallBackWorldwide)
+            settings.SetBooleanSetting("SearchPartialTitles", _SpecialSettings_Movie.SearchPartialTitles)
+            settings.SetBooleanSetting("SearchPopularTitles", _SpecialSettings_Movie.SearchPopularTitles)
+            settings.SetBooleanSetting("SearchTvTitles", _SpecialSettings_Movie.SearchTvTitles)
+            settings.SetBooleanSetting("SearchVideoTitles", _SpecialSettings_Movie.SearchVideoTitles)
+            settings.SetBooleanSetting("SearchShortTitles", _SpecialSettings_Movie.SearchShortTitles)
+            settings.SetSetting("ForceTitleLanguage", _SpecialSettings_Movie.ForceTitleLanguage)
         End Using
     End Sub
 
@@ -398,14 +391,14 @@ Public Class IMDB_Data
         ConfigOptions_Movie.bWriters = _setup_Movie.chkWriters.Checked
         ConfigOptions_Movie.bYear = _setup_Movie.chkYear.Checked
 
-        _MySettings_Movie.CountryAbbreviation = _setup_Movie.chkCountryAbbreviation.Checked
-        _MySettings_Movie.FallBackWorldwide = _setup_Movie.chkFallBackworldwide.Checked
-        _MySettings_Movie.ForceTitleLanguage = _setup_Movie.cbForceTitleLanguage.Text
-        _MySettings_Movie.SearchPartialTitles = _setup_Movie.chkPartialTitles.Checked
-        _MySettings_Movie.SearchPopularTitles = _setup_Movie.chkPopularTitles.Checked
-        _MySettings_Movie.SearchTvTitles = _setup_Movie.chkTvTitles.Checked
-        _MySettings_Movie.SearchVideoTitles = _setup_Movie.chkVideoTitles.Checked
-        _MySettings_Movie.SearchShortTitles = _setup_Movie.chkShortTitles.Checked
+        _SpecialSettings_Movie.CountryAbbreviation = _setup_Movie.chkCountryAbbreviation.Checked
+        _SpecialSettings_Movie.FallBackWorldwide = _setup_Movie.chkFallBackworldwide.Checked
+        _SpecialSettings_Movie.ForceTitleLanguage = _setup_Movie.cbForceTitleLanguage.Text
+        _SpecialSettings_Movie.SearchPartialTitles = _setup_Movie.chkPartialTitles.Checked
+        _SpecialSettings_Movie.SearchPopularTitles = _setup_Movie.chkPopularTitles.Checked
+        _SpecialSettings_Movie.SearchTvTitles = _setup_Movie.chkTvTitles.Checked
+        _SpecialSettings_Movie.SearchVideoTitles = _setup_Movie.chkVideoTitles.Checked
+        _SpecialSettings_Movie.SearchShortTitles = _setup_Movie.chkShortTitles.Checked
 
         SaveSettings_Movie()
         If DoDispose Then
@@ -451,6 +444,10 @@ Public Class IMDB_Data
             logger.Error("Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult
         End If
+
+        LoadSettings_Movie()
+        Dim _scraper As New IMDB.Scraper(_SpecialSettings_Movie)
+
         studio.AddRange(_scraper.GetMovieStudios(DBMovie.Movie.IMDBID))
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -492,16 +489,17 @@ Public Class IMDB_Data
         logger.Trace("Started IMDB Scraper")
 
         LoadSettings_Movie()
+        Dim _scraper As New IMDB.Scraper(_SpecialSettings_Movie)
 
         Dim FilteredOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(ScrapeOptions, ConfigOptions_Movie)
 
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _MySettings_Movie.FallBackWorldwide, _MySettings_Movie.ForceTitleLanguage, _MySettings_Movie.CountryAbbreviation)
+                _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, FilteredOptions, FilteredOptions.bFullCrew, _MySettings_Movie.FallBackWorldwide, _MySettings_Movie.ForceTitleLanguage, _MySettings_Movie.CountryAbbreviation)
+                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, FilteredOptions, FilteredOptions.bFullCrew, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nMovie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -517,9 +515,9 @@ Public Class IMDB_Data
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
-                Using dSearch As New dlgIMDBSearchResults_Movie
+                Using dSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings_Movie, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie.Filename, FilteredOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _MySettings_Movie.FallBackWorldwide, _MySettings_Movie.ForceTitleLanguage, _MySettings_Movie.CountryAbbreviation)
+                        _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else
@@ -565,6 +563,7 @@ Public Class IMDB_Data
         logger.Trace("Started IMDB Scraper")
 
         LoadSettings_TV()
+        Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
 
         Dim FilteredOptions As Structures.ScrapeOptions_TV = Functions.TVScrapeOptionsAndAlso(ScrapeOptions, ConfigOptions_TV)
 
@@ -600,7 +599,7 @@ Public Class IMDB_Data
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBTV.TVShow.IMDB) Then
-                Using dSearch As New dlgIMDBSearchResults_TV
+                Using dSearch As New dlgIMDBSearchResults_TV(_SpecialSettings_TV, _scraper)
                     If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, FilteredOptions) = Windows.Forms.DialogResult.OK Then
                         _scraper.GetTVShowInfo(nShow.IMDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
@@ -643,9 +642,10 @@ Public Class IMDB_Data
 
 #Region "Nested Types"
 
-    Structure sMySettings
+    Structure SpecialSettings
 
 #Region "Fields"
+
         Dim FallBackWorldwide As Boolean
         Dim ForceTitleLanguage As String
         Dim SearchPartialTitles As Boolean
@@ -654,6 +654,7 @@ Public Class IMDB_Data
         Dim SearchVideoTitles As Boolean
         Dim SearchShortTitles As Boolean
         Dim CountryAbbreviation As Boolean
+
 #End Region 'Fields
 
     End Structure

@@ -32,11 +32,11 @@ Public Class dlgTMDBSearchResults_TV
     Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-    Private TMDB As TMDB.Scraper
+    Private _TMDB As TMDB.Scraper
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TMDB.Scraper.sMySettings_ForScraper
+    Private _SpecialSettings As TMDB_Data.SpecialSettings
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
@@ -48,14 +48,14 @@ Public Class dlgTMDBSearchResults_TV
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB.Scraper.sMySettings_ForScraper, _TMDB As TMDB.Scraper)
+    Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, TMDB As TMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
-        MySettings = _MySettings
-        TMDB = _TMDB
+        _SpecialSettings = SpecialSettings
+        _TMDB = TMDB
     End Sub
 
     Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions_TV) As Windows.Forms.DialogResult
@@ -72,7 +72,7 @@ Public Class dlgTMDBSearchResults_TV
         Me.txtFileName.Text = sShowPath
         chkManual.Enabled = False
 
-        TMDB.SearchTVShowAsync(sShowTitle, _filterOptions)
+        _TMDB.SearchTVShowAsync(sShowTitle, _filterOptions)
 
         Return MyBase.ShowDialog()
     End Function
@@ -103,9 +103,9 @@ Public Class dlgTMDBSearchResults_TV
             Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
             Me.pnlLoading.Visible = True
             chkManual.Enabled = False
-            TMDB.CancelAsync()
+            _TMDB.CancelAsync()
 
-            TMDB.SearchTVShowAsync(Me.txtSearch.Text, _filterOptions)
+            _TMDB.SearchTVShowAsync(Me.txtSearch.Text, _filterOptions)
         End If
     End Sub
 
@@ -113,7 +113,7 @@ Public Class dlgTMDBSearchResults_TV
         Dim pOpt As New Structures.ScrapeOptions_TV
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        TMDB.GetSearchTVShowInfoAsync(Me.txtTMDBID.Text, _nShow, pOpt)
+        _TMDB.GetSearchTVShowInfoAsync(Me.txtTMDBID.Text, _nShow, pOpt)
 
     End Sub
 
@@ -160,8 +160,8 @@ Public Class dlgTMDBSearchResults_TV
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If TMDB.bwTMDB.IsBusy Then
-            TMDB.CancelAsync()
+        If _TMDB.bwTMDB.IsBusy Then
+            _TMDB.CancelAsync()
         End If
         _nShow.Clear()
 
@@ -194,7 +194,7 @@ Public Class dlgTMDBSearchResults_TV
 
         _nShow.Clear()
 
-        TMDB.CancelAsync()
+        _TMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
@@ -221,8 +221,8 @@ Public Class dlgTMDBSearchResults_TV
         Me.SetUp()
         pnlPicStatus.Visible = False
 
-        AddHandler TMDB.SearchInfoDownloaded_TVShow, AddressOf SearchInfoDownloaded
-        AddHandler TMDB.SearchResultsDownloaded_TVShow, AddressOf SearchResultsDownloaded
+        AddHandler _TMDB.SearchInfoDownloaded_TVShow, AddressOf SearchInfoDownloaded
+        AddHandler _TMDB.SearchResultsDownloaded_TVShow, AddressOf SearchResultsDownloaded
 
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
@@ -341,7 +341,7 @@ Public Class dlgTMDBSearchResults_TV
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        TMDB.GetSearchTVShowInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nShow, pOpt)
+        _TMDB.GetSearchTVShowInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nShow, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick

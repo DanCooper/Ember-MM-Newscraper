@@ -122,6 +122,7 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Interface.Kodi", "Addons\generic.Interface.Kodi\generic.Interface.Kodi.vbproj", "{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KodiAPI", "KodiAPI\KodiAPI.csproj", "{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}"
+EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TVDB", "Addons\scraper.Data.TVDB\scraper.Data.TVDB.vbproj", "{087BE07B-00AF-4B65-B988-6889C0D31568}"
 EndProject
 Global

@@ -129,6 +129,7 @@ Namespace IMDB
 #Region "Fields"
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
         Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
 
         Private Const LINK_PATTERN As String = "<a[\s]+[^>]*?href[\s]?=[\s\""\']*(?<url>.*?)[\""\']*.*?>(?<name>[^<]+|.*?)?<\/a>"
@@ -155,6 +156,8 @@ Namespace IMDB
         Private sPoster As String
         Private intHTTP As HTTP = Nothing
 
+        Private _SpecialSettings As IMDB_Data.SpecialSettings
+
 #End Region 'Fields
 
 #Region "Enumerations"
@@ -180,6 +183,10 @@ Namespace IMDB
 #End Region 'Events
 
 #Region "Methods"
+
+        Public Sub New(ByVal SpecialSettings As IMDB_Data.SpecialSettings)
+            _SpecialSettings = SpecialSettings
+        End Sub
 
         Public Sub CancelAsync()
 
@@ -1242,7 +1249,7 @@ mPlot:          'Plot
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         Else
                             nMovie.Clear()
-                            Using dIMDB As New dlgIMDBSearchResults_Movie
+                            Using dIMDB As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
                                 If dIMDB.ShowDialog(nMovie, r, sMovieName, oDBMovie.Filename) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(nMovie.IMDBID) Then
                                         b = False
@@ -1318,7 +1325,7 @@ mPlot:          'Plot
                         b = GetTVShowInfo(r.Matches.Item(0).IMDB, nShow, False, FilteredOptions, True, False)
                     Else
                         nShow.Clear()
-                        Using dIMDB As New dlgIMDBSearchResults_TV
+                        Using dIMDB As New dlgIMDBSearchResults_TV(_SpecialSettings, Me)
                             If dIMDB.ShowDialog(nShow, r, sShowName, oDBTV.ShowPath) = Windows.Forms.DialogResult.OK Then
                                 If String.IsNullOrEmpty(nShow.IMDB) Then
                                     b = False
@@ -1577,19 +1584,19 @@ mPlot:          'Plot
             HTMLe = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
             rUri = intHTTP.ResponseUri
 
-            If clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False) Then
+            If _SpecialSettings.SearchTvTitles Then
                 HTMLt = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
             End If
-            If clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False) Then
+            If _SpecialSettings.SearchVideoTitles Then
                 HTMLv = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=video"))
             End If
-            If clsAdvancedSettings.GetBooleanSetting("SearchShortTitles", False) Then
+            If _SpecialSettings.SearchShortTitles Then
                 HTMLs = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=short"))
             End If
-            If clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
+            If _SpecialSettings.SearchPartialTitles Then
                 HTMLm = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
             End If
-            If clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True) Then
+            If _SpecialSettings.SearchPopularTitles Then
                 HTMLp = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
             End If
             intHTTP.Dispose()

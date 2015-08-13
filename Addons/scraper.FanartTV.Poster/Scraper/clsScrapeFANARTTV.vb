@@ -62,38 +62,6 @@ Namespace FanartTVs
 
 #Region "Methods"
 
-        'Public Sub New(ByRef sMySettings As FanartTV_Image.sMySettings)
-        '    FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
-        '    FanartTv.API.cKey = sMySettings.ApiKey
-        '    Dim Test = New FanartTv.Movies.Latest()
-        '    If FanartTv.API.ErrorOccurred Then
-        '        If Not IsNothing(FanartTv.API.ErrorMessage) Then
-        '            logger.Error(FanartTv.API.ErrorMessage)
-        '        End If
-        '    End If
-        'End Sub
-
-        'Public Sub Cancel()
-        '	If Me.bwFANARTTV.IsBusy Then Me.bwFANARTTV.CancelAsync()
-
-        '	While Me.bwFANARTTV.IsBusy
-        '		Application.DoEvents()
-        '		Threading.Thread.Sleep(50)
-        '	End While
-        'End Sub
-
-        'Public Sub GetImagesAsync(ByVal sURL As String)
-        '	Try
-        '		If Not bwFANARTTV.IsBusy Then
-        '			bwFANARTTV.WorkerSupportsCancellation = True
-        '			bwFANARTTV.WorkerReportsProgress = True
-        '			bwFANARTTV.RunWorkerAsync(New Arguments With {.Parameter = sURL})
-        '		End If
-        '	Catch ex As Exception
-        '		logger.Error(New StackFrame().GetMethod().Name,ex)
-        '	End Try
-        'End Sub
-
         Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
