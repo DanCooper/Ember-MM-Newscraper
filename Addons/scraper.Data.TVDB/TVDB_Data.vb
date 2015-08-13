@@ -99,7 +99,6 @@ Public Class TVDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
         LoadSettings()
-        _setup.API = _setup.txtApiKey.Text
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.chkScraperEpActors.Checked = ConfigOptions.bEpActors
         _setup.chkScraperEpAired.Checked = ConfigOptions.bEpAired

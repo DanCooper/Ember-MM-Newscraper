@@ -36,27 +36,15 @@ Public Class frmSettingsHolder
 
 #Region "Fields"
 
-    Private _api As String
-
 #End Region 'Fields
 
 #Region "Properties"
-
-    Public Property API() As String
-        Get
-            Return Me._api
-        End Get
-        Set(ByVal value As String)
-            Me._api = value
-        End Set
-    End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
     Public Sub New()
-        _api = String.Empty
         InitializeComponent()
         Me.SetUp()
     End Sub
@@ -112,7 +100,6 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
-        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

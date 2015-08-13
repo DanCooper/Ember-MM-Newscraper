@@ -30,8 +30,7 @@ Namespace TMDB
 
         Private _TMDBApi As TMDbLib.Client.TMDbClient  'preferred language
         Private _TMDBApiE As TMDbLib.Client.TMDbClient 'english language
-        Private _MySettings As sMySettings_ForScraper
-        Private strPrivateAPIKey As String = String.Empty
+        Private _MySettings As TMDB_Trailer.SpecialSettings
 
         Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
@@ -39,16 +38,16 @@ Namespace TMDB
 
 #Region "Methods"
 
-        Public Sub New(ByVal Settings As sMySettings_ForScraper)
+        Public Sub New(ByVal Settings As TMDB_Trailer.SpecialSettings)
             Try
                 _MySettings = Settings
 
-                _TMDBApi = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
+                _TMDBApi = New TMDbLib.Client.TMDbClient(_MySettings.APIKey)
                 _TMDBApi.GetConfig()
                 _TMDBApi.DefaultLanguage = _MySettings.PrefLanguage
 
                 If _MySettings.FallBackEng Then
-                    _TMDBApiE = New TMDbLib.Client.TMDbClient(Settings.ApiKey)
+                    _TMDBApiE = New TMDbLib.Client.TMDbClient(_MySettings.APIKey)
                     _TMDBApiE.GetConfig()
                     _TMDBApiE.DefaultLanguage = "en"
                 Else
@@ -189,18 +188,6 @@ Namespace TMDB
 
             Dim Parameter As String
             Dim Type As Enums.ModifierType
-
-#End Region 'Fields
-
-        End Structure
-
-        Structure sMySettings_ForScraper
-
-#Region "Fields"
-
-            Dim ApiKey As String
-            Dim FallBackEng As Boolean
-            Dim PrefLanguage As String
 
 #End Region 'Fields
 

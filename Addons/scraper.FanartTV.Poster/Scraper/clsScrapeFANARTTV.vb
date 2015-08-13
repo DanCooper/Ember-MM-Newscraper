@@ -50,6 +50,8 @@ Namespace FanartTVs
 
         Friend WithEvents bwFANARTTV As New System.ComponentModel.BackgroundWorker
 
+        Private _SpecialSettings As FanartTV_Image.SpecialSettings
+
 #End Region 'Fields
 
 #Region "Events"
@@ -62,13 +64,22 @@ Namespace FanartTVs
 
 #Region "Methods"
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Sub New(ByVal SpecialSettings As FanartTV_Image.SpecialSettings)
+            Try
+                _SpecialSettings = SpecialSettings
+
+                FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
+                FanartTv.API.cKey = SpecialSettings.ApiKey
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Sub
+
+        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
-                FanartTv.API.cKey = Settings.ApiKey
-
                 Dim Results = New FanartTv.Movies.Movie(imdbID_tmdbID)
                 If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
                     If FanartTv.API.ErrorMessage IsNot Nothing Then
@@ -112,7 +123,7 @@ Namespace FanartTVs
                             alImagesContainer.MainClearArts.Add(tmpPoster)
                         Next
                     End If
-                    If Results.List.Movieart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
+                    If Results.List.Movieart IsNot Nothing AndAlso Not _SpecialSettings.ClearArtOnlyHD Then
                         For Each image In Results.List.Movieart
                             Dim tmpPoster As New MediaContainers.Image With { _
                                 .Height = "281", _
@@ -147,7 +158,7 @@ Namespace FanartTVs
                         Next
                     End If
 
-                    If Results.List.Movielogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
+                    If Results.List.Movielogo IsNot Nothing AndAlso Not _SpecialSettings.ClearLogoOnlyHD Then
                         For Each image In Results.List.Movielogo
                             Dim tmpPoster As New MediaContainers.Image With { _
                                 .Height = "155", _
@@ -231,13 +242,10 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
-                FanartTv.API.cKey = Settings.ApiKey
-
                 Dim Results = New FanartTv.TV.Show(tvdbID)
                 If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
                     If FanartTv.API.ErrorMessage IsNot Nothing Then
@@ -318,7 +326,7 @@ Namespace FanartTVs
                             alContainer.MainClearArts.Add(tmpPoster)
                         Next
                     End If
-                    If Results.List.Clearart IsNot Nothing AndAlso Not Settings.ClearArtOnlyHD Then
+                    If Results.List.Clearart IsNot Nothing AndAlso Not _SpecialSettings.ClearArtOnlyHD Then
                         For Each image In Results.List.Clearart
                             Dim tmpPoster As New MediaContainers.Image With { _
                                 .Height = "281", _
@@ -352,7 +360,7 @@ Namespace FanartTVs
                             alContainer.MainClearLogos.Add(tmpPoster)
                         Next
                     End If
-                    If Results.List.Clearlogo IsNot Nothing AndAlso Not Settings.ClearLogoOnlyHD Then
+                    If Results.List.Clearlogo IsNot Nothing AndAlso Not _SpecialSettings.ClearLogoOnlyHD Then
                         For Each Image In Results.List.Clearlogo
                             Dim tmpPoster As New MediaContainers.Image With { _
                                 .Height = "155", _
@@ -478,18 +486,6 @@ Namespace FanartTVs
 
             Dim Result As Object
             Dim ResultList As List(Of MediaContainers.Image)
-
-#End Region 'Fields
-
-        End Structure
-
-        Structure MySettings
-
-#Region "Fields"
-
-            Dim ApiKey As String
-            Dim ClearArtOnlyHD As Boolean
-            Dim ClearLogoOnlyHD As Boolean
 
 #End Region 'Fields
 

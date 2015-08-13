@@ -36,7 +36,7 @@ Public Class TMDB_Trailer
     ''' </summary>
     ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
-    Private _MySettings As New sMySettings
+    Private _SpecialSettings As New SpecialSettings
     Private _Name As String = "TMDB_Trailer"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmSettingsHolder
@@ -102,10 +102,8 @@ Public Class TMDB_Trailer
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.txtApiKey.Text = strPrivateAPIKey
-        _setup.cbPrefLanguage.Text = _MySettings.PrefLanguage
-        _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
-        _setup.Lang = _setup.cbPrefLanguage.Text
-        _setup.API = _setup.txtApiKey.Text
+        _setup.cbPrefLanguage.Text = _SpecialSettings.PrefLanguage
+        _setup.chkFallBackEng.Checked = _SpecialSettings.FallBackEng
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
             _setup.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -132,11 +130,11 @@ Public Class TMDB_Trailer
 
     Sub LoadSettings()
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
-        _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
-        _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
         ConfigScrapeModifier.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        _SpecialSettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _SpecialSettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _SpecialSettings.PrefLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
 
     End Sub
 
@@ -150,12 +148,7 @@ Public Class TMDB_Trailer
         End If
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-            Settings.ApiKey = _MySettings.APIKey
-            Settings.FallBackEng = _MySettings.FallBackEng
-            Settings.PrefLanguage = _MySettings.PrefLanguage
-
-            Dim _scraper As New TMDB.Scraper(Settings)
+            Dim _scraper As New TMDB.Scraper(_SpecialSettings)
 
             TrailerList = _scraper.GetTrailers(DBMovie.Movie.TMDBID)
         End If
@@ -167,15 +160,15 @@ Public Class TMDB_Trailer
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
             settings.SetSetting("TMDBAPIKey", _setup.txtApiKey.Text)
-            settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
-            settings.SetSetting("TMDBLanguage", _MySettings.PrefLanguage)
+            settings.SetBooleanSetting("FallBackEn", _SpecialSettings.FallBackEng)
+            settings.SetSetting("TMDBLanguage", _SpecialSettings.PrefLanguage)
             settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.MainTrailer)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Trailer_Movie.SaveSetupScraper
-        _MySettings.PrefLanguage = _setup.cbPrefLanguage.Text
-        _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
+        _SpecialSettings.PrefLanguage = _setup.cbPrefLanguage.Text
+        _SpecialSettings.FallBackEng = _setup.chkFallBackEng.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -194,7 +187,7 @@ Public Class TMDB_Trailer
 
 #Region "Nested Types"
 
-    Structure sMySettings
+    Structure SpecialSettings
 
 #Region "Fields"
         Dim APIKey As String

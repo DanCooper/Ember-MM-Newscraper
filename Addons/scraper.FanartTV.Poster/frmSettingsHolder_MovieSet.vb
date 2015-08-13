@@ -36,30 +36,9 @@ Public Class frmSettingsHolder_MovieSet
 
 #Region "Fields"
 
-    Private _api As String
-    Private _language As String
-
 #End Region 'Fields
 
 #Region "Properties"
-
-    Public Property API() As String
-        Get
-            Return Me._api
-        End Get
-        Set(ByVal value As String)
-            Me._api = value
-        End Set
-    End Property
-
-    Public Property Lang() As String
-        Get
-            Return Me._language
-        End Get
-        Set(ByVal value As String)
-            Me._language = value
-        End Set
-    End Property
 
 #End Region 'Properties
 
@@ -175,7 +154,6 @@ Public Class frmSettingsHolder_MovieSet
     End Sub
 
     Private Sub txtApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
-        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

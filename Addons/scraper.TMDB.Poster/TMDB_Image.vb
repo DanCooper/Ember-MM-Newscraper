@@ -40,10 +40,6 @@ Public Class TMDB_Image
 
     Private TMDBId As String
 
-    ''' <summary>
-    ''' Scraping Here
-    ''' </summary>
-    ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
     Private _SpecialSettings_Movie As New SpecialSettings
     Private _SpecialSettings_MovieSet As New SpecialSettings
