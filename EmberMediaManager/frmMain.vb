@@ -12442,17 +12442,17 @@ doCancel:
         End If
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
-        Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainDiscArt)
-        Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster)
-        Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Theme_Movie(Enums.ModifierType.MainTheme)
-        Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTrailer)
+        Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+        Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+        Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+        Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+        Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
 
         'create ScrapeList of movies acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12621,13 +12621,13 @@ doCancel:
             Next
         End If
 
-        Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainDiscArt)
-        Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainPoster)
+        Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+        Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+        Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
 
         'create ScrapeList of moviesets acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12784,15 +12784,15 @@ doCancel:
         End If
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVShowActorThumbsAnyEnabled
-        Dim BannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainBanner)
-        Dim CharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainCharacterArt)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearLogo)
-        Dim EFanartsAllowed As Boolean = Master.eSettings.TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainFanart)
-        Dim FanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainPoster)
-        Dim ThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Theme_TV(Enums.ModifierType.MainTheme)
+        Dim BannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+        Dim CharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+        Dim ClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+        Dim ClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+        Dim EFanartsAllowed As Boolean = Master.eSettings.TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim FanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim LandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+        Dim PosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+        Dim ThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
 
         'create ScrapeList of tv shows acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12956,9 +12956,9 @@ doCancel:
         End If
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
-        Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse _
-                                                                                           ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainFanart))
-        Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.EpisodePoster)
+        Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse _
+                                                                                           ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
+        Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
 
         'create ScrapeList of episodes acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -16383,7 +16383,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskActor.Enabled = ActorAllowed_Movie
 
             'Banner Movie
-            Dim BannerAllowed_Movie As Boolean = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainBanner)
+            Dim BannerAllowed_Movie As Boolean = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
             Me.mnuMovieAllAutoBanner.Enabled = BannerAllowed_Movie
             Me.mnuMovieAllAskBanner.Enabled = BannerAllowed_Movie
             Me.mnuMovieMissAutoBanner.Enabled = BannerAllowed_Movie
@@ -16408,7 +16408,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskBanner.Enabled = BannerAllowed_Movie
 
             'Banner MovieSet
-            Dim BannerAllowed_MovieSet As Boolean = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainBanner)
+            Dim BannerAllowed_MovieSet As Boolean = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
             Me.mnuMovieSetAllAutoBanner.Enabled = BannerAllowed_MovieSet
             Me.mnuMovieSetAllAskBanner.Enabled = BannerAllowed_MovieSet
             Me.mnuMovieSetMissAutoBanner.Enabled = BannerAllowed_MovieSet
@@ -16421,7 +16421,7 @@ doCancel:
             Me.mnuMovieSetFilterAskBanner.Enabled = BannerAllowed_MovieSet
 
             'ClearArt Movie
-            Dim ClearArtAllowed_Movie As Boolean = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearArt)
+            Dim ClearArtAllowed_Movie As Boolean = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
             Me.mnuMovieAllAutoClearArt.Enabled = ClearArtAllowed_Movie
             Me.mnuMovieAllAskClearArt.Enabled = ClearArtAllowed_Movie
             Me.mnuMovieMissAutoClearArt.Enabled = ClearArtAllowed_Movie
@@ -16446,7 +16446,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskClearArt.Enabled = ClearArtAllowed_Movie
 
             'ClearArt MovieSet
-            Dim ClearArtAllowed_MovieSet As Boolean = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainClearArt)
+            Dim ClearArtAllowed_MovieSet As Boolean = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
             Me.mnuMovieSetAllAutoClearArt.Enabled = ClearArtAllowed_MovieSet
             Me.mnuMovieSetAllAskClearArt.Enabled = ClearArtAllowed_MovieSet
             Me.mnuMovieSetMissAutoClearArt.Enabled = ClearArtAllowed_MovieSet
@@ -16459,7 +16459,7 @@ doCancel:
             Me.mnuMovieSetFilterAskClearArt.Enabled = ClearArtAllowed_MovieSet
 
             'ClearLogo Movie
-            Dim ClearLogoAllowed_Movie As Boolean = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainClearLogo)
+            Dim ClearLogoAllowed_Movie As Boolean = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
             Me.mnuMovieAllAutoClearLogo.Enabled = ClearLogoAllowed_Movie
             Me.mnuMovieAllAskClearLogo.Enabled = ClearLogoAllowed_Movie
             Me.mnuMovieMissAutoClearLogo.Enabled = ClearLogoAllowed_Movie
@@ -16484,7 +16484,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskClearLogo.Enabled = ClearLogoAllowed_Movie
 
             'ClearLogo MovieSet
-            Dim ClearLogoAllowed_MovieSet As Boolean = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+            Dim ClearLogoAllowed_MovieSet As Boolean = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
             Me.mnuMovieSetAllAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
             Me.mnuMovieSetAllAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
             Me.mnuMovieSetMissAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
@@ -16497,7 +16497,7 @@ doCancel:
             Me.mnuMovieSetFilterAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
 
             'DiscArt Movie
-            Dim DiscArtAllowed_Movie As Boolean = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainDiscArt)
+            Dim DiscArtAllowed_Movie As Boolean = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
             Me.mnuMovieAllAutoDiscArt.Enabled = DiscArtAllowed_Movie
             Me.mnuMovieAllAskDiscArt.Enabled = DiscArtAllowed_Movie
             Me.mnuMovieMissAutoDiscArt.Enabled = DiscArtAllowed_Movie
@@ -16522,7 +16522,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskDiscArt.Enabled = DiscArtAllowed_Movie
 
             'DiscArt MovieSet
-            Dim DiscArtAllowed_MovieSet As Boolean = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+            Dim DiscArtAllowed_MovieSet As Boolean = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
             Me.mnuMovieSetAllAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
             Me.mnuMovieSetAllAskDiscArt.Enabled = DiscArtAllowed_MovieSet
             Me.mnuMovieSetMissAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
@@ -16535,7 +16535,7 @@ doCancel:
             Me.mnuMovieSetFilterAskDiscArt.Enabled = DiscArtAllowed_MovieSet
 
             'Extrafanart Movie
-            Dim EFanartsAllowed_Movie As Boolean = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
+            Dim EFanartsAllowed_Movie As Boolean = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
             Me.mnuMovieAllAutoEFanarts.Enabled = EFanartsAllowed_Movie
             Me.mnuMovieAllAskEFanarts.Enabled = EFanartsAllowed_Movie
             Me.mnuMovieMissAutoEFanarts.Enabled = EFanartsAllowed_Movie
@@ -16560,7 +16560,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskEFanarts.Enabled = EFanartsAllowed_Movie
 
             'Extrathumb Movie
-            Dim EThumbsAllowed_Movie As Boolean = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
+            Dim EThumbsAllowed_Movie As Boolean = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
             Me.mnuMovieAllAutoEThumbs.Enabled = EThumbsAllowed_Movie
             Me.mnuMovieAllAskEThumbs.Enabled = EThumbsAllowed_Movie
             Me.mnuMovieMissAutoEThumbs.Enabled = EThumbsAllowed_Movie
@@ -16585,7 +16585,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskEThumbs.Enabled = EThumbsAllowed_Movie
 
             'Fanart Movie
-            Dim FanartAllowed_Movie As Boolean = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainFanart)
+            Dim FanartAllowed_Movie As Boolean = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
             Me.mnuMovieAllAutoFanart.Enabled = FanartAllowed_Movie
             Me.mnuMovieAllAskFanart.Enabled = FanartAllowed_Movie
             Me.mnuMovieMissAutoFanart.Enabled = FanartAllowed_Movie
@@ -16610,7 +16610,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskFanart.Enabled = FanartAllowed_Movie
 
             'Fanart MovieSet
-            Dim FanartAllowed_MovieSet As Boolean = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainFanart)
+            Dim FanartAllowed_MovieSet As Boolean = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
             Me.mnuMovieSetAllAutoFanart.Enabled = FanartAllowed_MovieSet
             Me.mnuMovieSetAllAskFanart.Enabled = FanartAllowed_MovieSet
             Me.mnuMovieSetMissAutoFanart.Enabled = FanartAllowed_MovieSet
@@ -16623,7 +16623,7 @@ doCancel:
             Me.mnuMovieSetFilterAskFanart.Enabled = FanartAllowed_MovieSet
 
             'Landscape Movie
-            Dim LandscapeAllowed_Movie As Boolean = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainLandscape)
+            Dim LandscapeAllowed_Movie As Boolean = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
             Me.mnuMovieAllAutoLandscape.Enabled = LandscapeAllowed_Movie
             Me.mnuMovieAllAskLandscape.Enabled = LandscapeAllowed_Movie
             Me.mnuMovieMissAutoLandscape.Enabled = LandscapeAllowed_Movie
@@ -16648,7 +16648,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskLandscape.Enabled = LandscapeAllowed_Movie
 
             'Landscape MovieSet
-            Dim LandscapeAllowed_MovieSet As Boolean = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainLandscape)
+            Dim LandscapeAllowed_MovieSet As Boolean = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
             Me.mnuMovieSetAllAutoLandscape.Enabled = LandscapeAllowed_MovieSet
             Me.mnuMovieSetAllAskLandscape.Enabled = LandscapeAllowed_MovieSet
             Me.mnuMovieSetMissAutoLandscape.Enabled = LandscapeAllowed_MovieSet
@@ -16681,7 +16681,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAutoMI.Enabled = .MovieScraperMetaDataScan
 
             'Poster Movie
-            Dim PosterAllowed_Movie As Boolean = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ModifierType.MainPoster)
+            Dim PosterAllowed_Movie As Boolean = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
             Me.mnuMovieAllAutoPoster.Enabled = PosterAllowed_Movie
             Me.mnuMovieAllAskPoster.Enabled = PosterAllowed_Movie
             Me.mnuMovieMissAutoPoster.Enabled = PosterAllowed_Movie
@@ -16706,7 +16706,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskPoster.Enabled = PosterAllowed_Movie
 
             'Poster MovieSet
-            Dim PosterAllowed_MovieSet As Boolean = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ModifierType.MainPoster)
+            Dim PosterAllowed_MovieSet As Boolean = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
             Me.mnuMovieSetAllAutoPoster.Enabled = PosterAllowed_MovieSet
             Me.mnuMovieSetAllAskPoster.Enabled = PosterAllowed_MovieSet
             Me.mnuMovieSetMissAutoPoster.Enabled = PosterAllowed_MovieSet
@@ -16719,7 +16719,7 @@ doCancel:
             Me.mnuMovieSetFilterAskPoster.Enabled = PosterAllowed_MovieSet
 
             'Theme Movie
-            Dim ThemeAllowed_Movie As Boolean = .MovieThemeTvTunesEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Theme_Movie(Enums.ModifierType.MainTheme)
+            Dim ThemeAllowed_Movie As Boolean = .MovieThemeTvTunesEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
             Me.mnuMovieAllAutoTheme.Enabled = ThemeAllowed_Movie
             Me.mnuMovieAllAskTheme.Enabled = ThemeAllowed_Movie
             Me.mnuMovieMissAutoTheme.Enabled = ThemeAllowed_Movie
@@ -16744,7 +16744,7 @@ doCancel:
             Me.cmnuTrayMovieFilterAskTheme.Enabled = ThemeAllowed_Movie
 
             'Trailer Movie
-            Dim TrailerAllowed_Movie As Boolean = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Trailer_Movie(Enums.ModifierType.MainTrailer)
+            Dim TrailerAllowed_Movie As Boolean = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
             Me.mnuMovieAllAutoTrailer.Enabled = TrailerAllowed_Movie
             Me.mnuMovieAllAskTrailer.Enabled = TrailerAllowed_Movie
             Me.mnuMovieMissAutoTrailer.Enabled = TrailerAllowed_Movie

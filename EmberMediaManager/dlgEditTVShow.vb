@@ -1208,7 +1208,7 @@ Public Class dlgEditTVShow
             'Images and TabPages
 
             If Master.eSettings.TVShowBannerAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainBanner) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner) Then
                     .btnSetBannerScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
@@ -1223,7 +1223,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowCharacterArtAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainCharacterArt) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt) Then
                     .btnSetCharacterArtScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing Then
@@ -1238,7 +1238,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowClearArtAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearArt) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt) Then
                     .btnSetClearArtScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing Then
@@ -1253,7 +1253,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowClearLogoAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainClearLogo) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo) Then
                     .btnSetClearLogoScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing Then
@@ -1268,7 +1268,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowFanartAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainFanart) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     .btnSetFanartScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
@@ -1283,7 +1283,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowLandscapeAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainLandscape) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape) Then
                     .btnSetLandscapeScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
@@ -1298,7 +1298,7 @@ Public Class dlgEditTVShow
             End If
 
             If Master.eSettings.TVShowPosterAnyEnabled Then
-                If Not ModulesManager.Instance.QueryScraperCapabilities_Image_TV(Enums.ModifierType.MainPoster) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster) Then
                     .btnSetPosterScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
