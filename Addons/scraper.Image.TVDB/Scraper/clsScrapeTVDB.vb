@@ -62,15 +62,26 @@ Namespace TVDBs
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
+        ''' <summary>
+        ''' Workaround to fix the theTVDB bug
+        ''' </summary>
+        ''' <param name="tvdbID"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Async Function GetFullSeriesById(ByVal tvdbID As Integer) As Task(Of TVDB.Model.SeriesDetails)
+            Dim Result As TVDB.Model.SeriesDetails = Await _TVDBApi.GetFullSeriesById(tvdbID, _TVDBMirror)
+            Return Result
+        End Function
 
         Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(tvdbID), _TVDBMirror).Result
-                If Results Is Nothing Then
+                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
+                If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                     Return Nothing
                 End If
+                Dim Results = APIResult.Result
 
                 If bwTVDB.CancellationPending Then Return Nothing
 
@@ -173,10 +184,11 @@ Namespace TVDBs
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
-                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(tvdbID), _TVDBMirror).Result
-                If Results Is Nothing Then
+                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
+                If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                     Return Nothing
                 End If
+                Dim Results = APIResult.Result
 
                 If bwTVDB.CancellationPending Then Return Nothing
 
