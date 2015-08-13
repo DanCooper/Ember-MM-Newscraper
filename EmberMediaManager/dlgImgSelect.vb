@@ -117,7 +117,29 @@ Public Class dlgImgSelect
     Private DoSeasonLandscape As Boolean = False
     Private DoSeasonPoster As Boolean = False
 
-    Private currListImage As New iTag
+    Private LoadedAllSeasonsBanner As Boolean = False
+    Private LoadedAllSeasonsFanart As Boolean = False
+    Private LoadedAllSeasonsLandscape As Boolean = False
+    Private LoadedAllSeasonsPoster As Boolean = False
+    Private LoadedEpisodeFanart As Boolean = False
+    Private LoadedEpisodePoster As Boolean = False
+    Private LoadedMainBanner As Boolean = False
+    Private LoadedMainCharacterArt As Boolean = False
+    Private LoadedMainClearArt As Boolean = False
+    Private LoadedMainClearLogo As Boolean = False
+    Private LoadedMainDiscArt As Boolean = False
+    Private LoadedMainExtrafanarts As Boolean = False
+    Private LoadedMainExtrathumbs As Boolean = False
+    Private LoadedMainFanart As Boolean = False
+    Private LoadedMainLandscape As Boolean = False
+    Private LoadedMainPoster As Boolean = False
+    Private LoadedSeasonBanner As Boolean = False
+    Private LoadedSeasonFanart As Boolean = False
+    Private LoadedSeasonLandscape As Boolean = False
+    Private LoadedSeasonPoster As Boolean = False
+
+    Private currListImageSelectedSeason As Integer = -1
+    Private currListImageSelectedImageType As Enums.ModifierType
     Private currSubImage As New iTag
     Private currSubImageSelectedType As Enums.ModifierType
     Private currTopImage As New iTag
@@ -194,6 +216,16 @@ Public Class dlgImgSelect
     Private Sub dlgImgSelectNew_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         tmrReorderMainList.Stop()
         tmrReorderMainList.Start()
+    End Sub
+
+    Private Sub dlgImgSelect_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        If e.KeyValue = Keys.Delete Then
+            If Me.btnRemoveSubImage.Enabled Then
+                Me.btnRemoveSubImage.PerformClick()
+            ElseIf Me.btnRemoveTopImage.Enabled Then
+                Me.btnRemoveTopImage.PerformClick()
+            End If
+        End If
     End Sub
 
     Private Sub tmrReorderMainList_Tick(sender As Object, e As EventArgs) Handles tmrReorderMainList.Tick
@@ -363,8 +395,9 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
         End If
+        Me.LoadedEpisodeFanart = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
 
         'Episode Posters
         If DoEpisodePoster Then
@@ -376,8 +409,9 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodePoster)
         End If
+        Me.LoadedEpisodePoster = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodePoster)
 
         'Main Banners
         If DoMainBanner OrElse DoAllSeasonsBanner Then
@@ -389,9 +423,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsBanner)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainBanner)
         End If
+        Me.LoadedMainBanner = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsBanner)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainBanner)
 
         'Main CharacterArts
         If DoMainCharacterArt Then
@@ -403,8 +438,9 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainCharacterArt)
         End If
+        Me.LoadedMainCharacterArt = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainCharacterArt)
 
         'Main ClearArts
         If DoMainClearArt Then
@@ -416,8 +452,9 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearArt)
         End If
+        Me.LoadedMainClearArt = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearArt)
 
         'Main ClearLogos
         If DoMainClearLogo Then
@@ -429,8 +466,9 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearLogo)
         End If
+        Me.LoadedMainClearLogo = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainClearLogo)
 
         'Main Discarts
         If DoMainDiscArt Then
@@ -442,8 +480,9 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainDiscArt)
         End If
+        Me.LoadedMainDiscArt = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainDiscArt)
 
         'Main Fanarts
         If DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
@@ -455,12 +494,14 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainEFanarts)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainEThumbs)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainFanart)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
         End If
+        Me.LoadedMainFanart = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsFanart)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainEFanarts)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainEThumbs)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainFanart)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
 
         'Main Landscapes
         If DoMainLandscape OrElse DoAllSeasonsLandscape Then
@@ -472,9 +513,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsLandscape)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainLandscape)
         End If
+        Me.LoadedMainLandscape = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsLandscape)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainLandscape)
 
         'Main Posters
         If DoMainPoster OrElse DoAllSeasonsPoster Then
@@ -486,9 +528,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
         End If
+        Me.LoadedMainPoster = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
 
         'Season Banners
         If DoSeasonBanner OrElse DoAllSeasonsBanner Then
@@ -500,9 +543,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsBanner)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonBanner)
         End If
+        Me.LoadedSeasonBanner = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsBanner)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonBanner)
 
         'Season Fanarts
         If DoSeasonFanart OrElse DoAllSeasonsFanart Then
@@ -514,9 +558,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsFanart)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
         End If
+        Me.LoadedSeasonFanart = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsFanart)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
 
         'Season Landscapes
         If DoSeasonLandscape OrElse DoAllSeasonsLandscape Then
@@ -528,9 +573,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsLandscape)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonLandscape)
         End If
+        Me.LoadedSeasonLandscape = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsLandscape)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonLandscape)
 
         'Season Posters
         If DoSeasonPoster OrElse DoAllSeasonsPoster Then
@@ -542,9 +588,10 @@ Public Class dlgImgSelect
                 Me.bwImgDownload.ReportProgress(iProgress, "progress")
                 iProgress += 1
             Next
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
-            Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonPoster)
         End If
+        Me.LoadedSeasonPoster = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonPoster)
 
         Return False
     End Function
@@ -578,10 +625,60 @@ Public Class dlgImgSelect
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Private Sub CreateImageList(ByRef tTag As iTag)
+    Private Sub CreateImageList(ByVal tTag As iTag)
+        ClearImageList()
+
+        Select Case tTag.ImageType
+            Case Enums.ModifierType.AllSeasonsBanner
+                If LoadedMainBanner AndAlso LoadedSeasonBanner Then FillImageList(tTag)
+            Case Enums.ModifierType.AllSeasonsFanart
+                If LoadedMainFanart AndAlso LoadedSeasonFanart Then FillImageList(tTag)
+            Case Enums.ModifierType.AllSeasonsLandscape
+                If LoadedMainLandscape AndAlso LoadedSeasonLandscape Then FillImageList(tTag)
+            Case Enums.ModifierType.AllSeasonsPoster
+                If LoadedMainPoster AndAlso LoadedSeasonPoster Then FillImageList(tTag)
+            Case Enums.ModifierType.EpisodeFanart
+                If LoadedMainFanart AndAlso LoadedEpisodeFanart Then FillImageList(tTag)
+            Case Enums.ModifierType.EpisodePoster
+                If LoadedEpisodePoster Then FillImageList(tTag)
+            Case Enums.ModifierType.MainBanner
+                If LoadedMainBanner Then FillImageList(tTag)
+            Case Enums.ModifierType.MainCharacterArt
+                If LoadedMainCharacterArt Then FillImageList(tTag)
+            Case Enums.ModifierType.MainClearArt
+                If LoadedMainClearArt Then FillImageList(tTag)
+            Case Enums.ModifierType.MainClearLogo
+                If LoadedMainClearLogo Then FillImageList(tTag)
+            Case Enums.ModifierType.MainDiscArt
+                If LoadedMainDiscArt Then FillImageList(tTag)
+            Case Enums.ModifierType.MainEFanarts
+                If LoadedMainFanart Then FillImageList(tTag)
+            Case Enums.ModifierType.MainEThumbs
+                If LoadedMainFanart Then FillImageList(tTag)
+            Case Enums.ModifierType.MainFanart
+                If LoadedMainFanart Then FillImageList(tTag)
+            Case Enums.ModifierType.MainLandscape
+                If LoadedMainLandscape Then FillImageList(tTag)
+            Case Enums.ModifierType.MainPoster
+                If LoadedMainPoster Then FillImageList(tTag)
+            Case Enums.ModifierType.SeasonBanner
+                If LoadedSeasonBanner Then FillImageList(tTag)
+            Case Enums.ModifierType.SeasonFanart
+                If LoadedMainFanart AndAlso LoadedSeasonFanart Then FillImageList(tTag)
+            Case Enums.ModifierType.SeasonLandscape
+                If LoadedSeasonLandscape Then FillImageList(tTag)
+            Case Enums.ModifierType.SeasonPoster
+                If LoadedSeasonPoster Then FillImageList(tTag)
+        End Select
+    End Sub
+
+    Private Sub FillImageList(ByRef tTag As iTag)
         Dim iCount As Integer = 0
 
         ClearImageList()
+
+        Me.currListImageSelectedSeason = tTag.iSeason
+        Me.currListImageSelectedImageType = tTag.ImageType
 
         Select Case tTag.ImageType
             Case Enums.ModifierType.AllSeasonsBanner
@@ -745,11 +842,13 @@ Public Class dlgImgSelect
                 AddSubImage(img, iCount, Enums.ModifierType.MainEFanarts, -1)
                 iCount += 1
             Next
+            If Me.tDefaultImagesContainer.ExtraFanarts.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
         ElseIf Me.currSubImageSelectedType = Enums.ModifierType.MainEThumbs AndAlso DoMainExtrathumbs Then
             For Each img In tDBElementResult.ImagesContainer.ExtraThumbs
                 AddSubImage(img, iCount, Enums.ModifierType.MainEThumbs, -1)
                 iCount += 1
             Next
+            If Me.tDefaultImagesContainer.ExtraThumbs.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
         ElseIf Me.currSubImageSelectedType = Enums.ModifierType.SeasonBanner AndAlso DoSeasonBanner Then
             For Each sSeason As Database.DBElement In tDBElementResult.Seasons.Where(Function(f) f.TVSeason.Season = 999)
                 AddSubImage(sSeason.ImagesContainer.Banner, iCount, Enums.ModifierType.AllSeasonsBanner, sSeason.TVSeason.Season)
@@ -1149,6 +1248,10 @@ Public Class dlgImgSelect
         End If
     End Sub
 
+    Private Sub cbSubImageType_MouseLeave(sender As Object, e As EventArgs) Handles cbSubImageType.MouseLeave
+        Me.pnlImageList.Focus()
+    End Sub
+
     Private Sub cbSubImageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSubImageType.SelectedIndexChanged
         If Not Me.currSubImageSelectedType = CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value Then
             Me.currSubImageSelectedType = CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
@@ -1259,8 +1362,8 @@ Public Class dlgImgSelect
         Me.btnRemoveSubImage.Enabled = True
         Me.btnRestoreSubImage.Enabled = True
 
-        If Not Me.currSubImage.ImageType = tTag.ImageType OrElse Not Me.currSubImage.iSeason = tTag.iSeason Then
-            Me.currSubImage = tTag
+        Me.currSubImage = tTag
+        If Not Me.currListImageSelectedImageType = tTag.ImageType OrElse Not Me.currListImageSelectedSeason = tTag.iSeason Then
             CreateImageList(tTag)
         End If
     End Sub
@@ -1284,8 +1387,8 @@ Public Class dlgImgSelect
         Me.btnRemoveTopImage.Enabled = True
         Me.btnRestoreTopImage.Enabled = True
 
-        If Not Me.currTopImage.ImageType = tTag.ImageType Then
-            Me.currTopImage = tTag
+        Me.currTopImage = tTag
+        If Not Me.currListImageSelectedImageType = tTag.ImageType Then
             CreateImageList(tTag)
         End If
     End Sub
@@ -1308,7 +1411,10 @@ Public Class dlgImgSelect
 
     Private Sub DeselectAllSubImages()
         Me.btnRemoveSubImage.Enabled = False
-        Me.btnRestoreSubImage.Enabled = False
+        If Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainEFanarts OrElse _
+            Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainEThumbs Then
+            Me.btnRestoreSubImage.Enabled = False
+        End If
         Me.currSubImage = New iTag
         If Me.pnlSubImage_Panel IsNot Nothing Then
             For i As Integer = 0 To Me.pnlSubImage_Panel.Count - 1

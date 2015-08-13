@@ -854,6 +854,38 @@ Public Class ModulesManager
 
         Return False
     End Function
+
+    Function QueryScraperCapabilities_Image_TV(ByVal externalScraperModule As _externalScraperModuleClass_Image_TV, ByVal ImageType As Enums.ModifierType) As Boolean
+        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
+            Application.DoEvents()
+        End While
+
+        Select Case ImageType
+            Case Enums.ModifierType.AllSeasonsBanner
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainBanner) OrElse _
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonBanner) Then Return True
+            Case Enums.ModifierType.AllSeasonsFanart
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
+            Case Enums.ModifierType.AllSeasonsLandscape
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) OrElse _
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonLandscape) Then Return True
+            Case Enums.ModifierType.EpisodeFanart
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.EpisodeFanart) Then Return True
+            Case Enums.ModifierType.MainEFanarts
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
+            Case Enums.ModifierType.MainEThumbs
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
+            Case Enums.ModifierType.SeasonFanart
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
+                    externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
+            Case Else
+                Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
+        End Select
+
+        Return False
+    End Function
     ''' <summary>
     ''' Calls all the generic modules of the supplied type (if one is defined), passing the supplied _params.
     ''' The module will do its task and return any expected results in the _refparams.
@@ -1396,6 +1428,12 @@ Public Class ModulesManager
             If ScrapeModifier.EpisodeFanart Then
                 ScrapeModifier.MainFanart = True
             End If
+            If ScrapeModifier.MainEFanarts Then
+                ScrapeModifier.MainFanart = True
+            End If
+            If ScrapeModifier.MainEThumbs Then
+                ScrapeModifier.MainFanart = True
+            End If
             If ScrapeModifier.SeasonFanart Then
                 ScrapeModifier.MainFanart = True
             End If
@@ -1552,14 +1590,14 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function ScraperWithCapabilityAnyEnabled_Image_TV(ByVal cap As Enums.ModifierType) As Boolean
+    Function ScraperWithCapabilityAnyEnabled_Image_TV(ByVal ImageType As Enums.ModifierType) As Boolean
         Dim ret As Boolean = False
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
             Application.DoEvents()
         End While
         For Each _externalScraperModule As _externalScraperModuleClass_Image_TV In externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Try
-                ret = _externalScraperModule.ProcessorModule.QueryScraperCapabilities(cap)
+                ret = QueryScraperCapabilities_Image_TV(_externalScraperModule, ImageType)
                 If ret Then Exit For
             Catch ex As Exception
             End Try

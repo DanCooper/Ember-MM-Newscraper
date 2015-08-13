@@ -203,6 +203,7 @@ Partial Class dlgImgSelect
         'btnCancel
         '
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(1256, 41)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
@@ -359,7 +360,7 @@ Partial Class dlgImgSelect
         '
         Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(1147, 17)
+        Me.lblStatus.Size = New System.Drawing.Size(1217, 17)
         Me.lblStatus.Spring = True
         Me.lblStatus.Text = "Downloading"
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -377,12 +378,15 @@ Partial Class dlgImgSelect
         '
         'dlgImgSelect
         '
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1334, 711)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.pnlImgSelect)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.KeyPreview = True
         Me.Name = "dlgImgSelect"
         Me.Text = "Image Select"
         Me.pnlImgSelect.ResumeLayout(False)

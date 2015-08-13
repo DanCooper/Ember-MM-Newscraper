@@ -5548,7 +5548,7 @@ doCancel:
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
-        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, False)
+        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
 
@@ -7146,7 +7146,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
-        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, False)
+        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
 
@@ -7337,7 +7337,7 @@ doCancel:
 
             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
-            Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, False)
+            Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
             Edit_TVSeason(tmpDBTVSeason)
         End If
     End Sub
@@ -12783,16 +12783,27 @@ doCancel:
             Next
         End If
 
-        Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVShowActorThumbsAnyEnabled
-        Dim BannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
-        Dim CharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
-        Dim EFanartsAllowed As Boolean = Master.eSettings.TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-        Dim FanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-        Dim ThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
+        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
+        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
+        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
+        Dim EpisodeActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
+        Dim EpisodeFanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+        Dim EpisodePosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+        Dim MainActorThumbsAllowed As Boolean = Master.eSettings.TVShowActorThumbsAnyEnabled
+        Dim MainBannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+        Dim MainCharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+        Dim MainClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+        Dim MainClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+        Dim MainEFanartsAllowed As Boolean = Master.eSettings.TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim MainFanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim MainLandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+        Dim MainPosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+        Dim MainThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+        Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+        Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+        Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
         'create ScrapeList of tv shows acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12800,17 +12811,30 @@ doCancel:
 
             Dim sModifier As New Structures.ScrapeModifier
             sModifier.DoSearch = ScrapeModifier.DoSearch
-            sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
-            sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
-            sModifier.MainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso CharacterArtAllowed
-            sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
-            sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
-            sModifier.MainEFanarts = ScrapeModifier.MainEFanarts AndAlso EFanartsAllowed
-            sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
-            sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso LandscapeAllowed
+            sModifier.AllSeasonsBanner = ScrapeModifier.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed
+            sModifier.AllSeasonsFanart = ScrapeModifier.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed
+            sModifier.AllSeasonsLandscape = ScrapeModifier.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed
+            sModifier.AllSeasonsPoster = ScrapeModifier.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed
+            sModifier.EpisodeActorThumbs = ScrapeModifier.EpisodeActorThumbs AndAlso EpisodeActorThumbsAllowed
+            sModifier.EpisodeFanart = ScrapeModifier.EpisodeFanart AndAlso EpisodeFanartAllowed
+            sModifier.EpisodePoster = ScrapeModifier.EpisodePoster AndAlso EpisodePosterAllowed
+            sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso MainActorThumbsAllowed
+            sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso MainBannerAllowed
+            sModifier.MainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso MainCharacterArtAllowed
+            sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso MainClearArtAllowed
+            sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso MainClearLogoAllowed
+            sModifier.MainEFanarts = ScrapeModifier.MainEFanarts AndAlso MainEFanartsAllowed
+            sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso MainFanartAllowed
+            sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso MainLandscapeAllowed
             sModifier.MainNFO = ScrapeModifier.MainNFO
-            sModifier.MainPoster = ScrapeModifier.MainPoster AndAlso PosterAllowed
-            sModifier.MainTheme = ScrapeModifier.MainTheme AndAlso ThemeAllowed
+            sModifier.MainPoster = ScrapeModifier.MainPoster AndAlso MainPosterAllowed
+            sModifier.MainTheme = ScrapeModifier.MainTheme AndAlso MainThemeAllowed
+            sModifier.SeasonBanner = ScrapeModifier.SeasonBanner AndAlso SeasonBannerAllowed
+            sModifier.SeasonFanart = ScrapeModifier.SeasonFanart AndAlso SeasonFanartAllowed
+            sModifier.SeasonLandscape = ScrapeModifier.SeasonLandscape AndAlso SeasonLandscapeAllowed
+            sModifier.SeasonPoster = ScrapeModifier.SeasonPoster AndAlso SeasonPosterAllowed
+            sModifier.withEpisodes = ScrapeModifier.withEpisodes
+            sModifier.withSeasons = ScrapeModifier.withSeasons
 
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip

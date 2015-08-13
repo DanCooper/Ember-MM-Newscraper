@@ -554,7 +554,7 @@ Public Class dlgEditTVEpisode
             'Images and TabPages
 
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     .btnSetFanartScrape.Enabled = False
                 End If
                 If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
