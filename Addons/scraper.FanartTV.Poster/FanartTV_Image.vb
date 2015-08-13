@@ -171,12 +171,6 @@ Public Class FanartTV_Image
 
     Function QueryScraperCapabilities_TV(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ModifierType.SeasonBanner
-                Return ConfigModifier_TV.SeasonBanner
-            Case Enums.ModifierType.SeasonLandscape
-                Return ConfigModifier_TV.SeasonLandscape
-            Case Enums.ModifierType.SeasonPoster
-                Return ConfigModifier_TV.SeasonPoster
             Case Enums.ModifierType.MainBanner
                 Return ConfigModifier_TV.MainBanner
             Case Enums.ModifierType.MainCharacterArt
@@ -191,6 +185,12 @@ Public Class FanartTV_Image
                 Return ConfigModifier_TV.MainLandscape
             Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_TV.MainPoster
+            Case Enums.ModifierType.SeasonBanner
+                Return ConfigModifier_TV.SeasonBanner
+            Case Enums.ModifierType.SeasonLandscape
+                Return ConfigModifier_TV.SeasonLandscape
+            Case Enums.ModifierType.SeasonPoster
+                Return ConfigModifier_TV.SeasonPoster
         End Select
         Return False
     End Function

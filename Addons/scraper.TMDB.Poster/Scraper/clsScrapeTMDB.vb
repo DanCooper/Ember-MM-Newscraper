@@ -123,7 +123,7 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByRef Settings As MySettings) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -139,8 +139,8 @@ Namespace TMDB
                     Return Nothing
                 End If
 
-                'Fanart Show / AllSeasons / Season / Episode
-                If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                'MainFanart
+                If FilteredModifier.MainFanart AndAlso Results.Backdrops IsNot Nothing Then
                     For Each image In Results.Backdrops
                         Dim tmpImage As New MediaContainers.Image With { _
                             .Height = image.Height.ToString, _
@@ -158,8 +158,8 @@ Namespace TMDB
                     Next
                 End If
 
-                'Poster Show / AllSeasons
-                If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.MainPoster) AndAlso Results.Posters IsNot Nothing Then
+                'MainPoster
+                If FilteredModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
                     For Each image In Results.Posters
                         Dim tmpImage As New MediaContainers.Image With { _
                                 .Height = image.Height.ToString, _
@@ -200,7 +200,7 @@ Namespace TMDB
                     Return Nothing
                 End If
 
-                'Poster
+                'EpisodePoster
                 If Results.Stills IsNot Nothing Then
                     For Each image In Results.Stills
                         Dim tmpImage As New MediaContainers.Image With { _

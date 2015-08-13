@@ -78,8 +78,8 @@ Namespace TVDBs
 
                 If Results.Banners IsNot Nothing Then
 
-                    'Banner Show / AllSeasons
-                    If (FilteredModifier.AllSeasonsBanner OrElse FilteredModifier.MainBanner) Then
+                    'MainBanner
+                    If FilteredModifier.MainBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.series)
                             Dim img As New MediaContainers.Image With {.Height = "140", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -95,8 +95,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'Banner Season / AllSeasons
-                    If (FilteredModifier.AllSeasonsBanner OrElse FilteredModifier.SeasonBanner) Then
+                    'SeasonBanner
+                    If FilteredModifier.SeasonBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso f.BannerPath.Contains("seasonswide"))
                             Dim img As New MediaContainers.Image With {.Height = "140", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -112,8 +112,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'Fanart Show / AllSeasons / Season / Episode
-                    If (FilteredModifier.AllSeasonsFanart OrElse FilteredModifier.EpisodeFanart OrElse FilteredModifier.MainFanart OrElse FilteredModifier.SeasonFanart) Then
+                    'MainFanart
+                    If FilteredModifier.MainFanart Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
                             alContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                                         .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -128,8 +128,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'Poster Show / AllSeasons
-                    If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.MainPoster) Then
+                    'MainPoster
+                    If FilteredModifier.MainPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
                             Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -145,8 +145,8 @@ Namespace TVDBs
                         Next
                     End If
 
-                    'Poster Season  /AllSeasons
-                    If (FilteredModifier.AllSeasonsPoster OrElse FilteredModifier.SeasonPoster) Then
+                    'SeasonPoster
+                    If FilteredModifier.SeasonPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso Not f.BannerPath.Contains("seasonswide"))
                             Dim img As New MediaContainers.Image With {.Height = "578", _
                                                                        .LongLang = Localization.ISOGetLangByCode2(image.Language), _
@@ -182,7 +182,7 @@ Namespace TVDBs
 
                 If bwTVDB.CancellationPending Then Return Nothing
 
-                'Poster
+                'EpisodePoster
                 If Results.Series.Episodes IsNot Nothing Then
                     For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.CombinedEpisodeNumber = iEpisode)
                         Dim img As New MediaContainers.Image With { _

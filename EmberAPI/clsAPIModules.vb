@@ -1039,6 +1039,31 @@ Public Class ModulesManager
                 Application.DoEvents()
             End While
 
+            'workaround to get MainFanarts for AllSeasonsFanarts, EpisodeFanarts and SeasonFanarts,
+            'also get MainBanners, MainLandscapes and MainPosters for AllSeasonsBanners, AllSeasonsLandscapes and AllSeasonsPosters
+            If ScrapeModifier.AllSeasonsBanner Then
+                ScrapeModifier.MainBanner = True
+                ScrapeModifier.SeasonBanner = True
+            End If
+            If ScrapeModifier.AllSeasonsFanart Then
+                ScrapeModifier.MainFanart = True
+                ScrapeModifier.SeasonFanart = True
+            End If
+            If ScrapeModifier.AllSeasonsLandscape Then
+                ScrapeModifier.MainLandscape = True
+                ScrapeModifier.SeasonLandscape = True
+            End If
+            If ScrapeModifier.AllSeasonsPoster Then
+                ScrapeModifier.MainPoster = True
+                ScrapeModifier.SeasonPoster = True
+            End If
+            If ScrapeModifier.EpisodeFanart Then
+                ScrapeModifier.MainFanart = True
+            End If
+            If ScrapeModifier.SeasonFanart Then
+                ScrapeModifier.MainFanart = True
+            End If
+
             If (modules.Count() <= 0) Then
                 logger.Warn("No tv show image scrapers are defined")
             Else

@@ -140,32 +140,6 @@ Public Class dlgEditTVEpisode
         Me.DeleteSubtitle()
     End Sub
 
-    Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
-        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ModifierType.EpisodeFanart, 0, 0, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodeFanart, MediaContainers.Image))
-
-        'If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-        '    EpisodeFanart = tImage
-        '    Me.pbEpisodeFanart.Image = tImage.Image
-        '    Me.pbEpisodeFanart.Tag = tImage
-
-        '    Me.lblEpisodeFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodeFanart.Image.Width, Me.pbEpisodeFanart.Image.Height)
-        '    Me.lblEpisodeFanartSize.Visible = True
-        'End If
-    End Sub
-
-    Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
-        'Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Me.tmpDBTVEpisode.TVShow.Title, Convert.ToInt32(Me.tmpDBTVEpisode.ShowID), Me.tmpDBTVEpisode.TVShow.ID, Enums.ModifierType.EpisodePoster, Me.tmpDBTVEpisode.TVEp.Season, Me.tmpDBTVEpisode.TVEp.Episode, Me.tmpDBTVEpisode.ShowLanguage, Me.tmpDBTVEpisode.Ordering, CType(EpisodePoster, MediaContainers.Image))
-
-        'If tImage IsNot Nothing AndAlso tImage.Image IsNot Nothing Then
-        '    EpisodePoster = tImage
-        '    Me.pbEpisodePoster.Image = tImage.Image
-        '    Me.pbEpisodePoster.Tag = tImage
-
-        '    Me.lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodePoster.Image.Width, Me.pbEpisodePoster.Image.Height)
-        '    Me.lblEpisodePosterSize.Visible = True
-        'End If
-    End Sub
-
     Private Sub BuildStars(ByVal sinRating As Single)
 
         Try
@@ -1114,6 +1088,74 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
+    Private Sub btnSetEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 4
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdImage.FileName)
+                If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                    Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+        Dim aContainer As New MediaContainers.SearchResultsContainer
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+            If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelect()
+                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
+                    Me.tmpDBElement.ImagesContainer.Fanart = pResults
+                    If pResults.ImageOriginal.Image IsNot Nothing Then
+                        Me.pbFanart.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                        Me.lblFanartSize.Visible = True
+                    End If
+                    Cursor = Cursors.Default
+                End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        End If
+    End Sub
+
+    Private Sub btnSetEpisodeFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                Dim tImage As MediaContainers.Image
+                If dImgManual.ShowDialog() = DialogResult.OK Then
+                    tImage = dImgManual.Results
+                    If tImage.ImageOriginal.Image IsNot Nothing Then
+                        Me.tmpDBElement.ImagesContainer.Fanart = tImage
+                        Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                        Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+
+                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                        Me.lblFanartSize.Visible = True
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
 
     Private Sub btnSetEpisodePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
         Try
@@ -1138,6 +1180,30 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
+    Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+        Dim aContainer As New MediaContainers.SearchResultsContainer
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+            If aContainer.EpisodePosters.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelect()
+                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = Windows.Forms.DialogResult.OK Then
+                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
+                    Me.tmpDBElement.ImagesContainer.Poster = pResults
+                    If pResults.ImageOriginal.Image IsNot Nothing Then
+                        Me.pbPoster.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                        Me.lblPosterSize.Visible = True
+                    End If
+                    Cursor = Cursors.Default
+                End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        End If
+    End Sub
+
     Private Sub btnSetEpisodePosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
@@ -1151,50 +1217,6 @@ Public Class dlgEditTVEpisode
 
                         Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                         Me.lblPosterSize.Visible = True
-                    End If
-                End If
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub btnSetEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
-        Try
-            With ofdImage
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
-                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-                .FilterIndex = 4
-            End With
-
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdImage.FileName)
-                If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                    Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                    Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
-
-                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                    Me.lblFanartSize.Visible = True
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub btnSetEpisodeFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
-        Try
-            Using dImgManual As New dlgImgManual
-                Dim tImage As MediaContainers.Image
-                If dImgManual.ShowDialog() = DialogResult.OK Then
-                    tImage = dImgManual.Results
-                    If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.Fanart = tImage
-                        Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                        Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
-
-                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                        Me.lblFanartSize.Visible = True
                     End If
                 End If
             End Using

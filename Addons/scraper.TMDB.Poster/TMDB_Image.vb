@@ -155,12 +155,12 @@ Public Class TMDB_Image
         Select Case cap
             Case Enums.ModifierType.EpisodePoster
                 Return ConfigModifier_TV.EpisodePoster
-            Case Enums.ModifierType.SeasonPoster
-                Return ConfigModifier_TV.SeasonPoster
             Case Enums.ModifierType.MainFanart
                 Return ConfigModifier_TV.MainFanart
             Case Enums.ModifierType.MainPoster
                 Return ConfigModifier_TV.MainPoster
+            Case Enums.ModifierType.SeasonPoster
+                Return ConfigModifier_TV.SeasonPoster
         End Select
         Return False
     End Function
@@ -427,13 +427,13 @@ Public Class TMDB_Image
             End If
         ElseIf DBTV.TVSeason IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, FilteredModifier, Settings)
+                ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier, Settings)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
         ElseIf DBTV.TVShow IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TMDB, FilteredModifier, Settings)
+                ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier, Settings)
             Else
                 logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
             End If
