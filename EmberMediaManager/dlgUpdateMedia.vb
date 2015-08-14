@@ -506,7 +506,7 @@ Public Class dlgUpdateMedia
             Me.chkOptsTrailer.Checked = Not Master.eSettings.MovieLockTrailer
 
             'set defaults
-            CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
+            CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
             Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.All, True)
 
             Me.CheckEnable()
@@ -530,11 +530,11 @@ Public Class dlgUpdateMedia
 
     Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_All.CheckedChanged
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
         ElseIf Me.rbUpdate_Ask.Checked Then
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
         Else
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullSkip
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
         End If
     End Sub
 
@@ -578,7 +578,7 @@ Public Class dlgUpdateMedia
     Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdate_Ask.CheckedChanged
         Select Case True
             Case Me.rbUpdateModifier_All.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
             Case Me.rbUpdateModifier_Missing.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissAsk
             Case Me.rbUpdateModifier_New.Checked
@@ -591,7 +591,7 @@ Public Class dlgUpdateMedia
     Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdate_Auto.CheckedChanged
         Select Case True
             Case Me.rbUpdateModifier_All.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
             Case Me.rbUpdateModifier_Missing.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissAuto
             Case Me.rbUpdateModifier_New.Checked
@@ -604,7 +604,7 @@ Public Class dlgUpdateMedia
     Private Sub rbUpdate_Skip_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdate_Skip.CheckedChanged
         Select Case True
             Case Me.rbUpdateModifier_All.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.FullSkip
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
             Case Me.rbUpdateModifier_Missing.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissSkip
             Case Me.rbUpdateModifier_New.Checked

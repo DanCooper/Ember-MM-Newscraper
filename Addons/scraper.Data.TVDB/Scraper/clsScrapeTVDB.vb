@@ -118,7 +118,7 @@ Namespace TVDBs
             Dim b As Boolean = False
 
             Select Case iType
-                Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
+                Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     Else
@@ -135,11 +135,11 @@ Namespace TVDBs
                             End If
                         End Using
                     End If
-                Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.AllSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                     If r.Matches.Count = 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If
-                Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
+                Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
                     If r.Matches.Count > 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If

@@ -1496,14 +1496,14 @@ Partial Class frmMain
         'mnuMainEdit
         '
         Me.mnuMainEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainEditSettings})
-        Me.mnuMainEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.mnuMainEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.mnuMainEdit.Name = "mnuMainEdit"
         Me.mnuMainEdit.Size = New System.Drawing.Size(39, 20)
         Me.mnuMainEdit.Text = "&Edit"
         '
         'mnuMainEditSettings
         '
-        Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"),System.Drawing.Image)
+        Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
         Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
@@ -3287,6 +3287,7 @@ Partial Class frmMain
         Me.cmnuMovieReSelAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.cmnuMovieReSelAutoBanner.Name = "cmnuMovieReSelAutoBanner"
         Me.cmnuMovieReSelAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuMovieReSelAutoBanner.Tag = "banner"
         Me.cmnuMovieReSelAutoBanner.Text = "Banner Only"
         '
         'cmnuMovieReSelAutoClearArt
@@ -3398,6 +3399,7 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.cmnuMovieReSelAskBanner.Name = "cmnuMovieReSelAskBanner"
         Me.cmnuMovieReSelAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuMovieReSelAskBanner.Tag = "banner"
         Me.cmnuMovieReSelAskBanner.Text = "Banner Only"
         '
         'cmnuMovieReSelAskClearArt
@@ -8551,6 +8553,7 @@ Partial Class frmMain
         Me.mnuScrapeMovies.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuScrapeMovies.Name = "mnuScrapeMovies"
         Me.mnuScrapeMovies.Size = New System.Drawing.Size(109, 22)
+        Me.mnuScrapeMovies.Tag = "movie"
         Me.mnuScrapeMovies.Text = "Scrape Movies"
         '
         'mnuMovieAll
@@ -8558,6 +8561,7 @@ Partial Class frmMain
         Me.mnuMovieAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllAuto, Me.mnuMovieAllAsk, Me.mnuMovieAllSkip})
         Me.mnuMovieAll.Name = "mnuMovieAll"
         Me.mnuMovieAll.Size = New System.Drawing.Size(183, 22)
+        Me.mnuMovieAll.Tag = ""
         Me.mnuMovieAll.Text = "All Movies"
         '
         'mnuMovieAllAuto
@@ -8565,12 +8569,14 @@ Partial Class frmMain
         Me.mnuMovieAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllAutoAll, Me.mnuMovieAllAutoActor, Me.mnuMovieAllAutoBanner, Me.mnuMovieAllAutoClearArt, Me.mnuMovieAllAutoClearLogo, Me.mnuMovieAllAutoDiscArt, Me.mnuMovieAllAutoEFanarts, Me.mnuMovieAllAutoEThumbs, Me.mnuMovieAllAutoFanart, Me.mnuMovieAllAutoLandscape, Me.mnuMovieAllAutoMI, Me.mnuMovieAllAutoNfo, Me.mnuMovieAllAutoPoster, Me.mnuMovieAllAutoTheme, Me.mnuMovieAllAutoTrailer})
         Me.mnuMovieAllAuto.Name = "mnuMovieAllAuto"
         Me.mnuMovieAllAuto.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieAllAuto.Tag = "all_auto"
         Me.mnuMovieAllAuto.Text = "Automatic (Force Best Match)"
         '
         'mnuMovieAllAutoAll
         '
         Me.mnuMovieAllAutoAll.Name = "mnuMovieAllAutoAll"
         Me.mnuMovieAllAutoAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoAll.Tag = "all"
         Me.mnuMovieAllAutoAll.Text = "All Items"
         '
         'mnuMovieAllAutoActor
@@ -8578,6 +8584,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieAllAutoActor.Name = "mnuMovieAllAutoActor"
         Me.mnuMovieAllAutoActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoActor.Tag = "actorthumbs"
         Me.mnuMovieAllAutoActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieAllAutoBanner
@@ -8585,6 +8592,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieAllAutoBanner.Name = "mnuMovieAllAutoBanner"
         Me.mnuMovieAllAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoBanner.Tag = "banner"
         Me.mnuMovieAllAutoBanner.Text = "Banner Only"
         '
         'mnuMovieAllAutoClearArt
@@ -8592,6 +8600,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
         Me.mnuMovieAllAutoClearArt.Name = "mnuMovieAllAutoClearArt"
         Me.mnuMovieAllAutoClearArt.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoClearArt.Tag = "clearart"
         Me.mnuMovieAllAutoClearArt.Text = "ClearArt Only"
         '
         'mnuMovieAllAutoClearLogo
@@ -8599,6 +8608,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
         Me.mnuMovieAllAutoClearLogo.Name = "mnuMovieAllAutoClearLogo"
         Me.mnuMovieAllAutoClearLogo.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoClearLogo.Tag = "clearlogo"
         Me.mnuMovieAllAutoClearLogo.Text = "ClearLogo Only"
         '
         'mnuMovieAllAutoDiscArt
@@ -8606,13 +8616,15 @@ Partial Class frmMain
         Me.mnuMovieAllAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
         Me.mnuMovieAllAutoDiscArt.Name = "mnuMovieAllAutoDiscArt"
         Me.mnuMovieAllAutoDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoDiscArt.Text = "DiscArt Only"
+        Me.mnuMovieAllAutoDiscArt.Tag = "discart"
+        Me.mnuMovieAllAutoDiscArt.Text = "DiscArt"
         '
         'mnuMovieAllAutoEFanarts
         '
         Me.mnuMovieAllAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
         Me.mnuMovieAllAutoEFanarts.Name = "mnuMovieAllAutoEFanarts"
         Me.mnuMovieAllAutoEFanarts.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoEFanarts.Tag = "extrafanarts"
         Me.mnuMovieAllAutoEFanarts.Text = "Extrafanarts Only"
         '
         'mnuMovieAllAutoEThumbs
@@ -8620,6 +8632,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
         Me.mnuMovieAllAutoEThumbs.Name = "mnuMovieAllAutoEThumbs"
         Me.mnuMovieAllAutoEThumbs.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoEThumbs.Tag = "extrathumbs"
         Me.mnuMovieAllAutoEThumbs.Text = "Extrathumbs Only"
         '
         'mnuMovieAllAutoFanart
@@ -8627,6 +8640,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
         Me.mnuMovieAllAutoFanart.Name = "mnuMovieAllAutoFanart"
         Me.mnuMovieAllAutoFanart.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoFanart.Tag = "fanart"
         Me.mnuMovieAllAutoFanart.Text = "Fanart Only"
         '
         'mnuMovieAllAutoLandscape
@@ -8634,6 +8648,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
         Me.mnuMovieAllAutoLandscape.Name = "mnuMovieAllAutoLandscape"
         Me.mnuMovieAllAutoLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoLandscape.Tag = "landscape"
         Me.mnuMovieAllAutoLandscape.Text = "Landscape Only"
         '
         'mnuMovieAllAutoMI
@@ -8641,6 +8656,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
         Me.mnuMovieAllAutoMI.Name = "mnuMovieAllAutoMI"
         Me.mnuMovieAllAutoMI.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoMI.Tag = "meta"
         Me.mnuMovieAllAutoMI.Text = "Meta Data Only"
         '
         'mnuMovieAllAutoNfo
@@ -8648,6 +8664,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
         Me.mnuMovieAllAutoNfo.Name = "mnuMovieAllAutoNfo"
         Me.mnuMovieAllAutoNfo.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoNfo.Tag = "nfo"
         Me.mnuMovieAllAutoNfo.Text = "NFO Only"
         '
         'mnuMovieAllAutoPoster
@@ -8655,6 +8672,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
         Me.mnuMovieAllAutoPoster.Name = "mnuMovieAllAutoPoster"
         Me.mnuMovieAllAutoPoster.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoPoster.Tag = "poster"
         Me.mnuMovieAllAutoPoster.Text = "Poster Only"
         '
         'mnuMovieAllAutoTheme
@@ -8662,6 +8680,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
         Me.mnuMovieAllAutoTheme.Name = "mnuMovieAllAutoTheme"
         Me.mnuMovieAllAutoTheme.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoTheme.Tag = "theme"
         Me.mnuMovieAllAutoTheme.Text = "Theme Only"
         '
         'mnuMovieAllAutoTrailer
@@ -8669,6 +8688,7 @@ Partial Class frmMain
         Me.mnuMovieAllAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
         Me.mnuMovieAllAutoTrailer.Name = "mnuMovieAllAutoTrailer"
         Me.mnuMovieAllAutoTrailer.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAutoTrailer.Tag = "trailer"
         Me.mnuMovieAllAutoTrailer.Text = "Trailer Only"
         '
         'mnuMovieAllAsk
@@ -8676,12 +8696,14 @@ Partial Class frmMain
         Me.mnuMovieAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllAskAll, Me.mnuMovieAllAskActor, Me.mnuMovieAllAskBanner, Me.mnuMovieAllAskClearArt, Me.mnuMovieAllAskClearLogo, Me.mnuMovieAllAskDiscArt, Me.mnuMovieAllAskEFanarts, Me.mnuMovieAllAskEThumbs, Me.mnuMovieAllAskFanart, Me.mnuMovieAllAskLandscape, Me.mnuMovieAllAskMI, Me.mnuMovieAllAskNfo, Me.mnuMovieAllAskPoster, Me.mnuMovieAllAskTheme, Me.mnuMovieAllAskTrailer})
         Me.mnuMovieAllAsk.Name = "mnuMovieAllAsk"
         Me.mnuMovieAllAsk.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieAllAsk.Tag = "all_ask"
         Me.mnuMovieAllAsk.Text = "Ask (Require Input If No Exact Match)"
         '
         'mnuMovieAllAskAll
         '
         Me.mnuMovieAllAskAll.Name = "mnuMovieAllAskAll"
         Me.mnuMovieAllAskAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAskAll.Tag = "all"
         Me.mnuMovieAllAskAll.Text = "All Items"
         '
         'mnuMovieAllAskActor
@@ -8689,6 +8711,7 @@ Partial Class frmMain
         Me.mnuMovieAllAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieAllAskActor.Name = "mnuMovieAllAskActor"
         Me.mnuMovieAllAskActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAskActor.Tag = "actorthumbs"
         Me.mnuMovieAllAskActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieAllAskBanner
@@ -8696,6 +8719,7 @@ Partial Class frmMain
         Me.mnuMovieAllAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieAllAskBanner.Name = "mnuMovieAllAskBanner"
         Me.mnuMovieAllAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieAllAskBanner.Tag = "banner"
         Me.mnuMovieAllAskBanner.Text = "Banner Only"
         '
         'mnuMovieAllAskClearArt
@@ -8787,12 +8811,14 @@ Partial Class frmMain
         Me.mnuMovieAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllSkipAll})
         Me.mnuMovieAllSkip.Name = "mnuMovieAllSkip"
         Me.mnuMovieAllSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieAllSkip.Tag = "all_skip"
         Me.mnuMovieAllSkip.Text = "Skip (Skip If More Than One Match)"
         '
         'mnuMovieAllSkipAll
         '
         Me.mnuMovieAllSkipAll.Name = "mnuMovieAllSkipAll"
         Me.mnuMovieAllSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMovieAllSkipAll.Tag = "all"
         Me.mnuMovieAllSkipAll.Text = "All Items"
         '
         'mnuMovieMiss
@@ -8807,12 +8833,14 @@ Partial Class frmMain
         Me.mnuMovieMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAutoAll, Me.mnuMovieMissAutoActor, Me.mnuMovieMissAutoBanner, Me.mnuMovieMissAutoClearArt, Me.mnuMovieMissAutoClearLogo, Me.mnuMovieMissAutoDiscArt, Me.mnuMovieMissAutoEFanarts, Me.mnuMovieMissAutoEThumbs, Me.mnuMovieMissAutoFanart, Me.mnuMovieMissAutoLandscape, Me.mnuMovieMissAutoNfo, Me.mnuMovieMissAutoPoster, Me.mnuMovieMissAutoTheme, Me.mnuMovieMissAutoTrailer})
         Me.mnuMovieMissAuto.Name = "mnuMovieMissAuto"
         Me.mnuMovieMissAuto.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieMissAuto.Tag = "miss_auto"
         Me.mnuMovieMissAuto.Text = "Automatic (Force Best Match)"
         '
         'mnuMovieMissAutoAll
         '
         Me.mnuMovieMissAutoAll.Name = "mnuMovieMissAutoAll"
         Me.mnuMovieMissAutoAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAutoAll.Tag = "all"
         Me.mnuMovieMissAutoAll.Text = "All Items"
         Me.mnuMovieMissAutoAll.Visible = false
         '
@@ -8821,6 +8849,7 @@ Partial Class frmMain
         Me.mnuMovieMissAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieMissAutoActor.Name = "mnuMovieMissAutoActor"
         Me.mnuMovieMissAutoActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAutoActor.Tag = "actorthumbs"
         Me.mnuMovieMissAutoActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieMissAutoBanner
@@ -8828,6 +8857,7 @@ Partial Class frmMain
         Me.mnuMovieMissAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieMissAutoBanner.Name = "mnuMovieMissAutoBanner"
         Me.mnuMovieMissAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAutoBanner.Tag = "banner"
         Me.mnuMovieMissAutoBanner.Text = "Banner Only"
         '
         'mnuMovieMissAutoClearArt
@@ -8912,12 +8942,14 @@ Partial Class frmMain
         Me.mnuMovieMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAskAll, Me.mnuMovieMissAskActor, Me.mnuMovieMissAskBanner, Me.mnuMovieMissAskClearArt, Me.mnuMovieMissAskClearLogo, Me.mnuMovieMissAskDiscArt, Me.mnuMovieMissAskEFanarts, Me.mnuMovieMissAskEThumbs, Me.mnuMovieMissAskFanart, Me.mnuMovieMissAskLandscape, Me.mnuMovieMissAskNfo, Me.mnuMovieMissAskPoster, Me.mnuMovieMissAskTheme, Me.mnuMovieMissAskTrailer})
         Me.mnuMovieMissAsk.Name = "mnuMovieMissAsk"
         Me.mnuMovieMissAsk.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieMissAsk.Tag = "miss_ask"
         Me.mnuMovieMissAsk.Text = "Ask (Require Input If No Exact Match)"
         '
         'mnuMovieMissAskAll
         '
         Me.mnuMovieMissAskAll.Name = "mnuMovieMissAskAll"
         Me.mnuMovieMissAskAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAskAll.Tag = "all"
         Me.mnuMovieMissAskAll.Text = "All Items"
         Me.mnuMovieMissAskAll.Visible = false
         '
@@ -8926,6 +8958,7 @@ Partial Class frmMain
         Me.mnuMovieMissAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieMissAskActor.Name = "mnuMovieMissAskActor"
         Me.mnuMovieMissAskActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAskActor.Tag = "actorthumbs"
         Me.mnuMovieMissAskActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieMissAskBanner
@@ -8933,6 +8966,7 @@ Partial Class frmMain
         Me.mnuMovieMissAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieMissAskBanner.Name = "mnuMovieMissAskBanner"
         Me.mnuMovieMissAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMissAskBanner.Tag = "banner"
         Me.mnuMovieMissAskBanner.Text = "Banner Only"
         '
         'mnuMovieMissAskClearArt
@@ -9017,13 +9051,15 @@ Partial Class frmMain
         Me.mnuMovieMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissSkipAll})
         Me.mnuMovieMissSkip.Name = "mnuMovieMissSkip"
         Me.mnuMovieMissSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieMissSkip.Tag = "miss_skip"
         Me.mnuMovieMissSkip.Text = "Skip (Skip If More Than One Match)"
         Me.mnuMovieMissSkip.Visible = false
         '
         'mnuMovieMissSkipAll
         '
         Me.mnuMovieMissSkipAll.Name = "mnuMovieMissSkipAll"
-        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMovieMissSkipAll.Tag = "all"
         Me.mnuMovieMissSkipAll.Text = "All Items"
         '
         'mnuMovieNew
@@ -9038,12 +9074,14 @@ Partial Class frmMain
         Me.mnuMovieNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewAutoAll, Me.mnuMovieNewAutoActor, Me.mnuMovieNewAutoBanner, Me.mnuMovieNewAutoClearArt, Me.mnuMovieNewAutoClearLogo, Me.mnuMovieNewAutoDiscArt, Me.mnuMovieNewAutoEFanarts, Me.mnuMovieNewAutoEThumbs, Me.mnuMovieNewAutoFanart, Me.mnuMovieNewAutoLandscape, Me.mnuMovieNewAutoMI, Me.mnuMovieNewAutoNfo, Me.mnuMovieNewAutoPoster, Me.mnuMovieNewAutoTheme, Me.mnuMovieNewAutoTrailer})
         Me.mnuMovieNewAuto.Name = "mnuMovieNewAuto"
         Me.mnuMovieNewAuto.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieNewAuto.Tag = "new_auto"
         Me.mnuMovieNewAuto.Text = "Automatic (Force Best Match)"
         '
         'mnuMovieNewAutoAll
         '
         Me.mnuMovieNewAutoAll.Name = "mnuMovieNewAutoAll"
         Me.mnuMovieNewAutoAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieNewAutoAll.Tag = "all"
         Me.mnuMovieNewAutoAll.Text = "All Items"
         '
         'mnuMovieNewAutoActor
@@ -9051,6 +9089,7 @@ Partial Class frmMain
         Me.mnuMovieNewAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieNewAutoActor.Name = "mnuMovieNewAutoActor"
         Me.mnuMovieNewAutoActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieNewAutoActor.Tag = "actorthumbs"
         Me.mnuMovieNewAutoActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieNewAutoBanner
@@ -9058,6 +9097,7 @@ Partial Class frmMain
         Me.mnuMovieNewAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieNewAutoBanner.Name = "mnuMovieNewAutoBanner"
         Me.mnuMovieNewAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieNewAutoBanner.Tag = "banner"
         Me.mnuMovieNewAutoBanner.Text = "Banner Only"
         '
         'mnuMovieNewAutoClearArt
@@ -9149,12 +9189,14 @@ Partial Class frmMain
         Me.mnuMovieNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewAskAll, Me.mnuMovieNewAskActor, Me.mnuMovieNewAskBanner, Me.mnuMovieNewAskClearArt, Me.mnuMovieNewAskClearLogo, Me.mnuMovieNewAskDiscArt, Me.mnuMovieNewAskEFanarts, Me.mnuMovieNewAskEThumbs, Me.mnuMovieNewAskFanart, Me.mnuMovieNewAskLandscape, Me.mnuMovieNewAskMI, Me.mnuMovieNewAskNfo, Me.mnuMovieNewAskPoster, Me.mnuMovieNewAskTheme, Me.mnuMovieNewAskTrailer})
         Me.mnuMovieNewAsk.Name = "mnuMovieNewAsk"
         Me.mnuMovieNewAsk.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieNewAsk.Tag = "new_ask"
         Me.mnuMovieNewAsk.Text = "Ask (Require Input If No Exact Match)"
         '
         'mnuMovieNewAskAll
         '
         Me.mnuMovieNewAskAll.Name = "mnuMovieNewAskAll"
         Me.mnuMovieNewAskAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieNewAskAll.Tag = "all"
         Me.mnuMovieNewAskAll.Text = "All Items"
         '
         'mnuMovieNewAskActor
@@ -9162,6 +9204,7 @@ Partial Class frmMain
         Me.mnuMovieNewAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieNewAskActor.Name = "mnuMovieNewAskActor"
         Me.mnuMovieNewAskActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieNewAskActor.Tag = "actorthumbs"
         Me.mnuMovieNewAskActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieNewAskBanner
@@ -9169,6 +9212,7 @@ Partial Class frmMain
         Me.mnuMovieNewAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieNewAskBanner.Name = "mnuMovieNewAskBanner"
         Me.mnuMovieNewAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieNewAskBanner.Tag = "banner"
         Me.mnuMovieNewAskBanner.Text = "Banner Only"
         '
         'mnuMovieNewAskClearArt
@@ -9260,12 +9304,14 @@ Partial Class frmMain
         Me.mnuMovieNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewSkipAll})
         Me.mnuMovieNewSkip.Name = "mnuMovieNewSkip"
         Me.mnuMovieNewSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieNewSkip.Tag = "new_skip"
         Me.mnuMovieNewSkip.Text = "Skip (Skip If More Than One Match)"
         '
         'mnuMovieNewSkipAll
         '
         Me.mnuMovieNewSkipAll.Name = "mnuMovieNewSkipAll"
         Me.mnuMovieNewSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMovieNewSkipAll.Tag = "all"
         Me.mnuMovieNewSkipAll.Text = "All Items"
         '
         'mnuMovieMark
@@ -9280,12 +9326,14 @@ Partial Class frmMain
         Me.mnuMovieMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkAutoAll, Me.mnuMovieMarkAutoActor, Me.mnuMovieMarkAutoBanner, Me.mnuMovieMarkAutoClearArt, Me.mnuMovieMarkAutoClearLogo, Me.mnuMovieMarkAutoDiscArt, Me.mnuMovieMarkAutoEFanarts, Me.mnuMovieMarkAutoEThumbs, Me.mnuMovieMarkAutoFanart, Me.mnuMovieMarkAutoLandscape, Me.mnuMovieMarkAutoMI, Me.mnuMovieMarkAutoNfo, Me.mnuMovieMarkAutoPoster, Me.mnuMovieMarkAutoTheme, Me.mnuMovieMarkAutoTrailer})
         Me.mnuMovieMarkAuto.Name = "mnuMovieMarkAuto"
         Me.mnuMovieMarkAuto.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieMarkAuto.Tag = "mark_auto"
         Me.mnuMovieMarkAuto.Text = "Automatic (Force Best Match)"
         '
         'mnuMovieMarkAutoAll
         '
         Me.mnuMovieMarkAutoAll.Name = "mnuMovieMarkAutoAll"
         Me.mnuMovieMarkAutoAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMarkAutoAll.Tag = "all"
         Me.mnuMovieMarkAutoAll.Text = "All Items"
         '
         'mnuMovieMarkAutoActor
@@ -9293,6 +9341,7 @@ Partial Class frmMain
         Me.mnuMovieMarkAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieMarkAutoActor.Name = "mnuMovieMarkAutoActor"
         Me.mnuMovieMarkAutoActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMarkAutoActor.Tag = "actorthumbs"
         Me.mnuMovieMarkAutoActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieMarkAutoBanner
@@ -9300,6 +9349,7 @@ Partial Class frmMain
         Me.mnuMovieMarkAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieMarkAutoBanner.Name = "mnuMovieMarkAutoBanner"
         Me.mnuMovieMarkAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMarkAutoBanner.Tag = "banner"
         Me.mnuMovieMarkAutoBanner.Text = "Banner Only"
         '
         'mnuMovieMarkAutoClearArt
@@ -9391,12 +9441,14 @@ Partial Class frmMain
         Me.mnuMovieMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkAskAll, Me.mnuMovieMarkAskActor, Me.mnuMovieMarkAskBanner, Me.mnuMovieMarkAskClearArt, Me.mnuMovieMarkAskClearLogo, Me.mnuMovieMarkAskDiscArt, Me.mnuMovieMarkAskEFanarts, Me.mnuMovieMarkAskEThumbs, Me.mnuMovieMarkAskFanart, Me.mnuMovieMarkAskLandscape, Me.mnuMovieMarkAskMI, Me.mnuMovieMarkAskNfo, Me.mnuMovieMarkAskPoster, Me.mnuMovieMarkAskTheme, Me.mnuMovieMarkAskTrailer})
         Me.mnuMovieMarkAsk.Name = "mnuMovieMarkAsk"
         Me.mnuMovieMarkAsk.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieMarkAsk.Tag = "mark_ask"
         Me.mnuMovieMarkAsk.Text = "Ask (Require Input If No Exact Match)"
         '
         'mnuMovieMarkAskAll
         '
         Me.mnuMovieMarkAskAll.Name = "mnuMovieMarkAskAll"
         Me.mnuMovieMarkAskAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMarkAskAll.Tag = "all"
         Me.mnuMovieMarkAskAll.Text = "All Items"
         '
         'mnuMovieMarkAskActor
@@ -9404,6 +9456,7 @@ Partial Class frmMain
         Me.mnuMovieMarkAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieMarkAskActor.Name = "mnuMovieMarkAskActor"
         Me.mnuMovieMarkAskActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMarkAskActor.Tag = "actorthumbs"
         Me.mnuMovieMarkAskActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieMarkAskBanner
@@ -9411,6 +9464,7 @@ Partial Class frmMain
         Me.mnuMovieMarkAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieMarkAskBanner.Name = "mnuMovieMarkAskBanner"
         Me.mnuMovieMarkAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieMarkAskBanner.Tag = "banner"
         Me.mnuMovieMarkAskBanner.Text = "Banner Only"
         '
         'mnuMovieMarkAskClearArt
@@ -9502,12 +9556,14 @@ Partial Class frmMain
         Me.mnuMovieMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkSkipAll})
         Me.mnuMovieMarkSkip.Name = "mnuMovieMarkSkip"
         Me.mnuMovieMarkSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieMarkSkip.Tag = "mark_skip"
         Me.mnuMovieMarkSkip.Text = "Skip (Skip If More Than One Match)"
         '
         'mnuMovieMarkSkipAll
         '
         Me.mnuMovieMarkSkipAll.Name = "mnuMovieMarkSkipAll"
         Me.mnuMovieMarkSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMovieMarkSkipAll.Tag = "all"
         Me.mnuMovieMarkSkipAll.Text = "All Items"
         '
         'mnuMovieFilter
@@ -9522,12 +9578,14 @@ Partial Class frmMain
         Me.mnuMovieFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterAutoAll, Me.mnuMovieFilterAutoActor, Me.mnuMovieFilterAutoBanner, Me.mnuMovieFilterAutoClearArt, Me.mnuMovieFilterAutoClearLogo, Me.mnuMovieFilterAutoDiscArt, Me.mnuMovieFilterAutoEFanarts, Me.mnuMovieFilterAutoEThumbs, Me.mnuMovieFilterAutoFanart, Me.mnuMovieFilterAutoLandscape, Me.mnuMovieFilterAutoMI, Me.mnuMovieFilterAutoNfo, Me.mnuMovieFilterAutoPoster, Me.mnuMovieFilterAutoTheme, Me.mnuMovieFilterAutoTrailer})
         Me.mnuMovieFilterAuto.Name = "mnuMovieFilterAuto"
         Me.mnuMovieFilterAuto.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieFilterAuto.Tag = "filter_auto"
         Me.mnuMovieFilterAuto.Text = "Automatic (Force Best Match)"
         '
         'mnuMovieFilterAutoAll
         '
         Me.mnuMovieFilterAutoAll.Name = "mnuMovieFilterAutoAll"
         Me.mnuMovieFilterAutoAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieFilterAutoAll.Tag = "all"
         Me.mnuMovieFilterAutoAll.Text = "All Items"
         '
         'mnuMovieFilterAutoActor
@@ -9535,6 +9593,7 @@ Partial Class frmMain
         Me.mnuMovieFilterAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieFilterAutoActor.Name = "mnuMovieFilterAutoActor"
         Me.mnuMovieFilterAutoActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieFilterAutoActor.Tag = "actorthumbs"
         Me.mnuMovieFilterAutoActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieFilterAutoBanner
@@ -9542,6 +9601,7 @@ Partial Class frmMain
         Me.mnuMovieFilterAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieFilterAutoBanner.Name = "mnuMovieFilterAutoBanner"
         Me.mnuMovieFilterAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieFilterAutoBanner.Tag = "banner"
         Me.mnuMovieFilterAutoBanner.Text = "Banner Only"
         '
         'mnuMovieFilterAutoClearArt
@@ -9633,12 +9693,14 @@ Partial Class frmMain
         Me.mnuMovieFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterAskAll, Me.mnuMovieFilterAskActor, Me.mnuMovieFilterAskBanner, Me.mnuMovieFilterAskClearArt, Me.mnuMovieFilterAskClearLogo, Me.mnuMovieFilterAskDiscArt, Me.mnuMovieFilterAskEFanarts, Me.mnuMovieFilterAskEThumbs, Me.mnuMovieFilterAskFanart, Me.mnuMovieFilterAskLandscape, Me.mnuMovieFilterAskMI, Me.mnuMovieFilterAskNfo, Me.mnuMovieFilterAskPoster, Me.mnuMovieFilterAskTheme, Me.mnuMovieFilterAskTrailer})
         Me.mnuMovieFilterAsk.Name = "mnuMovieFilterAsk"
         Me.mnuMovieFilterAsk.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieFilterAsk.Tag = "filter_ask"
         Me.mnuMovieFilterAsk.Text = "Ask (Require Input If No Exact Match)"
         '
         'mnuMovieFilterAskAll
         '
         Me.mnuMovieFilterAskAll.Name = "mnuMovieFilterAskAll"
         Me.mnuMovieFilterAskAll.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieFilterAskAll.Tag = "all"
         Me.mnuMovieFilterAskAll.Text = "All Items"
         '
         'mnuMovieFilterAskActor
@@ -9646,6 +9708,7 @@ Partial Class frmMain
         Me.mnuMovieFilterAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
         Me.mnuMovieFilterAskActor.Name = "mnuMovieFilterAskActor"
         Me.mnuMovieFilterAskActor.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieFilterAskActor.Tag = "actorthumbs"
         Me.mnuMovieFilterAskActor.Text = "Actor Thumbs Only"
         '
         'mnuMovieFilterAskBanner
@@ -9653,6 +9716,7 @@ Partial Class frmMain
         Me.mnuMovieFilterAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieFilterAskBanner.Name = "mnuMovieFilterAskBanner"
         Me.mnuMovieFilterAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMovieFilterAskBanner.Tag = "banner"
         Me.mnuMovieFilterAskBanner.Text = "Banner Only"
         '
         'mnuMovieFilterAskClearArt
@@ -9744,12 +9808,14 @@ Partial Class frmMain
         Me.mnuMovieFilterSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterSkipAll})
         Me.mnuMovieFilterSkip.Name = "mnuMovieFilterSkip"
         Me.mnuMovieFilterSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMovieFilterSkip.Tag = "filter_skip"
         Me.mnuMovieFilterSkip.Text = "Skip (Skip If More Than One Match)"
         '
         'mnuMovieFilterSkipAll
         '
         Me.mnuMovieFilterSkipAll.Name = "mnuMovieFilterSkipAll"
         Me.mnuMovieFilterSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMovieFilterSkipAll.Tag = "all"
         Me.mnuMovieFilterSkipAll.Text = "All Items"
         '
         'mnuMovieCustom
@@ -9794,6 +9860,7 @@ Partial Class frmMain
         Me.mnuMovieSetAllAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieSetAllAutoBanner.Name = "mnuMovieSetAllAutoBanner"
         Me.mnuMovieSetAllAutoBanner.Size = New System.Drawing.Size(165, 22)
+        Me.mnuMovieSetAllAutoBanner.Tag = "banner"
         Me.mnuMovieSetAllAutoBanner.Text = "Banner Only"
         '
         'mnuMovieSetAllAutoClearArt
@@ -9879,6 +9946,7 @@ Partial Class frmMain
         Me.mnuMovieSetAllAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieSetAllAskBanner.Name = "mnuMovieSetAllAskBanner"
         Me.mnuMovieSetAllAskBanner.Size = New System.Drawing.Size(165, 22)
+        Me.mnuMovieSetAllAskBanner.Tag = "banner"
         Me.mnuMovieSetAllAskBanner.Text = "Banner Only"
         '
         'mnuMovieSetAllAskClearArt
@@ -9986,6 +10054,7 @@ Partial Class frmMain
         Me.mnuMovieSetMissAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
         Me.mnuMovieSetMissAutoBanner.Name = "mnuMovieSetMissAutoBanner"
         Me.mnuMovieSetMissAutoBanner.Size = New System.Drawing.Size(165, 22)
+        Me.mnuMovieSetMissAutoBanner.Tag = "banner"
         Me.mnuMovieSetMissAutoBanner.Text = "Banner Only"
         '
         'mnuMovieSetMissAutoClearArt
@@ -10842,7 +10911,7 @@ Partial Class frmMain
         '
         Me.cmnuTray.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayTitle, Me.ToolStripSeparator21, Me.cmnuTrayUpdate, Me.cmnuTrayScrape, Me.ToolStripSeparator23, Me.cmnuTrayTools, Me.ToolStripSeparator22, Me.cmnuTraySettings, Me.ToolStripSeparator13, Me.cmnuTrayExit})
         Me.cmnuTray.Name = "cmnuTrayIcon"
-        Me.cmnuTray.Size = New System.Drawing.Size(195, 182)
+        Me.cmnuTray.Size = New System.Drawing.Size(195, 160)
         Me.cmnuTray.Text = "Ember Media Manager"
         '
         'cmnuTrayTitle
@@ -11356,7 +11425,7 @@ Partial Class frmMain
         'cmnuTrayMovieMissSkipAll
         '
         Me.cmnuTrayMovieMissSkipAll.Name = "cmnuTrayMovieMissSkipAll"
-        Me.cmnuTrayMovieMissSkipAll.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuTrayMovieMissSkipAll.Size = New System.Drawing.Size(120, 22)
         Me.cmnuTrayMovieMissSkipAll.Text = "All Items"
         '
         'cmnuTrayMovieNew

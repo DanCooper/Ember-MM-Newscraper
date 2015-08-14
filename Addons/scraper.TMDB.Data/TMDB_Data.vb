@@ -638,7 +638,7 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(nMovie.TMDBID) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.AllAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nMovie = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
@@ -708,7 +708,7 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(nMovieSet.TMDB) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.AllAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nMovieSet = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
@@ -782,7 +782,7 @@ Public Class TMDB_Data
 
         If String.IsNullOrEmpty(nShow.TMDB) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.AllAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
                     nShow = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select

@@ -801,9 +801,9 @@ Public Class Enums
     ''' <remarks></remarks>
     Public Enum ScrapeType As Integer
         SingleScrape = 0
-        FullAuto = 1
-        FullAsk = 2
-        FullSkip = 3
+        AllAuto = 1
+        AllAsk = 2
+        AllSkip = 3
         MissAuto = 4
         MissAsk = 5
         MissSkip = 6

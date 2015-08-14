@@ -1239,7 +1239,7 @@ mPlot:          'Plot
 
             Try
                 Select Case iType
-                    Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
+                    Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
 
                         If r.ExactMatches.Count = 1 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
@@ -1262,12 +1262,12 @@ mPlot:          'Plot
                             End Using
                         End If
 
-                    Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
+                    Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.AllSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                         If r.ExactMatches.Count = 1 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
                         End If
 
-                    Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
+                    Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
 
                         'check if ALL results are over lev value
                         Dim useAnyway As Boolean = False
@@ -1319,7 +1319,7 @@ mPlot:          'Plot
             Dim b As Boolean = False
 
             Select Case iType
-                Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
+                Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.MissAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.SingleField
 
                     If r.Matches.Count = 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).IMDB, nShow, False, FilteredOptions, True, False)
@@ -1338,12 +1338,12 @@ mPlot:          'Plot
                         End Using
                     End If
 
-                Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.AllSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.MissSkip
                     If r.Matches.Count = 1 Then
                         b = GetTVShowInfo(r.Matches.Item(0).IMDB, nShow, False, FilteredOptions, True, False)
                     End If
 
-                Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
+                Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.MissAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
 
                     If r.Matches.Count > 0 Then
                         b = GetTVShowInfo(r.Matches.Item(0).IMDB, nShow, False, FilteredOptions, True, False)
