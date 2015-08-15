@@ -804,9 +804,9 @@ Public Class Enums
         AllAuto = 1
         AllAsk = 2
         AllSkip = 3
-        MissAuto = 4
-        MissAsk = 5
-        MissSkip = 6
+        MissingAuto = 4
+        MissingAsk = 5
+        MissingSkip = 6
         CleanFolders = 7
         NewAuto = 8
         NewAsk = 9
@@ -820,6 +820,9 @@ Public Class Enums
         CopyBackdrops = 17
         SingleField = 18
         SingleAuto = 19
+        SelectedAuto = 20
+        SelectedAsk = 21
+        SelectedSkip = 22
         None = 99
     End Enum
 

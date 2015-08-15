@@ -192,6 +192,10 @@ Public Class frmMain
     Private _ipup As Integer = 500
     Private CloseApp As Boolean = False
 
+    Private _SelectedScrapeType As String = String.Empty
+    Private _SelectedScrapeTypeMode As String = String.Empty
+    Private _SelectedContentType As String = String.Empty
+
     Private oldStatus As String = String.Empty
 
     Private KeyBuffer As String = String.Empty
@@ -2172,8 +2176,8 @@ Public Class frmMain
                                             logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
                                         End If
                                     Next
-                                ElseIf Args.ScrapeType = Enums.ScrapeType.SingleScrape OrElse Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissAsk Then
-                                    If Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissAsk Then
+                                ElseIf Args.ScrapeType = Enums.ScrapeType.SingleScrape OrElse Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissingAsk Then
+                                    If Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissingAsk Then
                                         MessageBox.Show(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dTrailerSelect As New dlgTrailerSelect
@@ -4271,7 +4275,7 @@ doCancel:
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withSeasons, True)
-            Me.CreateScrapeList_TV(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
+            Me.CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
         End If
     End Sub
 
@@ -5495,7 +5499,7 @@ doCancel:
         If Me.dgvMovies.SelectedRows.Count = 1 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-            Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+            Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
         End If
     End Sub
 
@@ -5503,7 +5507,7 @@ doCancel:
         If Me.dgvMovieSets.SelectedRows.Count = 1 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-            Me.CreateScrapeList_MovieSet(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
+            Me.CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
         End If
     End Sub
 
@@ -5513,7 +5517,7 @@ doCancel:
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withSeasons, True)
-            Me.CreateScrapeList_TV(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
+            Me.CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
         End If
     End Sub
     ''' <summary>
@@ -5528,7 +5532,7 @@ doCancel:
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+        Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
     End Sub
     ''' <summary>
     ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
@@ -5542,7 +5546,7 @@ doCancel:
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifier)
+        Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifier)
     End Sub
 
     Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
@@ -5651,54 +5655,14 @@ doCancel:
             End Try
         Next
     End Sub
-    'Private Sub createGenreThumbs(ByVal strGenres As String)
-    '    '//
-    '    ' Parse the genre string and create panels/pictureboxes for each one
-    '    '\\
 
-    '    Dim genreArray() As String
-
-    '    Try
-    '        genreArray = Microsoft.VisualBasic.Strings.Split(strGenres, " / ")
-    '        For i As Integer = 0 To UBound(genreArray)
-    '            ReDim Preserve Me.pnlGenre(i)
-    '            ReDim Preserve Me.pbGenre(i)
-    '            Me.pnlGenre(i) = New Panel()
-    '            Me.pnlGenre(i).Visible = False
-    '            Me.pbGenre(i) = New PictureBox()
-    '            Me.pbGenre(i).Name = genreArray(i).Trim.ToUpper
-    '            Me.pnlGenre(i).Size = New Size(68, 100)
-    '            Me.pbGenre(i).Size = New Size(62, 94)
-    '            Me.pnlGenre(i).BackColor = Me.GenrePanelColor
-    '            Me.pbGenre(i).BackColor = Me.GenrePanelColor
-    '            Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
-    '            Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
-    '            Me.pbGenre(i).Image = APIXML.GetGenreImage(genreArray(i).Trim)
-    '            Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
-    '            Me.pbGenre(i).Left = 2
-    '            Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
-    '            Me.pbGenre(i).Top = 2
-    '            Me.scMain.Panel2.Controls.Add(Me.pnlGenre(i))
-    '            Me.pnlGenre(i).Controls.Add(Me.pbGenre(i))
-    '            Me.pnlGenre(i).BringToFront()
-    '            AddHandler Me.pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
-    '            AddHandler Me.pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
-    '            If Master.eSettings.AllwaysDisplayGenresText Then
-    '                pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
-    '            End If
-    '        Next
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
-    '    End Try
-    'End Sub
-
-    Private Sub mnuMovieCustom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieCustom.Click, cmnuTrayMovieCustom.Click
+    Private Sub mnuMovieCustom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeSubmenuCustom.Click
         Me.SetControlsEnabled(False)
         Using dUpdate As New dlgUpdateMedia
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
-                Me.CreateScrapeList_Movie(False, CustomUpdater.ScrapeType, CustomUpdater.Options, CustomUpdater.ScrapeModifier)
+                Me.CreateScrapeList_Movie(CustomUpdater.ScrapeType, CustomUpdater.Options, CustomUpdater.ScrapeModifier)
             Else
                 Me.SetControlsEnabled(True)
             End If
@@ -5767,7 +5731,7 @@ doCancel:
             scrapeOptions.bCollectionID = True
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-            CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifier)
+            CreateScrapeList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifier)
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso _
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
@@ -5816,9 +5780,9 @@ doCancel:
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
             End Select
             If Master.eSettings.MovieClickScrapeAsk Then
-                CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
+                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_Movie, ScrapeModifier)
             Else
-                CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
+                CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifier)
             End If
         End If
     End Sub
@@ -6343,9 +6307,9 @@ doCancel:
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
             End Select
             If Master.eSettings.MovieSetClickScrapeAsk Then
-                CreateScrapeList_MovieSet(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_MovieSet, ScrapeModifier)
             Else
-                CreateScrapeList_MovieSet(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_MovieSet, ScrapeModifier)
             End If
         End If
     End Sub
@@ -7940,12 +7904,12 @@ doCancel:
                     Case Windows.Forms.DialogResult.Retry
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-                        Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+                        Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
                     Case Windows.Forms.DialogResult.Abort
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-                        Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+                        Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo_Movie(CInt(DBMovie.ID), DBMovie.Filename, True, False)
                 End Select
@@ -7969,12 +7933,12 @@ doCancel:
                 Case Windows.Forms.DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifier
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-                    Me.CreateScrapeList_MovieSet(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                    Me.CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
                 Case Windows.Forms.DialogResult.Abort
                     Dim ScrapeModifier As New Structures.ScrapeModifier
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-                    Me.CreateScrapeList_MovieSet(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                    Me.CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
                 Case Else
                     If Me.InfoCleared Then Me.LoadInfo_MovieSet(CInt(DBMovieSet.ID), False)
             End Select
@@ -8038,12 +8002,12 @@ doCancel:
                     Case Windows.Forms.DialogResult.Retry
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-                        Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+                        Me.CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
                     Case Windows.Forms.DialogResult.Abort
                         Dim ScrapeModifier As New Structures.ScrapeModifier
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-                        Me.CreateScrapeList_Movie(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+                        Me.CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo_TVShow(CInt(DBTVShow.ID))
                 End Select
@@ -10548,7 +10512,7 @@ doCancel:
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifier As Structures.ScrapeModifier = CType(_params(2), Structures.ScrapeModifier)
-                        CreateScrapeList_Movie(False, CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_Movie, ScrapeModifier)
+                        CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_Movie, ScrapeModifier)
                         While bwMovieScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -10811,7 +10775,136 @@ doCancel:
         End If
     End Sub
 
-    Private Sub Autoscraper(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMovieAllAutoAll.Click, cmnuTrayMovieAllAutoAll.Click
+    Private Sub mnuScrapeModifier_Opened(sender As Object, e As EventArgs) Handles mnuScrapeModifier.Opened
+        _SelectedScrapeTypeMode = mnuScrapeModifier.OwnerItem.Tag.ToString
+
+        With Master.eSettings
+            Select Case _SelectedContentType
+                Case "movie"
+                    mnuScrapeModifierActorthumbs.Enabled = .MovieActorThumbsAnyEnabled
+                    mnuScrapeModifierActorthumbs.Visible = True
+                    mnuScrapeModifierBanner.Enabled = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    mnuScrapeModifierBanner.Visible = True
+                    mnuScrapeModifierCharacterArt.Enabled = False
+                    mnuScrapeModifierCharacterArt.Visible = False
+                    mnuScrapeModifierClearArt.Enabled = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    mnuScrapeModifierClearArt.Visible = True
+                    mnuScrapeModifierClearLogo.Enabled = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    mnuScrapeModifierClearLogo.Visible = True
+                    mnuScrapeModifierDiscArt.Enabled = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    mnuScrapeModifierDiscArt.Visible = True
+                    mnuScrapeModifierExtrafanarts.Enabled = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainEFanarts)
+                    mnuScrapeModifierExtrafanarts.Visible = True
+                    mnuScrapeModifierExtrathumbs.Enabled = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainEThumbs)
+                    mnuScrapeModifierExtrathumbs.Visible = True
+                    mnuScrapeModifierFanart.Enabled = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierLandscape.Enabled = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    mnuScrapeModifierLandscape.Visible = True
+                    mnuScrapeModifierMetaData.Enabled = .MovieScraperMetaDataScan
+                    mnuScrapeModifierMetaData.Visible = True
+                    mnuScrapeModifierNFO.Enabled = True
+                    mnuScrapeModifierNFO.Visible = True
+                    mnuScrapeModifierPoster.Enabled = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    mnuScrapeModifierPoster.Visible = True
+                    mnuScrapeModifierTheme.Enabled = .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                    mnuScrapeModifierTheme.Visible = True
+                    mnuScrapeModifierTrailer.Enabled = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+                    mnuScrapeModifierTrailer.Visible = True
+                Case "movieset"
+                    mnuScrapeModifierActorthumbs.Enabled = False
+                    mnuScrapeModifierActorthumbs.Visible = False
+                    mnuScrapeModifierBanner.Enabled = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+                    mnuScrapeModifierBanner.Visible = True
+                    mnuScrapeModifierCharacterArt.Enabled = False
+                    mnuScrapeModifierCharacterArt.Visible = False
+                    mnuScrapeModifierClearArt.Enabled = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+                    mnuScrapeModifierClearArt.Visible = True
+                    mnuScrapeModifierClearLogo.Enabled = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+                    mnuScrapeModifierClearLogo.Visible = True
+                    mnuScrapeModifierDiscArt.Enabled = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+                    mnuScrapeModifierDiscArt.Visible = True
+                    mnuScrapeModifierExtrafanarts.Enabled = False
+                    mnuScrapeModifierExtrafanarts.Visible = False
+                    mnuScrapeModifierExtrathumbs.Enabled = False
+                    mnuScrapeModifierExtrathumbs.Visible = False
+                    mnuScrapeModifierFanart.Enabled = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+                    mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierLandscape.Enabled = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+                    mnuScrapeModifierLandscape.Visible = True
+                    mnuScrapeModifierMetaData.Enabled = False
+                    mnuScrapeModifierMetaData.Visible = False
+                    mnuScrapeModifierNFO.Enabled = True
+                    mnuScrapeModifierNFO.Visible = True
+                    mnuScrapeModifierPoster.Enabled = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+                    mnuScrapeModifierPoster.Visible = True
+                    mnuScrapeModifierTheme.Enabled = False
+                    mnuScrapeModifierTheme.Visible = False
+                    mnuScrapeModifierTrailer.Enabled = False
+                    mnuScrapeModifierTrailer.Visible = False
+                Case "tvshow"
+                    mnuScrapeModifierActorthumbs.Enabled = .TVShowActorThumbsAnyEnabled
+                    mnuScrapeModifierActorthumbs.Visible = True
+                    mnuScrapeModifierBanner.Enabled = .TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+                    mnuScrapeModifierBanner.Visible = True
+                    mnuScrapeModifierCharacterArt.Enabled = .TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+                    mnuScrapeModifierCharacterArt.Visible = True
+                    mnuScrapeModifierClearArt.Enabled = .TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+                    mnuScrapeModifierClearArt.Visible = True
+                    mnuScrapeModifierClearLogo.Enabled = .TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+                    mnuScrapeModifierClearLogo.Visible = True
+                    mnuScrapeModifierDiscArt.Enabled = False
+                    mnuScrapeModifierDiscArt.Visible = False
+                    mnuScrapeModifierExtrafanarts.Enabled = .TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainEFanarts)
+                    mnuScrapeModifierExtrafanarts.Visible = True
+                    mnuScrapeModifierExtrathumbs.Enabled = False
+                    mnuScrapeModifierExtrathumbs.Visible = False
+                    mnuScrapeModifierFanart.Enabled = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierLandscape.Enabled = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+                    mnuScrapeModifierLandscape.Visible = True
+                    mnuScrapeModifierMetaData.Enabled = False
+                    mnuScrapeModifierMetaData.Visible = False
+                    mnuScrapeModifierNFO.Enabled = True
+                    mnuScrapeModifierNFO.Visible = True
+                    mnuScrapeModifierPoster.Enabled = .TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+                    mnuScrapeModifierPoster.Visible = True
+                    mnuScrapeModifierTheme.Enabled = .TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+                    mnuScrapeModifierTheme.Visible = True
+                    mnuScrapeModifierTrailer.Enabled = False
+                    mnuScrapeModifierTrailer.Visible = False
+            End Select
+        End With
+    End Sub
+
+    Private Sub mnuScrapeType_Opened(sender As Object, e As EventArgs) Handles mnuScrapeType.Opened
+        If mnuScrapeType.OwnerItem.OwnerItem IsNot Nothing Then
+            _SelectedScrapeType = mnuScrapeType.OwnerItem.Tag.ToString
+            _SelectedContentType = mnuScrapeType.OwnerItem.OwnerItem.Tag.ToString
+        Else
+            _SelectedScrapeType = "selected"
+            _SelectedContentType = mnuScrapeType.OwnerItem.Tag.ToString
+        End If
+    End Sub
+
+    Private Sub Autoscraper(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+        mnuScrapeModifierActorthumbs.Click, _
+        mnuScrapeModifierAll.Click, _
+        mnuScrapeModifierBanner.Click, _
+        mnuScrapeModifierCharacterArt.Click, _
+        mnuScrapeModifierClearArt.Click, _
+        mnuScrapeModifierClearLogo.Click, _
+        mnuScrapeModifierDiscArt.Click, _
+        mnuScrapeModifierExtrafanarts.Click, _
+        mnuScrapeModifierExtrathumbs.Click, _
+        mnuScrapeModifierFanart.Click, _
+        mnuScrapeModifierLandscape.Click, _
+        mnuScrapeModifierMetaData.Click, _
+        mnuScrapeModifierNFO.Click, _
+        mnuScrapeModifierPoster.Click, _
+        mnuScrapeModifierTheme.Click, _
+        mnuScrapeModifierTrailer.Click
+
         Dim ContentType As String = String.Empty
         Dim ModifierType As String = String.Empty
         Dim ScrapeType As String = String.Empty
@@ -10820,8 +10913,8 @@ doCancel:
 
         Dim Menu As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
         ModifierType = Menu.Tag.ToString
-        ScrapeType = Menu.OwnerItem.Tag.ToString
-        ContentType = Menu.OwnerItem.OwnerItem.OwnerItem.Tag.ToString
+        ScrapeType = String.Concat(_SelectedScrapeType, "_", _SelectedScrapeTypeMode)
+        ContentType = _SelectedContentType
 
         Select Case ModifierType
             Case "all"
@@ -10879,25 +10972,33 @@ doCancel:
                 Type = Enums.ScrapeType.MarkAuto
             Case "mark_skip"
                 Type = Enums.ScrapeType.MarkSkip
-            Case "miss_ask"
-                Type = Enums.ScrapeType.MissAsk
-            Case "miss_auto"
-                Type = Enums.ScrapeType.MissAuto
-            Case "miss_skip"
-                Type = Enums.ScrapeType.MissSkip
+            Case "missing_ask"
+                Type = Enums.ScrapeType.MissingAsk
+            Case "missing_auto"
+                Type = Enums.ScrapeType.MissingAuto
+            Case "missing_skip"
+                Type = Enums.ScrapeType.MissingSkip
             Case "new_ask"
                 Type = Enums.ScrapeType.NewAsk
             Case "new_auto"
                 Type = Enums.ScrapeType.NewAuto
             Case "new_skip"
                 Type = Enums.ScrapeType.NewSkip
+            Case "selected_ask"
+                Type = Enums.ScrapeType.SelectedAsk
+            Case "selected_auto"
+                Type = Enums.ScrapeType.SelectedAuto
+            Case "selected_skip"
+                Type = Enums.ScrapeType.SelectedSkip
         End Select
 
         Select Case ContentType
             Case "movie"
-                Me.CreateScrapeList_Movie(False, Type, Master.DefaultOptions_Movie, ScrapeModifier)
+                Me.CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifier)
             Case "movieset"
-                Me.CreateScrapeList_MovieSet(False, Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                Me.CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
+            Case "tvshow"
+                Me.CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifier)
         End Select
     End Sub
 
@@ -10956,20 +11057,22 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_Movie(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_Movie(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
-        If selected Then
-            'create snapshoot list of selected movies
-            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-            Next
-        Else
-            For Each sRow As DataRow In Me.dtMovies.Rows
-                DataRowList.Add(sRow)
-            Next
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+                'create snapshoot list of selected movies
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+                Next
+            Case Else
+                For Each sRow As DataRow In Me.dtMovies.Rows
+                    DataRowList.Add(sRow)
+                Next
+        End Select
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
         Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
@@ -11014,7 +11117,7 @@ doCancel:
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsMovies.Find("idMovie", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
                     If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
@@ -11042,55 +11145,48 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
-        If Not selected Then
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        Else
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+            Case Enums.ScrapeType.MissingAuto
+                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+            Case Enums.ScrapeType.MissingAsk
+                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+            Case Enums.ScrapeType.MissingSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+            Case Enums.ScrapeType.NewAsk
+                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+            Case Enums.ScrapeType.NewAuto
+                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+            Case Enums.ScrapeType.NewSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+            Case Enums.ScrapeType.MarkAsk
+                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+            Case Enums.ScrapeType.MarkAuto
+                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+            Case Enums.ScrapeType.MarkSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+            Case Enums.ScrapeType.FilterAsk
+                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+            Case Enums.ScrapeType.SelectedAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+            Case Enums.ScrapeType.SelectedAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+            Case Enums.ScrapeType.SelectedSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+            Case Enums.ScrapeType.SingleField
+                Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        End Select
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
             Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -11136,20 +11232,22 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_MovieSet(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_MovieSet(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
-        If selected Then
-            'create snapshoot list of selected moviesets
-            For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-            Next
-        Else
-            For Each sRow As DataRow In Me.dtMovieSets.Rows
-                DataRowList.Add(sRow)
-            Next
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+                'create snapshoot list of selected moviesets
+                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+                Next
+            Case Else
+                For Each sRow As DataRow In Me.dtMovieSets.Rows
+                    DataRowList.Add(sRow)
+                Next
+        End Select
 
         Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
         Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
@@ -11182,7 +11280,7 @@ doCancel:
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsMovieSets.Find("idSet", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
                     If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
@@ -11206,53 +11304,49 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
-        If Not selected Then
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
-                Case Enums.ScrapeType.MissAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
-                Case Enums.ScrapeType.MissAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
-                Case Enums.ScrapeType.MissSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
-                Case Enums.ScrapeType.MarkAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
-                Case Enums.ScrapeType.MarkAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
-                Case Enums.ScrapeType.MarkSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SingleScrape
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        Else
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    Me.tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
-            End Select
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
+            Case Enums.ScrapeType.MissingAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
+            Case Enums.ScrapeType.MissingAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
+            Case Enums.ScrapeType.MissingSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
+            Case Enums.ScrapeType.NewAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
+            Case Enums.ScrapeType.NewAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
+            Case Enums.ScrapeType.NewSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
+            Case Enums.ScrapeType.MarkAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
+            Case Enums.ScrapeType.MarkAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
+            Case Enums.ScrapeType.MarkSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
+            Case Enums.ScrapeType.FilterAsk
+                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
+            Case Enums.ScrapeType.SingleField
+                Me.tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
+            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        End Select
+
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
             Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -11298,20 +11392,22 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_TV(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_TV(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
-        If selected Then
-            'create snapshoot list of selected tv show
-            For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-            Next
-        Else
-            For Each sRow As DataRow In Me.dtTVShows.Rows
-                DataRowList.Add(sRow)
-            Next
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+                'create snapshoot list of selected tv show
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+                Next
+            Case Else
+                For Each sRow As DataRow In Me.dtTVShows.Rows
+                    DataRowList.Add(sRow)
+                Next
+        End Select
 
         Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
         Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
@@ -11377,7 +11473,7 @@ doCancel:
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsTVShows.Find("idShow", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
                     If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.MainBanner = False
                     If Not String.IsNullOrEmpty(drvRow.Item("CharacterArtPath").ToString) Then sModifier.MainCharacterArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
@@ -11403,55 +11499,48 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
-        If Not selected Then
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        Else
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+            Case Enums.ScrapeType.MissingAuto
+                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+            Case Enums.ScrapeType.MissingAsk
+                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+            Case Enums.ScrapeType.MissingSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+            Case Enums.ScrapeType.NewAsk
+                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+            Case Enums.ScrapeType.NewAuto
+                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+            Case Enums.ScrapeType.NewSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+            Case Enums.ScrapeType.MarkAsk
+                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+            Case Enums.ScrapeType.MarkAuto
+                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+            Case Enums.ScrapeType.MarkSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+            Case Enums.ScrapeType.FilterAsk
+                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+            Case Enums.ScrapeType.SelectedAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+            Case Enums.ScrapeType.SelectedAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+            Case Enums.ScrapeType.SelectedSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+            Case Enums.ScrapeType.SingleField
+                Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        End Select
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
             Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -11537,7 +11626,7 @@ doCancel:
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsTVEpisodes.Find("idEpisode", drvRow.Item(0))
                     If Not index >= 0 Then Continue For
-                Case Enums.ScrapeType.MissAsk, Enums.ScrapeType.MissAuto, Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
                     If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.EpisodeFanart = False
                     If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.EpisodeNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.EpisodePoster = False
@@ -11564,11 +11653,11 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
                 Case Enums.ScrapeType.AllSkip
                     Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType.MissingAuto
                     Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissAsk
+                Case Enums.ScrapeType.MissingAsk
                     Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissSkip
+                Case Enums.ScrapeType.MissingSkip
                     Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
                 Case Enums.ScrapeType.NewAsk
                     Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
@@ -14004,186 +14093,12 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskBanner.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskClearArt.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskClearLogo.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskDiscArt.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEFanarts.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEFanarts, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEThumbs, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMovieReSelAskFanart.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskLandscape.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTheme.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTheme, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTrailer, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAsk, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoBanner.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoClearArt.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoClearLogo.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoDiscArt.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEFanarts.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEFanarts, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEThumbs.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEThumbs, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoFanart.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoLandscape.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoMetaData.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoNfo.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoPoster.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTheme.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTheme, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTrailer.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTrailer, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllAuto, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieReSelSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelSkipAll.Click
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.AllSkip, Master.DefaultOptions_Movie, ScrapeModifier)
-    End Sub
-
     Private Sub cmnuMovieUpSelActors_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelActors.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bCast = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
@@ -14191,7 +14106,7 @@ doCancel:
         cScrapeOptions.bCert = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelCollectionID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCollectionID.Click
@@ -14199,7 +14114,7 @@ doCancel:
         cScrapeOptions.bCollectionID = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
@@ -14207,7 +14122,7 @@ doCancel:
         cScrapeOptions.bCountry = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelDirector_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelDirector.Click
@@ -14215,7 +14130,7 @@ doCancel:
         cScrapeOptions.bDirector = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenre.Click
@@ -14223,7 +14138,7 @@ doCancel:
         cScrapeOptions.bGenre = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelMPAA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelMPAA.Click
@@ -14231,7 +14146,7 @@ doCancel:
         cScrapeOptions.bMPAA = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelOriginalTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOriginalTitle.Click
@@ -14239,7 +14154,7 @@ doCancel:
         cScrapeOptions.bOriginalTitle = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelOutline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOutline.Click
@@ -14247,7 +14162,7 @@ doCancel:
         cScrapeOptions.bOutline = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelPlot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelPlot.Click
@@ -14255,7 +14170,7 @@ doCancel:
         cScrapeOptions.bPlot = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelProducers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelProducers.Click
@@ -14263,7 +14178,7 @@ doCancel:
         cScrapeOptions.bProducers = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
@@ -14272,7 +14187,7 @@ doCancel:
         cScrapeOptions.bVotes = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelRelease_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRelease.Click
@@ -14280,7 +14195,7 @@ doCancel:
         cScrapeOptions.bRelease = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelRuntime_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRuntime.Click
@@ -14288,7 +14203,7 @@ doCancel:
         cScrapeOptions.bRuntime = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelStudio.Click
@@ -14296,7 +14211,7 @@ doCancel:
         cScrapeOptions.bStudio = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTagline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTagline.Click
@@ -14304,7 +14219,7 @@ doCancel:
         cScrapeOptions.bTagline = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTitle.Click
@@ -14312,7 +14227,7 @@ doCancel:
         cScrapeOptions.bTitle = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTop250_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTop250.Click
@@ -14320,7 +14235,7 @@ doCancel:
         cScrapeOptions.bTop250 = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTrailer.Click
@@ -14328,7 +14243,7 @@ doCancel:
         cScrapeOptions.bTrailer = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelWriters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelWriter.Click
@@ -14336,7 +14251,7 @@ doCancel:
         cScrapeOptions.bWriters = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelYear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelYear.Click
@@ -14344,7 +14259,7 @@ doCancel:
         cScrapeOptions.bYear = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(True, Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
     ''' <summary>
     ''' Updates the media info panels (right side of disiplay) when the movie selector changes (left side of display)
@@ -14578,6 +14493,8 @@ doCancel:
         Me.mnuScrapeMovies.Visible = currMainTabTag.ContentType = Enums.ContentType.Movie
         Me.mnuScrapeMovieSets.Enabled = isEnabled AndAlso Me.dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet
         Me.mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.MovieSet
+        Me.mnuScrapeTVShows.Enabled = isEnabled AndAlso Me.dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV
+        Me.mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
         Me.mnuUpdate.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
         Me.cmnuMovie.Enabled = isEnabled
@@ -14593,7 +14510,9 @@ doCancel:
         Me.scTVSeasonsEpisodes.IsSplitterFixed = Not isEnabled
         Me.mnuMainHelp.Enabled = isEnabled
         Me.cmnuTrayTools.Enabled = Me.mnuMainTools.Enabled
-        Me.cmnuTrayScrape.Enabled = Me.mnuScrapeMovies.Enabled
+        Me.cmnuTrayScrapeMovies.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0
+        Me.cmnuTrayScrapeMovieSets.Enabled = isEnabled AndAlso Me.dgvMovieSets.RowCount > 0
+        Me.cmnuTrayScrapeTVShows.Enabled = isEnabled AndAlso Me.dgvTVShows.RowCount > 0
         Me.cmnuTrayUpdate.Enabled = isEnabled
         Me.cmnuTraySettings.Enabled = isEnabled
         Me.cmnuTrayExit.Enabled = isEnabled
@@ -14903,428 +14822,6 @@ doCancel:
             ' for future use
             Me.mnuMainToolsClearCache.Enabled = False
 
-            'Me.mnuAllAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuAllAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuMissAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuMissAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuMarkAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuNewAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuNewAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuFilterAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-            'Me.mnuFilterAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
-
-            'Actor Thumbs Movie
-            Dim ActorAllowed_Movie As Boolean = .MovieActorThumbsAnyEnabled
-            Me.mnuMovieAllAutoActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieAllAskActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieMissAutoActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieMissAskActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieNewAutoActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieNewAskActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieMarkAutoActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieMarkAskActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieFilterAutoActor.Enabled = ActorAllowed_Movie
-            Me.mnuMovieFilterAskActor.Enabled = ActorAllowed_Movie
-            Me.cmnuMovieReSelAskActor.Enabled = ActorAllowed_Movie
-            Me.cmnuMovieReSelAutoActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieAllAutoActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieAllAskActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieMissAutoActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieMissAskActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieNewAutoActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieNewAskActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieMarkAskActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoActor.Enabled = ActorAllowed_Movie
-            Me.cmnuTrayMovieFilterAskActor.Enabled = ActorAllowed_Movie
-
-            'Banner Movie
-            Dim BannerAllowed_Movie As Boolean = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
-            Me.mnuMovieAllAutoBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieAllAskBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieMissAutoBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieMissAskBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieNewAutoBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieNewAskBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieMarkAutoBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieMarkAskBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieFilterAutoBanner.Enabled = BannerAllowed_Movie
-            Me.mnuMovieFilterAskBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuMovieReSelAskBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuMovieReSelAutoBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieAllAutoBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieAllAskBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieMissAutoBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieMissAskBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieNewAutoBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieNewAskBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieMarkAskBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoBanner.Enabled = BannerAllowed_Movie
-            Me.cmnuTrayMovieFilterAskBanner.Enabled = BannerAllowed_Movie
-
-            'Banner MovieSet
-            Dim BannerAllowed_MovieSet As Boolean = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
-            Me.mnuMovieSetAllAutoBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetAllAskBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetMissAutoBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetMissAskBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetNewAutoBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetNewAskBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetMarkAskBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoBanner.Enabled = BannerAllowed_MovieSet
-            Me.mnuMovieSetFilterAskBanner.Enabled = BannerAllowed_MovieSet
-
-            'ClearArt Movie
-            Dim ClearArtAllowed_Movie As Boolean = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
-            Me.mnuMovieAllAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieAllAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieMissAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieMissAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieNewAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieNewAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieMarkAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieMarkAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieFilterAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.mnuMovieFilterAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuMovieReSelAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuMovieReSelAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieAllAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieAllAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieMissAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieMissAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieNewAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieNewAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieMarkAskClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoClearArt.Enabled = ClearArtAllowed_Movie
-            Me.cmnuTrayMovieFilterAskClearArt.Enabled = ClearArtAllowed_Movie
-
-            'ClearArt MovieSet
-            Dim ClearArtAllowed_MovieSet As Boolean = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
-            Me.mnuMovieSetAllAutoClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetAllAskClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetMissAutoClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetMissAskClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetNewAutoClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetNewAskClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetMarkAskClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoClearArt.Enabled = ClearArtAllowed_MovieSet
-            Me.mnuMovieSetFilterAskClearArt.Enabled = ClearArtAllowed_MovieSet
-
-            'ClearLogo Movie
-            Dim ClearLogoAllowed_Movie As Boolean = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
-            Me.mnuMovieAllAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieAllAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieMissAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieMissAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieNewAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieNewAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieMarkAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieMarkAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieFilterAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.mnuMovieFilterAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuMovieReSelAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuMovieReSelAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieAllAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieAllAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieMissAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieMissAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieNewAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieNewAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieMarkAskClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoClearLogo.Enabled = ClearLogoAllowed_Movie
-            Me.cmnuTrayMovieFilterAskClearLogo.Enabled = ClearLogoAllowed_Movie
-
-            'ClearLogo MovieSet
-            Dim ClearLogoAllowed_MovieSet As Boolean = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
-            Me.mnuMovieSetAllAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetAllAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetMissAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetMissAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetNewAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetNewAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetMarkAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
-            Me.mnuMovieSetFilterAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
-
-            'DiscArt Movie
-            Dim DiscArtAllowed_Movie As Boolean = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-            Me.mnuMovieAllAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieAllAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieMissAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieMissAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieNewAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieNewAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieMarkAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieMarkAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieFilterAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.mnuMovieFilterAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuMovieReSelAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuMovieReSelAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieAllAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieAllAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieMissAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieMissAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieNewAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieNewAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieMarkAskDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoDiscArt.Enabled = DiscArtAllowed_Movie
-            Me.cmnuTrayMovieFilterAskDiscArt.Enabled = DiscArtAllowed_Movie
-
-            'DiscArt MovieSet
-            Dim DiscArtAllowed_MovieSet As Boolean = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
-            Me.mnuMovieSetAllAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetAllAskDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetMissAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetMissAskDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetNewAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetNewAskDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetMarkAskDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
-            Me.mnuMovieSetFilterAskDiscArt.Enabled = DiscArtAllowed_MovieSet
-
-            'Extrafanart Movie
-            Dim EFanartsAllowed_Movie As Boolean = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-            Me.mnuMovieAllAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieAllAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieMissAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieMissAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieMarkAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieMarkAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieNewAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieNewAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieFilterAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.mnuMovieFilterAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuMovieReSelAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuMovieReSelAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieAllAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieAllAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieMissAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieMissAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieMarkAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieNewAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieNewAskEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoEFanarts.Enabled = EFanartsAllowed_Movie
-            Me.cmnuTrayMovieFilterAskEFanarts.Enabled = EFanartsAllowed_Movie
-
-            'Extrathumb Movie
-            Dim EThumbsAllowed_Movie As Boolean = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-            Me.mnuMovieAllAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieAllAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieMissAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieMissAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieMarkAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieMarkAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieNewAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieNewAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieFilterAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.mnuMovieFilterAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuMovieReSelAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuMovieReSelAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieAllAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieAllAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieMissAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieMissAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieMarkAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieNewAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieNewAskEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoEThumbs.Enabled = EThumbsAllowed_Movie
-            Me.cmnuTrayMovieFilterAskEThumbs.Enabled = EThumbsAllowed_Movie
-
-            'Fanart Movie
-            Dim FanartAllowed_Movie As Boolean = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-            Me.mnuMovieAllAutoFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieAllAskFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieMissAutoFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieMissAskFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieMarkAutoFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieMarkAskFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieNewAutoFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieNewAskFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieFilterAutoFanart.Enabled = FanartAllowed_Movie
-            Me.mnuMovieFilterAskFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuMovieMovieReSelAskFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuMovieReSelAutoFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieAllAutoFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieAllAskFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieMissAutoFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieMissAskFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieMarkAskFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieNewAutoFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieNewAskFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoFanart.Enabled = FanartAllowed_Movie
-            Me.cmnuTrayMovieFilterAskFanart.Enabled = FanartAllowed_Movie
-
-            'Fanart MovieSet
-            Dim FanartAllowed_MovieSet As Boolean = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
-            Me.mnuMovieSetAllAutoFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetAllAskFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetMissAutoFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetMissAskFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetMarkAskFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetNewAutoFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetNewAskFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoFanart.Enabled = FanartAllowed_MovieSet
-            Me.mnuMovieSetFilterAskFanart.Enabled = FanartAllowed_MovieSet
-
-            'Landscape Movie
-            Dim LandscapeAllowed_Movie As Boolean = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
-            Me.mnuMovieAllAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieAllAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieMissAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieMissAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieNewAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieNewAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieMarkAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieMarkAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieFilterAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.mnuMovieFilterAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuMovieReSelAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuMovieReSelAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieAllAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieAllAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieMissAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieMissAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieNewAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieNewAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieMarkAskLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoLandscape.Enabled = LandscapeAllowed_Movie
-            Me.cmnuTrayMovieFilterAskLandscape.Enabled = LandscapeAllowed_Movie
-
-            'Landscape MovieSet
-            Dim LandscapeAllowed_MovieSet As Boolean = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
-            Me.mnuMovieSetAllAutoLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetAllAskLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetMissAutoLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetMissAskLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetNewAutoLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetNewAskLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetMarkAskLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoLandscape.Enabled = LandscapeAllowed_MovieSet
-            Me.mnuMovieSetFilterAskLandscape.Enabled = LandscapeAllowed_MovieSet
-
-            'Metadata Movie
-            Me.mnuMovieAllAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieAllAutoMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieNewAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieNewAutoMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieMarkAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieMarkAutoMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieFilterAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.mnuMovieFilterAutoMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuMovieReSelAskMetaData.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuMovieReSelAutoMetaData.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieAllAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieAllAutoMetaData.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieNewAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieNewAutoMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieMarkAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieMarkAutoMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieFilterAskMI.Enabled = .MovieScraperMetaDataScan
-            Me.cmnuTrayMovieFilterAutoMI.Enabled = .MovieScraperMetaDataScan
-
-            'Poster Movie
-            Dim PosterAllowed_Movie As Boolean = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-            Me.mnuMovieAllAutoPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieAllAskPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieMissAutoPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieMissAskPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieMarkAutoPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieMarkAskPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieNewAutoPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieNewAskPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieFilterAutoPoster.Enabled = PosterAllowed_Movie
-            Me.mnuMovieFilterAskPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuMovieReSelAskPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuMovieReSelAutoPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieAllAutoPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieAllAskPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieMissAutoPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieMissAskPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieMarkAskPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieNewAutoPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieNewAskPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoPoster.Enabled = PosterAllowed_Movie
-            Me.cmnuTrayMovieFilterAskPoster.Enabled = PosterAllowed_Movie
-
-            'Poster MovieSet
-            Dim PosterAllowed_MovieSet As Boolean = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
-            Me.mnuMovieSetAllAutoPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetAllAskPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetMissAutoPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetMissAskPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetMarkAutoPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetMarkAskPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetNewAutoPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetNewAskPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetFilterAutoPoster.Enabled = PosterAllowed_MovieSet
-            Me.mnuMovieSetFilterAskPoster.Enabled = PosterAllowed_MovieSet
-
-            'Theme Movie
-            Dim ThemeAllowed_Movie As Boolean = .MovieThemeTvTunesEnable AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
-            Me.mnuMovieAllAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieAllAskTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieMissAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieMissAskTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieNewAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieNewAskTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieMarkAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieMarkAskTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieFilterAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.mnuMovieFilterAskTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuMovieReSelAskTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuMovieReSelAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieAllAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieAllAskTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieMissAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieMissAskTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieNewAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieNewAskTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieMarkAskTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoTheme.Enabled = ThemeAllowed_Movie
-            Me.cmnuTrayMovieFilterAskTheme.Enabled = ThemeAllowed_Movie
-
-            'Trailer Movie
-            Dim TrailerAllowed_Movie As Boolean = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
-            Me.mnuMovieAllAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieAllAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieMissAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieMissAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieNewAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieNewAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieMarkAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieMarkAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieFilterAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.mnuMovieFilterAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuMovieReSelAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuMovieReSelAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieAllAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieAllAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieMissAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieMissAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieNewAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieNewAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieMarkAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieMarkAskTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieFilterAutoTrailer.Enabled = TrailerAllowed_Movie
-            Me.cmnuTrayMovieFilterAskTrailer.Enabled = TrailerAllowed_Movie
-
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie WHERE mark = 1;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -15524,7 +15021,11 @@ doCancel:
         Me.mnuScrapeMovies.Visible = currMainTabTag.ContentType = Enums.ContentType.Movie
         Me.mnuScrapeMovieSets.Enabled = (Me.dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet)
         Me.mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.MovieSet
-        Me.cmnuTrayScrape.Enabled = Me.mnuScrapeMovies.Enabled
+        Me.mnuScrapeTVShows.Enabled = (Me.dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)
+        Me.mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
+        Me.cmnuTrayScrapeMovies.Enabled = Me.dgvMovies.RowCount > 0
+        Me.cmnuTrayScrapeMovieSets.Enabled = Me.dgvMovieSets.RowCount > 0
+        Me.cmnuTrayScrapeTVShows.Enabled = Me.dgvTVShows.RowCount > 0
     End Sub
 
     Private Sub mnuMainToolsOfflineMM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsOfflineHolder.Click, cmnuTrayToolsOfflineHolder.Click
@@ -15805,585 +15306,123 @@ doCancel:
             With Me
                 .MinimumSize = New Size(800, 600)
 
-                ' Scrape Media Menu: All Movies
-                .mnuMovieAll.Text = Master.eLang.GetString(68, "All Movies")
-                .cmnuTrayMovieAll.Text = .mnuMovieAll.Text
-
-                ' Scrape Media Menu: All MovieSets
-                .mnuMovieSetAll.Text = Master.eLang.GetString(1227, "All MovieSets")
-
-                ' Scrape Media Menu: Movies Missing Items
-                .mnuMovieMiss.Text = Master.eLang.GetString(78, "Movies Missing Items")
-                .cmnuTrayMovieMiss.Text = .mnuMovieMiss.Text
-
-                ' Scrape Media Menu: MovieSets Missing Items
-                .mnuMovieSetMiss.Text = Master.eLang.GetString(1228, "MovieSets Missing Items")
-
-                'Scrape Media Menu: New Movies
-                .mnuMovieNew.Text = Master.eLang.GetString(79, "New Movies")
-                .cmnuTrayMovieNew.Text = .mnuMovieNew.Text
-
-                'Scrape Media Menu: New MovieSets
-                .mnuMovieSetNew.Text = Master.eLang.GetString(1229, "New MovieSets")
-
-                ' Scrape Media menu: Marked Movies
-                .mnuMovieMark.Text = Master.eLang.GetString(80, "Marked Movies")
-                .cmnuTrayMovieMark.Text = .mnuMovieMark.Text
-
-                ' Scrape Media menu: Marked MovieSets
-                .mnuMovieSetMark.Text = Master.eLang.GetString(1230, "Marked MovieSets")
-
-                ' Scrape Media Menu: Current Filter
-                .mnuMovieFilter.Text = Master.eLang.GetString(624, "Current Filter")
-                .mnuMovieSetFilter.Text = .mnuMovieFilter.Text
-                .cmnuTrayMovieFilter.Text = .mnuMovieFilter.Text
-
-                ' Scrape Media Menu: Custom Scraper
-                .mnuMovieCustom.Text = Master.eLang.GetString(81, "Custom Scraper...")
-                .mnuMovieSetCustom.Text = .mnuMovieCustom.Text
-                .cmnuTrayMovieCustom.Text = .mnuMovieCustom.Text
-
-                ' Scrape Media Menu: FullAuto
-                .mnuMovieAllAuto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-                .mnuMovieMissAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieNewAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieMarkAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieFilterAuto.Text = .mnuMovieAllAuto.Text
-                .cmnuTrayMovieAllAuto.Text = .mnuMovieAllAuto.Text
-                .cmnuTrayMovieMissAuto.Text = .mnuMovieAllAuto.Text
-                .cmnuTrayMovieNewAuto.Text = .mnuMovieAllAuto.Text
-                .cmnuTrayMovieMarkAuto.Text = .mnuMovieAllAuto.Text
-                .cmnuTrayMovieFilterAuto.Text = .mnuMovieAllAuto.Text
-                .cmnuMovieReSelAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieSetAllAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieSetMissAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieSetNewAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieSetMarkAuto.Text = .mnuMovieAllAuto.Text
-                .mnuMovieSetFilterAuto.Text = .mnuMovieAllAuto.Text
-
-                ' Scrape Media Menu: Ask
-                .mnuMovieAllAsk.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-                .mnuMovieMissAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieNewAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieMarkAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieFilterAsk.Text = .mnuMovieAllAsk.Text
-                .cmnuTrayMovieAllAsk.Text = .mnuMovieAllAsk.Text
-                .cmnuTrayMovieMissAsk.Text = .mnuMovieAllAsk.Text
-                .cmnuTrayMovieNewAsk.Text = .mnuMovieAllAsk.Text
-                .cmnuTrayMovieMarkAsk.Text = .mnuMovieAllAsk.Text
-                .cmnuTrayMovieFilterAsk.Text = .mnuMovieAllAsk.Text
-                .cmnuMovieReSelAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieSetAllAsk.Text = mnuMovieAllAsk.Text
-                .mnuMovieSetMissAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieSetNewAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieSetMarkAsk.Text = .mnuMovieAllAsk.Text
-                .mnuMovieSetFilterAsk.Text = .mnuMovieAllAsk.Text
-
-                ' Scrape Media Menu: Skip
-                .mnuMovieAllSkip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
-                .mnuMovieMissSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieNewSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieMarkSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieFilterSkip.Text = .mnuMovieAllSkip.Text
-                .cmnuTrayMovieAllSkip.Text = .mnuMovieAllSkip.Text
-                .cmnuTrayMovieMissSkip.Text = .mnuMovieAllSkip.Text
-                .cmnuTrayMovieNewSkip.Text = .mnuMovieAllSkip.Text
-                .cmnuTrayMovieMarkSkip.Text = .mnuMovieAllSkip.Text
-                .cmnuTrayMovieFilterSkip.Text = .mnuMovieAllSkip.Text
-                .cmnuMovieReSelSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieSetAllSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieSetMissSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieSetNewSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieSetMarkSkip.Text = .mnuMovieAllSkip.Text
-                .mnuMovieSetFilterSkip.Text = .mnuMovieAllSkip.Text
-
-                ' Scrape Media Content: Actor Thumbs
-                .mnuMovieAllAutoActor.Text = Master.eLang.GetString(973, "Actor Thumbs Only")
-                .mnuMovieAllAskActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieMissAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieMissAskActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieNewAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieNewAskActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieMarkAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieMarkAskActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieFilterAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .mnuMovieFilterAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieAllAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieAllAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieMissAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieMissAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieNewAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieNewAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieMarkAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieMarkAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieFilterAutoActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuTrayMovieFilterAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuMovieReSelAskActor.Text = .mnuMovieAllAutoActor.Text
-                .cmnuMovieReSelAutoActor.Text = .mnuMovieAllAutoActor.Text
-
-                ' Scrape Media Content: All Items
-                .mnuMovieAllAutoAll.Text = Master.eLang.GetString(70, "All Items")
-                .mnuMovieAllAskAll.Text = mnuMovieAllAutoAll.Text
-                .mnuMovieAllSkipAll.Text = mnuMovieAllAutoAll.Text
-                .mnuMovieMissAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieMissAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieMissSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieNewAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieNewAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieNewSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieMarkAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieMarkAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieMarkSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieFilterAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieFilterAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieFilterSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieAllAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieAllAskAll.Text = mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieAllSkipAll.Text = mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieMissAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieMissAskAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieMissSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieNewAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieNewAskAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieNewSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieMarkAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieMarkAskAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieMarkSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieFilterAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieFilterAskAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuTrayMovieFilterSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuMovieReSelAskAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuMovieReSelAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .cmnuMovieReSelSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetAllAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetAllAskAll.Text = mnuMovieAllAutoAll.Text
-                .mnuMovieSetAllSkipAll.Text = mnuMovieAllAutoAll.Text
-                .mnuMovieSetMissAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetMissAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetMissSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetNewAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetNewAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetNewSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetMarkAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetMarkAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetMarkSkipAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetFilterAutoAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetFilterAskAll.Text = .mnuMovieAllAutoAll.Text
-                .mnuMovieSetFilterSkipAll.Text = .mnuMovieAllAutoAll.Text
-
-                ' Scrape Media Content: Banner
-                .mnuMovieAllAutoBanner.Text = Master.eLang.GetString(1060, "Banner Only")
-                .mnuMovieAllAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieMissAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieMissAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieNewAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieNewAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieMarkAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieMarkAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieFilterAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieFilterAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieAllAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieAllAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieMissAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieMissAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieNewAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieNewAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieMarkAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieMarkAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieFilterAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuTrayMovieFilterAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuMovieReSelAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .cmnuMovieReSelAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetAllAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetAllAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetMissAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetMissAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetNewAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetNewAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetMarkAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetMarkAskBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetFilterAutoBanner.Text = .mnuMovieAllAutoBanner.Text
-                .mnuMovieSetFilterAskBanner.Text = .mnuMovieAllAutoBanner.Text
-
-                ' Scrape Media Content: ClearArt
-                .mnuMovieAllAutoClearArt.Text = Master.eLang.GetString(1122, "ClearArt Only")
-                .mnuMovieAllAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieMissAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieMissAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieNewAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieNewAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieMarkAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieMarkAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieFilterAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieFilterAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieAllAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieAllAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieMissAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieMissAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieNewAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieNewAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieMarkAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieMarkAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieFilterAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuTrayMovieFilterAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuMovieReSelAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .cmnuMovieReSelAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetAllAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetAllAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetMissAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetMissAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetNewAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetNewAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetMarkAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetMarkAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetFilterAutoClearArt.Text = .mnuMovieAllAutoClearArt.Text
-                .mnuMovieSetFilterAskClearArt.Text = .mnuMovieAllAutoClearArt.Text
-
-                ' Scrape Media Content: ClearLogo
-                .mnuMovieAllAutoClearLogo.Text = Master.eLang.GetString(1123, "ClearLogo Only")
-                .mnuMovieAllAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieMissAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieMissAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieNewAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieNewAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieMarkAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieMarkAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieFilterAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieFilterAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieAllAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieAllAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieMissAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieMissAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieNewAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieNewAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieMarkAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieMarkAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieFilterAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuTrayMovieFilterAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuMovieReSelAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .cmnuMovieReSelAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetAllAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetAllAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetMissAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetMissAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetNewAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetNewAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetMarkAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetMarkAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetFilterAutoClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-                .mnuMovieSetFilterAskClearLogo.Text = .mnuMovieAllAutoClearLogo.Text
-
-                ' Scrape Media Content: DiscArt
-                .mnuMovieAllAutoDiscArt.Text = Master.eLang.GetString(1124, "DiscArt Only")
-                .mnuMovieAllAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieMissAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieMissAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieNewAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieNewAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieMarkAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieMarkAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieFilterAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieFilterAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieAllAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieAllAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieMissAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieMissAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieNewAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieNewAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieMarkAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieMarkAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieFilterAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuTrayMovieFilterAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuMovieReSelAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .cmnuMovieReSelAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetAllAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetAllAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetMissAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetMissAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetNewAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetNewAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetMarkAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetMarkAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetFilterAutoDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-                .mnuMovieSetFilterAskDiscArt.Text = .mnuMovieAllAutoDiscArt.Text
-
-                ' Scrape Media Content: Extrafanarts
-                .mnuMovieAllAutoEFanarts.Text = Master.eLang.GetString(975, "Extrafanarts Only")
-                .mnuMovieAllAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieMissAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieMissAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieNewAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieNewAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieMarkAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieMarkAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieFilterAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieFilterAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieAllAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieAllAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieMissAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieMissAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieNewAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieNewAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieMarkAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieMarkAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieFilterAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuTrayMovieFilterAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuMovieReSelAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .cmnuMovieReSelAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetAllAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetAllAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetMissAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetMissAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetNewAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetNewAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetMarkAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetMarkAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetFilterAutoEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-                .mnuMovieSetFilterAskEFanarts.Text = .mnuMovieAllAutoEFanarts.Text
-
-                ' Scrape Media Content: Extrathumbs
-                .mnuMovieAllAutoEThumbs.Text = Master.eLang.GetString(74, "Extrathumbs Only")
-                .mnuMovieAllAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieMissAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieMissAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieNewAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieNewAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieMarkAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieMarkAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieFilterAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieFilterAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieAllAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieAllAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieMissAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieMissAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieNewAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieNewAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieMarkAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieMarkAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieFilterAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuTrayMovieFilterAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuMovieReSelAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .cmnuMovieReSelAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetAllAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetAllAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetMissAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetMissAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetNewAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetNewAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetMarkAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetMarkAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetFilterAutoEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-                .mnuMovieSetFilterAskEThumbs.Text = .mnuMovieAllAutoEThumbs.Text
-
-                ' Scrape Media Content: Fanart
-                .mnuMovieAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
-                .mnuMovieAllAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieMissAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieMissAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieNewAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieNewAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieMarkAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieMarkAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieFilterAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieFilterAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieAllAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieAllAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieMissAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieMissAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieNewAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieNewAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieMarkAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieMarkAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieFilterAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuTrayMovieFilterAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuMovieMovieReSelAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .cmnuMovieReSelAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetAllAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetAllAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetMissAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetMissAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetNewAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetNewAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetMarkAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetMarkAskFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetFilterAutoFanart.Text = .mnuMovieAllAutoFanart.Text
-                .mnuMovieSetFilterAskFanart.Text = .mnuMovieAllAutoFanart.Text
-
-                ' Scrape Media Content: Landscape
-                .mnuMovieAllAutoLandscape.Text = Master.eLang.GetString(1061, "Landscape Only")
-                .mnuMovieAllAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieMissAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieMissAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieNewAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieNewAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieMarkAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieMarkAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieFilterAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieFilterAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieAllAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieAllAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieMissAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieMissAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieNewAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieNewAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieMarkAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieMarkAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieFilterAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuTrayMovieFilterAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuMovieReSelAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .cmnuMovieReSelAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetAllAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetAllAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetMissAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetMissAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetNewAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetNewAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetMarkAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetMarkAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetFilterAutoLandscape.Text = .mnuMovieAllAutoLandscape.Text
-                .mnuMovieSetFilterAskLandscape.Text = .mnuMovieAllAutoLandscape.Text
-
-                ' Scrape Media Content: Meta Data
-                .mnuMovieAllAutoMI.Text = Master.eLang.GetString(76, "Meta Data Only")
-                .mnuMovieAllAskMI.Text = .mnuMovieAllAutoMI.Text
-                .mnuMovieNewAutoMI.Text = .mnuMovieAllAutoMI.Text
-                .mnuMovieNewAskMI.Text = .mnuMovieAllAutoMI.Text
-                .mnuMovieMarkAutoMI.Text = .mnuMovieAllAutoMI.Text
-                .mnuMovieMarkAskMI.Text = .mnuMovieAllAutoMI.Text
-                .mnuMovieFilterAutoMI.Text = .mnuMovieAllAutoMI.Text
-                .mnuMovieFilterAskMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieAllAutoMetaData.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieAllAskMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieNewAutoMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieNewAskMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieMarkAutoMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieMarkAskMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieFilterAutoMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuTrayMovieFilterAskMI.Text = .mnuMovieAllAutoMI.Text
-                .cmnuMovieReSelAskMetaData.Text = .mnuMovieAllAutoMI.Text
-                .cmnuMovieReSelAutoMetaData.Text = .mnuMovieAllAutoMI.Text
-
-                ' Scrape Media Content: NFO
-                .mnuMovieAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")
-                .mnuMovieAllAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieMissAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieMissAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieNewAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieNewAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieMarkAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieMarkAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieFilterAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieFilterAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieAllAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieAllAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieMissAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieMissAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieNewAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieNewAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieMarkAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieMarkAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieFilterAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuTrayMovieFilterAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuMovieReSelAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .cmnuMovieReSelAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetAllAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetAllAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetMissAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetMissAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetNewAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetNewAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetMarkAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetMarkAskNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetFilterAutoNfo.Text = .mnuMovieAllAutoNfo.Text
-                .mnuMovieSetFilterAskNfo.Text = .mnuMovieAllAutoNfo.Text
-
-                ' Scrape Media Content: Poster
-                .mnuMovieAllAutoPoster.Text = Master.eLang.GetString(72, "Poster Only")
-                .mnuMovieAllAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieMissAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieMissAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieNewAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieNewAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieMarkAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieMarkAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieFilterAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieFilterAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieAllAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieAllAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieMissAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieMissAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieNewAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieNewAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieMarkAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieMarkAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieFilterAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuTrayMovieFilterAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuMovieReSelAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .cmnuMovieReSelAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetAllAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetAllAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetMissAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetMissAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetNewAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetNewAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetMarkAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetMarkAskPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetFilterAutoPoster.Text = .mnuMovieAllAutoPoster.Text
-                .mnuMovieSetFilterAskPoster.Text = .mnuMovieAllAutoPoster.Text
-
-                ' Scrape Media Content: Theme
-                .mnuMovieAllAutoTheme.Text = Master.eLang.GetString(1125, "Theme Only")
-                .mnuMovieAllAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieMissAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieMissAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieNewAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieNewAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieMarkAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieMarkAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieFilterAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .mnuMovieFilterAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieAllAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieAllAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieMissAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieMissAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieNewAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieNewAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieMarkAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieMarkAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieFilterAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuTrayMovieFilterAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuMovieReSelAskTheme.Text = .mnuMovieAllAutoTheme.Text
-                .cmnuMovieReSelAutoTheme.Text = .mnuMovieAllAutoTheme.Text
-
-                ' Scrape Media Content: Trailer
-                .mnuMovieAllAutoTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
-                .mnuMovieAllAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieMissAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieMissAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieNewAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieNewAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieMarkAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieMarkAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieFilterAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .mnuMovieFilterAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieAllAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieAllAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieMissAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieMissAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieNewAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieNewAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieMarkAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieMarkAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieFilterAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuTrayMovieFilterAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuMovieReSelAskTrailer.Text = .mnuMovieAllAutoTrailer.Text
-                .cmnuMovieReSelAutoTrailer.Text = .mnuMovieAllAutoTrailer.Text
+                'All
+                Dim strAll As String = Master.eLang.GetString(68, "All")
+                .mnuScrapeSubmenuAll.Text = strAll
 
                 'Missing Items
                 Dim strMissingItems As String = Master.eLang.GetString(40, "Missing Items")
                 .btnFilterMissing_Movies.Text = strMissingItems
                 .btnFilterMissing_MovieSets.Text = strMissingItems
                 .btnFilterMissing_Shows.Text = strMissingItems
+                .mnuScrapeSubmenuMissing.Text = strMissingItems
+
+                'New
+                Dim strNew As String = Master.eLang.GetString(47, "New")
+                .mnuScrapeSubmenuNew.Text = strNew
+
+                'Marked
+                Dim strMarked As String = Master.eLang.GetString(48, "Marked")
+                .mnuScrapeSubmenuMarked.Text = strMarked
+
+                'Current Filter
+                Dim strCurrentFilter As String = Master.eLang.GetString(624, "Current Filter")
+                .mnuScrapeSubmenuFilter.Text = strCurrentFilter
+
+                'Custom Scraper
+                Dim strCustomScraper = Master.eLang.GetString(81, "Custom Scraper...")
+                .mnuScrapeSubmenuCustom.Text = strCustomScraper
+
+                'Ask (Require Input If No Exact Match)
+                Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                .mnuScrapeTypeAsk.Text = strAsk
+
+                'Automatic (Force Best Match)
+                Dim strAutomatic As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                .mnuScrapeTypeAuto.Text = strAutomatic
+
+                'Skip (Skip If More Than One Match)
+                Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
+                .mnuScrapeTypeSkip.Text = strSkip
+
+                'Actor Thumbs Only
+                Dim strActorThumbsOnly = Master.eLang.GetString(973, "Actor Thumbs Only")
+                .mnuScrapeModifierActorthumbs.Text = strActorThumbsOnly
+
+                'All Items
+                Dim strAllItems As String = Master.eLang.GetString(70, "All Items")
+                .mnuScrapeModifierAll.Text = strAllItems
+
+                'Banner Only
+                Dim strBannerOnly As String = Master.eLang.GetString(1060, "Banner Only")
+                .mnuScrapeModifierBanner.Text = strBannerOnly
+
+                'CharacterArt Only
+                Dim strCharacterArtOnly As String = Master.eLang.GetString(1121, "CharacterArt Only")
+                .mnuScrapeModifierCharacterArt.Text = strCharacterArtOnly
+
+                'ClearArt Only
+                Dim strClearArtOnly As String = Master.eLang.GetString(1122, "ClearArt Only")
+                .mnuScrapeModifierClearArt.Text = strClearArtOnly
+
+                'ClearLogo Only
+                Dim strClearLogoOnly As String = Master.eLang.GetString(1123, "ClearLogo Only")
+                .mnuScrapeModifierClearLogo.Text = strClearLogoOnly
+
+                'DiscArt Only
+                Dim strDiscArtOnly As String = Master.eLang.GetString(1124, "DiscArt Only")
+                .mnuScrapeModifierDiscArt.Text = strDiscArtOnly
+
+                'Extrafanarts Only
+                Dim strExtrafanartsOnly As String = Master.eLang.GetString(975, "Extrafanarts Only")
+                .mnuScrapeModifierExtrafanarts.Text = strExtrafanartsOnly
+
+                'Extrathumbs Only
+                Dim strExtrathumbsOnly As String = Master.eLang.GetString(74, "Extrathumbs Only")
+                .mnuScrapeModifierExtrathumbs.Text = strExtrathumbsOnly
+
+                'Fanart Only
+                Dim strFanartOnly As String = Master.eLang.GetString(73, "Fanart Only")
+                .mnuScrapeModifierFanart.Text = strFanartOnly
+
+                'Landscape Only
+                Dim strLandscapeOnly As String = Master.eLang.GetString(1061, "Landscape Only")
+                .mnuScrapeModifierLandscape.Text = strLandscapeOnly
+
+                'Meta Data Only
+                Dim strMetaDataOnly As String = Master.eLang.GetString(76, "Meta Data Only")
+                .mnuScrapeModifierMetaData.Text = strMetaDataOnly
+
+                'NFO Only
+                Dim strNFOOnly As String = Master.eLang.GetString(71, "NFO Only")
+                .mnuScrapeModifierNFO.Text = strNFOOnly
+
+                'Poster Only
+                Dim strPosterOnly As String = Master.eLang.GetString(72, "Poster Only")
+                .mnuScrapeModifierPoster.Text = strPosterOnly
+
+                'Scrape Movies
+                Dim strScrapeMovies As String = Master.eLang.GetString(67, "Scrape Movies")
+                .mnuScrapeMovies.Text = strScrapeMovies
+                .cmnuTrayScrapeMovies.Text = strScrapeMovies
+
+                'Scrape MovieSets
+                Dim strScrapeMovieSets As String = Master.eLang.GetString(1213, "Scrape MovieSets")
+                .mnuScrapeMovieSets.Text = strScrapeMovieSets
+                .cmnuTrayScrapeMovieSets.Text = strScrapeMovieSets
+
+                'Scrape TV Shows
+                Dim strScrapeTVShows As String = Master.eLang.GetString(1234, "Scrape TV Shows")
+                .mnuScrapeTVShows.Text = strScrapeTVShows
+                .cmnuTrayScrapeTVShows.Text = strScrapeTVShows
+
+                'Theme Only
+                Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
+                .mnuScrapeModifierTheme.Text = strThemeOnly
+
+                'Trailer Only
+                Dim strTrailerOnly As String = Master.eLang.GetString(75, "Trailer Only")
+                .mnuScrapeModifierTrailer.Text = strTrailerOnly
 
                 ' others
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -16638,7 +15677,6 @@ doCancel:
                 .cmnuShowRefresh.Text = Master.eLang.GetString(1066, "Refresh Data")
                 .cmnuShowRescrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
                 .cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
-                .cmnuTrayScrape.Text = Master.eLang.GetString(67, "Scrape Media")
                 .cmnuTraySettings.Text = Master.eLang.GetString(4, "&Settings...")
                 .cmnuTrayTools.Text = Master.eLang.GetString(8, "&Tools")
                 .cmnuTrayUpdate.Text = Master.eLang.GetString(82, "Update Library")
@@ -16735,8 +15773,6 @@ doCancel:
                 .rbFilterOr_Movies.Text = Master.eLang.GetString(46, "Or")
                 .rbFilterOr_MovieSets.Text = .rbFilterOr_Movies.Text
                 .rbFilterOr_Shows.Text = .rbFilterOr_Movies.Text
-                .mnuScrapeMovies.Text = Master.eLang.GetString(67, "Scrape Movies")
-                .mnuScrapeMovieSets.Text = Master.eLang.GetString(1213, "Scrape MovieSets")
                 .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
 
@@ -16758,6 +15794,7 @@ doCancel:
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .mnuScrapeMovies.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
                 .mnuScrapeMovieSets.ToolTipText = Master.eLang.GetString(1214, "Scrape/download data from the internet for multiple moviesets.")
+                .mnuScrapeTVShows.ToolTipText = Master.eLang.GetString(1235, "Scrape/download data from the internet for multiple tv shows.")
                 .mnuUpdate.ToolTipText = Master.eLang.GetString(85, "Scans sources for new content and cleans database.")
                 TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
                 TT.SetToolTip(.txtSearchMovies, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
@@ -16886,6 +15923,7 @@ doCancel:
                 Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = True
                 Me.mnuScrapeMovieSets.Visible = False
+                Me.mnuScrapeTVShows.Visible = False
                 Me.pnlFilter_Movies.Visible = True
                 Me.pnlFilter_MovieSets.Visible = False
                 Me.pnlFilter_Shows.Visible = False
@@ -16928,6 +15966,7 @@ doCancel:
                 Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = False
                 Me.mnuScrapeMovieSets.Visible = True
+                Me.mnuScrapeTVShows.Visible = False
                 Me.pnlFilter_Movies.Visible = False
                 Me.pnlFilter_MovieSets.Visible = True
                 Me.pnlFilter_Shows.Visible = False
@@ -16966,12 +16005,10 @@ doCancel:
                 ModulesManager.Instance.RuntimeObjects.ListShows = Me.currList_Shows
                 Me.FillList(False, False, True)
                 Me.mnuMainTools.Enabled = True
-                Me.cmnuTrayTools.Enabled = False
-                Me.mnuScrapeMovies.Enabled = False
-                Me.mnuScrapeMovieSets.Enabled = False
+                Me.cmnuTrayTools.Enabled = True
                 Me.mnuScrapeMovies.Visible = False
                 Me.mnuScrapeMovieSets.Visible = False
-                Me.cmnuTrayScrape.Enabled = False
+                Me.mnuScrapeTVShows.Visible = True
                 Me.dgvMovies.Visible = False
                 Me.dgvMovieSets.Visible = False
                 Me.pnlFilter_Movies.Visible = False

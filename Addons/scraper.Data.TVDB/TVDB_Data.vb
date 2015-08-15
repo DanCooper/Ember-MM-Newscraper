@@ -266,7 +266,7 @@ Public Class TVDB_Data
 
         If String.IsNullOrEmpty(nShow.TVDB) Then
             Select Case ScrapeType
-                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.AllAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MissAuto
+                Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
                     nShow = Nothing
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select

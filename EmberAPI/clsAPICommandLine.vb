@@ -114,15 +114,15 @@ Public Class CommandLine
                 Case "-missask"
                     Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType.MissAsk, CustomScrapeModifier}))
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType.MissingAsk, CustomScrapeModifier}))
                 Case "-missauto"
                     Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType.MissAuto, CustomScrapeModifier}))
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType.MissingAuto, CustomScrapeModifier}))
                 Case "-missskip"
                     Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType.MissSkip, CustomScrapeModifier}))
+                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovie", Enums.ScrapeType.MissingSkip, CustomScrapeModifier}))
                 Case "-newask"
                     Dim CustomScrapeModifier As New Structures.ScrapeModifier
                     i = SetScraperMod(Args, i, CustomScrapeModifier)

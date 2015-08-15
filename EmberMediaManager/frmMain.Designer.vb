@@ -193,40 +193,27 @@ Partial Class frmMain
         Me.cmnuMovieSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSel = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoMetaData = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieMovieReSelAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskMetaData = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieReSelSkipAll = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeType = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuScrapeTypeAuto = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifier = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuScrapeModifierAll = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierActorthumbs = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierCharacterArt = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierClearArt = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierClearLogo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierDiscArt = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierExtrafanarts = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierExtrathumbs = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierFanart = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierLandscape = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierMetaData = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierNFO = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierPoster = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierTheme = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeModifierTrailer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSel = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelActors = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelCert = New System.Windows.Forms.ToolStripMenuItem()
@@ -657,318 +644,15 @@ Partial Class frmMain
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tsMain = New System.Windows.Forms.ToolStrip()
         Me.mnuScrapeMovies = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.mnuMovieAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMiss = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMark = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilter = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieCustom = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuScrapeSubmenuAll = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuMissing = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.mnuMovieSetAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMiss = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMark = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilter = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMovieSetRestart = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
@@ -991,181 +675,9 @@ Partial Class frmMain
         Me.cmnuTrayUpdate = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoMetaData = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMiss = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMark = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilter = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAuto = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskBanner = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskClearArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskClearLogo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskDiscArt = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskEThumbs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskFanart = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskPoster = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskTheme = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayMovieCustom = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuTrayTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayToolsCleanFiles = New System.Windows.Forms.ToolStripMenuItem()
@@ -1243,6 +755,8 @@ Partial Class frmMain
         Me.tblFilterSourcesTop_Shows.SuspendLayout
         CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).BeginInit
         Me.cmnuMovie.SuspendLayout
+        Me.mnuScrapeType.SuspendLayout
+        Me.mnuScrapeModifier.SuspendLayout
         CType(Me.dgvMovieSets,System.ComponentModel.ISupportInitialize).BeginInit
         Me.cmnuMovieSet.SuspendLayout
         CType(Me.scTV,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1436,6 +950,7 @@ Partial Class frmMain
         CType(Me.pbFanartCache,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbFanart,System.ComponentModel.ISupportInitialize).BeginInit
         Me.tsMain.SuspendLayout
+        Me.mnuScrapeSubmenu.SuspendLayout
         Me.cmnuTray.SuspendLayout
         Me.pnlLoadSettingsBG.SuspendLayout
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1496,14 +1011,14 @@ Partial Class frmMain
         'mnuMainEdit
         '
         Me.mnuMainEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainEditSettings})
-        Me.mnuMainEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.mnuMainEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuMainEdit.Name = "mnuMainEdit"
         Me.mnuMainEdit.Size = New System.Drawing.Size(39, 20)
         Me.mnuMainEdit.Text = "&Edit"
         '
         'mnuMainEditSettings
         '
-        Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
+        Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"),System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
         Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
@@ -3256,248 +2771,176 @@ Partial Class frmMain
         '
         'cmnuMovieReSel
         '
-        Me.cmnuMovieReSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAuto, Me.cmnuMovieReSelAsk, Me.cmnuMovieReSelSkip})
+        Me.cmnuMovieReSel.DropDown = Me.mnuScrapeType
         Me.cmnuMovieReSel.Image = CType(resources.GetObject("cmnuMovieReSel.Image"),System.Drawing.Image)
         Me.cmnuMovieReSel.Name = "cmnuMovieReSel"
         Me.cmnuMovieReSel.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuMovieReSel.Tag = "movie"
         Me.cmnuMovieReSel.Text = "(Re)Scrape Selected Movies"
         '
-        'cmnuMovieReSelAuto
+        'mnuScrapeType
         '
-        Me.cmnuMovieReSelAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAutoAll, Me.cmnuMovieReSelAutoActor, Me.cmnuMovieReSelAutoBanner, Me.cmnuMovieReSelAutoClearArt, Me.cmnuMovieReSelAutoClearLogo, Me.cmnuMovieReSelAutoDiscArt, Me.cmnuMovieReSelAutoEFanarts, Me.cmnuMovieReSelAutoEThumbs, Me.cmnuMovieReSelAutoFanart, Me.cmnuMovieReSelAutoLandscape, Me.cmnuMovieReSelAutoMetaData, Me.cmnuMovieReSelAutoNfo, Me.cmnuMovieReSelAutoPoster, Me.cmnuMovieReSelAutoTheme, Me.cmnuMovieReSelAutoTrailer})
-        Me.cmnuMovieReSelAuto.Name = "cmnuMovieReSelAuto"
-        Me.cmnuMovieReSelAuto.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuMovieReSelAuto.Text = "Automatic (Force Best Match)"
+        Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
+        Me.mnuScrapeType.Name = "mnuScrapeType"
+        Me.mnuScrapeType.Size = New System.Drawing.Size(272, 70)
         '
-        'cmnuMovieReSelAutoAll
+        'mnuScrapeTypeAuto
         '
-        Me.cmnuMovieReSelAutoAll.Name = "cmnuMovieReSelAutoAll"
-        Me.cmnuMovieReSelAutoAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoAll.Text = "All Items"
+        Me.mnuScrapeTypeAuto.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeAuto.Name = "mnuScrapeTypeAuto"
+        Me.mnuScrapeTypeAuto.Size = New System.Drawing.Size(271, 22)
+        Me.mnuScrapeTypeAuto.Tag = "auto"
+        Me.mnuScrapeTypeAuto.Text = "Automatic (Force Best Match)"
         '
-        'cmnuMovieReSelAutoActor
+        'mnuScrapeModifier
         '
-        Me.cmnuMovieReSelAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuMovieReSelAutoActor.Name = "cmnuMovieReSelAutoActor"
-        Me.cmnuMovieReSelAutoActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoActor.Text = "Actor Thumbs Only"
+        Me.mnuScrapeModifier.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeModifierAll, Me.mnuScrapeModifierActorthumbs, Me.mnuScrapeModifierBanner, Me.mnuScrapeModifierCharacterArt, Me.mnuScrapeModifierClearArt, Me.mnuScrapeModifierClearLogo, Me.mnuScrapeModifierDiscArt, Me.mnuScrapeModifierExtrafanarts, Me.mnuScrapeModifierExtrathumbs, Me.mnuScrapeModifierFanart, Me.mnuScrapeModifierLandscape, Me.mnuScrapeModifierMetaData, Me.mnuScrapeModifierNFO, Me.mnuScrapeModifierPoster, Me.mnuScrapeModifierTheme, Me.mnuScrapeModifierTrailer})
+        Me.mnuScrapeModifier.Name = "mnuScrapeModifier"
+        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeSkip
+        Me.mnuScrapeModifier.Size = New System.Drawing.Size(179, 356)
         '
-        'cmnuMovieReSelAutoBanner
+        'mnuScrapeModifierAll
         '
-        Me.cmnuMovieReSelAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuMovieReSelAutoBanner.Name = "cmnuMovieReSelAutoBanner"
-        Me.cmnuMovieReSelAutoBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoBanner.Tag = "banner"
-        Me.cmnuMovieReSelAutoBanner.Text = "Banner Only"
+        Me.mnuScrapeModifierAll.Name = "mnuScrapeModifierAll"
+        Me.mnuScrapeModifierAll.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierAll.Tag = "all"
+        Me.mnuScrapeModifierAll.Text = "All Items"
         '
-        'cmnuMovieReSelAutoClearArt
+        'mnuScrapeModifierActorthumbs
         '
-        Me.cmnuMovieReSelAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuMovieReSelAutoClearArt.Name = "cmnuMovieReSelAutoClearArt"
-        Me.cmnuMovieReSelAutoClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoClearArt.Text = "ClearArt Only"
+        Me.mnuScrapeModifierActorthumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
+        Me.mnuScrapeModifierActorthumbs.Name = "mnuScrapeModifierActorthumbs"
+        Me.mnuScrapeModifierActorthumbs.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierActorthumbs.Tag = "actorthumbs"
+        Me.mnuScrapeModifierActorthumbs.Text = "Actor Thumbs Only"
         '
-        'cmnuMovieReSelAutoClearLogo
+        'mnuScrapeModifierBanner
         '
-        Me.cmnuMovieReSelAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuMovieReSelAutoClearLogo.Name = "cmnuMovieReSelAutoClearLogo"
-        Me.cmnuMovieReSelAutoClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoClearLogo.Text = "ClearLogo Only"
+        Me.mnuScrapeModifierBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
+        Me.mnuScrapeModifierBanner.Name = "mnuScrapeModifierBanner"
+        Me.mnuScrapeModifierBanner.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierBanner.Tag = "banner"
+        Me.mnuScrapeModifierBanner.Text = "Banner Only"
         '
-        'cmnuMovieReSelAutoDiscArt
+        'mnuScrapeModifierCharacterArt
         '
-        Me.cmnuMovieReSelAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuMovieReSelAutoDiscArt.Name = "cmnuMovieReSelAutoDiscArt"
-        Me.cmnuMovieReSelAutoDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoDiscArt.Text = "DiscArt Only"
+        Me.mnuScrapeModifierCharacterArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasCharacterArt
+        Me.mnuScrapeModifierCharacterArt.Name = "mnuScrapeModifierCharacterArt"
+        Me.mnuScrapeModifierCharacterArt.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierCharacterArt.Tag = "clearart"
+        Me.mnuScrapeModifierCharacterArt.Text = "CharacterArt Only"
         '
-        'cmnuMovieReSelAutoEFanarts
+        'mnuScrapeModifierClearArt
         '
-        Me.cmnuMovieReSelAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuMovieReSelAutoEFanarts.Name = "cmnuMovieReSelAutoEFanarts"
-        Me.cmnuMovieReSelAutoEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoEFanarts.Text = "Extrafanarts Only"
+        Me.mnuScrapeModifierClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
+        Me.mnuScrapeModifierClearArt.Name = "mnuScrapeModifierClearArt"
+        Me.mnuScrapeModifierClearArt.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierClearArt.Tag = "clearart"
+        Me.mnuScrapeModifierClearArt.Text = "ClearArt Only"
         '
-        'cmnuMovieReSelAutoEThumbs
+        'mnuScrapeModifierClearLogo
         '
-        Me.cmnuMovieReSelAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuMovieReSelAutoEThumbs.Name = "cmnuMovieReSelAutoEThumbs"
-        Me.cmnuMovieReSelAutoEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoEThumbs.Text = "Extrathumbs Only"
+        Me.mnuScrapeModifierClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
+        Me.mnuScrapeModifierClearLogo.Name = "mnuScrapeModifierClearLogo"
+        Me.mnuScrapeModifierClearLogo.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierClearLogo.Tag = "clearlogo"
+        Me.mnuScrapeModifierClearLogo.Text = "ClearLogo Only"
         '
-        'cmnuMovieReSelAutoFanart
+        'mnuScrapeModifierDiscArt
         '
-        Me.cmnuMovieReSelAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuMovieReSelAutoFanart.Name = "cmnuMovieReSelAutoFanart"
-        Me.cmnuMovieReSelAutoFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoFanart.Text = "Fanart Only"
+        Me.mnuScrapeModifierDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
+        Me.mnuScrapeModifierDiscArt.Name = "mnuScrapeModifierDiscArt"
+        Me.mnuScrapeModifierDiscArt.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierDiscArt.Tag = "discart"
+        Me.mnuScrapeModifierDiscArt.Text = "DiscArt"
         '
-        'cmnuMovieReSelAutoLandscape
+        'mnuScrapeModifierExtrafanarts
         '
-        Me.cmnuMovieReSelAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuMovieReSelAutoLandscape.Name = "cmnuMovieReSelAutoLandscape"
-        Me.cmnuMovieReSelAutoLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoLandscape.Text = "Landscape Only"
+        Me.mnuScrapeModifierExtrafanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
+        Me.mnuScrapeModifierExtrafanarts.Name = "mnuScrapeModifierExtrafanarts"
+        Me.mnuScrapeModifierExtrafanarts.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierExtrafanarts.Tag = "extrafanarts"
+        Me.mnuScrapeModifierExtrafanarts.Text = "Extrafanarts Only"
         '
-        'cmnuMovieReSelAutoMetaData
+        'mnuScrapeModifierExtrathumbs
         '
-        Me.cmnuMovieReSelAutoMetaData.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuMovieReSelAutoMetaData.Name = "cmnuMovieReSelAutoMetaData"
-        Me.cmnuMovieReSelAutoMetaData.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoMetaData.Text = "Meta Data Only"
+        Me.mnuScrapeModifierExtrathumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
+        Me.mnuScrapeModifierExtrathumbs.Name = "mnuScrapeModifierExtrathumbs"
+        Me.mnuScrapeModifierExtrathumbs.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierExtrathumbs.Tag = "extrathumbs"
+        Me.mnuScrapeModifierExtrathumbs.Text = "Extrathumbs Only"
         '
-        'cmnuMovieReSelAutoNfo
+        'mnuScrapeModifierFanart
         '
-        Me.cmnuMovieReSelAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuMovieReSelAutoNfo.Name = "cmnuMovieReSelAutoNfo"
-        Me.cmnuMovieReSelAutoNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoNfo.Text = "NFO Only"
+        Me.mnuScrapeModifierFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
+        Me.mnuScrapeModifierFanart.Name = "mnuScrapeModifierFanart"
+        Me.mnuScrapeModifierFanart.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierFanart.Tag = "fanart"
+        Me.mnuScrapeModifierFanart.Text = "Fanart Only"
         '
-        'cmnuMovieReSelAutoPoster
-        '
-        Me.cmnuMovieReSelAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuMovieReSelAutoPoster.Name = "cmnuMovieReSelAutoPoster"
-        Me.cmnuMovieReSelAutoPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoPoster.Text = "Poster Only"
-        '
-        'cmnuMovieReSelAutoTheme
-        '
-        Me.cmnuMovieReSelAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuMovieReSelAutoTheme.Name = "cmnuMovieReSelAutoTheme"
-        Me.cmnuMovieReSelAutoTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoTheme.Text = "Theme Only"
-        '
-        'cmnuMovieReSelAutoTrailer
-        '
-        Me.cmnuMovieReSelAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuMovieReSelAutoTrailer.Name = "cmnuMovieReSelAutoTrailer"
-        Me.cmnuMovieReSelAutoTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAutoTrailer.Text = "Trailer Only"
-        '
-        'cmnuMovieReSelAsk
-        '
-        Me.cmnuMovieReSelAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAskAll, Me.cmnuMovieReSelAskActor, Me.cmnuMovieReSelAskBanner, Me.cmnuMovieReSelAskClearArt, Me.cmnuMovieReSelAskClearLogo, Me.cmnuMovieReSelAskDiscArt, Me.cmnuMovieReSelAskEFanarts, Me.cmnuMovieReSelAskEThumbs, Me.cmnuMovieMovieReSelAskFanart, Me.cmnuMovieReSelAskLandscape, Me.cmnuMovieReSelAskMetaData, Me.cmnuMovieReSelAskNfo, Me.cmnuMovieReSelAskPoster, Me.cmnuMovieReSelAskTheme, Me.cmnuMovieReSelAskTrailer})
-        Me.cmnuMovieReSelAsk.Name = "cmnuMovieReSelAsk"
-        Me.cmnuMovieReSelAsk.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuMovieReSelAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'cmnuMovieReSelAskAll
-        '
-        Me.cmnuMovieReSelAskAll.Name = "cmnuMovieReSelAskAll"
-        Me.cmnuMovieReSelAskAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskAll.Text = "All Items"
-        '
-        'cmnuMovieReSelAskActor
-        '
-        Me.cmnuMovieReSelAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuMovieReSelAskActor.Name = "cmnuMovieReSelAskActor"
-        Me.cmnuMovieReSelAskActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuMovieReSelAskBanner
-        '
-        Me.cmnuMovieReSelAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuMovieReSelAskBanner.Name = "cmnuMovieReSelAskBanner"
-        Me.cmnuMovieReSelAskBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskBanner.Tag = "banner"
-        Me.cmnuMovieReSelAskBanner.Text = "Banner Only"
-        '
-        'cmnuMovieReSelAskClearArt
-        '
-        Me.cmnuMovieReSelAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuMovieReSelAskClearArt.Name = "cmnuMovieReSelAskClearArt"
-        Me.cmnuMovieReSelAskClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskClearArt.Text = "ClearArt Only"
-        '
-        'cmnuMovieReSelAskClearLogo
-        '
-        Me.cmnuMovieReSelAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuMovieReSelAskClearLogo.Name = "cmnuMovieReSelAskClearLogo"
-        Me.cmnuMovieReSelAskClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuMovieReSelAskDiscArt
-        '
-        Me.cmnuMovieReSelAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuMovieReSelAskDiscArt.Name = "cmnuMovieReSelAskDiscArt"
-        Me.cmnuMovieReSelAskDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuMovieReSelAskEFanarts
-        '
-        Me.cmnuMovieReSelAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuMovieReSelAskEFanarts.Name = "cmnuMovieReSelAskEFanarts"
-        Me.cmnuMovieReSelAskEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuMovieReSelAskEThumbs
-        '
-        Me.cmnuMovieReSelAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuMovieReSelAskEThumbs.Name = "cmnuMovieReSelAskEThumbs"
-        Me.cmnuMovieReSelAskEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuMovieMovieReSelAskFanart
-        '
-        Me.cmnuMovieMovieReSelAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuMovieMovieReSelAskFanart.Name = "cmnuMovieMovieReSelAskFanart"
-        Me.cmnuMovieMovieReSelAskFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieMovieReSelAskFanart.Text = "Fanart Only"
-        '
-        'cmnuMovieReSelAskLandscape
-        '
-        Me.cmnuMovieReSelAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuMovieReSelAskLandscape.Name = "cmnuMovieReSelAskLandscape"
-        Me.cmnuMovieReSelAskLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskLandscape.Text = "Landscape Only"
-        '
-        'cmnuMovieReSelAskMetaData
-        '
-        Me.cmnuMovieReSelAskMetaData.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuMovieReSelAskMetaData.Name = "cmnuMovieReSelAskMetaData"
-        Me.cmnuMovieReSelAskMetaData.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskMetaData.Text = "Meta Data Only"
-        '
-        'cmnuMovieReSelAskNfo
-        '
-        Me.cmnuMovieReSelAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuMovieReSelAskNfo.Name = "cmnuMovieReSelAskNfo"
-        Me.cmnuMovieReSelAskNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskNfo.Text = "NFO Only"
-        '
-        'cmnuMovieReSelAskPoster
-        '
-        Me.cmnuMovieReSelAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasSubtitle
-        Me.cmnuMovieReSelAskPoster.Name = "cmnuMovieReSelAskPoster"
-        Me.cmnuMovieReSelAskPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskPoster.Text = "Poster Only"
-        '
-        'cmnuMovieReSelAskTheme
-        '
-        Me.cmnuMovieReSelAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuMovieReSelAskTheme.Name = "cmnuMovieReSelAskTheme"
-        Me.cmnuMovieReSelAskTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskTheme.Text = "Theme Only"
-        '
-        'cmnuMovieReSelAskTrailer
-        '
-        Me.cmnuMovieReSelAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuMovieReSelAskTrailer.Name = "cmnuMovieReSelAskTrailer"
-        Me.cmnuMovieReSelAskTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuMovieReSelAskTrailer.Text = "Trailer Only"
-        '
-        'cmnuMovieReSelSkip
-        '
-        Me.cmnuMovieReSelSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelSkipAll})
-        Me.cmnuMovieReSelSkip.Name = "cmnuMovieReSelSkip"
-        Me.cmnuMovieReSelSkip.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuMovieReSelSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'cmnuMovieReSelSkipAll
-        '
-        Me.cmnuMovieReSelSkipAll.Name = "cmnuMovieReSelSkipAll"
-        Me.cmnuMovieReSelSkipAll.Size = New System.Drawing.Size(120, 22)
-        Me.cmnuMovieReSelSkipAll.Text = "All Items"
+        'mnuScrapeModifierLandscape
+        '
+        Me.mnuScrapeModifierLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
+        Me.mnuScrapeModifierLandscape.Name = "mnuScrapeModifierLandscape"
+        Me.mnuScrapeModifierLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierLandscape.Tag = "landscape"
+        Me.mnuScrapeModifierLandscape.Text = "Landscape Only"
+        '
+        'mnuScrapeModifierMetaData
+        '
+        Me.mnuScrapeModifierMetaData.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
+        Me.mnuScrapeModifierMetaData.Name = "mnuScrapeModifierMetaData"
+        Me.mnuScrapeModifierMetaData.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierMetaData.Tag = "metadata"
+        Me.mnuScrapeModifierMetaData.Text = "Meta Data Only"
+        '
+        'mnuScrapeModifierNFO
+        '
+        Me.mnuScrapeModifierNFO.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
+        Me.mnuScrapeModifierNFO.Name = "mnuScrapeModifierNFO"
+        Me.mnuScrapeModifierNFO.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierNFO.Tag = "nfo"
+        Me.mnuScrapeModifierNFO.Text = "NFO Only"
+        '
+        'mnuScrapeModifierPoster
+        '
+        Me.mnuScrapeModifierPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
+        Me.mnuScrapeModifierPoster.Name = "mnuScrapeModifierPoster"
+        Me.mnuScrapeModifierPoster.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierPoster.Tag = "poster"
+        Me.mnuScrapeModifierPoster.Text = "Poster Only"
+        '
+        'mnuScrapeModifierTheme
+        '
+        Me.mnuScrapeModifierTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
+        Me.mnuScrapeModifierTheme.Name = "mnuScrapeModifierTheme"
+        Me.mnuScrapeModifierTheme.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierTheme.Tag = "theme"
+        Me.mnuScrapeModifierTheme.Text = "Theme Only"
+        '
+        'mnuScrapeModifierTrailer
+        '
+        Me.mnuScrapeModifierTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
+        Me.mnuScrapeModifierTrailer.Name = "mnuScrapeModifierTrailer"
+        Me.mnuScrapeModifierTrailer.Size = New System.Drawing.Size(178, 22)
+        Me.mnuScrapeModifierTrailer.Tag = "trailer"
+        Me.mnuScrapeModifierTrailer.Text = "Trailer Only"
+        '
+        'mnuScrapeTypeAsk
+        '
+        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
+        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
+        Me.mnuScrapeTypeAsk.Tag = "ask"
+        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'mnuScrapeTypeSkip
+        '
+        Me.mnuScrapeTypeSkip.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeSkip.Name = "mnuScrapeTypeSkip"
+        Me.mnuScrapeTypeSkip.Size = New System.Drawing.Size(271, 22)
+        Me.mnuScrapeTypeSkip.Tag = "skip"
+        Me.mnuScrapeTypeSkip.Text = "Skip (Skip If More Than One Match)"
         '
         'cmnuMovieUpSel
         '
@@ -3509,127 +2952,127 @@ Partial Class frmMain
         'cmnuMovieUpSelActors
         '
         Me.cmnuMovieUpSelActors.Name = "cmnuMovieUpSelActors"
-        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelActors.Text = "Actors"
         '
         'cmnuMovieUpSelCert
         '
         Me.cmnuMovieUpSelCert.Name = "cmnuMovieUpSelCert"
-        Me.cmnuMovieUpSelCert.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelCert.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelCert.Text = "Certification"
         '
         'cmnuMovieUpSelCollectionID
         '
         Me.cmnuMovieUpSelCollectionID.Name = "cmnuMovieUpSelCollectionID"
-        Me.cmnuMovieUpSelCollectionID.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelCollectionID.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelCollectionID.Text = "Collection ID"
         '
         'cmnuMovieUpSelCountry
         '
         Me.cmnuMovieUpSelCountry.Name = "cmnuMovieUpSelCountry"
-        Me.cmnuMovieUpSelCountry.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelCountry.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelCountry.Text = "Country"
         '
         'cmnuMovieUpSelDirector
         '
         Me.cmnuMovieUpSelDirector.Name = "cmnuMovieUpSelDirector"
-        Me.cmnuMovieUpSelDirector.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelDirector.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelDirector.Text = "Director"
         '
         'cmnuMovieUpSelGenre
         '
         Me.cmnuMovieUpSelGenre.Name = "cmnuMovieUpSelGenre"
-        Me.cmnuMovieUpSelGenre.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelGenre.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelGenre.Text = "Genre"
         '
         'cmnuMovieUpSelMPAA
         '
         Me.cmnuMovieUpSelMPAA.Name = "cmnuMovieUpSelMPAA"
-        Me.cmnuMovieUpSelMPAA.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelMPAA.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelMPAA.Text = "MPAA"
         '
         'cmnuMovieUpSelOriginalTitle
         '
         Me.cmnuMovieUpSelOriginalTitle.Name = "cmnuMovieUpSelOriginalTitle"
-        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelOriginalTitle.Text = "Original Title"
         '
         'cmnuMovieUpSelPlot
         '
         Me.cmnuMovieUpSelPlot.Name = "cmnuMovieUpSelPlot"
-        Me.cmnuMovieUpSelPlot.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelPlot.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelPlot.Text = "Plot"
         '
         'cmnuMovieUpSelOutline
         '
         Me.cmnuMovieUpSelOutline.Name = "cmnuMovieUpSelOutline"
-        Me.cmnuMovieUpSelOutline.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelOutline.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelOutline.Text = "Plot Outline"
         '
         'cmnuMovieUpSelProducers
         '
         Me.cmnuMovieUpSelProducers.Name = "cmnuMovieUpSelProducers"
-        Me.cmnuMovieUpSelProducers.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelProducers.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelProducers.Text = "Producers"
         '
         'cmnuMovieUpSelRating
         '
         Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
-        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
         '
         'cmnuMovieUpSelRelease
         '
         Me.cmnuMovieUpSelRelease.Name = "cmnuMovieUpSelRelease"
-        Me.cmnuMovieUpSelRelease.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelRelease.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelRelease.Text = "Release Date"
         '
         'cmnuMovieUpSelRuntime
         '
         Me.cmnuMovieUpSelRuntime.Name = "cmnuMovieUpSelRuntime"
-        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelRuntime.Text = "Runtime"
         '
         'cmnuMovieUpSelStudio
         '
         Me.cmnuMovieUpSelStudio.Name = "cmnuMovieUpSelStudio"
-        Me.cmnuMovieUpSelStudio.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelStudio.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelStudio.Text = "Studio"
         '
         'cmnuMovieUpSelTagline
         '
         Me.cmnuMovieUpSelTagline.Name = "cmnuMovieUpSelTagline"
-        Me.cmnuMovieUpSelTagline.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelTagline.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelTagline.Text = "Tagline"
         '
         'cmnuMovieUpSelTitle
         '
         Me.cmnuMovieUpSelTitle.Name = "cmnuMovieUpSelTitle"
-        Me.cmnuMovieUpSelTitle.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelTitle.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelTitle.Text = "Title"
         '
         'cmnuMovieUpSelTop250
         '
         Me.cmnuMovieUpSelTop250.Name = "cmnuMovieUpSelTop250"
-        Me.cmnuMovieUpSelTop250.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelTop250.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelTop250.Text = "Top 250"
         '
         'cmnuMovieUpSelTrailer
         '
         Me.cmnuMovieUpSelTrailer.Name = "cmnuMovieUpSelTrailer"
-        Me.cmnuMovieUpSelTrailer.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelTrailer.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelTrailer.Text = "Trailer"
         '
         'cmnuMovieUpSelWriter
         '
         Me.cmnuMovieUpSelWriter.Name = "cmnuMovieUpSelWriter"
-        Me.cmnuMovieUpSelWriter.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelWriter.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelWriter.Text = "Writer"
         '
         'cmnuMovieUpSelYear
         '
         Me.cmnuMovieUpSelYear.Name = "cmnuMovieUpSelYear"
-        Me.cmnuMovieUpSelYear.Size = New System.Drawing.Size(148, 22)
+        Me.cmnuMovieUpSelYear.Size = New System.Drawing.Size(152, 22)
         Me.cmnuMovieUpSelYear.Text = "Year"
         '
         'cmnuMovieChange
@@ -8536,7 +7979,7 @@ Partial Class frmMain
         Me.tsMain.CanOverflow = false
         Me.tsMain.GripMargin = New System.Windows.Forms.Padding(0)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeMovies, Me.mnuScrapeMovieSets, Me.mnuUpdate, Me.tsbMediaCenters})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeMovies, Me.mnuScrapeMovieSets, Me.mnuScrapeTVShows, Me.mnuUpdate, Me.tsbMediaCenters})
         Me.tsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
@@ -8547,7 +7990,7 @@ Partial Class frmMain
         '
         'mnuScrapeMovies
         '
-        Me.mnuScrapeMovies.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAll, Me.mnuMovieMiss, Me.mnuMovieNew, Me.mnuMovieMark, Me.mnuMovieFilter, Me.mnuMovieCustom})
+        Me.mnuScrapeMovies.DropDown = Me.mnuScrapeSubmenu
         Me.mnuScrapeMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuScrapeMovies.Image = CType(resources.GetObject("mnuScrapeMovies.Image"),System.Drawing.Image)
         Me.mnuScrapeMovies.ImageTransparentColor = System.Drawing.Color.Magenta
@@ -8556,2257 +7999,83 @@ Partial Class frmMain
         Me.mnuScrapeMovies.Tag = "movie"
         Me.mnuScrapeMovies.Text = "Scrape Movies"
         '
-        'mnuMovieAll
-        '
-        Me.mnuMovieAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllAuto, Me.mnuMovieAllAsk, Me.mnuMovieAllSkip})
-        Me.mnuMovieAll.Name = "mnuMovieAll"
-        Me.mnuMovieAll.Size = New System.Drawing.Size(183, 22)
-        Me.mnuMovieAll.Tag = ""
-        Me.mnuMovieAll.Text = "All Movies"
-        '
-        'mnuMovieAllAuto
-        '
-        Me.mnuMovieAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllAutoAll, Me.mnuMovieAllAutoActor, Me.mnuMovieAllAutoBanner, Me.mnuMovieAllAutoClearArt, Me.mnuMovieAllAutoClearLogo, Me.mnuMovieAllAutoDiscArt, Me.mnuMovieAllAutoEFanarts, Me.mnuMovieAllAutoEThumbs, Me.mnuMovieAllAutoFanart, Me.mnuMovieAllAutoLandscape, Me.mnuMovieAllAutoMI, Me.mnuMovieAllAutoNfo, Me.mnuMovieAllAutoPoster, Me.mnuMovieAllAutoTheme, Me.mnuMovieAllAutoTrailer})
-        Me.mnuMovieAllAuto.Name = "mnuMovieAllAuto"
-        Me.mnuMovieAllAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieAllAuto.Tag = "all_auto"
-        Me.mnuMovieAllAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieAllAutoAll
-        '
-        Me.mnuMovieAllAutoAll.Name = "mnuMovieAllAutoAll"
-        Me.mnuMovieAllAutoAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoAll.Tag = "all"
-        Me.mnuMovieAllAutoAll.Text = "All Items"
-        '
-        'mnuMovieAllAutoActor
-        '
-        Me.mnuMovieAllAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieAllAutoActor.Name = "mnuMovieAllAutoActor"
-        Me.mnuMovieAllAutoActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoActor.Tag = "actorthumbs"
-        Me.mnuMovieAllAutoActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieAllAutoBanner
-        '
-        Me.mnuMovieAllAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieAllAutoBanner.Name = "mnuMovieAllAutoBanner"
-        Me.mnuMovieAllAutoBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoBanner.Tag = "banner"
-        Me.mnuMovieAllAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieAllAutoClearArt
-        '
-        Me.mnuMovieAllAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieAllAutoClearArt.Name = "mnuMovieAllAutoClearArt"
-        Me.mnuMovieAllAutoClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoClearArt.Tag = "clearart"
-        Me.mnuMovieAllAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieAllAutoClearLogo
-        '
-        Me.mnuMovieAllAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieAllAutoClearLogo.Name = "mnuMovieAllAutoClearLogo"
-        Me.mnuMovieAllAutoClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoClearLogo.Tag = "clearlogo"
-        Me.mnuMovieAllAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieAllAutoDiscArt
-        '
-        Me.mnuMovieAllAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieAllAutoDiscArt.Name = "mnuMovieAllAutoDiscArt"
-        Me.mnuMovieAllAutoDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoDiscArt.Tag = "discart"
-        Me.mnuMovieAllAutoDiscArt.Text = "DiscArt"
-        '
-        'mnuMovieAllAutoEFanarts
-        '
-        Me.mnuMovieAllAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieAllAutoEFanarts.Name = "mnuMovieAllAutoEFanarts"
-        Me.mnuMovieAllAutoEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoEFanarts.Tag = "extrafanarts"
-        Me.mnuMovieAllAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieAllAutoEThumbs
-        '
-        Me.mnuMovieAllAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieAllAutoEThumbs.Name = "mnuMovieAllAutoEThumbs"
-        Me.mnuMovieAllAutoEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoEThumbs.Tag = "extrathumbs"
-        Me.mnuMovieAllAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieAllAutoFanart
-        '
-        Me.mnuMovieAllAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieAllAutoFanart.Name = "mnuMovieAllAutoFanart"
-        Me.mnuMovieAllAutoFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoFanart.Tag = "fanart"
-        Me.mnuMovieAllAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieAllAutoLandscape
-        '
-        Me.mnuMovieAllAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieAllAutoLandscape.Name = "mnuMovieAllAutoLandscape"
-        Me.mnuMovieAllAutoLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoLandscape.Tag = "landscape"
-        Me.mnuMovieAllAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieAllAutoMI
-        '
-        Me.mnuMovieAllAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieAllAutoMI.Name = "mnuMovieAllAutoMI"
-        Me.mnuMovieAllAutoMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoMI.Tag = "meta"
-        Me.mnuMovieAllAutoMI.Text = "Meta Data Only"
-        '
-        'mnuMovieAllAutoNfo
-        '
-        Me.mnuMovieAllAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieAllAutoNfo.Name = "mnuMovieAllAutoNfo"
-        Me.mnuMovieAllAutoNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoNfo.Tag = "nfo"
-        Me.mnuMovieAllAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieAllAutoPoster
-        '
-        Me.mnuMovieAllAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieAllAutoPoster.Name = "mnuMovieAllAutoPoster"
-        Me.mnuMovieAllAutoPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoPoster.Tag = "poster"
-        Me.mnuMovieAllAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieAllAutoTheme
-        '
-        Me.mnuMovieAllAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieAllAutoTheme.Name = "mnuMovieAllAutoTheme"
-        Me.mnuMovieAllAutoTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoTheme.Tag = "theme"
-        Me.mnuMovieAllAutoTheme.Text = "Theme Only"
-        '
-        'mnuMovieAllAutoTrailer
-        '
-        Me.mnuMovieAllAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieAllAutoTrailer.Name = "mnuMovieAllAutoTrailer"
-        Me.mnuMovieAllAutoTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAutoTrailer.Tag = "trailer"
-        Me.mnuMovieAllAutoTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieAllAsk
-        '
-        Me.mnuMovieAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllAskAll, Me.mnuMovieAllAskActor, Me.mnuMovieAllAskBanner, Me.mnuMovieAllAskClearArt, Me.mnuMovieAllAskClearLogo, Me.mnuMovieAllAskDiscArt, Me.mnuMovieAllAskEFanarts, Me.mnuMovieAllAskEThumbs, Me.mnuMovieAllAskFanart, Me.mnuMovieAllAskLandscape, Me.mnuMovieAllAskMI, Me.mnuMovieAllAskNfo, Me.mnuMovieAllAskPoster, Me.mnuMovieAllAskTheme, Me.mnuMovieAllAskTrailer})
-        Me.mnuMovieAllAsk.Name = "mnuMovieAllAsk"
-        Me.mnuMovieAllAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieAllAsk.Tag = "all_ask"
-        Me.mnuMovieAllAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieAllAskAll
-        '
-        Me.mnuMovieAllAskAll.Name = "mnuMovieAllAskAll"
-        Me.mnuMovieAllAskAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskAll.Tag = "all"
-        Me.mnuMovieAllAskAll.Text = "All Items"
-        '
-        'mnuMovieAllAskActor
-        '
-        Me.mnuMovieAllAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieAllAskActor.Name = "mnuMovieAllAskActor"
-        Me.mnuMovieAllAskActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskActor.Tag = "actorthumbs"
-        Me.mnuMovieAllAskActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieAllAskBanner
-        '
-        Me.mnuMovieAllAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieAllAskBanner.Name = "mnuMovieAllAskBanner"
-        Me.mnuMovieAllAskBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskBanner.Tag = "banner"
-        Me.mnuMovieAllAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieAllAskClearArt
-        '
-        Me.mnuMovieAllAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieAllAskClearArt.Name = "mnuMovieAllAskClearArt"
-        Me.mnuMovieAllAskClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieAllAskClearLogo
-        '
-        Me.mnuMovieAllAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieAllAskClearLogo.Name = "mnuMovieAllAskClearLogo"
-        Me.mnuMovieAllAskClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieAllAskDiscArt
-        '
-        Me.mnuMovieAllAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieAllAskDiscArt.Name = "mnuMovieAllAskDiscArt"
-        Me.mnuMovieAllAskDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieAllAskEFanarts
-        '
-        Me.mnuMovieAllAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieAllAskEFanarts.Name = "mnuMovieAllAskEFanarts"
-        Me.mnuMovieAllAskEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieAllAskEThumbs
-        '
-        Me.mnuMovieAllAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieAllAskEThumbs.Name = "mnuMovieAllAskEThumbs"
-        Me.mnuMovieAllAskEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieAllAskFanart
-        '
-        Me.mnuMovieAllAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieAllAskFanart.Name = "mnuMovieAllAskFanart"
-        Me.mnuMovieAllAskFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieAllAskLandscape
-        '
-        Me.mnuMovieAllAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieAllAskLandscape.Name = "mnuMovieAllAskLandscape"
-        Me.mnuMovieAllAskLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieAllAskMI
-        '
-        Me.mnuMovieAllAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieAllAskMI.Name = "mnuMovieAllAskMI"
-        Me.mnuMovieAllAskMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskMI.Text = "Meta Data Only"
-        '
-        'mnuMovieAllAskNfo
-        '
-        Me.mnuMovieAllAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieAllAskNfo.Name = "mnuMovieAllAskNfo"
-        Me.mnuMovieAllAskNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieAllAskPoster
-        '
-        Me.mnuMovieAllAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieAllAskPoster.Name = "mnuMovieAllAskPoster"
-        Me.mnuMovieAllAskPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieAllAskTheme
-        '
-        Me.mnuMovieAllAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieAllAskTheme.Name = "mnuMovieAllAskTheme"
-        Me.mnuMovieAllAskTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskTheme.Text = "Theme Only"
-        '
-        'mnuMovieAllAskTrailer
-        '
-        Me.mnuMovieAllAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieAllAskTrailer.Name = "mnuMovieAllAskTrailer"
-        Me.mnuMovieAllAskTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieAllAskTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieAllSkip
-        '
-        Me.mnuMovieAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieAllSkipAll})
-        Me.mnuMovieAllSkip.Name = "mnuMovieAllSkip"
-        Me.mnuMovieAllSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieAllSkip.Tag = "all_skip"
-        Me.mnuMovieAllSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieAllSkipAll
-        '
-        Me.mnuMovieAllSkipAll.Name = "mnuMovieAllSkipAll"
-        Me.mnuMovieAllSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieAllSkipAll.Tag = "all"
-        Me.mnuMovieAllSkipAll.Text = "All Items"
-        '
-        'mnuMovieMiss
-        '
-        Me.mnuMovieMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAuto, Me.mnuMovieMissAsk, Me.mnuMovieMissSkip})
-        Me.mnuMovieMiss.Name = "mnuMovieMiss"
-        Me.mnuMovieMiss.Size = New System.Drawing.Size(183, 22)
-        Me.mnuMovieMiss.Text = "Movies Missing Items"
-        '
-        'mnuMovieMissAuto
-        '
-        Me.mnuMovieMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAutoAll, Me.mnuMovieMissAutoActor, Me.mnuMovieMissAutoBanner, Me.mnuMovieMissAutoClearArt, Me.mnuMovieMissAutoClearLogo, Me.mnuMovieMissAutoDiscArt, Me.mnuMovieMissAutoEFanarts, Me.mnuMovieMissAutoEThumbs, Me.mnuMovieMissAutoFanart, Me.mnuMovieMissAutoLandscape, Me.mnuMovieMissAutoNfo, Me.mnuMovieMissAutoPoster, Me.mnuMovieMissAutoTheme, Me.mnuMovieMissAutoTrailer})
-        Me.mnuMovieMissAuto.Name = "mnuMovieMissAuto"
-        Me.mnuMovieMissAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieMissAuto.Tag = "miss_auto"
-        Me.mnuMovieMissAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieMissAutoAll
-        '
-        Me.mnuMovieMissAutoAll.Name = "mnuMovieMissAutoAll"
-        Me.mnuMovieMissAutoAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoAll.Tag = "all"
-        Me.mnuMovieMissAutoAll.Text = "All Items"
-        Me.mnuMovieMissAutoAll.Visible = false
-        '
-        'mnuMovieMissAutoActor
-        '
-        Me.mnuMovieMissAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieMissAutoActor.Name = "mnuMovieMissAutoActor"
-        Me.mnuMovieMissAutoActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoActor.Tag = "actorthumbs"
-        Me.mnuMovieMissAutoActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieMissAutoBanner
-        '
-        Me.mnuMovieMissAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieMissAutoBanner.Name = "mnuMovieMissAutoBanner"
-        Me.mnuMovieMissAutoBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoBanner.Tag = "banner"
-        Me.mnuMovieMissAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieMissAutoClearArt
-        '
-        Me.mnuMovieMissAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieMissAutoClearArt.Name = "mnuMovieMissAutoClearArt"
-        Me.mnuMovieMissAutoClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieMissAutoClearLogo
-        '
-        Me.mnuMovieMissAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieMissAutoClearLogo.Name = "mnuMovieMissAutoClearLogo"
-        Me.mnuMovieMissAutoClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieMissAutoDiscArt
-        '
-        Me.mnuMovieMissAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieMissAutoDiscArt.Name = "mnuMovieMissAutoDiscArt"
-        Me.mnuMovieMissAutoDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieMissAutoEFanarts
-        '
-        Me.mnuMovieMissAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieMissAutoEFanarts.Name = "mnuMovieMissAutoEFanarts"
-        Me.mnuMovieMissAutoEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieMissAutoEThumbs
-        '
-        Me.mnuMovieMissAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieMissAutoEThumbs.Name = "mnuMovieMissAutoEThumbs"
-        Me.mnuMovieMissAutoEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieMissAutoFanart
-        '
-        Me.mnuMovieMissAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieMissAutoFanart.Name = "mnuMovieMissAutoFanart"
-        Me.mnuMovieMissAutoFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieMissAutoLandscape
-        '
-        Me.mnuMovieMissAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieMissAutoLandscape.Name = "mnuMovieMissAutoLandscape"
-        Me.mnuMovieMissAutoLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieMissAutoNfo
-        '
-        Me.mnuMovieMissAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieMissAutoNfo.Name = "mnuMovieMissAutoNfo"
-        Me.mnuMovieMissAutoNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieMissAutoPoster
-        '
-        Me.mnuMovieMissAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieMissAutoPoster.Name = "mnuMovieMissAutoPoster"
-        Me.mnuMovieMissAutoPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieMissAutoTheme
-        '
-        Me.mnuMovieMissAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieMissAutoTheme.Name = "mnuMovieMissAutoTheme"
-        Me.mnuMovieMissAutoTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoTheme.Text = "Theme Only"
-        '
-        'mnuMovieMissAutoTrailer
-        '
-        Me.mnuMovieMissAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieMissAutoTrailer.Name = "mnuMovieMissAutoTrailer"
-        Me.mnuMovieMissAutoTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAutoTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieMissAsk
-        '
-        Me.mnuMovieMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissAskAll, Me.mnuMovieMissAskActor, Me.mnuMovieMissAskBanner, Me.mnuMovieMissAskClearArt, Me.mnuMovieMissAskClearLogo, Me.mnuMovieMissAskDiscArt, Me.mnuMovieMissAskEFanarts, Me.mnuMovieMissAskEThumbs, Me.mnuMovieMissAskFanart, Me.mnuMovieMissAskLandscape, Me.mnuMovieMissAskNfo, Me.mnuMovieMissAskPoster, Me.mnuMovieMissAskTheme, Me.mnuMovieMissAskTrailer})
-        Me.mnuMovieMissAsk.Name = "mnuMovieMissAsk"
-        Me.mnuMovieMissAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieMissAsk.Tag = "miss_ask"
-        Me.mnuMovieMissAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieMissAskAll
-        '
-        Me.mnuMovieMissAskAll.Name = "mnuMovieMissAskAll"
-        Me.mnuMovieMissAskAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskAll.Tag = "all"
-        Me.mnuMovieMissAskAll.Text = "All Items"
-        Me.mnuMovieMissAskAll.Visible = false
-        '
-        'mnuMovieMissAskActor
-        '
-        Me.mnuMovieMissAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieMissAskActor.Name = "mnuMovieMissAskActor"
-        Me.mnuMovieMissAskActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskActor.Tag = "actorthumbs"
-        Me.mnuMovieMissAskActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieMissAskBanner
-        '
-        Me.mnuMovieMissAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieMissAskBanner.Name = "mnuMovieMissAskBanner"
-        Me.mnuMovieMissAskBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskBanner.Tag = "banner"
-        Me.mnuMovieMissAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieMissAskClearArt
-        '
-        Me.mnuMovieMissAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieMissAskClearArt.Name = "mnuMovieMissAskClearArt"
-        Me.mnuMovieMissAskClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieMissAskClearLogo
-        '
-        Me.mnuMovieMissAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieMissAskClearLogo.Name = "mnuMovieMissAskClearLogo"
-        Me.mnuMovieMissAskClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieMissAskDiscArt
-        '
-        Me.mnuMovieMissAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieMissAskDiscArt.Name = "mnuMovieMissAskDiscArt"
-        Me.mnuMovieMissAskDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieMissAskEFanarts
-        '
-        Me.mnuMovieMissAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieMissAskEFanarts.Name = "mnuMovieMissAskEFanarts"
-        Me.mnuMovieMissAskEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieMissAskEThumbs
-        '
-        Me.mnuMovieMissAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieMissAskEThumbs.Name = "mnuMovieMissAskEThumbs"
-        Me.mnuMovieMissAskEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieMissAskFanart
-        '
-        Me.mnuMovieMissAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieMissAskFanart.Name = "mnuMovieMissAskFanart"
-        Me.mnuMovieMissAskFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieMissAskLandscape
-        '
-        Me.mnuMovieMissAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieMissAskLandscape.Name = "mnuMovieMissAskLandscape"
-        Me.mnuMovieMissAskLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieMissAskNfo
-        '
-        Me.mnuMovieMissAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieMissAskNfo.Name = "mnuMovieMissAskNfo"
-        Me.mnuMovieMissAskNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieMissAskPoster
-        '
-        Me.mnuMovieMissAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieMissAskPoster.Name = "mnuMovieMissAskPoster"
-        Me.mnuMovieMissAskPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieMissAskTheme
-        '
-        Me.mnuMovieMissAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieMissAskTheme.Name = "mnuMovieMissAskTheme"
-        Me.mnuMovieMissAskTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskTheme.Text = "Theme Only"
-        '
-        'mnuMovieMissAskTrailer
-        '
-        Me.mnuMovieMissAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieMissAskTrailer.Name = "mnuMovieMissAskTrailer"
-        Me.mnuMovieMissAskTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMissAskTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieMissSkip
-        '
-        Me.mnuMovieMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMissSkipAll})
-        Me.mnuMovieMissSkip.Name = "mnuMovieMissSkip"
-        Me.mnuMovieMissSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieMissSkip.Tag = "miss_skip"
-        Me.mnuMovieMissSkip.Text = "Skip (Skip If More Than One Match)"
-        Me.mnuMovieMissSkip.Visible = false
-        '
-        'mnuMovieMissSkipAll
-        '
-        Me.mnuMovieMissSkipAll.Name = "mnuMovieMissSkipAll"
-        Me.mnuMovieMissSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieMissSkipAll.Tag = "all"
-        Me.mnuMovieMissSkipAll.Text = "All Items"
-        '
-        'mnuMovieNew
-        '
-        Me.mnuMovieNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewAuto, Me.mnuMovieNewAsk, Me.mnuMovieNewSkip})
-        Me.mnuMovieNew.Name = "mnuMovieNew"
-        Me.mnuMovieNew.Size = New System.Drawing.Size(183, 22)
-        Me.mnuMovieNew.Text = "New Movies"
-        '
-        'mnuMovieNewAuto
-        '
-        Me.mnuMovieNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewAutoAll, Me.mnuMovieNewAutoActor, Me.mnuMovieNewAutoBanner, Me.mnuMovieNewAutoClearArt, Me.mnuMovieNewAutoClearLogo, Me.mnuMovieNewAutoDiscArt, Me.mnuMovieNewAutoEFanarts, Me.mnuMovieNewAutoEThumbs, Me.mnuMovieNewAutoFanart, Me.mnuMovieNewAutoLandscape, Me.mnuMovieNewAutoMI, Me.mnuMovieNewAutoNfo, Me.mnuMovieNewAutoPoster, Me.mnuMovieNewAutoTheme, Me.mnuMovieNewAutoTrailer})
-        Me.mnuMovieNewAuto.Name = "mnuMovieNewAuto"
-        Me.mnuMovieNewAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieNewAuto.Tag = "new_auto"
-        Me.mnuMovieNewAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieNewAutoAll
-        '
-        Me.mnuMovieNewAutoAll.Name = "mnuMovieNewAutoAll"
-        Me.mnuMovieNewAutoAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoAll.Tag = "all"
-        Me.mnuMovieNewAutoAll.Text = "All Items"
-        '
-        'mnuMovieNewAutoActor
-        '
-        Me.mnuMovieNewAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieNewAutoActor.Name = "mnuMovieNewAutoActor"
-        Me.mnuMovieNewAutoActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoActor.Tag = "actorthumbs"
-        Me.mnuMovieNewAutoActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieNewAutoBanner
-        '
-        Me.mnuMovieNewAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieNewAutoBanner.Name = "mnuMovieNewAutoBanner"
-        Me.mnuMovieNewAutoBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoBanner.Tag = "banner"
-        Me.mnuMovieNewAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieNewAutoClearArt
-        '
-        Me.mnuMovieNewAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieNewAutoClearArt.Name = "mnuMovieNewAutoClearArt"
-        Me.mnuMovieNewAutoClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieNewAutoClearLogo
-        '
-        Me.mnuMovieNewAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieNewAutoClearLogo.Name = "mnuMovieNewAutoClearLogo"
-        Me.mnuMovieNewAutoClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieNewAutoDiscArt
-        '
-        Me.mnuMovieNewAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieNewAutoDiscArt.Name = "mnuMovieNewAutoDiscArt"
-        Me.mnuMovieNewAutoDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieNewAutoEFanarts
-        '
-        Me.mnuMovieNewAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieNewAutoEFanarts.Name = "mnuMovieNewAutoEFanarts"
-        Me.mnuMovieNewAutoEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieNewAutoEThumbs
-        '
-        Me.mnuMovieNewAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieNewAutoEThumbs.Name = "mnuMovieNewAutoEThumbs"
-        Me.mnuMovieNewAutoEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieNewAutoFanart
-        '
-        Me.mnuMovieNewAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieNewAutoFanart.Name = "mnuMovieNewAutoFanart"
-        Me.mnuMovieNewAutoFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieNewAutoLandscape
-        '
-        Me.mnuMovieNewAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieNewAutoLandscape.Name = "mnuMovieNewAutoLandscape"
-        Me.mnuMovieNewAutoLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieNewAutoMI
-        '
-        Me.mnuMovieNewAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieNewAutoMI.Name = "mnuMovieNewAutoMI"
-        Me.mnuMovieNewAutoMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoMI.Text = "Meta Data Only"
-        '
-        'mnuMovieNewAutoNfo
-        '
-        Me.mnuMovieNewAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieNewAutoNfo.Name = "mnuMovieNewAutoNfo"
-        Me.mnuMovieNewAutoNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieNewAutoPoster
-        '
-        Me.mnuMovieNewAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieNewAutoPoster.Name = "mnuMovieNewAutoPoster"
-        Me.mnuMovieNewAutoPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieNewAutoTheme
-        '
-        Me.mnuMovieNewAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieNewAutoTheme.Name = "mnuMovieNewAutoTheme"
-        Me.mnuMovieNewAutoTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoTheme.Text = "Theme Only"
-        '
-        'mnuMovieNewAutoTrailer
-        '
-        Me.mnuMovieNewAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieNewAutoTrailer.Name = "mnuMovieNewAutoTrailer"
-        Me.mnuMovieNewAutoTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAutoTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieNewAsk
-        '
-        Me.mnuMovieNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewAskAll, Me.mnuMovieNewAskActor, Me.mnuMovieNewAskBanner, Me.mnuMovieNewAskClearArt, Me.mnuMovieNewAskClearLogo, Me.mnuMovieNewAskDiscArt, Me.mnuMovieNewAskEFanarts, Me.mnuMovieNewAskEThumbs, Me.mnuMovieNewAskFanart, Me.mnuMovieNewAskLandscape, Me.mnuMovieNewAskMI, Me.mnuMovieNewAskNfo, Me.mnuMovieNewAskPoster, Me.mnuMovieNewAskTheme, Me.mnuMovieNewAskTrailer})
-        Me.mnuMovieNewAsk.Name = "mnuMovieNewAsk"
-        Me.mnuMovieNewAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieNewAsk.Tag = "new_ask"
-        Me.mnuMovieNewAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieNewAskAll
-        '
-        Me.mnuMovieNewAskAll.Name = "mnuMovieNewAskAll"
-        Me.mnuMovieNewAskAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskAll.Tag = "all"
-        Me.mnuMovieNewAskAll.Text = "All Items"
-        '
-        'mnuMovieNewAskActor
-        '
-        Me.mnuMovieNewAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieNewAskActor.Name = "mnuMovieNewAskActor"
-        Me.mnuMovieNewAskActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskActor.Tag = "actorthumbs"
-        Me.mnuMovieNewAskActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieNewAskBanner
-        '
-        Me.mnuMovieNewAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieNewAskBanner.Name = "mnuMovieNewAskBanner"
-        Me.mnuMovieNewAskBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskBanner.Tag = "banner"
-        Me.mnuMovieNewAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieNewAskClearArt
-        '
-        Me.mnuMovieNewAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieNewAskClearArt.Name = "mnuMovieNewAskClearArt"
-        Me.mnuMovieNewAskClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieNewAskClearLogo
-        '
-        Me.mnuMovieNewAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieNewAskClearLogo.Name = "mnuMovieNewAskClearLogo"
-        Me.mnuMovieNewAskClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieNewAskDiscArt
-        '
-        Me.mnuMovieNewAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieNewAskDiscArt.Name = "mnuMovieNewAskDiscArt"
-        Me.mnuMovieNewAskDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieNewAskEFanarts
-        '
-        Me.mnuMovieNewAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieNewAskEFanarts.Name = "mnuMovieNewAskEFanarts"
-        Me.mnuMovieNewAskEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieNewAskEThumbs
-        '
-        Me.mnuMovieNewAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieNewAskEThumbs.Name = "mnuMovieNewAskEThumbs"
-        Me.mnuMovieNewAskEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieNewAskFanart
-        '
-        Me.mnuMovieNewAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieNewAskFanart.Name = "mnuMovieNewAskFanart"
-        Me.mnuMovieNewAskFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieNewAskLandscape
-        '
-        Me.mnuMovieNewAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieNewAskLandscape.Name = "mnuMovieNewAskLandscape"
-        Me.mnuMovieNewAskLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieNewAskMI
-        '
-        Me.mnuMovieNewAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieNewAskMI.Name = "mnuMovieNewAskMI"
-        Me.mnuMovieNewAskMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskMI.Text = "Meta Data Only"
-        '
-        'mnuMovieNewAskNfo
-        '
-        Me.mnuMovieNewAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieNewAskNfo.Name = "mnuMovieNewAskNfo"
-        Me.mnuMovieNewAskNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieNewAskPoster
-        '
-        Me.mnuMovieNewAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieNewAskPoster.Name = "mnuMovieNewAskPoster"
-        Me.mnuMovieNewAskPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieNewAskTheme
-        '
-        Me.mnuMovieNewAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieNewAskTheme.Name = "mnuMovieNewAskTheme"
-        Me.mnuMovieNewAskTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskTheme.Text = "Theme Only"
-        '
-        'mnuMovieNewAskTrailer
-        '
-        Me.mnuMovieNewAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieNewAskTrailer.Name = "mnuMovieNewAskTrailer"
-        Me.mnuMovieNewAskTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieNewAskTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieNewSkip
-        '
-        Me.mnuMovieNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieNewSkipAll})
-        Me.mnuMovieNewSkip.Name = "mnuMovieNewSkip"
-        Me.mnuMovieNewSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieNewSkip.Tag = "new_skip"
-        Me.mnuMovieNewSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieNewSkipAll
-        '
-        Me.mnuMovieNewSkipAll.Name = "mnuMovieNewSkipAll"
-        Me.mnuMovieNewSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieNewSkipAll.Tag = "all"
-        Me.mnuMovieNewSkipAll.Text = "All Items"
-        '
-        'mnuMovieMark
-        '
-        Me.mnuMovieMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkAuto, Me.mnuMovieMarkAsk, Me.mnuMovieMarkSkip})
-        Me.mnuMovieMark.Name = "mnuMovieMark"
-        Me.mnuMovieMark.Size = New System.Drawing.Size(183, 22)
-        Me.mnuMovieMark.Text = "Marked Movies"
-        '
-        'mnuMovieMarkAuto
-        '
-        Me.mnuMovieMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkAutoAll, Me.mnuMovieMarkAutoActor, Me.mnuMovieMarkAutoBanner, Me.mnuMovieMarkAutoClearArt, Me.mnuMovieMarkAutoClearLogo, Me.mnuMovieMarkAutoDiscArt, Me.mnuMovieMarkAutoEFanarts, Me.mnuMovieMarkAutoEThumbs, Me.mnuMovieMarkAutoFanart, Me.mnuMovieMarkAutoLandscape, Me.mnuMovieMarkAutoMI, Me.mnuMovieMarkAutoNfo, Me.mnuMovieMarkAutoPoster, Me.mnuMovieMarkAutoTheme, Me.mnuMovieMarkAutoTrailer})
-        Me.mnuMovieMarkAuto.Name = "mnuMovieMarkAuto"
-        Me.mnuMovieMarkAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieMarkAuto.Tag = "mark_auto"
-        Me.mnuMovieMarkAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieMarkAutoAll
-        '
-        Me.mnuMovieMarkAutoAll.Name = "mnuMovieMarkAutoAll"
-        Me.mnuMovieMarkAutoAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoAll.Tag = "all"
-        Me.mnuMovieMarkAutoAll.Text = "All Items"
-        '
-        'mnuMovieMarkAutoActor
-        '
-        Me.mnuMovieMarkAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieMarkAutoActor.Name = "mnuMovieMarkAutoActor"
-        Me.mnuMovieMarkAutoActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoActor.Tag = "actorthumbs"
-        Me.mnuMovieMarkAutoActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieMarkAutoBanner
-        '
-        Me.mnuMovieMarkAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieMarkAutoBanner.Name = "mnuMovieMarkAutoBanner"
-        Me.mnuMovieMarkAutoBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoBanner.Tag = "banner"
-        Me.mnuMovieMarkAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieMarkAutoClearArt
-        '
-        Me.mnuMovieMarkAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieMarkAutoClearArt.Name = "mnuMovieMarkAutoClearArt"
-        Me.mnuMovieMarkAutoClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieMarkAutoClearLogo
-        '
-        Me.mnuMovieMarkAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieMarkAutoClearLogo.Name = "mnuMovieMarkAutoClearLogo"
-        Me.mnuMovieMarkAutoClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieMarkAutoDiscArt
-        '
-        Me.mnuMovieMarkAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieMarkAutoDiscArt.Name = "mnuMovieMarkAutoDiscArt"
-        Me.mnuMovieMarkAutoDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieMarkAutoEFanarts
-        '
-        Me.mnuMovieMarkAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieMarkAutoEFanarts.Name = "mnuMovieMarkAutoEFanarts"
-        Me.mnuMovieMarkAutoEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieMarkAutoEThumbs
-        '
-        Me.mnuMovieMarkAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieMarkAutoEThumbs.Name = "mnuMovieMarkAutoEThumbs"
-        Me.mnuMovieMarkAutoEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieMarkAutoFanart
-        '
-        Me.mnuMovieMarkAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieMarkAutoFanart.Name = "mnuMovieMarkAutoFanart"
-        Me.mnuMovieMarkAutoFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieMarkAutoLandscape
-        '
-        Me.mnuMovieMarkAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieMarkAutoLandscape.Name = "mnuMovieMarkAutoLandscape"
-        Me.mnuMovieMarkAutoLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieMarkAutoMI
-        '
-        Me.mnuMovieMarkAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieMarkAutoMI.Name = "mnuMovieMarkAutoMI"
-        Me.mnuMovieMarkAutoMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoMI.Text = "Meta Data Only"
-        '
-        'mnuMovieMarkAutoNfo
-        '
-        Me.mnuMovieMarkAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieMarkAutoNfo.Name = "mnuMovieMarkAutoNfo"
-        Me.mnuMovieMarkAutoNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieMarkAutoPoster
-        '
-        Me.mnuMovieMarkAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieMarkAutoPoster.Name = "mnuMovieMarkAutoPoster"
-        Me.mnuMovieMarkAutoPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieMarkAutoTheme
-        '
-        Me.mnuMovieMarkAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieMarkAutoTheme.Name = "mnuMovieMarkAutoTheme"
-        Me.mnuMovieMarkAutoTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoTheme.Text = "Theme Only"
-        '
-        'mnuMovieMarkAutoTrailer
-        '
-        Me.mnuMovieMarkAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieMarkAutoTrailer.Name = "mnuMovieMarkAutoTrailer"
-        Me.mnuMovieMarkAutoTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAutoTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieMarkAsk
-        '
-        Me.mnuMovieMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkAskAll, Me.mnuMovieMarkAskActor, Me.mnuMovieMarkAskBanner, Me.mnuMovieMarkAskClearArt, Me.mnuMovieMarkAskClearLogo, Me.mnuMovieMarkAskDiscArt, Me.mnuMovieMarkAskEFanarts, Me.mnuMovieMarkAskEThumbs, Me.mnuMovieMarkAskFanart, Me.mnuMovieMarkAskLandscape, Me.mnuMovieMarkAskMI, Me.mnuMovieMarkAskNfo, Me.mnuMovieMarkAskPoster, Me.mnuMovieMarkAskTheme, Me.mnuMovieMarkAskTrailer})
-        Me.mnuMovieMarkAsk.Name = "mnuMovieMarkAsk"
-        Me.mnuMovieMarkAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieMarkAsk.Tag = "mark_ask"
-        Me.mnuMovieMarkAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieMarkAskAll
-        '
-        Me.mnuMovieMarkAskAll.Name = "mnuMovieMarkAskAll"
-        Me.mnuMovieMarkAskAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskAll.Tag = "all"
-        Me.mnuMovieMarkAskAll.Text = "All Items"
-        '
-        'mnuMovieMarkAskActor
-        '
-        Me.mnuMovieMarkAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieMarkAskActor.Name = "mnuMovieMarkAskActor"
-        Me.mnuMovieMarkAskActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskActor.Tag = "actorthumbs"
-        Me.mnuMovieMarkAskActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieMarkAskBanner
-        '
-        Me.mnuMovieMarkAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieMarkAskBanner.Name = "mnuMovieMarkAskBanner"
-        Me.mnuMovieMarkAskBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskBanner.Tag = "banner"
-        Me.mnuMovieMarkAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieMarkAskClearArt
-        '
-        Me.mnuMovieMarkAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieMarkAskClearArt.Name = "mnuMovieMarkAskClearArt"
-        Me.mnuMovieMarkAskClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieMarkAskClearLogo
-        '
-        Me.mnuMovieMarkAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieMarkAskClearLogo.Name = "mnuMovieMarkAskClearLogo"
-        Me.mnuMovieMarkAskClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieMarkAskDiscArt
-        '
-        Me.mnuMovieMarkAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieMarkAskDiscArt.Name = "mnuMovieMarkAskDiscArt"
-        Me.mnuMovieMarkAskDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieMarkAskEFanarts
-        '
-        Me.mnuMovieMarkAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieMarkAskEFanarts.Name = "mnuMovieMarkAskEFanarts"
-        Me.mnuMovieMarkAskEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieMarkAskEThumbs
-        '
-        Me.mnuMovieMarkAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieMarkAskEThumbs.Name = "mnuMovieMarkAskEThumbs"
-        Me.mnuMovieMarkAskEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieMarkAskFanart
-        '
-        Me.mnuMovieMarkAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieMarkAskFanart.Name = "mnuMovieMarkAskFanart"
-        Me.mnuMovieMarkAskFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieMarkAskLandscape
-        '
-        Me.mnuMovieMarkAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieMarkAskLandscape.Name = "mnuMovieMarkAskLandscape"
-        Me.mnuMovieMarkAskLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieMarkAskMI
-        '
-        Me.mnuMovieMarkAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieMarkAskMI.Name = "mnuMovieMarkAskMI"
-        Me.mnuMovieMarkAskMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskMI.Text = "Meta Data Only"
-        '
-        'mnuMovieMarkAskNfo
-        '
-        Me.mnuMovieMarkAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieMarkAskNfo.Name = "mnuMovieMarkAskNfo"
-        Me.mnuMovieMarkAskNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieMarkAskPoster
-        '
-        Me.mnuMovieMarkAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieMarkAskPoster.Name = "mnuMovieMarkAskPoster"
-        Me.mnuMovieMarkAskPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieMarkAskTheme
-        '
-        Me.mnuMovieMarkAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieMarkAskTheme.Name = "mnuMovieMarkAskTheme"
-        Me.mnuMovieMarkAskTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskTheme.Text = "Theme Only"
-        '
-        'mnuMovieMarkAskTrailer
-        '
-        Me.mnuMovieMarkAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieMarkAskTrailer.Name = "mnuMovieMarkAskTrailer"
-        Me.mnuMovieMarkAskTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieMarkAskTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieMarkSkip
-        '
-        Me.mnuMovieMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieMarkSkipAll})
-        Me.mnuMovieMarkSkip.Name = "mnuMovieMarkSkip"
-        Me.mnuMovieMarkSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieMarkSkip.Tag = "mark_skip"
-        Me.mnuMovieMarkSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieMarkSkipAll
-        '
-        Me.mnuMovieMarkSkipAll.Name = "mnuMovieMarkSkipAll"
-        Me.mnuMovieMarkSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieMarkSkipAll.Tag = "all"
-        Me.mnuMovieMarkSkipAll.Text = "All Items"
-        '
-        'mnuMovieFilter
-        '
-        Me.mnuMovieFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterAuto, Me.mnuMovieFilterAsk, Me.mnuMovieFilterSkip})
-        Me.mnuMovieFilter.Name = "mnuMovieFilter"
-        Me.mnuMovieFilter.Size = New System.Drawing.Size(183, 22)
-        Me.mnuMovieFilter.Text = "Current Filter"
-        '
-        'mnuMovieFilterAuto
-        '
-        Me.mnuMovieFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterAutoAll, Me.mnuMovieFilterAutoActor, Me.mnuMovieFilterAutoBanner, Me.mnuMovieFilterAutoClearArt, Me.mnuMovieFilterAutoClearLogo, Me.mnuMovieFilterAutoDiscArt, Me.mnuMovieFilterAutoEFanarts, Me.mnuMovieFilterAutoEThumbs, Me.mnuMovieFilterAutoFanart, Me.mnuMovieFilterAutoLandscape, Me.mnuMovieFilterAutoMI, Me.mnuMovieFilterAutoNfo, Me.mnuMovieFilterAutoPoster, Me.mnuMovieFilterAutoTheme, Me.mnuMovieFilterAutoTrailer})
-        Me.mnuMovieFilterAuto.Name = "mnuMovieFilterAuto"
-        Me.mnuMovieFilterAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieFilterAuto.Tag = "filter_auto"
-        Me.mnuMovieFilterAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieFilterAutoAll
-        '
-        Me.mnuMovieFilterAutoAll.Name = "mnuMovieFilterAutoAll"
-        Me.mnuMovieFilterAutoAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoAll.Tag = "all"
-        Me.mnuMovieFilterAutoAll.Text = "All Items"
-        '
-        'mnuMovieFilterAutoActor
-        '
-        Me.mnuMovieFilterAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieFilterAutoActor.Name = "mnuMovieFilterAutoActor"
-        Me.mnuMovieFilterAutoActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoActor.Tag = "actorthumbs"
-        Me.mnuMovieFilterAutoActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieFilterAutoBanner
-        '
-        Me.mnuMovieFilterAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieFilterAutoBanner.Name = "mnuMovieFilterAutoBanner"
-        Me.mnuMovieFilterAutoBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoBanner.Tag = "banner"
-        Me.mnuMovieFilterAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieFilterAutoClearArt
-        '
-        Me.mnuMovieFilterAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieFilterAutoClearArt.Name = "mnuMovieFilterAutoClearArt"
-        Me.mnuMovieFilterAutoClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieFilterAutoClearLogo
-        '
-        Me.mnuMovieFilterAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieFilterAutoClearLogo.Name = "mnuMovieFilterAutoClearLogo"
-        Me.mnuMovieFilterAutoClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieFilterAutoDiscArt
-        '
-        Me.mnuMovieFilterAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieFilterAutoDiscArt.Name = "mnuMovieFilterAutoDiscArt"
-        Me.mnuMovieFilterAutoDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieFilterAutoEFanarts
-        '
-        Me.mnuMovieFilterAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieFilterAutoEFanarts.Name = "mnuMovieFilterAutoEFanarts"
-        Me.mnuMovieFilterAutoEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieFilterAutoEThumbs
-        '
-        Me.mnuMovieFilterAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieFilterAutoEThumbs.Name = "mnuMovieFilterAutoEThumbs"
-        Me.mnuMovieFilterAutoEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieFilterAutoFanart
-        '
-        Me.mnuMovieFilterAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieFilterAutoFanart.Name = "mnuMovieFilterAutoFanart"
-        Me.mnuMovieFilterAutoFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieFilterAutoLandscape
-        '
-        Me.mnuMovieFilterAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieFilterAutoLandscape.Name = "mnuMovieFilterAutoLandscape"
-        Me.mnuMovieFilterAutoLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieFilterAutoMI
-        '
-        Me.mnuMovieFilterAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieFilterAutoMI.Name = "mnuMovieFilterAutoMI"
-        Me.mnuMovieFilterAutoMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoMI.Text = "Meta Data Only"
-        '
-        'mnuMovieFilterAutoNfo
-        '
-        Me.mnuMovieFilterAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieFilterAutoNfo.Name = "mnuMovieFilterAutoNfo"
-        Me.mnuMovieFilterAutoNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieFilterAutoPoster
-        '
-        Me.mnuMovieFilterAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieFilterAutoPoster.Name = "mnuMovieFilterAutoPoster"
-        Me.mnuMovieFilterAutoPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieFilterAutoTheme
-        '
-        Me.mnuMovieFilterAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieFilterAutoTheme.Name = "mnuMovieFilterAutoTheme"
-        Me.mnuMovieFilterAutoTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoTheme.Text = "Theme Only"
-        '
-        'mnuMovieFilterAutoTrailer
-        '
-        Me.mnuMovieFilterAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieFilterAutoTrailer.Name = "mnuMovieFilterAutoTrailer"
-        Me.mnuMovieFilterAutoTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAutoTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieFilterAsk
-        '
-        Me.mnuMovieFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterAskAll, Me.mnuMovieFilterAskActor, Me.mnuMovieFilterAskBanner, Me.mnuMovieFilterAskClearArt, Me.mnuMovieFilterAskClearLogo, Me.mnuMovieFilterAskDiscArt, Me.mnuMovieFilterAskEFanarts, Me.mnuMovieFilterAskEThumbs, Me.mnuMovieFilterAskFanart, Me.mnuMovieFilterAskLandscape, Me.mnuMovieFilterAskMI, Me.mnuMovieFilterAskNfo, Me.mnuMovieFilterAskPoster, Me.mnuMovieFilterAskTheme, Me.mnuMovieFilterAskTrailer})
-        Me.mnuMovieFilterAsk.Name = "mnuMovieFilterAsk"
-        Me.mnuMovieFilterAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieFilterAsk.Tag = "filter_ask"
-        Me.mnuMovieFilterAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieFilterAskAll
-        '
-        Me.mnuMovieFilterAskAll.Name = "mnuMovieFilterAskAll"
-        Me.mnuMovieFilterAskAll.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskAll.Tag = "all"
-        Me.mnuMovieFilterAskAll.Text = "All Items"
-        '
-        'mnuMovieFilterAskActor
-        '
-        Me.mnuMovieFilterAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.mnuMovieFilterAskActor.Name = "mnuMovieFilterAskActor"
-        Me.mnuMovieFilterAskActor.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskActor.Tag = "actorthumbs"
-        Me.mnuMovieFilterAskActor.Text = "Actor Thumbs Only"
-        '
-        'mnuMovieFilterAskBanner
-        '
-        Me.mnuMovieFilterAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieFilterAskBanner.Name = "mnuMovieFilterAskBanner"
-        Me.mnuMovieFilterAskBanner.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskBanner.Tag = "banner"
-        Me.mnuMovieFilterAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieFilterAskClearArt
-        '
-        Me.mnuMovieFilterAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieFilterAskClearArt.Name = "mnuMovieFilterAskClearArt"
-        Me.mnuMovieFilterAskClearArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieFilterAskClearLogo
-        '
-        Me.mnuMovieFilterAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieFilterAskClearLogo.Name = "mnuMovieFilterAskClearLogo"
-        Me.mnuMovieFilterAskClearLogo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieFilterAskDiscArt
-        '
-        Me.mnuMovieFilterAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieFilterAskDiscArt.Name = "mnuMovieFilterAskDiscArt"
-        Me.mnuMovieFilterAskDiscArt.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieFilterAskEFanarts
-        '
-        Me.mnuMovieFilterAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieFilterAskEFanarts.Name = "mnuMovieFilterAskEFanarts"
-        Me.mnuMovieFilterAskEFanarts.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'mnuMovieFilterAskEThumbs
-        '
-        Me.mnuMovieFilterAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieFilterAskEThumbs.Name = "mnuMovieFilterAskEThumbs"
-        Me.mnuMovieFilterAskEThumbs.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'mnuMovieFilterAskFanart
-        '
-        Me.mnuMovieFilterAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieFilterAskFanart.Name = "mnuMovieFilterAskFanart"
-        Me.mnuMovieFilterAskFanart.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieFilterAskLandscape
-        '
-        Me.mnuMovieFilterAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieFilterAskLandscape.Name = "mnuMovieFilterAskLandscape"
-        Me.mnuMovieFilterAskLandscape.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieFilterAskMI
-        '
-        Me.mnuMovieFilterAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.mnuMovieFilterAskMI.Name = "mnuMovieFilterAskMI"
-        Me.mnuMovieFilterAskMI.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskMI.Text = "Meta Data Only"
-        '
-        'mnuMovieFilterAskNfo
-        '
-        Me.mnuMovieFilterAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieFilterAskNfo.Name = "mnuMovieFilterAskNfo"
-        Me.mnuMovieFilterAskNfo.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieFilterAskPoster
-        '
-        Me.mnuMovieFilterAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieFilterAskPoster.Name = "mnuMovieFilterAskPoster"
-        Me.mnuMovieFilterAskPoster.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieFilterAskTheme
-        '
-        Me.mnuMovieFilterAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.mnuMovieFilterAskTheme.Name = "mnuMovieFilterAskTheme"
-        Me.mnuMovieFilterAskTheme.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskTheme.Text = "Theme Only"
-        '
-        'mnuMovieFilterAskTrailer
-        '
-        Me.mnuMovieFilterAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.mnuMovieFilterAskTrailer.Name = "mnuMovieFilterAskTrailer"
-        Me.mnuMovieFilterAskTrailer.Size = New System.Drawing.Size(171, 22)
-        Me.mnuMovieFilterAskTrailer.Text = "Trailer Only"
-        '
-        'mnuMovieFilterSkip
-        '
-        Me.mnuMovieFilterSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieFilterSkipAll})
-        Me.mnuMovieFilterSkip.Name = "mnuMovieFilterSkip"
-        Me.mnuMovieFilterSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieFilterSkip.Tag = "filter_skip"
-        Me.mnuMovieFilterSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieFilterSkipAll
-        '
-        Me.mnuMovieFilterSkipAll.Name = "mnuMovieFilterSkipAll"
-        Me.mnuMovieFilterSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieFilterSkipAll.Tag = "all"
-        Me.mnuMovieFilterSkipAll.Text = "All Items"
-        '
-        'mnuMovieCustom
-        '
-        Me.mnuMovieCustom.Name = "mnuMovieCustom"
-        Me.mnuMovieCustom.Size = New System.Drawing.Size(183, 22)
-        Me.mnuMovieCustom.Text = "Custom Scraper..."
+        'mnuScrapeSubmenu
+        '
+        Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
+        Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
+        Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
+        '
+        'mnuScrapeSubmenuAll
+        '
+        Me.mnuScrapeSubmenuAll.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuAll.Name = "mnuScrapeSubmenuAll"
+        Me.mnuScrapeSubmenuAll.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuAll.Tag = "all"
+        Me.mnuScrapeSubmenuAll.Text = "All"
+        '
+        'mnuScrapeSubmenuMissing
+        '
+        Me.mnuScrapeSubmenuMissing.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuMissing.Name = "mnuScrapeSubmenuMissing"
+        Me.mnuScrapeSubmenuMissing.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuMissing.Tag = "missing"
+        Me.mnuScrapeSubmenuMissing.Text = "Missing Items"
+        '
+        'mnuScrapeSubmenuNew
+        '
+        Me.mnuScrapeSubmenuNew.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuNew.Name = "mnuScrapeSubmenuNew"
+        Me.mnuScrapeSubmenuNew.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuNew.Tag = "new"
+        Me.mnuScrapeSubmenuNew.Text = "New"
+        '
+        'mnuScrapeSubmenuMarked
+        '
+        Me.mnuScrapeSubmenuMarked.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuMarked.Name = "mnuScrapeSubmenuMarked"
+        Me.mnuScrapeSubmenuMarked.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuMarked.Tag = "marked"
+        Me.mnuScrapeSubmenuMarked.Text = "Marked"
+        '
+        'mnuScrapeSubmenuFilter
+        '
+        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
+        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuFilter.Tag = "filter"
+        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
+        '
+        'mnuScrapeSubmenuCustom
+        '
+        Me.mnuScrapeSubmenuCustom.Name = "mnuScrapeSubmenuCustom"
+        Me.mnuScrapeSubmenuCustom.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuCustom.Tag = "custom"
+        Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
         'mnuScrapeMovieSets
         '
-        Me.mnuScrapeMovieSets.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetAll, Me.mnuMovieSetMiss, Me.mnuMovieSetNew, Me.mnuMovieSetMark, Me.mnuMovieSetFilter, Me.mnuMovieSetCustom, Me.mnuMovieSetRestart})
+        Me.mnuScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
         Me.mnuScrapeMovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.mnuScrapeMovieSets.Image = CType(resources.GetObject("mnuScrapeMovieSets.Image"),System.Drawing.Image)
         Me.mnuScrapeMovieSets.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.mnuScrapeMovieSets.Name = "mnuScrapeMovieSets"
         Me.mnuScrapeMovieSets.Size = New System.Drawing.Size(125, 22)
+        Me.mnuScrapeMovieSets.Tag = "movieset"
         Me.mnuScrapeMovieSets.Text = "Scrape MovieSets"
         Me.mnuScrapeMovieSets.Visible = false
         '
-        'mnuMovieSetAll
-        '
-        Me.mnuMovieSetAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetAllAuto, Me.mnuMovieSetAllAsk, Me.mnuMovieSetAllSkip})
-        Me.mnuMovieSetAll.Name = "mnuMovieSetAll"
-        Me.mnuMovieSetAll.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetAll.Text = "All MovieSets"
-        '
-        'mnuMovieSetAllAuto
-        '
-        Me.mnuMovieSetAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetAllAutoAll, Me.mnuMovieSetAllAutoBanner, Me.mnuMovieSetAllAutoClearArt, Me.mnuMovieSetAllAutoClearLogo, Me.mnuMovieSetAllAutoDiscArt, Me.mnuMovieSetAllAutoEFanarts, Me.mnuMovieSetAllAutoEThumbs, Me.mnuMovieSetAllAutoFanart, Me.mnuMovieSetAllAutoLandscape, Me.mnuMovieSetAllAutoNfo, Me.mnuMovieSetAllAutoPoster})
-        Me.mnuMovieSetAllAuto.Name = "mnuMovieSetAllAuto"
-        Me.mnuMovieSetAllAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetAllAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieSetAllAutoAll
-        '
-        Me.mnuMovieSetAllAutoAll.Name = "mnuMovieSetAllAutoAll"
-        Me.mnuMovieSetAllAutoAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoAll.Text = "All Items"
-        '
-        'mnuMovieSetAllAutoBanner
-        '
-        Me.mnuMovieSetAllAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetAllAutoBanner.Name = "mnuMovieSetAllAutoBanner"
-        Me.mnuMovieSetAllAutoBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoBanner.Tag = "banner"
-        Me.mnuMovieSetAllAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetAllAutoClearArt
-        '
-        Me.mnuMovieSetAllAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetAllAutoClearArt.Name = "mnuMovieSetAllAutoClearArt"
-        Me.mnuMovieSetAllAutoClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetAllAutoClearLogo
-        '
-        Me.mnuMovieSetAllAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetAllAutoClearLogo.Name = "mnuMovieSetAllAutoClearLogo"
-        Me.mnuMovieSetAllAutoClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetAllAutoDiscArt
-        '
-        Me.mnuMovieSetAllAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetAllAutoDiscArt.Name = "mnuMovieSetAllAutoDiscArt"
-        Me.mnuMovieSetAllAutoDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetAllAutoEFanarts
-        '
-        Me.mnuMovieSetAllAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetAllAutoEFanarts.Name = "mnuMovieSetAllAutoEFanarts"
-        Me.mnuMovieSetAllAutoEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetAllAutoEFanarts.Visible = false
-        '
-        'mnuMovieSetAllAutoEThumbs
-        '
-        Me.mnuMovieSetAllAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetAllAutoEThumbs.Name = "mnuMovieSetAllAutoEThumbs"
-        Me.mnuMovieSetAllAutoEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetAllAutoEThumbs.Visible = false
-        '
-        'mnuMovieSetAllAutoFanart
-        '
-        Me.mnuMovieSetAllAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetAllAutoFanart.Name = "mnuMovieSetAllAutoFanart"
-        Me.mnuMovieSetAllAutoFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetAllAutoLandscape
-        '
-        Me.mnuMovieSetAllAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetAllAutoLandscape.Name = "mnuMovieSetAllAutoLandscape"
-        Me.mnuMovieSetAllAutoLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetAllAutoNfo
-        '
-        Me.mnuMovieSetAllAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetAllAutoNfo.Name = "mnuMovieSetAllAutoNfo"
-        Me.mnuMovieSetAllAutoNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetAllAutoPoster
-        '
-        Me.mnuMovieSetAllAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetAllAutoPoster.Name = "mnuMovieSetAllAutoPoster"
-        Me.mnuMovieSetAllAutoPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetAllAsk
-        '
-        Me.mnuMovieSetAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetAllAskAll, Me.mnuMovieSetAllAskBanner, Me.mnuMovieSetAllAskClearArt, Me.mnuMovieSetAllAskClearLogo, Me.mnuMovieSetAllAskDiscArt, Me.mnuMovieSetAllAskEFanarts, Me.mnuMovieSetAllAskEThumbs, Me.mnuMovieSetAllAskFanart, Me.mnuMovieSetAllAskLandscape, Me.mnuMovieSetAllAskNfo, Me.mnuMovieSetAllAskPoster})
-        Me.mnuMovieSetAllAsk.Name = "mnuMovieSetAllAsk"
-        Me.mnuMovieSetAllAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetAllAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieSetAllAskAll
-        '
-        Me.mnuMovieSetAllAskAll.Name = "mnuMovieSetAllAskAll"
-        Me.mnuMovieSetAllAskAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskAll.Text = "All Items"
-        '
-        'mnuMovieSetAllAskBanner
-        '
-        Me.mnuMovieSetAllAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetAllAskBanner.Name = "mnuMovieSetAllAskBanner"
-        Me.mnuMovieSetAllAskBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskBanner.Tag = "banner"
-        Me.mnuMovieSetAllAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetAllAskClearArt
-        '
-        Me.mnuMovieSetAllAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetAllAskClearArt.Name = "mnuMovieSetAllAskClearArt"
-        Me.mnuMovieSetAllAskClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetAllAskClearLogo
-        '
-        Me.mnuMovieSetAllAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetAllAskClearLogo.Name = "mnuMovieSetAllAskClearLogo"
-        Me.mnuMovieSetAllAskClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetAllAskDiscArt
-        '
-        Me.mnuMovieSetAllAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetAllAskDiscArt.Name = "mnuMovieSetAllAskDiscArt"
-        Me.mnuMovieSetAllAskDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetAllAskEFanarts
-        '
-        Me.mnuMovieSetAllAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetAllAskEFanarts.Name = "mnuMovieSetAllAskEFanarts"
-        Me.mnuMovieSetAllAskEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetAllAskEFanarts.Visible = false
-        '
-        'mnuMovieSetAllAskEThumbs
-        '
-        Me.mnuMovieSetAllAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetAllAskEThumbs.Name = "mnuMovieSetAllAskEThumbs"
-        Me.mnuMovieSetAllAskEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetAllAskEThumbs.Visible = false
-        '
-        'mnuMovieSetAllAskFanart
-        '
-        Me.mnuMovieSetAllAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetAllAskFanart.Name = "mnuMovieSetAllAskFanart"
-        Me.mnuMovieSetAllAskFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetAllAskLandscape
-        '
-        Me.mnuMovieSetAllAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetAllAskLandscape.Name = "mnuMovieSetAllAskLandscape"
-        Me.mnuMovieSetAllAskLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetAllAskNfo
-        '
-        Me.mnuMovieSetAllAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetAllAskNfo.Name = "mnuMovieSetAllAskNfo"
-        Me.mnuMovieSetAllAskNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetAllAskPoster
-        '
-        Me.mnuMovieSetAllAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetAllAskPoster.Name = "mnuMovieSetAllAskPoster"
-        Me.mnuMovieSetAllAskPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetAllAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetAllSkip
-        '
-        Me.mnuMovieSetAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetAllSkipAll})
-        Me.mnuMovieSetAllSkip.Name = "mnuMovieSetAllSkip"
-        Me.mnuMovieSetAllSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetAllSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieSetAllSkipAll
-        '
-        Me.mnuMovieSetAllSkipAll.Name = "mnuMovieSetAllSkipAll"
-        Me.mnuMovieSetAllSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieSetAllSkipAll.Text = "All Items"
-        '
-        'mnuMovieSetMiss
-        '
-        Me.mnuMovieSetMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMissAuto, Me.mnuMovieSetMissAsk, Me.mnuMovieSetMissSkip})
-        Me.mnuMovieSetMiss.Name = "mnuMovieSetMiss"
-        Me.mnuMovieSetMiss.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetMiss.Text = "MovieSets Missing Items"
-        '
-        'mnuMovieSetMissAuto
-        '
-        Me.mnuMovieSetMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMissAutoAll, Me.mnuMovieSetMissAutoBanner, Me.mnuMovieSetMissAutoClearArt, Me.mnuMovieSetMissAutoClearLogo, Me.mnuMovieSetMissAutoDiscArt, Me.mnuMovieSetMissAutoEFanarts, Me.mnuMovieSetMissAutoEThumbs, Me.mnuMovieSetMissAutoFanart, Me.mnuMovieSetMissAutoLandscape, Me.mnuMovieSetMissAutoNfo, Me.mnuMovieSetMissAutoPoster})
-        Me.mnuMovieSetMissAuto.Name = "mnuMovieSetMissAuto"
-        Me.mnuMovieSetMissAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetMissAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieSetMissAutoAll
-        '
-        Me.mnuMovieSetMissAutoAll.Enabled = false
-        Me.mnuMovieSetMissAutoAll.Name = "mnuMovieSetMissAutoAll"
-        Me.mnuMovieSetMissAutoAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoAll.Text = "All Items"
-        Me.mnuMovieSetMissAutoAll.Visible = false
-        '
-        'mnuMovieSetMissAutoBanner
-        '
-        Me.mnuMovieSetMissAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetMissAutoBanner.Name = "mnuMovieSetMissAutoBanner"
-        Me.mnuMovieSetMissAutoBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoBanner.Tag = "banner"
-        Me.mnuMovieSetMissAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetMissAutoClearArt
-        '
-        Me.mnuMovieSetMissAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetMissAutoClearArt.Name = "mnuMovieSetMissAutoClearArt"
-        Me.mnuMovieSetMissAutoClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetMissAutoClearLogo
-        '
-        Me.mnuMovieSetMissAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetMissAutoClearLogo.Name = "mnuMovieSetMissAutoClearLogo"
-        Me.mnuMovieSetMissAutoClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetMissAutoDiscArt
-        '
-        Me.mnuMovieSetMissAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetMissAutoDiscArt.Name = "mnuMovieSetMissAutoDiscArt"
-        Me.mnuMovieSetMissAutoDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetMissAutoEFanarts
-        '
-        Me.mnuMovieSetMissAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetMissAutoEFanarts.Name = "mnuMovieSetMissAutoEFanarts"
-        Me.mnuMovieSetMissAutoEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetMissAutoEFanarts.Visible = false
-        '
-        'mnuMovieSetMissAutoEThumbs
-        '
-        Me.mnuMovieSetMissAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetMissAutoEThumbs.Name = "mnuMovieSetMissAutoEThumbs"
-        Me.mnuMovieSetMissAutoEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetMissAutoEThumbs.Visible = false
-        '
-        'mnuMovieSetMissAutoFanart
-        '
-        Me.mnuMovieSetMissAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetMissAutoFanart.Name = "mnuMovieSetMissAutoFanart"
-        Me.mnuMovieSetMissAutoFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetMissAutoLandscape
-        '
-        Me.mnuMovieSetMissAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetMissAutoLandscape.Name = "mnuMovieSetMissAutoLandscape"
-        Me.mnuMovieSetMissAutoLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetMissAutoNfo
-        '
-        Me.mnuMovieSetMissAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetMissAutoNfo.Name = "mnuMovieSetMissAutoNfo"
-        Me.mnuMovieSetMissAutoNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetMissAutoPoster
-        '
-        Me.mnuMovieSetMissAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetMissAutoPoster.Name = "mnuMovieSetMissAutoPoster"
-        Me.mnuMovieSetMissAutoPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetMissAsk
-        '
-        Me.mnuMovieSetMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMissAskAll, Me.mnuMovieSetMissAskBanner, Me.mnuMovieSetMissAskClearArt, Me.mnuMovieSetMissAskClearLogo, Me.mnuMovieSetMissAskDiscArt, Me.mnuMovieSetMissAskEFanarts, Me.mnuMovieSetMissAskEThumbs, Me.mnuMovieSetMissAskFanart, Me.mnuMovieSetMissAskLandscape, Me.mnuMovieSetMissAskNfo, Me.mnuMovieSetMissAskPoster})
-        Me.mnuMovieSetMissAsk.Name = "mnuMovieSetMissAsk"
-        Me.mnuMovieSetMissAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetMissAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieSetMissAskAll
-        '
-        Me.mnuMovieSetMissAskAll.Enabled = false
-        Me.mnuMovieSetMissAskAll.Name = "mnuMovieSetMissAskAll"
-        Me.mnuMovieSetMissAskAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskAll.Text = "All Items"
-        Me.mnuMovieSetMissAskAll.Visible = false
-        '
-        'mnuMovieSetMissAskBanner
-        '
-        Me.mnuMovieSetMissAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetMissAskBanner.Name = "mnuMovieSetMissAskBanner"
-        Me.mnuMovieSetMissAskBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetMissAskClearArt
-        '
-        Me.mnuMovieSetMissAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetMissAskClearArt.Name = "mnuMovieSetMissAskClearArt"
-        Me.mnuMovieSetMissAskClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetMissAskClearLogo
-        '
-        Me.mnuMovieSetMissAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetMissAskClearLogo.Name = "mnuMovieSetMissAskClearLogo"
-        Me.mnuMovieSetMissAskClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetMissAskDiscArt
-        '
-        Me.mnuMovieSetMissAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetMissAskDiscArt.Name = "mnuMovieSetMissAskDiscArt"
-        Me.mnuMovieSetMissAskDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetMissAskEFanarts
-        '
-        Me.mnuMovieSetMissAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetMissAskEFanarts.Name = "mnuMovieSetMissAskEFanarts"
-        Me.mnuMovieSetMissAskEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetMissAskEFanarts.Visible = false
-        '
-        'mnuMovieSetMissAskEThumbs
-        '
-        Me.mnuMovieSetMissAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetMissAskEThumbs.Name = "mnuMovieSetMissAskEThumbs"
-        Me.mnuMovieSetMissAskEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetMissAskEThumbs.Visible = false
-        '
-        'mnuMovieSetMissAskFanart
-        '
-        Me.mnuMovieSetMissAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetMissAskFanart.Name = "mnuMovieSetMissAskFanart"
-        Me.mnuMovieSetMissAskFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetMissAskLandscape
-        '
-        Me.mnuMovieSetMissAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetMissAskLandscape.Name = "mnuMovieSetMissAskLandscape"
-        Me.mnuMovieSetMissAskLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetMissAskNfo
-        '
-        Me.mnuMovieSetMissAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetMissAskNfo.Name = "mnuMovieSetMissAskNfo"
-        Me.mnuMovieSetMissAskNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetMissAskPoster
-        '
-        Me.mnuMovieSetMissAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetMissAskPoster.Name = "mnuMovieSetMissAskPoster"
-        Me.mnuMovieSetMissAskPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMissAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetMissSkip
-        '
-        Me.mnuMovieSetMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMissSkipAll})
-        Me.mnuMovieSetMissSkip.Enabled = false
-        Me.mnuMovieSetMissSkip.Name = "mnuMovieSetMissSkip"
-        Me.mnuMovieSetMissSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetMissSkip.Text = "Skip (Skip If More Than One Match)"
-        Me.mnuMovieSetMissSkip.Visible = false
-        '
-        'mnuMovieSetMissSkipAll
-        '
-        Me.mnuMovieSetMissSkipAll.Name = "mnuMovieSetMissSkipAll"
-        Me.mnuMovieSetMissSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieSetMissSkipAll.Text = "All Items"
-        '
-        'mnuMovieSetNew
-        '
-        Me.mnuMovieSetNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetNewAuto, Me.mnuMovieSetNewAsk, Me.mnuMovieSetNewSkip})
-        Me.mnuMovieSetNew.Name = "mnuMovieSetNew"
-        Me.mnuMovieSetNew.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetNew.Text = "New MovieSets"
-        '
-        'mnuMovieSetNewAuto
-        '
-        Me.mnuMovieSetNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetNewAutoAll, Me.mnuMovieSetNewAutoBanner, Me.mnuMovieSetNewAutoClearArt, Me.mnuMovieSetNewAutoClearLogo, Me.mnuMovieSetNewAutoDiscArt, Me.mnuMovieSetNewAutoEFanarts, Me.mnuMovieSetNewAutoEThumbs, Me.mnuMovieSetNewAutoFanart, Me.mnuMovieSetNewAutoLandscape, Me.mnuMovieSetNewAutoNfo, Me.mnuMovieSetNewAutoPoster})
-        Me.mnuMovieSetNewAuto.Name = "mnuMovieSetNewAuto"
-        Me.mnuMovieSetNewAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetNewAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieSetNewAutoAll
-        '
-        Me.mnuMovieSetNewAutoAll.Name = "mnuMovieSetNewAutoAll"
-        Me.mnuMovieSetNewAutoAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoAll.Text = "All Items"
-        '
-        'mnuMovieSetNewAutoBanner
-        '
-        Me.mnuMovieSetNewAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetNewAutoBanner.Name = "mnuMovieSetNewAutoBanner"
-        Me.mnuMovieSetNewAutoBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetNewAutoClearArt
-        '
-        Me.mnuMovieSetNewAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetNewAutoClearArt.Name = "mnuMovieSetNewAutoClearArt"
-        Me.mnuMovieSetNewAutoClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetNewAutoClearLogo
-        '
-        Me.mnuMovieSetNewAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetNewAutoClearLogo.Name = "mnuMovieSetNewAutoClearLogo"
-        Me.mnuMovieSetNewAutoClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetNewAutoDiscArt
-        '
-        Me.mnuMovieSetNewAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetNewAutoDiscArt.Name = "mnuMovieSetNewAutoDiscArt"
-        Me.mnuMovieSetNewAutoDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetNewAutoEFanarts
-        '
-        Me.mnuMovieSetNewAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetNewAutoEFanarts.Name = "mnuMovieSetNewAutoEFanarts"
-        Me.mnuMovieSetNewAutoEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetNewAutoEFanarts.Visible = false
-        '
-        'mnuMovieSetNewAutoEThumbs
-        '
-        Me.mnuMovieSetNewAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetNewAutoEThumbs.Name = "mnuMovieSetNewAutoEThumbs"
-        Me.mnuMovieSetNewAutoEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetNewAutoEThumbs.Visible = false
-        '
-        'mnuMovieSetNewAutoFanart
-        '
-        Me.mnuMovieSetNewAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetNewAutoFanart.Name = "mnuMovieSetNewAutoFanart"
-        Me.mnuMovieSetNewAutoFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetNewAutoLandscape
-        '
-        Me.mnuMovieSetNewAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetNewAutoLandscape.Name = "mnuMovieSetNewAutoLandscape"
-        Me.mnuMovieSetNewAutoLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetNewAutoNfo
-        '
-        Me.mnuMovieSetNewAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetNewAutoNfo.Name = "mnuMovieSetNewAutoNfo"
-        Me.mnuMovieSetNewAutoNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetNewAutoPoster
-        '
-        Me.mnuMovieSetNewAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetNewAutoPoster.Name = "mnuMovieSetNewAutoPoster"
-        Me.mnuMovieSetNewAutoPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetNewAsk
-        '
-        Me.mnuMovieSetNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetNewAskAll, Me.mnuMovieSetNewAskBanner, Me.mnuMovieSetNewAskClearArt, Me.mnuMovieSetNewAskClearLogo, Me.mnuMovieSetNewAskDiscArt, Me.mnuMovieSetNewAskEFanarts, Me.mnuMovieSetNewAskEThumbs, Me.mnuMovieSetNewAskFanart, Me.mnuMovieSetNewAskLandscape, Me.mnuMovieSetNewAskNfo, Me.mnuMovieSetNewAskPoster})
-        Me.mnuMovieSetNewAsk.Name = "mnuMovieSetNewAsk"
-        Me.mnuMovieSetNewAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetNewAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieSetNewAskAll
-        '
-        Me.mnuMovieSetNewAskAll.Name = "mnuMovieSetNewAskAll"
-        Me.mnuMovieSetNewAskAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskAll.Text = "All Items"
-        '
-        'mnuMovieSetNewAskBanner
-        '
-        Me.mnuMovieSetNewAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetNewAskBanner.Name = "mnuMovieSetNewAskBanner"
-        Me.mnuMovieSetNewAskBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetNewAskClearArt
-        '
-        Me.mnuMovieSetNewAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetNewAskClearArt.Name = "mnuMovieSetNewAskClearArt"
-        Me.mnuMovieSetNewAskClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetNewAskClearLogo
-        '
-        Me.mnuMovieSetNewAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetNewAskClearLogo.Name = "mnuMovieSetNewAskClearLogo"
-        Me.mnuMovieSetNewAskClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetNewAskDiscArt
-        '
-        Me.mnuMovieSetNewAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetNewAskDiscArt.Name = "mnuMovieSetNewAskDiscArt"
-        Me.mnuMovieSetNewAskDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetNewAskEFanarts
-        '
-        Me.mnuMovieSetNewAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetNewAskEFanarts.Name = "mnuMovieSetNewAskEFanarts"
-        Me.mnuMovieSetNewAskEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetNewAskEFanarts.Visible = false
-        '
-        'mnuMovieSetNewAskEThumbs
-        '
-        Me.mnuMovieSetNewAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetNewAskEThumbs.Name = "mnuMovieSetNewAskEThumbs"
-        Me.mnuMovieSetNewAskEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetNewAskEThumbs.Visible = false
-        '
-        'mnuMovieSetNewAskFanart
-        '
-        Me.mnuMovieSetNewAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetNewAskFanart.Name = "mnuMovieSetNewAskFanart"
-        Me.mnuMovieSetNewAskFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetNewAskLandscape
-        '
-        Me.mnuMovieSetNewAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetNewAskLandscape.Name = "mnuMovieSetNewAskLandscape"
-        Me.mnuMovieSetNewAskLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetNewAskNfo
-        '
-        Me.mnuMovieSetNewAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetNewAskNfo.Name = "mnuMovieSetNewAskNfo"
-        Me.mnuMovieSetNewAskNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetNewAskPoster
-        '
-        Me.mnuMovieSetNewAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetNewAskPoster.Name = "mnuMovieSetNewAskPoster"
-        Me.mnuMovieSetNewAskPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetNewAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetNewSkip
-        '
-        Me.mnuMovieSetNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetNewSkipAll})
-        Me.mnuMovieSetNewSkip.Name = "mnuMovieSetNewSkip"
-        Me.mnuMovieSetNewSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetNewSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieSetNewSkipAll
-        '
-        Me.mnuMovieSetNewSkipAll.Name = "mnuMovieSetNewSkipAll"
-        Me.mnuMovieSetNewSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieSetNewSkipAll.Text = "All Items"
-        '
-        'mnuMovieSetMark
-        '
-        Me.mnuMovieSetMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMarkAuto, Me.mnuMovieSetMarkAsk, Me.mnuMovieSetMarkSkip})
-        Me.mnuMovieSetMark.Name = "mnuMovieSetMark"
-        Me.mnuMovieSetMark.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetMark.Text = "Marked MovieSets"
-        '
-        'mnuMovieSetMarkAuto
-        '
-        Me.mnuMovieSetMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMarkAutoAll, Me.mnuMovieSetMarkAutoBanner, Me.mnuMovieSetMarkAutoClearArt, Me.mnuMovieSetMarkAutoClearLogo, Me.mnuMovieSetMarkAutoDiscArt, Me.mnuMovieSetMarkAutoEFanarts, Me.mnuMovieSetMarkAutoEThumbs, Me.mnuMovieSetMarkAutoFanart, Me.mnuMovieSetMarkAutoLandscape, Me.mnuMovieSetMarkAutoNfo, Me.mnuMovieSetMarkAutoPoster})
-        Me.mnuMovieSetMarkAuto.Name = "mnuMovieSetMarkAuto"
-        Me.mnuMovieSetMarkAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetMarkAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieSetMarkAutoAll
-        '
-        Me.mnuMovieSetMarkAutoAll.Name = "mnuMovieSetMarkAutoAll"
-        Me.mnuMovieSetMarkAutoAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoAll.Text = "All Items"
-        '
-        'mnuMovieSetMarkAutoBanner
-        '
-        Me.mnuMovieSetMarkAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetMarkAutoBanner.Name = "mnuMovieSetMarkAutoBanner"
-        Me.mnuMovieSetMarkAutoBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetMarkAutoClearArt
-        '
-        Me.mnuMovieSetMarkAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetMarkAutoClearArt.Name = "mnuMovieSetMarkAutoClearArt"
-        Me.mnuMovieSetMarkAutoClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetMarkAutoClearLogo
-        '
-        Me.mnuMovieSetMarkAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetMarkAutoClearLogo.Name = "mnuMovieSetMarkAutoClearLogo"
-        Me.mnuMovieSetMarkAutoClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetMarkAutoDiscArt
-        '
-        Me.mnuMovieSetMarkAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetMarkAutoDiscArt.Name = "mnuMovieSetMarkAutoDiscArt"
-        Me.mnuMovieSetMarkAutoDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetMarkAutoEFanarts
-        '
-        Me.mnuMovieSetMarkAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetMarkAutoEFanarts.Name = "mnuMovieSetMarkAutoEFanarts"
-        Me.mnuMovieSetMarkAutoEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetMarkAutoEFanarts.Visible = false
-        '
-        'mnuMovieSetMarkAutoEThumbs
-        '
-        Me.mnuMovieSetMarkAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetMarkAutoEThumbs.Name = "mnuMovieSetMarkAutoEThumbs"
-        Me.mnuMovieSetMarkAutoEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetMarkAutoEThumbs.Visible = false
-        '
-        'mnuMovieSetMarkAutoFanart
-        '
-        Me.mnuMovieSetMarkAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetMarkAutoFanart.Name = "mnuMovieSetMarkAutoFanart"
-        Me.mnuMovieSetMarkAutoFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetMarkAutoLandscape
-        '
-        Me.mnuMovieSetMarkAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetMarkAutoLandscape.Name = "mnuMovieSetMarkAutoLandscape"
-        Me.mnuMovieSetMarkAutoLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetMarkAutoNfo
-        '
-        Me.mnuMovieSetMarkAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetMarkAutoNfo.Name = "mnuMovieSetMarkAutoNfo"
-        Me.mnuMovieSetMarkAutoNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetMarkAutoPoster
-        '
-        Me.mnuMovieSetMarkAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetMarkAutoPoster.Name = "mnuMovieSetMarkAutoPoster"
-        Me.mnuMovieSetMarkAutoPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetMarkAsk
-        '
-        Me.mnuMovieSetMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMarkAskAll, Me.mnuMovieSetMarkAskBanner, Me.mnuMovieSetMarkAskClearArt, Me.mnuMovieSetMarkAskClearLogo, Me.mnuMovieSetMarkAskDiscArt, Me.mnuMovieSetMarkAskEFanarts, Me.mnuMovieSetMarkAskEThumbs, Me.mnuMovieSetMarkAskFanart, Me.mnuMovieSetMarkAskLandscape, Me.mnuMovieSetMarkAskNfo, Me.mnuMovieSetMarkAskPoster})
-        Me.mnuMovieSetMarkAsk.Name = "mnuMovieSetMarkAsk"
-        Me.mnuMovieSetMarkAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetMarkAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieSetMarkAskAll
-        '
-        Me.mnuMovieSetMarkAskAll.Name = "mnuMovieSetMarkAskAll"
-        Me.mnuMovieSetMarkAskAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskAll.Text = "All Items"
-        '
-        'mnuMovieSetMarkAskBanner
-        '
-        Me.mnuMovieSetMarkAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetMarkAskBanner.Name = "mnuMovieSetMarkAskBanner"
-        Me.mnuMovieSetMarkAskBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetMarkAskClearArt
-        '
-        Me.mnuMovieSetMarkAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetMarkAskClearArt.Name = "mnuMovieSetMarkAskClearArt"
-        Me.mnuMovieSetMarkAskClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetMarkAskClearLogo
-        '
-        Me.mnuMovieSetMarkAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetMarkAskClearLogo.Name = "mnuMovieSetMarkAskClearLogo"
-        Me.mnuMovieSetMarkAskClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetMarkAskDiscArt
-        '
-        Me.mnuMovieSetMarkAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetMarkAskDiscArt.Name = "mnuMovieSetMarkAskDiscArt"
-        Me.mnuMovieSetMarkAskDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetMarkAskEFanarts
-        '
-        Me.mnuMovieSetMarkAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetMarkAskEFanarts.Name = "mnuMovieSetMarkAskEFanarts"
-        Me.mnuMovieSetMarkAskEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetMarkAskEFanarts.Visible = false
-        '
-        'mnuMovieSetMarkAskEThumbs
-        '
-        Me.mnuMovieSetMarkAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetMarkAskEThumbs.Name = "mnuMovieSetMarkAskEThumbs"
-        Me.mnuMovieSetMarkAskEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetMarkAskEThumbs.Visible = false
-        '
-        'mnuMovieSetMarkAskFanart
-        '
-        Me.mnuMovieSetMarkAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetMarkAskFanart.Name = "mnuMovieSetMarkAskFanart"
-        Me.mnuMovieSetMarkAskFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetMarkAskLandscape
-        '
-        Me.mnuMovieSetMarkAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetMarkAskLandscape.Name = "mnuMovieSetMarkAskLandscape"
-        Me.mnuMovieSetMarkAskLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetMarkAskNfo
-        '
-        Me.mnuMovieSetMarkAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetMarkAskNfo.Name = "mnuMovieSetMarkAskNfo"
-        Me.mnuMovieSetMarkAskNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetMarkAskPoster
-        '
-        Me.mnuMovieSetMarkAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetMarkAskPoster.Name = "mnuMovieSetMarkAskPoster"
-        Me.mnuMovieSetMarkAskPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetMarkAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetMarkSkip
-        '
-        Me.mnuMovieSetMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetMarkSkipAll})
-        Me.mnuMovieSetMarkSkip.Name = "mnuMovieSetMarkSkip"
-        Me.mnuMovieSetMarkSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetMarkSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieSetMarkSkipAll
-        '
-        Me.mnuMovieSetMarkSkipAll.Name = "mnuMovieSetMarkSkipAll"
-        Me.mnuMovieSetMarkSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieSetMarkSkipAll.Text = "All Items"
-        '
-        'mnuMovieSetFilter
-        '
-        Me.mnuMovieSetFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetFilterAuto, Me.mnuMovieSetFilterAsk, Me.mnuMovieSetFilterSkip})
-        Me.mnuMovieSetFilter.Name = "mnuMovieSetFilter"
-        Me.mnuMovieSetFilter.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetFilter.Text = "Current Filter"
-        '
-        'mnuMovieSetFilterAuto
-        '
-        Me.mnuMovieSetFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetFilterAutoAll, Me.mnuMovieSetFilterAutoBanner, Me.mnuMovieSetFilterAutoClearArt, Me.mnuMovieSetFilterAutoClearLogo, Me.mnuMovieSetFilterAutoDiscArt, Me.mnuMovieSetFilterAutoEFanarts, Me.mnuMovieSetFilterAutoEThumbs, Me.mnuMovieSetFilterAutoFanart, Me.mnuMovieSetFilterAutoLandscape, Me.mnuMovieSetFilterAutoNfo, Me.mnuMovieSetFilterAutoPoster})
-        Me.mnuMovieSetFilterAuto.Name = "mnuMovieSetFilterAuto"
-        Me.mnuMovieSetFilterAuto.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetFilterAuto.Text = "Automatic (Force Best Match)"
-        '
-        'mnuMovieSetFilterAutoAll
-        '
-        Me.mnuMovieSetFilterAutoAll.Name = "mnuMovieSetFilterAutoAll"
-        Me.mnuMovieSetFilterAutoAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoAll.Text = "All Items"
-        '
-        'mnuMovieSetFilterAutoBanner
-        '
-        Me.mnuMovieSetFilterAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetFilterAutoBanner.Name = "mnuMovieSetFilterAutoBanner"
-        Me.mnuMovieSetFilterAutoBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetFilterAutoClearArt
-        '
-        Me.mnuMovieSetFilterAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetFilterAutoClearArt.Name = "mnuMovieSetFilterAutoClearArt"
-        Me.mnuMovieSetFilterAutoClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetFilterAutoClearLogo
-        '
-        Me.mnuMovieSetFilterAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetFilterAutoClearLogo.Name = "mnuMovieSetFilterAutoClearLogo"
-        Me.mnuMovieSetFilterAutoClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetFilterAutoDiscArt
-        '
-        Me.mnuMovieSetFilterAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetFilterAutoDiscArt.Name = "mnuMovieSetFilterAutoDiscArt"
-        Me.mnuMovieSetFilterAutoDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetFilterAutoEFanarts
-        '
-        Me.mnuMovieSetFilterAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetFilterAutoEFanarts.Name = "mnuMovieSetFilterAutoEFanarts"
-        Me.mnuMovieSetFilterAutoEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetFilterAutoEFanarts.Visible = false
-        '
-        'mnuMovieSetFilterAutoEThumbs
-        '
-        Me.mnuMovieSetFilterAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetFilterAutoEThumbs.Name = "mnuMovieSetFilterAutoEThumbs"
-        Me.mnuMovieSetFilterAutoEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetFilterAutoEThumbs.Visible = false
-        '
-        'mnuMovieSetFilterAutoFanart
-        '
-        Me.mnuMovieSetFilterAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetFilterAutoFanart.Name = "mnuMovieSetFilterAutoFanart"
-        Me.mnuMovieSetFilterAutoFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetFilterAutoLandscape
-        '
-        Me.mnuMovieSetFilterAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetFilterAutoLandscape.Name = "mnuMovieSetFilterAutoLandscape"
-        Me.mnuMovieSetFilterAutoLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetFilterAutoNfo
-        '
-        Me.mnuMovieSetFilterAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetFilterAutoNfo.Name = "mnuMovieSetFilterAutoNfo"
-        Me.mnuMovieSetFilterAutoNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetFilterAutoPoster
-        '
-        Me.mnuMovieSetFilterAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetFilterAutoPoster.Name = "mnuMovieSetFilterAutoPoster"
-        Me.mnuMovieSetFilterAutoPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAutoPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetFilterAsk
-        '
-        Me.mnuMovieSetFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetFilterAskAll, Me.mnuMovieSetFilterAskBanner, Me.mnuMovieSetFilterAskClearArt, Me.mnuMovieSetFilterAskClearLogo, Me.mnuMovieSetFilterAskDiscArt, Me.mnuMovieSetFilterAskEFanarts, Me.mnuMovieSetFilterAskEThumbs, Me.mnuMovieSetFilterAskFanart, Me.mnuMovieSetFilterAskLandscape, Me.mnuMovieSetFilterAskNfo, Me.mnuMovieSetFilterAskPoster})
-        Me.mnuMovieSetFilterAsk.Name = "mnuMovieSetFilterAsk"
-        Me.mnuMovieSetFilterAsk.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetFilterAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'mnuMovieSetFilterAskAll
-        '
-        Me.mnuMovieSetFilterAskAll.Name = "mnuMovieSetFilterAskAll"
-        Me.mnuMovieSetFilterAskAll.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskAll.Text = "All Items"
-        '
-        'mnuMovieSetFilterAskBanner
-        '
-        Me.mnuMovieSetFilterAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.mnuMovieSetFilterAskBanner.Name = "mnuMovieSetFilterAskBanner"
-        Me.mnuMovieSetFilterAskBanner.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskBanner.Text = "Banner Only"
-        '
-        'mnuMovieSetFilterAskClearArt
-        '
-        Me.mnuMovieSetFilterAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.mnuMovieSetFilterAskClearArt.Name = "mnuMovieSetFilterAskClearArt"
-        Me.mnuMovieSetFilterAskClearArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskClearArt.Text = "ClearArt Only"
-        '
-        'mnuMovieSetFilterAskClearLogo
-        '
-        Me.mnuMovieSetFilterAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.mnuMovieSetFilterAskClearLogo.Name = "mnuMovieSetFilterAskClearLogo"
-        Me.mnuMovieSetFilterAskClearLogo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskClearLogo.Text = "ClearLogo Only"
-        '
-        'mnuMovieSetFilterAskDiscArt
-        '
-        Me.mnuMovieSetFilterAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.mnuMovieSetFilterAskDiscArt.Name = "mnuMovieSetFilterAskDiscArt"
-        Me.mnuMovieSetFilterAskDiscArt.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskDiscArt.Text = "DiscArt Only"
-        '
-        'mnuMovieSetFilterAskEFanarts
-        '
-        Me.mnuMovieSetFilterAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.mnuMovieSetFilterAskEFanarts.Name = "mnuMovieSetFilterAskEFanarts"
-        Me.mnuMovieSetFilterAskEFanarts.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskEFanarts.Text = "Extrafanarts Only"
-        Me.mnuMovieSetFilterAskEFanarts.Visible = false
-        '
-        'mnuMovieSetFilterAskEThumbs
-        '
-        Me.mnuMovieSetFilterAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.mnuMovieSetFilterAskEThumbs.Name = "mnuMovieSetFilterAskEThumbs"
-        Me.mnuMovieSetFilterAskEThumbs.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskEThumbs.Text = "Extrathumbs Only"
-        Me.mnuMovieSetFilterAskEThumbs.Visible = false
-        '
-        'mnuMovieSetFilterAskFanart
-        '
-        Me.mnuMovieSetFilterAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.mnuMovieSetFilterAskFanart.Name = "mnuMovieSetFilterAskFanart"
-        Me.mnuMovieSetFilterAskFanart.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskFanart.Text = "Fanart Only"
-        '
-        'mnuMovieSetFilterAskLandscape
-        '
-        Me.mnuMovieSetFilterAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.mnuMovieSetFilterAskLandscape.Name = "mnuMovieSetFilterAskLandscape"
-        Me.mnuMovieSetFilterAskLandscape.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskLandscape.Text = "Landscape Only"
-        '
-        'mnuMovieSetFilterAskNfo
-        '
-        Me.mnuMovieSetFilterAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.mnuMovieSetFilterAskNfo.Name = "mnuMovieSetFilterAskNfo"
-        Me.mnuMovieSetFilterAskNfo.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskNfo.Text = "NFO Only"
-        '
-        'mnuMovieSetFilterAskPoster
-        '
-        Me.mnuMovieSetFilterAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.mnuMovieSetFilterAskPoster.Name = "mnuMovieSetFilterAskPoster"
-        Me.mnuMovieSetFilterAskPoster.Size = New System.Drawing.Size(165, 22)
-        Me.mnuMovieSetFilterAskPoster.Text = "Poster Only"
-        '
-        'mnuMovieSetFilterSkip
-        '
-        Me.mnuMovieSetFilterSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMovieSetFilterSkipAll})
-        Me.mnuMovieSetFilterSkip.Name = "mnuMovieSetFilterSkip"
-        Me.mnuMovieSetFilterSkip.Size = New System.Drawing.Size(264, 22)
-        Me.mnuMovieSetFilterSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'mnuMovieSetFilterSkipAll
-        '
-        Me.mnuMovieSetFilterSkipAll.Name = "mnuMovieSetFilterSkipAll"
-        Me.mnuMovieSetFilterSkipAll.Size = New System.Drawing.Size(117, 22)
-        Me.mnuMovieSetFilterSkipAll.Text = "All Items"
-        '
-        'mnuMovieSetCustom
-        '
-        Me.mnuMovieSetCustom.Name = "mnuMovieSetCustom"
-        Me.mnuMovieSetCustom.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetCustom.Text = "Custom Scraper..."
-        Me.mnuMovieSetCustom.Visible = false
-        '
-        'mnuMovieSetRestart
-        '
-        Me.mnuMovieSetRestart.Name = "mnuMovieSetRestart"
-        Me.mnuMovieSetRestart.Size = New System.Drawing.Size(199, 22)
-        Me.mnuMovieSetRestart.Text = "Restart last scrape..."
-        Me.mnuMovieSetRestart.Visible = false
+        'mnuScrapeTVShows
+        '
+        Me.mnuScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
+        Me.mnuScrapeTVShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.mnuScrapeTVShows.Image = CType(resources.GetObject("mnuScrapeTVShows.Image"),System.Drawing.Image)
+        Me.mnuScrapeTVShows.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.mnuScrapeTVShows.Name = "mnuScrapeTVShows"
+        Me.mnuScrapeTVShows.Size = New System.Drawing.Size(122, 22)
+        Me.mnuScrapeTVShows.Tag = "tvshow"
+        Me.mnuScrapeTVShows.Text = "Scrape TV Shows"
+        Me.mnuScrapeTVShows.Visible = false
         '
         'mnuUpdate
         '
@@ -10909,9 +8178,9 @@ Partial Class frmMain
         '
         'cmnuTray
         '
-        Me.cmnuTray.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayTitle, Me.ToolStripSeparator21, Me.cmnuTrayUpdate, Me.cmnuTrayScrape, Me.ToolStripSeparator23, Me.cmnuTrayTools, Me.ToolStripSeparator22, Me.cmnuTraySettings, Me.ToolStripSeparator13, Me.cmnuTrayExit})
+        Me.cmnuTray.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayTitle, Me.ToolStripSeparator21, Me.cmnuTrayUpdate, Me.cmnuTrayScrapeMovies, Me.cmnuTrayScrapeMovieSets, Me.cmnuTrayScrapeTVShows, Me.ToolStripSeparator23, Me.cmnuTrayTools, Me.ToolStripSeparator22, Me.cmnuTraySettings, Me.ToolStripSeparator13, Me.cmnuTrayExit})
         Me.cmnuTray.Name = "cmnuTrayIcon"
-        Me.cmnuTray.Size = New System.Drawing.Size(195, 160)
+        Me.cmnuTray.Size = New System.Drawing.Size(195, 204)
         Me.cmnuTray.Text = "Ember Media Manager"
         '
         'cmnuTrayTitle
@@ -10947,1218 +8216,32 @@ Partial Class frmMain
         Me.cmnuTrayUpdateShows.Size = New System.Drawing.Size(125, 22)
         Me.cmnuTrayUpdateShows.Text = "TV Shows"
         '
-        'cmnuTrayScrape
-        '
-        Me.cmnuTrayScrape.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieAll, Me.cmnuTrayMovieMiss, Me.cmnuTrayMovieNew, Me.cmnuTrayMovieMark, Me.cmnuTrayMovieFilter, Me.cmnuTrayMovieCustom})
-        Me.cmnuTrayScrape.Image = CType(resources.GetObject("cmnuTrayScrape.Image"),System.Drawing.Image)
-        Me.cmnuTrayScrape.Name = "cmnuTrayScrape"
-        Me.cmnuTrayScrape.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrape.Text = "Scrape Media"
-        '
-        'cmnuTrayMovieAll
-        '
-        Me.cmnuTrayMovieAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieAllAuto, Me.cmnuTrayMovieAllAsk, Me.cmnuTrayMovieAllSkip})
-        Me.cmnuTrayMovieAll.Name = "cmnuTrayMovieAll"
-        Me.cmnuTrayMovieAll.Size = New System.Drawing.Size(188, 22)
-        Me.cmnuTrayMovieAll.Text = "All Movies"
-        '
-        'cmnuTrayMovieAllAuto
-        '
-        Me.cmnuTrayMovieAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieAllAutoAll, Me.cmnuTrayMovieAllAutoActor, Me.cmnuTrayMovieAllAutoBanner, Me.cmnuTrayMovieAllAutoClearArt, Me.cmnuTrayMovieAllAutoClearLogo, Me.cmnuTrayMovieAllAutoDiscArt, Me.cmnuTrayMovieAllAutoEFanarts, Me.cmnuTrayMovieAllAutoEThumbs, Me.cmnuTrayMovieAllAutoFanart, Me.cmnuTrayMovieAllAutoLandscape, Me.cmnuTrayMovieAllAutoMetaData, Me.cmnuTrayMovieAllAutoNfo, Me.cmnuTrayMovieAllAutoPoster, Me.cmnuTrayMovieAllAutoTheme, Me.cmnuTrayMovieAllAutoTrailer})
-        Me.cmnuTrayMovieAllAuto.Name = "cmnuTrayMovieAllAuto"
-        Me.cmnuTrayMovieAllAuto.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieAllAuto.Text = "Automatic (Force Best Match)"
-        '
-        'cmnuTrayMovieAllAutoAll
-        '
-        Me.cmnuTrayMovieAllAutoAll.Name = "cmnuTrayMovieAllAutoAll"
-        Me.cmnuTrayMovieAllAutoAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoAll.Text = "All Items"
-        '
-        'cmnuTrayMovieAllAutoActor
-        '
-        Me.cmnuTrayMovieAllAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieAllAutoActor.Name = "cmnuTrayMovieAllAutoActor"
-        Me.cmnuTrayMovieAllAutoActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieAllAutoBanner
-        '
-        Me.cmnuTrayMovieAllAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieAllAutoBanner.Name = "cmnuTrayMovieAllAutoBanner"
-        Me.cmnuTrayMovieAllAutoBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieAllAutoClearArt
-        '
-        Me.cmnuTrayMovieAllAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieAllAutoClearArt.Name = "cmnuTrayMovieAllAutoClearArt"
-        Me.cmnuTrayMovieAllAutoClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieAllAutoClearLogo
-        '
-        Me.cmnuTrayMovieAllAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieAllAutoClearLogo.Name = "cmnuTrayMovieAllAutoClearLogo"
-        Me.cmnuTrayMovieAllAutoClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieAllAutoDiscArt
-        '
-        Me.cmnuTrayMovieAllAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieAllAutoDiscArt.Name = "cmnuTrayMovieAllAutoDiscArt"
-        Me.cmnuTrayMovieAllAutoDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieAllAutoEFanarts
-        '
-        Me.cmnuTrayMovieAllAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieAllAutoEFanarts.Name = "cmnuTrayMovieAllAutoEFanarts"
-        Me.cmnuTrayMovieAllAutoEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieAllAutoEThumbs
-        '
-        Me.cmnuTrayMovieAllAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieAllAutoEThumbs.Name = "cmnuTrayMovieAllAutoEThumbs"
-        Me.cmnuTrayMovieAllAutoEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieAllAutoFanart
-        '
-        Me.cmnuTrayMovieAllAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieAllAutoFanart.Name = "cmnuTrayMovieAllAutoFanart"
-        Me.cmnuTrayMovieAllAutoFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieAllAutoLandscape
-        '
-        Me.cmnuTrayMovieAllAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieAllAutoLandscape.Name = "cmnuTrayMovieAllAutoLandscape"
-        Me.cmnuTrayMovieAllAutoLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieAllAutoMetaData
-        '
-        Me.cmnuTrayMovieAllAutoMetaData.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieAllAutoMetaData.Name = "cmnuTrayMovieAllAutoMetaData"
-        Me.cmnuTrayMovieAllAutoMetaData.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoMetaData.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieAllAutoNfo
-        '
-        Me.cmnuTrayMovieAllAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieAllAutoNfo.Name = "cmnuTrayMovieAllAutoNfo"
-        Me.cmnuTrayMovieAllAutoNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieAllAutoPoster
-        '
-        Me.cmnuTrayMovieAllAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieAllAutoPoster.Name = "cmnuTrayMovieAllAutoPoster"
-        Me.cmnuTrayMovieAllAutoPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieAllAutoTheme
-        '
-        Me.cmnuTrayMovieAllAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieAllAutoTheme.Name = "cmnuTrayMovieAllAutoTheme"
-        Me.cmnuTrayMovieAllAutoTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieAllAutoTrailer
-        '
-        Me.cmnuTrayMovieAllAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieAllAutoTrailer.Name = "cmnuTrayMovieAllAutoTrailer"
-        Me.cmnuTrayMovieAllAutoTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAutoTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieAllAsk
-        '
-        Me.cmnuTrayMovieAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieAllAskAll, Me.cmnuTrayMovieAllAskActor, Me.cmnuTrayMovieAllAskBanner, Me.cmnuTrayMovieAllAskClearArt, Me.cmnuTrayMovieAllAskClearLogo, Me.cmnuTrayMovieAllAskDiscArt, Me.cmnuTrayMovieAllAskEFanarts, Me.cmnuTrayMovieAllAskEThumbs, Me.cmnuTrayMovieAllAskFanart, Me.cmnuTrayMovieAllAskLandscape, Me.cmnuTrayMovieAllAskMI, Me.cmnuTrayMovieAllAskNfo, Me.cmnuTrayMovieAllAskPoster, Me.cmnuTrayMovieAllAskTheme, Me.cmnuTrayMovieAllAskTrailer})
-        Me.cmnuTrayMovieAllAsk.Name = "cmnuTrayMovieAllAsk"
-        Me.cmnuTrayMovieAllAsk.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieAllAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'cmnuTrayMovieAllAskAll
-        '
-        Me.cmnuTrayMovieAllAskAll.Name = "cmnuTrayMovieAllAskAll"
-        Me.cmnuTrayMovieAllAskAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskAll.Text = "All Items"
-        '
-        'cmnuTrayMovieAllAskActor
-        '
-        Me.cmnuTrayMovieAllAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieAllAskActor.Name = "cmnuTrayMovieAllAskActor"
-        Me.cmnuTrayMovieAllAskActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieAllAskBanner
-        '
-        Me.cmnuTrayMovieAllAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieAllAskBanner.Name = "cmnuTrayMovieAllAskBanner"
-        Me.cmnuTrayMovieAllAskBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieAllAskClearArt
-        '
-        Me.cmnuTrayMovieAllAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieAllAskClearArt.Name = "cmnuTrayMovieAllAskClearArt"
-        Me.cmnuTrayMovieAllAskClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieAllAskClearLogo
-        '
-        Me.cmnuTrayMovieAllAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieAllAskClearLogo.Name = "cmnuTrayMovieAllAskClearLogo"
-        Me.cmnuTrayMovieAllAskClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieAllAskDiscArt
-        '
-        Me.cmnuTrayMovieAllAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieAllAskDiscArt.Name = "cmnuTrayMovieAllAskDiscArt"
-        Me.cmnuTrayMovieAllAskDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieAllAskEFanarts
-        '
-        Me.cmnuTrayMovieAllAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieAllAskEFanarts.Name = "cmnuTrayMovieAllAskEFanarts"
-        Me.cmnuTrayMovieAllAskEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieAllAskEThumbs
-        '
-        Me.cmnuTrayMovieAllAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieAllAskEThumbs.Name = "cmnuTrayMovieAllAskEThumbs"
-        Me.cmnuTrayMovieAllAskEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieAllAskFanart
-        '
-        Me.cmnuTrayMovieAllAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieAllAskFanart.Name = "cmnuTrayMovieAllAskFanart"
-        Me.cmnuTrayMovieAllAskFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieAllAskLandscape
-        '
-        Me.cmnuTrayMovieAllAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieAllAskLandscape.Name = "cmnuTrayMovieAllAskLandscape"
-        Me.cmnuTrayMovieAllAskLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieAllAskMI
-        '
-        Me.cmnuTrayMovieAllAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieAllAskMI.Name = "cmnuTrayMovieAllAskMI"
-        Me.cmnuTrayMovieAllAskMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieAllAskNfo
-        '
-        Me.cmnuTrayMovieAllAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieAllAskNfo.Name = "cmnuTrayMovieAllAskNfo"
-        Me.cmnuTrayMovieAllAskNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieAllAskPoster
-        '
-        Me.cmnuTrayMovieAllAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieAllAskPoster.Name = "cmnuTrayMovieAllAskPoster"
-        Me.cmnuTrayMovieAllAskPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieAllAskTheme
-        '
-        Me.cmnuTrayMovieAllAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieAllAskTheme.Name = "cmnuTrayMovieAllAskTheme"
-        Me.cmnuTrayMovieAllAskTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieAllAskTrailer
-        '
-        Me.cmnuTrayMovieAllAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieAllAskTrailer.Name = "cmnuTrayMovieAllAskTrailer"
-        Me.cmnuTrayMovieAllAskTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieAllAskTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieAllSkip
-        '
-        Me.cmnuTrayMovieAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieAllSkipAll})
-        Me.cmnuTrayMovieAllSkip.Name = "cmnuTrayMovieAllSkip"
-        Me.cmnuTrayMovieAllSkip.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieAllSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'cmnuTrayMovieAllSkipAll
-        '
-        Me.cmnuTrayMovieAllSkipAll.Name = "cmnuTrayMovieAllSkipAll"
-        Me.cmnuTrayMovieAllSkipAll.Size = New System.Drawing.Size(120, 22)
-        Me.cmnuTrayMovieAllSkipAll.Text = "All Items"
-        '
-        'cmnuTrayMovieMiss
-        '
-        Me.cmnuTrayMovieMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMissAuto, Me.cmnuTrayMovieMissAsk, Me.cmnuTrayMovieMissSkip})
-        Me.cmnuTrayMovieMiss.Name = "cmnuTrayMovieMiss"
-        Me.cmnuTrayMovieMiss.Size = New System.Drawing.Size(188, 22)
-        Me.cmnuTrayMovieMiss.Text = "Movies Missing Items"
-        '
-        'cmnuTrayMovieMissAuto
-        '
-        Me.cmnuTrayMovieMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMissAutoAll, Me.cmnuTrayMovieMissAutoActor, Me.cmnuTrayMovieMissAutoBanner, Me.cmnuTrayMovieMissAutoClearArt, Me.cmnuTrayMovieMissAutoClearLogo, Me.cmnuTrayMovieMissAutoDiscArt, Me.cmnuTrayMovieMissAutoEFanarts, Me.cmnuTrayMovieMissAutoEThumbs, Me.cmnuTrayMovieMissAutoFanart, Me.cmnuTrayMovieMissAutoLandscape, Me.cmnuTrayMovieMissAutoNfo, Me.cmnuTrayMovieMissAutoPoster, Me.cmnuTrayMovieMissAutoTheme, Me.cmnuTrayMovieMissAutoTrailer})
-        Me.cmnuTrayMovieMissAuto.Name = "cmnuTrayMovieMissAuto"
-        Me.cmnuTrayMovieMissAuto.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieMissAuto.Text = "Automatic (Force Best Match)"
-        '
-        'cmnuTrayMovieMissAutoAll
-        '
-        Me.cmnuTrayMovieMissAutoAll.Name = "cmnuTrayMovieMissAutoAll"
-        Me.cmnuTrayMovieMissAutoAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoAll.Text = "All Items"
-        Me.cmnuTrayMovieMissAutoAll.Visible = false
-        '
-        'cmnuTrayMovieMissAutoActor
-        '
-        Me.cmnuTrayMovieMissAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieMissAutoActor.Name = "cmnuTrayMovieMissAutoActor"
-        Me.cmnuTrayMovieMissAutoActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieMissAutoBanner
-        '
-        Me.cmnuTrayMovieMissAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieMissAutoBanner.Name = "cmnuTrayMovieMissAutoBanner"
-        Me.cmnuTrayMovieMissAutoBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieMissAutoClearArt
-        '
-        Me.cmnuTrayMovieMissAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieMissAutoClearArt.Name = "cmnuTrayMovieMissAutoClearArt"
-        Me.cmnuTrayMovieMissAutoClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieMissAutoClearLogo
-        '
-        Me.cmnuTrayMovieMissAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieMissAutoClearLogo.Name = "cmnuTrayMovieMissAutoClearLogo"
-        Me.cmnuTrayMovieMissAutoClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieMissAutoDiscArt
-        '
-        Me.cmnuTrayMovieMissAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieMissAutoDiscArt.Name = "cmnuTrayMovieMissAutoDiscArt"
-        Me.cmnuTrayMovieMissAutoDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieMissAutoEFanarts
-        '
-        Me.cmnuTrayMovieMissAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieMissAutoEFanarts.Name = "cmnuTrayMovieMissAutoEFanarts"
-        Me.cmnuTrayMovieMissAutoEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieMissAutoEThumbs
-        '
-        Me.cmnuTrayMovieMissAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieMissAutoEThumbs.Name = "cmnuTrayMovieMissAutoEThumbs"
-        Me.cmnuTrayMovieMissAutoEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieMissAutoFanart
-        '
-        Me.cmnuTrayMovieMissAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieMissAutoFanart.Name = "cmnuTrayMovieMissAutoFanart"
-        Me.cmnuTrayMovieMissAutoFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieMissAutoLandscape
-        '
-        Me.cmnuTrayMovieMissAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieMissAutoLandscape.Name = "cmnuTrayMovieMissAutoLandscape"
-        Me.cmnuTrayMovieMissAutoLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieMissAutoNfo
-        '
-        Me.cmnuTrayMovieMissAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieMissAutoNfo.Name = "cmnuTrayMovieMissAutoNfo"
-        Me.cmnuTrayMovieMissAutoNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieMissAutoPoster
-        '
-        Me.cmnuTrayMovieMissAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieMissAutoPoster.Name = "cmnuTrayMovieMissAutoPoster"
-        Me.cmnuTrayMovieMissAutoPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieMissAutoTheme
-        '
-        Me.cmnuTrayMovieMissAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieMissAutoTheme.Name = "cmnuTrayMovieMissAutoTheme"
-        Me.cmnuTrayMovieMissAutoTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieMissAutoTrailer
-        '
-        Me.cmnuTrayMovieMissAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieMissAutoTrailer.Name = "cmnuTrayMovieMissAutoTrailer"
-        Me.cmnuTrayMovieMissAutoTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAutoTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieMissAsk
-        '
-        Me.cmnuTrayMovieMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMissAskAll, Me.cmnuTrayMovieMissAskActor, Me.cmnuTrayMovieMissAskBanner, Me.cmnuTrayMovieMissAskClearArt, Me.cmnuTrayMovieMissAskClearLogo, Me.cmnuTrayMovieMissAskDiscArt, Me.cmnuTrayMovieMissAskEFanarts, Me.cmnuTrayMovieMissAskEThumbs, Me.cmnuTrayMovieMissAskFanart, Me.cmnuTrayMovieMissAskLandscape, Me.cmnuTrayMovieMissAskNfo, Me.cmnuTrayMovieMissAskPoster, Me.cmnuTrayMovieMissAskTheme, Me.cmnuTrayMovieMissAskTrailer})
-        Me.cmnuTrayMovieMissAsk.Name = "cmnuTrayMovieMissAsk"
-        Me.cmnuTrayMovieMissAsk.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieMissAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'cmnuTrayMovieMissAskAll
-        '
-        Me.cmnuTrayMovieMissAskAll.Name = "cmnuTrayMovieMissAskAll"
-        Me.cmnuTrayMovieMissAskAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskAll.Text = "All Items"
-        Me.cmnuTrayMovieMissAskAll.Visible = false
-        '
-        'cmnuTrayMovieMissAskActor
-        '
-        Me.cmnuTrayMovieMissAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieMissAskActor.Name = "cmnuTrayMovieMissAskActor"
-        Me.cmnuTrayMovieMissAskActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieMissAskBanner
-        '
-        Me.cmnuTrayMovieMissAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieMissAskBanner.Name = "cmnuTrayMovieMissAskBanner"
-        Me.cmnuTrayMovieMissAskBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieMissAskClearArt
-        '
-        Me.cmnuTrayMovieMissAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieMissAskClearArt.Name = "cmnuTrayMovieMissAskClearArt"
-        Me.cmnuTrayMovieMissAskClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieMissAskClearLogo
-        '
-        Me.cmnuTrayMovieMissAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieMissAskClearLogo.Name = "cmnuTrayMovieMissAskClearLogo"
-        Me.cmnuTrayMovieMissAskClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieMissAskDiscArt
-        '
-        Me.cmnuTrayMovieMissAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieMissAskDiscArt.Name = "cmnuTrayMovieMissAskDiscArt"
-        Me.cmnuTrayMovieMissAskDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieMissAskEFanarts
-        '
-        Me.cmnuTrayMovieMissAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieMissAskEFanarts.Name = "cmnuTrayMovieMissAskEFanarts"
-        Me.cmnuTrayMovieMissAskEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskEFanarts.Text = "Extrfanarts Only"
-        '
-        'cmnuTrayMovieMissAskEThumbs
-        '
-        Me.cmnuTrayMovieMissAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieMissAskEThumbs.Name = "cmnuTrayMovieMissAskEThumbs"
-        Me.cmnuTrayMovieMissAskEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieMissAskFanart
-        '
-        Me.cmnuTrayMovieMissAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieMissAskFanart.Name = "cmnuTrayMovieMissAskFanart"
-        Me.cmnuTrayMovieMissAskFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieMissAskLandscape
-        '
-        Me.cmnuTrayMovieMissAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieMissAskLandscape.Name = "cmnuTrayMovieMissAskLandscape"
-        Me.cmnuTrayMovieMissAskLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieMissAskNfo
-        '
-        Me.cmnuTrayMovieMissAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieMissAskNfo.Name = "cmnuTrayMovieMissAskNfo"
-        Me.cmnuTrayMovieMissAskNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieMissAskPoster
-        '
-        Me.cmnuTrayMovieMissAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieMissAskPoster.Name = "cmnuTrayMovieMissAskPoster"
-        Me.cmnuTrayMovieMissAskPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieMissAskTheme
-        '
-        Me.cmnuTrayMovieMissAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieMissAskTheme.Name = "cmnuTrayMovieMissAskTheme"
-        Me.cmnuTrayMovieMissAskTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieMissAskTrailer
-        '
-        Me.cmnuTrayMovieMissAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieMissAskTrailer.Name = "cmnuTrayMovieMissAskTrailer"
-        Me.cmnuTrayMovieMissAskTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMissAskTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieMissSkip
-        '
-        Me.cmnuTrayMovieMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMissSkipAll})
-        Me.cmnuTrayMovieMissSkip.Name = "cmnuTrayMovieMissSkip"
-        Me.cmnuTrayMovieMissSkip.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieMissSkip.Text = "Skip (Skip If More Than One Match)"
-        Me.cmnuTrayMovieMissSkip.Visible = false
-        '
-        'cmnuTrayMovieMissSkipAll
-        '
-        Me.cmnuTrayMovieMissSkipAll.Name = "cmnuTrayMovieMissSkipAll"
-        Me.cmnuTrayMovieMissSkipAll.Size = New System.Drawing.Size(120, 22)
-        Me.cmnuTrayMovieMissSkipAll.Text = "All Items"
-        '
-        'cmnuTrayMovieNew
-        '
-        Me.cmnuTrayMovieNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieNewAuto, Me.cmnuTrayMovieNewAsk, Me.cmnuTrayMovieNewSkip})
-        Me.cmnuTrayMovieNew.Name = "cmnuTrayMovieNew"
-        Me.cmnuTrayMovieNew.Size = New System.Drawing.Size(188, 22)
-        Me.cmnuTrayMovieNew.Text = "New Movies"
-        '
-        'cmnuTrayMovieNewAuto
-        '
-        Me.cmnuTrayMovieNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieNewAutoAll, Me.cmnuTrayMovieNewAutoActor, Me.cmnuTrayMovieNewAutoBanner, Me.cmnuTrayMovieNewAutoClearArt, Me.cmnuTrayMovieNewAutoClearLogo, Me.cmnuTrayMovieNewAutoDiscArt, Me.cmnuTrayMovieNewAutoEFanarts, Me.cmnuTrayMovieNewAutoEThumbs, Me.cmnuTrayMovieNewAutoFanart, Me.cmnuTrayMovieNewAutoLandscape, Me.cmnuTrayMovieNewAutoMI, Me.cmnuTrayMovieNewAutoNfo, Me.cmnuTrayMovieNewAutoPoster, Me.cmnuTrayMovieNewAutoTheme, Me.cmnuTrayMovieNewAutoTrailer})
-        Me.cmnuTrayMovieNewAuto.Name = "cmnuTrayMovieNewAuto"
-        Me.cmnuTrayMovieNewAuto.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieNewAuto.Text = "Automatic (Force Best Match)"
-        '
-        'cmnuTrayMovieNewAutoAll
-        '
-        Me.cmnuTrayMovieNewAutoAll.Name = "cmnuTrayMovieNewAutoAll"
-        Me.cmnuTrayMovieNewAutoAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoAll.Text = "All Items"
-        '
-        'cmnuTrayMovieNewAutoActor
-        '
-        Me.cmnuTrayMovieNewAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieNewAutoActor.Name = "cmnuTrayMovieNewAutoActor"
-        Me.cmnuTrayMovieNewAutoActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieNewAutoBanner
-        '
-        Me.cmnuTrayMovieNewAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieNewAutoBanner.Name = "cmnuTrayMovieNewAutoBanner"
-        Me.cmnuTrayMovieNewAutoBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieNewAutoClearArt
-        '
-        Me.cmnuTrayMovieNewAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieNewAutoClearArt.Name = "cmnuTrayMovieNewAutoClearArt"
-        Me.cmnuTrayMovieNewAutoClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieNewAutoClearLogo
-        '
-        Me.cmnuTrayMovieNewAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieNewAutoClearLogo.Name = "cmnuTrayMovieNewAutoClearLogo"
-        Me.cmnuTrayMovieNewAutoClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieNewAutoDiscArt
-        '
-        Me.cmnuTrayMovieNewAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieNewAutoDiscArt.Name = "cmnuTrayMovieNewAutoDiscArt"
-        Me.cmnuTrayMovieNewAutoDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieNewAutoEFanarts
-        '
-        Me.cmnuTrayMovieNewAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieNewAutoEFanarts.Name = "cmnuTrayMovieNewAutoEFanarts"
-        Me.cmnuTrayMovieNewAutoEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieNewAutoEThumbs
-        '
-        Me.cmnuTrayMovieNewAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieNewAutoEThumbs.Name = "cmnuTrayMovieNewAutoEThumbs"
-        Me.cmnuTrayMovieNewAutoEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieNewAutoFanart
-        '
-        Me.cmnuTrayMovieNewAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieNewAutoFanart.Name = "cmnuTrayMovieNewAutoFanart"
-        Me.cmnuTrayMovieNewAutoFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieNewAutoLandscape
-        '
-        Me.cmnuTrayMovieNewAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieNewAutoLandscape.Name = "cmnuTrayMovieNewAutoLandscape"
-        Me.cmnuTrayMovieNewAutoLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieNewAutoMI
-        '
-        Me.cmnuTrayMovieNewAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieNewAutoMI.Name = "cmnuTrayMovieNewAutoMI"
-        Me.cmnuTrayMovieNewAutoMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieNewAutoNfo
-        '
-        Me.cmnuTrayMovieNewAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieNewAutoNfo.Name = "cmnuTrayMovieNewAutoNfo"
-        Me.cmnuTrayMovieNewAutoNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieNewAutoPoster
-        '
-        Me.cmnuTrayMovieNewAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieNewAutoPoster.Name = "cmnuTrayMovieNewAutoPoster"
-        Me.cmnuTrayMovieNewAutoPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieNewAutoTheme
-        '
-        Me.cmnuTrayMovieNewAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieNewAutoTheme.Name = "cmnuTrayMovieNewAutoTheme"
-        Me.cmnuTrayMovieNewAutoTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieNewAutoTrailer
-        '
-        Me.cmnuTrayMovieNewAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieNewAutoTrailer.Name = "cmnuTrayMovieNewAutoTrailer"
-        Me.cmnuTrayMovieNewAutoTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAutoTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieNewAsk
-        '
-        Me.cmnuTrayMovieNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieNewAskAll, Me.cmnuTrayMovieNewAskActor, Me.cmnuTrayMovieNewAskBanner, Me.cmnuTrayMovieNewAskClearArt, Me.cmnuTrayMovieNewAskClearLogo, Me.cmnuTrayMovieNewAskDiscArt, Me.cmnuTrayMovieNewAskEFanarts, Me.cmnuTrayMovieNewAskEThumbs, Me.cmnuTrayMovieNewAskFanart, Me.cmnuTrayMovieNewAskLandscape, Me.cmnuTrayMovieNewAskMI, Me.cmnuTrayMovieNewAskNfo, Me.cmnuTrayMovieNewAskPoster, Me.cmnuTrayMovieNewAskTheme, Me.cmnuTrayMovieNewAskTrailer})
-        Me.cmnuTrayMovieNewAsk.Name = "cmnuTrayMovieNewAsk"
-        Me.cmnuTrayMovieNewAsk.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieNewAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'cmnuTrayMovieNewAskAll
-        '
-        Me.cmnuTrayMovieNewAskAll.Name = "cmnuTrayMovieNewAskAll"
-        Me.cmnuTrayMovieNewAskAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskAll.Text = "All Items"
-        '
-        'cmnuTrayMovieNewAskActor
-        '
-        Me.cmnuTrayMovieNewAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieNewAskActor.Name = "cmnuTrayMovieNewAskActor"
-        Me.cmnuTrayMovieNewAskActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieNewAskBanner
-        '
-        Me.cmnuTrayMovieNewAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieNewAskBanner.Name = "cmnuTrayMovieNewAskBanner"
-        Me.cmnuTrayMovieNewAskBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieNewAskClearArt
-        '
-        Me.cmnuTrayMovieNewAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieNewAskClearArt.Name = "cmnuTrayMovieNewAskClearArt"
-        Me.cmnuTrayMovieNewAskClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieNewAskClearLogo
-        '
-        Me.cmnuTrayMovieNewAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieNewAskClearLogo.Name = "cmnuTrayMovieNewAskClearLogo"
-        Me.cmnuTrayMovieNewAskClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieNewAskDiscArt
-        '
-        Me.cmnuTrayMovieNewAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieNewAskDiscArt.Name = "cmnuTrayMovieNewAskDiscArt"
-        Me.cmnuTrayMovieNewAskDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieNewAskEFanarts
-        '
-        Me.cmnuTrayMovieNewAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieNewAskEFanarts.Name = "cmnuTrayMovieNewAskEFanarts"
-        Me.cmnuTrayMovieNewAskEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieNewAskEThumbs
-        '
-        Me.cmnuTrayMovieNewAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieNewAskEThumbs.Name = "cmnuTrayMovieNewAskEThumbs"
-        Me.cmnuTrayMovieNewAskEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieNewAskFanart
-        '
-        Me.cmnuTrayMovieNewAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieNewAskFanart.Name = "cmnuTrayMovieNewAskFanart"
-        Me.cmnuTrayMovieNewAskFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieNewAskLandscape
-        '
-        Me.cmnuTrayMovieNewAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieNewAskLandscape.Name = "cmnuTrayMovieNewAskLandscape"
-        Me.cmnuTrayMovieNewAskLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieNewAskMI
-        '
-        Me.cmnuTrayMovieNewAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieNewAskMI.Name = "cmnuTrayMovieNewAskMI"
-        Me.cmnuTrayMovieNewAskMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieNewAskNfo
-        '
-        Me.cmnuTrayMovieNewAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieNewAskNfo.Name = "cmnuTrayMovieNewAskNfo"
-        Me.cmnuTrayMovieNewAskNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieNewAskPoster
-        '
-        Me.cmnuTrayMovieNewAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieNewAskPoster.Name = "cmnuTrayMovieNewAskPoster"
-        Me.cmnuTrayMovieNewAskPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieNewAskTheme
-        '
-        Me.cmnuTrayMovieNewAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieNewAskTheme.Name = "cmnuTrayMovieNewAskTheme"
-        Me.cmnuTrayMovieNewAskTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieNewAskTrailer
-        '
-        Me.cmnuTrayMovieNewAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieNewAskTrailer.Name = "cmnuTrayMovieNewAskTrailer"
-        Me.cmnuTrayMovieNewAskTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieNewAskTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieNewSkip
-        '
-        Me.cmnuTrayMovieNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieNewSkipAll})
-        Me.cmnuTrayMovieNewSkip.Name = "cmnuTrayMovieNewSkip"
-        Me.cmnuTrayMovieNewSkip.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieNewSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'cmnuTrayMovieNewSkipAll
-        '
-        Me.cmnuTrayMovieNewSkipAll.Name = "cmnuTrayMovieNewSkipAll"
-        Me.cmnuTrayMovieNewSkipAll.Size = New System.Drawing.Size(120, 22)
-        Me.cmnuTrayMovieNewSkipAll.Text = "All Items"
-        '
-        'cmnuTrayMovieMark
-        '
-        Me.cmnuTrayMovieMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMarkAuto, Me.cmnuTrayMovieMarkAsk, Me.cmnuTrayMovieMarkSkip})
-        Me.cmnuTrayMovieMark.Name = "cmnuTrayMovieMark"
-        Me.cmnuTrayMovieMark.Size = New System.Drawing.Size(188, 22)
-        Me.cmnuTrayMovieMark.Text = "Marked Movies"
-        '
-        'cmnuTrayMovieMarkAuto
-        '
-        Me.cmnuTrayMovieMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMarkAutoAll, Me.cmnuTrayMovieMarkAutoActor, Me.cmnuTrayMovieMarkAutoBanner, Me.cmnuTrayMovieMarkAutoClearArt, Me.cmnuTrayMovieMarkAutoClearLogo, Me.cmnuTrayMovieMarkAutoDiscArt, Me.cmnuTrayMovieMarkAutoEFanarts, Me.cmnuTrayMovieMarkAutoEThumbs, Me.cmnuTrayMovieMarkAutoFanart, Me.cmnuTrayMovieMarkAutoLandscape, Me.cmnuTrayMovieMarkAutoMI, Me.cmnuTrayMovieMarkAutoNfo, Me.cmnuTrayMovieMarkAutoPoster, Me.cmnuTrayMovieMarkAutoTheme, Me.cmnuTrayMovieMarkAutoTrailer})
-        Me.cmnuTrayMovieMarkAuto.Name = "cmnuTrayMovieMarkAuto"
-        Me.cmnuTrayMovieMarkAuto.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieMarkAuto.Text = "Automatic (Force Best Match)"
-        '
-        'cmnuTrayMovieMarkAutoAll
-        '
-        Me.cmnuTrayMovieMarkAutoAll.Name = "cmnuTrayMovieMarkAutoAll"
-        Me.cmnuTrayMovieMarkAutoAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoAll.Text = "All Items"
-        '
-        'cmnuTrayMovieMarkAutoActor
-        '
-        Me.cmnuTrayMovieMarkAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieMarkAutoActor.Name = "cmnuTrayMovieMarkAutoActor"
-        Me.cmnuTrayMovieMarkAutoActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieMarkAutoBanner
-        '
-        Me.cmnuTrayMovieMarkAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieMarkAutoBanner.Name = "cmnuTrayMovieMarkAutoBanner"
-        Me.cmnuTrayMovieMarkAutoBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieMarkAutoClearArt
-        '
-        Me.cmnuTrayMovieMarkAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieMarkAutoClearArt.Name = "cmnuTrayMovieMarkAutoClearArt"
-        Me.cmnuTrayMovieMarkAutoClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieMarkAutoClearLogo
-        '
-        Me.cmnuTrayMovieMarkAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieMarkAutoClearLogo.Name = "cmnuTrayMovieMarkAutoClearLogo"
-        Me.cmnuTrayMovieMarkAutoClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieMarkAutoDiscArt
-        '
-        Me.cmnuTrayMovieMarkAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieMarkAutoDiscArt.Name = "cmnuTrayMovieMarkAutoDiscArt"
-        Me.cmnuTrayMovieMarkAutoDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieMarkAutoEFanarts
-        '
-        Me.cmnuTrayMovieMarkAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieMarkAutoEFanarts.Name = "cmnuTrayMovieMarkAutoEFanarts"
-        Me.cmnuTrayMovieMarkAutoEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieMarkAutoEThumbs
-        '
-        Me.cmnuTrayMovieMarkAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieMarkAutoEThumbs.Name = "cmnuTrayMovieMarkAutoEThumbs"
-        Me.cmnuTrayMovieMarkAutoEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieMarkAutoFanart
-        '
-        Me.cmnuTrayMovieMarkAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieMarkAutoFanart.Name = "cmnuTrayMovieMarkAutoFanart"
-        Me.cmnuTrayMovieMarkAutoFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieMarkAutoLandscape
-        '
-        Me.cmnuTrayMovieMarkAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieMarkAutoLandscape.Name = "cmnuTrayMovieMarkAutoLandscape"
-        Me.cmnuTrayMovieMarkAutoLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieMarkAutoMI
-        '
-        Me.cmnuTrayMovieMarkAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieMarkAutoMI.Name = "cmnuTrayMovieMarkAutoMI"
-        Me.cmnuTrayMovieMarkAutoMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieMarkAutoNfo
-        '
-        Me.cmnuTrayMovieMarkAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieMarkAutoNfo.Name = "cmnuTrayMovieMarkAutoNfo"
-        Me.cmnuTrayMovieMarkAutoNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieMarkAutoPoster
-        '
-        Me.cmnuTrayMovieMarkAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieMarkAutoPoster.Name = "cmnuTrayMovieMarkAutoPoster"
-        Me.cmnuTrayMovieMarkAutoPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieMarkAutoTheme
-        '
-        Me.cmnuTrayMovieMarkAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieMarkAutoTheme.Name = "cmnuTrayMovieMarkAutoTheme"
-        Me.cmnuTrayMovieMarkAutoTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieMarkAutoTrailer
-        '
-        Me.cmnuTrayMovieMarkAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieMarkAutoTrailer.Name = "cmnuTrayMovieMarkAutoTrailer"
-        Me.cmnuTrayMovieMarkAutoTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAutoTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieMarkAsk
-        '
-        Me.cmnuTrayMovieMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMarkAskAll, Me.cmnuTrayMovieMarkAskActor, Me.cmnuTrayMovieMarkAskBanner, Me.cmnuTrayMovieMarkAskClearArt, Me.cmnuTrayMovieMarkAskClearLogo, Me.cmnuTrayMovieMarkAskDiscArt, Me.cmnuTrayMovieMarkAskEFanarts, Me.cmnuTrayMovieMarkAskEThumbs, Me.cmnuTrayMovieMarkAskFanart, Me.cmnuTrayMovieMarkAskLandscape, Me.cmnuTrayMovieMarkAskMI, Me.cmnuTrayMovieMarkAskNfo, Me.cmnuTrayMovieMarkAskPoster, Me.cmnuTrayMovieMarkAskTheme, Me.cmnuTrayMovieMarkAskTrailer})
-        Me.cmnuTrayMovieMarkAsk.Name = "cmnuTrayMovieMarkAsk"
-        Me.cmnuTrayMovieMarkAsk.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieMarkAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'cmnuTrayMovieMarkAskAll
-        '
-        Me.cmnuTrayMovieMarkAskAll.Name = "cmnuTrayMovieMarkAskAll"
-        Me.cmnuTrayMovieMarkAskAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskAll.Text = "All Items"
-        '
-        'cmnuTrayMovieMarkAskActor
-        '
-        Me.cmnuTrayMovieMarkAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieMarkAskActor.Name = "cmnuTrayMovieMarkAskActor"
-        Me.cmnuTrayMovieMarkAskActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieMarkAskBanner
-        '
-        Me.cmnuTrayMovieMarkAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieMarkAskBanner.Name = "cmnuTrayMovieMarkAskBanner"
-        Me.cmnuTrayMovieMarkAskBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieMarkAskClearArt
-        '
-        Me.cmnuTrayMovieMarkAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieMarkAskClearArt.Name = "cmnuTrayMovieMarkAskClearArt"
-        Me.cmnuTrayMovieMarkAskClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieMarkAskClearLogo
-        '
-        Me.cmnuTrayMovieMarkAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieMarkAskClearLogo.Name = "cmnuTrayMovieMarkAskClearLogo"
-        Me.cmnuTrayMovieMarkAskClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieMarkAskDiscArt
-        '
-        Me.cmnuTrayMovieMarkAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieMarkAskDiscArt.Name = "cmnuTrayMovieMarkAskDiscArt"
-        Me.cmnuTrayMovieMarkAskDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieMarkAskEFanarts
-        '
-        Me.cmnuTrayMovieMarkAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieMarkAskEFanarts.Name = "cmnuTrayMovieMarkAskEFanarts"
-        Me.cmnuTrayMovieMarkAskEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieMarkAskEThumbs
-        '
-        Me.cmnuTrayMovieMarkAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieMarkAskEThumbs.Name = "cmnuTrayMovieMarkAskEThumbs"
-        Me.cmnuTrayMovieMarkAskEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieMarkAskFanart
-        '
-        Me.cmnuTrayMovieMarkAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieMarkAskFanart.Name = "cmnuTrayMovieMarkAskFanart"
-        Me.cmnuTrayMovieMarkAskFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieMarkAskLandscape
-        '
-        Me.cmnuTrayMovieMarkAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieMarkAskLandscape.Name = "cmnuTrayMovieMarkAskLandscape"
-        Me.cmnuTrayMovieMarkAskLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieMarkAskMI
-        '
-        Me.cmnuTrayMovieMarkAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieMarkAskMI.Name = "cmnuTrayMovieMarkAskMI"
-        Me.cmnuTrayMovieMarkAskMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieMarkAskNfo
-        '
-        Me.cmnuTrayMovieMarkAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieMarkAskNfo.Name = "cmnuTrayMovieMarkAskNfo"
-        Me.cmnuTrayMovieMarkAskNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieMarkAskPoster
-        '
-        Me.cmnuTrayMovieMarkAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieMarkAskPoster.Name = "cmnuTrayMovieMarkAskPoster"
-        Me.cmnuTrayMovieMarkAskPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieMarkAskTheme
-        '
-        Me.cmnuTrayMovieMarkAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieMarkAskTheme.Name = "cmnuTrayMovieMarkAskTheme"
-        Me.cmnuTrayMovieMarkAskTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieMarkAskTrailer
-        '
-        Me.cmnuTrayMovieMarkAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieMarkAskTrailer.Name = "cmnuTrayMovieMarkAskTrailer"
-        Me.cmnuTrayMovieMarkAskTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieMarkAskTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieMarkSkip
-        '
-        Me.cmnuTrayMovieMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieMarkSkipAll})
-        Me.cmnuTrayMovieMarkSkip.Name = "cmnuTrayMovieMarkSkip"
-        Me.cmnuTrayMovieMarkSkip.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieMarkSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'cmnuTrayMovieMarkSkipAll
-        '
-        Me.cmnuTrayMovieMarkSkipAll.Name = "cmnuTrayMovieMarkSkipAll"
-        Me.cmnuTrayMovieMarkSkipAll.Size = New System.Drawing.Size(120, 22)
-        Me.cmnuTrayMovieMarkSkipAll.Text = "All Items"
-        '
-        'cmnuTrayMovieFilter
-        '
-        Me.cmnuTrayMovieFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieFilterAuto, Me.cmnuTrayMovieFilterAsk, Me.cmnuTrayMovieFilterSkip})
-        Me.cmnuTrayMovieFilter.Name = "cmnuTrayMovieFilter"
-        Me.cmnuTrayMovieFilter.Size = New System.Drawing.Size(188, 22)
-        Me.cmnuTrayMovieFilter.Text = "Current Filter"
-        '
-        'cmnuTrayMovieFilterAuto
-        '
-        Me.cmnuTrayMovieFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieFilterAutoAll, Me.cmnuTrayMovieFilterAutoActor, Me.cmnuTrayMovieFilterAutoBanner, Me.cmnuTrayMovieFilterAutoClearArt, Me.cmnuTrayMovieFilterAutoClearLogo, Me.cmnuTrayMovieFilterAutoDiscArt, Me.cmnuTrayMovieFilterAutoEFanarts, Me.cmnuTrayMovieFilterAutoEThumbs, Me.cmnuTrayMovieFilterAutoFanart, Me.cmnuTrayMovieFilterAutoLandscape, Me.cmnuTrayMovieFilterAutoMI, Me.cmnuTrayMovieFilterAutoNfo, Me.cmnuTrayMovieFilterAutoPoster, Me.cmnuTrayMovieFilterAutoTheme, Me.cmnuTrayMovieFilterAutoTrailer})
-        Me.cmnuTrayMovieFilterAuto.Name = "cmnuTrayMovieFilterAuto"
-        Me.cmnuTrayMovieFilterAuto.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieFilterAuto.Text = "Automatic (Force Best Match)"
-        '
-        'cmnuTrayMovieFilterAutoAll
-        '
-        Me.cmnuTrayMovieFilterAutoAll.Name = "cmnuTrayMovieFilterAutoAll"
-        Me.cmnuTrayMovieFilterAutoAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoAll.Text = "All Items"
-        '
-        'cmnuTrayMovieFilterAutoActor
-        '
-        Me.cmnuTrayMovieFilterAutoActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieFilterAutoActor.Name = "cmnuTrayMovieFilterAutoActor"
-        Me.cmnuTrayMovieFilterAutoActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieFilterAutoBanner
-        '
-        Me.cmnuTrayMovieFilterAutoBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieFilterAutoBanner.Name = "cmnuTrayMovieFilterAutoBanner"
-        Me.cmnuTrayMovieFilterAutoBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieFilterAutoClearArt
-        '
-        Me.cmnuTrayMovieFilterAutoClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieFilterAutoClearArt.Name = "cmnuTrayMovieFilterAutoClearArt"
-        Me.cmnuTrayMovieFilterAutoClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieFilterAutoClearLogo
-        '
-        Me.cmnuTrayMovieFilterAutoClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieFilterAutoClearLogo.Name = "cmnuTrayMovieFilterAutoClearLogo"
-        Me.cmnuTrayMovieFilterAutoClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieFilterAutoDiscArt
-        '
-        Me.cmnuTrayMovieFilterAutoDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieFilterAutoDiscArt.Name = "cmnuTrayMovieFilterAutoDiscArt"
-        Me.cmnuTrayMovieFilterAutoDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieFilterAutoEFanarts
-        '
-        Me.cmnuTrayMovieFilterAutoEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieFilterAutoEFanarts.Name = "cmnuTrayMovieFilterAutoEFanarts"
-        Me.cmnuTrayMovieFilterAutoEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieFilterAutoEThumbs
-        '
-        Me.cmnuTrayMovieFilterAutoEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieFilterAutoEThumbs.Name = "cmnuTrayMovieFilterAutoEThumbs"
-        Me.cmnuTrayMovieFilterAutoEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieFilterAutoFanart
-        '
-        Me.cmnuTrayMovieFilterAutoFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieFilterAutoFanart.Name = "cmnuTrayMovieFilterAutoFanart"
-        Me.cmnuTrayMovieFilterAutoFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieFilterAutoLandscape
-        '
-        Me.cmnuTrayMovieFilterAutoLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieFilterAutoLandscape.Name = "cmnuTrayMovieFilterAutoLandscape"
-        Me.cmnuTrayMovieFilterAutoLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieFilterAutoMI
-        '
-        Me.cmnuTrayMovieFilterAutoMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieFilterAutoMI.Name = "cmnuTrayMovieFilterAutoMI"
-        Me.cmnuTrayMovieFilterAutoMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieFilterAutoNfo
-        '
-        Me.cmnuTrayMovieFilterAutoNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieFilterAutoNfo.Name = "cmnuTrayMovieFilterAutoNfo"
-        Me.cmnuTrayMovieFilterAutoNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieFilterAutoPoster
-        '
-        Me.cmnuTrayMovieFilterAutoPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieFilterAutoPoster.Name = "cmnuTrayMovieFilterAutoPoster"
-        Me.cmnuTrayMovieFilterAutoPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieFilterAutoTheme
-        '
-        Me.cmnuTrayMovieFilterAutoTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieFilterAutoTheme.Name = "cmnuTrayMovieFilterAutoTheme"
-        Me.cmnuTrayMovieFilterAutoTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieFilterAutoTrailer
-        '
-        Me.cmnuTrayMovieFilterAutoTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieFilterAutoTrailer.Name = "cmnuTrayMovieFilterAutoTrailer"
-        Me.cmnuTrayMovieFilterAutoTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAutoTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieFilterAsk
-        '
-        Me.cmnuTrayMovieFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieFilterAskAll, Me.cmnuTrayMovieFilterAskActor, Me.cmnuTrayMovieFilterAskBanner, Me.cmnuTrayMovieFilterAskClearArt, Me.cmnuTrayMovieFilterAskClearLogo, Me.cmnuTrayMovieFilterAskDiscArt, Me.cmnuTrayMovieFilterAskEFanarts, Me.cmnuTrayMovieFilterAskEThumbs, Me.cmnuTrayMovieFilterAskFanart, Me.cmnuTrayMovieFilterAskLandscape, Me.cmnuTrayMovieFilterAskMI, Me.cmnuTrayMovieFilterAskNfo, Me.cmnuTrayMovieFilterAskPoster, Me.cmnuTrayMovieFilterAskTheme, Me.cmnuTrayMovieFilterAskTrailer})
-        Me.cmnuTrayMovieFilterAsk.Name = "cmnuTrayMovieFilterAsk"
-        Me.cmnuTrayMovieFilterAsk.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieFilterAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
-        'cmnuTrayMovieFilterAskAll
-        '
-        Me.cmnuTrayMovieFilterAskAll.Name = "cmnuTrayMovieFilterAskAll"
-        Me.cmnuTrayMovieFilterAskAll.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskAll.Text = "All Items"
-        '
-        'cmnuTrayMovieFilterAskActor
-        '
-        Me.cmnuTrayMovieFilterAskActor.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasActorThumb
-        Me.cmnuTrayMovieFilterAskActor.Name = "cmnuTrayMovieFilterAskActor"
-        Me.cmnuTrayMovieFilterAskActor.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuTrayMovieFilterAskBanner
-        '
-        Me.cmnuTrayMovieFilterAskBanner.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasBanner
-        Me.cmnuTrayMovieFilterAskBanner.Name = "cmnuTrayMovieFilterAskBanner"
-        Me.cmnuTrayMovieFilterAskBanner.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskBanner.Text = "Banner Only"
-        '
-        'cmnuTrayMovieFilterAskClearArt
-        '
-        Me.cmnuTrayMovieFilterAskClearArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearArt
-        Me.cmnuTrayMovieFilterAskClearArt.Name = "cmnuTrayMovieFilterAskClearArt"
-        Me.cmnuTrayMovieFilterAskClearArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskClearArt.Text = "ClearArt Only"
-        '
-        'cmnuTrayMovieFilterAskClearLogo
-        '
-        Me.cmnuTrayMovieFilterAskClearLogo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasClearLogo
-        Me.cmnuTrayMovieFilterAskClearLogo.Name = "cmnuTrayMovieFilterAskClearLogo"
-        Me.cmnuTrayMovieFilterAskClearLogo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskClearLogo.Text = "ClearLogo Only"
-        '
-        'cmnuTrayMovieFilterAskDiscArt
-        '
-        Me.cmnuTrayMovieFilterAskDiscArt.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasDiscArt
-        Me.cmnuTrayMovieFilterAskDiscArt.Name = "cmnuTrayMovieFilterAskDiscArt"
-        Me.cmnuTrayMovieFilterAskDiscArt.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskDiscArt.Text = "DiscArt Only"
-        '
-        'cmnuTrayMovieFilterAskEFanarts
-        '
-        Me.cmnuTrayMovieFilterAskEFanarts.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrafanart
-        Me.cmnuTrayMovieFilterAskEFanarts.Name = "cmnuTrayMovieFilterAskEFanarts"
-        Me.cmnuTrayMovieFilterAskEFanarts.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskEFanarts.Text = "Extrafanarts Only"
-        '
-        'cmnuTrayMovieFilterAskEThumbs
-        '
-        Me.cmnuTrayMovieFilterAskEThumbs.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasExtrathumb
-        Me.cmnuTrayMovieFilterAskEThumbs.Name = "cmnuTrayMovieFilterAskEThumbs"
-        Me.cmnuTrayMovieFilterAskEThumbs.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskEThumbs.Text = "Extrathumbs Only"
-        '
-        'cmnuTrayMovieFilterAskFanart
-        '
-        Me.cmnuTrayMovieFilterAskFanart.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasFanart
-        Me.cmnuTrayMovieFilterAskFanart.Name = "cmnuTrayMovieFilterAskFanart"
-        Me.cmnuTrayMovieFilterAskFanart.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskFanart.Text = "Fanart Only"
-        '
-        'cmnuTrayMovieFilterAskLandscape
-        '
-        Me.cmnuTrayMovieFilterAskLandscape.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasLandscape
-        Me.cmnuTrayMovieFilterAskLandscape.Name = "cmnuTrayMovieFilterAskLandscape"
-        Me.cmnuTrayMovieFilterAskLandscape.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskLandscape.Text = "Landscape Only"
-        '
-        'cmnuTrayMovieFilterAskMI
-        '
-        Me.cmnuTrayMovieFilterAskMI.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasMeta
-        Me.cmnuTrayMovieFilterAskMI.Name = "cmnuTrayMovieFilterAskMI"
-        Me.cmnuTrayMovieFilterAskMI.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskMI.Text = "Meta Data Only"
-        '
-        'cmnuTrayMovieFilterAskNfo
-        '
-        Me.cmnuTrayMovieFilterAskNfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasNfo
-        Me.cmnuTrayMovieFilterAskNfo.Name = "cmnuTrayMovieFilterAskNfo"
-        Me.cmnuTrayMovieFilterAskNfo.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskNfo.Text = "NFO Only"
-        '
-        'cmnuTrayMovieFilterAskPoster
-        '
-        Me.cmnuTrayMovieFilterAskPoster.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasPoster
-        Me.cmnuTrayMovieFilterAskPoster.Name = "cmnuTrayMovieFilterAskPoster"
-        Me.cmnuTrayMovieFilterAskPoster.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskPoster.Text = "Poster Only"
-        '
-        'cmnuTrayMovieFilterAskTheme
-        '
-        Me.cmnuTrayMovieFilterAskTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTheme
-        Me.cmnuTrayMovieFilterAskTheme.Name = "cmnuTrayMovieFilterAskTheme"
-        Me.cmnuTrayMovieFilterAskTheme.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskTheme.Text = "Theme Only"
-        '
-        'cmnuTrayMovieFilterAskTrailer
-        '
-        Me.cmnuTrayMovieFilterAskTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasTrailer
-        Me.cmnuTrayMovieFilterAskTrailer.Name = "cmnuTrayMovieFilterAskTrailer"
-        Me.cmnuTrayMovieFilterAskTrailer.Size = New System.Drawing.Size(178, 22)
-        Me.cmnuTrayMovieFilterAskTrailer.Text = "Trailer Only"
-        '
-        'cmnuTrayMovieFilterSkip
-        '
-        Me.cmnuTrayMovieFilterSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMovieFilterSkipAll})
-        Me.cmnuTrayMovieFilterSkip.Name = "cmnuTrayMovieFilterSkip"
-        Me.cmnuTrayMovieFilterSkip.Size = New System.Drawing.Size(271, 22)
-        Me.cmnuTrayMovieFilterSkip.Text = "Skip (Skip If More Than One Match)"
-        '
-        'cmnuTrayMovieFilterSkipAll
-        '
-        Me.cmnuTrayMovieFilterSkipAll.Name = "cmnuTrayMovieFilterSkipAll"
-        Me.cmnuTrayMovieFilterSkipAll.Size = New System.Drawing.Size(120, 22)
-        Me.cmnuTrayMovieFilterSkipAll.Text = "All Items"
-        '
-        'cmnuTrayMovieCustom
-        '
-        Me.cmnuTrayMovieCustom.Name = "cmnuTrayMovieCustom"
-        Me.cmnuTrayMovieCustom.Size = New System.Drawing.Size(188, 22)
-        Me.cmnuTrayMovieCustom.Text = "Custom Scraper..."
+        'cmnuTrayScrapeMovies
+        '
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"),System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        '
+        'cmnuTrayScrapeMovieSets
+        '
+        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"),System.Drawing.Image)
+        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
+        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
+        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
+        '
+        'cmnuTrayScrapeTVShows
+        '
+        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"),System.Drawing.Image)
+        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
+        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
+        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'ToolStripSeparator23
         '
@@ -12447,6 +8530,8 @@ Partial Class frmMain
         Me.tblFilterSourcesTop_Shows.PerformLayout
         CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuMovie.ResumeLayout(false)
+        Me.mnuScrapeType.ResumeLayout(false)
+        Me.mnuScrapeModifier.ResumeLayout(false)
         CType(Me.dgvMovieSets,System.ComponentModel.ISupportInitialize).EndInit
         Me.cmnuMovieSet.ResumeLayout(false)
         Me.scTV.Panel1.ResumeLayout(false)
@@ -12740,6 +8825,7 @@ Partial Class frmMain
         CType(Me.pbFanart,System.ComponentModel.ISupportInitialize).EndInit
         Me.tsMain.ResumeLayout(false)
         Me.tsMain.PerformLayout
+        Me.mnuScrapeSubmenu.ResumeLayout(false)
         Me.cmnuTray.ResumeLayout(false)
         Me.pnlLoadSettingsBG.ResumeLayout(false)
         CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
@@ -12808,12 +8894,6 @@ End Sub
     Friend WithEvents lblReleaseDate As System.Windows.Forms.Label
     Friend WithEvents lblReleaseDateHeader As System.Windows.Forms.Label
     Friend WithEvents ilColumnIcons As System.Windows.Forms.ImageList
-    Friend WithEvents mnuMovieAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMiss As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAsk As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrWait_Movie As System.Windows.Forms.Timer
     Friend WithEvents tmrLoad_Movie As System.Windows.Forms.Timer
     Friend WithEvents pnlSearchMovies As System.Windows.Forms.Panel
@@ -12842,52 +8922,6 @@ End Sub
     Friend WithEvents cmnuMovieSep1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieSep3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieEdit As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMark As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskEThumbs As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents prbCanceling As System.Windows.Forms.ProgressBar
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
@@ -12905,21 +8939,6 @@ End Sub
     Friend WithEvents btnFilterDown_Movies As System.Windows.Forms.Button
     Friend WithEvents btnFilterUp_Movies As System.Windows.Forms.Button
     Friend WithEvents lblFilterSource_Movies As System.Windows.Forms.Label
-    Friend WithEvents mnuMovieAllAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieCustom As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMainToolsSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieReload As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMainToolsReloadMovies As System.Windows.Forms.ToolStripMenuItem
@@ -12957,23 +8976,6 @@ End Sub
     Friend WithEvents lblFilterSources_Movies As System.Windows.Forms.Label
     Friend WithEvents clbFilterSources_Movies As System.Windows.Forms.CheckedListBox
     Friend WithEvents txtFilterSource_Movies As System.Windows.Forms.TextBox
-    Friend WithEvents mnuMovieFilter As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnFilterSortTitle_Movies As System.Windows.Forms.Button
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents btnFilterSortRating_Movies As System.Windows.Forms.Button
@@ -13030,22 +9032,6 @@ End Sub
     Friend WithEvents cmnuEpisodeRemove As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuEpisodeRemoveFromDB As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuEpisodeRemoveFromDisk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoMetaData As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieMovieReSelAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskMetaData As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMainHelpVersions As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonChangeImages As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator14 As System.Windows.Forms.ToolStripSeparator
@@ -13073,7 +9059,7 @@ End Sub
     Friend WithEvents cmnuTrayTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator21 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuTrayUpdate As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayScrape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayScrapeMovies As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayTools As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator22 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuTraySettings As System.Windows.Forms.ToolStripMenuItem
@@ -13089,90 +9075,6 @@ End Sub
     Friend WithEvents ToolStripSeparator24 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator25 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator26 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents cmnuTrayMovieAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMiss As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMark As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilter As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieCustom As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoMetaData As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoMI As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents pnlLoadSettingsBG As System.Windows.Forms.Panel
     Friend WithEvents pbLoadSettings As System.Windows.Forms.PictureBox
     Friend WithEvents lblLoadSettings As System.Windows.Forms.Label
@@ -13208,213 +9110,15 @@ End Sub
     Friend WithEvents lblRating As System.Windows.Forms.Label
     Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
     Friend WithEvents pbFanartSmallCache As System.Windows.Forms.PictureBox
-    Friend WithEvents mnuMovieAllAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoActor As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieWatched As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowWatched As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuSeasonWatched As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuEpisodeWatched As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoActor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskActor As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tpMovies As System.Windows.Forms.TabPage
     Friend WithEvents mnuMainToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuVersion As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskLandscape As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowRefresh As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieAllAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMissAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieNewAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieMarkAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieFilterAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieReSelAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieAllAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMissAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieNewAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieMarkAskTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAutoTheme As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuTrayMovieFilterAskTheme As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSel As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelRating As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tpMovieSets As System.Windows.Forms.TabPage
@@ -13469,143 +9173,6 @@ End Sub
     Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
     Friend WithEvents mnuMainToolsReloadMovieSets As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuScrapeMovieSets As System.Windows.Forms.ToolStripDropDownButton
-    Friend WithEvents mnuMovieSetAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetAllSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMiss As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMissSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNew As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetNewSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMark As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetMarkSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilter As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAuto As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAutoPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskBanner As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskClearArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskClearLogo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskDiscArt As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskEFanarts As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskEThumbs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskFanart As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskLandscape As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskNfo As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterAskPoster As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterSkip As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetCustom As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuMovieSetRestart As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetMark As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetLock As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetSep2 As System.Windows.Forms.ToolStripSeparator
@@ -13916,4 +9483,35 @@ End Sub
     Friend WithEvents cmnuMovieSetSortMethodMethods As System.Windows.Forms.ToolStripComboBox
     Friend WithEvents cmnuMovieSetSortMethodSet As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrRunTasks As System.Windows.Forms.Timer
+    Friend WithEvents mnuScrapeModifier As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents mnuScrapeModifierAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierActorthumbs As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierCharacterArt As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierClearArt As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierClearLogo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierDiscArt As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierExtrafanarts As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierExtrathumbs As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierMetaData As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierNFO As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierTheme As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeModifierTrailer As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeTypeSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeType As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents mnuScrapeTypeAuto As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeTypeAsk As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeSubmenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents mnuScrapeSubmenuAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeSubmenuMissing As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeSubmenuNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeSubmenuMarked As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeSubmenuFilter As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeSubmenuCustom As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeTVShows As System.Windows.Forms.ToolStripDropDownButton
+    Friend WithEvents cmnuTrayScrapeMovieSets As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayScrapeTVShows As System.Windows.Forms.ToolStripMenuItem
 End Class

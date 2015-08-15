@@ -555,11 +555,11 @@ Public Class dlgUpdateMedia
         End If
 
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
         ElseIf Me.rbUpdate_Ask.Checked Then
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
         Else
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissSkip
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
         End If
 
         Me.CheckEnable()
@@ -580,7 +580,7 @@ Public Class dlgUpdateMedia
             Case Me.rbUpdateModifier_All.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
             Case Me.rbUpdateModifier_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
             Case Me.rbUpdateModifier_New.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
             Case rbUpdateModifier_Marked.Checked
@@ -593,7 +593,7 @@ Public Class dlgUpdateMedia
             Case Me.rbUpdateModifier_All.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
             Case Me.rbUpdateModifier_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
             Case Me.rbUpdateModifier_New.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
             Case Me.rbUpdateModifier_Marked.Checked
@@ -606,7 +606,7 @@ Public Class dlgUpdateMedia
             Case Me.rbUpdateModifier_All.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
             Case Me.rbUpdateModifier_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissSkip
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
             Case Me.rbUpdateModifier_New.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
             Case Me.rbUpdateModifier_Marked.Checked
