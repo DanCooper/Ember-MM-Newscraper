@@ -2861,7 +2861,7 @@ Public Class Database
                  "DateAdded, EFanartsPath, ThemePath, ", _
                  "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed", _
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
-                Dim parMovieID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.Int32, 0, "idMovie")
+                Dim parMovieID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.UInt64, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
             End If
             Dim par_movie_MoviePath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MoviePath", DbType.String, 0, "MoviePath")
@@ -2903,18 +2903,18 @@ Public Class Database
             Dim par_movie_OutOfTolerance As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
             Dim par_movie_VideoSource As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_VideoSource", DbType.String, 0, "VideoSource")
             Dim par_movie_NeedsSave As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_NeedsSave", DbType.Boolean, 0, "NeedsSave")
-            Dim par_movie_DateAdded As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.Int32, 0, "DateAdded")
+            Dim par_movie_DateAdded As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.UInt64, 0, "DateAdded")
             Dim par_movie_EFanartsPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EFanartsPath", DbType.String, 0, "EFanartsPath")
             Dim par_movie_ThemePath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ThemePath", DbType.String, 0, "ThemePath")
             Dim par_movie_TMDB As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDB", DbType.String, 0, "TMDB")
             Dim par_movie_TMDBColID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDBColID", DbType.String, 0, "TMDBColID")
-            Dim par_movie_DateModified As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateModified", DbType.Int32, 0, "DateModified")
+            Dim par_movie_DateModified As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateModified", DbType.UInt64, 0, "DateModified")
             Dim par_movie_MarkCustom1 As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom1", DbType.Boolean, 0, "MarkCustom1")
             Dim par_movie_MarkCustom2 As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom2", DbType.Boolean, 0, "MarkCustom2")
             Dim par_movie_MarkCustom3 As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom3", DbType.Boolean, 0, "MarkCustom3")
             Dim par_movie_MarkCustom4 As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom4", DbType.Boolean, 0, "MarkCustom4")
             Dim par_movie_HasSet As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasSet", DbType.Boolean, 0, "HasSet")
-            Dim par_movie_iLastPlayed As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iLastPlayed", DbType.Int32, 0, "iLastPlayed")
+            Dim par_movie_iLastPlayed As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iLastPlayed", DbType.UInt64, 0, "iLastPlayed")
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
@@ -2965,18 +2965,25 @@ Public Class Database
                 _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            Dim DateTimeLastPlayedUnix As Double = -1
             Try
                 Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                par_movie_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
             Catch
                 'Kodi save it only as yyyy-MM-dd, try that
                 Try
                     Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
-                    par_movie_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                    DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
-                    par_movie_iLastPlayed.Value = Nothing 'need to be NOTHING instead of String.Empty
+                    DateTimeLastPlayedUnix = -1
                 End Try
             End Try
+            If DateTimeLastPlayedUnix >= 0 Then
+                par_movie_iLastPlayed.Value = DateTimeLastPlayedUnix
+            Else
+                par_movie_iLastPlayed.Value = Nothing 'need to be NOTHING instead of 0
+                _movieDB.Movie.LastPlayed = String.Empty
+            End If
 
             'Trailer URL
             If Master.eSettings.MovieScraperXBMCTrailerFormat Then
@@ -3455,7 +3462,7 @@ Public Class Database
                  "idSet, ListTitle, NfoPath, ", _
                  "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
                  ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
-                Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "idSet")
+                Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.UInt64, 0, "idSet")
                 parMovieSetID.Value = _moviesetDB.ID
             End If
             Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
@@ -3573,7 +3580,7 @@ Public Class Database
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (", _
                           "idTag, strTag) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM tag;")
-                Dim parTagID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.Int32, 0, "idTag")
+                Dim parTagID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.UInt64, 0, "idTag")
                 parTagID.Value = _tagDB.ID
             End If
             Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "strTag")
@@ -3764,13 +3771,13 @@ Public Class Database
             Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
             Dim parDisplaySeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
             Dim parDisplayEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplayEpisode", DbType.String, 0, "DisplayEpisode")
-            Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.Int32, 0, "DateAdded")
+            Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.UInt64, 0, "DateAdded")
             Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
             Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
             Dim parVideoSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
             Dim parHasSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
             Dim parSubEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubEpisode", DbType.String, 0, "SubEpisode")
-            Dim par_iLastPlayed As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.Int32, 0, "iLastPlayed")
+            Dim par_iLastPlayed As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.UInt64, 0, "iLastPlayed")
             Dim par_strIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "strIMDB")
             Dim par_strTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
             Dim par_strTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTVDB", DbType.String, 0, "strTVDB")
@@ -3807,18 +3814,25 @@ Public Class Database
                 _TVEpDB.TVEpisode.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            Dim DateTimeLastPlayedUnix As Double = -1
             Try
                 Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEpisode.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                par_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
             Catch
                 'Kodi save it only as yyyy-MM-dd, try that
                 Try
                     Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_TVEpDB.TVEpisode.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
-                    par_iLastPlayed.Value = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                    DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
-                    par_iLastPlayed.Value = Nothing 'need to be NOTHING instead of String.Empty
+                    DateTimeLastPlayedUnix = -1
                 End Try
             End Try
+            If DateTimeLastPlayedUnix >= 0 Then
+                par_iLastPlayed.Value = DateTimeLastPlayedUnix
+            Else
+                par_iLastPlayed.Value = Nothing 'need to be NOTHING instead of 0
+                _TVEpDB.TVEpisode.LastPlayed = String.Empty
+            End If
 
             ' First let's save it to NFO, even because we will need the NFO path
             If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
