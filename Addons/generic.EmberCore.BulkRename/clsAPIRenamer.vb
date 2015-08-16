@@ -955,6 +955,11 @@ Public Class FileFolderRenamer
         Try
             MovieFile.ID = CInt(_tmpMovie.ID)
 
+            'Countries
+            If _tmpMovie.Movie.Countries.Count > 0 Then
+                MovieFile.Country = String.Join(" / ", Master.currMovie.Movie.Countries.ToArray)
+            End If
+
             'Title
             If String.IsNullOrEmpty(_tmpMovie.Movie.Title) Then
                 MovieFile.Title = _tmpMovie.ListTitle
@@ -975,8 +980,8 @@ Public Class FileFolderRenamer
             End If
 
             'Director
-            If _tmpMovie.Movie.Director IsNot Nothing Then
-                MovieFile.Director = _tmpMovie.Movie.Director
+            If _tmpMovie.Movie.Directors.Count > 0 Then
+                MovieFile.Director = String.Join(" / ", Master.currMovie.Movie.Directors.ToArray)
             End If
 
             'VideoSource
@@ -985,8 +990,8 @@ Public Class FileFolderRenamer
             End If
 
             'Genres
-            If _tmpMovie.Movie.Genre IsNot Nothing Then
-                MovieFile.Genre = _tmpMovie.Movie.Genre
+            If _tmpMovie.Movie.Genres.Count > 0 Then
+                MovieFile.Genre = String.Join(" / ", Master.currMovie.Movie.Genres.ToArray)
             End If
 
             'IMDBID

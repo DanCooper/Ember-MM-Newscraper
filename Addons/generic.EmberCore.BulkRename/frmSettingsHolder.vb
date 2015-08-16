@@ -187,7 +187,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.AudioCodec = "dts"
         _fDummySingleMovie.BasePath = "D:\Movies"
         _fDummySingleMovie.Collection = "The Avengers Collection"
-        _fDummySingleMovie.Country = "United States of America"
+        _fDummySingleMovie.Country = "United States of America / Japan"
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
