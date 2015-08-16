@@ -3057,6 +3057,7 @@ Public Class dlgSettings
             Me.chkTVLockShowTitle.Checked = .TVLockShowTitle
             Me.chkTVLockShowVotes.Checked = .TVLockShowVotes
             Me.chkTVScanOrderModify.Checked = .TVScanOrderModify
+            Me.chkTVScraperCleanFields.Checked = .TVScraperCleanFields
             Me.chkTVScraperEpisodeActors.Checked = .TVScraperEpisodeActors
             Me.chkTVScraperEpisodeAired.Checked = .TVScraperEpisodeAired
             Me.chkTVScraperEpisodeCredits.Checked = .TVScraperEpisodeCredits
@@ -4893,6 +4894,7 @@ Public Class dlgSettings
             .TVMetadataPerFileType.AddRange(Me.TVMeta)
             .TVMultiPartMatching = Me.txtTVSourcesRegexMultiPartMatching.Text
             .TVScanOrderModify = Me.chkTVScanOrderModify.Checked
+            .TVScraperCleanFields = Me.chkTVScraperCleanFields.Checked
             .TVScraperDurationRuntimeFormat = Me.txtTVScraperDurationRuntimeFormat.Text
             .TVScraperEpisodeActors = Me.chkTVScraperEpisodeActors.Checked
             .TVScraperEpisodeAired = Me.chkTVScraperEpisodeAired.Checked
@@ -5570,6 +5572,11 @@ Public Class dlgSettings
         Me.gbTVImagesShowCharacterArtOpts.Text = strCharacterArt
         Me.lblTVShowCharacterArtExpert.Text = strCharacterArt
         Me.lblTVSourcesFileNamingXBMCADCharacterArt.Text = strCharacterArt
+
+        'Cleanup disabled fields
+        Dim strCleanUpDisabledFileds As String = Master.eLang.GetString(125, "Cleanup disabled fields")
+        Me.chkMovieScraperCleanFields.Text = strCleanUpDisabledFileds
+        Me.chkTVScraperCleanFields.Text = strCleanUpDisabledFileds
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
@@ -6344,7 +6351,6 @@ Public Class dlgSettings
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
         Me.chkMovieScraperCertForMPAAFallback.Text = Master.eLang.GetString(1293, "Only if no MPAA is found")
-        Me.chkMovieScraperCleanFields.Text = Master.eLang.GetString(125, "Cleanup disabled fields")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         Me.chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
         Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
@@ -7508,6 +7514,7 @@ Public Class dlgSettings
         chkTVLockShowTitle.CheckedChanged, _
         chkTVLockShowVotes.CheckedChanged, _
         chkTVScanOrderModify.CheckedChanged, _
+        chkTVScraperCleanFields.CheckedChanged, _
         chkTVScraperEpisodeActors.CheckedChanged, _
         chkTVScraperEpisodeAired.CheckedChanged, _
         chkTVScraperEpisodeCredits.CheckedChanged, _

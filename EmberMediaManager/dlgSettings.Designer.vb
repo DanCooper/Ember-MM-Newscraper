@@ -1537,6 +1537,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkTVScraperCleanFields = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -15604,9 +15605,9 @@ Partial Class dlgSettings
         Me.gbTVScraperCertificationOpts.Controls.Add(Me.tblTVScraperCertificationOpts)
         Me.gbTVScraperCertificationOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVScraperCertificationOpts.Location = New System.Drawing.Point(313, 293)
+        Me.gbTVScraperCertificationOpts.Location = New System.Drawing.Point(313, 316)
         Me.gbTVScraperCertificationOpts.Name = "gbTVScraperCertificationOpts"
-        Me.gbTVScraperCertificationOpts.Size = New System.Drawing.Size(446, 178)
+        Me.gbTVScraperCertificationOpts.Size = New System.Drawing.Size(446, 155)
         Me.gbTVScraperCertificationOpts.TabIndex = 78
         Me.gbTVScraperCertificationOpts.TabStop = false
         Me.gbTVScraperCertificationOpts.Text = "Certification"
@@ -15633,7 +15634,7 @@ Partial Class dlgSettings
         Me.tblTVScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperCertificationOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperCertificationOpts.Size = New System.Drawing.Size(440, 157)
+        Me.tblTVScraperCertificationOpts.Size = New System.Drawing.Size(440, 134)
         Me.tblTVScraperCertificationOpts.TabIndex = 78
         '
         'chkTVScraperShowCertOnlyValue
@@ -16844,7 +16845,7 @@ Partial Class dlgSettings
         Me.gbTVScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbTVScraperMiscOpts.Location = New System.Drawing.Point(313, 220)
         Me.gbTVScraperMiscOpts.Name = "gbTVScraperMiscOpts"
-        Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 67)
+        Me.gbTVScraperMiscOpts.Size = New System.Drawing.Size(446, 90)
         Me.gbTVScraperMiscOpts.TabIndex = 5
         Me.gbTVScraperMiscOpts.TabStop = false
         Me.gbTVScraperMiscOpts.Text = "Miscellaneous"
@@ -16855,16 +16856,18 @@ Partial Class dlgSettings
         Me.tblTVScraperMiscOpts.ColumnCount = 2
         Me.tblTVScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseSRuntimeForEp, 0, 0)
-        Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseDisplaySeasonEpisode, 0, 1)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseSRuntimeForEp, 0, 1)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperUseDisplaySeasonEpisode, 0, 2)
+        Me.tblTVScraperMiscOpts.Controls.Add(Me.chkTVScraperCleanFields, 0, 0)
         Me.tblTVScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperMiscOpts.Name = "tblTVScraperMiscOpts"
-        Me.tblTVScraperMiscOpts.RowCount = 3
+        Me.tblTVScraperMiscOpts.RowCount = 4
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperMiscOpts.Size = New System.Drawing.Size(440, 46)
+        Me.tblTVScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVScraperMiscOpts.Size = New System.Drawing.Size(440, 69)
         Me.tblTVScraperMiscOpts.TabIndex = 6
         '
         'chkTVScraperUseSRuntimeForEp
@@ -16872,7 +16875,7 @@ Partial Class dlgSettings
         Me.chkTVScraperUseSRuntimeForEp.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVScraperUseSRuntimeForEp.AutoSize = true
         Me.chkTVScraperUseSRuntimeForEp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVScraperUseSRuntimeForEp.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVScraperUseSRuntimeForEp.Location = New System.Drawing.Point(3, 26)
         Me.chkTVScraperUseSRuntimeForEp.Name = "chkTVScraperUseSRuntimeForEp"
         Me.chkTVScraperUseSRuntimeForEp.Size = New System.Drawing.Size(379, 17)
         Me.chkTVScraperUseSRuntimeForEp.TabIndex = 1
@@ -16883,7 +16886,7 @@ Partial Class dlgSettings
         '
         Me.chkTVScraperUseDisplaySeasonEpisode.AutoSize = true
         Me.chkTVScraperUseDisplaySeasonEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkTVScraperUseDisplaySeasonEpisode.Location = New System.Drawing.Point(3, 26)
+        Me.chkTVScraperUseDisplaySeasonEpisode.Location = New System.Drawing.Point(3, 49)
         Me.chkTVScraperUseDisplaySeasonEpisode.Name = "chkTVScraperUseDisplaySeasonEpisode"
         Me.chkTVScraperUseDisplaySeasonEpisode.Size = New System.Drawing.Size(358, 17)
         Me.chkTVScraperUseDisplaySeasonEpisode.TabIndex = 2
@@ -18265,7 +18268,6 @@ Partial Class dlgSettings
         '
         Me.chkMovieScraperCleanFields.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieScraperCleanFields.AutoSize = true
-        Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCleanFields, 3)
         Me.chkMovieScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieScraperCleanFields.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieScraperCleanFields.Name = "chkMovieScraperCleanFields"
@@ -21505,6 +21507,18 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
         '
+        'chkTVScraperCleanFields
+        '
+        Me.chkTVScraperCleanFields.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVScraperCleanFields.AutoSize = true
+        Me.chkTVScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperCleanFields.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVScraperCleanFields.Name = "chkTVScraperCleanFields"
+        Me.chkTVScraperCleanFields.Size = New System.Drawing.Size(147, 17)
+        Me.chkTVScraperCleanFields.TabIndex = 79
+        Me.chkTVScraperCleanFields.Text = "Cleanup disabled fields"
+        Me.chkTVScraperCleanFields.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -23807,4 +23821,5 @@ End Sub
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAFanart As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAALandscape As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAPoster As System.Windows.Forms.Label
+    Friend WithEvents chkTVScraperCleanFields As System.Windows.Forms.CheckBox
 End Class
