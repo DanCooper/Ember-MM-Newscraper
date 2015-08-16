@@ -178,6 +178,7 @@ Public Class IMDB_Data
         _setup_Movie.chkTvTitles.Checked = _SpecialSettings_Movie.SearchTvTitles
         _setup_Movie.chkVideoTitles.Checked = _SpecialSettings_Movie.SearchVideoTitles
         _setup_Movie.chkShortTitles.Checked = _SpecialSettings_Movie.SearchShortTitles
+        _setup_Movie.chkStudiowithDistributors.Checked = _SpecialSettings_Movie.StudiowithDistributors
 
         _setup_Movie.orderChanged()
 
@@ -273,6 +274,7 @@ Public Class IMDB_Data
         _SpecialSettings_Movie.SearchTvTitles = clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
         _SpecialSettings_Movie.SearchVideoTitles = clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
         _SpecialSettings_Movie.SearchShortTitles = clsAdvancedSettings.GetBooleanSetting("SearchShortTitles", False)
+        _SpecialSettings_Movie.StudiowithDistributors = clsAdvancedSettings.GetBooleanSetting("StudiowithDistributors", False)
     End Sub
 
     Sub LoadSettings_TV()
@@ -335,6 +337,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("SearchVideoTitles", _SpecialSettings_Movie.SearchVideoTitles)
             settings.SetBooleanSetting("SearchShortTitles", _SpecialSettings_Movie.SearchShortTitles)
             settings.SetSetting("ForceTitleLanguage", _SpecialSettings_Movie.ForceTitleLanguage)
+            settings.SetBooleanSetting("StudiowithDistributors", _SpecialSettings_Movie.StudiowithDistributors)
         End Using
     End Sub
 
@@ -399,6 +402,7 @@ Public Class IMDB_Data
         _SpecialSettings_Movie.SearchTvTitles = _setup_Movie.chkTvTitles.Checked
         _SpecialSettings_Movie.SearchVideoTitles = _setup_Movie.chkVideoTitles.Checked
         _SpecialSettings_Movie.SearchShortTitles = _setup_Movie.chkShortTitles.Checked
+        _SpecialSettings_Movie.StudiowithDistributors = _setup_Movie.chkStudiowithDistributors.Checked
 
         SaveSettings_Movie()
         If DoDispose Then
@@ -496,10 +500,10 @@ Public Class IMDB_Data
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation)
+                _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, FilteredOptions, FilteredOptions.bFullCrew, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation)
+                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, FilteredOptions, FilteredOptions.bFullCrew, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nMovie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -517,7 +521,7 @@ Public Class IMDB_Data
             If String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings_Movie, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie.Filename, FilteredOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation)
+                        _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, FilteredOptions.bFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else
@@ -654,7 +658,7 @@ Public Class IMDB_Data
         Dim SearchVideoTitles As Boolean
         Dim SearchShortTitles As Boolean
         Dim CountryAbbreviation As Boolean
-
+        Dim StudiowithDistributors As Boolean
 #End Region 'Fields
 
     End Structure

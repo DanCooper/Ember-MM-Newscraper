@@ -1390,15 +1390,11 @@ Public Class Functions
         filterOptions.bCollectionID = Options.bCollectionID AndAlso Options2.bCollectionID
         filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
-        filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
         filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
         filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
-        filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
         filterOptions.bOriginalTitle = Options.bOriginalTitle AndAlso Options2.bOriginalTitle
-        filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
         filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
         filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
-        filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
         filterOptions.bRating = Options.bRating AndAlso Options2.bRating
         filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
         filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
@@ -1410,6 +1406,12 @@ Public Class Functions
         filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
         filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
+        'workaround since following switches don't have global data scraper settings (IMDB only)
+        'may be cleaner to move those settings out from here and manage as IMDB only settings
+        filterOptions.bFullCrew = Options2.bFullCrew
+        filterOptions.bMusicBy = Options2.bMusicBy
+        filterOptions.bOtherCrew = Options2.bOtherCrew
+        filterOptions.bProducers = Options2.bProducers
         Return filterOptions
     End Function
     ''' <summary>
