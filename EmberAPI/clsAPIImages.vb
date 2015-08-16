@@ -358,7 +358,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie">Movie database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieEFanarts(ByVal DBMovie As Database.DBElement)
+    Public Shared Sub DeleteMovieExtrafanarts(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -376,7 +376,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBMovie">Movie database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieEThumbs(ByVal DBMovie As Database.DBElement)
+    Public Shared Sub DeleteMovieExtrathumbs(ByVal DBMovie As Database.DBElement)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
@@ -801,7 +801,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVShow">TV Show database record</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowEFanarts(ByVal DBTVShow As Database.DBElement)
+    Public Shared Sub DeleteTVShowExtrafanarts(ByVal DBTVShow As Database.DBElement)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -967,13 +967,13 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainExtrafanarts
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso .MovieEFanartsAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrafanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso .MovieEFanartsAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainExtrathumbs
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso .MovieEThumbsAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrathumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso .MovieEThumbsAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1084,7 +1084,7 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainExtrafanarts
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.EFanartsPath) OrElse .TVShowEFanartsOverwrite) AndAlso .TVShowEFanartsAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mTV.ExtrafanartsPath) OrElse .TVShowEFanartsOverwrite) AndAlso .TVShowEFanartsAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1353,14 +1353,41 @@ Public Class Images
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrafanarts(ByVal mMovie As Database.DBElement) As String
+    Public Shared Function SaveMovieExtrafanarts(ByVal mMovie As Database.DBElement) As String
         Dim efPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
+        Images.DeleteMovieExtrafanarts(mMovie)
 
+        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
+            If eImg.ImageOriginal.Image IsNot Nothing Then
+                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
+            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
+                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
+                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
+            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
+                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
+                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
+            End If
         Next
+
+        Return Directory.GetParent(efPath).FullName
+    End Function
+    ''' <summary>
+    ''' Save the image as a movie's extrafanart
+    ''' </summary>
+    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Database.DBElement, ByVal sName As String, Optional sURL As String = "") As String
+        Dim efPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+
+        If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
 
         Dim doResize As Boolean = Master.eSettings.MovieEFanartsResize AndAlso (_image.Width > Master.eSettings.MovieEFanartsWidth OrElse _image.Height > Master.eSettings.MovieEFanartsHeight)
 
@@ -1371,15 +1398,15 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            'For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainExtrafanarts)
-            '    If Not a = String.Empty Then
-            '        If Not Directory.Exists(a) Then
-            '            Directory.CreateDirectory(a)
-            '        End If
-            '        efPath = Path.Combine(a, sName)
-            '        Save(efPath)
-            '    End If
-            'Next
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModifierType.MainExtrafanarts)
+                If Not a = String.Empty Then
+                    If Not Directory.Exists(a) Then
+                        Directory.CreateDirectory(a)
+                    End If
+                    efPath = Path.Combine(a, sName)
+                    Save(efPath)
+                End If
+            Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1414,7 +1441,7 @@ Public Class Images
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
                     End If
-                    iMod = Functions.GetExtraModifier(a)
+                    iMod = Functions.GetExtrathumbsModifier(a)
                     iVal = iMod + 1
                     etPath = Path.Combine(a, String.Concat("thumb", iVal, ".jpg"))
                     Save(etPath)
@@ -2519,6 +2546,28 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
+    End Function
+
+    Public Shared Function SaveTVShowExtrafanarts(ByVal mShow As Database.DBElement) As String
+        Dim efPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+
+        Images.DeleteTVShowExtrafanarts(mShow)
+
+        For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
+            If eImg.ImageOriginal.Image IsNot Nothing Then
+                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
+            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
+                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
+                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
+            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
+                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
+                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
+            End If
+        Next
+
+        Return Directory.GetParent(efPath).FullName
     End Function
     ''' <summary>
     ''' Save the image as a tv show's extrafanart

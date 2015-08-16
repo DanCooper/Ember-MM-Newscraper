@@ -83,8 +83,8 @@ Public Class Scanner
 
         'remove all known paths
         DBMovie.ActorThumbs.Clear()
-        DBMovie.EFanartsPath = String.Empty
-        DBMovie.EThumbsPath = String.Empty
+        DBMovie.ExtrafanartsPath = String.Empty
+        DBMovie.ExtrathumbsPath = String.Empty
         DBMovie.ImagesContainer = New MediaContainers.ImagesContainer
         DBMovie.NfoPath = String.Empty
         DBMovie.Subtitles = New List(Of MediaInfo.Subtitle)
@@ -141,12 +141,14 @@ Public Class Scanner
             Next
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainExtrafanarts)
                 If Directory.Exists(a) Then
-                    efList.AddRange(Directory.GetFiles(a))
+                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                    If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainExtrathumbs)
                 If Directory.Exists(a) Then
-                    etList.AddRange(Directory.GetFiles(a))
+                    etList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                    If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainSubtitle)
@@ -199,16 +201,28 @@ Public Class Scanner
         End If
 
         'extrafanart
-        If String.IsNullOrEmpty(DBMovie.EFanartsPath) Then
-            If efList.Count > 0 Then
-                DBMovie.EFanartsPath = efList.Item(0).ToString
+        If String.IsNullOrEmpty(DBMovie.ExtrafanartsPath) Then
+            For Each ePath In efList
+                Dim eImg As New MediaContainers.Image
+                eImg.ImageOriginal.FromFile(ePath)
+                eImg.URLOriginal = ePath
+                DBMovie.ImagesContainer.Extrafanarts.Add(eImg)
+            Next
+            If DBMovie.ImagesContainer.Extrafanarts.Count > 0 Then
+                DBMovie.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName
             End If
         End If
 
         'extrathumbs
-        If String.IsNullOrEmpty(DBMovie.EThumbsPath) Then
-            If etList.Count > 0 Then
-                DBMovie.EThumbsPath = etList.Item(0).ToString
+        If String.IsNullOrEmpty(DBMovie.ExtrathumbsPath) Then
+            For Each ePath In etList
+                Dim eImg As New MediaContainers.Image
+                eImg.ImageOriginal.FromFile(ePath)
+                eImg.URLOriginal = ePath
+                DBMovie.ImagesContainer.Extrathumbs.Add(eImg)
+            Next
+            If DBMovie.ImagesContainer.Extrathumbs.Count > 0 Then
+                DBMovie.ExtrathumbsPath = Directory.GetParent(etList.Item(0)).FullName
             End If
         End If
 
@@ -538,7 +552,7 @@ Public Class Scanner
 
         'remove all known paths
         DBTVShow.ActorThumbs.Clear()
-        DBTVShow.EFanartsPath = String.Empty
+        DBTVShow.ExtrafanartsPath = String.Empty
         DBTVShow.ImagesContainer = New MediaContainers.ImagesContainer
         DBTVShow.NfoPath = String.Empty
         DBTVShow.ThemePath = String.Empty
@@ -548,7 +562,8 @@ Public Class Scanner
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainExtrafanarts)
                 If Directory.Exists(a) Then
-                    efList.AddRange(Directory.GetFiles(a))
+                    efList.AddRange(Directory.GetFiles(a, "*.jpg"))
+                    If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
         Catch ex As Exception
@@ -596,9 +611,15 @@ Public Class Scanner
         End If
 
         'extrafanart
-        If String.IsNullOrEmpty(DBTVShow.EFanartsPath) Then
-            If efList.Count > 0 Then
-                DBTVShow.EFanartsPath = efList.Item(0).ToString
+        If String.IsNullOrEmpty(DBTVShow.ExtrafanartsPath) Then
+            For Each ePath In efList
+                Dim eImg As New MediaContainers.Image
+                eImg.ImageOriginal.FromFile(ePath)
+                eImg.URLOriginal = ePath
+                DBTVShow.ImagesContainer.Extrafanarts.Add(eImg)
+            Next
+            If DBTVShow.ImagesContainer.Extrafanarts.Count > 0 Then
+                DBTVShow.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName
             End If
         End If
 

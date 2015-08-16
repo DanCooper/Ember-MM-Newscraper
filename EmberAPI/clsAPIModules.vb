@@ -1214,7 +1214,7 @@ Public Class ModulesManager
 
             'clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
-                DBTV.EFanartsPath = String.Empty
+                DBTV.ExtrafanartsPath = String.Empty
                 DBTV.NfoPath = String.Empty
                 DBTV.ThemePath = String.Empty
                 DBTV.ImagesContainer = New MediaContainers.ImagesContainer

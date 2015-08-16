@@ -196,7 +196,7 @@ Public Class frmMovieExtractor
                 Directory.CreateDirectory(tPath)
             End If
 
-            Dim iMod As Integer = Functions.GetExtraModifier(tPath)
+            Dim iMod As Integer = Functions.GetExtrathumbsModifier(tPath)
 
             Dim exImage As New Images
             Dim sPath As String = Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg"))
@@ -221,7 +221,7 @@ Public Class frmMovieExtractor
                 Directory.CreateDirectory(tPath)
             End If
 
-            Dim iMod As Integer = Functions.GetExtraModifier(tPath)
+            Dim iMod As Integer = Functions.GetExtrathumbsModifier(tPath)
 
             Dim exImage As New Images
             Dim sPath As String = Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg"))

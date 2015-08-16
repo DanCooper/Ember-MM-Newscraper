@@ -1914,7 +1914,7 @@ Public Class dlgEditTVShow
                         For Each lItem As ExtraImages In EFanartsList
                             Dim efPath As String = lItem.Image.SaveAsTVShowExtrafanart(Me.tmpDBElement, lItem.Name)
                             If lItem.Index = 0 Then
-                                Me.tmpDBElement.EFanartsPath = efPath
+                                Me.tmpDBElement.ExtrafanartsPath = efPath
                             End If
                         Next
 

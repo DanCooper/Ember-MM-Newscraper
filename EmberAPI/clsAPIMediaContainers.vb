@@ -3772,14 +3772,13 @@ Namespace MediaContainers
                             .DiscArt = New Image
                         End If
 
+                        'Movie Extrafanarts
                         If .Extrafanarts.Count > 0 Then
-                            For Each tImg As MediaContainers.Image In .Extrafanarts
-
-                            Next
+                            DBElement.ExtrafanartsPath = Images.SaveMovieExtrafanarts(DBElement)
                         Else
-                            Images.DeleteMovieEFanarts(DBElement)
-                            DBElement.ImagesContainer.Extrafanarts = New List(Of Image)
-                            DBElement.EFanartsPath = String.Empty
+                            Images.DeleteMovieExtrafanarts(DBElement)
+                            .Extrafanarts = New List(Of Image)
+                            DBElement.ExtrafanartsPath = String.Empty
                         End If
 
                         'Movie Fanart
@@ -4136,6 +4135,15 @@ Namespace MediaContainers
                         Else
                             Images.DeleteTVShowClearLogo(DBElement)
                             .ClearLogo = New Image
+                        End If
+
+                        'Show Extrafanarts
+                        If .Extrafanarts.Count > 0 Then
+                            DBElement.ExtrafanartsPath = Images.SaveTVShowExtrafanarts(DBElement)
+                        Else
+                            Images.DeleteTVShowExtrafanarts(DBElement)
+                            .Extrafanarts = New List(Of Image)
+                            DBElement.ExtrafanartsPath = String.Empty
                         End If
 
                         'Show Fanart

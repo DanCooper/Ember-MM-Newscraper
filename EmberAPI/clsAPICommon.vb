@@ -1218,7 +1218,40 @@ Public Class Functions
     ''' </summary>
     ''' <param name="sPath">Full path to extrathumbs directory</param>
     ''' <returns>Last detected number of the discovered extrathumbs.</returns>
-    Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
+    Public Shared Function GetExtrafanartsModifier(ByVal sPath As String) As Integer
+        Dim iMod As Integer = 0
+        Dim lThumbs As New List(Of String)
+
+        Try
+            If Directory.Exists(sPath) Then
+
+                Try
+                    lThumbs.AddRange(Directory.GetFiles(sPath, "extrafanart*.jpg"))
+                Catch
+                End Try
+
+                If lThumbs.Count > 0 Then
+                    Dim cur As Integer = 0
+                    For Each t As String In lThumbs
+                        cur = Convert.ToInt32(Regex.Match(t, "(\d+).jpg").Groups(1).ToString)
+                        iMod = Math.Max(iMod, cur)
+                    Next
+                End If
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrafanart from path: " & sPath, ex)
+        End Try
+
+        Return iMod
+    End Function
+
+    ''' <summary>
+    ''' Get the number of the last sequential extrathumb to make sure we're not overwriting current ones.
+    ''' </summary>
+    ''' <param name="sPath">Full path to extrathumbs directory</param>
+    ''' <returns>Last detected number of the discovered extrathumbs.</returns>
+    Public Shared Function GetExtrathumbsModifier(ByVal sPath As String) As Integer
         Dim iMod As Integer = 0
         Dim lThumbs As New List(Of String)
 
@@ -1240,7 +1273,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last thumb from path: " & sPath, ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrathumb from path: " & sPath, ex)
         End Try
 
         Return iMod

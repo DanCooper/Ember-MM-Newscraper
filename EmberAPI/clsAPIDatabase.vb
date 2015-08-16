@@ -1370,8 +1370,8 @@ Public Class Database
                     _movieDB.IsSingle = Convert.ToBoolean(SQLreader("type"))
                     If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then _movieDB.EThumbsPath = SQLreader("EThumbsPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _movieDB.EFanartsPath = SQLreader("EFanartsPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then _movieDB.ExtrathumbsPath = SQLreader("EThumbsPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _movieDB.ExtrafanartsPath = SQLreader("EFanartsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _movieDB.ThemePath = SQLreader("ThemePath").ToString
                     If Not DBNull.Value.Equals(SQLreader("Source")) Then _movieDB.Source = SQLreader("Source").ToString
 
@@ -1566,6 +1566,21 @@ Public Class Database
             If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath)
             If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath)
             If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ExtrafanartsPath) Then
+                For Each ePath As String In Directory.GetFiles(_movieDB.ExtrafanartsPath, "*.jpg")
+                    Dim eImg As New MediaContainers.Image
+                    eImg.ImageOriginal.FromFile(ePath)
+                    eImg.URLOriginal = ePath
+                    _movieDB.ImagesContainer.Extrafanarts.Add(eImg)
+                Next
+            End If
+            If Not String.IsNullOrEmpty(_movieDB.ExtrathumbsPath) Then
+                For Each ePath As String In Directory.GetFiles(_movieDB.ExtrathumbsPath, "thumb*.jpg")
+                    Dim eImg As New MediaContainers.Image
+                    eImg.ImageOriginal.FromFile(ePath)
+                    _movieDB.ImagesContainer.Extrathumbs.Add(eImg)
+                Next
+            End If
         End If
 
         'Check if the file is available and ready to edit
@@ -2188,7 +2203,7 @@ Public Class Database
                 If SQLreader.HasRows Then
                     SQLreader.Read()
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _TVDB.ListTitle = SQLreader("ListTitle").ToString
-                    If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _TVDB.EFanartsPath = SQLreader("EFanartsPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _TVDB.ExtrafanartsPath = SQLreader("EFanartsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("Language")) Then _TVDB.Language = SQLreader("Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _TVDB.NfoPath = SQLreader("NfoPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("Source")) Then _TVDB.Source = SQLreader("Source").ToString
@@ -2274,17 +2289,12 @@ Public Class Database
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
-
-            If Not String.IsNullOrEmpty(_TVDB.EFanartsPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(_TVDB.ShowPath, Enums.ModifierType.MainExtrafanarts)
-                    If Directory.Exists(a) Then
-                        Dim List = (Directory.GetFiles(a))
-                        For Each efFile In List
-                            Dim newEFanart As New MediaContainers.Image
-                            newEFanart.ImageOriginal.FromFile(efFile)
-                            _TVDB.ImagesContainer.Extrafanarts.Add(newEFanart)
-                        Next
-                    End If
+            If Not String.IsNullOrEmpty(_TVDB.ExtrafanartsPath) Then
+                For Each ePath As String In Directory.GetFiles(_TVDB.ExtrafanartsPath, "*.jpg")
+                    Dim eImg As New MediaContainers.Image
+                    eImg.ImageOriginal.FromFile(ePath)
+                    eImg.URLOriginal = ePath
+                    _TVDB.ImagesContainer.Extrafanarts.Add(eImg)
                 Next
             End If
         End If
@@ -2466,6 +2476,17 @@ Public Class Database
                     Case Is < 21
                         PrepareSortTitle("tvshow", True)
                         PrepareDisplayEpisodeSeason(True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 26
+                        PrepareEFanartsPath("idMovie", "movie", True)
+                        PrepareEThumbsPath("idMovie", "movie", True)
+                        PrepareEFanartsPath("idShow", "tvshow", True)
                 End Select
 
                 SQLtransaction.Commit()
@@ -2811,6 +2832,56 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
+    Private Sub PrepareEFanartsPath(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing Extrafanarts Paths...")
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT * FROM {0} WHERE EFanartsPath NOT LIKE ''", table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim newExtrafanartsPath As String = String.Empty
+                    If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then newExtrafanartsPath = SQLreader("EFanartsPath").ToString
+                        newExtrafanartsPath = Directory.GetParent(newExtrafanartsPath).FullName
+                    Using SQLcommand_update_paths As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommand_update_paths.CommandText = String.Format("UPDATE {0} SET EFanartsPath=? WHERE {1}={2}", table, idField, SQLreader(idField))
+                        Dim par_ExtrafanartsPath As SQLite.SQLiteParameter = SQLcommand_update_paths.Parameters.Add("par_EFanartsPath", DbType.String, 0, "EFanartsPath")
+                        par_ExtrafanartsPath.Value = newExtrafanartsPath
+                        SQLcommand_update_paths.ExecuteNonQuery()
+                    End Using
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareEThumbsPath(ByVal idField As String, ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing ExtrathumbsPaths...")
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT * FROM {0} WHERE EThumbsPath NOT LIKE ''", table)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim newExtrathumbsPath As String = String.Empty
+                    If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then newExtrathumbsPath = SQLreader("EThumbsPath").ToString
+                    newExtrathumbsPath = Directory.GetParent(newExtrathumbsPath).FullName
+                    Using SQLcommand_update_paths As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommand_update_paths.CommandText = String.Format("UPDATE {0} SET EThumbsPath=? WHERE {1}={2}", table, idField, SQLreader(idField))
+                        Dim par_ExtrathumbsPath As SQLite.SQLiteParameter = SQLcommand_update_paths.Parameters.Add("par_EThumbsPath", DbType.String, 0, "EThumbsPath")
+                        par_ExtrathumbsPath.Value = newExtrathumbsPath
+                        SQLcommand_update_paths.ExecuteNonQuery()
+                    End Using
+                End While
+            End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
     '  Public Function CheckEssentials() As Boolean
     'Dim needUpdate As Boolean = False
     'Dim lhttp As New HTTP
@@ -2897,14 +2968,14 @@ Public Class Database
             Dim par_movie_NfoPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_NfoPath", DbType.String, 0, "NfoPath")
             Dim par_movie_TrailerPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TrailerPath", DbType.String, 0, "TrailerPath")
             Dim par_movie_SubPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_SubPath", DbType.String, 0, "SubPath")
-            Dim par_movie_EThumbsPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EThumbsPath", DbType.String, 0, "EThumbsPath")
+            Dim par_movie_ExtrathumbsPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EThumbsPath", DbType.String, 0, "EThumbsPath")
             Dim par_movie_FanartURL As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_FanartURL", DbType.String, 0, "FanartURL")
             Dim par_movie_UseFolder As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_UseFolder", DbType.Boolean, 0, "UseFolder")
             Dim par_movie_OutOfTolerance As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
             Dim par_movie_VideoSource As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_VideoSource", DbType.String, 0, "VideoSource")
             Dim par_movie_NeedsSave As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_NeedsSave", DbType.Boolean, 0, "NeedsSave")
             Dim par_movie_DateAdded As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.UInt64, 0, "DateAdded")
-            Dim par_movie_EFanartsPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EFanartsPath", DbType.String, 0, "EFanartsPath")
+            Dim par_movie_ExtrafanartsPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EFanartsPath", DbType.String, 0, "EFanartsPath")
             Dim par_movie_ThemePath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ThemePath", DbType.String, 0, "ThemePath")
             Dim par_movie_TMDB As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDB", DbType.String, 0, "TMDB")
             Dim par_movie_TMDBColID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDBColID", DbType.String, 0, "TMDBColID")
@@ -3057,6 +3128,12 @@ Public Class Database
 
             par_movie_Source.Value = _movieDB.Source
 
+            'Save Images to get ExtrafanartsPath and ExtrathumbsPath
+            'art Table be be linked later
+            _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+            par_movie_ExtrafanartsPath.Value = _movieDB.ExtrafanartsPath
+            par_movie_ExtrathumbsPath.Value = _movieDB.ExtrathumbsPath
+
             If IsNew Then
                 If Master.eSettings.MovieGeneralMarkNew Then
                     par_movie_Mark.Value = True
@@ -3113,8 +3190,6 @@ Public Class Database
                 Next
 
                 'Images
-                _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
-
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'movie';", _movieDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
@@ -3126,9 +3201,6 @@ Public Class Database
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.ImagesContainer.Fanart.LocalFilePath)
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.ImagesContainer.Landscape.LocalFilePath)
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.ImagesContainer.Poster.LocalFilePath)
-
-                par_movie_EFanartsPath.Value = _movieDB.EFanartsPath
-                par_movie_EThumbsPath.Value = _movieDB.EThumbsPath
 
                 'Studios
                 Using SQLcommand_studiolinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4189,7 +4261,7 @@ Public Class Database
             Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
             Dim parStatus As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStatus", DbType.String, 0, "Status")
             Dim parThemePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parThemePath", DbType.String, 0, "ThemePath")
-            Dim parEFanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
+            Dim parExtrafanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
             Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
             Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
             Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
@@ -4219,7 +4291,6 @@ Public Class Database
             ' First let's save it to NFO, even because we will need the NFO path
             If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
 
-            parEFanartsPath.Value = _TVShowDB.EFanartsPath
             parNfoPath.Value = _TVShowDB.NfoPath
             parTVShowPath.Value = _TVShowDB.ShowPath
             parThemePath.Value = _TVShowDB.ThemePath
@@ -4233,6 +4304,11 @@ Public Class Database
             parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.Language), Master.DB.GetTVSourceLanguage(_TVShowDB.Source), _TVShowDB.Language)
             parOrdering.Value = _TVShowDB.Ordering
             parEpisodeSorting.Value = _TVShowDB.EpisodeSorting
+
+            'Save Images to get ExtrafanartsPath and ExtrathumbsPath
+            'art Table be be linked later
+            _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
+            parExtrafanartsPath.Value = _TVShowDB.ExtrafanartsPath
 
             If IsNew Then
                 If Master.eSettings.TVGeneralMarkNewShows Then
@@ -4284,8 +4360,6 @@ Public Class Database
                 Next
 
                 'Images
-                _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
-
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Format("DELETE FROM art WHERE media_id = {0} AND media_type = 'tvshow';", _TVShowDB.ID)
                     SQLcommand_art.ExecuteNonQuery()
@@ -4867,7 +4941,7 @@ Public Class Database
             End Set
         End Property
 
-        Public Property EFanartsPath() As String
+        Public Property ExtrafanartsPath() As String
             Get
                 Return Me._extrafanartspath
             End Get
@@ -4876,7 +4950,7 @@ Public Class Database
             End Set
         End Property
 
-        Public Property EThumbsPath() As String
+        Public Property ExtrathumbsPath() As String
             Get
                 Return Me._extrathumbspath
             End Get
