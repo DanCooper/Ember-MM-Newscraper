@@ -319,15 +319,15 @@ Public Class dlgImgSelect
         End If
 
         'Main Extrafanarts
-        If DoMainExtrafanarts AndAlso Me.tDBElementResult.ImagesContainer.ExtraFanarts.Count > 0 Then
-            For Each img In tDBElementResult.ImagesContainer.ExtraFanarts
+        If DoMainExtrafanarts AndAlso Me.tDBElementResult.ImagesContainer.Extrafanarts.Count > 0 Then
+            For Each img In tDBElementResult.ImagesContainer.Extrafanarts
                 DownloadAndCache(img, False)
             Next
         End If
 
         'Main Extrathumbs
-        If DoMainExtrathumbs AndAlso Me.tDBElementResult.ImagesContainer.ExtraThumbs.Count > 0 Then
-            For Each img In tDBElementResult.ImagesContainer.ExtraThumbs
+        If DoMainExtrathumbs AndAlso Me.tDBElementResult.ImagesContainer.Extrathumbs.Count > 0 Then
+            For Each img In tDBElementResult.ImagesContainer.Extrathumbs
                 DownloadAndCache(img, False)
             Next
         End If
@@ -498,8 +498,8 @@ Public Class dlgImgSelect
         Me.LoadedMainFanart = True
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsFanart)
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
-        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainEFanarts)
-        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainEThumbs)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainExtrafanarts)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainExtrathumbs)
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainFanart)
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonFanart)
 
@@ -651,9 +651,9 @@ Public Class dlgImgSelect
                 If LoadedMainClearLogo Then FillImageList(tTag)
             Case Enums.ModifierType.MainDiscArt
                 If LoadedMainDiscArt Then FillImageList(tTag)
-            Case Enums.ModifierType.MainEFanarts
+            Case Enums.ModifierType.MainExtrafanarts
                 If LoadedMainFanart Then FillImageList(tTag)
-            Case Enums.ModifierType.MainEThumbs
+            Case Enums.ModifierType.MainExtrathumbs
                 If LoadedMainFanart Then FillImageList(tTag)
             Case Enums.ModifierType.MainFanart
                 If LoadedMainFanart Then FillImageList(tTag)
@@ -767,16 +767,16 @@ Public Class dlgImgSelect
                     Me.AddListImage(tImage, iCount, Enums.ModifierType.MainDiscArt)
                     iCount += 1
                 Next
-            Case Enums.ModifierType.MainEFanarts
+            Case Enums.ModifierType.MainExtrafanarts
                 iCount = 0
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainEFanarts)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainExtrafanarts)
                     iCount += 1
                 Next
-            Case Enums.ModifierType.MainEThumbs
+            Case Enums.ModifierType.MainExtrathumbs
                 iCount = 0
                 For Each tImage As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainEThumbs)
+                    Me.AddListImage(tImage, iCount, Enums.ModifierType.MainExtrathumbs)
                     iCount += 1
                 Next
             Case Enums.ModifierType.MainFanart
@@ -837,18 +837,18 @@ Public Class dlgImgSelect
 
         ClearSubImages()
 
-        If Me.currSubImageSelectedType = Enums.ModifierType.MainEFanarts AndAlso DoMainExtrafanarts Then
-            For Each img In tDBElementResult.ImagesContainer.ExtraFanarts
-                AddSubImage(img, iCount, Enums.ModifierType.MainEFanarts, -1)
+        If Me.currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts AndAlso DoMainExtrafanarts Then
+            For Each img In tDBElementResult.ImagesContainer.Extrafanarts
+                AddSubImage(img, iCount, Enums.ModifierType.MainExtrafanarts, -1)
                 iCount += 1
             Next
-            If Me.tDefaultImagesContainer.ExtraFanarts.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
-        ElseIf Me.currSubImageSelectedType = Enums.ModifierType.MainEThumbs AndAlso DoMainExtrathumbs Then
-            For Each img In tDBElementResult.ImagesContainer.ExtraThumbs
-                AddSubImage(img, iCount, Enums.ModifierType.MainEThumbs, -1)
+            If Me.tDefaultImagesContainer.Extrafanarts.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
+        ElseIf Me.currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs AndAlso DoMainExtrathumbs Then
+            For Each img In tDBElementResult.ImagesContainer.Extrathumbs
+                AddSubImage(img, iCount, Enums.ModifierType.MainExtrathumbs, -1)
                 iCount += 1
             Next
-            If Me.tDefaultImagesContainer.ExtraThumbs.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
+            If Me.tDefaultImagesContainer.Extrathumbs.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
         ElseIf Me.currSubImageSelectedType = Enums.ModifierType.SeasonBanner AndAlso DoSeasonBanner Then
             For Each sSeason As Database.DBElement In tDBElementResult.Seasons.Where(Function(f) f.TVSeason.Season = 999)
                 AddSubImage(sSeason.ImagesContainer.Banner, iCount, Enums.ModifierType.AllSeasonsBanner, sSeason.TVSeason.Season)
@@ -972,8 +972,8 @@ Public Class dlgImgSelect
         Select Case tContentType
             Case Enums.ContentType.Movie
                 Me.ComboBoxItems.Clear()
-                If DoMainExtrafanarts Then Me.ComboBoxItems.Add(Master.eLang.GetString(992, "Extrafanarts"), Enums.ModifierType.MainEFanarts)
-                If DoMainExtrathumbs Then Me.ComboBoxItems.Add(Master.eLang.GetString(153, "Extrathumbs"), Enums.ModifierType.MainEThumbs)
+                If DoMainExtrafanarts Then Me.ComboBoxItems.Add(Master.eLang.GetString(992, "Extrafanarts"), Enums.ModifierType.MainExtrafanarts)
+                If DoMainExtrathumbs Then Me.ComboBoxItems.Add(Master.eLang.GetString(153, "Extrathumbs"), Enums.ModifierType.MainExtrathumbs)
                 Me.cbSubImageType.DataSource = Me.ComboBoxItems.ToList
                 Me.cbSubImageType.DisplayMember = "Key"
                 Me.cbSubImageType.ValueMember = "Value"
@@ -983,8 +983,8 @@ Public Class dlgImgSelect
                 End If
             Case Is = Enums.ContentType.TV, Enums.ContentType.TVShow
                 Me.ComboBoxItems.Clear()
-                If DoMainExtrafanarts Then Me.ComboBoxItems.Add(Master.eLang.GetString(992, "Extrafanarts"), Enums.ModifierType.MainEFanarts)
-                If DoMainExtrathumbs Then Me.ComboBoxItems.Add(Master.eLang.GetString(153, "Extrathumbs"), Enums.ModifierType.MainEThumbs)
+                If DoMainExtrafanarts Then Me.ComboBoxItems.Add(Master.eLang.GetString(992, "Extrafanarts"), Enums.ModifierType.MainExtrafanarts)
+                If DoMainExtrathumbs Then Me.ComboBoxItems.Add(Master.eLang.GetString(153, "Extrathumbs"), Enums.ModifierType.MainExtrathumbs)
                 If DoSeasonBanner Then Me.ComboBoxItems.Add(Master.eLang.GetString(1017, "Season Banner"), Enums.ModifierType.SeasonBanner)
                 If DoSeasonFanart Then Me.ComboBoxItems.Add(Master.eLang.GetString(686, "Season Fanart"), Enums.ModifierType.SeasonFanart)
                 If DoSeasonLandscape Then Me.ComboBoxItems.Add(Master.eLang.GetString(1018, "Season Landscape"), Enums.ModifierType.SeasonLandscape)
@@ -1257,7 +1257,7 @@ Public Class dlgImgSelect
             Me.currSubImageSelectedType = CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
             ClearImageList()
             CreateSubImages()
-            If Me.currSubImageSelectedType = Enums.ModifierType.MainEFanarts OrElse Me.currSubImageSelectedType = Enums.ModifierType.MainEThumbs Then
+            If Me.currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts OrElse Me.currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs Then
                 Me.currSubImage = New iTag With {.ImageType = Me.currSubImageSelectedType, .iSeason = -1}
                 DeselectAllTopImages()
                 CreateImageList(Me.currSubImage)
@@ -1411,8 +1411,8 @@ Public Class dlgImgSelect
 
     Private Sub DeselectAllSubImages()
         Me.btnRemoveSubImage.Enabled = False
-        If Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainEFanarts OrElse _
-            Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainEThumbs Then
+        If Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainExtrafanarts OrElse _
+            Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainExtrathumbs Then
             Me.btnRestoreSubImage.Enabled = False
         End If
         Me.currSubImage = New iTag
@@ -1497,9 +1497,9 @@ Public Class dlgImgSelect
             Case Enums.ModifierType.MainDiscArt
                 tDBElementResult.ImagesContainer.DiscArt = tTag.Image
                 RefreshTopImage(tTag)
-            Case Enums.ModifierType.MainEFanarts
+            Case Enums.ModifierType.MainExtrafanarts
                 AddExtraImage(tTag)
-            Case Enums.ModifierType.MainEThumbs
+            Case Enums.ModifierType.MainExtrathumbs
                 AddExtraImage(tTag)
             Case Enums.ModifierType.MainFanart
                 tDBElementResult.ImagesContainer.Fanart = tTag.Image
@@ -1520,8 +1520,8 @@ Public Class dlgImgSelect
                 Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
                 Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
                 Me.DoMainDiscArt = Me.tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
-                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainEFanarts AndAlso Master.eSettings.MovieEFanartsAnyEnabled
-                Me.DoMainExtrathumbs = Me.tScrapeModifier.MainEThumbs AndAlso Master.eSettings.MovieEThumbsAnyEnabled
+                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.MovieEFanartsAnyEnabled
+                Me.DoMainExtrathumbs = Me.tScrapeModifier.MainExtrathumbs AndAlso Master.eSettings.MovieEThumbsAnyEnabled
                 Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
                 Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
@@ -1544,7 +1544,7 @@ Public Class dlgImgSelect
                 Me.DoMainCharacterArt = Me.tScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
                 Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
                 Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
-                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainEFanarts AndAlso Master.eSettings.TVShowEFanartsAnyEnabled
+                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.TVShowEFanartsAnyEnabled
                 Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
                 Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
@@ -1557,7 +1557,7 @@ Public Class dlgImgSelect
                 Me.DoMainCharacterArt = Me.tScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
                 Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
                 Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
-                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainEFanarts AndAlso Master.eSettings.TVShowEFanartsAnyEnabled
+                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.TVShowEFanartsAnyEnabled
                 Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
                 Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
@@ -1578,16 +1578,16 @@ Public Class dlgImgSelect
 
     Private Sub AddExtraImage(ByVal tTag As iTag)
         Select Case tTag.ImageType
-            Case Enums.ModifierType.MainEFanarts
-                If tDBElementResult.ImagesContainer.ExtraFanarts.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
-                    tDBElementResult.ImagesContainer.ExtraFanarts.Add(tTag.Image)
-                    AddSubImage(tTag.Image, Me.pnlSubImages.Controls.Count, Enums.ModifierType.MainEFanarts, -1)
+            Case Enums.ModifierType.MainExtrafanarts
+                If tDBElementResult.ImagesContainer.Extrafanarts.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
+                    tDBElementResult.ImagesContainer.Extrafanarts.Add(tTag.Image)
+                    AddSubImage(tTag.Image, Me.pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrafanarts, -1)
                     ReorderSubImages()
                 End If
-            Case Enums.ModifierType.MainEThumbs
-                If tDBElementResult.ImagesContainer.ExtraThumbs.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
-                    tDBElementResult.ImagesContainer.ExtraThumbs.Add(tTag.Image)
-                    AddSubImage(tTag.Image, Me.pnlSubImages.Controls.Count, Enums.ModifierType.MainEThumbs, -1)
+            Case Enums.ModifierType.MainExtrathumbs
+                If tDBElementResult.ImagesContainer.Extrathumbs.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
+                    tDBElementResult.ImagesContainer.Extrathumbs.Add(tTag.Image)
+                    AddSubImage(tTag.Image, Me.pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrathumbs, -1)
                     ReorderSubImages()
                 End If
         End Select
@@ -1770,11 +1770,11 @@ Public Class dlgImgSelect
             tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = iSeason).ImagesContainer.Poster = New MediaContainers.Image
             Me.currSubImage = CreateImageTag(New MediaContainers.Image, eImageType, iSeason)
             RefreshSubImage(Me.currSubImage)
-        ElseIf eImageType = Enums.ModifierType.MainEFanarts Then
-            tDBElementResult.ImagesContainer.ExtraFanarts.Remove(Me.currSubImage.Image)
+        ElseIf eImageType = Enums.ModifierType.MainExtrafanarts Then
+            tDBElementResult.ImagesContainer.Extrafanarts.Remove(Me.currSubImage.Image)
             CreateSubImages()
-        ElseIf eImageType = Enums.ModifierType.MainEThumbs Then
-            tDBElementResult.ImagesContainer.ExtraThumbs.Remove(Me.currSubImage.Image)
+        ElseIf eImageType = Enums.ModifierType.MainExtrathumbs Then
+            tDBElementResult.ImagesContainer.Extrathumbs.Remove(Me.currSubImage.Image)
             CreateSubImages()
         End If
     End Sub
@@ -1845,14 +1845,14 @@ Public Class dlgImgSelect
             tDBElementResult.Seasons.FirstOrDefault(Function(s) s.TVSeason.Season = iSeason).ImagesContainer.Poster = sImg
             Me.currSubImage = CreateImageTag(sImg, eImageType, iSeason)
             RefreshSubImage(Me.currSubImage)
-        ElseIf eImageType = Enums.ModifierType.MainEFanarts Then
+        ElseIf eImageType = Enums.ModifierType.MainExtrafanarts Then
             If MessageBox.Show("Text", "Title", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
-                tDBElementResult.ImagesContainer.ExtraFanarts = tDefaultImagesContainer.ExtraFanarts
+                tDBElementResult.ImagesContainer.Extrafanarts = tDefaultImagesContainer.Extrafanarts
                 CreateSubImages()
             End If
-        ElseIf eImageType = Enums.ModifierType.MainEThumbs Then
+        ElseIf eImageType = Enums.ModifierType.MainExtrathumbs Then
             If MessageBox.Show("Text", "Title", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
-                tDBElementResult.ImagesContainer.ExtraThumbs = tDefaultImagesContainer.ExtraThumbs
+                tDBElementResult.ImagesContainer.Extrathumbs = tDefaultImagesContainer.Extrathumbs
                 CreateSubImages()
             End If
         End If
@@ -1985,7 +1985,7 @@ Public Class dlgImgSelect
         End If
 
         'Extrafanarts
-        For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.ExtraFanarts
+        For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrafanarts
             If img.ImageOriginal.Image Is Nothing Then
                 If Not String.IsNullOrEmpty(img.LocalFilePath) AndAlso File.Exists(img.LocalFilePath) Then
                     img.ImageOriginal.FromFile(img.LocalFilePath)
@@ -1996,7 +1996,7 @@ Public Class dlgImgSelect
         Next
 
         'Extrathumbs
-        For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.ExtraThumbs
+        For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrathumbs
             If img.ImageOriginal.Image Is Nothing Then
                 If Not String.IsNullOrEmpty(img.LocalFilePath) AndAlso File.Exists(img.LocalFilePath) Then
                     img.ImageOriginal.FromFile(img.LocalFilePath)

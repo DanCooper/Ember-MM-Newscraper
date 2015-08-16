@@ -1211,7 +1211,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModifierType.MainEFanarts
+                Case Enums.ModifierType.MainExtrafanarts
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieExtrafanartsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
@@ -1244,7 +1244,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModifierType.MainEThumbs
+                Case Enums.ModifierType.MainExtrathumbs
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieExtrathumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
@@ -2094,7 +2094,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModifierType.MainEFanarts
+                Case Enums.ModifierType.MainExtrafanarts
                     With Master.eSettings
                         If .TVUseEden AndAlso .TVShowExtrafanartsFrodo Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
                         If .TVUseExpert AndAlso .TVShowExtrafanartsExpert Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))

@@ -1343,7 +1343,7 @@ Public Class dlgEditTVShow
         Dim EF_i As Integer = 0
         Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
 
-        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainEFanarts)
+        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainExtrafanarts)
             If Directory.Exists(a) Then
                 EF_lFI.AddRange(Directory.GetFiles(a))
             End If
@@ -1368,9 +1368,9 @@ Public Class dlgEditTVShow
             End If
 
             ' load scraped Extrafanarts
-            If Me.tmpDBElement.ImagesContainer.ExtraFanarts.Count > 0 Then
+            If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
                 If Not EF_i >= EF_max Then
-                    For Each fanart As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.ExtraFanarts
+                    For Each fanart As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
                         'Dim EFImage As New Images
                         'If Not String.IsNullOrEmpty(fanart) Then
                         '    EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
@@ -1892,7 +1892,7 @@ Public Class dlgEditTVShow
 
     Private Sub SaveEFanartsList()
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainExtrafanarts)
                 If Not String.IsNullOrEmpty(a) Then
                     If Not hasClearedEF Then
                         FileUtils.Delete.DeleteDirectory(a)

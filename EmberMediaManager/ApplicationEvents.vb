@@ -112,7 +112,7 @@ Namespace My
                 e.BringToForeground = True
             ElseIf e.CommandLine.Count > 0 Then
                 Dim Args() As String = e.CommandLine.ToArray
-                frmMain.fCommandLine.RunCommandLine(Args, False)
+                frmMain.fCommandLine.RunCommandLine(Args)
             End If
         End Sub
 

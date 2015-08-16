@@ -380,8 +380,8 @@ Public Class FanartTV_Image
         ConfigModifier_Movie.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainDiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.Movie)
-        ConfigModifier_Movie.MainEFanarts = ConfigModifier_Movie.MainFanart
-        ConfigModifier_Movie.MainEThumbs = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
     End Sub
 
     Sub LoadSettings_MovieSet()
@@ -396,8 +396,8 @@ Public Class FanartTV_Image
         ConfigModifier_MovieSet.MainClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainDiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainEFanarts = ConfigModifier_MovieSet.MainFanart
-        ConfigModifier_MovieSet.MainEThumbs = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
     End Sub
 
     Sub LoadSettings_TV()
@@ -415,7 +415,7 @@ Public Class FanartTV_Image
         ConfigModifier_TV.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainLandscape = clsAdvancedSettings.GetBooleanSetting("DoShowLandscape", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
-        ConfigModifier_TV.MainEFanarts = ConfigModifier_TV.MainFanart
+        ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
     End Sub
 
     Sub SaveSettings_Movie()

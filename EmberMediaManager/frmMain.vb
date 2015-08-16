@@ -2045,9 +2045,9 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (tScrapeItem.ScrapeModifier.MainActorThumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainClearArt Or _
-                                                                         tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or tScrapeItem.ScrapeModifier.MainEFanarts Or _
-                                                                         tScrapeItem.ScrapeModifier.MainEThumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
+                If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainClearArt Or _
+                                                                         tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
+                                                                         tScrapeItem.ScrapeModifier.MainExtrathumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
                                                                          tScrapeItem.ScrapeModifier.MainPoster Or tScrapeItem.ScrapeModifier.MainTheme Or tScrapeItem.ScrapeModifier.MainTrailer) Then
                     Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
@@ -2075,8 +2075,8 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifier.MainClearArt OrElse _
                     tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
                     tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainEFanarts OrElse _
-                    tScrapeItem.ScrapeModifier.MainEThumbs OrElse _
+                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse _
+                    tScrapeItem.ScrapeModifier.MainExtrathumbs OrElse _
                     tScrapeItem.ScrapeModifier.MainFanart OrElse _
                     tScrapeItem.ScrapeModifier.MainLandscape OrElse _
                     tScrapeItem.ScrapeModifier.MainPoster Then
@@ -2176,8 +2176,8 @@ Public Class frmMain
                                             logger.Debug("[" & DBScrapeMovie.Movie.Title & "] No trailer link to download!")
                                         End If
                                     Next
-                                ElseIf Args.ScrapeType = Enums.ScrapeType.SingleScrape OrElse Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissingAsk Then
-                                    If Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissingAsk Then
+                                ElseIf Args.ScrapeType = Enums.ScrapeType.SingleScrape OrElse Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkedAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissingAsk Then
+                                    If Args.ScrapeType = Enums.ScrapeType.AllAsk OrElse Args.ScrapeType = Enums.ScrapeType.NewAsk OrElse Args.ScrapeType = Enums.ScrapeType.MarkedAsk OrElse Args.ScrapeType = Enums.ScrapeType.MissingAsk Then
                                         MessageBox.Show(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), Master.eLang.GetString(929, "No Preferred Size:"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                                     End If
                                     Using dTrailerSelect As New dlgTrailerSelect
@@ -2203,7 +2203,7 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 'ActorThumbs
-                If tScrapeItem.ScrapeModifier.MainActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
+                If tScrapeItem.ScrapeModifier.MainActorthumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                         For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                             Dim img As New Images
@@ -2396,7 +2396,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifier.MainClearArt OrElse _
                     tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
                     tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainEFanarts OrElse _
+                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse _
                     tScrapeItem.ScrapeModifier.MainFanart OrElse _
                     tScrapeItem.ScrapeModifier.MainLandscape OrElse _
                     tScrapeItem.ScrapeModifier.MainPoster Then
@@ -2516,8 +2516,8 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeShow.TVShow.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorThumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or _
-                                                                           tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainEFanarts Or _
+                If String.IsNullOrEmpty(DBScrapeShow.TVShow.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or _
+                                                                           tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
                                                                            tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or _
                                                                            tScrapeItem.ScrapeModifier.MainTheme) Then
                     Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
@@ -2538,10 +2538,11 @@ Public Class frmMain
 
                 'get all images
                 If tScrapeItem.ScrapeModifier.MainBanner OrElse _
+                    tScrapeItem.ScrapeModifier.MainCharacterArt OrElse _
                     tScrapeItem.ScrapeModifier.MainClearArt OrElse _
                     tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
                     tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainEFanarts OrElse _
+                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse _
                     tScrapeItem.ScrapeModifier.MainFanart OrElse _
                     tScrapeItem.ScrapeModifier.MainLandscape OrElse _
                     tScrapeItem.ScrapeModifier.MainPoster Then
@@ -2554,8 +2555,13 @@ Public Class frmMain
                                     DBScrapeShow = dImgSelect.Result
                                 End If
                             End Using
-
-                        Else 'autoscraping
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredImages As New MediaContainers.ImagesContainer
+                            Dim newPreferredEpisodeImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
+                            Dim newPreferredSeasonImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
+                            Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, newPreferredSeasonImages, newPreferredEpisodeImages)
+                            DBScrapeShow.ImagesContainer = newPreferredImages
 
                             For Each tEpisode In DBScrapeShow.Episodes
                                 Dim epImagesContainer As New MediaContainers.SearchResultsContainer
@@ -2666,8 +2672,8 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeEpisode.TVEpisode.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorThumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or _
-                                                                         tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainEFanarts Or _
+                If String.IsNullOrEmpty(DBScrapeEpisode.TVEpisode.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or _
+                                                                         tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
                                                                          tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or _
                                                                          tScrapeItem.ScrapeModifier.MainTheme) Then
                     Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
@@ -5759,9 +5765,9 @@ doCancel:
                 Case "DiscArtPath"
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
                 Case "EFanartsPath"
-                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEFanarts, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
                 Case "EThumbsPath"
-                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEThumbs, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
                 Case "FanartPath"
                     Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
                 Case "LandscapePath"
@@ -9806,7 +9812,7 @@ doCancel:
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             Me.Visible = False
-            logger.Info(New StackFrame().GetMethod().Name, "Embert startup")
+            logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
 
             If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
                 Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
@@ -9919,7 +9925,21 @@ doCancel:
     Private Sub LoadWithCommandLine(ByVal appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
         Dim Args() As String = appArgs.CommandLine.ToArray
 
-        fCommandLine.RunCommandLine(Args, True)
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+        Master.DB.ConnectMyVideosDB()
+        Master.DB.LoadMovieSourcesFromDB()
+        Master.DB.LoadTVSourcesFromDB()
+        Master.DB.LoadExcludeDirsFromDB()
+
+        RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+        Me.FillList(True, True, True)
+        AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+
+        fCommandLine.RunCommandLine(Args)
 
         While Not Me.TaskList.Count = 0 OrElse Not Me.TasksDone
             Application.DoEvents()
@@ -10508,12 +10528,21 @@ doCancel:
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
-                    Case "scrapemovie"
+                    Case "scrapemovies"
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         Dim ScrapeModifier As Structures.ScrapeModifier = CType(_params(2), Structures.ScrapeModifier)
                         CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_Movie, ScrapeModifier)
                         While bwMovieScraper.IsBusy
+                            Application.DoEvents()
+                            Threading.Thread.Sleep(50)
+                        End While
+                    Case "scrapetvshows"
+                        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                        Dim ScrapeModifier As Structures.ScrapeModifier = CType(_params(2), Structures.ScrapeModifier)
+                        CreateScrapeList_TV(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_TV, ScrapeModifier)
+                        While bwTVScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -10793,9 +10822,9 @@ doCancel:
                     mnuScrapeModifierClearLogo.Visible = True
                     mnuScrapeModifierDiscArt.Enabled = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
                     mnuScrapeModifierDiscArt.Visible = True
-                    mnuScrapeModifierExtrafanarts.Enabled = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainEFanarts)
+                    mnuScrapeModifierExtrafanarts.Enabled = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     mnuScrapeModifierExtrafanarts.Visible = True
-                    mnuScrapeModifierExtrathumbs.Enabled = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainEThumbs)
+                    mnuScrapeModifierExtrathumbs.Enabled = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
                     mnuScrapeModifierExtrathumbs.Visible = True
                     mnuScrapeModifierFanart.Enabled = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
@@ -10855,7 +10884,7 @@ doCancel:
                     mnuScrapeModifierClearLogo.Visible = True
                     mnuScrapeModifierDiscArt.Enabled = False
                     mnuScrapeModifierDiscArt.Visible = False
-                    mnuScrapeModifierExtrafanarts.Enabled = .TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainEFanarts)
+                    mnuScrapeModifierExtrafanarts.Enabled = .TVShowEFanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainExtrafanarts)
                     mnuScrapeModifierExtrafanarts.Visible = True
                     mnuScrapeModifierExtrathumbs.Enabled = False
                     mnuScrapeModifierExtrathumbs.Visible = False
@@ -10932,9 +10961,9 @@ doCancel:
             Case "discart"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
             Case "extrafanarts"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEFanarts, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
             Case "extrathumbs"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainEThumbs, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
             Case "fanart"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
             Case "landscape"
@@ -10967,11 +10996,11 @@ doCancel:
             Case "filter_skip"
                 Type = Enums.ScrapeType.FilterSkip
             Case "mark_ask"
-                Type = Enums.ScrapeType.MarkAsk
+                Type = Enums.ScrapeType.MarkedAsk
             Case "mark_auto"
-                Type = Enums.ScrapeType.MarkAuto
+                Type = Enums.ScrapeType.MarkedAuto
             Case "mark_skip"
-                Type = Enums.ScrapeType.MarkSkip
+                Type = Enums.ScrapeType.MarkedSkip
             Case "missing_ask"
                 Type = Enums.ScrapeType.MissingAsk
             Case "missing_auto"
@@ -11093,13 +11122,13 @@ doCancel:
 
             Dim sModifier As New Structures.ScrapeModifier
             sModifier.DoSearch = ScrapeModifier.DoSearch
-            sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso ActorThumbsAllowed
+            sModifier.MainActorthumbs = ScrapeModifier.MainActorthumbs AndAlso ActorThumbsAllowed
             sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso BannerAllowed
             sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
             sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
             sModifier.MainDiscArt = ScrapeModifier.MainDiscArt AndAlso DiscArtAllowed
-            sModifier.MainEFanarts = ScrapeModifier.MainEFanarts AndAlso EFanartsAllowed
-            sModifier.MainEThumbs = ScrapeModifier.MainEThumbs AndAlso EThumbsAllowed
+            sModifier.MainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso EFanartsAllowed
+            sModifier.MainExtrathumbs = ScrapeModifier.MainExtrathumbs AndAlso EThumbsAllowed
             sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
             sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso LandscapeAllowed
             sModifier.MainMeta = ScrapeModifier.MainMeta
@@ -11112,7 +11141,7 @@ doCancel:
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsMovies.Find("idMovie", drvRow.Item(0))
@@ -11122,8 +11151,8 @@ doCancel:
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
                     If Not String.IsNullOrEmpty(drvRow.Item("DiscArtPath").ToString) Then sModifier.MainDiscArt = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainEFanarts = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString) Then sModifier.MainEThumbs = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainExtrafanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("EThumbsPath").ToString) Then sModifier.MainExtrathumbs = False
                     If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
                     If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
                     If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
@@ -11164,11 +11193,11 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
             Case Enums.ScrapeType.NewSkip
                 Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkAsk
+            Case Enums.ScrapeType.MarkedAsk
                 Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkAuto
+            Case Enums.ScrapeType.MarkedAuto
                 Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkSkip
+            Case Enums.ScrapeType.MarkedSkip
                 Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
             Case Enums.ScrapeType.FilterAsk
                 Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
@@ -11275,7 +11304,7 @@ doCancel:
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsMovieSets.Find("idSet", drvRow.Item(0))
@@ -11323,11 +11352,11 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
             Case Enums.ScrapeType.NewSkip
                 Me.tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
-            Case Enums.ScrapeType.MarkAsk
+            Case Enums.ScrapeType.MarkedAsk
                 Me.tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
-            Case Enums.ScrapeType.MarkAuto
+            Case Enums.ScrapeType.MarkedAuto
                 Me.tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
-            Case Enums.ScrapeType.MarkSkip
+            Case Enums.ScrapeType.MarkedSkip
                 Me.tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
             Case Enums.ScrapeType.FilterAsk
                 Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
@@ -11447,12 +11476,12 @@ doCancel:
             sModifier.EpisodeMeta = ScrapeModifier.EpisodeMeta AndAlso EpisodeMetaAllowed
             sModifier.EpisodeNFO = ScrapeModifier.EpisodeNFO
             sModifier.EpisodePoster = ScrapeModifier.EpisodePoster AndAlso EpisodePosterAllowed
-            sModifier.MainActorThumbs = ScrapeModifier.MainActorThumbs AndAlso MainActorThumbsAllowed
+            sModifier.MainActorthumbs = ScrapeModifier.MainActorthumbs AndAlso MainActorThumbsAllowed
             sModifier.MainBanner = ScrapeModifier.MainBanner AndAlso MainBannerAllowed
             sModifier.MainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso MainCharacterArtAllowed
             sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso MainClearArtAllowed
             sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso MainClearLogoAllowed
-            sModifier.MainEFanarts = ScrapeModifier.MainEFanarts AndAlso MainEFanartsAllowed
+            sModifier.MainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso MainEFanartsAllowed
             sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso MainFanartAllowed
             sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso MainLandscapeAllowed
             sModifier.MainNFO = ScrapeModifier.MainNFO
@@ -11468,7 +11497,7 @@ doCancel:
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsTVShows.Find("idShow", drvRow.Item(0))
@@ -11478,7 +11507,7 @@ doCancel:
                     If Not String.IsNullOrEmpty(drvRow.Item("CharacterArtPath").ToString) Then sModifier.MainCharacterArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearArtPath").ToString) Then sModifier.MainClearArt = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ClearLogoPath").ToString) Then sModifier.MainClearLogo = False
-                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainEFanarts = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("EFanartsPath").ToString) Then sModifier.MainExtrafanarts = False
                     If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.MainFanart = False
                     If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.MainLandscape = False
                     If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
@@ -11518,11 +11547,11 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
             Case Enums.ScrapeType.NewSkip
                 Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkAsk
+            Case Enums.ScrapeType.MarkedAsk
                 Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkAuto
+            Case Enums.ScrapeType.MarkedAuto
                 Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkSkip
+            Case Enums.ScrapeType.MarkedSkip
                 Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
             Case Enums.ScrapeType.FilterAsk
                 Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
@@ -11621,7 +11650,7 @@ doCancel:
             Select Case sType
                 Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                     If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
-                Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
                     If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
                 Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                     Dim index As Integer = Me.bsTVEpisodes.Find("idEpisode", drvRow.Item(0))
@@ -11665,11 +11694,11 @@ doCancel:
                     Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
                 Case Enums.ScrapeType.NewSkip
                     Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkAsk
+                Case Enums.ScrapeType.MarkedAsk
                     Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkAuto
+                Case Enums.ScrapeType.MarkedAuto
                     Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkSkip
+                Case Enums.ScrapeType.MarkedSkip
                     Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
                 Case Enums.ScrapeType.FilterAsk
                     Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")

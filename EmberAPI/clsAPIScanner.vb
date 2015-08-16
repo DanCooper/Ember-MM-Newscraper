@@ -139,12 +139,12 @@ Public Class Scanner
                     atList.AddRange(Directory.GetFiles(parDir))
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainExtrafanarts)
                 If Directory.Exists(a) Then
                     efList.AddRange(Directory.GetFiles(a))
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainEThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, DBMovie.IsSingle, Enums.ModifierType.MainExtrathumbs)
                 If Directory.Exists(a) Then
                     etList.AddRange(Directory.GetFiles(a))
                 End If
@@ -546,7 +546,7 @@ Public Class Scanner
         Try
             fList.AddRange(Directory.GetFiles(DBTVShow.ShowPath))
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainEFanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.MainExtrafanarts)
                 If Directory.Exists(a) Then
                     efList.AddRange(Directory.GetFiles(a))
                 End If

@@ -195,7 +195,7 @@ Namespace FanartTVs
                 End If
 
                 'Fanart
-                If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
+                If (FilteredModifier.MainExtrafanarts OrElse FilteredModifier.MainExtrathumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
                     For Each image In Results.List.Moviebackground
                         alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URLOriginal = image.Url, .URLThumb = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next

@@ -634,8 +634,8 @@ Public Class Enums
         MainClearArt = 16
         MainClearLogo = 17
         MainDiscArt = 18
-        MainEFanarts = 19
-        MainEThumbs = 20
+        MainExtrafanarts = 19
+        MainExtrathumbs = 20
         MainFanart = 21
         MainLandscape = 22
         MainMeta = 23
@@ -811,9 +811,9 @@ Public Class Enums
         NewAuto = 8
         NewAsk = 9
         NewSkip = 10
-        MarkAuto = 11
-        MarkAsk = 12
-        MarkSkip = 13
+        MarkedAuto = 11
+        MarkedAsk = 12
+        MarkedSkip = 13
         FilterAuto = 14
         FilterAsk = 15
         FilterSkip = 16
@@ -1482,14 +1482,14 @@ Public Class Functions
         FilteredModifier.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
         FilteredModifier.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
         FilteredModifier.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
-        FilteredModifier.MainActorThumbs = Options.MainActorThumbs AndAlso Options2.MainActorThumbs
+        FilteredModifier.MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs
         FilteredModifier.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
         FilteredModifier.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
         FilteredModifier.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
         FilteredModifier.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
         FilteredModifier.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
-        FilteredModifier.MainEFanarts = Options.MainEFanarts AndAlso Options2.MainEFanarts
-        FilteredModifier.MainEThumbs = Options.MainEThumbs AndAlso Options2.MainEThumbs
+        FilteredModifier.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
+        FilteredModifier.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
         FilteredModifier.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
         FilteredModifier.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
         FilteredModifier.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
@@ -1523,14 +1523,14 @@ Public Class Functions
                     .EpisodePoster = MValue
                     .EpisodeSubtitles = MValue
                     .EpisodeWatchedFile = MValue
-                    .MainActorThumbs = MValue
+                    .MainActorthumbs = MValue
                     .MainBanner = MValue
                     .MainCharacterArt = MValue
                     .MainClearArt = MValue
                     .MainClearLogo = MValue
                     .MainDiscArt = MValue
-                    .MainEFanarts = MValue
-                    .MainEThumbs = MValue
+                    .MainExtrafanarts = MValue
+                    .MainExtrathumbs = MValue
                     .MainFanart = MValue
                     .MainLandscape = MValue
                     .MainMeta = MValue
@@ -1571,7 +1571,7 @@ Public Class Functions
                 Case Enums.ModifierType.EpisodeWatchedFile
                     .EpisodeWatchedFile = MValue
                 Case Enums.ModifierType.MainActorThumbs
-                    .MainActorThumbs = MValue
+                    .MainActorthumbs = MValue
                 Case Enums.ModifierType.MainBanner
                     .MainBanner = MValue
                 Case Enums.ModifierType.MainCharacterArt
@@ -1582,10 +1582,10 @@ Public Class Functions
                     .MainClearLogo = MValue
                 Case Enums.ModifierType.MainDiscArt
                     .MainDiscArt = MValue
-                Case Enums.ModifierType.MainEFanarts
-                    .MainEFanarts = MValue
-                Case Enums.ModifierType.MainEThumbs
-                    .MainEThumbs = MValue
+                Case Enums.ModifierType.MainExtrafanarts
+                    .MainExtrafanarts = MValue
+                Case Enums.ModifierType.MainExtrathumbs
+                    .MainExtrathumbs = MValue
                 Case Enums.ModifierType.MainFanart
                     .MainFanart = MValue
                 Case Enums.ModifierType.MainLandscape
@@ -1827,14 +1827,14 @@ Public Class Structures
         Dim EpisodeNFO As Boolean
         Dim EpisodeSubtitles As Boolean
         Dim EpisodeWatchedFile As Boolean
-        Dim MainActorThumbs As Boolean
+        Dim MainActorthumbs As Boolean
         Dim MainBanner As Boolean
         Dim MainCharacterArt As Boolean
         Dim MainClearArt As Boolean
         Dim MainClearLogo As Boolean
         Dim MainDiscArt As Boolean
-        Dim MainEFanarts As Boolean
-        Dim MainEThumbs As Boolean
+        Dim MainExtrafanarts As Boolean
+        Dim MainExtrathumbs As Boolean
         Dim MainFanart As Boolean
         Dim MainLandscape As Boolean
         Dim MainMeta As Boolean

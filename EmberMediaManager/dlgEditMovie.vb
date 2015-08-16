@@ -57,7 +57,6 @@ Public Class dlgEditMovie
     Private etDeleteList As New List(Of String)
     Private EThumbsIndex As Integer = -1
     Private EThumbsList As New List(Of ExtraImages)
-    Private EThumbsExtractor As New List(Of String)
     Private EThumbsWarning As Boolean = True
     Private iETCounter As Integer = 0
     Private iETLeft As Integer = 1
@@ -66,7 +65,6 @@ Public Class dlgEditMovie
     Private pnlETImage() As Panel
 
     'Extrafanarts
-    Private EFanartsExtractor As New List(Of String)
     Private EFanartsWarning As Boolean = True
     Private iEFCounter As Integer = 0
     Private iEFLeft As Integer = 1
@@ -444,7 +442,7 @@ Public Class dlgEditMovie
 
     Private Sub RemoveExtrafanart()
         If pbEFanarts.Tag IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.ExtraFanarts.Remove(DirectCast(Me.pbEFanarts.Tag, MediaContainers.Image))
+            Me.tmpDBElement.ImagesContainer.Extrafanarts.Remove(DirectCast(Me.pbEFanarts.Tag, MediaContainers.Image))
             Me.RefreshEFanarts()
             Me.lblEFanartsSize.Text = ""
             Me.lblEFanartsSize.Visible = False
@@ -1407,7 +1405,7 @@ Public Class dlgEditMovie
         Try
             ' load local Extrathumbs
             'If Not Me.tmpDBMovie.RemoveEThumbs Then
-            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBElement.Filename, Me.tmpDBElement.IsSingle, Enums.ModifierType.MainEThumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(Me.tmpDBElement.Filename, Me.tmpDBElement.IsSingle, Enums.ModifierType.MainExtrathumbs)
                 If Directory.Exists(a) Then
                     ET_lFI.AddRange(Directory.GetFiles(a, "thumb*.jpg"))
                     If ET_lFI.Count > 0 Then Exit For 'load only first folder that has files to prevent duplicate loading
@@ -1446,20 +1444,7 @@ Public Class dlgEditMovie
             'End If
 
             'load MovieExtractor Extrathumbs
-            If EThumbsExtractor.Count > 0 Then
-                If Not ET_i >= ET_max Then
-                    For Each thumb As String In EThumbsExtractor
-                        Dim ETImage As New Images
-                        If Me.bwEThumbs.CancellationPending Then Return
-                        If Not Me.etDeleteList.Contains(thumb) Then
-                            ETImage.FromFile(thumb)
-                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
-                            ET_i += 1
-                            If ET_i >= ET_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
+            
 
             If ET_i >= ET_max AndAlso EThumbsWarning Then
                 MessageBox.Show(String.Format(Master.eLang.GetString(1120, "To prevent a memory overflow will not display more than {0} Extrathumbs."), ET_max), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -1952,9 +1937,9 @@ Public Class dlgEditMovie
                         If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
                             '.btnSetFanartScrape.Enabled = False
                         End If
-                        If Me.tmpDBElement.ImagesContainer.ExtraFanarts.Count > 0 Then
+                        If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
                             Dim iIndex As Integer = 0
-                            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.ExtraFanarts
+                            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
                                 AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
                                 iIndex += 1
                             Next
@@ -2592,9 +2577,9 @@ Public Class dlgEditMovie
             Me.pnlEFanarts.Controls(0).Dispose()
         End While
 
-        If Me.tmpDBElement.ImagesContainer.ExtraFanarts.Count > 0 Then
+        If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
             Dim iIndex As Integer = 0
-            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.ExtraFanarts
+            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
                 AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
                 iIndex += 1
             Next
@@ -2928,13 +2913,17 @@ Public Class dlgEditMovie
             ElseIf _params(0).ToString = "EFanartToSave" Then
                 Dim fPath As String = _params(1).ToString
                 If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                    EFanartsExtractor.Add(fPath)
+                    Dim eImg As New MediaContainers.Image
+                    eImg.ImageOriginal.FromFile(fPath)
+                    tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
                     Me.RefreshEFanarts()
                 End If
             ElseIf _params(0).ToString = "EThumbToSave" Then
                 Dim fPath As String = _params(1).ToString
                 If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                    EThumbsExtractor.Add(fPath)
+                    Dim eImg As New MediaContainers.Image
+                    eImg.ImageOriginal.FromFile(fPath)
+                    tmpDBElement.ImagesContainer.Extrathumbs.Add(eImg)
                     Me.RefreshEThumbs()
                 End If
             End If

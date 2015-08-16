@@ -823,9 +823,9 @@ Public Class ModulesManager
         End While
 
         Select Case ImageType
-            Case Enums.ModifierType.MainEFanarts
+            Case Enums.ModifierType.MainExtrafanarts
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
-            Case Enums.ModifierType.MainEThumbs
+            Case Enums.ModifierType.MainExtrathumbs
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
             Case Else
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)
@@ -900,7 +900,7 @@ Public Class ModulesManager
             Case Enums.ModifierType.EpisodeFanart
                 If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.EpisodeFanart) Then Return True
-            Case Enums.ModifierType.MainEFanarts
+            Case Enums.ModifierType.MainExtrafanarts
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
             Case Enums.ModifierType.SeasonFanart
                 If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
@@ -1453,10 +1453,10 @@ Public Class ModulesManager
             If ScrapeModifier.EpisodeFanart Then
                 ScrapeModifier.MainFanart = True
             End If
-            If ScrapeModifier.MainEFanarts Then
+            If ScrapeModifier.MainExtrafanarts Then
                 ScrapeModifier.MainFanart = True
             End If
-            If ScrapeModifier.MainEThumbs Then
+            If ScrapeModifier.MainExtrathumbs Then
                 ScrapeModifier.MainFanart = True
             End If
             If ScrapeModifier.SeasonFanart Then

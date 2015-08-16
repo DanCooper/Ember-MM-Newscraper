@@ -2276,13 +2276,13 @@ Public Class Database
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
 
             If Not String.IsNullOrEmpty(_TVDB.EFanartsPath) Then
-                For Each a In FileUtils.GetFilenameList.TVShow(_TVDB.ShowPath, Enums.ModifierType.MainEFanarts)
+                For Each a In FileUtils.GetFilenameList.TVShow(_TVDB.ShowPath, Enums.ModifierType.MainExtrafanarts)
                     If Directory.Exists(a) Then
                         Dim List = (Directory.GetFiles(a))
                         For Each efFile In List
                             Dim newEFanart As New MediaContainers.Image
                             newEFanart.ImageOriginal.FromFile(efFile)
-                            _TVDB.ImagesContainer.ExtraFanarts.Add(newEFanart)
+                            _TVDB.ImagesContainer.Extrafanarts.Add(newEFanart)
                         Next
                     End If
                 Next
@@ -2998,8 +2998,6 @@ Public Class Database
             par_movie_Type.Value = _movieDB.IsSingle
             par_movie_ListTitle.Value = _movieDB.ListTitle
 
-            par_movie_EFanartsPath.Value = _movieDB.EFanartsPath
-            par_movie_EThumbsPath.Value = _movieDB.EThumbsPath
             par_movie_NfoPath.Value = _movieDB.NfoPath
             par_movie_ThemePath.Value = _movieDB.ThemePath
             par_movie_TrailerPath.Value = _movieDB.TrailerPath
@@ -3128,6 +3126,9 @@ Public Class Database
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "fanart", _movieDB.ImagesContainer.Fanart.LocalFilePath)
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "landscape", _movieDB.ImagesContainer.Landscape.LocalFilePath)
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.ImagesContainer.Poster.LocalFilePath)
+
+                par_movie_EFanartsPath.Value = _movieDB.EFanartsPath
+                par_movie_EThumbsPath.Value = _movieDB.EThumbsPath
 
                 'Studios
                 Using SQLcommand_studiolinkmovie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()

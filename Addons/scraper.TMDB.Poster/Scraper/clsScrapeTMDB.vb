@@ -68,7 +68,7 @@ Namespace TMDB
                 End If
 
                 'Fanart
-                If (FilteredModifier.MainEFanarts OrElse FilteredModifier.MainEThumbs OrElse FilteredModifier.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                If (FilteredModifier.MainExtrafanarts OrElse FilteredModifier.MainExtrathumbs OrElse FilteredModifier.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
                     For Each image In Results.Backdrops
                         Dim tmpImage As New MediaContainers.Image With { _
                             .Height = image.Height.ToString, _

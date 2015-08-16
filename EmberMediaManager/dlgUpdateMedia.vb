@@ -261,8 +261,8 @@ Public Class dlgUpdateMedia
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainClearLogo, chkModClearLogo.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainDiscArt, chkModDiscArt.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainFanart, chkModFanart.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainEThumbs, chkModEThumbs.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainEFanarts, chkModEFanarts.Checked)
+                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainExtrathumbs, chkModEThumbs.Checked)
+                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainExtrafanarts, chkModEFanarts.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainFanart, chkModFanart.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainLandscape, chkModLandscape.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainMeta, chkModMeta.Checked)
@@ -540,11 +540,11 @@ Public Class dlgUpdateMedia
 
     Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_Marked.CheckedChanged
         If Me.rbUpdate_Auto.Checked Then
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAuto
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
         ElseIf Me.rbUpdate_Ask.Checked Then
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAsk
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
         Else
-            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkSkip
+            Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
         End If
     End Sub
 
@@ -584,7 +584,7 @@ Public Class dlgUpdateMedia
             Case Me.rbUpdateModifier_New.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
             Case rbUpdateModifier_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAsk
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
         End Select
     End Sub
 
@@ -597,7 +597,7 @@ Public Class dlgUpdateMedia
             Case Me.rbUpdateModifier_New.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
             Case Me.rbUpdateModifier_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkAuto
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
         End Select
     End Sub
 
@@ -610,7 +610,7 @@ Public Class dlgUpdateMedia
             Case Me.rbUpdateModifier_New.Checked
                 Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
             Case Me.rbUpdateModifier_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkSkip
+                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
         End Select
     End Sub
 
