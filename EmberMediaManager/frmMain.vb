@@ -1594,7 +1594,7 @@ Public Class frmMain
             Return
         End If
 
-        Master.currMovie = Master.DB.LoadMovieFromDB(Args.ID)
+        Master.currMovie = Master.DB.LoadMovieFromDB(Args.ID, True, True)
 
         If bwLoadMovieInfo.CancellationPending Then
             e.Cancel = True
@@ -1855,7 +1855,7 @@ Public Class frmMain
             Return
         End If
 
-        Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID, False, False)
+        Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID, False, False, True, True)
 
         If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True

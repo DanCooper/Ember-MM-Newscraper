@@ -1353,8 +1353,10 @@ Public Class Database
     ''' Load all the information for a movie.
     ''' </summary>
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
+    ''' <param name="withImages">load all images to memorystream</param>
+    ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional withImages As Boolean = True) As Database.DBElement
+    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional withImages As Boolean = True, Optional exclExtraImages As Boolean = False) As Database.DBElement
         Dim _movieDB As New Database.DBElement
 
         _movieDB.ID = MovieID
@@ -1566,18 +1568,19 @@ Public Class Database
             If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath)
             If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath)
             If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ExtrafanartsPath) Then
+            If Not String.IsNullOrEmpty(_movieDB.ExtrafanartsPath) AndAlso Directory.Exists(_movieDB.ExtrafanartsPath) Then
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrafanartsPath, "*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.FromFile(ePath)
-                    eImg.URLOriginal = ePath
+                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrafanarts.Add(eImg)
                 Next
             End If
-            If Not String.IsNullOrEmpty(_movieDB.ExtrathumbsPath) Then
+            If Not String.IsNullOrEmpty(_movieDB.ExtrathumbsPath) AndAlso Directory.Exists(_movieDB.ExtrathumbsPath) Then
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrathumbsPath, "thumb*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.FromFile(ePath)
+                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrathumbs.Add(eImg)
                 Next
             End If
@@ -1593,14 +1596,16 @@ Public Class Database
     ''' Load all the information for a movie (by movie path)
     ''' </summary>
     ''' <param name="sPath">Full path to the movie file</param>
+    ''' <param name="withImages">load all images to memorystream</param>
+    ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal sPath As String, Optional withImages As Boolean = True) As Database.DBElement
+    Public Function LoadMovieFromDB(ByVal sPath As String, Optional withImages As Boolean = True, Optional exclExtraImages As Boolean = False) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Concat("SELECT idMovie FROM movie WHERE MoviePath = ", sPath, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")), withImages)
+                    Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")), withImages, exclExtraImages)
                 Else
                     Return New Database.DBElement
                 End If
@@ -1614,6 +1619,7 @@ Public Class Database
     ''' Load all the information for a movieset.
     ''' </summary>
     ''' <param name="MovieSetID">ID of the movieset to load, as stored in the database</param>
+    ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional withImages As Boolean = True) As Database.DBElement
         Dim _moviesetDB As New DBElement
@@ -1875,6 +1881,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="EpisodeID">Episode ID</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
+    ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function LoadTVEpFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Dim _TVDB As New Database.DBElement
@@ -2056,6 +2063,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="sPath">Full episode path</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
+    ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function LoadTVEpFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -2078,6 +2086,7 @@ Public Class Database
     ''' <param name="iSeason">Season number</param>
     ''' <param name="iEpisode">Episode number</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
+    ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
     Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
@@ -2110,6 +2119,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="SeasonID">Season ID</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
+    ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
     Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
@@ -2189,8 +2199,10 @@ Public Class Database
     ''' Load all the information for a TV Show
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
+    ''' <param name="withImages">load all images to memorystream</param>
+    ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional withImages As Boolean = True, Optional exclExtraImages As Boolean = False) As Database.DBElement
         Dim _TVDB As New Database.DBElement
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
@@ -2289,11 +2301,11 @@ Public Class Database
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
             If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ExtrafanartsPath) Then
+            If Not String.IsNullOrEmpty(_TVDB.ExtrafanartsPath) AndAlso Directory.Exists(_TVDB.ExtrafanartsPath) Then
                 For Each ePath As String In Directory.GetFiles(_TVDB.ExtrafanartsPath, "*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.FromFile(ePath)
-                    eImg.URLOriginal = ePath
+                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    eImg.LocalFilePath = ePath
                     _TVDB.ImagesContainer.Extrafanarts.Add(eImg)
                 Next
             End If
@@ -2908,9 +2920,9 @@ Public Class Database
     ''' <param name="_movieDB">Media.Movie object to save to the database</param>
     ''' <param name="IsNew">Is this a new movie (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
-    ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <param name="ToDisk">Create NFO and Images</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieToDB(ByVal _movieDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Database.DBElement
+    Public Function SaveMovieToDB(ByVal _movieDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3062,13 +3074,20 @@ Public Class Database
                 _movieDB.Movie.Trailer = _movieDB.Movie.Trailer.Replace("http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
             End If
 
-            ' First let's save it to NFO, even because we will need the NFO path
-            If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
+            'First let's save it to NFO, even because we will need the NFO path
+            'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
+            'art Table be be linked later
+            If ToDisk Then
+                NFO.SaveMovieToNFO(_movieDB)
+                _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+            End If
 
             par_movie_MoviePath.Value = _movieDB.Filename
             par_movie_Type.Value = _movieDB.IsSingle
             par_movie_ListTitle.Value = _movieDB.ListTitle
 
+            par_movie_ExtrafanartsPath.Value = _movieDB.ExtrafanartsPath
+            par_movie_ExtrathumbsPath.Value = _movieDB.ExtrathumbsPath
             par_movie_NfoPath.Value = _movieDB.NfoPath
             par_movie_ThemePath.Value = _movieDB.ThemePath
             par_movie_TrailerPath.Value = _movieDB.TrailerPath
@@ -3127,12 +3146,6 @@ Public Class Database
             par_movie_VideoSource.Value = _movieDB.VideoSource
 
             par_movie_Source.Value = _movieDB.Source
-
-            'Save Images to get ExtrafanartsPath and ExtrathumbsPath
-            'art Table be be linked later
-            _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
-            par_movie_ExtrafanartsPath.Value = _movieDB.ExtrafanartsPath
-            par_movie_ExtrathumbsPath.Value = _movieDB.ExtrathumbsPath
 
             If IsNew Then
                 If Master.eSettings.MovieGeneralMarkNew Then
@@ -3516,10 +3529,10 @@ Public Class Database
     ''' <param name="_moviesetDB">Media.Movie object to save to the database</param>
     ''' <param name="IsNew">Is this a new movieset (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
-    ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <param name="ToDisk">Create NFO and Images</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Database.DBElement
+    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal toDisk As Boolean = False, Optional ByVal withMovies As Boolean = False) As Database.DBElement
         If _moviesetDB.ID = -1 Then IsNew = True
 
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
@@ -3548,10 +3561,12 @@ Public Class Database
             Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
             Dim parSortMethod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortMethod", DbType.Int16, 0, "SortMethod")
 
-            ' First let's save it to NFO, even because we will need the NFO path
-            'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
-            'Why do we need IMDB to save to NFO?
-            If ToNfo Then NFO.SaveMovieSetToNFO(_moviesetDB)
+            'First let's save it to NFO, even because we will need the NFO path, also save Images
+            'art Table be be linked later
+            If toDisk Then
+                NFO.SaveMovieSetToNFO(_moviesetDB)
+                _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB, Enums.ContentType.MovieSet)
+            End If
 
             parNfoPath.Value = _moviesetDB.NfoPath
 
@@ -3581,8 +3596,6 @@ Public Class Database
         End Using
 
         'Images
-        _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB, Enums.ContentType.MovieSet)
-
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _moviesetDB.ID, " AND media_type = 'set';")
             SQLcommand_art.ExecuteNonQuery()
@@ -3747,8 +3760,8 @@ Public Class Database
     ''' <param name="IsNew">Is this a new episode (not already present in database)?</param>
     ''' <param name="WithSeason">If <c>True</c>, also save season information</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
-    ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Function SaveTVEpToDB(ByVal _TVEpDB As Database.DBElement, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Database.DBElement
+    ''' <param name="ToDisk">Create NFO and Images</param>
+    Public Function SaveTVEpToDB(ByVal _TVEpDB As Database.DBElement, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -3907,8 +3920,12 @@ Public Class Database
                 _TVEpDB.TVEpisode.LastPlayed = String.Empty
             End If
 
-            ' First let's save it to NFO, even because we will need the NFO path
-            If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
+            'First let's save it to NFO, even because we will need the NFO path, also save Images
+            'art Table be be linked later
+            If ToDisk Then
+                NFO.SaveTVEpToNFO(_TVEpDB)
+                _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.ContentType.TVEpisode)
+            End If
 
             parTVShowID.Value = _TVEpDB.ShowID
             parNfoPath.Value = _TVEpDB.NfoPath
@@ -3973,9 +3990,7 @@ Public Class Database
                 End Using
                 AddCast(_TVEpDB.ID, "episode", "episode", _TVEpDB.TVEpisode.Actors)
 
-                'Images 
-                _TVEpDB.ImagesContainer.SaveAllImages(_TVEpDB, Enums.ContentType.TVEpisode)
-
+                'Images
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _TVEpDB.ID, " AND media_type = 'episode';")
                     SQLcommand_art.ExecuteNonQuery()
@@ -4217,8 +4232,8 @@ Public Class Database
     ''' <param name="_TVShowDB">Database.DBElement object to save to the database</param>
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
-    ''' <param name="ToNfo">Save the information to an nfo file?</param>
-    Public Function SaveTVShowToDB(ByRef _TVShowDB As Database.DBElement, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Database.DBElement
+    ''' <param name="ToDisk">Create NFO and Images</param>
+    Public Function SaveTVShowToDB(ByRef _TVShowDB As Database.DBElement, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -4288,9 +4303,15 @@ Public Class Database
                 par_strTMDB.Value = .TMDB
             End With
 
-            ' First let's save it to NFO, even because we will need the NFO path
-            If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
+            'First let's save it to NFO, even because we will need the NFO path
+            'Also Save Images to get ExtrafanartsPath
+            'art Table be be linked later
+            If ToDisk Then
+                NFO.SaveTVShowToNFO(_TVShowDB)
+                _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
+            End If
 
+            parExtrafanartsPath.Value = _TVShowDB.ExtrafanartsPath
             parNfoPath.Value = _TVShowDB.NfoPath
             parTVShowPath.Value = _TVShowDB.ShowPath
             parThemePath.Value = _TVShowDB.ThemePath
@@ -4304,11 +4325,6 @@ Public Class Database
             parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.Language), Master.DB.GetTVSourceLanguage(_TVShowDB.Source), _TVShowDB.Language)
             parOrdering.Value = _TVShowDB.Ordering
             parEpisodeSorting.Value = _TVShowDB.EpisodeSorting
-
-            'Save Images to get ExtrafanartsPath and ExtrathumbsPath
-            'art Table be be linked later
-            _TVShowDB.ImagesContainer.SaveAllImages(_TVShowDB, Enums.ContentType.TVShow)
-            parExtrafanartsPath.Value = _TVShowDB.ExtrafanartsPath
 
             If IsNew Then
                 If Master.eSettings.TVGeneralMarkNewShows Then

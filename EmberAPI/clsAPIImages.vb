@@ -1362,13 +1362,13 @@ Public Class Images
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
             If eImg.ImageOriginal.Image IsNot Nothing Then
-                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
+                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
                 eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
             ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
                 eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
-                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
+                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next
 
@@ -1378,7 +1378,6 @@ Public Class Images
     ''' Save the image as a movie's extrafanart
     ''' </summary>
     ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
-    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
@@ -2557,13 +2556,13 @@ Public Class Images
 
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
             If eImg.ImageOriginal.Image IsNot Nothing Then
-                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
+                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
                 eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
             ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
                 eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
-                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
+                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next
 
@@ -2573,7 +2572,6 @@ Public Class Images
     ''' Save the image as a tv show's extrafanart
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>

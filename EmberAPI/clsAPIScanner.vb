@@ -200,13 +200,10 @@ Public Class Scanner
             Next
         End If
 
-        'extrafanart
+        'extrafanarts
         If String.IsNullOrEmpty(DBMovie.ExtrafanartsPath) Then
             For Each ePath In efList
-                Dim eImg As New MediaContainers.Image
-                eImg.ImageOriginal.FromFile(ePath)
-                eImg.URLOriginal = ePath
-                DBMovie.ImagesContainer.Extrafanarts.Add(eImg)
+                DBMovie.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
             Next
             If DBMovie.ImagesContainer.Extrafanarts.Count > 0 Then
                 DBMovie.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName
@@ -216,10 +213,7 @@ Public Class Scanner
         'extrathumbs
         If String.IsNullOrEmpty(DBMovie.ExtrathumbsPath) Then
             For Each ePath In etList
-                Dim eImg As New MediaContainers.Image
-                eImg.ImageOriginal.FromFile(ePath)
-                eImg.URLOriginal = ePath
-                DBMovie.ImagesContainer.Extrathumbs.Add(eImg)
+                DBMovie.ImagesContainer.Extrathumbs.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
             Next
             If DBMovie.ImagesContainer.Extrathumbs.Count > 0 Then
                 DBMovie.ExtrathumbsPath = Directory.GetParent(etList.Item(0)).FullName
@@ -610,13 +604,10 @@ Public Class Scanner
             Next
         End If
 
-        'extrafanart
+        'show extrafanarts
         If String.IsNullOrEmpty(DBTVShow.ExtrafanartsPath) Then
             For Each ePath In efList
-                Dim eImg As New MediaContainers.Image
-                eImg.ImageOriginal.FromFile(ePath)
-                eImg.URLOriginal = ePath
-                DBTVShow.ImagesContainer.Extrafanarts.Add(eImg)
+                DBTVShow.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
             Next
             If DBTVShow.ImagesContainer.Extrafanarts.Count > 0 Then
                 DBTVShow.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName

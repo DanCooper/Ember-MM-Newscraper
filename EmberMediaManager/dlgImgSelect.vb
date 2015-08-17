@@ -1926,10 +1926,12 @@ Public Class dlgImgSelect
     ''' <remarks>All other images will be downloaded while saving to DB</remarks>
     Private Sub DoneAndClose()
         Me.btnOK.Enabled = False
-        Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image(s)...")
-        Me.pbStatus.Style = ProgressBarStyle.Marquee
-        Me.lblStatus.Visible = True
-        Me.pbStatus.Visible = True
+        Me.DeselectAllListImages()
+        Me.DeselectAllSubImages()
+        Me.DeselectAllTopImages()
+        Me.pnlImageList.Enabled = False
+        Me.pnlSubImages.Enabled = False
+        Me.pnlTopImages.Enabled = False
 
         If Me.bwImgDefaults.IsBusy Then Me.bwImgDefaults.CancelAsync()
         If Me.bwImgDownload.IsBusy Then Me.bwImgDownload.CancelAsync()
@@ -1938,6 +1940,11 @@ Public Class dlgImgSelect
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
+
+        Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Image(s)...")
+        Me.pbStatus.Style = ProgressBarStyle.Marquee
+        Me.lblStatus.Visible = True
+        Me.pbStatus.Visible = True
 
         'Banner
         If tDBElementResult.ImagesContainer.Banner.ImageOriginal.Image Is Nothing Then

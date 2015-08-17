@@ -1890,51 +1890,6 @@ Public Class dlgEditTVShow
         End Try
     End Sub
 
-    Private Sub SaveEFanartsList()
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainExtrafanarts)
-                If Not String.IsNullOrEmpty(a) Then
-                    If Not hasClearedEF Then
-                        FileUtils.Delete.DeleteDirectory(a)
-                        hasClearedEF = True
-                    Else
-                        'first delete the ones from the delete list
-                        For Each del As String In efDeleteList
-                            File.Delete(Path.Combine(a, del))
-                        Next
-
-                        'now name the rest something arbitrary so we don't get any conflicts
-                        For Each lItem As ExtraImages In EFanartsList
-                            If Not lItem.Path.Substring(0, 1) = ":" Then
-                                File.Move(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
-                            End If
-                        Next
-
-                        'now rename them properly
-                        For Each lItem As ExtraImages In EFanartsList
-                            Dim efPath As String = lItem.Image.SaveAsTVShowExtrafanart(Me.tmpDBElement, lItem.Name)
-                            If lItem.Index = 0 Then
-                                Me.tmpDBElement.ExtrafanartsPath = efPath
-                            End If
-                        Next
-
-                        'now remove the temp images
-                        Dim tList As New List(Of String)
-
-                        If Directory.Exists(a) Then
-                            tList.AddRange(Directory.GetFiles(a, "temp*.jpg"))
-                            For Each tFile As String In tList
-                                File.Delete(Path.Combine(a, tFile))
-                            Next
-                        End If
-                    End If
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
     Private Sub SelectMPAA()
         Try
             If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.MPAA) Then
