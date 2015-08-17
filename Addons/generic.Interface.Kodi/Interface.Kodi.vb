@@ -66,6 +66,22 @@ Public Class KodiInterface
     Private WithEvents mnuMainToolsKodiCleanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents mnuMainToolsKodiScanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
 
+    'structure used to store Update Movie/TV/Movieset-Tasks for Kodi Interface
+    Private Structure KodiTask
+        Dim mType As Enums.ModuleEventType
+        Dim Params As List(Of Object)
+        Dim Refparam As Object
+        Dim dbmovie As Database.DBElement
+        Dim dbtv As Database.DBElement
+        Dim dbmovieset As Database.DBElement
+    End Structure
+    'pool of Update tasks for KodiInterface (can be filled extremely fast when updating whole tvshow at once)
+    Private TaskList As New List(Of KodiTask)
+    'control variable: true=Ready to start tmrRunTasks-Timer and work through items of tasklist, false= Timer already tickting, executing tasks
+    Private TasksDone As Boolean = True
+    'Timer - on tick event work through items of tasklist
+    Private tmrRunTasks As New Timer
+
 #End Region 'Fields
 
 #Region "Events"
@@ -121,6 +137,7 @@ Public Class KodiInterface
 #End Region 'Properties
 
 #Region "Methods"
+
     ''' <summary>
     ''' Implementation of Realtime Sync, triggered outside of this module i.e after finishing edits of a movie (=Enums.ModuleEventType.Sync_Movie)
     ''' </summary>
@@ -130,10 +147,53 @@ Public Class KodiInterface
     ''' TODO, 2015/07/06 Cocotus  
     ''' - RunGeneric is a synched function, so we can't use Await in conjunction with async KodiAPI here (which is preferred). For Ember 1.5 I suggest to change RunGeneric to Public Async Function
     ''' - As soon as RunGeneric is Async, switch all API calling subs/function in here to async to so we can use await and enable result notification in Ember (see commented code below)
+    ''' 2015/08/18 Cocotus  
+    ''' For now we use concept of storing pool of API tasks in list (="TaskList") and use a timer object and its tick-event to get the work done
+    ''' Timer tick event is async so we can queue with await all API tasks
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Database.DBElement, ByRef _dbmovieset As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+        'add job to tasklist and get everything done in Tick-Event thread of timer
+        TaskList.Add(New KodiTask With {.mType = mType, .Params = _params, .Refparam = _refparam, .dbmovie = _dbmovie, .dbtv = _dbtv, .dbmovieset = _dbmovieset})
+        If TasksDone Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1443, "Start Syncing"), New Bitmap(My.Resources.logo)}))
+            Me.tmrRunTasks.Start()
+            Me.TasksDone = False
+        End If
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
 
+    ''' <summary>
+    ''' Tick event of timer object. Used to work through jobs of Tasklist
+    ''' </summary>
+    ''' <param name="sender">Timer tick event</param>
+    ''' <param name="e">Timer tick event</param>
+    ''' <remarks>
+    ''' Worker function used to handle all ApiTaks in List(of KodiTask)
+    ''' Made async to await async Kodi API
+    ''' </remarks>
+    Private Async Sub tmrRunTasks_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Me.tmrRunTasks.Enabled = False
+        Me.TasksDone = False
+        While Me.TaskList.Count > 0
+            Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params, TaskList.Item(0).Refparam, TaskList.Item(0).dbmovie, TaskList.Item(0).dbtv, TaskList.Item(0).dbmovieset)
+            Me.TaskList.RemoveAt(0)
+        End While
+        Me.TasksDone = True
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1444, "Sync OK"), New Bitmap(My.Resources.logo)}))
+    End Sub
+
+    ''' <summary>
+    ''' This is a generic callback function to handle all realtime-sync work for KODI-Api
+    ''' </summary>
+    ''' <param name="mType"></param>
+    ''' <param name="_params"></param>
+    ''' <remarks>
+    ''' Worker function used to handle all ApiTaks in List(of KodiTask)
+    ''' Made async to await async Kodi API
+    ''' </remarks>
+    Private Async Function GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Database.DBElement, ByVal _dbtv As Database.DBElement, ByVal _dbmovieset As Database.DBElement) As Task(Of Boolean)
         'check if at least one host is configured, else skip
+        Dim result As Boolean = False
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Select Case mType
 
@@ -155,12 +215,11 @@ Public Class KodiInterface
                                     Next
                                     If Sourceok = True Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
                                         'run task
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, MySettings.SendNotifications))
+                                        result = Await Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, MySettings.SendNotifications))
                                         'Update EmberDB Playcount value if configured by user
                                         If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                                            Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBMovie.ID, "movie"))
+                                            result = Await Task.Run(Function() _APIKodi.SyncPlaycount(tDBMovie.ID, "movie"))
                                         End If
                                         'Synchronously waiting for an async method... not good and no ideal solution here. The asynchronous code of KodiAPI works best if it doesn’t get synchronously blocked - so for now I moved notifcation in Ember in async APIKodi to avoid waiting here for the task to finish. 
                                         'solution for now until Ember v1.5 (in future better use await and change all methods/functions to async code, all the way up in Ember (like msavazzi prepared)) 
@@ -177,11 +236,11 @@ Public Class KodiInterface
                                 End If
                             Next
                         Else
-                            logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & Master.eLang.GetString(1442, "Please Scrape In Ember First!"))
+                            logger.Warn("[KodiInterface] GenericRunCallBack MovieUpdate: " & Master.eLang.GetString(1442, "Please Scrape In Ember First!"))
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                         End If
                     Else
-                        logger.Warn("[KodiInterface] RunGeneric MovieUpdate: Not online!")
+                        logger.Warn("[KodiInterface] GenericRunCallBack MovieUpdate: Not online!")
                     End If
 
                     'MovieSet syncing
@@ -195,8 +254,7 @@ Public Class KodiInterface
                                     'only update movie if moviesetpath of host is set
                                     If Not String.IsNullOrEmpty(host.moviesetpath) Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, MySettings.SendNotifications))
+                                        result = Await Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, MySettings.SendNotifications))
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
                                         '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
@@ -206,16 +264,16 @@ Public Class KodiInterface
                                         '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
                                         'End If
                                     Else
-                                        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: " & host.name & " | No Remote MoviesetPath configured!")
+                                        logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: " & host.name & " | No Remote MoviesetPath configured!")
                                     End If
                                 End If
                             Next
                         Else
-                            logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: Please Scrape In Ember First!")
+                            logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                         End If
                     Else
-                        logger.Warn("[KodiInterface] RunGeneric MoviesetUpdate: No movies in set!")
+                        logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: No movies in set!")
                     End If
 
 
@@ -237,11 +295,10 @@ Public Class KodiInterface
                                     Next
                                     If Sourceok = True Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVEpisode.Title, New Bitmap(My.Resources.logo)}))
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateTVEpisodeInfo(tDBTV.ID, MySettings.SendNotifications))
+                                        result = Await Task.Run(Function() _APIKodi.UpdateTVEpisodeInfo(tDBTV.ID, MySettings.SendNotifications))
                                         'Update EmberDB Playcount value if configured by user
                                         If MySettings.SyncPlayCount AndAlso MySettings.SyncPlayCountHost = host.name Then
-                                            Dim resultSyncPlaycount As Task(Of Boolean) = Task.Run(Function() _APIKodi.SyncPlaycount(tDBTV.ID, "movie"))
+                                            result = Await Task.Run(Function() _APIKodi.SyncPlaycount(tDBTV.ID, "movie"))
                                         End If
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
@@ -255,11 +312,11 @@ Public Class KodiInterface
                                 End If
                             Next
                         Else
-                            logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: Please Scrape In Ember First!")
+                            logger.Warn("[KodiInterface] GenericRunCallBack EpisodeUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                         End If
                     Else
-                        logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: Not online!")
+                        logger.Warn("[KodiInterface] GenericRunCallBack EpisodeUpdate: Not online!")
                     End If
 
                     'TVSeason syncing
@@ -280,8 +337,7 @@ Public Class KodiInterface
                                     Next
                                     If Sourceok = True Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVSeason.Season, New Bitmap(My.Resources.logo)}))
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateTVSeasonInfo(tDBTV.ID, MySettings.SendNotifications))
+                                        result = Await Task.Run(Function() _APIKodi.UpdateTVSeasonInfo(tDBTV.ID, MySettings.SendNotifications))
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
                                         '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
@@ -294,11 +350,11 @@ Public Class KodiInterface
                                 End If
                             Next
                         Else
-                            logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: Please Scrape In Ember First!")
+                            logger.Warn("[KodiInterface] GenericRunCallBack TVSeasonUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                         End If
                     Else
-                        logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: Not online!")
+                        logger.Warn("[KodiInterface] GenericRunCallBack TVSeasonUpdate: Not online!")
                     End If
 
                     'TVShow syncing
@@ -319,8 +375,7 @@ Public Class KodiInterface
                                     Next
                                     If Sourceok = True Then
                                         Dim _APIKodi As New Kodi.APIKodi(host)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1443, "Start Syncing") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
-                                        Dim result As Task(Of Boolean) = Task.Run(Function() _APIKodi.UpdateTVShowInfo(tDBTV.ShowID, MySettings.SendNotifications))
+                                        result = Await Task.Run(Function() _APIKodi.UpdateTVShowInfo(tDBTV.ShowID, MySettings.SendNotifications))
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
                                         '    logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title)
@@ -333,19 +388,19 @@ Public Class KodiInterface
                                 End If
                             Next
                         Else
-                            logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: Please Scrape In Ember First!")
+                            logger.Warn("[KodiInterface] GenericRunCallBack TVShowUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                         End If
                     Else
-                        logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: Not online!")
+                        logger.Warn("[KodiInterface] GenericRunCallBack TVShowUpdate: Not online!")
                     End If
             End Select
         Else
-            logger.Warn("[KodiInterface] RunGeneric: No Host Configured!")
+            logger.Warn("[KodiInterface] GenericRunCallBack: No Host Configured!")
         End If
-
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return result
     End Function
+
     ''' <summary>
     ''' Actions on module startup (Ember startup)
     ''' </summary>
@@ -365,6 +420,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation
     ''' Used at module startup(=Ember startup) to load Kodi Hosts and also set other module settings
     Sub LoadSettings()
+        AddHandler tmrRunTasks.Tick, AddressOf tmrRunTasks_Tick
         MySettings.SendNotifications = clsAdvancedSettings.GetBooleanSetting("HostNotifications", False)
         MySettings.SyncPlayCount = clsAdvancedSettings.GetBooleanSetting("SyncPlayCount", False)
         MySettings.SyncPlayCountHost = clsAdvancedSettings.GetSetting("SyncPlayCountHost", "")

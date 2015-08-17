@@ -68,6 +68,29 @@ Namespace Kodi
             End If
             'now initialize new client object
             _kodi = New Client(platformServices, _currenthost.address, _currenthost.port, _currenthost.username, _currenthost.password)
+            'Listen to Kodi Events
+            AddHandler _kodi.VideoLibrary.OnScanFinished, AddressOf VideoLibrary_OnScanFinished
+            AddHandler _kodi.VideoLibrary.OnCleanFinished, AddressOf VideoLibrary_OnCleanFinished
+            _kodi.StartNotificationListener()
+        End Sub
+
+        ''' <summary>
+        ''' Triggered as soon as video library scan (whole database not specific folder!) is finished
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>just an example for eventhandler</remarks>
+        Private Sub VideoLibrary_OnScanFinished(ByVal sender As String, ByVal data As Object)
+            'Finished updating video library
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.name & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+        End Sub
+        ''' <summary>
+        ''' Triggered as soon as cleaning of video library is finished
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>just an example for eventhandler</remarks>
+        Private Sub VideoLibrary_OnCleanFinished(ByVal sender As String, ByVal data As Object)
+            'Finished cleaning of video library
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.name & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
         End Sub
 
 #Region "Movie API"
