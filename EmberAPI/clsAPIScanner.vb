@@ -430,31 +430,29 @@ Public Class Scanner
         Next
     End Sub
 
-    Public Sub GetTVSeasonFolderContents(ByRef TVDB As Database.DBElement, ByVal sSeason As Integer)
-        Dim Season As Integer = sSeason
-        Dim SeasonFirstEpisodePath As String = String.Empty
-        Dim SeasonPath As String = String.Empty
-        Dim ShowPath As String = TVDB.ShowPath
+    Public Sub GetTVSeasonFolderContents(ByRef TVDB As Database.DBElement)
+        Dim iSeason As Integer = TVDB.TVSeason.Season
+        Dim strSeasonFirstEpisodePath As String = String.Empty
+        Dim strSeasonPath As String = String.Empty
+        Dim strShowPath As String = TVDB.ShowPath
         Dim bInside As Boolean = False
         Dim fList As New List(Of String)
-        Dim fName As String = String.Empty
 
         'remove all known paths
         TVDB.ImagesContainer = New MediaContainers.ImagesContainer
 
-        If Functions.IsSeasonDirectory(Directory.GetParent(TVDB.Filename).FullName) Then
-            SeasonPath = Directory.GetParent(TVDB.Filename).FullName
+        'check if there is a season directory
+        strSeasonPath = Functions.GetSeasonDirectoryFromShowPath(strShowPath, iSeason)
+        If Not String.IsNullOrEmpty(strSeasonPath) Then 'If Functions.IsSeasonDirectory(Directory.GetParent(TVDB.Filename).FullName) Then
             bInside = True
-        Else
-            SeasonPath = Directory.GetParent(TVDB.Filename).FullName
         End If
 
         Try
             If bInside Then
-                fList.AddRange(Directory.GetFiles(SeasonPath))
-                fList.AddRange(Directory.GetFiles(ShowPath))
+                fList.AddRange(Directory.GetFiles(strSeasonPath))
+                fList.AddRange(Directory.GetFiles(strShowPath))
             Else
-                fList.AddRange(Directory.GetFiles(SeasonPath))
+                fList.AddRange(Directory.GetFiles(strShowPath))
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -465,7 +463,7 @@ Public Class Scanner
             Dim dtEpisodes As New DataTable
             Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", TVDB.ShowID, " AND Season = ", TVDB.TVSeason.Season, " ORDER BY Episode;"))
             If dtEpisodes.Rows.Count > 0 Then
-                SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                strSeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -474,13 +472,13 @@ Public Class Scanner
         'season banner
         If String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFilePath) Then
             'all-seasons
-            If Season = 999 Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsBanner)
+            If iSeason = 999 Then
+                For Each a In FileUtils.GetFilenameList.TVShow(strShowPath, Enums.ModifierType.AllSeasonsBanner)
                     TVDB.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFilePath) Then Exit For
                 Next
             Else
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonBanner)
+                For Each a In FileUtils.GetFilenameList.TVSeason(strShowPath, strSeasonPath, iSeason, strSeasonFirstEpisodePath, Enums.ModifierType.SeasonBanner)
                     TVDB.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Banner.LocalFilePath) Then Exit For
                 Next
@@ -490,13 +488,13 @@ Public Class Scanner
         'season fanart
         If String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFilePath) Then
             'all-seasons
-            If Season = 999 Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsFanart)
+            If iSeason = 999 Then
+                For Each a In FileUtils.GetFilenameList.TVShow(strShowPath, Enums.ModifierType.AllSeasonsFanart)
                     TVDB.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFilePath) Then Exit For
                 Next
             Else
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonFanart)
+                For Each a In FileUtils.GetFilenameList.TVSeason(strShowPath, strSeasonPath, iSeason, strSeasonFirstEpisodePath, Enums.ModifierType.SeasonFanart)
                     TVDB.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Fanart.LocalFilePath) Then Exit For
                 Next
@@ -506,13 +504,13 @@ Public Class Scanner
         'season landscape
         If String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFilePath) Then
             'all-seasons
-            If Season = 999 Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsLandscape)
+            If iSeason = 999 Then
+                For Each a In FileUtils.GetFilenameList.TVShow(strShowPath, Enums.ModifierType.AllSeasonsLandscape)
                     TVDB.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFilePath) Then Exit For
                 Next
             Else
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonLandscape)
+                For Each a In FileUtils.GetFilenameList.TVSeason(strShowPath, strSeasonPath, iSeason, strSeasonFirstEpisodePath, Enums.ModifierType.SeasonLandscape)
                     TVDB.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Landscape.LocalFilePath) Then Exit For
                 Next
@@ -522,13 +520,13 @@ Public Class Scanner
         'season poster
         If String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFilePath) Then
             'all-seasons
-            If Season = 999 Then
-                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.ModifierType.AllSeasonsPoster)
+            If iSeason = 999 Then
+                For Each a In FileUtils.GetFilenameList.TVShow(strShowPath, Enums.ModifierType.AllSeasonsPoster)
                     TVDB.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFilePath) Then Exit For
                 Next
             Else
-                For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.ModifierType.SeasonPoster)
+                For Each a In FileUtils.GetFilenameList.TVSeason(strShowPath, strSeasonPath, iSeason, strSeasonFirstEpisodePath, Enums.ModifierType.SeasonPoster)
                     TVDB.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(TVDB.ImagesContainer.Poster.LocalFilePath) Then Exit For
                 Next
@@ -693,11 +691,7 @@ Public Class Scanner
     Public Sub LoadMovie(ByRef DBMovie As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
         Dim ToNfo As Boolean = False
 
-        'first, lets get the contents
         GetMovieFolderContents(DBMovie)
-
-        'add filename to tmpMovie for UpdateMediaInfo
-        DBMovie.Filename = DBMovie.Filename
 
         If Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
             DBMovie.Movie = NFO.LoadMovieFromNFO(DBMovie.NfoPath, DBMovie.IsSingle)
@@ -796,7 +790,6 @@ Public Class Scanner
         End If
 
         If Not String.IsNullOrEmpty(DBMovie.ListTitle) Then
-
             'search local actor thumb for each actor in NFO
             If DBMovie.Movie.Actors.Count > 0 AndAlso DBMovie.ActorThumbs.Count > 0 Then
                 For Each actor In DBMovie.Movie.Actors
@@ -832,7 +825,6 @@ Public Class Scanner
         Dim ToNfo As Boolean = False
         Dim OldTitle As String = DBMovieSet.MovieSet.Title
 
-        'first, lets get the contents
         GetMovieSetFolderContents(DBMovieSet)
 
         If String.IsNullOrEmpty(DBMovieSet.NfoPath) Then
@@ -859,7 +851,187 @@ Public Class Scanner
         DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, True)
     End Sub
 
-    Public Sub LoadTVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
+    Public Sub LoadTVEpisode(ByRef DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean)
+        Dim ToNfo As Boolean = False
+
+        GetTVEpisodeFolderContents(DBTVEpisode)
+
+        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
+            If sEpisode.byDate Then
+
+                ToNfo = False
+
+                If Not String.IsNullOrEmpty(DBTVEpisode.NfoPath) Then
+                    DBTVEpisode.TVEpisode = NFO.LoadTVEpFromNFO(DBTVEpisode.NfoPath, sEpisode.Season, sEpisode.Aired)
+                    If Not DBTVEpisode.TVEpisode.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) AndAlso Master.eSettings.TVScraperMetaDataScan Then
+                        MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
+                    End If
+                Else
+                    If Not String.IsNullOrEmpty(DBTVEpisode.TVShow.TVDB) AndAlso DBTVEpisode.ShowID >= 0 Then
+                        If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) Then DBTVEpisode.TVEpisode.Aired = sEpisode.Aired
+                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(DBTVEpisode, Master.DefaultOptions_TV, False) Then
+                            If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+                                ToNfo = True
+
+                                'if we had info for it (based on title) and mediainfo scanning is enabled
+                                If Master.eSettings.TVScraperMetaDataScan Then
+                                    MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
+                                End If
+                            End If
+
+                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then
+                                If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEpisode.LocalFile) Then
+                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromFile(DBTVEpisode.TVEpisode.LocalFile)
+                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
+                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
+                                    End If
+                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.PosterURL) Then
+                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
+                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
+                                        Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEpisode.LocalFile).FullName)
+                                        DBTVEpisode.TVEpisode.Poster.ImageOriginal.Save(DBTVEpisode.TVEpisode.LocalFile)
+                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Else
+                        DBTVEpisode.TVEpisode = New MediaContainers.EpisodeDetails
+                    End If
+                End If
+
+                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+                    'no title so assume it's an invalid nfo, clear nfo path if exists
+                    DBTVEpisode.NfoPath = String.Empty
+                    'set title based on episode file
+                    If Not Master.eSettings.TVEpisodeNoFilter Then DBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), DBTVEpisode.TVShow.Title)
+                End If
+
+                'search local actor thumb for each actor in NFO
+                If DBTVEpisode.TVEpisode.Actors.Count > 0 AndAlso DBTVEpisode.ActorThumbs.Count > 0 Then
+                    For Each actor In DBTVEpisode.TVEpisode.Actors
+                        actor.ThumbPath = DBTVEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    Next
+                End If
+
+                If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = sEpisode.Season
+                If DBTVEpisode.TVEpisode.Episode = -1 AndAlso DBTVEpisode.Ordering = Enums.Ordering.DayOfYear Then
+                    Dim eDate As Date = DateTime.ParseExact(sEpisode.Aired, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    DBTVEpisode.TVEpisode.Episode = eDate.DayOfYear
+                ElseIf DBTVEpisode.TVEpisode.Episode = -1 Then
+                    DBTVEpisode.TVEpisode.Episode = sEpisode.Episode
+                End If
+                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) Then DBTVEpisode.TVEpisode.Aired = sEpisode.Aired
+
+                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+                    'nothing usable in the title after filters have runs
+                    DBTVEpisode.TVEpisode.Title = String.Format("{0} {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Aired)
+                End If
+
+                Dim vSource As String = APIXML.GetVideoSource(DBTVEpisode.Filename, True)
+                If Not String.IsNullOrEmpty(vSource) Then
+                    DBTVEpisode.VideoSource = vSource
+                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
+                ElseIf String.IsNullOrEmpty(DBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    DBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBTVEpisode.Filename)), String.Empty, "*EmberAPP")
+                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
+                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.VideoSource) Then
+                    DBTVEpisode.VideoSource = DBTVEpisode.TVEpisode.VideoSource
+                End If
+
+                'Do the Save
+                Master.DB.SaveTVEpToDB(DBTVEpisode, isNew, True, Batchmode, ToNfo)
+
+                If ReportProgress Then Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Title)})
+            Else
+                Dim iEpisode As Integer = CInt(sEpisode.Episode)
+                Dim iSeason As Integer = CInt(sEpisode.Season)
+                ToNfo = False
+
+                If Not String.IsNullOrEmpty(DBTVEpisode.NfoPath) Then
+                    DBTVEpisode.TVEpisode = NFO.LoadTVEpFromNFO(DBTVEpisode.NfoPath, iSeason, iEpisode)
+                    If Not DBTVEpisode.TVEpisode.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) AndAlso Master.eSettings.TVScraperMetaDataScan Then
+                        MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
+                    End If
+                Else
+                    If Not String.IsNullOrEmpty(DBTVEpisode.TVShow.TVDB) AndAlso DBTVEpisode.ShowID >= 0 Then
+                        If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
+                        If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
+                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(DBTVEpisode, Master.DefaultOptions_TV, False) Then
+                            If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+                                ToNfo = True
+
+                                'if we had info for it (based on title) and mediainfo scanning is enabled
+                                If Master.eSettings.TVScraperMetaDataScan Then
+                                    MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
+                                End If
+                            End If
+
+                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then
+                                If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEpisode.LocalFile) Then
+                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromFile(DBTVEpisode.TVEpisode.LocalFile)
+                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
+                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
+                                    End If
+                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.PosterURL) Then
+                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
+                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
+                                        Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEpisode.LocalFile).FullName)
+                                        DBTVEpisode.TVEpisode.Poster.ImageOriginal.Save(DBTVEpisode.TVEpisode.LocalFile)
+                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Else
+                        DBTVEpisode.TVEpisode = New MediaContainers.EpisodeDetails
+                    End If
+                End If
+
+                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+                    'no title so assume it's an invalid nfo, clear nfo path if exists
+                    DBTVEpisode.NfoPath = String.Empty
+                    'set title based on episode file
+                    If Not Master.eSettings.TVEpisodeNoFilter Then DBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), DBTVEpisode.TVShow.Title)
+                End If
+
+                'search local actor thumb for each actor in NFO
+                If DBTVEpisode.TVEpisode.Actors.Count > 0 AndAlso DBTVEpisode.ActorThumbs.Count > 0 Then
+                    For Each actor In DBTVEpisode.TVEpisode.Actors
+                        actor.ThumbPath = DBTVEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    Next
+                End If
+
+                If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
+                If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
+                If DBTVEpisode.TVEpisode.SubEpisode = -1 AndAlso Not sEpisode.SubEpisode = -1 Then DBTVEpisode.TVEpisode.SubEpisode = sEpisode.SubEpisode
+
+                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
+                    'nothing usable in the title after filters have runs
+                    DBTVEpisode.TVEpisode.Title = String.Format("{0} S{1}E{2}{3}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0")), _
+                                                       DBTVEpisode.TVEpisode.Episode.ToString.PadLeft(2, Convert.ToChar("0")), If(DBTVEpisode.TVEpisode.SubEpisodeSpecified, String.Concat(".", DBTVEpisode.TVEpisode.SubEpisode), String.Empty))
+                End If
+
+                Dim vSource As String = APIXML.GetVideoSource(DBTVEpisode.Filename, True)
+                If Not String.IsNullOrEmpty(vSource) Then
+                    DBTVEpisode.VideoSource = vSource
+                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
+                ElseIf String.IsNullOrEmpty(DBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    DBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBTVEpisode.Filename)), String.Empty, "*EmberAPP")
+                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
+                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.VideoSource) Then
+                    DBTVEpisode.VideoSource = DBTVEpisode.TVEpisode.VideoSource
+                End If
+
+                'Do the Save
+                Master.DB.SaveTVEpToDB(DBTVEpisode, isNew, False, Batchmode, ToNfo)
+
+                If ReportProgress Then Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Title)})
+            End If
+        Next
+    End Sub
+
+    Public Sub LoadTVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean)
         Dim newSeasonsIndex As New List(Of Integer)
         Dim toNfo As Boolean = False
 
@@ -914,198 +1086,24 @@ Public Class Scanner
                 For Each DBTVEpisode As Database.DBElement In DBTVShow.Episodes
                     DBTVEpisode = Master.DB.AddTVShowInfoToDBElement(DBTVEpisode, DBTVShow)
                     If Not String.IsNullOrEmpty(DBTVEpisode.Filename) Then
-                        GetTVEpisodeFolderContents(DBTVEpisode)
+                        LoadTVEpisode(DBTVEpisode, isNew, Batchmode, ReportProgress)
 
-                        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
-                            If sEpisode.byDate Then
+                        'For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
 
-                                toNfo = False
 
-                                If Not String.IsNullOrEmpty(DBTVEpisode.NfoPath) Then
-                                    DBTVEpisode.TVEpisode = NFO.LoadTVEpFromNFO(DBTVEpisode.NfoPath, sEpisode.Season, sEpisode.Aired)
-                                    If Not DBTVEpisode.TVEpisode.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                                        MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
-                                    End If
-                                Else
-                                    If Not String.IsNullOrEmpty(DBTVEpisode.TVShow.TVDB) AndAlso DBTVEpisode.ShowID >= 0 Then
-                                        If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) Then DBTVEpisode.TVEpisode.Aired = sEpisode.Aired
-                                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(DBTVEpisode, Master.DefaultOptions_TV, False) Then
-                                            If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-                                                toNfo = True
-
-                                                'if we had info for it (based on title) and mediainfo scanning is enabled
-                                                If Master.eSettings.TVScraperMetaDataScan Then
-                                                    MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
-                                                End If
-                                            End If
-
-                                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then
-                                                If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEpisode.LocalFile) Then
-                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromFile(DBTVEpisode.TVEpisode.LocalFile)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
-                                                    End If
-                                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.PosterURL) Then
-                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
-                                                        Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEpisode.LocalFile).FullName)
-                                                        DBTVEpisode.TVEpisode.Poster.ImageOriginal.Save(DBTVEpisode.TVEpisode.LocalFile)
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
-                                                    End If
-                                                End If
-                                            End If
-                                        End If
-                                    Else
-                                        DBTVEpisode.TVEpisode = New MediaContainers.EpisodeDetails
-                                    End If
-                                End If
-
-                                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-                                    'no title so assume it's an invalid nfo, clear nfo path if exists
-                                    DBTVEpisode.NfoPath = String.Empty
-                                    'set title based on episode file
-                                    If Not Master.eSettings.TVEpisodeNoFilter Then DBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), DBTVEpisode.TVShow.Title)
-                                End If
-
-                                'search local actor thumb for each actor in NFO
-                                If DBTVEpisode.TVEpisode.Actors.Count > 0 AndAlso DBTVEpisode.ActorThumbs.Count > 0 Then
-                                    For Each actor In DBTVEpisode.TVEpisode.Actors
-                                        actor.ThumbPath = DBTVEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                                    Next
-                                End If
-
-                                If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = sEpisode.Season
-                                If DBTVEpisode.TVEpisode.Episode = -1 AndAlso DBTVEpisode.Ordering = Enums.Ordering.DayOfYear Then
-                                    Dim eDate As Date = DateTime.ParseExact(sEpisode.Aired, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
-                                    DBTVEpisode.TVEpisode.Episode = eDate.DayOfYear
-                                ElseIf DBTVEpisode.TVEpisode.Episode = -1 Then
-                                    DBTVEpisode.TVEpisode.Episode = sEpisode.Episode
-                                End If
-                                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) Then DBTVEpisode.TVEpisode.Aired = sEpisode.Aired
-
-                                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-                                    'nothing usable in the title after filters have runs
-                                    DBTVEpisode.TVEpisode.Title = String.Format("{0} {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Aired)
-                                End If
-
-                                Dim vSource As String = APIXML.GetVideoSource(DBTVEpisode.Filename, True)
-                                If Not String.IsNullOrEmpty(vSource) Then
-                                    DBTVEpisode.VideoSource = vSource
-                                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
-                                ElseIf String.IsNullOrEmpty(DBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                                    DBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBTVEpisode.Filename)), String.Empty, "*EmberAPP")
-                                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
-                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.VideoSource) Then
-                                    DBTVEpisode.VideoSource = DBTVEpisode.TVEpisode.VideoSource
-                                End If
-
-                                'Do the Save
-                                Master.DB.SaveTVEpToDB(DBTVEpisode, isNew, True, Batchmode, toNfo)
-
-                                Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Title)})
-                            Else
-                                Dim iEpisode As Integer = CInt(sEpisode.Episode)
-                                Dim iSeason As Integer = CInt(sEpisode.Season)
-                                toNfo = False
-
-                                If Not String.IsNullOrEmpty(DBTVEpisode.NfoPath) Then
-                                    DBTVEpisode.TVEpisode = NFO.LoadTVEpFromNFO(DBTVEpisode.NfoPath, iSeason, iEpisode)
-                                    If Not DBTVEpisode.TVEpisode.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                                        MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
-                                    End If
-                                Else
-                                    If Not String.IsNullOrEmpty(DBTVEpisode.TVShow.TVDB) AndAlso DBTVEpisode.ShowID >= 0 Then
-                                        If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
-                                        If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
-                                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(DBTVEpisode, Master.DefaultOptions_TV, False) Then
-                                            If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-                                                toNfo = True
-
-                                                'if we had info for it (based on title) and mediainfo scanning is enabled
-                                                If Master.eSettings.TVScraperMetaDataScan Then
-                                                    MediaInfo.UpdateTVMediaInfo(DBTVEpisode)
-                                                End If
-                                            End If
-
-                                            If String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then
-                                                If Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.LocalFile) AndAlso File.Exists(DBTVEpisode.TVEpisode.LocalFile) Then
-                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromFile(DBTVEpisode.TVEpisode.LocalFile)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
-                                                    End If
-                                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.PosterURL) Then
-                                                    DBTVEpisode.TVEpisode.Poster.ImageOriginal.FromWeb(DBTVEpisode.TVEpisode.PosterURL)
-                                                    If Not IsNothing(DBTVEpisode.TVEpisode.Poster.ImageOriginal.Image) Then
-                                                        Directory.CreateDirectory(Directory.GetParent(DBTVEpisode.TVEpisode.LocalFile).FullName)
-                                                        DBTVEpisode.TVEpisode.Poster.ImageOriginal.Save(DBTVEpisode.TVEpisode.LocalFile)
-                                                        DBTVEpisode.ImagesContainer.Poster.LocalFilePath = DBTVEpisode.TVEpisode.Poster.ImageOriginal.SaveAsTVEpisodePoster(DBTVEpisode)
-                                                    End If
-                                                End If
-                                            End If
-                                        End If
-                                    Else
-                                        DBTVEpisode.TVEpisode = New MediaContainers.EpisodeDetails
-                                    End If
-                                End If
-
-                                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-                                    'no title so assume it's an invalid nfo, clear nfo path if exists
-                                    DBTVEpisode.NfoPath = String.Empty
-                                    'set title based on episode file
-                                    If Not Master.eSettings.TVEpisodeNoFilter Then DBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), DBTVEpisode.TVShow.Title)
-                                End If
-
-                                'search local actor thumb for each actor in NFO
-                                If DBTVEpisode.TVEpisode.Actors.Count > 0 AndAlso DBTVEpisode.ActorThumbs.Count > 0 Then
-                                    For Each actor In DBTVEpisode.TVEpisode.Actors
-                                        actor.ThumbPath = DBTVEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                                    Next
-                                End If
-
-                                If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
-                                If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
-                                If DBTVEpisode.TVEpisode.SubEpisode = -1 AndAlso Not sEpisode.SubEpisode = -1 Then DBTVEpisode.TVEpisode.SubEpisode = sEpisode.SubEpisode
-
-                                If String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) Then
-                                    'nothing usable in the title after filters have runs
-                                    DBTVEpisode.TVEpisode.Title = String.Format("{0} S{1}E{2}{3}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0")), _
-                                                                       DBTVEpisode.TVEpisode.Episode.ToString.PadLeft(2, Convert.ToChar("0")), If(DBTVEpisode.TVEpisode.SubEpisodeSpecified, String.Concat(".", DBTVEpisode.TVEpisode.SubEpisode), String.Empty))
-                                End If
-
-                                Dim vSource As String = APIXML.GetVideoSource(DBTVEpisode.Filename, True)
-                                If Not String.IsNullOrEmpty(vSource) Then
-                                    DBTVEpisode.VideoSource = vSource
-                                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
-                                ElseIf String.IsNullOrEmpty(DBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                                    DBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBTVEpisode.Filename)), String.Empty, "*EmberAPP")
-                                    DBTVEpisode.TVEpisode.VideoSource = DBTVEpisode.VideoSource
-                                ElseIf Not String.IsNullOrEmpty(DBTVEpisode.TVEpisode.VideoSource) Then
-                                    DBTVEpisode.VideoSource = DBTVEpisode.TVEpisode.VideoSource
-                                End If
-
-                                'Do the Save
-                                Master.DB.SaveTVEpToDB(DBTVEpisode, isNew, False, Batchmode, toNfo)
-
-                                'Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", DBTVEpisode.TVShow.Title, DBTVEpisode.TVEp.Title)})
-                            End If
-
-                            'add seasons
-                            If DBTVShow.Seasons Is Nothing Then
-                                DBTVShow.Seasons = New List(Of Database.DBElement)
-                            End If
-
-                            Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = DBTVEpisode.TVEpisode.Season)
-                            If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
-                                tmpSeason = New Database.DBElement
-                                tmpSeason.Filename = DBTVEpisode.Filename
-                                tmpSeason.ID = -1
-                                tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = DBTVEpisode.TVEpisode.Season}
-                                tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVEpisode)
-                                GetTVSeasonFolderContents(tmpSeason, tmpSeason.TVSeason.Season)
-                                DBTVShow.Seasons.Add(tmpSeason)
-                                newSeasonsIndex.Add(tmpSeason.TVSeason.Season)
-                            End If
-                        Next
+                        '    'add seasons
+                        '    Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = DBTVEpisode.TVEpisode.Season)
+                        '    If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
+                        '        tmpSeason = New Database.DBElement
+                        '        tmpSeason.Filename = DBTVEpisode.Filename
+                        '        tmpSeason.ID = -1
+                        '        tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = DBTVEpisode.TVEpisode.Season}
+                        '        tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVEpisode)
+                        '        GetTVSeasonFolderContents(tmpSeason)
+                        '        DBTVShow.Seasons.Add(tmpSeason)
+                        '        newSeasonsIndex.Add(tmpSeason.TVSeason.Season)
+                        '    End If
+                        'Next
                     End If
                 Next
             End If
@@ -1118,7 +1116,7 @@ Public Class Scanner
                 tmpAllSeasons.ID = -1
                 tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
                 tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTVShow)
-                GetTVSeasonFolderContents(tmpAllSeasons, tmpAllSeasons.TVSeason.Season)
+                GetTVSeasonFolderContents(tmpAllSeasons)
                 DBTVShow.Seasons.Add(tmpAllSeasons)
                 newSeasonsIndex.Add(tmpAllSeasons.TVSeason.Season)
             End If
@@ -1127,7 +1125,7 @@ Public Class Scanner
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason.TVSeason IsNot Nothing Then
-                    Master.DB.SaveTVSeasonToDB(tSeason, True)
+                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode)
                 End If
             Next
         End If
@@ -1560,7 +1558,7 @@ Public Class Scanner
                     Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                 Next
 
-                LoadTVShow(currShowContainer, True, True)
+                LoadTVShow(currShowContainer, True, True, True)
             Else
                 For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
 
@@ -1595,7 +1593,7 @@ Public Class Scanner
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                     Next
 
-                    LoadTVShow(currShowContainer, True, True)
+                    LoadTVShow(currShowContainer, True, True, True)
                 Next
 
             End If
@@ -1727,7 +1725,7 @@ Public Class Scanner
                                 Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                             Next
 
-                            LoadTVShow(currShowContainer, True, True)
+                            LoadTVShow(currShowContainer, True, True, True)
                         End If
                     End If
                     Exit For
