@@ -10995,11 +10995,11 @@ doCancel:
                 Type = Enums.ScrapeType.FilterAuto
             Case "filter_skip"
                 Type = Enums.ScrapeType.FilterSkip
-            Case "mark_ask"
+            Case "marked_ask"
                 Type = Enums.ScrapeType.MarkedAsk
-            Case "mark_auto"
+            Case "marked_auto"
                 Type = Enums.ScrapeType.MarkedAuto
-            Case "mark_skip"
+            Case "marked_skip"
                 Type = Enums.ScrapeType.MarkedSkip
             Case "missing_ask"
                 Type = Enums.ScrapeType.MissingAsk
