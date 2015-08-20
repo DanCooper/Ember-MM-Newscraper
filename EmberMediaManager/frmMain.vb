@@ -2042,6 +2042,10 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_Movie, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
+                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                        bwMovieScraper.CancelAsync()
+                    End If
                 End If
             Else
                 ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -2049,9 +2053,14 @@ Public Class frmMain
                                                                          tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
                                                                          tScrapeItem.ScrapeModifier.MainExtrathumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
                                                                          tScrapeItem.ScrapeModifier.MainPoster Or tScrapeItem.ScrapeModifier.MainTheme Or tScrapeItem.ScrapeModifier.MainTrailer) Then
-                    Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
-                        Exit For
+                    Dim tModifier As New Structures.ScrapeModifier With {.MainNFO = True}
+                    Dim tOptions As New Structures.ScrapeOptions_Movie 'set all values to false to not override any field. ID's are always determined.
+                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifier, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
+                        Cancelled = True
+                        If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                            bwMovieScraper.CancelAsync()
+                        End If
                     End If
                 End If
             End If
@@ -2223,8 +2232,10 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
+                logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
+            Else
+                logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
             End If
-            logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeMovie, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieScraper.CancellationPending}
@@ -2617,7 +2628,7 @@ Public Class frmMain
             Me.InfoDownloaded_TVEpisode(Res.DBElement)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped Episode from disk to get clean informations in DB
-            Me.Reload_TVEpisode(Res.DBElement.ID, False, True, False)
+            Me.Reload_TVEpisode(Res.DBElement.ID, False, True)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -5327,22 +5338,18 @@ doCancel:
         Me.SetControlsEnabled(False, True)
 
         Dim doFill As Boolean = False
-        Dim tFill As Boolean = False
 
-        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    tFill = Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-                    If tFill Then doFill = True
+                    If Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False) Then
+                        doFill = True
+                    Else
+                        RefreshRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+                    End If
                 Next
-
-                Master.DB.CleanSeasons(True)
-
                 SQLtransaction.Commit()
             End Using
-        ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
-            tFill = Me.Reload_TVEpisode(Convert.ToInt64(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), False)
-            If tFill Then doFill = True
         End If
 
         Me.dgvTVShows.Cursor = Cursors.Default
@@ -10702,7 +10709,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 Try
-                    If Me.Reload_TVEpisode(Convert.ToInt16(_params(0))) Then
+                    If Me.Reload_TVEpisode(Convert.ToInt16(_params(0)), False, True) Then
                         Me.FillList(False, False, True)
                     End If
                     Me.SetStatus(Master.currShow.TVEpisode.Title)
@@ -13569,59 +13576,25 @@ doCancel:
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <param name="BatchMode"></param>
-    ''' <param name="FromNfo"></param>
-    ''' <param name="ToNfo"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function Reload_TVEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim tmpDBTVEpisode As New Database.DBElement
-        Dim tmpEp As New MediaContainers.EpisodeDetails
-        Dim SeasonChanged As Boolean = False
-        Dim EpisodeChanged As Boolean = False
-        Dim ShowID As Integer = -1
+    Private Function Reload_TVEpisode(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
+        Dim DBTVEpisode As New Database.DBElement
 
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        DBTVEpisode = Master.DB.LoadTVEpFromDB(ID, True)
 
-        tmpDBTVEpisode = Master.DB.LoadTVEpFromDB(ID, True)
+        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
 
-        If tmpDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tmpDBTVEpisode, Not BatchMode) Then
+            'first remove Episodes to prevent issues with MultiEpisodes
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Master.DB.DeleteTVEpFromDBByPath(DBTVEpisode.Filename, False, True)
+            If Not BatchMode Then SQLtransaction.Commit()
 
-            If FromNfo Then
-                If String.IsNullOrEmpty(tmpDBTVEpisode.NfoPath) Then
-                    Dim sNFO As String = NFO.GetEpNfoPath(tmpDBTVEpisode.Filename)
-                    tmpDBTVEpisode.NfoPath = sNFO
-                    tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpDBTVEpisode.TVEpisode.Season, tmpDBTVEpisode.TVEpisode.Episode)
-                Else
-                    tmpEp = NFO.LoadTVEpFromNFO(tmpDBTVEpisode.NfoPath, tmpDBTVEpisode.TVEpisode.Season, tmpDBTVEpisode.TVEpisode.Episode)
-                End If
-
-                If Not tmpEp.Episode = -999 Then
-                    tmpDBTVEpisode.TVEpisode = tmpEp
-                End If
-            End If
-
-            If String.IsNullOrEmpty(tmpDBTVEpisode.TVEpisode.Title) Then
-                tmpDBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpDBTVEpisode.Filename), tmpDBTVEpisode.TVShow.Title, False)
-            End If
-
-            Dim fromFile As String = APIXML.GetVideoSource(tmpDBTVEpisode.Filename, False)
-            If Not String.IsNullOrEmpty(fromFile) Then
-                tmpDBTVEpisode.VideoSource = fromFile
-                tmpDBTVEpisode.TVEpisode.VideoSource = tmpDBTVEpisode.VideoSource
-            ElseIf String.IsNullOrEmpty(tmpDBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                tmpDBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBTVEpisode.Filename)), String.Empty, "*EmberAPP")
-                tmpDBTVEpisode.TVEpisode.VideoSource = tmpDBTVEpisode.VideoSource
-            ElseIf Not String.IsNullOrEmpty(tmpDBTVEpisode.TVEpisode.VideoSource) Then
-                tmpDBTVEpisode.VideoSource = tmpDBTVEpisode.TVEpisode.VideoSource
-            End If
-
-            fScanner.GetTVEpisodeFolderContents(tmpDBTVEpisode)
-
-            Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, BatchMode, ToNfo)
-            RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
-
+            fScanner.LoadTVEpisode(DBTVEpisode, True, BatchMode, False)
+            If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
-            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
                                                      Master.eLang.GetString(738, "Remove episode from library"), _
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
@@ -13632,14 +13605,14 @@ doCancel:
             End If
         End If
 
-        If Not BatchMode Then
-            If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
-                Master.DB.CleanSeasons(BatchMode)
-                Me.FillSeasons(ShowID)
-            Else
-                Me.LoadInfo_TVEpisode(Convert.ToInt32(ID))
-            End If
-        End If
+        'If Not BatchMode Then
+        '    If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
+        '        Master.DB.CleanSeasons(BatchMode)
+        '        Me.FillSeasons(ShowID)
+        '    Else
+        '        Me.LoadInfo_TVEpisode(Convert.ToInt32(ID))
+        '    End If
+        'End If
 
         Return False
     End Function
@@ -13670,8 +13643,6 @@ doCancel:
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <param name="BatchMode"></param>
-    ''' <param name="withSeasons"></param>
-    ''' <param name="withEpisodes"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, ByVal reloadFull As Boolean) As Boolean
@@ -13683,7 +13654,7 @@ doCancel:
             fScanner.LoadTVShow(DBTVShow, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
         Else
-            If Not showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
                                                      Master.eLang.GetString(776, "Remove tv show from library"), _
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then

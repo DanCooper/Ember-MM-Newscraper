@@ -4853,7 +4853,9 @@ Public Class Database
 
     End Class
 
+    <Serializable()>
     Public Class DBElement
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -5334,6 +5336,19 @@ Public Class Database
             Me._usefolder = False
             Me._videosource = String.Empty
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New System.IO.MemoryStream(50000)
+            Dim Formatter As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, System.IO.SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
+
 
 #End Region 'Methods
 

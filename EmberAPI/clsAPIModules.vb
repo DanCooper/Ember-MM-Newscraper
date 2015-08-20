@@ -1062,7 +1062,7 @@ Public Class ModulesManager
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
-            Dim oDBMovie As New Database.DBElement
+            'Dim oDBMovie As New Database.DBElement
             Dim ScrapedList As New List(Of MediaContainers.Movie)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1101,9 +1101,10 @@ Public Class ModulesManager
             End If
 
             'create a copy of DBMovie
-            oDBMovie.Filename = DBMovie.Filename
-            oDBMovie.Movie = New MediaContainers.Movie With {.Title = DBMovie.Movie.Title, .OriginalTitle = DBMovie.Movie.OriginalTitle, .Year = DBMovie.Movie.Year, _
-                                                           .ID = DBMovie.Movie.ID, .IMDBID = DBMovie.Movie.IMDBID, .TMDBID = DBMovie.Movie.TMDBID}
+            Dim oDBMovie As Database.DBElement = CType(DBMovie.CloneDeep, Database.DBElement)
+            'oDBMovie.Filename = DBMovie.Filename
+            'oDBMovie.Movie = New MediaContainers.Movie With {.Title = DBMovie.Movie.Title, .OriginalTitle = DBMovie.Movie.OriginalTitle, .Year = DBMovie.Movie.Year, _
+            '                                               .ID = DBMovie.Movie.ID, .IMDBID = DBMovie.Movie.IMDBID, .TMDBID = DBMovie.Movie.TMDBID}
 
             If (modules.Count() <= 0) Then
                 logger.Warn("No movie scrapers are defined")
@@ -1145,7 +1146,7 @@ Public Class ModulesManager
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
-        Dim oDBMovieSet As New Database.DBElement
+        'Dim oDBMovieSet As New Database.DBElement
         Dim ScrapedList As New List(Of MediaContainers.MovieSet)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1163,7 +1164,8 @@ Public Class ModulesManager
         End If
 
         'create a copy of DBMovieSet
-        oDBMovieSet.MovieSet = New MediaContainers.MovieSet With {.Title = DBMovieSet.MovieSet.Title, .TMDB = DBMovieSet.MovieSet.TMDB}
+        Dim oDBMovieSet As Database.DBElement = CType(DBMovieSet.CloneDeep, Database.DBElement)
+        'oDBMovieSet.MovieSet = New MediaContainers.MovieSet With {.Title = DBMovieSet.MovieSet.Title, .TMDB = DBMovieSet.MovieSet.TMDB}
 
         If (modules.Count() <= 0) Then
             logger.Warn("No movieset scrapers are defined")
@@ -1205,7 +1207,7 @@ Public Class ModulesManager
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
-            Dim oShow As New Database.DBElement
+            'Dim oShow As New Database.DBElement
             Dim ScrapedList As New List(Of MediaContainers.TVShow)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1226,11 +1228,12 @@ Public Class ModulesManager
             End If
 
             'create a copy of DBTV
-            oShow.Ordering = DBTV.Ordering
-            oShow.Language = DBTV.Language
-            oShow.ShowID = DBTV.ShowID
-            oShow.ShowPath = DBTV.ShowPath
-            oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .TVDB = DBTV.TVShow.TVDB, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
+            Dim oShow As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+            'oShow.Ordering = DBTV.Ordering
+            'oShow.Language = DBTV.Language
+            'oShow.ShowID = DBTV.ShowID
+            'oShow.ShowPath = DBTV.ShowPath
+            'oShow.TVShow = New MediaContainers.TVShow With {.Title = DBTV.TVShow.Title, .TVDB = DBTV.TVShow.TVDB, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
             If (modules.Count() <= 0) Then
                 logger.Warn("No tv show scrapers are defined")
@@ -1264,7 +1267,7 @@ Public Class ModulesManager
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
-            Dim oEpisode As New Database.DBElement
+            'Dim oEpisode As New Database.DBElement
             Dim ScrapedList As New List(Of MediaContainers.EpisodeDetails)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1272,17 +1275,18 @@ Public Class ModulesManager
             End While
 
             'create a copy of DBTV
-            oEpisode.Filename = DBTV.Filename
-            oEpisode.Ordering = DBTV.Ordering
-            oEpisode.Language = DBTV.Language
-            oEpisode.ShowID = DBTV.ShowID
-            oEpisode.ShowPath = DBTV.ShowPath
-            oEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Aired = DBTV.TVEpisode.Aired, .Episode = DBTV.TVEpisode.Episode, _
-                                                                     .IMDB = DBTV.TVEpisode.IMDB, .Season = DBTV.TVEpisode.Season, _
-                                                                     .Title = DBTV.TVEpisode.Title, .TMDB = DBTV.TVEpisode.TMDB, _
-                                                                     .TVDB = DBTV.TVEpisode.TVDB}
-            oEpisode.TVShow = New MediaContainers.TVShow With {.OriginalTitle = DBTV.TVShow.OriginalTitle, .Title = DBTV.TVShow.Title, _
-                                                               .TVDB = DBTV.TVShow.TVDB, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
+            Dim oEpisode As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+            'oEpisode.Filename = DBTV.Filename
+            'oEpisode.Ordering = DBTV.Ordering
+            'oEpisode.Language = DBTV.Language
+            'oEpisode.ShowID = DBTV.ShowID
+            'oEpisode.ShowPath = DBTV.ShowPath
+            'oEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Aired = DBTV.TVEpisode.Aired, .Episode = DBTV.TVEpisode.Episode, _
+            '                                                         .IMDB = DBTV.TVEpisode.IMDB, .Season = DBTV.TVEpisode.Season, _
+            '                                                         .Title = DBTV.TVEpisode.Title, .TMDB = DBTV.TVEpisode.TMDB, _
+            '                                                         .TVDB = DBTV.TVEpisode.TVDB}
+            'oEpisode.TVShow = New MediaContainers.TVShow With {.OriginalTitle = DBTV.TVShow.OriginalTitle, .Title = DBTV.TVShow.Title, _
+            '                                                   .TVDB = DBTV.TVShow.TVDB, .IMDB = DBTV.TVShow.IMDB, .TMDB = DBTV.TVShow.TMDB}
 
             If (modules.Count() <= 0) Then
                 logger.Warn("No tv show scrapers are defined")
