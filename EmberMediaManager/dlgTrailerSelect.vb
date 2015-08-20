@@ -171,7 +171,7 @@ Public Class dlgTrailerSelect
                 MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 didCancel = True
             End If
-        ElseIf YouTube.YouTubeURL.IsYouTubeURL(Me.txtManualTrailerLink.Text) OrElse _
+        ElseIf YouTube.UrlUtils.IsYouTubeURL(Me.txtManualTrailerLink.Text) OrElse _
             Regex.IsMatch(Me.txtManualTrailerLink.Text, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
             Dim sFormat As New TrailerLinksContainer
             Using dFormats As New dlgTrailerFormat
@@ -215,7 +215,7 @@ Public Class dlgTrailerSelect
                 Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = ManualTrailer, .bType = CloseDialog})
             End If
         Else
-            If YouTube.YouTubeURL.IsYouTubeURL(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
+            If YouTube.UrlUtils.IsYouTubeURL(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
                 If Me._noDownload Then
                     Results.WebURL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK

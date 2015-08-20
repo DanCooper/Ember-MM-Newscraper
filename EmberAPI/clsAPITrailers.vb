@@ -387,7 +387,7 @@ Public Class Trailers
 
             'Check 1 Youtube/IMDB handling: At this point trailers from Youtube and IMDB don't have quality property set, so let's analyze the quality of given trailer and set correct trailerurl/quality of each trailerlink in list
             For Each aUrl As MediaContainers.Trailer In TrailerList
-                If Regex.IsMatch(aUrl.VideoURL, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                If YouTube.UrlUtils.IsYouTubeURL(aUrl.VideoURL) Then
                     Dim YT As New YouTube.Scraper
                     Dim Trailer As YouTube.VideoLinkItem
                     YT.GetVideoLinks(aUrl.VideoURL)

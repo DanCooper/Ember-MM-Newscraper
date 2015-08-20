@@ -29,95 +29,11 @@ Imports System.Web
 
 Namespace YouTube
 
-    Public Class StreamInfo
-        Private m_url As String = [String].Empty
-        Private m_type As String = [String].Empty
-
-        Public Shared Function FromStringTable(table As IEnumerable(Of String())) As StreamInfo
-            Dim info As New StreamInfo()
-            Dim infoType As Type = GetType(StreamInfo)
-
-            Dim properties = infoType.GetProperties().ToDictionary(Function(item) item.Name.ToLower())
-
-            For Each entry In table
-                properties(entry(0).ToLower()).SetValue(info, Convert.ChangeType(entry(1), properties(entry(0).ToLower()).PropertyType))
-            Next
-
-            Return info
-        End Function
-
-        Public Property Url() As String
-            Get
-                Return m_url
-            End Get
-            Set(value As String)
-                m_url = HttpUtility.UrlDecode(value)
-            End Set
-        End Property
-
-        Public Property Fallback_Host() As String
-            Get
-                Return m_Fallback_Host
-            End Get
-            Set(value As String)
-                m_Fallback_Host = Value
-            End Set
-        End Property
-        Private m_Fallback_Host As String
-        Public Property ITag() As Integer
-            Get
-                Return m_ITag
-            End Get
-            Set(value As Integer)
-                m_ITag = Value
-            End Set
-        End Property
-        Private m_ITag As Integer
-        Public Property Quality() As String
-            Get
-                Return m_Quality
-            End Get
-            Set(value As String)
-                m_Quality = Value
-            End Set
-        End Property
-        Private m_Quality As String
-        Public Property Sig() As String
-            Get
-                Return m_Sig
-            End Get
-            Set(value As String)
-                m_Sig = Value
-            End Set
-        End Property
-        Private m_Sig As String
-        'public string S { get; set; }
-        Public Property Type() As String
-            Get
-                Return m_type
-            End Get
-            Set(value As String)
-                m_type = HttpUtility.UrlDecode(value)
-            End Set
-        End Property
-        Public ReadOnly Property FileType() As String
-            Get
-                Return Type.Split(";"c)(0).Split("/"c)(1).Replace("x-", "")
-            End Get
-        End Property
-        Public ReadOnly Property DownloadUrl() As String
-            Get
-                Return [String].Format("{0}&fallback_host={1}&signature={2}", Url, Fallback_Host, Sig)
-            End Get
-        End Property
-    End Class
-
     Public Class Scraper
 
 #Region "Fields"
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-
 
         Private _youtubelinks As YouTubeLinkItemCollection
 
@@ -149,42 +65,36 @@ Namespace YouTube
         ''' <summary>
         ''' Fetches the list of valid video links for the given URL
         ''' </summary>
-        ''' <param name="url"><c>String</c> representation of the URL to query</param>
-        ''' <remarks>If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
+        ''' <param name="strURL"><c>String</c> representation of the URL to query</param>
+        ''' <remarks>If the <paramref name="strURL">URL</paramref> leads to a YouTube video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
-        ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.</remarks>
-        Public Sub GetVideoLinks(ByVal url As String)
+        ''' </remarks>
+        Public Sub GetVideoLinks(ByVal strURL As String)
             Try
-                _youtubelinks = ParseYTFormats(url, False)
+                _youtubelinks = ParseYTFormats(strURL)
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
-        Public Shared Function GetVideoDetails(ByVal videoID As String) As String
-            If String.IsNullOrEmpty(videoID) Then Return String.Empty
+        Public Shared Function GetVideoDetails(ByVal strVideoID As String) As String
+            If String.IsNullOrEmpty(strVideoID) Then Return String.Empty
             Dim sHTTP As New HTTP
-            Dim result As String = sHTTP.DownloadData(String.Concat("https://www.youtube.com/get_video_info?&video_id=", videoID))
+            Dim result As String = sHTTP.DownloadData(String.Concat("https://www.youtube.com/get_video_info?&video_id=", strVideoID))
             Return result
         End Function
         ''' <summary>
-        ''' Extract and return the title of the video from the supplied HTML.
+        ''' Extract and return the title of the video from the supplied YouTUbe URL.
         ''' </summary>
-        ''' <param name="HTML">The text to parse for the title</param>
-        ''' <returns><c>String</c> representing the title of the video, as extracted from the YouTube page.</returns>
-        ''' <remarks>This method looks in the page's metadata, looking for the meta name="title" tag, and 
-        ''' fetching the content attribute.</remarks>
-        Public Shared Function GetVideoTitle(ByRef HTML As String) As String
+        ''' <param name="strURL">The text to parse for the title</param>
+        Public Shared Function GetVideoTitle(ByRef strURL As String) As String
             Dim result As String = String.Empty
-            'Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
-            Dim KeyPattern As String = "meta name=\""title\"" content=\s*\""([^']*?)\"""
-            'meta name="title" content=
-            If Regex.IsMatch(HTML, KeyPattern) Then
-                result = Regex.Match(HTML, KeyPattern).Groups(1).Value
-                result = HttpUtility.HtmlDecode(result)
+            If UrlUtils.IsYouTubeURL(strURL) Then
+                Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
+                Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
+                result = HttpUtility.UrlDecode(rawAllData("title"))
             End If
-
             Return result
         End Function
 
@@ -195,90 +105,63 @@ Namespace YouTube
         ''' <summary>
         ''' Fetches the list of valid video links for the given URL
         ''' </summary>
-        ''' <param name="url"><c>String</c> representation of the URL to query</param>
-        ''' <param name="doProgress"><c>Boolean</c> representing whether an event should be raised. Note that this functionality
-        ''' has not yet been implemented.</param>
+        ''' <param name="strURL"><c>String</c> representation of the URL to query</param>
         ''' <remarks>Note that most callers should use <c>GetVideoLinks(ByVal url As String)</c> instead of this <c>Private</c> function.
         ''' If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
         ''' </remarks>
-        Private Function ParseYTFormats(ByVal url As String, ByVal doProgress As Boolean) As YouTubeLinkItemCollection
+        Private Function ParseYTFormats(ByVal strURL As String) As YouTubeLinkItemCollection
             Dim DownloadLinks As New YouTubeLinkItemCollection
-            Dim sHTTP As New HTTP
 
-            Try
-                If YouTubeURL.IsYouTubeURL(url) Then
-                    Dim raw_video_info As String = GetVideoDetails(YouTubeURL.GetVideoID(url))
-                    Dim rawStream_map As String = String.Empty
-                    Dim rawDash_map As String = String.Empty
+            If UrlUtils.IsYouTubeURL(strURL) Then
+                Dim rawVideo_Info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
+                Dim rawStream_Map As String = String.Empty
+                Dim rawDash_Map As String = String.Empty
 
-                    Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
+                Dim rawAllData As Dictionary(Of String, String) = ToStringTable(rawVideo_Info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
 
-                    Try
-                        rawStream_map = HttpUtility.UrlDecode(rawAllData("url_encoded_fmt_stream_map"))
-                        rawDash_map = HttpUtility.UrlDecode(rawAllData("adaptive_fmts"))
-                    Catch ex As Exception
+                Try
+                    rawStream_Map = HttpUtility.UrlDecode(rawAllData("url_encoded_fmt_stream_map"))
+                    rawDash_Map = HttpUtility.UrlDecode(rawAllData("adaptive_fmts"))
+                Catch ex As Exception
 
-                    End Try
+                End Try
 
-                    Try
-                        Dim Info = rawStream_map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
+                Try
+                    Dim StreamList = rawStream_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
+                    Dim DashList = rawDash_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
 
-                        Dim Title As String = HttpUtility.UrlDecode(rawAllData("title"))
-                    Catch ex As Exception
+                    Dim Title As String = HttpUtility.UrlDecode(rawAllData("title"))
 
-                    End Try
-                End If
-
-
-                Dim Html As String = sHTTP.DownloadData(url)
-
-                If Html.ToLower.Contains("page not found") Then
-                    Html = String.Empty
-                End If
-
-                Dim test As String = Web.HttpUtility.UrlDecode(Html)
-
-                If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
-
-                Dim VideoTitle As String = GetVideoTitle(Html)
-                VideoTitle = Regex.Replace(VideoTitle, "['?\\:*<>]*", "")
-
-                Dim fmtMatch As Match = Regex.Match(Html, "url_encoded_fmt_stream_map\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
-                Dim dashMatch As Match = Regex.Match(Html, "(adaptive_fmts"":"".*?"")", RegexOptions.IgnoreCase) '"adaptive_fmts\"": \""(.*?)\"", \""", RegexOptions.IgnoreCase)
-
-                If fmtMatch.Success Then
-                    Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(fmtMatch, VideoTitle)
-                    If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.AudioLinks.Count > 0 Then
-                        DownloadLinks.AudioLinks.AddRange(fmtDownloadlinks.AudioLinks)
+                    If StreamList.Count > 0 Then
+                        Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(StreamList, False)
+                        If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.AudioLinks.Count > 0 Then
+                            DownloadLinks.AudioLinks.AddRange(fmtDownloadlinks.AudioLinks)
+                        End If
+                        If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.VideoLinks.Count > 0 Then
+                            DownloadLinks.VideoLinks.AddRange(fmtDownloadlinks.VideoLinks)
+                        End If
                     End If
-                    If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.VideoLinks.Count > 0 Then
-                        DownloadLinks.VideoLinks.AddRange(fmtDownloadlinks.VideoLinks)
+
+                    If DashList.Count > 0 Then
+                        Dim dashDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(DashList, True)
+                        If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.AudioLinks.Count > 0 Then
+                            DownloadLinks.AudioLinks.AddRange(dashDownloadlinks.AudioLinks)
+                        End If
+                        If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.VideoLinks.Count > 0 Then
+                            DownloadLinks.VideoLinks.AddRange(dashDownloadlinks.VideoLinks)
+                        End If
                     End If
-                End If
+                Catch ex As Exception
 
-                If dashMatch.Success Then
-                    Dim dashDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(dashMatch, VideoTitle)
-                    If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.AudioLinks.Count > 0 Then
-                        DownloadLinks.AudioLinks.AddRange(dashDownloadlinks.AudioLinks)
-                    End If
-                    If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.VideoLinks.Count > 0 Then
-                        DownloadLinks.VideoLinks.AddRange(dashDownloadlinks.VideoLinks)
-                    End If
-                End If
+                End Try
+            End If
 
-                DownloadLinks.AudioLinks.Sort()
-                DownloadLinks.VideoLinks.Sort()
+            DownloadLinks.AudioLinks.Sort()
+            DownloadLinks.VideoLinks.Sort()
 
-                Return DownloadLinks
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return New YouTubeLinkItemCollection
-            Finally
-                sHTTP = Nothing
-            End Try
+            Return DownloadLinks
         End Function
         ''' <summary>
         ''' Search for the given string on YouTube
@@ -298,7 +181,7 @@ Namespace YouTube
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = "<li><div class=""yt-lockup yt-lockup-tile yt-lockup-video.*?video-time.*?>(?<TIME>.*?)<.*?<h3 class=""yt-lockup-title""><a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)"""
+            Dim Pattern As String = "<\/div><span class=""video-time.*?>(?<TIME>.*?)<.*?<a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)"""
 
             Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
 
@@ -314,31 +197,13 @@ Namespace YouTube
             Return tList
         End Function
 
-        Private Function SelectYTiTag(ByVal YouTubeMatch As Match, ByVal VideoTitle As String) As YouTubeLinkItemCollection
+        Private Function SelectYTiTag(ByVal StreamList() As StreamInfo, ByVal isDash As Boolean) As YouTubeLinkItemCollection
             Dim DownloadLinks As New YouTubeLinkItemCollection
-            Dim sHTTP As New HTTP
-
-            Dim FormatMap As String = YouTubeMatch.Groups(1).Value
-            Dim decoded As String = Web.HttpUtility.UrlDecode(FormatMap)
-            Dim FormatArray() As String = decoded.Replace(", ", ";").Split(","c)
-
-            Dim rurl As New Regex("url=([^\\]+)", RegexOptions.IgnoreCase)
-            Dim ritag As New Regex("itag=(\d+)", RegexOptions.IgnoreCase)
-            Dim rsig As New Regex("sig=([^\\]+)", RegexOptions.IgnoreCase)
-
-            For i As Integer = 0 To FormatArray.Length - 1
-                Dim yturl As String = rurl.Match(FormatArray(i)).Groups(1).Value
-                Dim ytitag As String = ritag.Match(FormatArray(i)).Groups(1).Value
-                Dim ytsig As String = rsig.Match(FormatArray(i)).Groups(1).Value
-
-                'Console.WriteLine("Trailer Itag: {0}", ytitag)
-                'Console.WriteLine("Trailer Url: {0}", yturl)
-                'Console.WriteLine("Trailer Sig: {0}", ytsig)
-
+            For Each tStream As StreamInfo In StreamList
                 Dim aLink As New AudioLinkItem
                 Dim vLink As New VideoLinkItem
 
-                Select Case ytitag
+                Select Case tStream.ITag.ToString
                     ' **********************************************************************
                     ' see all itags http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
                     ' **********************************************************************
@@ -580,17 +445,23 @@ Namespace YouTube
                 End Select
 
                 If Not String.IsNullOrEmpty(vLink.Description) Then
-                    vLink.URL = Web.HttpUtility.UrlDecode(Web.HttpUtility.UrlDecode(yturl)) & "&signature=" & ytsig & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
-                    vLink.URL = vLink.URL.Replace("sig=", "signature=")
+                    If isDash Then
+                        vLink.URL = tStream.DownloadUrlDash
+                    Else
+                        vLink.URL = tStream.DownloadUrl
+                    End If
 
-                    If Not String.IsNullOrEmpty(vLink.URL) AndAlso sHTTP.IsValidURL(vLink.URL) Then
+                    If Not String.IsNullOrEmpty(vLink.URL) Then
                         DownloadLinks.VideoLinks.Add(vLink)
                     End If
                 ElseIf Not String.IsNullOrEmpty(aLink.Description) Then
-                    aLink.URL = Web.HttpUtility.UrlDecode(Web.HttpUtility.UrlDecode(yturl)) & "&signature=" & ytsig & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
-                    aLink.URL = aLink.URL.Replace("sig=", "signature=")
+                    If isDash Then
+                        aLink.URL = tStream.DownloadUrlDash
+                    Else
+                        aLink.URL = tStream.DownloadUrl
+                    End If
 
-                    If Not String.IsNullOrEmpty(aLink.URL) AndAlso sHTTP.IsValidURL(aLink.URL) Then
+                    If Not String.IsNullOrEmpty(aLink.URL) Then
                         DownloadLinks.AudioLinks.Add(aLink)
                     End If
                 End If
@@ -603,7 +474,205 @@ Namespace YouTube
 
     End Class
 
-    Public Class YouTubeURL
+    Public Class StreamInfo
+
+#Region "Fields"
+
+        Private m_Bitrate As String
+        Private m_Clen As String
+        Private m_FPS As String
+        Private m_Fallback_Host As String
+        Private m_ITag As Integer
+        Private m_Index As String
+        Private m_Init As String
+        Private m_LMT As String
+        Private m_ProjectionType As String
+        Private m_Quality As String
+        Private m_QualityLabel As String
+        Private m_Sig As String
+        Private m_Size As String
+        Private m_Type As String = String.Empty
+        Private m_URL As String = String.Empty
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property Bitrate() As String
+            Get
+                Return m_Bitrate
+            End Get
+            Set(value As String)
+                m_Bitrate = value
+            End Set
+        End Property
+
+        Public Property Clen() As String
+            Get
+                Return m_Clen
+            End Get
+            Set(value As String)
+                m_Clen = value
+            End Set
+        End Property
+
+        Public ReadOnly Property DownloadUrl() As String
+            Get
+                Return String.Format("{0}&fallback_host={1}&signature={2}", Url, Fallback_Host, Sig)
+            End Get
+        End Property
+
+        Public ReadOnly Property DownloadUrlDash() As String
+            Get
+                Return Url
+            End Get
+        End Property
+
+        Public Property FPS() As String
+            Get
+                Return m_FPS
+            End Get
+            Set(value As String)
+                m_FPS = value
+            End Set
+        End Property
+
+        Public Property Fallback_Host() As String
+            Get
+                Return m_Fallback_Host
+            End Get
+            Set(value As String)
+                m_Fallback_Host = value
+            End Set
+        End Property
+
+        Public ReadOnly Property FileType() As String
+            Get
+                Return Type.Split(";"c)(0).Split("/"c)(1).Replace("x-", "")
+            End Get
+        End Property
+
+        Public Property ITag() As Integer
+            Get
+                Return m_ITag
+            End Get
+            Set(value As Integer)
+                m_ITag = value
+            End Set
+        End Property
+
+        Public Property Index() As String
+            Get
+                Return m_Index
+            End Get
+            Set(value As String)
+                m_Index = value
+            End Set
+        End Property
+
+        Public Property Init() As String
+            Get
+                Return m_Init
+            End Get
+            Set(value As String)
+                m_Init = value
+            End Set
+        End Property
+
+        Public Property LMT() As String
+            Get
+                Return m_LMT
+            End Get
+            Set(value As String)
+                m_LMT = value
+            End Set
+        End Property
+
+        Public Property Projection_Type() As String
+            Get
+                Return m_ProjectionType
+            End Get
+            Set(value As String)
+                m_ProjectionType = value
+            End Set
+        End Property
+
+        Public Property Quality() As String
+            Get
+                Return m_Quality
+            End Get
+            Set(value As String)
+                m_Quality = value
+            End Set
+        End Property
+
+        Public Property Quality_Label() As String
+            Get
+                Return m_QualityLabel
+            End Get
+            Set(value As String)
+                m_QualityLabel = value
+            End Set
+        End Property
+
+        Public Property Sig() As String
+            Get
+                Return m_Sig
+            End Get
+            Set(value As String)
+                m_Sig = value
+            End Set
+        End Property
+
+        Public Property Size() As String
+            Get
+                Return m_Size
+            End Get
+            Set(value As String)
+                m_Size = value
+            End Set
+        End Property
+
+        Public Property Type() As String
+            Get
+                Return m_Type
+            End Get
+            Set(value As String)
+                m_Type = HttpUtility.UrlDecode(value)
+            End Set
+        End Property
+
+        Public Property Url() As String
+            Get
+                Return m_URL
+            End Get
+            Set(value As String)
+                m_URL = HttpUtility.UrlDecode(value)
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Shared Function FromStringTable(table As IEnumerable(Of String())) As StreamInfo
+            Dim info As New StreamInfo()
+            Dim infoType As Type = GetType(StreamInfo)
+
+            Dim properties = infoType.GetProperties().ToDictionary(Function(item) item.Name.ToLower())
+
+            For Each entry In table
+                properties(entry(0).ToLower()).SetValue(info, Convert.ChangeType(entry(1), properties(entry(0).ToLower()).PropertyType))
+            Next
+
+            Return info
+        End Function
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class UrlUtils
 
 #Region "Fields"
 
@@ -612,8 +681,6 @@ Namespace YouTube
 #End Region 'Fields
 
 #Region "Methods"
-
-#End Region 'Methods
 
         Public Shared Function GetVideoID(ByVal URL As String) As String
             Dim ytMatch As Match = YouTubeURLRegex.Match(URL)
@@ -628,6 +695,8 @@ Namespace YouTube
             Dim result As Match = YouTubeURLRegex.Match(URL)
             Return result.Success
         End Function
+
+#End Region 'Methods
 
     End Class
 

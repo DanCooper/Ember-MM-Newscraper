@@ -74,7 +74,7 @@ Public Class dlgTrailerFormat
     Private Sub bwParseTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwParseTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If EmberAPI.YouTube.YouTubeURL.IsYouTubeURL(Me._url) Then
+            If EmberAPI.YouTube.UrlUtils.IsYouTubeURL(Me._url) Then
                 _isIMDb = False
                 _isYouTube = True
                 YouTube.GetVideoLinks(Me._url)
