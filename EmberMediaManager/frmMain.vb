@@ -5342,10 +5342,12 @@ doCancel:
         If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    If Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False) Then
-                        doFill = True
-                    Else
-                        RefreshRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+                    If Not Convert.ToInt64(sRow.Cells("TVEpPathID").Value) = -1 Then 'skipping missing episodes
+                        If Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False) Then
+                            doFill = True
+                        Else
+                            RefreshRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+                        End If
                     End If
                 Next
                 SQLtransaction.Commit()
@@ -5378,7 +5380,7 @@ doCancel:
             Me.tspbLoading.Visible = True
             Application.DoEvents()
 
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                     Me.tspbLoading.Value += 1
                     If Me.Reload_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value), True, False, False) Then
@@ -5387,7 +5389,7 @@ doCancel:
                         RefreshRow_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value))
                     End If
                 Next
-                SQLTrans.Commit()
+                SQLtransaction.Commit()
             End Using
 
             Me.tslLoading.Visible = False
@@ -5420,7 +5422,7 @@ doCancel:
             Me.tspbLoading.Visible = True
             Application.DoEvents()
 
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                     Me.tspbLoading.Value += 1
                     If Me.Reload_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value), True, False, False) Then
@@ -5439,7 +5441,7 @@ doCancel:
                     '    End Using
                     'End Using
                 Next
-                SQLTrans.Commit()
+                SQLtransaction.Commit()
             End Using
 
             Me.tslLoading.Visible = False
@@ -5553,15 +5555,15 @@ doCancel:
     Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
         Me.ClearInfo()
 
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                 If Not CInt(sRow.Cells("Season").Value) = 999 Then
-                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
+                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells("idSeason").Value), True)
                 End If
             Next
             Me.Reload_TVShow(idShow, True, True, False)
-            SQLTrans.Commit()
+            SQLtransaction.Commit()
         End Using
 
         If Me.dgvTVSeasons.RowCount > 0 Then
@@ -5575,7 +5577,7 @@ doCancel:
         Dim SeasonsList As New List(Of Integer)
         Me.ClearInfo()
 
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(Me.dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                 If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
@@ -5593,7 +5595,7 @@ doCancel:
             Next
             Me.Reload_TVShow(idShow, True, True, False)
 
-            SQLTrans.Commit()
+            SQLtransaction.Commit()
         End Using
 
         Dim cSeas As Integer = 0
@@ -5612,11 +5614,11 @@ doCancel:
     Private Sub cmnuShowRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
         Me.ClearInfo()
 
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                 Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True)
             Next
-            SQLTrans.Commit()
+            SQLtransaction.Commit()
         End Using
 
         Me.FillList(False, False, True)
@@ -10699,7 +10701,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_Movie
                 Try
-                    If Me.Reload_Movie(Convert.ToInt16(_params(0)), False, True) Then
+                    If Me.Reload_Movie(Convert.ToInt64(_params(0)), False, True) Then
                         Me.FillList(True, True, False)
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
@@ -10709,7 +10711,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 Try
-                    If Me.Reload_TVEpisode(Convert.ToInt16(_params(0)), False, True) Then
+                    If Me.Reload_TVEpisode(Convert.ToInt64(_params(0)), False, True) Then
                         Me.FillList(False, False, True)
                     End If
                     Me.SetStatus(Master.currShow.TVEpisode.Title)
@@ -10719,7 +10721,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_TVShow
                 Try
-                    If Me.Reload_TVShow(Convert.ToInt16(_params(0)), False, True, False) Then
+                    If Me.Reload_TVShow(Convert.ToInt64(_params(0)), False, True, False) Then
                         Me.FillList(False, False, True)
                     End If
                     Me.SetStatus(Master.currShow.ShowPath)
@@ -13580,18 +13582,19 @@ doCancel:
     ''' <remarks></remarks>
     Private Function Reload_TVEpisode(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
         Dim DBTVEpisode As New Database.DBElement
+        Dim epCount As Integer = 0
 
         DBTVEpisode = Master.DB.LoadTVEpFromDB(ID, True)
 
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
 
-            'first remove Episodes to prevent issues with MultiEpisodes
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Master.DB.DeleteTVEpFromDBByPath(DBTVEpisode.Filename, False, True)
-            If Not BatchMode Then SQLtransaction.Commit()
+            'check if this episode is a MultiEpisode
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM episode WHERE TVEpPathID = {0}", DBTVEpisode.FilenameID)
+                epCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+            End Using
 
-            fScanner.LoadTVEpisode(DBTVEpisode, True, BatchMode, False)
+            fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False, epCount > 1)
             If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
@@ -13604,15 +13607,6 @@ doCancel:
                 Return False
             End If
         End If
-
-        'If Not BatchMode Then
-        '    If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
-        '        Master.DB.CleanSeasons(BatchMode)
-        '        Me.FillSeasons(ShowID)
-        '    Else
-        '        Me.LoadInfo_TVEpisode(Convert.ToInt32(ID))
-        '    End If
-        'End If
 
         Return False
     End Function
