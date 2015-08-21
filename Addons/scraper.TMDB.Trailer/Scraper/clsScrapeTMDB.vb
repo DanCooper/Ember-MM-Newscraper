@@ -95,7 +95,7 @@ Namespace TMDB
             If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
                 For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
                     Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
-                    Dim tName As String = If(Not String.IsNullOrEmpty(Video.Name), Video.Name, GetYouTubeTitle(tLink))
+                    Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
                     alTrailers.Add(New MediaContainers.Trailer With { _
                                    .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)), _
                                    .Quality = GetVideoQuality(Video.Size), _
@@ -142,18 +142,6 @@ Namespace TMDB
             End Select
 
             Return Enums.TrailerType.Any
-        End Function
-
-        Public Shared Function GetYouTubeTitle(ByVal sURL As String) As String
-            Dim oTitle As String
-            Dim sHTTP As New HTTP
-
-            Dim HTML As String = sHTTP.DownloadData(String.Concat(sURL))
-            sHTTP = Nothing
-
-            oTitle = YouTube.Scraper.GetVideoTitle(HTML)
-
-            Return oTitle
         End Function
 
         '      Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork

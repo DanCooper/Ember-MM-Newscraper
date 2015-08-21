@@ -36,6 +36,9 @@ Namespace YouTubes
         Public Function GetTrailers(ByVal strTitle As String) As List(Of MediaContainers.Trailer)
             Dim alTrailers As New List(Of MediaContainers.Trailer)
             alTrailers = YouTube.Scraper.SearchOnYouTube(String.Concat(strTitle, " ", Master.eSettings.MovieTrailerDefaultSearch))
+            For Each tTrailer In alTrailers
+                tTrailer.Scraper = "YouTube"
+            Next
             Return alTrailers
         End Function
 
