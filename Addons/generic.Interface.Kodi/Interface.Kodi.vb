@@ -71,9 +71,7 @@ Public Class KodiInterface
         Dim mType As Enums.ModuleEventType
         Dim Params As List(Of Object)
         Dim Refparam As Object
-        Dim dbmovie As Database.DBElement
-        Dim dbtv As Database.DBElement
-        Dim dbmovieset As Database.DBElement
+        Dim dbelement As Database.DBElement
     End Structure
     'pool of Update tasks for KodiInterface (can be filled extremely fast when updating whole tvshow at once)
     Private TaskList As New List(Of KodiTask)
@@ -151,9 +149,9 @@ Public Class KodiInterface
     ''' For now we use concept of storing pool of API tasks in list (="TaskList") and use a timer object and its tick-event to get the work done
     ''' Timer tick event is async so we can queue with await all API tasks
     ''' </remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Database.DBElement, ByRef _dbmovieset As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         'add job to tasklist and get everything done in Tick-Event thread of timer
-        TaskList.Add(New KodiTask With {.mType = mType, .Params = _params, .Refparam = _refparam, .dbmovie = _dbmovie, .dbtv = _dbtv, .dbmovieset = _dbmovieset})
+        TaskList.Add(New KodiTask With {.mType = mType, .Params = _params, .Refparam = _singleobjekt, .dbelement = _dbelement})
         If TasksDone Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1443, "Start Syncing"), New Bitmap(My.Resources.logo)}))
             Me.tmrRunTasks.Start()
@@ -175,7 +173,7 @@ Public Class KodiInterface
         Me.tmrRunTasks.Enabled = False
         Me.TasksDone = False
         While Me.TaskList.Count > 0
-            Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params, TaskList.Item(0).Refparam, TaskList.Item(0).dbmovie, TaskList.Item(0).dbtv, TaskList.Item(0).dbmovieset)
+            Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params, TaskList.Item(0).Refparam, TaskList.Item(0).dbelement)
             Me.TaskList.RemoveAt(0)
         End While
         Me.TasksDone = True
@@ -191,7 +189,7 @@ Public Class KodiInterface
     ''' Worker function used to handle all ApiTaks in List(of KodiTask)
     ''' Made async to await async Kodi API
     ''' </remarks>
-    Private Async Function GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbmovie As Database.DBElement, ByVal _dbtv As Database.DBElement, ByVal _dbmovieset As Database.DBElement) As Task(Of Boolean)
+    Private Async Function GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByVal _params As List(Of Object), ByVal _refparam As Object, ByVal _dbelement As Database.DBElement) As Task(Of Boolean)
         'check if at least one host is configured, else skip
         Dim result As Boolean = False
         If MySettings.KodiHosts.host.ToList.Count > 0 Then

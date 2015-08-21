@@ -2593,7 +2593,7 @@ Public Class frmMain
                 End If
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , DBScrapeShow)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVShow, Nothing, Nothing, False, DBScrapeShow)
                     Master.DB.SaveTVShowToDB(DBScrapeShow, False, False, True)
                     bwTVScraper.ReportProgress(-2, DBScrapeShow.ID)
                     bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -2727,7 +2727,7 @@ Public Class frmMain
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, , DBScrapeEpisode)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, DBScrapeEpisode)
                     Master.DB.SaveTVShowToDB(DBScrapeEpisode, False, False, True)
                     bwTVEpisodeScraper.ReportProgress(-2, DBScrapeEpisode.ID)
                     bwTVEpisodeScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -5593,7 +5593,7 @@ doCancel:
             For Each iSeason In SeasonsList
                 Me.RefreshRow_TVSeason(idShow, iSeason)
             Next
-            Me.Reload_TVShow(idShow, True, True, False)
+            Me.RefreshRow_TVShow(idShow)
 
             SQLtransaction.Commit()
         End Using
@@ -8069,7 +8069,7 @@ doCancel:
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
                 Case Windows.Forms.DialogResult.OK
                     DBMovieSet = dEditMovieSet.Result
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, Nothing, Nothing, DBMovieSet)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
                     Master.DB.SaveMovieSetToDB(DBMovieSet, False, False, True)
                     RefreshRow_MovieSet(DBMovieSet.ID)
                 Case Windows.Forms.DialogResult.Retry
@@ -8098,7 +8098,7 @@ doCancel:
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
                     Case Windows.Forms.DialogResult.OK
                         DBTVEpisode = dEditTVEpisode.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, Nothing, Nothing, False, Nothing, DBTVEpisode)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
                         Master.DB.SaveTVEpToDB(DBTVEpisode, False, False, False, True)
                         RefreshRow_TVEpisode(DBTVEpisode.ID)
                     Case Else
@@ -8118,7 +8118,7 @@ doCancel:
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
                     Case Windows.Forms.DialogResult.OK
                         DBTVSeason = dEditTVSeason.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVSeason, Nothing, Nothing, False, Nothing, DBTVSeason)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
                         Master.DB.SaveTVSeasonToDB(DBTVSeason, False)
                         RefreshRow_TVSeason(DBTVSeason.ID)
                     Case Else
@@ -8138,7 +8138,7 @@ doCancel:
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
                     Case Windows.Forms.DialogResult.OK
                         DBTVShow = dEditTVShow.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVShow, Nothing, Nothing, False, Nothing, DBTVShow)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVShow, Nothing, Nothing, False, DBTVShow)
                         Master.DB.SaveTVShowToDB(DBTVShow, False, True, False, True)
                         RefreshRow_TVShow(DBTVShow.ID)
                     Case Windows.Forms.DialogResult.Retry

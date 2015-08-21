@@ -49,7 +49,7 @@ Public Class Interfaces
 
         Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String)
         Function InjectSetup() As Containers.SettingsPanel
-        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Database.DBElement, ByRef _dbmovieset As Database.DBElement) As ModuleResult
+        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As ModuleResult
         Sub SaveSetup(ByVal DoDispose As Boolean)
 
 #End Region 'Methods

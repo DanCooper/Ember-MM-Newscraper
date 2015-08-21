@@ -917,11 +917,11 @@ Public Class ModulesManager
     ''' </summary>
     ''' <param name="mType">The <c>Enums.ModuleEventType</c> of module to execute.</param>
     ''' <param name="_params">Parameters to pass to the module</param>
-    ''' <param name="_refparam"><c>Object</c> representing the module's result (if relevant)</param>
+    ''' <param name="_singleobjekt"><c>Object</c> representing the module's result (if relevant)</param>
     ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
     ''' <returns></returns>
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBMovie As Database.DBElement = Nothing, Optional ByRef DBTV As Database.DBElement = Nothing, Optional ByRef DBMovieSet As Database.DBElement = Nothing) As Boolean
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _singleobjekt As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBElement As Database.DBElement = Nothing) As Boolean
         Dim ret As Interfaces.ModuleResult
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -936,7 +936,7 @@ Public Class ModulesManager
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
                         logger.Trace("Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
-                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam, DBMovie, DBTV, DBMovieSet)
+                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _singleobjekt, DBElement)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try

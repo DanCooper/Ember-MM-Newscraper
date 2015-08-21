@@ -759,6 +759,16 @@ Public Class Enums
         Sync_TVShow = 50
         Task = 51
         TVImageNaming = 52
+        ''' <summary>
+        ''' Called when auto scraper finishs but before save to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        ScraperMulti_TVShow = 53
+        ''' <summary>
+        ''' Called when single scraper finishs, tv show is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        ScraperSingle_TVShow = 54
     End Enum
 
     Public Enum ScraperEventType As Integer

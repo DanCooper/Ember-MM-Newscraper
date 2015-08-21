@@ -89,12 +89,12 @@ Public Class NMTExporterModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Database.DBElement, ByRef _dbmovieset As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Try
             Dim movie As New Database.DBElement
             Select Case mType
                 Case Enums.ModuleEventType.Sync_Movie
-                    movie = DirectCast(_refparam, Database.DBElement)
+                    movie = DirectCast(_singleobjekt, Database.DBElement)
                     dlgNMTMovies.dtMovieMedia = Nothing
                     ' TODO
                 Case Enums.ModuleEventType.CommandLine

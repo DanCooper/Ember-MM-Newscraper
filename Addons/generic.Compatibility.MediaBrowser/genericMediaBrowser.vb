@@ -130,7 +130,7 @@ Public Class genericMediaBrowser
         End Using
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object, ByRef _dbmovie As Database.DBElement, ByRef _dbtv As Database.DBElement, ByRef _dbmovieset As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
         Dim doContinue As Boolean
         Dim mMovie As Database.DBElement
         Dim _image As Images
@@ -140,14 +140,14 @@ Public Class genericMediaBrowser
                     Case Enums.ModuleEventType.OnNFOSave_Movie
                         If clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False) Then
                             mMovie = DirectCast(_params(0), Database.DBElement)
-                            doContinue = DirectCast(_refparam, Boolean)
+                            doContinue = DirectCast(_singleobjekt, Boolean)
                             XMLmymovies.SaveMovieDB(mMovie)
-                            _refparam = doContinue
+                            _singleobjekt = doContinue
                         End If
                     Case Enums.ModuleEventType.OnFanartSave_Movie
                         If clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False) Then
                             mMovie = DirectCast(_params(0), Database.DBElement)
-                            _image = DirectCast(_refparam, Images)
+                            _image = DirectCast(_singleobjekt, Images)
                             Dim fPath As String = Path.Combine(Path.GetDirectoryName(mMovie.Filename), "backdrop.jpg")
                             Dim eimage As New Images
                             eimage = _image
