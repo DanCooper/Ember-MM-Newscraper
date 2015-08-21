@@ -692,7 +692,7 @@ Public Class Trailers
             lsttrailerresults.AddRange(TrailerList)
             'Check 2: Clean Up -> first remove all movies which don't have preferred quality and check if there's at least one left!
             For i = lsttrailerresults.Count - 1 To 0 Step -1
-                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefVideoQual) OrElse lsttrailerresults(i).Title.ToLower.Contains("trailer") = False Then
+                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefVideoQual) OrElse Not lsttrailerresults(i).Title.ToLower.Contains("trailer") Then
                     lsttrailerresults.RemoveAt(i)
                 End If
             Next

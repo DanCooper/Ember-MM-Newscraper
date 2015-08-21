@@ -125,17 +125,15 @@ Namespace YouTube
                     rawStream_Map = HttpUtility.UrlDecode(rawAllData("url_encoded_fmt_stream_map"))
                     rawDash_Map = HttpUtility.UrlDecode(rawAllData("adaptive_fmts"))
                 Catch ex As Exception
-
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
 
                 Try
                     Dim StreamList = rawStream_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
                     Dim DashList = rawDash_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
 
-                    Dim Title As String = HttpUtility.UrlDecode(rawAllData("title"))
-
                     If StreamList.Count > 0 Then
-                        Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(StreamList, False)
+                        Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(StreamList)
                         If fmtDownloadlinks IsNot Nothing AndAlso fmtDownloadlinks.AudioLinks.Count > 0 Then
                             DownloadLinks.AudioLinks.AddRange(fmtDownloadlinks.AudioLinks)
                         End If
@@ -145,7 +143,7 @@ Namespace YouTube
                     End If
 
                     If DashList.Count > 0 Then
-                        Dim dashDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(DashList, True)
+                        Dim dashDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(DashList)
                         If dashDownloadlinks IsNot Nothing AndAlso dashDownloadlinks.AudioLinks.Count > 0 Then
                             DownloadLinks.AudioLinks.AddRange(dashDownloadlinks.AudioLinks)
                         End If
@@ -153,13 +151,16 @@ Namespace YouTube
                             DownloadLinks.VideoLinks.AddRange(dashDownloadlinks.VideoLinks)
                         End If
                     End If
-                Catch ex As Exception
 
+                    DownloadLinks.AudioLinks.Sort()
+                    DownloadLinks.VideoLinks.Sort()
+
+                    DownloadLinks.BestQuality = DownloadLinks.VideoLinks.Item(0).FormatQuality
+                    DownloadLinks.Title = HttpUtility.UrlDecode(rawAllData("title"))
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
-
-            DownloadLinks.AudioLinks.Sort()
-            DownloadLinks.VideoLinks.Sort()
 
             Return DownloadLinks
         End Function
@@ -183,21 +184,25 @@ Namespace YouTube
 
             Dim Pattern As String = "<\/div><span class=""video-time.*?>(?<TIME>.*?)<.*?<a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)"""
 
-            Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
+            Try
+                Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline, TimeSpan.FromSeconds(1))
 
-            For ctr As Integer = 0 To Result.Count - 1
-                tLength = Result.Item(ctr).Groups(1).Value
-                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
-                tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
-                If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                    tList.Add(New MediaContainers.Trailer With {.VideoURL = tLink, .WebURL = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
-                End If
-            Next
+                For ctr As Integer = 0 To Result.Count - 1
+                    tLength = Result.Item(ctr).Groups(1).Value
+                    tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
+                    tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
+                    If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
+                        tList.Add(New MediaContainers.Trailer With {.VideoURL = tLink, .WebURL = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
+                    End If
+                Next
+            Catch ex As TimeoutException
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
 
             Return tList
         End Function
 
-        Private Function SelectYTiTag(ByVal StreamList() As StreamInfo, ByVal isDash As Boolean) As YouTubeLinkItemCollection
+        Private Function SelectYTiTag(ByVal StreamList() As StreamInfo) As YouTubeLinkItemCollection
             Dim DownloadLinks As New YouTubeLinkItemCollection
             For Each tStream As StreamInfo In StreamList
                 Dim aLink As New AudioLinkItem
@@ -445,7 +450,7 @@ Namespace YouTube
                 End Select
 
                 If Not String.IsNullOrEmpty(vLink.Description) Then
-                    If isDash Then
+                    If vLink.isDash Then
                         vLink.URL = tStream.DownloadUrlDash
                     Else
                         vLink.URL = tStream.DownloadUrl
@@ -455,11 +460,7 @@ Namespace YouTube
                         DownloadLinks.VideoLinks.Add(vLink)
                     End If
                 ElseIf Not String.IsNullOrEmpty(aLink.Description) Then
-                    If isDash Then
-                        aLink.URL = tStream.DownloadUrlDash
-                    Else
-                        aLink.URL = tStream.DownloadUrl
-                    End If
+                    aLink.URL = tStream.DownloadUrlDash
 
                     If Not String.IsNullOrEmpty(aLink.URL) Then
                         DownloadLinks.AudioLinks.Add(aLink)
@@ -491,6 +492,7 @@ Namespace YouTube
         Private m_QualityLabel As String
         Private m_Sig As String
         Private m_Size As String
+        Private m_Stereo3D As String
         Private m_Type As String = String.Empty
         Private m_URL As String = String.Empty
 
@@ -633,6 +635,15 @@ Namespace YouTube
             End Set
         End Property
 
+        Public Property Stereo3D() As String
+            Get
+                Return m_Stereo3D
+            End Get
+            Set(value As String)
+                m_Stereo3D = value
+            End Set
+        End Property
+
         Public Property Type() As String
             Get
                 Return m_Type
@@ -682,8 +693,8 @@ Namespace YouTube
 
 #Region "Methods"
 
-        Public Shared Function GetVideoID(ByVal URL As String) As String
-            Dim ytMatch As Match = YouTubeURLRegex.Match(URL)
+        Public Shared Function GetVideoID(ByVal strURL As String) As String
+            Dim ytMatch As Match = YouTubeURLRegex.Match(strURL)
             If ytMatch.Success Then
                 Return ytMatch.Groups(4).ToString
             Else
@@ -691,8 +702,8 @@ Namespace YouTube
             End If
         End Function
 
-        Public Shared Function IsYouTubeURL(ByVal URL As String) As Boolean
-            Dim result As Match = YouTubeURLRegex.Match(URL)
+        Public Shared Function IsYouTubeURL(ByVal strURL As String) As Boolean
+            Dim result As Match = YouTubeURLRegex.Match(strURL)
             Return result.Success
         End Function
 
@@ -870,6 +881,8 @@ Namespace YouTube
 #Region "Fields"
 
         Private _audiolinks As New List(Of AudioLinkItem)
+        Private _bestqualitiy As Enums.TrailerVideoQuality
+        Private _title As String
         Private _videolinks As New List(Of VideoLinkItem)
 
 #End Region 'Fields
@@ -893,6 +906,24 @@ Namespace YouTube
             End Set
         End Property
 
+        Public Property BestQuality() As Enums.TrailerVideoQuality
+            Get
+                Return _bestqualitiy
+            End Get
+            Set(ByVal value As Enums.TrailerVideoQuality)
+                _bestqualitiy = value
+            End Set
+        End Property
+
+        Public Property Title() As String
+            Get
+                Return _title
+            End Get
+            Set(ByVal value As String)
+                _title = value
+            End Set
+        End Property
+
         Public Property VideoLinks() As List(Of VideoLinkItem)
             Get
                 Return _videolinks
@@ -908,6 +939,8 @@ Namespace YouTube
 
         Public Sub Clear()
             Me._audiolinks = New List(Of AudioLinkItem)
+            Me._bestqualitiy = Enums.TrailerVideoQuality.Any
+            Me._title = String.Empty
             Me._videolinks = New List(Of VideoLinkItem)
         End Sub
 

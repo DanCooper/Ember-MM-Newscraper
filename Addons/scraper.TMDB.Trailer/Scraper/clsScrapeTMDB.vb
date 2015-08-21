@@ -95,7 +95,7 @@ Namespace TMDB
             If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
                 For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
                     Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
-                    Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink) 'If(Not String.IsNullOrEmpty(Video.Name), Video.Name, YouTube.Scraper.GetVideoTitle(tLink))
+                    Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
                     alTrailers.Add(New MediaContainers.Trailer With { _
                                    .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)), _
                                    .Quality = GetVideoQuality(Video.Size), _
