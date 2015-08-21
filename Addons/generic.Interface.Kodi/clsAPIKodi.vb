@@ -235,7 +235,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateMovieInfo(ByVal EmbermovieID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(EmbermovieID)
+            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(EmbermovieID, False)
             Try
                 If _kodi Is Nothing Then
                     logger.Warn("[APIKodi] UpdateMovieInfo: No client initialized! Abort!")
@@ -487,7 +487,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateMovieSetInfo(ByVal EmbermoviesetID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(EmbermoviesetID)
+            Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(EmbermoviesetID, False)
             Try
                 If _kodi Is Nothing Then
                     logger.Warn("[APIKodi] UpdateMovieSetInfo: No client initialized! Abort!")
@@ -665,7 +665,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVEpisodeInfo(ByVal EmberepisodeID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(EmberepisodeID, True)
+            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(EmberepisodeID, True, False)
 
             Try
                 If _kodi Is Nothing Then
@@ -838,7 +838,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVSeasonInfo(ByVal EmberseasonID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True)
+            Dim uSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True, False)
 
             Try
                 If _kodi Is Nothing Then
@@ -1009,7 +1009,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVShowInfo(ByVal EmbershowID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(EmbershowID, False, False)
+            Dim uTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(EmbershowID, False, False, False)
             Try
 
                 If _kodi Is Nothing Then
