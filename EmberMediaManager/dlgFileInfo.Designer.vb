@@ -29,7 +29,7 @@ Partial Class dlgFileInfo
         Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
         Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
-        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
         Me.lvStreams = New System.Windows.Forms.ListView()
         Me.colIndex = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colCodec = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -51,15 +51,15 @@ Partial Class dlgFileInfo
         Me.cbStreamType = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
-        'Cancel_Button
+        'Close_Button
         '
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(660, 325)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 0
-        Me.Cancel_Button.Text = "Close"
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClose.Location = New System.Drawing.Point(660, 325)
+        Me.btnClose.Name = "Close_Button"
+        Me.btnClose.Size = New System.Drawing.Size(67, 23)
+        Me.btnClose.TabIndex = 0
+        Me.btnClose.Text = "Close"
         '
         'lvStreams
         '
@@ -211,12 +211,12 @@ Partial Class dlgFileInfo
         '
         'dlgFileInfo
         '
-        Me.AcceptButton = Me.Cancel_Button
+        Me.AcceptButton = Me.btnClose
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
+        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(944, 354)
-        Me.Controls.Add(Me.Cancel_Button)
+        Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.lblStreamType)
         Me.Controls.Add(Me.cbStreamType)
         Me.Controls.Add(Me.btnRemoveSet)
@@ -234,7 +234,7 @@ Partial Class dlgFileInfo
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents lvStreams As System.Windows.Forms.ListView
     Friend WithEvents colIndex As System.Windows.Forms.ColumnHeader
     Friend WithEvents colCodec As System.Windows.Forms.ColumnHeader

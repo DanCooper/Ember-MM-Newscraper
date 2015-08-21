@@ -665,7 +665,7 @@ Namespace Kodi
         ''' </remarks>
         Public Async Function UpdateTVEpisodeInfo(ByVal EmberepisodeID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             Dim isNew As Boolean = False
-            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(EmberepisodeID, True)
+            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(EmberepisodeID, True)
 
             Try
                 If _kodi Is Nothing Then
@@ -1218,7 +1218,7 @@ Namespace Kodi
                             Return False
                         End If
                     Case "episode"
-                        Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(EmbervideofileID, True)
+                        Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(EmbervideofileID, True)
                         'search movie ID in Kodi DB
                         Dim KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season).ConfigureAwait(False)
                         If KodiEpsiode Is Nothing Then
@@ -1233,7 +1233,7 @@ Namespace Kodi
                         If Not KodiEpsiode Is Nothing Then
                             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                                 Dim tmpshow As New Database.DBElement
-                                tmpshow = Master.DB.LoadTVEpFromDB(EmbervideofileID, True)
+                                tmpshow = Master.DB.LoadTVEpisodeFromDB(EmbervideofileID, True)
                                 tmpshow.TVEpisode.Playcount = CStr(KodiEpsiode.playcount)
                                 'check date format
                                 'should be: 2014-09-01  09:10:11
@@ -1243,7 +1243,7 @@ Namespace Kodi
                                 If isDate Then
                                     tmpshow.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
-                                Master.DB.SaveTVEpToDB(tmpshow, False, False, True)
+                                Master.DB.SaveTVEpisodeToDB(tmpshow, False, False, True)
                                 SQLtransaction.Commit()
                             End Using
                             Return True
@@ -1439,7 +1439,7 @@ Namespace Kodi
                         uPath = uShow.ShowPath
                     End If
                 Case Enums.ContentType.TVEpisode
-                    Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(EmbervideofileID, False)
+                    Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(EmbervideofileID, False)
                     If FileUtils.Common.isBDRip(uEpisode.Filename) Then
                         'needs some testing?!
                         uPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uEpisode.Filename).FullName).FullName).FullName

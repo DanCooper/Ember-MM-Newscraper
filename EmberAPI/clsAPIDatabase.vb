@@ -1077,11 +1077,11 @@ Public Class Database
     ''' <param name="_TVDB">Database.DBElement container to fill with TVShow informations</param>
     ''' <param name="_TVDBShow">Optional the TVShow informations to add to _TVDB</param>
     ''' <remarks></remarks>
-    Public Function AddTVShowInfoToDBElement(ByVal _TVDB As Database.DBElement, Optional _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
+    Public Function AddTVShowInfoToDBElement(ByVal _TVDB As Database.DBElement, Optional ByVal _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
         Dim _tmpTVDBShow As New Database.DBElement
 
         If _TVDBShow Is Nothing OrElse _TVDBShow.TVShow Is Nothing Then
-            _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False)
+            _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False, False)
         Else
             _tmpTVDBShow = _TVDBShow
         End If
@@ -1786,7 +1786,7 @@ Public Class Database
                             End If
                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVEpisodesList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), withShow, withImages))
+                                    _TVEpisodesList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLReader("idEpisode")), withShow, withImages))
                                 End While
                             End Using
                         End Using
@@ -1892,7 +1892,7 @@ Public Class Database
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVEpFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Dim _TVDB As New Database.DBElement
         Dim PathID As Long = -1
 
@@ -2074,12 +2074,12 @@ Public Class Database
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVEpFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEpPaths WHERE TVEpPath = ", sPath, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), withShow, withImages)
+                    Return LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("ID")), withShow, withImages)
                 Else
                     Return New Database.DBElement With {.ID = -1}
                 End If
@@ -2098,13 +2098,13 @@ Public Class Database
     ''' <param name="withImages">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVEpFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional withImages As Boolean = True) As Database.DBElement
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", iShowID, iSeason, iEpisode)
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, withImages)
+                    Return LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, withImages)
                 Else
                     Return New Database.DBElement With {.ID = -1}
                 End If
@@ -3770,7 +3770,7 @@ Public Class Database
     ''' <param name="WithSeason">If <c>True</c>, also save season information</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVEpToDB(ByVal _TVEpDB As Database.DBElement, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
+    Public Function SaveTVEpisodeToDB(ByVal _TVEpDB As Database.DBElement, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -4428,7 +4428,7 @@ Public Class Database
         'save episode informations
         If withEpisodes AndAlso _TVShowDB.Episodes IsNot Nothing AndAlso _TVShowDB.Episodes.Count > 0 Then
             For Each nEpisode As Database.DBElement In _TVShowDB.Episodes
-                SaveTVEpToDB(nEpisode, If(nEpisode.ID >= 0, False, True), False, True, True)
+                SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), False, True, True)
             Next
         End If
 

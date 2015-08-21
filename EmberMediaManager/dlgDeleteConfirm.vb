@@ -302,7 +302,7 @@ Public Class dlgDeleteConfirm
                             For Each Ep As Long In ItemsToDelete.Keys
                                 hadError = False
 
-                                tEp = Master.DB.LoadTVEpFromDB(Ep, True)
+                                tEp = Master.DB.LoadTVEpisodeFromDB(Ep, True)
                                 ItemParentNode = .Nodes.Add(Ep.ToString, tEp.TVEpisode.Title)
                                 ItemParentNode.ImageKey = "MOVIE"
                                 ItemParentNode.SelectedImageKey = "MOVIE"

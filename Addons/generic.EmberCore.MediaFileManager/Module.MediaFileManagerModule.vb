@@ -343,7 +343,7 @@ Public Class FileManagerExternalModule
                         End If
                     Next
                 ElseIf ContentType = Enums.ContentType.TVShow Then
-                    For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListShows.SelectedRows
+                    For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
                         ID = Convert.ToInt64(sRow.Cells("idShow").Value)
                         If Not MediaToWork.Contains(ID) Then
                             MediaToWork.Add(ID)

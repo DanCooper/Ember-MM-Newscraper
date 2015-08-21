@@ -979,13 +979,13 @@ Public Class Scanner
                     cEpisode.ID = EpisodeID
 
                     'Do the Save
-                    Master.DB.SaveTVEpToDB(cEpisode, isNew, True, Batchmode, ToNfo)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
                     'add the season number to list
                     SeasonsList.Add(cEpisode.TVEpisode.Season)
                 End If
             Else
                 'Do the Save
-                Master.DB.SaveTVEpToDB(cEpisode, isNew, True, Batchmode, ToNfo)
+                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             End If

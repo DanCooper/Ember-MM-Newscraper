@@ -882,7 +882,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
-        Using dEditMeta As New dlgFileInfo
+        Using dEditMeta As New dlgFileInfo(New Database.DBElement, False)
             Dim fi As New MediaInfo.Fileinfo
             For Each x As Settings.MetadataPerType In MovieMeta
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
@@ -920,7 +920,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVScraperDefFIExtEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtEdit.Click
-        Using dEditMeta As New dlgFileInfo
+        Using dEditMeta As New dlgFileInfo(New Database.DBElement, True)
             Dim fi As New MediaInfo.Fileinfo
             For Each x As Settings.MetadataPerType In TVMeta
                 If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then
@@ -1002,7 +1002,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
-        Using dEditMeta As New dlgFileInfo
+        Using dEditMeta As New dlgFileInfo(New Database.DBElement, False)
             Dim fi As New MediaInfo.Fileinfo
             fi = dEditMeta.ShowDialog(fi, False)
             If Not fi Is Nothing Then
@@ -1021,7 +1021,7 @@ Public Class dlgSettings
 
     Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtAdd.Click
         If Not txtTVScraperDefFIExt.Text.StartsWith(".") Then txtTVScraperDefFIExt.Text = String.Concat(".", txtTVScraperDefFIExt.Text)
-        Using dEditMeta As New dlgFileInfo
+        Using dEditMeta As New dlgFileInfo(New Database.DBElement, True)
             Dim fi As New MediaInfo.Fileinfo
             fi = dEditMeta.ShowDialog(fi, True)
             If Not fi Is Nothing Then
@@ -4053,7 +4053,7 @@ Public Class dlgSettings
 
     Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
         If Me.lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
-            Using dEditMeta As New dlgFileInfo
+            Using dEditMeta As New dlgFileInfo(New Database.DBElement, False)
                 Dim fi As New MediaInfo.Fileinfo
                 For Each x As Settings.MetadataPerType In MovieMeta
                     If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
@@ -4124,7 +4124,7 @@ Public Class dlgSettings
 
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If Me.lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
-            Using dEditMeta As New dlgFileInfo
+            Using dEditMeta As New dlgFileInfo(New Database.DBElement, True)
                 Dim fi As New MediaInfo.Fileinfo
                 For Each x As Settings.MetadataPerType In TVMeta
                     If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then

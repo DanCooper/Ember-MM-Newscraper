@@ -1614,22 +1614,22 @@ Public Class dlgEditMovie
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement, False)
             dFileInfoEdit.TopLevel = False
             dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
             dFileInfoEdit.BackColor = Color.White
-            dFileInfoEdit.Cancel_Button.Visible = False
+            dFileInfoEdit.btnClose.Visible = False
             Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
             Dim oldwidth As Integer = dFileInfoEdit.Width
             dFileInfoEdit.Width = pnlFileInfo.Width
             dFileInfoEdit.Height = pnlFileInfo.Height
-            dFileInfoEdit.Show(False)
+            dFileInfoEdit.Show()
 
             Me.LoadGenres()
             Me.LoadRatings()
 
             Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, tmpDBElement)
             pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
             If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
                 tcEdit.TabPages.Remove(tpFrameExtraction)

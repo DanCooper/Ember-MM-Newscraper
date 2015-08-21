@@ -27,20 +27,23 @@ Public Class dlgRenameManual_TVShow
 
     Friend WithEvents bwRename As New System.ComponentModel.BackgroundWorker
 
+    Private _DBElement As New Database.DBElement
+
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Sub New()
+    Public Sub New(ByVal DBElement As Database.DBElement)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
+        _DBElement = DBElement
     End Sub
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle_Show(Master.currShow, txtFolder.Text, False, False, True, True)
+        FileFolderRenamer.RenameSingle_Show(_DBElement, txtFolder.Text, False, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
@@ -57,10 +60,10 @@ Public Class dlgRenameManual_TVShow
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
         Dim tFolder As String = String.Empty
-        If Not String.IsNullOrEmpty(Master.currShow.ShowPath) Then
-            tFolder = Path.GetFileName(Master.currShow.ShowPath)
+        If Not String.IsNullOrEmpty(_DBElement.ShowPath) Then
+            tFolder = Path.GetFileName(_DBElement.ShowPath)
         Else
-            tFolder = Master.currShow.TVShow.Title
+            tFolder = _DBElement.TVShow.Title
         End If
         txtFolder.Text = tFolder.Trim
     End Sub
@@ -77,13 +80,13 @@ Public Class dlgRenameManual_TVShow
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", Master.currShow.TVShow.Title)
+        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.TVShow.Title)
         Me.lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        Me.txtTitle.Text = Master.currShow.TVShow.Title
+        Me.txtTitle.Text = _DBElement.TVShow.Title
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged

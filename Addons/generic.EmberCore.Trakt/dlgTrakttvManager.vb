@@ -1435,7 +1435,7 @@ Public Class dlgTrakttvManager
                             'search for episode in Emberdatabase and update playcount/lastplayed value
                             If watchedshow.Show.Ids.Tvdb.ToString = srow.Item("TVDB").ToString AndAlso watchedseason.Number.ToString = srow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = srow.Item("Episode").ToString Then
                                 Dim tmpshow As New Database.DBElement
-                                tmpshow = Master.DB.LoadTVEpFromDB(CLng(srow.Item("idEpisode")), True)
+                                tmpshow = Master.DB.LoadTVEpisodeFromDB(CLng(srow.Item("idEpisode")), True)
                                 tmpshow.TVEpisode.Playcount = CStr(watchedepisode.Plays)
                                 'date is not user friendly formatted, so change format a bit
                                 '2014-09-01T09:10:11.000Z (original)
@@ -1446,7 +1446,7 @@ Public Class dlgTrakttvManager
                                 If isDate Then
                                     tmpshow.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
-                                Master.DB.SaveTVEpToDB(tmpshow, False, False, True)
+                                Master.DB.SaveTVEpisodeToDB(tmpshow, False, False, True)
                                 'Updated episode in Ember, next episode please!
                                 Exit For
                             End If

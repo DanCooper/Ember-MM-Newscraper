@@ -27,20 +27,23 @@ Public Class dlgRenameManual_Movie
 
     Friend WithEvents bwRename As New System.ComponentModel.BackgroundWorker
 
+    Private _DBElement As New Database.DBElement
+
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Sub New()
+    Public Sub New(ByVal DBElement As Database.DBElement)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
+        _DBElement = DBElement
     End Sub
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle_Movie(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True, True)
+        FileFolderRenamer.RenameSingle_Movie(_DBElement, txtFolder.Text, txtFile.Text, False, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
@@ -56,23 +59,23 @@ Public Class dlgRenameManual_Movie
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+        If FileUtils.Common.isVideoTS(_DBElement.Filename) Then
             txtFile.Text = "$F"
             txtFile.Visible = False
-            txtFolder.Text = Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).Name
-        ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+            txtFolder.Text = Directory.GetParent(Directory.GetParent(_DBElement.Filename).FullName).Name
+        ElseIf FileUtils.Common.isBDRip(_DBElement.Filename) Then
             txtFile.Text = "$F"
             txtFile.Visible = False
-            txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).Name
+            txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(_DBElement.Filename).FullName).FullName).Name
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename)).Trim
-            Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
+            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(_DBElement.Filename)).Trim
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
-                If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                    FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
+                If Not stackMark = String.Empty AndAlso _DBElement.Movie.Title.ToLower.EndsWith(stackMark) Then
+                    FileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
                 End If
-                If Master.currMovie.IsSingle Then
-                    txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
+                If _DBElement.IsSingle Then
+                    txtFolder.Text = Directory.GetParent(_DBElement.Filename).Name
                 Else
                     txtFolder.Text = "$D"
                     txtFolder.Visible = False
@@ -81,7 +84,7 @@ Public Class dlgRenameManual_Movie
             Else
                 txtFile.Text = "$F"
                 txtFile.Visible = False
-                txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
+                txtFolder.Text = Directory.GetParent(_DBElement.Filename).Name
             End If
         End If
     End Sub
@@ -99,14 +102,14 @@ Public Class dlgRenameManual_Movie
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", Master.currMovie.Movie.Title)
+        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.Movie.Title)
         Me.Label1.Text = Master.eLang.GetString(13, "Folder Name")
         Me.Label2.Text = Master.eLang.GetString(15, "File Name")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        Me.txtTitle.Text = Master.currMovie.Movie.Title
+        Me.txtTitle.Text = _DBElement.Movie.Title
     End Sub
 
     Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged

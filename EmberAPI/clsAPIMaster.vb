@@ -32,19 +32,13 @@ Public Class Master
 
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
-    Public Shared currMovie As New Database.DBElement
-    Public Shared currMovieSet As New Database.DBElement
-    Public Shared currShow As New Database.DBElement
     Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions_Movie
     Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared DefaultOptions_TV As New Structures.ScrapeOptions_TV
-    'Public Shared eAdvancedSettings As New AdvancedSettings
     Public Shared eLang As New Localization
-    'Public Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Shared eSettings As New Settings
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
     Public Shared is32Bit As Boolean
-    'Public Shared MediaJobLog As New MediaLog
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared MovieSources As New List(Of Structures.MovieSource)

@@ -101,10 +101,6 @@ Public Class frmMain
     Private ReportDownloadPercent As Boolean = False
     Private ScraperDone As Boolean = False
     Private sHTTP As New EmberAPI.HTTP
-    'Private tmpLang As String = String.Empty
-    'Private tmpTitle As String = String.Empty
-    'Private tmpTVDB As String = String.Empty
-    'Private tmpOrdering As Enums.Ordering = Enums.Ordering.Standard
 
     'Loading Delays
     Private currRow_Movie As Integer = -1
@@ -149,10 +145,6 @@ Public Class frmMain
     Private bDoingSearch_MovieSets As Boolean = False
     Private FilterArray_MovieSets As New List(Of String)
     Private filSearch_MovieSets As String = String.Empty
-    'Private filSource_MovieSets As String = String.Empty
-    'Private filYear_MovieSets As String = String.Empty
-    'Private filGenre_MovieSets As String = String.Empty
-    'Private filCountry_MovieSets As String = String.Empty
     Private filMissing_MovieSets As String = String.Empty
     Private currTextSearch_MovieSets As String = String.Empty
     Private prevTextSearch_MovieSets As String = String.Empty
@@ -162,9 +154,7 @@ Public Class frmMain
     Private FilterArray_Shows As New List(Of String)
     Private filSearch_Shows As String = String.Empty
     Private filSource_Shows As String = String.Empty
-    'Private filYear_Shows As String = String.Empty
     Private filGenre_Shows As String = String.Empty
-    'Private filCountry_Shows As String = String.Empty
     Private filMissing_Shows As String = String.Empty
     Private currTextSearch_Shows As String = String.Empty
     Private prevTextSearch_Shows As String = String.Empty
@@ -199,7 +189,11 @@ Public Class frmMain
     Private oldStatus As String = String.Empty
 
     Private KeyBuffer As String = String.Empty
-    ' Environment variables
+
+    Private currMovie As Database.DBElement
+    Private currMovieSet As Database.DBElement
+    Private currTV As Database.DBElement
+
 #End Region 'Fields
 
 #Region "Delegates"
@@ -951,12 +945,12 @@ Public Class frmMain
         Dim currMainTabTag As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            If Not String.IsNullOrEmpty(Master.currMovie.Filename) AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
-                Me.LoadInfo_Movie(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
+            If Not String.IsNullOrEmpty(Me.currMovie.Filename) AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
+                Me.LoadInfo_Movie(Convert.ToInt32(Me.currMovie.ID), Me.currMovie.Filename, False, True, True)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
             'no NFO support for MovieSets
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.TV AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+        ElseIf currMainTabTag.ContentType = Enums.ContentType.TV AndAlso Not String.IsNullOrEmpty(Me.currTV.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
             If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
@@ -966,7 +960,7 @@ Public Class frmMain
 
             Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
             Me.bwMetaInfo.WorkerSupportsCancellation = True
-            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.DBElement = Master.currShow, .IsTV = True, .setEnabled = True})
+            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.DBElement = Me.currTV, .IsTV = True, .setEnabled = True})
         End If
     End Sub
     ''' <summary>
@@ -1517,15 +1511,15 @@ Public Class frmMain
             Return
         End If
 
-        Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, True)
+        Me.currTV = Master.DB.LoadTVEpisodeFromDB(Args.ID, True)
 
         If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
@@ -1534,15 +1528,15 @@ Public Class frmMain
 
         If Not Master.eSettings.GeneralHideFanart Then
             Dim NeedsGS As Boolean = False
-            If Master.currShow.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal
+            If Me.currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
             Else
-                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal 'TODO: find a fallback methode
+                Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal 'TODO: find a fallback methode
                 NeedsGS = True
             End If
 
             If Me.MainFanart.Image IsNot Nothing Then
-                If String.IsNullOrEmpty(Master.currShow.Filename) Then
+                If String.IsNullOrEmpty(Me.currTV.Filename) Then
                     Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
                 ElseIf NeedsGS Then
                     Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
@@ -1594,21 +1588,21 @@ Public Class frmMain
             Return
         End If
 
-        Master.currMovie = Master.DB.LoadMovieFromDB(Args.ID, True, True)
+        Me.currMovie = Master.DB.LoadMovieFromDB(Args.ID, True, True)
 
         If bwLoadMovieInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovie.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovie.ImagesContainer.ClearArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovie.ImagesContainer.ClearLogo.ImageOriginal
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovie.ImagesContainer.DiscArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovie.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovie.ImagesContainer.Poster.ImageOriginal
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currMovie.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Me.currMovie.ImagesContainer.ClearArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Me.currMovie.ImagesContainer.ClearLogo.ImageOriginal
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Me.currMovie.ImagesContainer.DiscArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Me.currMovie.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currMovie.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currMovie.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currMovie.ImagesContainer.Poster.ImageOriginal
         'read nfo if it's there
 
         'wait for mediainfo to update the nfo
@@ -1659,21 +1653,21 @@ Public Class frmMain
             Return
         End If
 
-        Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Args.ID)
+        Me.currMovieSet = Master.DB.LoadMovieSetFromDB(Args.ID)
 
         If bwLoadMovieSetInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currMovieSet.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currMovieSet.ImagesContainer.ClearArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Master.currMovieSet.ImagesContainer.DiscArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currMovieSet.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currMovieSet.ImagesContainer.Poster.ImageOriginal
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currMovieSet.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Me.currMovieSet.ImagesContainer.ClearArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Me.currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
+        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Me.currMovieSet.ImagesContainer.DiscArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Me.currMovieSet.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currMovieSet.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currMovieSet.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currMovieSet.ImagesContainer.Poster.ImageOriginal
         'read nfo if it's there
 
         If bwLoadMovieSetInfo.CancellationPending Then
@@ -1704,9 +1698,9 @@ Public Class frmMain
         Dim Posters As New List(Of MovieInSetPoster)
 
         Try
-            If Master.currMovieSet.MovieList IsNot Nothing AndAlso Master.currMovieSet.MovieList.Count > 0 Then
+            If Me.currMovieSet.MovieList IsNot Nothing AndAlso Me.currMovieSet.MovieList.Count > 0 Then
                 Try
-                    For Each Movie As Database.DBElement In Master.currMovieSet.MovieList
+                    For Each Movie As Database.DBElement In Me.currMovieSet.MovieList
                         If bwLoadMovieSetPosters.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -1783,17 +1777,17 @@ Public Class frmMain
         Me.MainLandscape.Clear()
         Me.MainPoster.Clear()
 
-        Master.currShow = Master.DB.LoadTVSeasonFromDB(Args.ID, True)
+        Me.currTV = Master.DB.LoadTVSeasonFromDB(Args.ID, True)
 
         If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.ImageOriginal
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currTV.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currTV.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
@@ -1802,10 +1796,10 @@ Public Class frmMain
 
         If Not Master.eSettings.GeneralHideFanart Then
             Dim NeedsGS As Boolean = False
-            If Master.currShow.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal
+            If Me.currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
             Else
-                Me.MainFanart.FromFile(Master.currShow.ImagesContainer.Fanart.LocalFilePath) 'TODO: find a fallback methode
+                Me.MainFanart.FromFile(Me.currTV.ImagesContainer.Fanart.LocalFilePath) 'TODO: find a fallback methode
                 NeedsGS = True
             End If
 
@@ -1855,21 +1849,21 @@ Public Class frmMain
             Return
         End If
 
-        Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID, False, False, True, True)
+        Me.currTV = Master.DB.LoadTVShowFromDB(Args.ID, False, False, True, True)
 
         If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Master.currShow.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt = Master.currShow.ImagesContainer.CharacterArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Master.currShow.ImagesContainer.ClearArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Master.currShow.ImagesContainer.ClearLogo.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Master.currShow.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Master.currShow.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Master.currShow.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Master.currShow.ImagesContainer.Poster.ImageOriginal
+        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currTV.ImagesContainer.Banner.ImageOriginal
+        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt = Me.currTV.ImagesContainer.CharacterArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Me.currTV.ImagesContainer.ClearArt.ImageOriginal
+        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Me.currTV.ImagesContainer.ClearLogo.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currTV.ImagesContainer.Landscape.ImageOriginal
+        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True
@@ -1897,7 +1891,7 @@ Public Class frmMain
         Try
             If Args.IsTV Then
                 MediaInfo.UpdateTVMediaInfo(Args.DBElement)
-                Master.DB.SaveTVEpToDB(Args.DBElement, False, False, False, True)
+                Master.DB.SaveTVEpisodeToDB(Args.DBElement, False, False, False, True)
                 e.Result = New Results With {.fileinfo = NFO.FIToString(Args.DBElement.TVEpisode.FileInfo, True), .DBElement = Args.DBElement, .IsTV = True, .setEnabled = Args.setEnabled}
             Else
                 MediaInfo.UpdateMediaInfo(Args.DBElement)
@@ -2674,7 +2668,7 @@ Public Class frmMain
 
             logger.Trace(String.Concat("Start scraping: ", OldListTitle))
 
-            DBScrapeEpisode = Master.DB.LoadTVEpFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idEpisode")), True)
+            DBScrapeEpisode = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idEpisode")), True)
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
@@ -4302,14 +4296,14 @@ doCancel:
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
 
         Me.SetControlsEnabled(False, True)
-        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.TVDB, Master.currShow.Language)
+        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Me.currTV.ShowID), Me.currTV.TVShow.TVDB, Me.currTV.Language)
 
         If tEpisode IsNot Nothing Then
-            Master.currShow.TVEpisode = tEpisode
+            Me.currTV.TVEpisode = tEpisode
 
-            Master.DB.SaveTVEpToDB(Master.currShow, False, True, False, True)
+            Master.DB.SaveTVEpisodeToDB(Me.currTV, False, True, False, True)
 
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Master.currShow)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Me.currTV)
             RefreshRow_TVEpisode(ID)
         End If
 
@@ -4416,7 +4410,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-        Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
+        Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
         Edit_TVEpisode(tmpDBTVEpisode)
     End Sub
 
@@ -5240,8 +5234,9 @@ doCancel:
         If Me.dgvMovies.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-        Using dEditMeta As New dlgFileInfo
-            Select Case dEditMeta.ShowDialog(False)
+        Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
+        Using dEditMeta As New dlgFileInfo(DBElement, False)
+            Select Case dEditMeta.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
                     Me.RefreshRow_Movie(ID)
             End Select
@@ -5709,13 +5704,13 @@ doCancel:
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
-                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
+                    SeasonPath = Functions.GetSeasonDirectoryFromShowPath(Me.currTV.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
 
                     Using Explorer As New Diagnostics.Process
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
                             If String.IsNullOrEmpty(SeasonPath) Then
-                                Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", Master.currShow.ShowPath)
+                                Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", Me.currTV.ShowPath)
                             Else
                                 Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", SeasonPath)
                             End If
@@ -5723,7 +5718,7 @@ doCancel:
                         Else
                             Explorer.StartInfo.FileName = "xdg-open"
                             If String.IsNullOrEmpty(SeasonPath) Then
-                                Explorer.StartInfo.Arguments = String.Format("""{0}""", Master.currShow.ShowPath)
+                                Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.currTV.ShowPath)
                             Else
                                 Explorer.StartInfo.Arguments = String.Format("""{0}""", SeasonPath)
                             End If
@@ -6308,7 +6303,7 @@ doCancel:
                 Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy OrElse Me.bwRewrite_Movies.IsBusy Then Return
 
-                Me.SetStatus(Master.currMovie.Filename)
+                Me.SetStatus(Me.currMovie.Filename)
 
                 If Me.dgvMovies.SelectedRows.Count > 1 Then Return
 
@@ -6753,8 +6748,8 @@ doCancel:
 
             Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item("idSet", indX).Value)
-            Master.currMovieSet = Master.DB.LoadMovieSetFromDB(ID)
-            Me.SetStatus(Master.currMovieSet.ListTitle)
+            Me.currMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+            Me.SetStatus(Me.currMovieSet.ListTitle)
             Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
             Edit_MovieSet(tmpDBMovieSet)
         End If
@@ -6851,7 +6846,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-        Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
+        Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
         Edit_TVEpisode(tmpDBTVEpisode)
     End Sub
 
@@ -7059,7 +7054,7 @@ doCancel:
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
+            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
             Edit_TVEpisode(tmpDBTVEpisode)
         End If
     End Sub
@@ -8099,7 +8094,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         DBTVEpisode = dEditTVEpisode.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
-                        Master.DB.SaveTVEpToDB(DBTVEpisode, False, False, False, True)
+                        Master.DB.SaveTVEpisodeToDB(DBTVEpisode, False, False, False, True)
                         RefreshRow_TVEpisode(DBTVEpisode.ID)
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo_TVEpisode(CInt(DBTVEpisode.ID))
@@ -9146,56 +9141,56 @@ doCancel:
     Private Sub FillScreenInfoWith_Movie()
         Try
             Me.SuspendLayout()
-            If Master.currMovie.Movie.TitleSpecified AndAlso Master.currMovie.Movie.YearSpecified Then
-                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovie.Movie.Title, Master.currMovie.Movie.Year)
-            ElseIf Master.currMovie.Movie.TitleSpecified AndAlso Not Master.currMovie.Movie.YearSpecified Then
-                Me.lblTitle.Text = Master.currMovie.Movie.Title
-            ElseIf Not Master.currMovie.Movie.TitleSpecified AndAlso Master.currMovie.Movie.YearSpecified Then
-                Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Master.currMovie.Movie.Year)
+            If Me.currMovie.Movie.TitleSpecified AndAlso Me.currMovie.Movie.YearSpecified Then
+                Me.lblTitle.Text = String.Format("{0} ({1})", Me.currMovie.Movie.Title, Me.currMovie.Movie.Year)
+            ElseIf Me.currMovie.Movie.TitleSpecified AndAlso Not Me.currMovie.Movie.YearSpecified Then
+                Me.lblTitle.Text = Me.currMovie.Movie.Title
+            ElseIf Not Me.currMovie.Movie.TitleSpecified AndAlso Me.currMovie.Movie.YearSpecified Then
+                Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Me.currMovie.Movie.Year)
             End If
 
-            If Master.currMovie.Movie.OriginalTitleSpecified AndAlso Master.currMovie.Movie.OriginalTitle <> Master.currMovie.Movie.Title Then
-                Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
+            If Me.currMovie.Movie.OriginalTitleSpecified AndAlso Me.currMovie.Movie.OriginalTitle <> Me.currMovie.Movie.Title Then
+                Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Me.currMovie.Movie.OriginalTitle)
             Else
                 Me.lblOriginalTitle.Text = String.Empty
             End If
 
             Try
-                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Rating) Then
-                    If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                        Dim strRating As String = Double.Parse(Master.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                        Dim strVotes As String = Double.Parse(Master.currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                If Not String.IsNullOrEmpty(Me.currMovie.Movie.Rating) Then
+                    If Not String.IsNullOrEmpty(Me.currMovie.Movie.Votes) Then
+                        Dim strRating As String = Double.Parse(Me.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Me.currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Me.currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currMovie.Movie.Rating, " / ", Master.currMovie.Movie.Votes, ")"))
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Me.currMovie.Movie.Rating, " / ", Me.currMovie.Movie.Votes, ")"))
                 Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
             End Try
 
-            If Master.currMovie.Movie.RuntimeSpecified Then
-                Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
+            If Me.currMovie.Movie.RuntimeSpecified Then
+                Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Me.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Me.currMovie.Movie.Runtime, Me.currMovie.Movie.Runtime.IndexOf("|")), Me.currMovie.Movie.Runtime)).Trim
             End If
 
-            If Master.currMovie.Movie.Top250Specified AndAlso Integer.TryParse(Master.currMovie.Movie.Top250, 0) AndAlso (Integer.TryParse(Master.currMovie.Movie.Top250, 0) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
+            If Me.currMovie.Movie.Top250Specified AndAlso Integer.TryParse(Me.currMovie.Movie.Top250, 0) AndAlso (Integer.TryParse(Me.currMovie.Movie.Top250, 0) AndAlso Convert.ToInt32(Me.currMovie.Movie.Top250) > 0) Then
                 Me.pnlTop250.Visible = True
-                Me.lblTop250.Text = Master.currMovie.Movie.Top250
+                Me.lblTop250.Text = Me.currMovie.Movie.Top250
             Else
                 Me.pnlTop250.Visible = False
             End If
 
-            Me.txtOutline.Text = Master.currMovie.Movie.Outline
-            Me.txtPlot.Text = Master.currMovie.Movie.Plot
-            Me.lblTagline.Text = Master.currMovie.Movie.Tagline
+            Me.txtOutline.Text = Me.currMovie.Movie.Outline
+            Me.txtPlot.Text = Me.currMovie.Movie.Plot
+            Me.lblTagline.Text = Me.currMovie.Movie.Tagline
 
             Me.alActors = New List(Of String)
 
-            If Master.currMovie.Movie.ActorsSpecified Then
+            If Me.currMovie.Movie.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
+                For Each imdbAct As MediaContainers.Person In Me.currMovie.Movie.Actors
                     If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbPath)
@@ -9221,26 +9216,26 @@ doCancel:
                 Me.lstActors.SelectedIndex = 0
             End If
 
-            If Master.currMovie.Movie.MPAASpecified Then
-                Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
+            If Me.currMovie.Movie.MPAASpecified Then
+                Dim tmpRatingImg As Image = APIXML.GetRatingImage(Me.currMovie.Movie.MPAA)
                 If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
             End If
 
-            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Me.currMovie.Movie.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
 
-            If Master.currMovie.Movie.GenresSpecified Then
-                Me.createGenreThumbs(Master.currMovie.Movie.Genres)
+            If Me.currMovie.Movie.GenresSpecified Then
+                Me.createGenreThumbs(Me.currMovie.Movie.Genres)
             End If
 
-            If Master.currMovie.Movie.StudiosSpecified Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all images file a lower case
-                Me.pbStudio.Tag = Master.currMovie.Movie.Studios.Item(0)
+            If Me.currMovie.Movie.StudiosSpecified Then
+                Me.pbStudio.Image = APIXML.GetStudioImage(Me.currMovie.Movie.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Me.currMovie.Movie.Studios.Item(0)
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
@@ -9258,7 +9253,7 @@ doCancel:
             End If
             If Master.eSettings.MovieScraperMetaDataScan Then
                 'Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
-                Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False, Master.currMovie.Movie.VideoSource))
+                Me.SetAVImages(APIXML.GetAVImages(Me.currMovie.Movie.FileInfo, Me.currMovie.Filename, False, Me.currMovie.Movie.VideoSource))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -9266,17 +9261,17 @@ doCancel:
                 Me.pbStudio.Left = 0
             End If
 
-            Me.lblDirector.Text = String.Join(" / ", Master.currMovie.Movie.Directors.ToArray)
+            Me.lblDirector.Text = String.Join(" / ", Me.currMovie.Movie.Directors.ToArray)
 
-            Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
-            Me.txtTMDBID.Text = Master.currMovie.Movie.TMDBID
+            Me.txtIMDBID.Text = Me.currMovie.Movie.IMDBID
+            Me.txtTMDBID.Text = Me.currMovie.Movie.TMDBID
 
-            Me.txtFilePath.Text = Master.currMovie.Filename
+            Me.txtFilePath.Text = Me.currMovie.Filename
 
-            Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
-            Me.txtCerts.Text = String.Join(" / ", Master.currMovie.Movie.Certifications.ToArray)
+            Me.lblReleaseDate.Text = Me.currMovie.Movie.ReleaseDate
+            Me.txtCerts.Text = String.Join(" / ", Me.currMovie.Movie.Certifications.ToArray)
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
+            Me.txtMetaData.Text = NFO.FIToString(Me.currMovie.Movie.FileInfo, False)
 
             FillScreenInfoWithImages()
 
@@ -9311,7 +9306,8 @@ doCancel:
             For i As Integer = 0 To Me.pnlGenre.Count - 1
                 Me.pnlGenre(i).Visible = True
             Next
-            'Me.SetStatus(Master.currMovie.Filename)
+
+            Me.SetStatus(Me.currMovie.Filename)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -9321,17 +9317,17 @@ doCancel:
     Private Sub FillScreenInfoWith_MovieSet()
         Try
             Me.SuspendLayout()
-            If Master.currMovieSet.MovieSet.TitleSpecified AndAlso Master.currMovieSet.MovieList IsNot Nothing AndAlso Master.currMovieSet.MovieList.Count > 0 Then
-                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.MovieSet.Title, Master.currMovieSet.MovieList.Count)
-            ElseIf Master.currMovieSet.MovieSet.TitleSpecified Then
-                Me.lblTitle.Text = Master.currMovieSet.MovieSet.Title
+            If Me.currMovieSet.MovieSet.TitleSpecified AndAlso Me.currMovieSet.MovieList IsNot Nothing AndAlso Me.currMovieSet.MovieList.Count > 0 Then
+                Me.lblTitle.Text = String.Format("{0} ({1})", Me.currMovieSet.MovieSet.Title, Me.currMovieSet.MovieList.Count)
+            ElseIf Me.currMovieSet.MovieSet.TitleSpecified Then
+                Me.lblTitle.Text = Me.currMovieSet.MovieSet.Title
             Else
                 Me.lblTitle.Text = String.Empty
             End If
 
-            Me.txtPlot.Text = Master.currMovieSet.MovieSet.Plot
+            Me.txtPlot.Text = Me.currMovieSet.MovieSet.Plot
 
-            If Master.currMovieSet.MovieList IsNot Nothing AndAlso Master.currMovieSet.MovieList.Count > 0 Then
+            If Me.currMovieSet.MovieList IsNot Nothing AndAlso Me.currMovieSet.MovieList.Count > 0 Then
                 Me.bwLoadMovieSetPosters.WorkerSupportsCancellation = True
                 Me.bwLoadMovieSetPosters.RunWorkerAsync()
             End If
@@ -9379,37 +9375,37 @@ doCancel:
     Private Sub FillScreenInfoWith_TVEpisode()
         Try
             Me.SuspendLayout()
-            Me.lblTitle.Text = If(String.IsNullOrEmpty(Master.currShow.Filename), String.Concat(Master.currShow.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Master.currShow.TVEpisode.Title)
-            Me.txtPlot.Text = Master.currShow.TVEpisode.Plot
-            Me.lblDirector.Text = String.Join(" / ", Master.currShow.TVEpisode.Directors.ToArray)
-            Me.txtFilePath.Text = Master.currShow.Filename
-            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEpisode.Aired), "?", Master.currShow.TVEpisode.Aired))
+            Me.lblTitle.Text = If(String.IsNullOrEmpty(Me.currTV.Filename), String.Concat(Me.currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Me.currTV.TVEpisode.Title)
+            Me.txtPlot.Text = Me.currTV.TVEpisode.Plot
+            Me.lblDirector.Text = String.Join(" / ", Me.currTV.TVEpisode.Directors.ToArray)
+            Me.txtFilePath.Text = Me.currTV.Filename
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Aired), "?", Me.currTV.TVEpisode.Aired))
 
             Try
-                If Master.currShow.TVEpisode.RatingSpecified Then
-                    If Master.currShow.TVEpisode.VotesSpecified Then
-                        Dim strRating As String = Double.Parse(Master.currShow.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                        Dim strVotes As String = Double.Parse(Master.currShow.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                If Me.currTV.TVEpisode.RatingSpecified Then
+                    If Me.currTV.TVEpisode.VotesSpecified Then
+                        Dim strRating As String = Double.Parse(Me.currTV.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Me.currTV.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currShow.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Me.currTV.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVEpisode.Rating, " / ", Master.currShow.TVEpisode.Votes, ")"))
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Me.currTV.TVEpisode.Rating, " / ", Me.currTV.TVEpisode.Votes, ")"))
                 Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
             End Try
 
             Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"), _
-                            If(String.IsNullOrEmpty(Master.currShow.TVEpisode.Season.ToString), "?", Master.currShow.TVEpisode.Season.ToString), _
-                            If(String.IsNullOrEmpty(Master.currShow.TVEpisode.Episode.ToString), "?", Master.currShow.TVEpisode.Episode.ToString))
+                            If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Season.ToString), "?", Me.currTV.TVEpisode.Season.ToString), _
+                            If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Episode.ToString), "?", Me.currTV.TVEpisode.Episode.ToString))
 
             Me.alActors = New List(Of String)
 
-            If Master.currShow.TVEpisode.ActorsSpecified Then
+            If Me.currTV.TVEpisode.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As MediaContainers.Person In Master.currShow.TVEpisode.Actors
+                For Each imdbAct As MediaContainers.Person In Me.currTV.TVEpisode.Actors
                     If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbPath)
@@ -9435,26 +9431,26 @@ doCancel:
                 Me.lstActors.SelectedIndex = 0
             End If
 
-            If Master.currShow.TVShow.MPAASpecified Then
-                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+            If Me.currTV.TVShow.MPAASpecified Then
+                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Me.currTV.TVShow.MPAA)
                 If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
             End If
 
-            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVEpisode.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Me.currTV.TVEpisode.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
 
-            If Master.currShow.TVShow.GenresSpecified Then
-                Me.createGenreThumbs(Master.currShow.TVShow.Genres)
+            If Me.currTV.TVShow.GenresSpecified Then
+                Me.createGenreThumbs(Me.currTV.TVShow.Genres)
             End If
 
-            If Master.currShow.TVShow.StudiosSpecified Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio.ToLower) 'ByDef all images file a lower case
-                Me.pbStudio.Tag = Master.currShow.TVShow.Studio
+            If Me.currTV.TVShow.StudiosSpecified Then
+                Me.pbStudio.Image = APIXML.GetStudioImage(Me.currTV.TVShow.Studio.ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Me.currTV.TVShow.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
@@ -9462,8 +9458,8 @@ doCancel:
             If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
-            If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
-                Me.SetAVImages(APIXML.GetAVImages(Master.currShow.TVEpisode.FileInfo, Master.currShow.Filename, True, Master.currShow.TVEpisode.VideoSource))
+            If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(Me.currTV.Filename) Then
+                Me.SetAVImages(APIXML.GetAVImages(Me.currTV.TVEpisode.FileInfo, Me.currTV.Filename, True, Me.currTV.TVEpisode.VideoSource))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -9471,7 +9467,7 @@ doCancel:
                 Me.pbStudio.Left = 0
             End If
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEpisode.FileInfo, True)
+            Me.txtMetaData.Text = NFO.FIToString(Me.currTV.TVEpisode.FileInfo, True)
 
             FillScreenInfoWithImages()
 
@@ -9505,34 +9501,34 @@ doCancel:
 
     Private Sub FillScreenInfoWith_TVSeason()
         Me.SuspendLayout()
-        If Master.currShow.TVShow.TitleSpecified Then
-            Me.lblTitle.Text = Master.currShow.TVShow.Title
+        If Me.currTV.TVShow.TitleSpecified Then
+            Me.lblTitle.Text = Me.currTV.TVShow.Title
         End If
 
-        Me.txtPlot.Text = Master.currShow.TVSeason.Plot
-        Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(Master.currShow.TVShow.PremieredSpecified, Master.currShow.TVShow.Premiered, "?"))
+        Me.txtPlot.Text = Me.currTV.TVSeason.Plot
+        Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(Me.currTV.TVShow.PremieredSpecified, Me.currTV.TVShow.Premiered, "?"))
 
         Try
-            If Master.currShow.TVShow.RatingSpecified Then
-                If Master.currShow.TVShow.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(Master.currShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+            If Me.currTV.TVShow.RatingSpecified Then
+                If Me.currTV.TVShow.VotesSpecified Then
+                    Dim strRating As String = Double.Parse(Me.currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strVotes As String = Double.Parse(Me.currTV.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                     Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                 Else
-                    Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strRating As String = Double.Parse(Me.currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                     Me.lblRating.Text = String.Concat(strRating, "/10")
                 End If
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVShow.Rating, " / ", Master.currShow.TVShow.Votes, ")"))
+            logger.Error(String.Concat("Error: Not valid Rating or Votes (", Me.currTV.TVShow.Rating, " / ", Me.currTV.TVShow.Votes, ")"))
             Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
         End Try
 
         Me.alActors = New List(Of String)
 
-        If Master.currShow.TVShow.ActorsSpecified Then
+        If Me.currTV.TVShow.ActorsSpecified Then
             Me.pbActors.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In Master.currShow.TVShow.Actors
+            For Each imdbAct As MediaContainers.Person In Me.currTV.TVShow.Actors
                 If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
                     If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                         Me.alActors.Add(imdbAct.ThumbPath)
@@ -9558,26 +9554,26 @@ doCancel:
             Me.lstActors.SelectedIndex = 0
         End If
 
-        If Master.currShow.TVShow.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+        If Me.currTV.TVShow.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Me.currTV.TVShow.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 Me.pbMPAA.Image = tmpRatingImg
                 Me.MoveMPAA()
             End If
         End If
 
-        Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVShow.Rating)
+        Dim tmpRating As Single = NumUtils.ConvertToSingle(Me.currTV.TVShow.Rating)
         If tmpRating > 0 Then
             Me.BuildStars(tmpRating)
         End If
 
-        If Master.currShow.TVShow.Genres.Count > 0 Then
-            Me.createGenreThumbs(Master.currShow.TVShow.Genres)
+        If Me.currTV.TVShow.Genres.Count > 0 Then
+            Me.createGenreThumbs(Me.currTV.TVShow.Genres)
         End If
 
-        If Master.currShow.TVShow.StudiosSpecified Then
-            Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio.ToLower) 'ByDef all images file a lower case
-            Me.pbStudio.Tag = Master.currShow.TVShow.Studio
+        If Me.currTV.TVShow.StudiosSpecified Then
+            Me.pbStudio.Image = APIXML.GetStudioImage(Me.currTV.TVShow.Studio.ToLower) 'ByDef all images file a lower case
+            Me.pbStudio.Tag = Me.currTV.TVShow.Studio
         Else
             Me.pbStudio.Image = APIXML.GetStudioImage("####")
             Me.pbStudio.Tag = String.Empty
@@ -9618,35 +9614,35 @@ doCancel:
     Private Sub FillScreenInfoWith_TVShow()
         Try
             Me.SuspendLayout()
-            If Master.currShow.TVShow.TitleSpecified Then
-                Me.lblTitle.Text = Master.currShow.TVShow.Title
+            If Me.currTV.TVShow.TitleSpecified Then
+                Me.lblTitle.Text = Me.currTV.TVShow.Title
             End If
 
             Me.lblOriginalTitle.Text = String.Empty
-            Me.txtPlot.Text = Master.currShow.TVShow.Plot
-            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
+            Me.txtPlot.Text = Me.currTV.TVShow.Plot
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Me.currTV.TVShow.Premiered), "?", Me.currTV.TVShow.Premiered))
 
             Try
-                If Master.currShow.TVShow.RatingSpecified Then
-                    If Master.currShow.TVShow.VotesSpecified Then
-                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                        Dim strVotes As String = Double.Parse(Master.currShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                If Me.currTV.TVShow.RatingSpecified Then
+                    If Me.currTV.TVShow.VotesSpecified Then
+                        Dim strRating As String = Double.Parse(Me.currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strVotes As String = Double.Parse(Me.currTV.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                     Else
-                        Dim strRating As String = Double.Parse(Master.currShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                        Dim strRating As String = Double.Parse(Me.currTV.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Me.lblRating.Text = String.Concat(strRating, "/10")
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Master.currShow.TVShow.Rating, " / ", Master.currShow.TVShow.Votes, ")"))
+                logger.Error(String.Concat("Error: Not valid Rating or Votes (", Me.currTV.TVShow.Rating, " / ", Me.currTV.TVShow.Votes, ")"))
                 Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
             End Try
 
             Me.alActors = New List(Of String)
 
-            If Master.currShow.TVShow.ActorsSpecified Then
+            If Me.currTV.TVShow.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As MediaContainers.Person In Master.currShow.TVShow.Actors
+                For Each imdbAct As MediaContainers.Person In Me.currTV.TVShow.Actors
                     If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
                         If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.ThumbPath)
@@ -9672,26 +9668,26 @@ doCancel:
                 Me.lstActors.SelectedIndex = 0
             End If
 
-            If Master.currShow.TVShow.MPAASpecified Then
-                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+            If Me.currTV.TVShow.MPAASpecified Then
+                Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(Me.currTV.TVShow.MPAA)
                 If tmpRatingImg IsNot Nothing Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
                 End If
             End If
 
-            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currShow.TVShow.Rating)
+            Dim tmpRating As Single = NumUtils.ConvertToSingle(Me.currTV.TVShow.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
 
-            If Master.currShow.TVShow.Genres.Count > 0 Then
-                Me.createGenreThumbs(Master.currShow.TVShow.Genres)
+            If Me.currTV.TVShow.Genres.Count > 0 Then
+                Me.createGenreThumbs(Me.currTV.TVShow.Genres)
             End If
 
-            If Master.currShow.TVShow.StudiosSpecified Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio.ToLower) 'ByDef all images file a lower case
-                Me.pbStudio.Tag = Master.currShow.TVShow.Studio
+            If Me.currTV.TVShow.StudiosSpecified Then
+                Me.pbStudio.Image = APIXML.GetStudioImage(Me.currTV.TVShow.Studio.ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Me.currTV.TVShow.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
@@ -9996,9 +9992,11 @@ doCancel:
             ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
             ModulesManager.Instance.RuntimeObjects.MainTabControl = Me.tcMain
             ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
-            ModulesManager.Instance.RuntimeObjects.MediaListEpisodes = Me.dgvTVEpisodes
             ModulesManager.Instance.RuntimeObjects.MediaListMovies = Me.dgvMovies
-            ModulesManager.Instance.RuntimeObjects.MediaListShows = Me.dgvTVShows
+            ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = Me.dgvMovieSets
+            ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes = Me.dgvTVEpisodes
+            ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons = Me.dgvTVSeasons
+            ModulesManager.Instance.RuntimeObjects.MediaListTVShows = Me.dgvTVShows
             ModulesManager.Instance.RuntimeObjects.MenuMovieList = Me.cmnuMovie
             ModulesManager.Instance.RuntimeObjects.MenuMovieSetList = Me.cmnuMovieSet
             ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList = Me.cmnuEpisode
@@ -10700,34 +10698,14 @@ doCancel:
                 End Select
 
             Case Enums.ModuleEventType.AfterEdit_Movie
-                Try
-                    If Me.Reload_Movie(Convert.ToInt64(_params(0)), False, True) Then
-                        Me.FillList(True, True, False)
-                    End If
-                    Me.SetStatus(Master.currMovie.Filename)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
+                Me.RefreshRow_Movie(Convert.ToInt64(_params(0)))
 
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
-                Try
-                    If Me.Reload_TVEpisode(Convert.ToInt64(_params(0)), False, True) Then
-                        Me.FillList(False, False, True)
-                    End If
-                    Me.SetStatus(Master.currShow.TVEpisode.Title)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
+                Me.RefreshRow_TVEpisode(Convert.ToInt64(_params(0)))
 
             Case Enums.ModuleEventType.AfterEdit_TVShow
-                Try
-                    If Me.Reload_TVShow(Convert.ToInt64(_params(0)), False, True, False) Then
-                        Me.FillList(False, False, True)
-                    End If
-                    Me.SetStatus(Master.currShow.ShowPath)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
+                Me.RefreshRow_TVShow(Convert.ToInt64(_params(0)))
+
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", mType)
         End Select
@@ -10815,7 +10793,7 @@ doCancel:
 
             Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
             Me.bwMetaInfo.WorkerSupportsCancellation = True
-            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .DBElement = Master.currMovie})
+            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .DBElement = Me.currMovie})
         End If
 
         If doInfo Then
@@ -12683,7 +12661,7 @@ doCancel:
 
                             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
                             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifier As New Structures.ScrapeModifier
@@ -12694,7 +12672,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVEpToDB(tmpDBElement, False, False, False, True)
+                                        Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVEpisode(ID)
                                     End If
                                 Else
@@ -12968,7 +12946,7 @@ doCancel:
 
                             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
                             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVEpFromDB(ID, True)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifier As New Structures.ScrapeModifier
@@ -12979,7 +12957,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVEpToDB(tmpDBElement, False, False, False, True)
+                                        Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVEpisode(ID)
                                     End If
                                 Else
@@ -13584,7 +13562,7 @@ doCancel:
         Dim DBTVEpisode As New Database.DBElement
         Dim epCount As Integer = 0
 
-        DBTVEpisode = Master.DB.LoadTVEpFromDB(ID, True)
+        DBTVEpisode = Master.DB.LoadTVEpisodeFromDB(ID, True)
 
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
 
@@ -14411,7 +14389,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvMovies.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("LandscapePath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovies.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, 0)
-                Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item("idMovie", iRow).Value))
+                Me.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item("idMovie", iRow).Value))
                 Me.FillScreenInfoWith_Movie()
 
                 If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -14441,7 +14419,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.MovieSet)
-                Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item("idSet", iRow).Value))
+                Me.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item("idSet", iRow).Value))
                 Me.FillScreenInfoWith_MovieSet()
 
                 If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -14465,7 +14443,7 @@ doCancel:
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, Enums.ContentType.TVEpisode)
 
-                Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
+                Me.currTV = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
                 Me.FillScreenInfoWith_TVEpisode()
 
                 If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -14495,7 +14473,7 @@ doCancel:
                 Not Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", iRow).Value) Then
                 If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Me.ShowNoInfo(True, Enums.ContentType.TVSeason)
-                Master.currShow = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), True)
+                Me.currTV = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), True)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
 
                 If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso _
@@ -14530,7 +14508,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("NfoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVShow)
-                Master.currShow = Master.DB.LoadTVFullShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value))
+                Me.currTV = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value), False, False, True, False)
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item("idShow", iRow).Value))
 
                 If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -14724,7 +14702,7 @@ doCancel:
                 Dim currPlaycount As String = String.Empty
                 Dim hasWatched As Boolean = False
 
-                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False)
+                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False)
 
                 currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
                 hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
@@ -14737,7 +14715,7 @@ doCancel:
                     tmpDBTVEpisode.TVEpisode.Playcount = "0"
                 End If
 
-                Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, True, True)
+                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, False, True, True)
                 Me.RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
                 Application.DoEvents()
             Next
@@ -14780,7 +14758,7 @@ doCancel:
                             While SQLreader.Read
                                 Dim currPlaycount As String = String.Empty
 
-                                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
+                                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
 
                                 currPlaycount = SQLreader("Playcount").ToString
 
@@ -14792,7 +14770,7 @@ doCancel:
                                     tmpDBTVEpisode.TVEpisode.Playcount = "0"
                                 End If
 
-                                Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, True, True)
+                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, False, True, True)
                                 Me.RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
                                 Application.DoEvents()
                             End While
@@ -14835,7 +14813,7 @@ doCancel:
                             If Not SeasonsList.Contains(CInt(SQLreader("Season"))) Then SeasonsList.Add(CInt(SQLreader("Season")))
                             Dim currPlaycount As String = String.Empty
 
-                            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
+                            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
 
                             currPlaycount = SQLreader("Playcount").ToString
 
@@ -14847,7 +14825,7 @@ doCancel:
                                 tmpDBTVEpisode.TVEpisode.Playcount = "0"
                             End If
 
-                            Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, True, True)
+                            Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, False, True, True)
                             Me.RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
                             Application.DoEvents()
                         End While

@@ -1882,24 +1882,24 @@ Public Class ModulesManager
     End Function
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
-        Dim testDBTV As Database.DBElement = Master.currShow
-        If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(testDBTV, True) Then
-            Dim ret As Interfaces.ModuleResult
-            Dim epDetails As New MediaContainers.EpisodeDetails
-            While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
-                Application.DoEvents()
-            End While
-            For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-                Try
-                    'ret = _externalScraperModule.ProcessorModule.ChangeEpisode(ShowID, TVDBID, Lang, epDetails)
-                Catch ex As Exception
-                End Try
-                If ret.breakChain Then Exit For
-            Next
-            Return epDetails
-        Else
-            Return Nothing 'Cancelled
-        End If
+        'Dim testDBTV As Database.DBElement = Master.currTV
+        'If testDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(testDBTV, True) Then
+        '    Dim ret As Interfaces.ModuleResult
+        '    Dim epDetails As New MediaContainers.EpisodeDetails
+        '    While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
+        '        Application.DoEvents()
+        '    End While
+        '    For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
+        '        Try
+        '            'ret = _externalScraperModule.ProcessorModule.ChangeEpisode(ShowID, TVDBID, Lang, epDetails)
+        '        Catch ex As Exception
+        '        End Try
+        '        If ret.breakChain Then Exit For
+        '    Next
+        '    Return epDetails
+        'Else
+        Return Nothing 'Cancelled
+        'End If
     End Function
 
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
@@ -1942,8 +1942,10 @@ Public Class ModulesManager
         Private _MainTool As System.Windows.Forms.ToolStrip
         Private _MainTabControl As System.Windows.Forms.TabControl
         Private _MediaListMovies As System.Windows.Forms.DataGridView
-        Private _MediaListEpisodes As System.Windows.Forms.DataGridView
-        Private _MediaListShows As System.Windows.Forms.DataGridView
+        Private _MediaListMovieSets As System.Windows.Forms.DataGridView
+        Private _MediaListTVEpisodes As System.Windows.Forms.DataGridView
+        Private _MediaListTVSeasons As System.Windows.Forms.DataGridView
+        Private _MediaListTVShows As System.Windows.Forms.DataGridView
         Private _MenuMovieList As System.Windows.Forms.ContextMenuStrip
         Private _MenuMovieSetList As System.Windows.Forms.ContextMenuStrip
         Private _MenuTVEpisodeList As System.Windows.Forms.ContextMenuStrip
@@ -2075,15 +2077,6 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MediaListEpisodes() As System.Windows.Forms.DataGridView
-            Get
-                Return _MediaListEpisodes
-            End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
-                _MediaListEpisodes = value
-            End Set
-        End Property
-
         Public Property MediaListMovies() As System.Windows.Forms.DataGridView
             Get
                 Return _MediaListMovies
@@ -2093,12 +2086,39 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MediaListShows() As System.Windows.Forms.DataGridView
+        Public Property MediaListMovieSets() As System.Windows.Forms.DataGridView
             Get
-                Return _MediaListShows
+                Return _MediaListMovieSets
             End Get
             Set(ByVal value As System.Windows.Forms.DataGridView)
-                _MediaListShows = value
+                _MediaListMovieSets = value
+            End Set
+        End Property
+
+        Public Property MediaListTVEpisodes() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListTVEpisodes
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListTVEpisodes = value
+            End Set
+        End Property
+
+        Public Property MediaListTVSeasons() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListTVSeasons
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListTVSeasons = value
+            End Set
+        End Property
+
+        Public Property MediaListTVShows() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaListTVShows
+            End Get
+            Set(ByVal value As System.Windows.Forms.DataGridView)
+                _MediaListTVShows = value
             End Set
         End Property
 

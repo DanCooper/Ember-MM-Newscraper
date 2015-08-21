@@ -2304,7 +2304,7 @@ Public Class NFO
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLreader.Read
-                                EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
+                                EpList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
                             End While
                         End Using
 
