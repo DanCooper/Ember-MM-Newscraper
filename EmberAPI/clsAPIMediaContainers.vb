@@ -3782,6 +3782,15 @@ Namespace MediaContainers
                             DBElement.ExtrafanartsPath = String.Empty
                         End If
 
+                        'Movie Extrathumbs
+                        If .Extrathumbs.Count > 0 Then
+                            DBElement.ExtrathumbsPath = Images.SaveMovieExtrathumbs(DBElement)
+                        Else
+                            Images.DeleteMovieExtrathumbs(DBElement)
+                            .Extrathumbs = New List(Of Image)
+                            DBElement.ExtrathumbsPath = String.Empty
+                        End If
+
                         'Movie Fanart
                         If .Fanart.ImageOriginal.Image IsNot Nothing Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieFanart(DBElement)

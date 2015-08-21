@@ -136,7 +136,7 @@ Public Class dlgEditTVEpisode
         Me.DeleteActors()
     End Sub
 
-    Private Sub btnRemoveEpisodeSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveEpisodeSubtitle.Click
+    Private Sub btnRemoveSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSubtitle.Click
         Me.DeleteSubtitle()
     End Sub
 
@@ -1024,6 +1024,30 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub SetUp()
+        'Download
+        Dim strDownload As String = Master.eLang.GetString(373, "Download")
+        Me.btnSetFanartDL.Text = strDownload
+        Me.btnSetPosterDL.Text = strDownload
+        Me.btnSetSubtitleDL.Text = strDownload
+
+        'Loacal Browse
+        Dim strLocalBrowse As String = Master.eLang.GetString(78, "Local Browse")
+        Me.btnSetFanartLocal.Text = strLocalBrowse
+        Me.btnSetPosterLocal.Text = strLocalBrowse
+        Me.btnSetSubtitleLocal.Text = strLocalBrowse
+
+        'Remove
+        Dim strRemove As String = Master.eLang.GetString(30, "Remove")
+        Me.btnRemoveFanart.Text = strRemove
+        Me.btnRemovePoster.Text = strRemove
+        Me.btnRemoveSubtitle.Text = strRemove
+
+        'Scrape
+        Dim strScrape As String = Master.eLang.GetString(79, "Scrape")
+        Me.btnSetFanartScrape.Text = strScrape
+        Me.btnSetPosterScrape.Text = strScrape
+        Me.btnSetSubtitleScrape.Text = strScrape
+
         Dim mTitle As String = String.Empty
         mTitle = Me.tmpDBElement.TVEpisode.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
@@ -1032,14 +1056,6 @@ Public Class dlgEditTVEpisode
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
-        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
-        Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
-        Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colRole.Text = Master.eLang.GetString(233, "Role")
@@ -1088,7 +1104,7 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Sub btnSetEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
+    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
@@ -1157,7 +1173,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
 
-    Private Sub btnSetEpisodePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
+    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
@@ -1247,14 +1263,14 @@ Public Class dlgEditTVEpisode
         If lvSubtitles.SelectedItems.Count > 0 Then
             If lvSubtitles.SelectedItems.Item(0).Tag.ToString = "Header" Then
                 lvSubtitles.SelectedItems.Clear()
-                btnRemoveEpisodeSubtitle.Enabled = False
+                btnRemoveSubtitle.Enabled = False
                 txtSubtitlesPreview.Clear()
             Else
-                btnRemoveEpisodeSubtitle.Enabled = True
+                btnRemoveSubtitle.Enabled = True
                 txtSubtitlesPreview.Text = ReadSubtitle(Me.lvSubtitles.SelectedItems.Item(0).SubItems(1).Text.ToString)
             End If
         Else
-            btnRemoveEpisodeSubtitle.Enabled = False
+            btnRemoveSubtitle.Enabled = False
             txtSubtitlesPreview.Clear()
         End If
     End Sub

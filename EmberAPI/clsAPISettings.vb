@@ -7368,12 +7368,12 @@ Public Class Settings
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieDiscArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertVTS)))
     End Function
 
-    Public Function MovieEFanartsAnyEnabled() As Boolean
+    Public Function MovieExtrafanartsAnyEnabled() As Boolean
         Return MovieExtrafanartsEden OrElse MovieExtrafanartsFrodo OrElse _
             (MovieUseExpert AndAlso (MovieExtrafanartsExpertBDMV OrElse MovieExtrafanartsExpertSingle OrElse MovieExtrafanartsExpertVTS))
     End Function
 
-    Public Function MovieEThumbsAnyEnabled() As Boolean
+    Public Function MovieExtrathumbsAnyEnabled() As Boolean
         Return MovieExtrathumbsEden OrElse MovieExtrathumbsFrodo OrElse _
             (MovieUseExpert AndAlso (MovieExtrathumbsExpertBDMV OrElse MovieExtrathumbsExpertSingle OrElse MovieExtrathumbsExpertVTS))
     End Function

@@ -327,7 +327,7 @@ Public Class dlgImgSelect
 
         'Main Extrathumbs
         If DoMainExtrathumbs AndAlso Me.tDBElementResult.ImagesContainer.Extrathumbs.Count > 0 Then
-            For Each img In tDBElementResult.ImagesContainer.Extrathumbs
+            For Each img In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
                 DownloadAndCache(img, False)
             Next
         End If
@@ -385,9 +385,9 @@ Public Class dlgImgSelect
                                        tSearchResultsContainer.MainClearLogos.Count + tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count + _
                                        tSearchResultsContainer.MainLandscapes.Count + tSearchResultsContainer.MainPosters.Count, "max")
 
-        'Episode Fanarts
-        If DoEpisodeFanart Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
+        'Main Posters
+        If DoMainPoster OrElse DoAllSeasonsPoster Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
@@ -396,22 +396,9 @@ Public Class dlgImgSelect
                 iProgress += 1
             Next
         End If
-        Me.LoadedEpisodeFanart = True
-        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
-
-        'Episode Posters
-        If DoEpisodePoster Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-        End If
-        Me.LoadedEpisodePoster = True
-        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodePoster)
+        Me.LoadedMainPoster = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
 
         'Main Banners
         If DoMainBanner OrElse DoAllSeasonsBanner Then
@@ -518,21 +505,6 @@ Public Class dlgImgSelect
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsLandscape)
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainLandscape)
 
-        'Main Posters
-        If DoMainPoster OrElse DoAllSeasonsPoster Then
-            For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                DownloadAndCache(tImg, False)
-                If Me.bwImgDownload.CancellationPending Then
-                    Return True
-                End If
-                Me.bwImgDownload.ReportProgress(iProgress, "progress")
-                iProgress += 1
-            Next
-        End If
-        Me.LoadedMainPoster = True
-        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
-        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainPoster)
-
         'Season Banners
         If DoSeasonBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
@@ -592,6 +564,34 @@ Public Class dlgImgSelect
         Me.LoadedSeasonPoster = True
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.AllSeasonsPoster)
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.SeasonPoster)
+
+        'Episode Fanarts
+        If DoEpisodeFanart Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+        End If
+        Me.LoadedEpisodeFanart = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodeFanart)
+
+        'Episode Posters
+        If DoEpisodePoster Then
+            For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
+                DownloadAndCache(tImg, False)
+                If Me.bwImgDownload.CancellationPending Then
+                    Return True
+                End If
+                Me.bwImgDownload.ReportProgress(iProgress, "progress")
+                iProgress += 1
+            Next
+        End If
+        Me.LoadedEpisodePoster = True
+        Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.EpisodePoster)
 
         Return False
     End Function
@@ -1520,8 +1520,8 @@ Public Class dlgImgSelect
                 Me.DoMainClearArt = Me.tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
                 Me.DoMainClearLogo = Me.tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
                 Me.DoMainDiscArt = Me.tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
-                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.MovieEFanartsAnyEnabled
-                Me.DoMainExtrathumbs = Me.tScrapeModifier.MainExtrathumbs AndAlso Master.eSettings.MovieEThumbsAnyEnabled
+                Me.DoMainExtrafanarts = Me.tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.MovieExtrafanartsAnyEnabled
+                Me.DoMainExtrathumbs = Me.tScrapeModifier.MainExtrathumbs AndAlso Master.eSettings.MovieExtrathumbsAnyEnabled
                 Me.DoMainFanart = Me.tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
                 Me.DoMainLandscape = Me.tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 Me.DoMainPoster = Me.tScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled

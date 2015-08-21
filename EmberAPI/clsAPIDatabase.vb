@@ -1586,11 +1586,14 @@ Public Class Database
                 Next
             End If
             If Not String.IsNullOrEmpty(_movieDB.ExtrathumbsPath) AndAlso Directory.Exists(_movieDB.ExtrathumbsPath) Then
+                Dim iIndex As Integer = 0
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrathumbsPath, "thumb*.jpg")
                     Dim eImg As New MediaContainers.Image
                     If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    eImg.Index = iIndex
                     eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrathumbs.Add(eImg)
+                    iIndex += 1
                 Next
             End If
         End If

@@ -2005,40 +2005,52 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub SetUp()
+        'Download
+        Dim strDownload As String = Master.eLang.GetString(373, "Download")
+        Me.btnSetBannerDL.Text = strDownload
+        Me.btnSetCharacterArtDL.Text = strDownload
+        Me.btnSetClearArtDL.Text = strDownload
+        Me.btnSetClearLogoDL.Text = strDownload
+        Me.btnSetFanartDL.Text = strDownload
+        Me.btnSetLandscapeDL.Text = strDownload
+        Me.btnSetPosterDL.Text = strDownload
+
+        'Loacal Browse
+        Dim strLocalBrowse As String = Master.eLang.GetString(78, "Local Browse")
+        Me.btnSetBannerLocal.Text = strLocalBrowse
+        Me.btnSetCharacterArtLocal.Text = strLocalBrowse
+        Me.btnSetClearArtLocal.Text = strLocalBrowse
+        Me.btnSetClearLogoLocal.Text = strLocalBrowse
+        Me.btnSetFanartLocal.Text = strLocalBrowse
+        Me.btnSetLandscapeLocal.Text = strLocalBrowse
+        Me.btnSetPosterLocal.Text = strLocalBrowse
+
+        'Remove
+        Dim strRemove As String = Master.eLang.GetString(30, "Remove")
+        Me.btnRemoveBanner.Text = strRemove
+        Me.btnRemoveCharacterArt.Text = strRemove
+        Me.btnRemoveClearArt.Text = strRemove
+        Me.btnRemoveClearLogo.Text = strRemove
+        Me.btnRemoveFanart.Text = strRemove
+        Me.btnRemoveLandscape.Text = strRemove
+        Me.btnRemovePoster.Text = strRemove
+
+        'Scrape
+        Dim strScrape As String = Master.eLang.GetString(79, "Scrape")
+        Me.btnSetBannerScrape.Text = strScrape
+        Me.btnSetCharacterArtScrape.Text = strScrape
+        Me.btnSetClearArtScrape.Text = strScrape
+        Me.btnSetClearLogoScrape.Text = strScrape
+        Me.btnSetFanartScrape.Text = strScrape
+        Me.btnSetLandscapeScrape.Text = strScrape
+        Me.btnSetPosterScrape.Text = strScrape
+
         Dim mTitle As String = Me.tmpDBElement.TVShow.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Text = sTitle
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.btnRemoveBanner.Text = Master.eLang.GetString(1024, "Remove Banner")
-        Me.btnRemoveCharacterArt.Text = Master.eLang.GetString(1145, "Remove CharacterArt")
-        Me.btnRemoveClearArt.Text = Master.eLang.GetString(1087, "Remove ClearArt")
-        Me.btnRemoveClearLogo.Text = Master.eLang.GetString(1091, "Remove ClearLogo")
-        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
-        Me.btnRemoveLandscape.Text = Master.eLang.GetString(1034, "Remove Landscape")
-        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
-        Me.btnSetCharacterArtDL.Text = Master.eLang.GetString(1144, "Change CharacterArt (Download)")
-        Me.btnSetCharacterArtLocal.Text = Master.eLang.GetString(1142, "Change CharacterArt (Local)")
-        Me.btnSetCharacterArtScrape.Text = Master.eLang.GetString(1143, "Change CharacterArt (Scrape)")
-        Me.btnSetClearArtDL.Text = Master.eLang.GetString(1086, "Change ClearArt (Download)")
-        Me.btnSetClearArtLocal.Text = Master.eLang.GetString(1084, "Change ClearArt (Local)")
-        Me.btnSetClearArtScrape.Text = Master.eLang.GetString(1085, "Change ClearArt (Scrape)")
-        Me.btnSetClearLogoDL.Text = Master.eLang.GetString(1090, "Change ClearLogo (Download)")
-        Me.btnSetClearLogoLocal.Text = Master.eLang.GetString(1088, "Change ClearLogo (Local)")
-        Me.btnSetClearLogoScrape.Text = Master.eLang.GetString(1089, "Change ClearLogo (Scrape)")
-        Me.btnSetBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
-        Me.btnSetBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")
-        Me.btnSetBannerScrape.Text = Master.eLang.GetString(1022, "Change Banner (Scrape)")
-        Me.btnSetFanartDL.Text = Master.eLang.GetString(1033, "Change Landscape (Download)")
-        Me.btnSetFanartLocal.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
-        Me.btnSetLandscapeDL.Text = Master.eLang.GetString(1033, "Change Landscape (Download)")
-        Me.btnSetLandscapeLocal.Text = Master.eLang.GetString(1031, "Change Landscape (Local)")
-        Me.btnSetLandscapeScrape.Text = Master.eLang.GetString(1032, "Change Landscape (Scrape)")
-        Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.btnSetPosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnEFanartsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colRole.Text = Master.eLang.GetString(233, "Role")

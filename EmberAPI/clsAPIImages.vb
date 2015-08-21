@@ -967,13 +967,13 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ModifierType.MainExtrafanarts
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrafanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso .MovieEFanartsAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrafanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso .MovieExtrafanartsAnyEnabled Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ModifierType.MainExtrathumbs
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrathumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso .MovieEThumbsAnyEnabled Then
+                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrathumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso .MovieExtrathumbsAnyEnabled Then
                         Return True
                     Else
                         Return False
@@ -1348,7 +1348,7 @@ Public Class Images
         Return strReturn
     End Function
     ''' <summary>
-    ''' Save the image as a movie's extrafanart
+    ''' Save all movie Extrafanarts
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
@@ -1402,6 +1402,11 @@ Public Class Images
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
                     End If
+                    If String.IsNullOrEmpty(sName) Then
+                        iMod = Functions.GetExtrafanartsModifier(a)
+                        iVal = iMod + 1
+                        sName = Path.Combine(a, String.Concat("extrafanart", iVal, ".jpg"))
+                    End If
                     efPath = Path.Combine(a, sName)
                     Save(efPath)
                 End If
@@ -1413,13 +1418,40 @@ Public Class Images
         Return efPath
     End Function
     ''' <summary>
+    ''' Save all movie Extrathumbs
+    ''' </summary>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Shared Function SaveMovieExtrathumbs(ByVal mMovie As Database.DBElement) As String
+        Dim etPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+
+        Images.DeleteMovieExtrathumbs(mMovie)
+
+        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
+            If eImg.ImageOriginal.Image IsNot Nothing Then
+                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
+            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
+                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
+                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
+            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
+                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
+                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
+            End If
+        Next
+
+        Return Directory.GetParent(etPath).FullName
+    End Function
+    ''' <summary>
     ''' Save the image as a movie's extrathumb
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrathumbs(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
         Dim etPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -2598,6 +2630,11 @@ Public Class Images
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
                     End If
+                    If String.IsNullOrEmpty(sName) Then
+                        iMod = Functions.GetExtrafanartsModifier(a)
+                        iVal = iMod + 1
+                        sName = Path.Combine(a, String.Concat("extrafanart", iVal, ".jpg"))
+                    End If
                     efPath = Path.Combine(a, sName)
                     Save(efPath)
                 End If
@@ -2797,8 +2834,8 @@ Public Class Images
                 DoMainClearArt = ScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
                 DoMainClearLogo = ScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
                 DoMainDiscArt = ScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
-                DoMainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.MovieEFanartsAnyEnabled
-                DoMainExtrathumbs = ScrapeModifier.MainExtrathumbs AndAlso Master.eSettings.MovieEThumbsAnyEnabled
+                DoMainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.MovieExtrafanartsAnyEnabled
+                DoMainExtrathumbs = ScrapeModifier.MainExtrathumbs AndAlso Master.eSettings.MovieExtrathumbsAnyEnabled
                 DoMainFanart = ScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
                 DoMainLandscape = ScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 DoMainPoster = ScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled

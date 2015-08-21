@@ -252,7 +252,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetFanartDL.Name = "btnSetFanartDL"
         Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartDL.TabIndex = 3
-        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetFanartDL.Text = "Download"
         Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanartDL.UseVisualStyleBackColor = True
         '
@@ -265,7 +265,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemoveFanart.Name = "btnRemoveFanart"
         Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveFanart.TabIndex = 4
-        Me.btnRemoveFanart.Text = "Remove Fanart"
+        Me.btnRemoveFanart.Text = "Remove"
         Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveFanart.UseVisualStyleBackColor = True
         '
@@ -289,7 +289,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
         Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartScrape.TabIndex = 2
-        Me.btnSetFanartScrape.Text = "Change Fanart (Scrape)"
+        Me.btnSetFanartScrape.Text = "Scrape"
         Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanartScrape.UseVisualStyleBackColor = True
         '
@@ -302,7 +302,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetFanartLocal.Name = "btnSetFanartLocal"
         Me.btnSetFanartLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartLocal.TabIndex = 1
-        Me.btnSetFanartLocal.Text = "Change Fanart (Local Browse)"
+        Me.btnSetFanartLocal.Text = "Local Browse"
         Me.btnSetFanartLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanartLocal.UseVisualStyleBackColor = True
         '
@@ -341,7 +341,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetDiscArtDL.Name = "btnSetDiscArtDL"
         Me.btnSetDiscArtDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetDiscArtDL.TabIndex = 9
-        Me.btnSetDiscArtDL.Text = "Change DiscArt (Download)"
+        Me.btnSetDiscArtDL.Text = "Download"
         Me.btnSetDiscArtDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetDiscArtDL.UseVisualStyleBackColor = True
         '
@@ -354,7 +354,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemoveDiscArt.Name = "btnRemoveDiscArt"
         Me.btnRemoveDiscArt.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveDiscArt.TabIndex = 10
-        Me.btnRemoveDiscArt.Text = "Remove DiscArt"
+        Me.btnRemoveDiscArt.Text = "Remove"
         Me.btnRemoveDiscArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveDiscArt.UseVisualStyleBackColor = True
         '
@@ -378,7 +378,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetDiscArtScrape.Name = "btnSetDiscArtScrape"
         Me.btnSetDiscArtScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetDiscArtScrape.TabIndex = 8
-        Me.btnSetDiscArtScrape.Text = "Change DiscArt (Scrape)"
+        Me.btnSetDiscArtScrape.Text = "Scrape"
         Me.btnSetDiscArtScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetDiscArtScrape.UseVisualStyleBackColor = True
         '
@@ -391,7 +391,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetDiscArtLocal.Name = "btnSetDiscArtLocal"
         Me.btnSetDiscArtLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetDiscArtLocal.TabIndex = 7
-        Me.btnSetDiscArtLocal.Text = "Change DiscArt (Local Browse)"
+        Me.btnSetDiscArtLocal.Text = "Local Browse"
         Me.btnSetDiscArtLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetDiscArtLocal.UseVisualStyleBackColor = True
         '
@@ -430,7 +430,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetClearLogoDL.Name = "btnSetClearLogoDL"
         Me.btnSetClearLogoDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearLogoDL.TabIndex = 9
-        Me.btnSetClearLogoDL.Text = "Change ClearLogo (Download)"
+        Me.btnSetClearLogoDL.Text = "Download"
         Me.btnSetClearLogoDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetClearLogoDL.UseVisualStyleBackColor = True
         '
@@ -443,7 +443,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemoveClearLogo.Name = "btnRemoveClearLogo"
         Me.btnRemoveClearLogo.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveClearLogo.TabIndex = 10
-        Me.btnRemoveClearLogo.Text = "Remove ClearLogo"
+        Me.btnRemoveClearLogo.Text = "Remove"
         Me.btnRemoveClearLogo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveClearLogo.UseVisualStyleBackColor = True
         '
@@ -467,7 +467,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetClearLogoScrape.Name = "btnSetClearLogoScrape"
         Me.btnSetClearLogoScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearLogoScrape.TabIndex = 8
-        Me.btnSetClearLogoScrape.Text = "Change ClearLogo (Scrape)"
+        Me.btnSetClearLogoScrape.Text = "Scrape"
         Me.btnSetClearLogoScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetClearLogoScrape.UseVisualStyleBackColor = True
         '
@@ -480,7 +480,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetClearLogoLocal.Name = "btnSetClearLogoLocal"
         Me.btnSetClearLogoLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearLogoLocal.TabIndex = 7
-        Me.btnSetClearLogoLocal.Text = "Change ClearLogo (Local Browse)"
+        Me.btnSetClearLogoLocal.Text = "Local Browse"
         Me.btnSetClearLogoLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetClearLogoLocal.UseVisualStyleBackColor = True
         '
@@ -519,7 +519,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetClearArtDL.Name = "btnSetClearArtDL"
         Me.btnSetClearArtDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearArtDL.TabIndex = 9
-        Me.btnSetClearArtDL.Text = "Change ClearArt (Download)"
+        Me.btnSetClearArtDL.Text = "Download"
         Me.btnSetClearArtDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetClearArtDL.UseVisualStyleBackColor = True
         '
@@ -532,7 +532,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemoveClearArt.Name = "btnRemoveClearArt"
         Me.btnRemoveClearArt.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveClearArt.TabIndex = 10
-        Me.btnRemoveClearArt.Text = "Remove ClearArt"
+        Me.btnRemoveClearArt.Text = "Remove"
         Me.btnRemoveClearArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveClearArt.UseVisualStyleBackColor = True
         '
@@ -556,7 +556,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetClearArtScrape.Name = "btnSetClearArtScrape"
         Me.btnSetClearArtScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearArtScrape.TabIndex = 8
-        Me.btnSetClearArtScrape.Text = "Change ClearArt (Scrape)"
+        Me.btnSetClearArtScrape.Text = "Scrape"
         Me.btnSetClearArtScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetClearArtScrape.UseVisualStyleBackColor = True
         '
@@ -569,7 +569,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetClearArtLocal.Name = "btnSetClearArtLocal"
         Me.btnSetClearArtLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetClearArtLocal.TabIndex = 7
-        Me.btnSetClearArtLocal.Text = "Change ClearArt (Local Browse)"
+        Me.btnSetClearArtLocal.Text = "Local Browse"
         Me.btnSetClearArtLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetClearArtLocal.UseVisualStyleBackColor = True
         '
@@ -608,7 +608,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetLandscapeDL.Name = "btnSetLandscapeDL"
         Me.btnSetLandscapeDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeDL.TabIndex = 9
-        Me.btnSetLandscapeDL.Text = "Change Landscape (Download)"
+        Me.btnSetLandscapeDL.Text = "Download"
         Me.btnSetLandscapeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetLandscapeDL.UseVisualStyleBackColor = True
         '
@@ -621,7 +621,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemoveLandscape.Name = "btnRemoveLandscape"
         Me.btnRemoveLandscape.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveLandscape.TabIndex = 10
-        Me.btnRemoveLandscape.Text = "Remove Landscape"
+        Me.btnRemoveLandscape.Text = "Remove"
         Me.btnRemoveLandscape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveLandscape.UseVisualStyleBackColor = True
         '
@@ -645,7 +645,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetLandscapeScrape.Name = "btnSetLandscapeScrape"
         Me.btnSetLandscapeScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeScrape.TabIndex = 8
-        Me.btnSetLandscapeScrape.Text = "Change Landscape (Scrape)"
+        Me.btnSetLandscapeScrape.Text = "Scrape"
         Me.btnSetLandscapeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetLandscapeScrape.UseVisualStyleBackColor = True
         '
@@ -658,7 +658,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetLandscapeLocal.Name = "btnSetLandscapeLocal"
         Me.btnSetLandscapeLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeLocal.TabIndex = 7
-        Me.btnSetLandscapeLocal.Text = "Change Landscape (Local Browse)"
+        Me.btnSetLandscapeLocal.Text = "Local Browse"
         Me.btnSetLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetLandscapeLocal.UseVisualStyleBackColor = True
         '
@@ -698,7 +698,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetBannerDL.Name = "btnSetBannerDL"
         Me.btnSetBannerDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerDL.TabIndex = 9
-        Me.btnSetBannerDL.Text = "Change Banner (Download)"
+        Me.btnSetBannerDL.Text = "Download"
         Me.btnSetBannerDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetBannerDL.UseVisualStyleBackColor = True
         '
@@ -711,7 +711,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemoveBanner.Name = "btnRemoveBanner"
         Me.btnRemoveBanner.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveBanner.TabIndex = 10
-        Me.btnRemoveBanner.Text = "Remove Banner"
+        Me.btnRemoveBanner.Text = "Remove"
         Me.btnRemoveBanner.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveBanner.UseVisualStyleBackColor = True
         '
@@ -735,7 +735,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetBannerScrape.Name = "btnSetBannerScrape"
         Me.btnSetBannerScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerScrape.TabIndex = 8
-        Me.btnSetBannerScrape.Text = "Change Banner (Scrape)"
+        Me.btnSetBannerScrape.Text = "Scrape"
         Me.btnSetBannerScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetBannerScrape.UseVisualStyleBackColor = True
         '
@@ -748,7 +748,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetBannerLocal.Name = "btnSetBannerLocal"
         Me.btnSetBannerLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerLocal.TabIndex = 7
-        Me.btnSetBannerLocal.Text = "Change Banner (Local Browse)"
+        Me.btnSetBannerLocal.Text = "Local Browse"
         Me.btnSetBannerLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetBannerLocal.UseVisualStyleBackColor = True
         '
@@ -788,7 +788,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetPosterDL.Name = "btnSetPosterDL"
         Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterDL.TabIndex = 3
-        Me.btnSetPosterDL.Text = "Change Poster (Download)"
+        Me.btnSetPosterDL.Text = "Download"
         Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPosterDL.UseVisualStyleBackColor = True
         '
@@ -801,7 +801,7 @@ Partial Class dlgEditMovieSet
         Me.btnRemovePoster.Name = "btnRemovePoster"
         Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
         Me.btnRemovePoster.TabIndex = 4
-        Me.btnRemovePoster.Text = "Remove Poster"
+        Me.btnRemovePoster.Text = "Remove"
         Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemovePoster.UseVisualStyleBackColor = True
         '
@@ -825,7 +825,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
         Me.btnSetPosterScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterScrape.TabIndex = 2
-        Me.btnSetPosterScrape.Text = "Change Poster (Scrape)"
+        Me.btnSetPosterScrape.Text = "Scrape"
         Me.btnSetPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPosterScrape.UseVisualStyleBackColor = True
         '
@@ -838,7 +838,7 @@ Partial Class dlgEditMovieSet
         Me.btnSetPosterLocal.Name = "btnSetPosterLocal"
         Me.btnSetPosterLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterLocal.TabIndex = 1
-        Me.btnSetPosterLocal.Text = "Change Poster (Local Browse)"
+        Me.btnSetPosterLocal.Text = "Local Browse"
         Me.btnSetPosterLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPosterLocal.UseVisualStyleBackColor = True
         '

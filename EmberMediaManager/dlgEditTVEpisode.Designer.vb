@@ -79,14 +79,14 @@ Partial Class dlgEditTVEpisode
         Me.btnRemovePoster = New System.Windows.Forms.Button()
         Me.lblPosterSize = New System.Windows.Forms.Label()
         Me.btnSetPosterScrape = New System.Windows.Forms.Button()
-        Me.btnSetPoster = New System.Windows.Forms.Button()
+        Me.btnSetPosterLocal = New System.Windows.Forms.Button()
         Me.pbPoster = New System.Windows.Forms.PictureBox()
         Me.tpFanart = New System.Windows.Forms.TabPage()
         Me.lblFanartSize = New System.Windows.Forms.Label()
         Me.btnSetFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveFanart = New System.Windows.Forms.Button()
         Me.btnSetFanartScrape = New System.Windows.Forms.Button()
-        Me.btnSetFanart = New System.Windows.Forms.Button()
+        Me.btnSetFanartLocal = New System.Windows.Forms.Button()
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
@@ -99,10 +99,10 @@ Partial Class dlgEditTVEpisode
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.btnRemoveEpisodeSubtitle = New System.Windows.Forms.Button()
-        Me.btnSetMovieSubtitleDL = New System.Windows.Forms.Button()
-        Me.btnSetMovieSubtitleScrape = New System.Windows.Forms.Button()
-        Me.btnSetMovieSubtitleLocal = New System.Windows.Forms.Button()
+        Me.btnRemoveSubtitle = New System.Windows.Forms.Button()
+        Me.btnSetSubtitleDL = New System.Windows.Forms.Button()
+        Me.btnSetSubtitleScrape = New System.Windows.Forms.Button()
+        Me.btnSetSubtitleLocal = New System.Windows.Forms.Button()
         Me.tpMetaData = New System.Windows.Forms.TabPage()
         Me.pnlFileInfo = New System.Windows.Forms.Panel()
         Me.Cancel_Button = New System.Windows.Forms.Button()
@@ -627,7 +627,7 @@ Partial Class dlgEditTVEpisode
         Me.tpPoster.Controls.Add(Me.btnRemovePoster)
         Me.tpPoster.Controls.Add(Me.lblPosterSize)
         Me.tpPoster.Controls.Add(Me.btnSetPosterScrape)
-        Me.tpPoster.Controls.Add(Me.btnSetPoster)
+        Me.tpPoster.Controls.Add(Me.btnSetPosterLocal)
         Me.tpPoster.Controls.Add(Me.pbPoster)
         Me.tpPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpPoster.Name = "tpPoster"
@@ -646,7 +646,7 @@ Partial Class dlgEditTVEpisode
         Me.btnSetPosterDL.Name = "btnSetPosterDL"
         Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterDL.TabIndex = 3
-        Me.btnSetPosterDL.Text = "Change Poster (Download)"
+        Me.btnSetPosterDL.Text = "Download"
         Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPosterDL.UseVisualStyleBackColor = True
         '
@@ -659,7 +659,7 @@ Partial Class dlgEditTVEpisode
         Me.btnRemovePoster.Name = "btnRemovePoster"
         Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
         Me.btnRemovePoster.TabIndex = 4
-        Me.btnRemovePoster.Text = "Remove Poster"
+        Me.btnRemovePoster.Text = "Remove"
         Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemovePoster.UseVisualStyleBackColor = True
         '
@@ -683,22 +683,22 @@ Partial Class dlgEditTVEpisode
         Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
         Me.btnSetPosterScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterScrape.TabIndex = 2
-        Me.btnSetPosterScrape.Text = "Change Poster (Scrape)"
+        Me.btnSetPosterScrape.Text = "Scrape"
         Me.btnSetPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPosterScrape.UseVisualStyleBackColor = True
         '
-        'btnSetPoster
+        'btnSetPosterLocal
         '
-        Me.btnSetPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetPoster.Image = CType(resources.GetObject("btnSetPoster.Image"), System.Drawing.Image)
-        Me.btnSetPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPoster.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetPoster.Name = "btnSetPoster"
-        Me.btnSetPoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPoster.TabIndex = 1
-        Me.btnSetPoster.Text = "Change Poster (Local)"
-        Me.btnSetPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPoster.UseVisualStyleBackColor = True
+        Me.btnSetPosterLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetPosterLocal.Image = CType(resources.GetObject("btnSetPosterLocal.Image"), System.Drawing.Image)
+        Me.btnSetPosterLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetPosterLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetPosterLocal.Name = "btnSetPosterLocal"
+        Me.btnSetPosterLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetPosterLocal.TabIndex = 1
+        Me.btnSetPosterLocal.Text = "Local"
+        Me.btnSetPosterLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetPosterLocal.UseVisualStyleBackColor = True
         '
         'pbPoster
         '
@@ -717,7 +717,7 @@ Partial Class dlgEditTVEpisode
         Me.tpFanart.Controls.Add(Me.btnSetFanartDL)
         Me.tpFanart.Controls.Add(Me.btnRemoveFanart)
         Me.tpFanart.Controls.Add(Me.btnSetFanartScrape)
-        Me.tpFanart.Controls.Add(Me.btnSetFanart)
+        Me.tpFanart.Controls.Add(Me.btnSetFanartLocal)
         Me.tpFanart.Controls.Add(Me.pbFanart)
         Me.tpFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpFanart.Name = "tpFanart"
@@ -747,7 +747,7 @@ Partial Class dlgEditTVEpisode
         Me.btnSetFanartDL.Name = "btnSetFanartDL"
         Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartDL.TabIndex = 3
-        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetFanartDL.Text = "Download"
         Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanartDL.UseVisualStyleBackColor = True
         '
@@ -760,7 +760,7 @@ Partial Class dlgEditTVEpisode
         Me.btnRemoveFanart.Name = "btnRemoveFanart"
         Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
         Me.btnRemoveFanart.TabIndex = 4
-        Me.btnRemoveFanart.Text = "Remove Fanart"
+        Me.btnRemoveFanart.Text = "Remove"
         Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveFanart.UseVisualStyleBackColor = True
         '
@@ -773,22 +773,22 @@ Partial Class dlgEditTVEpisode
         Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
         Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartScrape.TabIndex = 2
-        Me.btnSetFanartScrape.Text = "Change Fanart (Scrape)"
+        Me.btnSetFanartScrape.Text = "Scrape"
         Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanartScrape.UseVisualStyleBackColor = True
         '
-        'btnSetFanart
+        'btnSetFanartLocal
         '
-        Me.btnSetFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetFanart.Image = CType(resources.GetObject("btnSetFanart.Image"), System.Drawing.Image)
-        Me.btnSetFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanart.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetFanart.Name = "btnSetFanart"
-        Me.btnSetFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanart.TabIndex = 1
-        Me.btnSetFanart.Text = "Change Fanart (Local)"
-        Me.btnSetFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanart.UseVisualStyleBackColor = True
+        Me.btnSetFanartLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetFanartLocal.Image = CType(resources.GetObject("btnSetFanartLocal.Image"), System.Drawing.Image)
+        Me.btnSetFanartLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetFanartLocal.Name = "btnSetFanartLocal"
+        Me.btnSetFanartLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartLocal.TabIndex = 1
+        Me.btnSetFanartLocal.Text = "Local"
+        Me.btnSetFanartLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartLocal.UseVisualStyleBackColor = True
         '
         'pbFanart
         '
@@ -824,10 +824,10 @@ Partial Class dlgEditTVEpisode
         Me.tpSubtitles.Controls.Add(Me.lblSubtitlesPreview)
         Me.tpSubtitles.Controls.Add(Me.txtSubtitlesPreview)
         Me.tpSubtitles.Controls.Add(Me.lvSubtitles)
-        Me.tpSubtitles.Controls.Add(Me.btnRemoveEpisodeSubtitle)
-        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleDL)
-        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleScrape)
-        Me.tpSubtitles.Controls.Add(Me.btnSetMovieSubtitleLocal)
+        Me.tpSubtitles.Controls.Add(Me.btnRemoveSubtitle)
+        Me.tpSubtitles.Controls.Add(Me.btnSetSubtitleDL)
+        Me.tpSubtitles.Controls.Add(Me.btnSetSubtitleScrape)
+        Me.tpSubtitles.Controls.Add(Me.btnSetSubtitleLocal)
         Me.tpSubtitles.Location = New System.Drawing.Point(4, 22)
         Me.tpSubtitles.Name = "tpSubtitles"
         Me.tpSubtitles.Size = New System.Drawing.Size(836, 452)
@@ -890,59 +890,59 @@ Partial Class dlgEditTVEpisode
         '
         Me.ColumnHeader3.Width = 100
         '
-        'btnRemoveEpisodeSubtitle
+        'btnRemoveSubtitle
         '
-        Me.btnRemoveEpisodeSubtitle.Enabled = False
-        Me.btnRemoveEpisodeSubtitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnRemoveEpisodeSubtitle.Image = CType(resources.GetObject("btnRemoveEpisodeSubtitle.Image"), System.Drawing.Image)
-        Me.btnRemoveEpisodeSubtitle.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveEpisodeSubtitle.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveEpisodeSubtitle.Name = "btnRemoveEpisodeSubtitle"
-        Me.btnRemoveEpisodeSubtitle.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveEpisodeSubtitle.TabIndex = 41
-        Me.btnRemoveEpisodeSubtitle.Text = "Remove Subtitle"
-        Me.btnRemoveEpisodeSubtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveEpisodeSubtitle.UseVisualStyleBackColor = True
+        Me.btnRemoveSubtitle.Enabled = False
+        Me.btnRemoveSubtitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveSubtitle.Image = CType(resources.GetObject("btnRemoveSubtitle.Image"), System.Drawing.Image)
+        Me.btnRemoveSubtitle.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveSubtitle.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveSubtitle.Name = "btnRemoveSubtitle"
+        Me.btnRemoveSubtitle.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveSubtitle.TabIndex = 41
+        Me.btnRemoveSubtitle.Text = "Remove"
+        Me.btnRemoveSubtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveSubtitle.UseVisualStyleBackColor = True
         '
-        'btnSetMovieSubtitleDL
+        'btnSetSubtitleDL
         '
-        Me.btnSetMovieSubtitleDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetMovieSubtitleDL.Image = CType(resources.GetObject("btnSetMovieSubtitleDL.Image"), System.Drawing.Image)
-        Me.btnSetMovieSubtitleDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetMovieSubtitleDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetMovieSubtitleDL.Name = "btnSetMovieSubtitleDL"
-        Me.btnSetMovieSubtitleDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetMovieSubtitleDL.TabIndex = 40
-        Me.btnSetMovieSubtitleDL.Text = "Add Subtitle (Download)"
-        Me.btnSetMovieSubtitleDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetMovieSubtitleDL.UseVisualStyleBackColor = True
+        Me.btnSetSubtitleDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetSubtitleDL.Image = CType(resources.GetObject("btnSetSubtitleDL.Image"), System.Drawing.Image)
+        Me.btnSetSubtitleDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSubtitleDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetSubtitleDL.Name = "btnSetSubtitleDL"
+        Me.btnSetSubtitleDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSubtitleDL.TabIndex = 40
+        Me.btnSetSubtitleDL.Text = "Download"
+        Me.btnSetSubtitleDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSubtitleDL.UseVisualStyleBackColor = True
         '
-        'btnSetMovieSubtitleScrape
+        'btnSetSubtitleScrape
         '
-        Me.btnSetMovieSubtitleScrape.Enabled = False
-        Me.btnSetMovieSubtitleScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetMovieSubtitleScrape.Image = CType(resources.GetObject("btnSetMovieSubtitleScrape.Image"), System.Drawing.Image)
-        Me.btnSetMovieSubtitleScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetMovieSubtitleScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetMovieSubtitleScrape.Name = "btnSetMovieSubtitleScrape"
-        Me.btnSetMovieSubtitleScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetMovieSubtitleScrape.TabIndex = 39
-        Me.btnSetMovieSubtitleScrape.Text = "Add Subtitle (Scrape)"
-        Me.btnSetMovieSubtitleScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetMovieSubtitleScrape.UseVisualStyleBackColor = True
+        Me.btnSetSubtitleScrape.Enabled = False
+        Me.btnSetSubtitleScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetSubtitleScrape.Image = CType(resources.GetObject("btnSetSubtitleScrape.Image"), System.Drawing.Image)
+        Me.btnSetSubtitleScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSubtitleScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetSubtitleScrape.Name = "btnSetSubtitleScrape"
+        Me.btnSetSubtitleScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSubtitleScrape.TabIndex = 39
+        Me.btnSetSubtitleScrape.Text = "Scrape"
+        Me.btnSetSubtitleScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSubtitleScrape.UseVisualStyleBackColor = True
         '
-        'btnSetMovieSubtitleLocal
+        'btnSetSubtitleLocal
         '
-        Me.btnSetMovieSubtitleLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetMovieSubtitleLocal.Image = CType(resources.GetObject("btnSetMovieSubtitleLocal.Image"), System.Drawing.Image)
-        Me.btnSetMovieSubtitleLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetMovieSubtitleLocal.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetMovieSubtitleLocal.Name = "btnSetMovieSubtitleLocal"
-        Me.btnSetMovieSubtitleLocal.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetMovieSubtitleLocal.TabIndex = 38
-        Me.btnSetMovieSubtitleLocal.Text = "Add Subtitle (Local Browse)"
-        Me.btnSetMovieSubtitleLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetMovieSubtitleLocal.UseVisualStyleBackColor = True
+        Me.btnSetSubtitleLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetSubtitleLocal.Image = CType(resources.GetObject("btnSetSubtitleLocal.Image"), System.Drawing.Image)
+        Me.btnSetSubtitleLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSubtitleLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetSubtitleLocal.Name = "btnSetSubtitleLocal"
+        Me.btnSetSubtitleLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSubtitleLocal.TabIndex = 38
+        Me.btnSetSubtitleLocal.Text = "Local Browse"
+        Me.btnSetSubtitleLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSubtitleLocal.UseVisualStyleBackColor = True
         '
         'tpMetaData
         '
@@ -1105,7 +1105,7 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
     Friend WithEvents lblPosterSize As System.Windows.Forms.Label
     Friend WithEvents btnSetPosterScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetPoster As System.Windows.Forms.Button
+    Friend WithEvents btnSetPosterLocal As System.Windows.Forms.Button
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents tpFrameExtraction As System.Windows.Forms.TabPage
     Friend WithEvents tpMetaData As System.Windows.Forms.TabPage
@@ -1120,7 +1120,7 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
     Friend WithEvents btnSetFanartScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetFanart As System.Windows.Forms.Button
+    Friend WithEvents btnSetFanartLocal As System.Windows.Forms.Button
     Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
     Friend WithEvents lblFanartSize As System.Windows.Forms.Label
     Friend WithEvents txtAired As System.Windows.Forms.TextBox
@@ -1151,10 +1151,10 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents btnRemoveEpisodeSubtitle As System.Windows.Forms.Button
-    Friend WithEvents btnSetMovieSubtitleDL As System.Windows.Forms.Button
-    Friend WithEvents btnSetMovieSubtitleScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetMovieSubtitleLocal As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveSubtitle As System.Windows.Forms.Button
+    Friend WithEvents btnSetSubtitleDL As System.Windows.Forms.Button
+    Friend WithEvents btnSetSubtitleScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetSubtitleLocal As System.Windows.Forms.Button
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
 
