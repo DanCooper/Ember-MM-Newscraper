@@ -160,6 +160,15 @@ Public Class frmSettingsHolder_Movie
 
     Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+        If Me.chkStudio.Checked = False Then
+            Me.chkStudiowithDistributors.Checked = False
+            Me.chkStudiowithDistributors.Enabled = False
+        Else
+            Me.chkStudiowithDistributors.Enabled = True
+        End If
+    End Sub
+    Private Sub chkStudiowithDistributors_CheckedChanged(sender As Object, e As EventArgs) Handles chkStudiowithDistributors.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTagline.CheckedChanged
@@ -279,8 +288,8 @@ Public Class frmSettingsHolder_Movie
         Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.chkStudiowithDistributors.Text = Master.eLang.GetString(1456, "Include Distributors")
     End Sub
 
 #End Region 'Methods
-
 End Class

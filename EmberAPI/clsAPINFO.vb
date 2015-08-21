@@ -1451,7 +1451,11 @@ Public Class NFO
 
             For Each miVideo As MediaInfo.Video In miFIV.StreamDetails.Video
                 If Not String.IsNullOrEmpty(miVideo.Width) Then
-                    iWidth = Convert.ToInt32(miVideo.Width)
+                    If Integer.TryParse(miVideo.Width, 0) Then
+                        iWidth = Convert.ToInt32(miVideo.Width)
+                    Else
+                        logger.Warn("[GetBestVideo] Invalid width(not a number!) of videostream: " & miVideo.Width)
+                    End If
                     If iWidth > iWidest Then
                         iWidest = iWidth
                         fivOut.Width = miVideo.Width

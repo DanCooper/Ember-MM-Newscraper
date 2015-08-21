@@ -75,6 +75,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
+        Me.chkStudiowithDistributors = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -217,7 +218,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(475, 182)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(484, 182)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -252,6 +253,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountry, 2, 4)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudio, 2, 5)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudiowithDistributors, 2, 6)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -264,7 +266,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(469, 161)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(478, 161)
         Me.tblScraperFieldsOpts.TabIndex = 1
         '
         'gbScraperFieldsCredits
@@ -272,7 +274,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsCredits.AutoSize = True
         Me.gbScraperFieldsCredits.Controls.Add(Me.tblScraperFieldsCredits)
         Me.gbScraperFieldsCredits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(309, 3)
+        Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(352, 3)
         Me.gbScraperFieldsCredits.Name = "gbScraperFieldsCredits"
         Me.tblScraperFieldsOpts.SetRowSpan(Me.gbScraperFieldsCredits, 6)
         Me.gbScraperFieldsCredits.Size = New System.Drawing.Size(123, 132)
@@ -604,7 +606,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 191)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(475, 140)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(484, 140)
         Me.gbScraperOpts.TabIndex = 97
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -636,7 +638,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperOpts.Size = New System.Drawing.Size(469, 119)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(478, 119)
         Me.tblScraperOpts.TabIndex = 1
         '
         'chkCountryAbbreviation
@@ -803,7 +805,21 @@ Partial Class frmSettingsHolder_Movie
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'frmIMDBInfoSettingsHolder
+        'chkStudiowithDistributors
+        '
+        Me.chkStudiowithDistributors.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkStudiowithDistributors.AutoSize = True
+        Me.chkStudiowithDistributors.Enabled = False
+        Me.chkStudiowithDistributors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkStudiowithDistributors.Location = New System.Drawing.Point(198, 141)
+        Me.chkStudiowithDistributors.Name = "chkStudiowithDistributors"
+        Me.chkStudiowithDistributors.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkStudiowithDistributors.Size = New System.Drawing.Size(148, 17)
+        Me.chkStudiowithDistributors.TabIndex = 82
+        Me.chkStudiowithDistributors.Text = "include Distributors"
+        Me.chkStudiowithDistributors.UseVisualStyleBackColor = True
+        '
+        'frmSettingsHolder_Movie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -815,7 +831,7 @@ Partial Class frmSettingsHolder_Movie
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmIMDBInfoSettingsHolder"
+        Me.Name = "frmSettingsHolder_Movie"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -902,5 +918,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents pnlSettingBottom As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
+    Friend WithEvents chkStudiowithDistributors As System.Windows.Forms.CheckBox
 
 End Class

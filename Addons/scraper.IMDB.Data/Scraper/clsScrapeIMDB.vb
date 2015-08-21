@@ -133,7 +133,6 @@ Namespace IMDB
         Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
 
         Private Const LINK_PATTERN As String = "<a[\s]+[^>]*?href[\s]?=[\s\""\']*(?<url>.*?)[\""\']*.*?>(?<name>[^<]+|.*?)?<\/a>"
-
         Private Const ACTORTABLE_PATTERN As String = "<table class=""cast"">(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
@@ -215,7 +214,7 @@ Namespace IMDB
         ''' <param name="ForceTitleLanguage">Module setting: preferred language title</param>
         ''' <returns>True: success, false: no success</returns>
         ''' <remarks></remarks>
-        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean, ByVal StudiowithDistributors As Boolean) As Boolean
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -566,26 +565,39 @@ mPlot:          'Plot
                 'Studios
                 If FilteredOptions.bStudio Then
                     Dim D, W As Integer
-                    If FullCrew Then
-                        D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
+                    D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
+                    If D > 0 Then W = HTML.IndexOf("</ul>", D)
+                    If D > 0 AndAlso W > 0 Then
+                        'only get the first one
+                        Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
+                                 Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty _
+                                 Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
+                        '  nMovie.Studio = Ps(0).ToString.Trim
+                        'only update nMovie if scraped result is not empty/nothing!
+                        If Ps.Count > 0 Then
+                            nMovie.Studios.AddRange(Ps.ToList)
+                        End If
+                    End If
+                    If StudiowithDistributors Then
+                        D = HTML.IndexOf("<b class=""blackcatheader"">Distributors</b>")
                         If D > 0 Then W = HTML.IndexOf("</ul>", D)
                         If D > 0 AndAlso W > 0 Then
-                            'only get the first one
-                            Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                     Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty _
-                                     Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString) Take 1
+                            Dim distributor_pattern As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>(?<releaseinfo>.*?)</li>"
+                            'example of DISTRIBUTOR_PATTERN input string: 
+                            '<li><a href="/company/co0015030/">Alfa Films</a> (2015) (Argentina) (theatrical)</li>
+                            '<li><a href="/company/co0481930/">Bravos Pictures</a> (2015) (Hong Kong) (theatrical)</li><li>
+                            Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), distributor_pattern) _
+                                     Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty AndAlso DirectCast(P1, Match).Groups("releaseinfo").ToString.Contains(ForceTitleLanguage) _
+                                     Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
                             '  nMovie.Studio = Ps(0).ToString.Trim
                             'only update nMovie if scraped result is not empty/nothing!
                             If Ps.Count > 0 Then
-                                nMovie.Studios.AddRange(Ps.ToList)
+                                For Each item In Ps.ToList
+                                    If nMovie.Studios.Contains(item) = False Then
+                                        nMovie.Studios.Add(item)
+                                    End If
+                                Next
                             End If
-                        End If
-                    Else
-                        D = HTML.IndexOf("<h5>Company:</h5>")
-                        If D > 0 Then W = HTML.IndexOf("</div>", D)
-                        'only update nMovie if scraped result is not empty/nothing!
-                        If D > 0 AndAlso W > 0 Then
-                            nMovie.Studios.Add(Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim))
                         End If
                     End If
                 End If
@@ -1233,7 +1245,7 @@ mPlot:          'Plot
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal sMovieYear As String, ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal sMovieYear As String, ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_Movie, ByVal FullCrew As Boolean, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean, ByVal StudiowithDistributors As Boolean) As MediaContainers.Movie
             Dim r As SearchResults_Movie = SearchMovie(sMovieName, sMovieYear)
             Dim b As Boolean = False
 
@@ -1241,11 +1253,11 @@ mPlot:          'Plot
                 Select Case iType
                     Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                         If r.ExactMatches.Count = 1 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         Else
                             nMovie.Clear()
                             Using dIMDB As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
@@ -1253,7 +1265,7 @@ mPlot:          'Plot
                                     If String.IsNullOrEmpty(nMovie.IMDBID) Then
                                         b = False
                                     Else
-                                        b = GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                                        b = GetMovieInfo(nMovie.IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                                     End If
                                 Else
                                     b = False
@@ -1263,7 +1275,7 @@ mPlot:          'Plot
 
                     Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                         If r.ExactMatches.Count = 1 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         End If
 
                     Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
@@ -1287,17 +1299,17 @@ mPlot:          'Plot
                         '    b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
                         'End If
                         If r.ExactMatches.Count = 1 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation)
+                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, nMovie, FullCrew, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         End If
                 End Select
 
@@ -1464,7 +1476,7 @@ mPlot:          'Plot
                     e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                 Case SearchType.SearchDetails_Movie
-                    Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True, True, "", False)
+                    Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True, True, "", False, False)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_Movie, .Success = s}
 
                 Case SearchType.TVShows
