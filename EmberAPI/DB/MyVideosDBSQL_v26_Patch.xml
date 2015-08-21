@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v26_to_v27">
+    <command type="DB">
+      <description>edit Trigger delete_season from seasons</description>
+      <execute>
+        DROP TRIGGER delete_season;
+
+        CREATE TRIGGER delete_season
+        AFTER DELETE
+        ON seasons
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
+        DELETE FROM episode WHERE Season=old.Season AND idShow=old.idShow;
+        END;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

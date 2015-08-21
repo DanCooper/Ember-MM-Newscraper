@@ -825,18 +825,6 @@ Public Class NFO
         'set ListTitle at the end of merging
         If Not String.IsNullOrEmpty(DBTV.TVShow.Title) Then
             DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
-            'Else
-            '    If FileUtils.Common.isVideoTS(DBTV.Filename) Then
-            '        DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).Name)
-            '    ElseIf FileUtils.Common.isBDRip(DBTV.Filename) Then
-            '        DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBTV.Filename).FullName).FullName).Name)
-            '    Else
-            '        If DBTV.UseFolder AndAlso DBTV.IsSingle Then
-            '            DBTV.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBTV.Filename).Name)
-            '        Else
-            '            DBTV.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBTV.Filename))
-            '        End If
-            '    End If
         End If
 
         'Seasons
@@ -908,13 +896,14 @@ Public Class NFO
                 Else
 
                     'no local episode found -> add it as "missing" episode
-                    Dim mEpisode As New Database.DBElement With { _
-                        .FilenameID = -1, _
-                        .ID = -1, _
-                        .ImagesContainer = New MediaContainers.ImagesContainer, _
-                        .TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
+                    Dim mEpisode As New Database.DBElement With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
                     mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
-                    DBTV.Episodes.Add(MergeDataScraperResults(mEpisode, ScrapedEpisodeList, ScrapeOptions))
+                    MergeDataScraperResults(mEpisode, ScrapedEpisodeList, ScrapeOptions)
+                    If mEpisode.TVEpisode.TitleSpecified Then
+                        DBTV.Episodes.Add(mEpisode)
+                    Else
+                        logger.Warn(String.Format("Can't add {0}: S{1}E{2}: No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
+                    End If
                 End If
             Next
         End If

@@ -1985,7 +1985,7 @@ Public Class frmMain
             Me.InfoDownloaded_Movie(Res.DBElement)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped Movie from disk to get clean informations in DB
-            Me.Reload_Movie(Res.DBElement.ID)
+            Me.Reload_Movie(Res.DBElement.ID, False, True)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -2042,6 +2042,10 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_Movie, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
+                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                        bwMovieScraper.CancelAsync()
+                    End If
                 End If
             Else
                 ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -2049,9 +2053,14 @@ Public Class frmMain
                                                                          tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
                                                                          tScrapeItem.ScrapeModifier.MainExtrathumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
                                                                          tScrapeItem.ScrapeModifier.MainPoster Or tScrapeItem.ScrapeModifier.MainTheme Or tScrapeItem.ScrapeModifier.MainTrailer) Then
-                    Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
-                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
-                        Exit For
+                    Dim tModifier As New Structures.ScrapeModifier With {.MainNFO = True}
+                    Dim tOptions As New Structures.ScrapeOptions_Movie 'set all values to false to not override any field. ID's are always determined.
+                    If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifier, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
+                        Cancelled = True
+                        If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                            bwMovieScraper.CancelAsync()
+                        End If
                     End If
                 End If
             End If
@@ -2223,8 +2232,10 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
+                logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
+            Else
+                logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
             End If
-            logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeMovie, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieScraper.CancellationPending}
@@ -2617,7 +2628,7 @@ Public Class frmMain
             Me.InfoDownloaded_TVEpisode(Res.DBElement)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped Episode from disk to get clean informations in DB
-            Me.Reload_TVEpisode(Res.DBElement.ID, False, True, False)
+            Me.Reload_TVEpisode(Res.DBElement.ID, False, True)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -2781,7 +2792,7 @@ Public Class frmMain
 
                                 fDeleter.GetItemsToDelete(True, scrapeMovie)
 
-                                Me.Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True)
+                                Me.Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True, False)
 
                                 Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item("idMovie").ToString))
                             Catch ex As Exception
@@ -2858,6 +2869,7 @@ doCancel:
     Private Sub bwReload_Movies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwReload_Movies.DoWork
         Dim iCount As Integer = 0
         Dim MovieIDs As New Dictionary(Of Long, String)
+        Dim doFill As Boolean = False
 
         For Each sRow As DataRow In Me.dtMovies.Rows
             MovieIDs.Add(Convert.ToInt64(sRow.Item("idMovie")), sRow.Item("ListTitle").ToString)
@@ -2867,24 +2879,39 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
                 If Me.bwReload_Movies.CancellationPending Then Return
                 Me.bwReload_Movies.ReportProgress(iCount, KVP.Value)
-                Me.Reload_Movie(KVP.Key, True)
+                If Me.Reload_Movie(KVP.Key, True, False) Then
+                    doFill = True
+                Else
+                    Me.bwReload_Movies.ReportProgress(-1, KVP.Key)
+                End If
                 iCount += 1
             Next
             SQLtransaction.Commit()
         End Using
+        e.Result = New Results With {.doFill = doFill}
     End Sub
 
     Private Sub bwReload_Movies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwReload_Movies.ProgressChanged
-        Me.SetStatus(e.UserState.ToString)
-        Me.tspbLoading.Value = e.ProgressPercentage
+        If e.ProgressPercentage = -1 Then
+            RefreshRow_Movie(CLng(e.UserState))
+        Else
+            Me.SetStatus(e.UserState.ToString)
+            Me.tspbLoading.Value = e.ProgressPercentage
+        End If
     End Sub
 
     Private Sub bwReload_Movies_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwReload_Movies.RunWorkerCompleted
+        Dim Res As Results = DirectCast(e.Result, Results)
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
 
-        Me.FillList(True, True, False)
+        If Res.doFill Then
+            FillList(True, True, False)
+        Else
+            DoTitleCheck()
+            Me.SetControlsEnabled(True)
+        End If
         Me.Cursor = Cursors.Default
     End Sub
 
@@ -2926,6 +2953,7 @@ doCancel:
 
         Dim iCount As Integer = 0
         Dim ShowIDs As New Dictionary(Of Long, String)
+        Dim doFill As Boolean = False
 
         For Each sRow As DataRow In Me.dtTVShows.Rows
             ShowIDs.Add(Convert.ToInt64(sRow.Item("idShow")), sRow.Item("ListTitle").ToString)
@@ -2935,24 +2963,38 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In ShowIDs
                 If Me.bwReload_TVShows.CancellationPending Then Return
                 Me.bwReload_TVShows.ReportProgress(iCount, KVP.Value)
-                Me.Reload_TVShow(KVP.Key, True, Args.withSeasons, Args.withEpisodes)
+                If Me.Reload_TVShow(KVP.Key, True, False, Args.withSeasons) Then
+                    doFill = True
+                Else
+                    Me.bwReload_TVShows.ReportProgress(-1, KVP.Key)
+                End If
                 iCount += 1
             Next
             SQLtransaction.Commit()
         End Using
+        e.Result = New Results With {.doFill = doFill}
     End Sub
 
     Private Sub bwReload_TVShows_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwReload_TVShows.ProgressChanged
-        Me.SetStatus(e.UserState.ToString)
-        Me.tspbLoading.Value = e.ProgressPercentage
+        If e.ProgressPercentage = -1 Then
+            RefreshRow_TVShow(CLng(e.UserState))
+        Else
+            Me.SetStatus(e.UserState.ToString)
+            Me.tspbLoading.Value = e.ProgressPercentage
+        End If
     End Sub
 
     Private Sub bwReload_TVShows_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwReload_TVShows.RunWorkerCompleted
+        Dim Res As Results = DirectCast(e.Result, Results)
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
 
-        Me.FillList(False, False, True)
+        If Res.doFill Then
+            FillList(False, False, True)
+        Else
+            Me.SetControlsEnabled(True)
+        End If
         Me.Cursor = Cursors.Default
     End Sub
 
@@ -5211,14 +5253,16 @@ doCancel:
         Me.SetControlsEnabled(False, True)
 
         Dim doFill As Boolean = False
-        Dim tFill As Boolean = False
 
-        Dim doBatch As Boolean = Not Me.dgvMovies.SelectedRows.Count = 1
+        Dim showMessages As Boolean = Me.dgvMovies.SelectedRows.Count = 1
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                tFill = Me.Reload_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value), doBatch)
-                If tFill Then doFill = True
+                If Me.Reload_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, showMessages) Then
+                    doFill = True
+                Else
+                    RefreshRow_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                End If
             Next
             SQLtransaction.Commit()
         End Using
@@ -5294,22 +5338,20 @@ doCancel:
         Me.SetControlsEnabled(False, True)
 
         Dim doFill As Boolean = False
-        Dim tFill As Boolean = False
 
-        If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    tFill = Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-                    If tFill Then doFill = True
+                    If Not Convert.ToInt64(sRow.Cells("TVEpPathID").Value) = -1 Then 'skipping missing episodes
+                        If Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False) Then
+                            doFill = True
+                        Else
+                            RefreshRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+                        End If
+                    End If
                 Next
-
-                Master.DB.CleanSeasons(True)
-
                 SQLtransaction.Commit()
             End Using
-        ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
-            tFill = Me.Reload_TVEpisode(Convert.ToInt64(Me.dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), False)
-            If tFill Then doFill = True
         End If
 
         Me.dgvTVShows.Cursor = Cursors.Default
@@ -5327,7 +5369,6 @@ doCancel:
         Me.SetControlsEnabled(False, True)
 
         Dim doFill As Boolean = False
-        Dim tFill As Boolean = False
 
         If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -5339,26 +5380,68 @@ doCancel:
             Me.tspbLoading.Visible = True
             Application.DoEvents()
 
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                     Me.tspbLoading.Value += 1
-
-                    doFill = Me.Reload_TVSeason(Convert.ToInt32(sRow.Cells("idSeason").Value), True)
-
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", sRow.Cells("idShow").Value, " AND Season = ", sRow.Cells("Season").Value, " AND Missing = 0;")
-                        Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                            While SQLReader.Read
-                                tFill = Me.Reload_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), True)
-                                If tFill Then doFill = True
-                            End While
-                        End Using
-                    End Using
+                    If Me.Reload_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value), True, False, False) Then
+                        doFill = True
+                    Else
+                        RefreshRow_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value))
+                    End If
                 Next
+                SQLtransaction.Commit()
+            End Using
 
-                Master.DB.CleanSeasons(True)
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+        End If
 
-                SQLTrans.Commit()
+        Me.dgvTVShows.Cursor = Cursors.Default
+        Me.dgvTVSeasons.Cursor = Cursors.Default
+        Me.dgvTVEpisodes.Cursor = Cursors.Default
+        Me.SetControlsEnabled(True)
+
+        If doFill Then Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+    End Sub
+
+    Private Sub cmnuSeasonReloadFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReloadFull.Click
+        Me.dgvTVShows.Cursor = Cursors.WaitCursor
+        Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+        Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
+        Me.SetControlsEnabled(False, True)
+
+        Dim doFill As Boolean = False
+
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.tspbLoading.Value = 0
+            Me.tspbLoading.Maximum = Me.dgvTVSeasons.SelectedRows.Count
+
+            Me.tslLoading.Text = String.Concat(Master.eLang.GetString(563, "Reloading Season"), ":")
+            Me.tslLoading.Visible = True
+            Me.tspbLoading.Visible = True
+            Application.DoEvents()
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                    Me.tspbLoading.Value += 1
+                    If Me.Reload_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value), True, False, False) Then
+                        doFill = True
+                    Else
+                        RefreshRow_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value))
+                    End If
+
+                    'Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    '    SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", sRow.Cells("idShow").Value, " AND Season = ", sRow.Cells("Season").Value, " AND Missing = 0;")
+                    '    Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                    '        While SQLReader.Read
+                    '            tFill = Me.Reload_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), True)
+                    '            If tFill Then doFill = True
+                    '        End While
+                    '    End Using
+                    'End Using
+                Next
+                SQLtransaction.Commit()
             End Using
 
             Me.tslLoading.Visible = False
@@ -5380,7 +5463,6 @@ doCancel:
         Me.SetControlsEnabled(False, True)
 
         Dim doFill As Boolean = False
-        Dim tFill As Boolean = False
 
         If Me.dgvTVShows.SelectedRows.Count > 1 Then
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -5395,8 +5477,11 @@ doCancel:
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                     Me.tspbLoading.Value += 1
-                    tFill = Me.Reload_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, True)
-                    If tFill Then doFill = True
+                    If Me.Reload_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, False, False) Then
+                        doFill = True
+                    Else
+                        RefreshRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
+                    End If
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -5404,8 +5489,59 @@ doCancel:
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
         ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-            tFill = Me.Reload_TVShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, True)
-            If tFill Then doFill = True
+            If Me.Reload_TVShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, False) Then
+                doFill = True
+            Else
+                RefreshRow_TVShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value))
+            End If
+        End If
+
+        Me.dgvTVShows.Cursor = Cursors.Default
+        Me.dgvTVSeasons.Cursor = Cursors.Default
+        Me.dgvTVEpisodes.Cursor = Cursors.Default
+        Me.SetControlsEnabled(True)
+
+        If doFill Then FillList(False, False, True)
+    End Sub
+
+    Private Sub cmnuShowReloadFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReloadFull.Click
+        Me.dgvTVShows.Cursor = Cursors.WaitCursor
+        Me.dgvTVSeasons.Cursor = Cursors.WaitCursor
+        Me.dgvTVEpisodes.Cursor = Cursors.WaitCursor
+        Me.SetControlsEnabled(False, True)
+
+        Dim doFill As Boolean = False
+
+        If Me.dgvTVShows.SelectedRows.Count > 1 Then
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.tspbLoading.Value = 0
+            Me.tspbLoading.Maximum = Me.dgvTVShows.SelectedRows.Count
+
+            Me.tslLoading.Text = String.Concat(Master.eLang.GetString(562, "Reloading Show"), ":")
+            Me.tslLoading.Visible = True
+            Me.tspbLoading.Visible = True
+            Application.DoEvents()
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    Me.tspbLoading.Value += 1
+                    If Me.Reload_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, False, True) Then
+                        doFill = True
+                    Else
+                        RefreshRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
+                    End If
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+        ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
+            If Me.Reload_TVShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, True) Then
+                doFill = True
+            Else
+                RefreshRow_TVShow(Convert.ToInt64(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value))
+            End If
         End If
 
         Me.dgvTVShows.Cursor = Cursors.Default
@@ -5419,15 +5555,15 @@ doCancel:
     Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
         Me.ClearInfo()
 
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(Me.dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
                 If Not CInt(sRow.Cells("Season").Value) = 999 Then
-                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), Convert.ToInt32(sRow.Cells("Season").Value), True)
+                    Master.DB.DeleteTVSeasonFromDB(Convert.ToInt32(sRow.Cells("idSeason").Value), True)
                 End If
             Next
-            Me.Reload_TVShow(idShow, True, False, False)
-            SQLTrans.Commit()
+            Me.Reload_TVShow(idShow, True, True, False)
+            SQLtransaction.Commit()
         End Using
 
         If Me.dgvTVSeasons.RowCount > 0 Then
@@ -5441,7 +5577,7 @@ doCancel:
         Dim SeasonsList As New List(Of Integer)
         Me.ClearInfo()
 
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(Me.dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                 If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
@@ -5457,9 +5593,9 @@ doCancel:
             For Each iSeason In SeasonsList
                 Me.RefreshRow_TVSeason(idShow, iSeason)
             Next
-            Me.Reload_TVShow(idShow, True, False, False)
+            Me.Reload_TVShow(idShow, True, True, False)
 
-            SQLTrans.Commit()
+            SQLtransaction.Commit()
         End Using
 
         Dim cSeas As Integer = 0
@@ -5478,11 +5614,11 @@ doCancel:
     Private Sub cmnuShowRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
         Me.ClearInfo()
 
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                 Master.DB.DeleteTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True)
             Next
-            SQLTrans.Commit()
+            SQLtransaction.Commit()
         End Using
 
         Me.FillList(False, False, True)
@@ -10565,7 +10701,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_Movie
                 Try
-                    If Me.Reload_Movie(Convert.ToInt16(_params(0))) Then
+                    If Me.Reload_Movie(Convert.ToInt64(_params(0)), False, True) Then
                         Me.FillList(True, True, False)
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
@@ -10575,7 +10711,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 Try
-                    If Me.Reload_TVEpisode(Convert.ToInt16(_params(0))) Then
+                    If Me.Reload_TVEpisode(Convert.ToInt64(_params(0)), False, True) Then
                         Me.FillList(False, False, True)
                     End If
                     Me.SetStatus(Master.currShow.TVEpisode.Title)
@@ -10585,7 +10721,7 @@ doCancel:
 
             Case Enums.ModuleEventType.AfterEdit_TVShow
                 Try
-                    If Me.Reload_TVShow(Convert.ToInt16(_params(0)), False, False, False) Then
+                    If Me.Reload_TVShow(Convert.ToInt64(_params(0)), False, True, False) Then
                         Me.FillList(False, False, True)
                     End If
                     Me.SetStatus(Master.currShow.ShowPath)
@@ -11962,7 +12098,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -11987,7 +12123,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12014,7 +12150,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12099,7 +12235,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12151,7 +12287,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -12176,7 +12312,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12203,7 +12339,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12255,7 +12391,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -12280,7 +12416,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12307,7 +12443,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12359,7 +12495,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -12384,7 +12520,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12449,7 +12585,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -12474,7 +12610,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12501,7 +12637,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12558,7 +12694,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVEpToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVEpToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVEpisode(ID)
                                     End If
                                 Else
@@ -12602,7 +12738,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -12627,7 +12763,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12654,7 +12790,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12733,7 +12869,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -12758,7 +12894,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     Me.RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -12785,7 +12921,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -12843,7 +12979,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVEpToDB(tmpDBElement, False, False)
+                                        Master.DB.SaveTVEpToDB(tmpDBElement, False, False, False, True)
                                         Me.RefreshRow_TVEpisode(ID)
                                     End If
                                 Else
@@ -13392,18 +13528,18 @@ doCancel:
     ''' </summary>
     ''' <param name="ID"></param>
     ''' <param name="BatchMode"></param>
-    ''' <returns>reload list from database</returns>
+    ''' <returns>Reload movie from disc</returns>
     ''' <remarks></remarks>
-    Private Function Reload_Movie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Private Function Reload_Movie(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
         Dim DBMovie As New Database.DBElement
 
-        DBMovie = Master.DB.LoadMovieFromDB(ID)
+        DBMovie = Master.DB.LoadMovieFromDB(ID, False)
 
-        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not BatchMode) Then
+        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
             fScanner.LoadMovie(DBMovie, False, BatchMode)
-            RefreshRow_Movie(DBMovie.ID)
+            If Not BatchMode Then RefreshRow_Movie(DBMovie.ID)
         Else
-            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
                                                      Master.eLang.GetString(654, "Remove movie from library"), _
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
@@ -13420,7 +13556,13 @@ doCancel:
 
         Return False
     End Function
-
+    ''' <summary>
+    ''' Reload movieset from disc
+    ''' </summary>
+    ''' <param name="ID"></param>
+    ''' <param name="BatchMode"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Dim DBMovieSet As New Database.DBElement
 
@@ -13431,56 +13573,31 @@ doCancel:
 
         Return False
     End Function
+    ''' <summary>
+    ''' Reload tv episode from disc
+    ''' </summary>
+    ''' <param name="ID"></param>
+    ''' <param name="BatchMode"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function Reload_TVEpisode(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
+        Dim DBTVEpisode As New Database.DBElement
+        Dim epCount As Integer = 0
 
-    Private Function Reload_TVEpisode(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim tmpDBTVEpisode As New Database.DBElement
-        Dim tmpEp As New MediaContainers.EpisodeDetails
-        Dim SeasonChanged As Boolean = False
-        Dim EpisodeChanged As Boolean = False
-        Dim ShowID As Integer = -1
+        DBTVEpisode = Master.DB.LoadTVEpFromDB(ID, True)
 
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
 
-        tmpDBTVEpisode = Master.DB.LoadTVEpFromDB(ID, True)
+            'check if this episode is a MultiEpisode
+            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM episode WHERE TVEpPathID = {0}", DBTVEpisode.FilenameID)
+                epCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+            End Using
 
-        If tmpDBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tmpDBTVEpisode, Not BatchMode) Then
-
-            If FromNfo Then
-                If String.IsNullOrEmpty(tmpDBTVEpisode.NfoPath) Then
-                    Dim sNFO As String = NFO.GetEpNfoPath(tmpDBTVEpisode.Filename)
-                    tmpDBTVEpisode.NfoPath = sNFO
-                    tmpEp = NFO.LoadTVEpFromNFO(sNFO, tmpDBTVEpisode.TVEpisode.Season, tmpDBTVEpisode.TVEpisode.Episode)
-                Else
-                    tmpEp = NFO.LoadTVEpFromNFO(tmpDBTVEpisode.NfoPath, tmpDBTVEpisode.TVEpisode.Season, tmpDBTVEpisode.TVEpisode.Episode)
-                End If
-
-                If Not tmpEp.Episode = -999 Then
-                    tmpDBTVEpisode.TVEpisode = tmpEp
-                End If
-            End If
-
-            If String.IsNullOrEmpty(tmpDBTVEpisode.TVEpisode.Title) Then
-                tmpDBTVEpisode.TVEpisode.Title = StringUtils.FilterName_TVEp(Path.GetFileNameWithoutExtension(tmpDBTVEpisode.Filename), tmpDBTVEpisode.TVShow.Title, False)
-            End If
-
-            Dim fromFile As String = APIXML.GetVideoSource(tmpDBTVEpisode.Filename, False)
-            If Not String.IsNullOrEmpty(fromFile) Then
-                tmpDBTVEpisode.VideoSource = fromFile
-                tmpDBTVEpisode.TVEpisode.VideoSource = tmpDBTVEpisode.VideoSource
-            ElseIf String.IsNullOrEmpty(tmpDBTVEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                tmpDBTVEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBTVEpisode.Filename)), String.Empty, "*EmberAPP")
-                tmpDBTVEpisode.TVEpisode.VideoSource = tmpDBTVEpisode.VideoSource
-            ElseIf Not String.IsNullOrEmpty(tmpDBTVEpisode.TVEpisode.VideoSource) Then
-                tmpDBTVEpisode.VideoSource = tmpDBTVEpisode.TVEpisode.VideoSource
-            End If
-
-            fScanner.GetTVEpisodeFolderContents(tmpDBTVEpisode)
-
-            Master.DB.SaveTVEpToDB(tmpDBTVEpisode, False, False, BatchMode, ToNfo)
-            RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
-
+            fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False, epCount > 1)
+            If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
-            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
                                                      Master.eLang.GetString(738, "Remove episode from library"), _
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
@@ -13491,62 +13608,47 @@ doCancel:
             End If
         End If
 
-        If Not BatchMode Then
-            If (SeasonChanged OrElse EpisodeChanged) AndAlso ShowID > -1 Then
-                Master.DB.CleanSeasons(BatchMode)
-                Me.FillSeasons(ShowID)
-            Else
-                Me.LoadInfo_TVEpisode(Convert.ToInt32(ID))
-            End If
+        Return False
+    End Function
+    ''' <summary>
+    ''' Reload tv season from disc
+    ''' </summary>
+    ''' <param name="ID"></param>
+    ''' <param name="BatchMode"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function Reload_TVSeason(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, reloadFull As Boolean) As Boolean
+        Dim DBTVSeason As New Database.DBElement
+
+        DBTVSeason = Master.DB.LoadTVSeasonFromDB(ID, True, False)
+
+        If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
+            fScanner.GetTVSeasonFolderContents(DBTVSeason)
+            Master.DB.SaveTVSeasonToDB(DBTVSeason, BatchMode)
+            If Not BatchMode Then RefreshRow_TVSeason(DBTVSeason.ID)
+        Else
+            Return False
         End If
 
         Return False
     End Function
-
-    Private Function Reload_TVSeason(ByVal SeasonID As Integer, ByVal BatchMode As Boolean) As Boolean
-        Dim tmpSeasonDb As New Database.DBElement
-        Dim newTable As New DataTable
-
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
-
-        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-
-        tmpSeasonDb = Master.DB.LoadTVSeasonFromDB(SeasonID, True)
-
-        Dim tPath As String = Functions.GetSeasonDirectoryFromShowPath(tmpSeasonDb.ShowPath, tmpSeasonDb.TVSeason.Season)
-
-        If String.IsNullOrEmpty(tPath) Then
-            tPath = tmpSeasonDb.ShowPath
-        End If
-
-        'fake file just for getting images
-        tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
-        fScanner.GetTVSeasonFolderContents(tmpSeasonDb, tmpSeasonDb.TVSeason.Season)
-
-        Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False)
-        RefreshRow_TVSeason(tmpSeasonDb.ID)
-
-        If Not BatchMode Then
-            SQLtransaction.Commit()
-            SQLtransaction = Nothing
-
-            Me.LoadInfo_TVSeason(SeasonID)
-            Me.FillEpisodes(CInt(tmpSeasonDb.ShowID), tmpSeasonDb.TVSeason.Season)
-        End If
-
-        Return False
-    End Function
-
-    Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean) As Boolean
+    ''' <summary>
+    ''' Reload tv show from disc
+    ''' </summary>
+    ''' <param name="ID"></param>
+    ''' <param name="BatchMode"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, ByVal reloadFull As Boolean) As Boolean
         Dim DBTVShow As New Database.DBElement
 
-        DBTVShow = Master.DB.LoadTVShowFromDB(ID, withSeasons, withEpisodes)
+        DBTVShow = Master.DB.LoadTVShowFromDB(ID, reloadFull, reloadFull, False)
 
-        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, Not BatchMode) Then
-            fScanner.LoadTVShow(DBTVShow, False, BatchMode)
+        If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, showMessage) Then
+            fScanner.LoadTVShow(DBTVShow, False, BatchMode, False)
+            If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
         Else
-            If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
                                                      Master.eLang.GetString(776, "Remove tv show from library"), _
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
@@ -13557,7 +13659,6 @@ doCancel:
             End If
         End If
 
-        RefreshRow_TVShow(DBTVShow.ID)
 
 
 
@@ -16823,6 +16924,7 @@ doCancel:
 
 #Region "Fields"
 
+        Dim doFill As Boolean
         Dim fileInfo As String
         Dim IsTV As Boolean
         Dim DBElement As Database.DBElement

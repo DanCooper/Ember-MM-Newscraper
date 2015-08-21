@@ -481,8 +481,8 @@ Namespace YouTube
 
         Private m_Bitrate As String
         Private m_Clen As String
-        Private m_FPS As String
         Private m_Fallback_Host As String
+        Private m_FPS As String
         Private m_ITag As Integer
         Private m_Index As String
         Private m_Init As String
@@ -530,21 +530,21 @@ Namespace YouTube
             End Get
         End Property
 
-        Public Property FPS() As String
-            Get
-                Return m_FPS
-            End Get
-            Set(value As String)
-                m_FPS = value
-            End Set
-        End Property
-
         Public Property Fallback_Host() As String
             Get
                 Return m_Fallback_Host
             End Get
             Set(value As String)
                 m_Fallback_Host = value
+            End Set
+        End Property
+
+        Public Property FPS() As String
+            Get
+                Return m_FPS
+            End Get
+            Set(value As String)
+                m_FPS = value
             End Set
         End Property
 

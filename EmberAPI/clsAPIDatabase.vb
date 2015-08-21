@@ -589,17 +589,17 @@ Public Class Database
     ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
     ''' <remarks></remarks>
     Public Sub CleanSeasons(Optional ByVal BatchMode As Boolean = False)
-        Dim SQLTrans As SQLite.SQLiteTransaction = Nothing
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
-        If Not BatchMode Then SQLTrans = Master.DB.MyVideosDBConn.BeginTransaction()
+        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
         Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLCommand.CommandText = "DELETE FROM seasons WHERE NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999"
             SQLCommand.ExecuteNonQuery()
         End Using
-        If Not BatchMode Then SQLTrans.Commit()
-        SQLTrans = Nothing
+        If Not BatchMode Then SQLtransaction.Commit()
+        SQLtransaction = Nothing
 
-        If SQLTrans IsNot Nothing Then SQLTrans.Dispose()
+        If SQLtransaction IsNot Nothing Then SQLtransaction.Dispose()
     End Sub
     ''' <summary>
     ''' Remove the New flag from database entries (movies, tvshow, seasons, episode)
@@ -693,7 +693,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 26
+        Dim MyVideosDBVersion As Integer = 27
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -991,29 +991,43 @@ Public Class Database
     ''' <summary>
     ''' Remove all information related to a TV season from the database.
     ''' </summary>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
+    Public Function DeleteTVSeasonFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        If ID < 0 Then Throw New ArgumentOutOfRangeException("idSeason", "Value must be >= 0, was given: " & ID)
+
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DELETE FROM seasons WHERE idSeason = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Remove all information related to a TV season from the database.
+    ''' </summary>
     ''' <param name="ShowID">ID of the tvshow to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
         If iSeason < 0 Then Throw New ArgumentOutOfRangeException("iSeason", "Value must be >= 0, was given: " & iSeason)
-
+        
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
-                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLReader.Read
-                        DeleteTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), True, False, True)
-                    End While
-                End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
-
-            CleanSeasons(True)
-
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1029,20 +1043,15 @@ Public Class Database
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVShowFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        If ID < 0 Then Throw New ArgumentOutOfRangeException("idShow", "Value must be >= 0, was given: " & ID)
+
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ID, ";")
-                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLReader.Read
-                        DeleteTVEpFromDB(Convert.ToInt64(SQLReader("idEpisode")), True, False, True)
-                    End While
-                End Using
                 SQLcommand.CommandText = String.Concat("DELETE FROM tvshow WHERE idShow = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
-
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -4853,7 +4862,9 @@ Public Class Database
 
     End Class
 
+    <Serializable()>
     Public Class DBElement
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -5334,6 +5345,19 @@ Public Class Database
             Me._usefolder = False
             Me._videosource = String.Empty
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New System.IO.MemoryStream(50000)
+            Dim Formatter As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, System.IO.SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
+
 
 #End Region 'Methods
 

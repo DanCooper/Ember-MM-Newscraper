@@ -3193,6 +3193,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()>
     Public Class [Image]
         Implements IComparable(Of [Image])
 
