@@ -186,7 +186,7 @@ Public Class dlgImgSelect
 
     Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType, Optional ByVal _isEdit As Boolean = False) As DialogResult
         Me.tSearchResultsContainer = SearchResultsContainer
-        Me.tDBElementResult = DBElement
+        Me.tDBElementResult = CType(DBElement.CloneDeep, Database.DBElement)
         Me.tScrapeModifier = ScrapeModifier
         Me.tContentType = ContentType
         SetParameters()
