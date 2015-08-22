@@ -3045,6 +3045,35 @@ Public Class Images
             DefaultImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
         End If
 
+        'Main Extrathumbs
+        If DoMainExtrathumbs Then
+            Dim iLimit As Integer = 0
+            Dim iDifference As Integer = 0
+            Select Case ContentType
+                Case Enums.ContentType.Movie
+                    iLimit = Master.eSettings.MovieEThumbsLimit
+            End Select
+
+            If Not DBElement.ImagesContainer.Extrathumbs.Count >= iLimit OrElse iLimit = 0 Then
+                iDifference = iLimit - DBElement.ImagesContainer.Extrathumbs.Count
+                Dim defImgList As New List(Of MediaContainers.Image)
+
+                If iLimit = 0 OrElse iDifference > 0 Then
+                    Select Case ContentType
+                        Case Enums.ContentType.Movie
+                            Images.GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(iLimit = 0, iLimit, iDifference))
+                    End Select
+
+                    If defImgList IsNot Nothing AndAlso defImgList.Count > 0 Then
+                        DBElement.ImagesContainer.Extrathumbs.AddRange(defImgList)
+                        DefaultImagesContainer.Extrathumbs.AddRange(DBElement.ImagesContainer.Extrathumbs)
+                    End If
+                End If
+            End If
+        Else
+            DefaultImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
+        End If
+
         'Main Fanart
         If DoMainFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             If DBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
@@ -3530,30 +3559,52 @@ Public Class Images
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extrathumbs</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image), ByVal iLimit As Integer) As List(Of String)
-        Dim imgList As New List(Of String)
-        If ImageList.Count = 0 Then Return imgList
+    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer) As Boolean
+        If ImageList.Count = 0 Then Return False
 
         If Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Any Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
-                imgList.Add(img.URLOriginal)
+            For Each img As MediaContainers.Image In ImageList
+                imgResultList.Add(img)
+                iLimit -= 1
+                If iLimit = 0 Then Exit For
             Next
-        ElseIf Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Thumb Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLThumb))
-                imgList.Add(img.URLThumb)
-            Next
-        Else
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal) AndAlso f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
-                imgList.Add(img.URLOriginal)
-            Next
-            If Not Master.eSettings.MovieEThumbsPrefSizeOnly Then
-                For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal) AndAlso Not f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
-                    imgList.Add(img.URLOriginal)
-                Next
-            End If
         End If
 
-        Return imgList
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.MovieEThumbsPrefSizeOnly Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.MovieFanartSize = Master.eSettings.MovieEThumbsPrefSize)
+                imgResultList.Add(img)
+                iLimit -= 1
+                If iLimit = 0 Then Exit For
+            Next
+        End If
+
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.MovieEThumbsPrefSizeOnly AndAlso Not Master.eSettings.MovieEThumbsPrefSize = Enums.MovieFanartSize.Any Then
+            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+                imgResultList.Add(img)
+                iLimit -= 1
+                If iLimit = 0 Then Exit For
+            Next
+        End If
+
+
+
+        'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+        '    imgResult = ImageList.First
+        'End If
+
+        'If imgResult Is Nothing Then
+        '    imgResult = ImageList.Find(Function(f) f.MovieFanartSize = Master.eSettings.MovieFanartPrefSize)
+        'End If
+
+        'If imgResult Is Nothing AndAlso Not Master.eSettings.MovieFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+        '    imgResult = ImageList.First
+        'End If
+
+        If imgResultList IsNot Nothing AndAlso imgResultList.Count > 0 Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     Public Shared Function GetPreferredMovieSetDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean

@@ -4201,6 +4201,17 @@ Namespace MediaContainers
             End With
         End Sub
 
+        Public Sub SortExtrathumbs()
+            Dim newList As New List(Of Image)
+            Dim newIndex As Integer = 0
+            For Each tImg As Image In Me.Extrathumbs.OrderBy(Function(f) f.Index)
+                tImg.Index = newIndex
+                newList.Add(tImg)
+                newIndex += 1
+            Next
+            Me.Extrathumbs = newList
+        End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"

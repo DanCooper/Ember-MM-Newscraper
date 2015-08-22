@@ -49,14 +49,6 @@ Public Class dlgEditMovie
     Private AnyThemePlayerEnabled As Boolean = False
     Private AnyTrailerPlayerEnabled As Boolean = False
 
-    'Extrathumbs
-    Private EThumbsWarning As Boolean = True
-    Private iETCounter As Integer = 0
-    Private iETLeft As Integer = 1
-    Private iETTop As Integer = 1
-    Private pbExtrathumbsImage() As PictureBox
-    Private pnlExtrathumbsImage() As Panel
-
     'Extrafanarts
     Private EFanartsWarning As Boolean = True
     Private iEFCounter As Integer = 0
@@ -64,6 +56,15 @@ Public Class dlgEditMovie
     Private iEFTop As Integer = 1
     Private pbExtrafanartsImage() As PictureBox
     Private pnlExtrafanartsImage() As Panel
+
+    'Extrathumbs
+    Private EThumbsWarning As Boolean = True
+    Private iETCounter As Integer = 0
+    Private iETLeft As Integer = 1
+    Private iETTop As Integer = 1
+    Private pbExtrathumbsImage() As PictureBox
+    Private pnlExtrathumbsImage() As Panel
+    Private currExtrathumbImage As New MediaContainers.Image
 
 #End Region 'Fields
 
@@ -183,11 +184,24 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub DoSelectExtrathumb(ByVal iIndex As Integer, tImg As MediaContainers.Image)
+        Me.currExtrathumbImage = tImg
+
         Me.pbExtrathumbs.Image = tImg.ImageOriginal.Image
         Me.pbExtrathumbs.Tag = tImg
         Me.btnExtrathumbsSetAsFanart.Enabled = True
         Me.lblExtrathumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbExtrathumbs.Image.Width, Me.pbExtrathumbs.Image.Height)
         Me.lblExtrathumbsSize.Visible = True
+
+        If tImg.Index > 0 Then
+            Me.btnEThumbsUp.Enabled = True
+        Else
+            Me.btnEThumbsUp.Enabled = False
+        End If
+        If tImg.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
+            Me.btnEThumbsDown.Enabled = True
+        Else
+            Me.btnEThumbsDown.Enabled = False
+        End If
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
@@ -276,32 +290,27 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    ' temporarily disabled
-    'Private Sub btnEThumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsDown.Click
-    '    Try
-    '        If EThumbsList.Count > 0 AndAlso EThumbsIndex < (EThumbsList.Count - 1) Then
-    '            Dim iIndex As Integer = EThumbsIndex
-    '            EThumbsList.Item(iIndex).Index = EThumbsList.Item(iIndex).Index + 1
-    '            EThumbsList.Item(iIndex + 1).Index = EThumbsList.Item(iIndex + 1).Index - 1
-    '        End If
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
-    '    End Try
-    'End Sub
+    Private Sub btnEThumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsDown.Click
+        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currExtrathumbImage.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
+            Dim iIndex As Integer = Me.currExtrathumbImage.Index
+            tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
+            tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index - 1
+            tmpDBElement.ImagesContainer.SortExtrathumbs()
+            RefreshExtrathumbs()
+            Me.DoSelectExtrathumb(iIndex + 1, CType(pnlExtrathumbsImage(iIndex + 1).Tag, MediaContainers.Image))
+        End If
+    End Sub
 
-    ' temporarily disabled
-    'Private Sub btnEThumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsUp.Click
-    '    Try
-    '        If lvEThumbs.Items.Count > 0 AndAlso lvEThumbs.SelectedIndices(0) > 0 Then
-    '            Dim iIndex As Integer = lvEThumbs.SelectedIndices(0)
-    '            lvEThumbs.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvEThumbs.Items(iIndex).Text.Trim) - 1))
-    '            lvEThumbs.Items(iIndex - 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvEThumbs.Items(iIndex - 1).Text.Trim) + 1))
-    '            lvEThumbs.Sort()
-    '        End If
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
-    '    End Try
-    'End Sub
+    Private Sub btnEThumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsUp.Click
+        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currExtrathumbImage.Index > 0 Then
+            Dim iIndex As Integer = Me.currExtrathumbImage.Index
+            tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
+            tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index + 1
+            tmpDBElement.ImagesContainer.SortExtrathumbs()
+            RefreshExtrathumbs()
+            Me.DoSelectExtrathumb(iIndex - 1, CType(pnlExtrathumbsImage(iIndex - 1).Tag, MediaContainers.Image))
+        End If
+    End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
         EditActor()
@@ -2438,6 +2447,7 @@ Public Class dlgEditMovie
         If Me.tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 Then
             Dim iIndex As Integer = 0
             For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
+                img.Index = iIndex
                 AddExtrathumbImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
                 iIndex += 1
             Next

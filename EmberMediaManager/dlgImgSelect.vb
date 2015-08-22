@@ -235,7 +235,8 @@ Public Class dlgImgSelect
 
     Private Sub bwImgDefaults_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwImgDefaults.DoWork
         Me.SetDefaults()
-        e.Cancel = Me.DownloadDefaultImages
+        Me.DownloadDefaultImages()
+        e.Cancel = bwImgDefaults.CancellationPending
     End Sub
 
     Private Sub bwImgDefaults_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwImgDefaults.RunWorkerCompleted
@@ -844,7 +845,8 @@ Public Class dlgImgSelect
             Next
             If Me.tDefaultImagesContainer.Extrafanarts.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
         ElseIf Me.currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs AndAlso DoMainExtrathumbs Then
-            For Each img In tDBElementResult.ImagesContainer.Extrathumbs
+            For Each img In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
+                img.Index = iCount
                 AddSubImage(img, iCount, Enums.ModifierType.MainExtrathumbs, -1)
                 iCount += 1
             Next
@@ -1046,7 +1048,7 @@ Public Class dlgImgSelect
         Me.lblImageList_Scraper(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblImageList_Scraper(iIndex).Text = tTag.Image.Scraper
         Me.pbImageList_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image), _
-                                          If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+                                                If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
         Me.pnlImageList_Panel(iIndex).Left = iImageList_NextLeft
         Me.pnlImageList_Panel(iIndex).Top = iImageList_NextTop
         Me.pbImageList_Image(iIndex).Location = Me.iImageList_Location_Image
@@ -1084,7 +1086,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub AddSubImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, ByVal iSeason As Integer)
-        Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason)
+        Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason, iIndex)
 
         ReDim Preserve Me.pnlSubImage_Panel(iIndex)
         ReDim Preserve Me.pbSubImage_Image(iIndex)
@@ -1115,7 +1117,7 @@ Public Class dlgImgSelect
         Me.lblSubImage_Title(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblSubImage_Title(iIndex).Text = tTag.strSeason
         Me.pbSubImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image), _
-                                         If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+                                               If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
         Me.pnlSubImage_Panel(iIndex).Left = iSubImage_DistanceLeft
         Me.pbSubImage_Image(iIndex).Location = iSubImage_Location_Image
         Me.lblSubImage_Resolution(iIndex).Location = iSubImage_Location_Resolution
@@ -1171,7 +1173,7 @@ Public Class dlgImgSelect
         Me.lblTopImage_Title(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblTopImage_Title(iIndex).Text = tTag.strTitle
         Me.pbTopImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image), _
-                                         If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+                                               If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
         Me.pnlTopImage_Panel(iIndex).Left = iTopImage_NextLeft
         Me.pbTopImage_Image(iIndex).Location = iTopImage_Location_Image
         Me.lblTopImage_Resolution(iIndex).Location = iTopImage_Location_Resolution
@@ -1362,6 +1364,22 @@ Public Class dlgImgSelect
         Me.btnRemoveSubImage.Enabled = True
         Me.btnRestoreSubImage.Enabled = True
 
+        If tTag.ImageType = Enums.ModifierType.MainExtrathumbs Then
+            If tTag.iIndex > 0 Then
+                Me.btnSubImageUp.Enabled = True
+            Else
+                Me.btnSubImageUp.Enabled = False
+            End If
+            If tTag.iIndex < tDBElementResult.ImagesContainer.Extrathumbs.Count - 1 Then
+                Me.btnSubImageDown.Enabled = True
+            Else
+                Me.btnSubImageDown.Enabled = False
+            End If
+        Else
+            Me.btnSubImageDown.Enabled = False
+            Me.btnSubImageUp.Enabled = False
+        End If
+
         Me.currSubImage = tTag
         If Not Me.currListImageSelectedImageType = tTag.ImageType OrElse Not Me.currListImageSelectedSeason = tTag.iSeason Then
             CreateImageList(tTag)
@@ -1411,6 +1429,8 @@ Public Class dlgImgSelect
 
     Private Sub DeselectAllSubImages()
         Me.btnRemoveSubImage.Enabled = False
+        Me.btnSubImageDown.Enabled = False
+        Me.btnSubImageUp.Enabled = False
         If Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainExtrafanarts OrElse _
             Not CType(Me.cbSubImageType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value = Enums.ModifierType.MainExtrathumbs Then
             Me.btnRestoreSubImage.Enabled = False
@@ -1586,6 +1606,7 @@ Public Class dlgImgSelect
                 End If
             Case Enums.ModifierType.MainExtrathumbs
                 If tDBElementResult.ImagesContainer.Extrathumbs.Where(Function(f) f.URLOriginal = tTag.Image.URLOriginal).Count = 0 Then
+                    tTag.Image.Index = tDBElementResult.ImagesContainer.Extrathumbs.Count
                     tDBElementResult.ImagesContainer.Extrathumbs.Add(tTag.Image)
                     AddSubImage(tTag.Image, Me.pnlSubImages.Controls.Count, Enums.ModifierType.MainExtrathumbs, -1)
                     ReorderSubImages()
@@ -1675,6 +1696,8 @@ Public Class dlgImgSelect
         Me.currSubImage = New iTag
         Me.btnRemoveSubImage.Enabled = False
         Me.btnRestoreSubImage.Enabled = False
+        Me.btnSubImageDown.Enabled = False
+        Me.btnSubImageUp.Enabled = False
         Me.iSubImage_NextTop = Me.iSubImage_DistanceTop
 
         If Me.pnlSubImages.Controls.Count > 0 Then
@@ -1688,7 +1711,7 @@ Public Class dlgImgSelect
         End If
     End Sub
 
-    Private Function CreateImageTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1) As iTag
+    Private Function CreateImageTag(ByRef tImage As MediaContainers.Image, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1, Optional ByVal iIndex As Integer = -1) As iTag
         Dim nTag As New iTag
 
         nTag.Image = tImage
@@ -1709,6 +1732,11 @@ Public Class dlgImgSelect
             Else
                 nTag.strResolution = String.Format("{0}x{1}", tImage.Width, tImage.Height)
             End If
+        End If
+
+        'Index (only needed for Extrathumbs)
+        If ModifierType = Enums.ModifierType.MainExtrathumbs Then
+            nTag.iIndex = iIndex
         End If
 
         'Season
@@ -1901,6 +1929,28 @@ Public Class dlgImgSelect
                 Me.currTopImage = CreateImageTag(tDefaultImagesContainer.Poster, eImageType)
                 RefreshTopImage(Me.currTopImage)
         End Select
+    End Sub
+
+    Private Sub btnSubImageDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubImageDown.Click
+        If tDBElementResult.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currSubImage.iIndex < (tDBElementResult.ImagesContainer.Extrathumbs.Count - 1) Then
+            Dim iIndex As Integer = Me.currSubImage.iIndex
+            tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
+            tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index - 1
+            tDBElementResult.ImagesContainer.SortExtrathumbs()
+            CreateSubImages()
+            Me.DoSelectSubImage(iIndex + 1, CType(pnlSubImage_Panel(iIndex + 1).Tag, iTag))
+        End If
+    End Sub
+
+    Private Sub btnSubImageUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSubImageUp.Click
+        If tDBElementResult.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currSubImage.iIndex > 0 Then
+            Dim iIndex As Integer = Me.currSubImage.iIndex
+            tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
+            tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index + 1
+            tDBElementResult.ImagesContainer.SortExtrathumbs()
+            CreateSubImages()
+            Me.DoSelectSubImage(iIndex - 1, CType(pnlSubImage_Panel(iIndex - 1).Tag, iTag))
+        End If
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click

@@ -1766,7 +1766,7 @@ Partial Class dlgEditMovie
         'btnExtrafanartsRefresh
         '
         Me.btnExtrafanartsRefresh.Image = CType(resources.GetObject("btnExtrafanartsRefresh.Image"), System.Drawing.Image)
-        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(87, 422)
+        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(6, 422)
         Me.btnExtrafanartsRefresh.Name = "btnExtrafanartsRefresh"
         Me.btnExtrafanartsRefresh.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrafanartsRefresh.TabIndex = 12
@@ -1856,7 +1856,7 @@ Partial Class dlgEditMovie
         'btnExtrathumbsRefresh
         '
         Me.btnExtrathumbsRefresh.Image = CType(resources.GetObject("btnExtrathumbsRefresh.Image"), System.Drawing.Image)
-        Me.btnExtrathumbsRefresh.Location = New System.Drawing.Point(87, 422)
+        Me.btnExtrathumbsRefresh.Location = New System.Drawing.Point(5, 422)
         Me.btnExtrathumbsRefresh.Name = "btnExtrathumbsRefresh"
         Me.btnExtrathumbsRefresh.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrathumbsRefresh.TabIndex = 4
@@ -1875,23 +1875,21 @@ Partial Class dlgEditMovie
         '
         Me.btnEThumbsDown.Enabled = False
         Me.btnEThumbsDown.Image = CType(resources.GetObject("btnEThumbsDown.Image"), System.Drawing.Image)
-        Me.btnEThumbsDown.Location = New System.Drawing.Point(28, 422)
+        Me.btnEThumbsDown.Location = New System.Drawing.Point(88, 422)
         Me.btnEThumbsDown.Name = "btnEThumbsDown"
         Me.btnEThumbsDown.Size = New System.Drawing.Size(23, 23)
         Me.btnEThumbsDown.TabIndex = 3
         Me.btnEThumbsDown.UseVisualStyleBackColor = True
-        Me.btnEThumbsDown.Visible = False
         '
         'btnEThumbsUp
         '
         Me.btnEThumbsUp.Enabled = False
         Me.btnEThumbsUp.Image = CType(resources.GetObject("btnEThumbsUp.Image"), System.Drawing.Image)
-        Me.btnEThumbsUp.Location = New System.Drawing.Point(4, 422)
+        Me.btnEThumbsUp.Location = New System.Drawing.Point(59, 422)
         Me.btnEThumbsUp.Name = "btnEThumbsUp"
         Me.btnEThumbsUp.Size = New System.Drawing.Size(23, 23)
         Me.btnEThumbsUp.TabIndex = 2
         Me.btnEThumbsUp.UseVisualStyleBackColor = True
-        Me.btnEThumbsUp.Visible = False
         '
         'pbExtrathumbs
         '
@@ -2008,13 +2006,13 @@ Partial Class dlgEditMovie
         Me.btnRemoveSubtitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnRemoveSubtitle.UseVisualStyleBackColor = True
         '
-        'btnSetubtitleDL
+        'btnSetSubtitleDL
         '
         Me.btnSetSubtitleDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetSubtitleDL.Image = CType(resources.GetObject("btnSetubtitleDL.Image"), System.Drawing.Image)
+        Me.btnSetSubtitleDL.Image = CType(resources.GetObject("btnSetSubtitleDL.Image"), System.Drawing.Image)
         Me.btnSetSubtitleDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnSetSubtitleDL.Location = New System.Drawing.Point(810, 184)
-        Me.btnSetSubtitleDL.Name = "btnSetubtitleDL"
+        Me.btnSetSubtitleDL.Name = "btnSetSubtitleDL"
         Me.btnSetSubtitleDL.Size = New System.Drawing.Size(96, 83)
         Me.btnSetSubtitleDL.TabIndex = 6
         Me.btnSetSubtitleDL.Text = "Download"
