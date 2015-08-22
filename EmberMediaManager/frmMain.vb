@@ -1532,8 +1532,18 @@ Public Class frmMain
             If Me.currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
             Else
-                Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal 'TODO: find a fallback methode
-                NeedsGS = True
+                Dim SeasonID As Long = Master.DB.GetTVSeasonIDFromEpisode(Me.currTV)
+                Dim TVSeasonFanart As String = Master.DB.GetArtForItem(SeasonID, "season", "fanart")
+                If Not String.IsNullOrEmpty(TVSeasonFanart) Then
+                    Me.MainFanart.FromFile(TVSeasonFanart)
+                    NeedsGS = True
+                Else
+                    Dim TVShowFanart As String = Master.DB.GetArtForItem(Me.currTV.ShowID, "tvshow", "fanart")
+                    If Not String.IsNullOrEmpty(TVShowFanart) Then
+                        Me.MainFanart.FromFile(TVShowFanart)
+                        NeedsGS = True
+                    End If
+                End If
             End If
 
             If Me.MainFanart.Image IsNot Nothing Then
@@ -1800,16 +1810,15 @@ Public Class frmMain
             If Me.currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
             Else
-                Me.MainFanart.FromFile(Me.currTV.ImagesContainer.Fanart.LocalFilePath) 'TODO: find a fallback methode
-                NeedsGS = True
+                Dim TVShowFanart As String = Master.DB.GetArtForItem(Me.currTV.ShowID, "tvshow", "fanart")
+                If Not String.IsNullOrEmpty(TVShowFanart) Then
+                    Me.MainFanart.FromFile(TVShowFanart)
+                    NeedsGS = True
+                End If
             End If
 
-            If Me.MainFanart.Image IsNot Nothing Then
-                If Not Args.setEnabled Then
-                    Me.MainFanart = ImageUtils.AddMissingStamp(Me.MainFanart)
-                ElseIf NeedsGS Then
-                    Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
-                End If
+            If Me.MainFanart.Image IsNot Nothing AndAlso NeedsGS Then
+                Me.MainFanart = ImageUtils.GrayScale(Me.MainFanart)
             End If
         End If
 

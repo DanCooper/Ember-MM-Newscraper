@@ -996,6 +996,8 @@ Public Class Images
                     Else
                         Return False
                     End If
+                Case Else
+                    Return False
             End Select
         End With
     End Function
@@ -1052,6 +1054,8 @@ Public Class Images
                     Else
                         Return False
                     End If
+                Case Else
+                    Return False
             End Select
         End With
     End Function
@@ -1107,6 +1111,8 @@ Public Class Images
                     Else
                         Return False
                     End If
+                Case Else
+                    Return False
             End Select
         End With
     End Function

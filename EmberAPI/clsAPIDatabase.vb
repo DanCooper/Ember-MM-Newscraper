@@ -350,7 +350,7 @@ Public Class Database
         End If
     End Sub
 
-    Private Function GetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String) As String
+    Public Function GetArtForItem(ByVal mediaId As Long, ByVal MediaType As String, ByVal artType As String) As String
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Format("SELECT url FROM art WHERE media_id={0} AND media_type='{1}' AND type='{2}'", mediaId, MediaType, artType)
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1182,6 +1182,26 @@ Public Class Database
         End Try
 
         Return bYear
+    End Function
+
+    Public Function GetTVSeasonIDFromEpisode(ByVal DBElement As DBElement) As Long
+        Dim sID As Long = -1
+        If DBElement.TVEpisode IsNot Nothing Then
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Format("SELECT idSeason FROM seasons WHERE idShow = {0} AND Season = {1};", DBElement.ShowID, DBElement.TVEpisode.Season)
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        SQLreader.Read()
+                        sID = CLng(SQLreader.Item("idSeason"))
+                        Return sID
+                    Else
+                        Return sID
+                    End If
+                End Using
+            End Using
+        Else
+            Return sID
+        End If
     End Function
 
     Public Function GetTVSourceLanguage(ByVal sName As String) As String
