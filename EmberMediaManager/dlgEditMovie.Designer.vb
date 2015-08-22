@@ -24,8 +24,8 @@ Partial Class dlgEditMovie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -219,6 +219,8 @@ Partial Class dlgEditMovie
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
+        Me.btnSetExtrafanartsScrape = New System.Windows.Forms.Button()
+        Me.btnSetExtrathumbsScrape = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -1705,6 +1707,7 @@ Partial Class dlgEditMovie
         '
         'tpExtrafanarts
         '
+        Me.tpExtrafanarts.Controls.Add(Me.btnSetExtrafanartsScrape)
         Me.tpExtrafanarts.Controls.Add(Me.lblExtrafanartsSize)
         Me.tpExtrafanarts.Controls.Add(Me.pnlExtrafanarts)
         Me.tpExtrafanarts.Controls.Add(Me.pnlEFanartsSetAsFanart)
@@ -1736,7 +1739,7 @@ Partial Class dlgEditMovie
         Me.pnlExtrafanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlExtrafanarts.Location = New System.Drawing.Point(5, 8)
         Me.pnlExtrafanarts.Name = "pnlExtrafanarts"
-        Me.pnlExtrafanarts.Size = New System.Drawing.Size(165, 408)
+        Me.pnlExtrafanarts.Size = New System.Drawing.Size(165, 394)
         Me.pnlExtrafanarts.TabIndex = 15
         '
         'pnlEFanartsSetAsFanart
@@ -1744,7 +1747,7 @@ Partial Class dlgEditMovie
         Me.pnlEFanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlEFanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlEFanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
-        Me.pnlEFanartsSetAsFanart.Location = New System.Drawing.Point(718, 403)
+        Me.pnlEFanartsSetAsFanart.Location = New System.Drawing.Point(767, 363)
         Me.pnlEFanartsSetAsFanart.Name = "pnlEFanartsSetAsFanart"
         Me.pnlEFanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlEFanartsSetAsFanart.TabIndex = 14
@@ -1766,7 +1769,7 @@ Partial Class dlgEditMovie
         'btnExtrafanartsRefresh
         '
         Me.btnExtrafanartsRefresh.Image = CType(resources.GetObject("btnExtrafanartsRefresh.Image"), System.Drawing.Image)
-        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(6, 422)
+        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(5, 408)
         Me.btnExtrafanartsRefresh.Name = "btnExtrafanartsRefresh"
         Me.btnExtrafanartsRefresh.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrafanartsRefresh.TabIndex = 12
@@ -1775,7 +1778,7 @@ Partial Class dlgEditMovie
         'btnExtrafanartsRemove
         '
         Me.btnExtrafanartsRemove.Image = CType(resources.GetObject("btnExtrafanartsRemove.Image"), System.Drawing.Image)
-        Me.btnExtrafanartsRemove.Location = New System.Drawing.Point(147, 422)
+        Me.btnExtrafanartsRemove.Location = New System.Drawing.Point(147, 408)
         Me.btnExtrafanartsRemove.Name = "btnExtrafanartsRemove"
         Me.btnExtrafanartsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrafanartsRemove.TabIndex = 13
@@ -1787,13 +1790,14 @@ Partial Class dlgEditMovie
         Me.pbExtrafanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbExtrafanarts.Location = New System.Drawing.Point(176, 8)
         Me.pbExtrafanarts.Name = "pbExtrafanarts"
-        Me.pbExtrafanarts.Size = New System.Drawing.Size(728, 437)
+        Me.pbExtrafanarts.Size = New System.Drawing.Size(700, 394)
         Me.pbExtrafanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbExtrafanarts.TabIndex = 10
         Me.pbExtrafanarts.TabStop = False
         '
         'tpExtrathumbs
         '
+        Me.tpExtrathumbs.Controls.Add(Me.btnSetExtrathumbsScrape)
         Me.tpExtrathumbs.Controls.Add(Me.lblExtrathumbsSize)
         Me.tpExtrathumbs.Controls.Add(Me.pnlExtrathumbs)
         Me.tpExtrathumbs.Controls.Add(Me.pnlEThumbsSetAsFanart)
@@ -1826,7 +1830,7 @@ Partial Class dlgEditMovie
         Me.pnlExtrathumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlExtrathumbs.Location = New System.Drawing.Point(5, 8)
         Me.pnlExtrathumbs.Name = "pnlExtrathumbs"
-        Me.pnlExtrathumbs.Size = New System.Drawing.Size(165, 408)
+        Me.pnlExtrathumbs.Size = New System.Drawing.Size(165, 394)
         Me.pnlExtrathumbs.TabIndex = 7
         '
         'pnlEThumbsSetAsFanart
@@ -1834,7 +1838,7 @@ Partial Class dlgEditMovie
         Me.pnlEThumbsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlEThumbsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlEThumbsSetAsFanart.Controls.Add(Me.btnExtrathumbsSetAsFanart)
-        Me.pnlEThumbsSetAsFanart.Location = New System.Drawing.Point(718, 403)
+        Me.pnlEThumbsSetAsFanart.Location = New System.Drawing.Point(767, 363)
         Me.pnlEThumbsSetAsFanart.Name = "pnlEThumbsSetAsFanart"
         Me.pnlEThumbsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlEThumbsSetAsFanart.TabIndex = 6
@@ -1856,7 +1860,7 @@ Partial Class dlgEditMovie
         'btnExtrathumbsRefresh
         '
         Me.btnExtrathumbsRefresh.Image = CType(resources.GetObject("btnExtrathumbsRefresh.Image"), System.Drawing.Image)
-        Me.btnExtrathumbsRefresh.Location = New System.Drawing.Point(5, 422)
+        Me.btnExtrathumbsRefresh.Location = New System.Drawing.Point(5, 408)
         Me.btnExtrathumbsRefresh.Name = "btnExtrathumbsRefresh"
         Me.btnExtrathumbsRefresh.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrathumbsRefresh.TabIndex = 4
@@ -1865,7 +1869,7 @@ Partial Class dlgEditMovie
         'btnExtrathumbsRemove
         '
         Me.btnExtrathumbsRemove.Image = CType(resources.GetObject("btnExtrathumbsRemove.Image"), System.Drawing.Image)
-        Me.btnExtrathumbsRemove.Location = New System.Drawing.Point(147, 422)
+        Me.btnExtrathumbsRemove.Location = New System.Drawing.Point(147, 408)
         Me.btnExtrathumbsRemove.Name = "btnExtrathumbsRemove"
         Me.btnExtrathumbsRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrathumbsRemove.TabIndex = 5
@@ -1875,7 +1879,7 @@ Partial Class dlgEditMovie
         '
         Me.btnEThumbsDown.Enabled = False
         Me.btnEThumbsDown.Image = CType(resources.GetObject("btnEThumbsDown.Image"), System.Drawing.Image)
-        Me.btnEThumbsDown.Location = New System.Drawing.Point(88, 422)
+        Me.btnEThumbsDown.Location = New System.Drawing.Point(88, 408)
         Me.btnEThumbsDown.Name = "btnEThumbsDown"
         Me.btnEThumbsDown.Size = New System.Drawing.Size(23, 23)
         Me.btnEThumbsDown.TabIndex = 3
@@ -1885,7 +1889,7 @@ Partial Class dlgEditMovie
         '
         Me.btnEThumbsUp.Enabled = False
         Me.btnEThumbsUp.Image = CType(resources.GetObject("btnEThumbsUp.Image"), System.Drawing.Image)
-        Me.btnEThumbsUp.Location = New System.Drawing.Point(59, 422)
+        Me.btnEThumbsUp.Location = New System.Drawing.Point(59, 408)
         Me.btnEThumbsUp.Name = "btnEThumbsUp"
         Me.btnEThumbsUp.Size = New System.Drawing.Size(23, 23)
         Me.btnEThumbsUp.TabIndex = 2
@@ -1897,7 +1901,7 @@ Partial Class dlgEditMovie
         Me.pbExtrathumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbExtrathumbs.Location = New System.Drawing.Point(176, 8)
         Me.pbExtrathumbs.Name = "pbExtrathumbs"
-        Me.pbExtrathumbs.Size = New System.Drawing.Size(728, 437)
+        Me.pbExtrathumbs.Size = New System.Drawing.Size(700, 394)
         Me.pbExtrathumbs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbExtrathumbs.TabIndex = 2
         Me.pbExtrathumbs.TabStop = False
@@ -1966,12 +1970,12 @@ Partial Class dlgEditMovie
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup1.Header = "Local Subtitles"
-        ListViewGroup1.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup2.Header = "Local Subtitles"
+        ListViewGroup2.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem1.Group = ListViewGroup1
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -2414,6 +2418,32 @@ Partial Class dlgEditMovie
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 74
         '
+        'btnSetExtrafanartsScrape
+        '
+        Me.btnSetExtrafanartsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetExtrafanartsScrape.Image = CType(resources.GetObject("btnSetExtrafanartsScrape.Image"), System.Drawing.Image)
+        Me.btnSetExtrafanartsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetExtrafanartsScrape.Location = New System.Drawing.Point(882, 95)
+        Me.btnSetExtrafanartsScrape.Name = "btnSetExtrafanartsScrape"
+        Me.btnSetExtrafanartsScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetExtrafanartsScrape.TabIndex = 17
+        Me.btnSetExtrafanartsScrape.Text = "Scrape"
+        Me.btnSetExtrafanartsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetExtrafanartsScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetExtrathumbsScrape
+        '
+        Me.btnSetExtrathumbsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetExtrathumbsScrape.Image = CType(resources.GetObject("btnSetExtrathumbsScrape.Image"), System.Drawing.Image)
+        Me.btnSetExtrathumbsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetExtrathumbsScrape.Location = New System.Drawing.Point(882, 95)
+        Me.btnSetExtrathumbsScrape.Name = "btnSetExtrathumbsScrape"
+        Me.btnSetExtrathumbsScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetExtrathumbsScrape.TabIndex = 18
+        Me.btnSetExtrathumbsScrape.Text = "Scrape"
+        Me.btnSetExtrathumbsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetExtrathumbsScrape.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -2691,5 +2721,7 @@ Partial Class dlgEditMovie
     Friend WithEvents lblThemePreviewNoPlayer As System.Windows.Forms.Label
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
+    Friend WithEvents btnSetExtrafanartsScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetExtrathumbsScrape As System.Windows.Forms.Button
 
 End Class

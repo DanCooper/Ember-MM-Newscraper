@@ -769,6 +769,44 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub btnSetExtrafanartsScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetExtrafanartsScrape.Click
+        Dim aContainer As New MediaContainers.SearchResultsContainer
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainFanarts.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelect()
+                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Me.tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
+                    RefreshExtrafanarts()
+                    Cursor = Cursors.Default
+                End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        End If
+    End Sub
+
+    Private Sub btnSetExtrathumbsScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetExtrathumbsScrape.Click
+        Dim aContainer As New MediaContainers.SearchResultsContainer
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
+        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+            If aContainer.MainFanarts.Count > 0 Then
+                Dim dlgImgS = New dlgImgSelect()
+                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    Me.tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
+                    RefreshExtrathumbs()
+                    Cursor = Cursors.Default
+                End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        End If
+    End Sub
+
     Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual

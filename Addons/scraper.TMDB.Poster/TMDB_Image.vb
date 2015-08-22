@@ -320,6 +320,7 @@ Public Class TMDB_Image
         ConfigModifier_Movie.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
+        ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
     End Sub
 
     Sub LoadSettings_MovieSet()
@@ -328,6 +329,8 @@ Public Class TMDB_Image
 
         ConfigModifier_MovieSet.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
+        ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
     End Sub
 
     Sub LoadSettings_TV()
@@ -355,7 +358,7 @@ Public Class TMDB_Image
             Settings.APIKey = _SpecialSettings_Movie.APIKey
 
             Dim _scraper As New TMDB.Scraper(Settings)
-            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_Movie)
 
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifier, Enums.ContentType.Movie)
         End If
@@ -380,7 +383,7 @@ Public Class TMDB_Image
             Settings.APIKey = _SpecialSettings_MovieSet.APIKey
 
             Dim _scraper As New TMDB.Scraper(Settings)
-            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_MovieSet)
 
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifier, Enums.ContentType.MovieSet)
         End If

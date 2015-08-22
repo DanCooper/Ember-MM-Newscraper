@@ -473,7 +473,7 @@ Public Class dlgImgSelect
         Me.bwImgDownload.ReportProgress(iProgress, Enums.ModifierType.MainDiscArt)
 
         'Main Fanarts
-        If DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
+        If DoMainFanart OrElse DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
                 DownloadAndCache(tImg, False)
                 If Me.bwImgDownload.CancellationPending Then
