@@ -295,7 +295,6 @@ Public Class dlgEditMovie
             Dim iIndex As Integer = Me.currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index - 1
-            tmpDBElement.ImagesContainer.SortExtrathumbs()
             RefreshExtrathumbs()
             Me.DoSelectExtrathumb(iIndex + 1, CType(pnlExtrathumbsImage(iIndex + 1).Tag, MediaContainers.Image))
         End If
@@ -306,7 +305,6 @@ Public Class dlgEditMovie
             Dim iIndex As Integer = Me.currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index + 1
-            tmpDBElement.ImagesContainer.SortExtrathumbs()
             RefreshExtrathumbs()
             Me.DoSelectExtrathumb(iIndex - 1, CType(pnlExtrathumbsImage(iIndex - 1).Tag, MediaContainers.Image))
         End If
@@ -2483,6 +2481,7 @@ Public Class dlgEditMovie
         End While
 
         If Me.tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 Then
+            tmpDBElement.ImagesContainer.SortExtrathumbs()
             Dim iIndex As Integer = 0
             For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
                 img.Index = iIndex

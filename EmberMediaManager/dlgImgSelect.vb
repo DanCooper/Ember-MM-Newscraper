@@ -845,6 +845,7 @@ Public Class dlgImgSelect
             Next
             If Me.tDefaultImagesContainer.Extrafanarts.Count > 0 Then Me.btnRestoreSubImage.Enabled = True
         ElseIf Me.currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs AndAlso DoMainExtrathumbs Then
+            tDBElementResult.ImagesContainer.SortExtrathumbs()
             For Each img In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
                 img.Index = iCount
                 AddSubImage(img, iCount, Enums.ModifierType.MainExtrathumbs, -1)
@@ -891,84 +892,103 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub CreateTopImages()
+        Dim noTopImages As Boolean = True
         Dim iCount As Integer = 0
 
         'While Movie / MovieSet / TV / TVShow scraping
         If DoMainPoster Then
             AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.MainPoster)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainFanart Then
             AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.MainFanart)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainBanner Then
             AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.MainBanner)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainCharacterArt Then
             AddTopImage(tDBElementResult.ImagesContainer.CharacterArt, iCount, Enums.ModifierType.MainCharacterArt)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainClearArt Then
             AddTopImage(tDBElementResult.ImagesContainer.ClearArt, iCount, Enums.ModifierType.MainClearArt)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainClearLogo Then
             AddTopImage(tDBElementResult.ImagesContainer.ClearLogo, iCount, Enums.ModifierType.MainClearLogo)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainDiscArt Then
             AddTopImage(tDBElementResult.ImagesContainer.DiscArt, iCount, Enums.ModifierType.MainDiscArt)
             iCount += 1
+            noTopImages = False
         End If
         If DoMainLandscape Then
             AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.MainLandscape)
             iCount += 1
+            noTopImages = False
         End If
 
         'While TVEpisode scraping
         If DoEpisodePoster AndAlso tContentType = Enums.ContentType.TVEpisode Then
             AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.EpisodePoster)
             iCount += 1
+            noTopImages = False
         End If
         If DoEpisodeFanart AndAlso tContentType = Enums.ContentType.TVEpisode Then
             AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.EpisodeFanart)
             iCount += 1
+            noTopImages = False
         End If
 
         'While TVSeason scraping
         If DoAllSeasonsPoster AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.AllSeasonsPoster, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoAllSeasonsFanart AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.AllSeasonsFanart, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoAllSeasonsBanner AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.AllSeasonsBanner, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoAllSeasonsLandscape AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.AllSeasonsLandscape, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoSeasonPoster AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Poster, iCount, Enums.ModifierType.SeasonPoster, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoSeasonFanart AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Fanart, iCount, Enums.ModifierType.SeasonFanart, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoSeasonBanner AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Banner, iCount, Enums.ModifierType.SeasonBanner, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
         If DoSeasonLandscape AndAlso tContentType = Enums.ContentType.TVSeason Then
             AddTopImage(tDBElementResult.ImagesContainer.Landscape, iCount, Enums.ModifierType.SeasonLandscape, tDBElementResult.TVSeason.Season)
             iCount += 1
+            noTopImages = False
         End If
 
         Select Case tContentType
@@ -999,6 +1019,13 @@ Public Class dlgImgSelect
                     Me.cbSubImageType.Enabled = True
                 End If
         End Select
+
+        'If we don't have any TopImage we can hide the panel (this should only be True while Extrafanarts or Extrathumbs scraping)
+        If Not noTopImages Then
+            Me.DoSelectTopImage(0, CType(pnlTopImage_Panel(0).Tag, iTag))
+        Else
+            Me.pnlImgSelectTop.Visible = False
+        End If
     End Sub
 
     Private Sub AddListImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1)
@@ -1436,6 +1463,7 @@ Public Class dlgImgSelect
             Me.btnRestoreSubImage.Enabled = False
         End If
         Me.currSubImage = New iTag
+        Me.currSubImageSelectedType = Enums.ModifierType.All
         If Me.pnlSubImage_Panel IsNot Nothing Then
             For i As Integer = 0 To Me.pnlSubImage_Panel.Count - 1
                 Me.pnlSubImage_Panel(i).BackColor = Color.White
@@ -1936,7 +1964,6 @@ Public Class dlgImgSelect
             Dim iIndex As Integer = Me.currSubImage.iIndex
             tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
             tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index - 1
-            tDBElementResult.ImagesContainer.SortExtrathumbs()
             CreateSubImages()
             Me.DoSelectSubImage(iIndex + 1, CType(pnlSubImage_Panel(iIndex + 1).Tag, iTag))
         End If
@@ -1947,7 +1974,6 @@ Public Class dlgImgSelect
             Dim iIndex As Integer = Me.currSubImage.iIndex
             tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
             tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index = tDBElementResult.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index + 1
-            tDBElementResult.ImagesContainer.SortExtrathumbs()
             CreateSubImages()
             Me.DoSelectSubImage(iIndex - 1, CType(pnlSubImage_Panel(iIndex - 1).Tag, iTag))
         End If
@@ -2057,7 +2083,7 @@ Public Class dlgImgSelect
         Next
 
         'Extrathumbs
-        For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrathumbs
+        For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
             If img.ImageOriginal.Image Is Nothing Then
                 If Not String.IsNullOrEmpty(img.LocalFilePath) AndAlso File.Exists(img.LocalFilePath) Then
                     img.ImageOriginal.FromFile(img.LocalFilePath)

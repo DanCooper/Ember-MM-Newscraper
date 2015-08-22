@@ -99,7 +99,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelect.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlImgSelect.Location = New System.Drawing.Point(0, 0)
         Me.pnlImgSelect.Name = "pnlImgSelect"
-        Me.pnlImgSelect.Size = New System.Drawing.Size(1334, 711)
+        Me.pnlImgSelect.Size = New System.Drawing.Size(1344, 711)
         Me.pnlImgSelect.TabIndex = 3
         '
         'pnlImageList
@@ -108,7 +108,7 @@ Partial Class dlgImgSelect
         Me.pnlImageList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlImageList.Location = New System.Drawing.Point(201, 203)
         Me.pnlImageList.Name = "pnlImageList"
-        Me.pnlImageList.Size = New System.Drawing.Size(1133, 408)
+        Me.pnlImageList.Size = New System.Drawing.Size(1143, 408)
         Me.pnlImageList.TabIndex = 3
         '
         'pnlImgSelectLeft
@@ -195,7 +195,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectBottom.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlImgSelectBottom.Location = New System.Drawing.Point(0, 611)
         Me.pnlImgSelectBottom.Name = "pnlImgSelectBottom"
-        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1334, 100)
+        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1344, 100)
         Me.pnlImgSelectBottom.TabIndex = 1
         '
         'tblImgSelectBottom
@@ -215,13 +215,13 @@ Partial Class dlgImgSelect
         Me.tblImgSelectBottom.Name = "tblImgSelectBottom"
         Me.tblImgSelectBottom.RowCount = 1
         Me.tblImgSelectBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImgSelectBottom.Size = New System.Drawing.Size(1334, 100)
+        Me.tblImgSelectBottom.Size = New System.Drawing.Size(1344, 100)
         Me.tblImgSelectBottom.TabIndex = 0
         '
         'btnOK
         '
         Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnOK.Location = New System.Drawing.Point(1175, 41)
+        Me.btnOK.Location = New System.Drawing.Point(1185, 41)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 0
@@ -232,7 +232,7 @@ Partial Class dlgImgSelect
         '
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(1256, 41)
+        Me.btnCancel.Location = New System.Drawing.Point(1266, 41)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 1
@@ -319,7 +319,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlImgSelectTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlImgSelectTop.Name = "pnlImgSelectTop"
-        Me.pnlImgSelectTop.Size = New System.Drawing.Size(1334, 203)
+        Me.pnlImgSelectTop.Size = New System.Drawing.Size(1344, 203)
         Me.pnlImgSelectTop.TabIndex = 0
         '
         'tblImgSelectTop
@@ -338,7 +338,7 @@ Partial Class dlgImgSelect
         Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblImgSelectTop.Size = New System.Drawing.Size(1334, 203)
+        Me.tblImgSelectTop.Size = New System.Drawing.Size(1344, 203)
         Me.tblImgSelectTop.TabIndex = 0
         '
         'btnRestoreTopImage
@@ -346,7 +346,7 @@ Partial Class dlgImgSelect
         Me.btnRestoreTopImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRestoreTopImage.Enabled = False
         Me.btnRestoreTopImage.Image = CType(resources.GetObject("btnRestoreTopImage.Image"), System.Drawing.Image)
-        Me.btnRestoreTopImage.Location = New System.Drawing.Point(1308, 6)
+        Me.btnRestoreTopImage.Location = New System.Drawing.Point(1318, 6)
         Me.btnRestoreTopImage.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.btnRestoreTopImage.Name = "btnRestoreTopImage"
         Me.btnRestoreTopImage.Size = New System.Drawing.Size(23, 23)
@@ -358,7 +358,7 @@ Partial Class dlgImgSelect
         Me.btnRemoveTopImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRemoveTopImage.Enabled = False
         Me.btnRemoveTopImage.Image = CType(resources.GetObject("btnRemoveTopImage.Image"), System.Drawing.Image)
-        Me.btnRemoveTopImage.Location = New System.Drawing.Point(1308, 157)
+        Me.btnRemoveTopImage.Location = New System.Drawing.Point(1318, 157)
         Me.btnRemoveTopImage.Margin = New System.Windows.Forms.Padding(3, 3, 3, 23)
         Me.btnRemoveTopImage.Name = "btnRemoveTopImage"
         Me.btnRemoveTopImage.Size = New System.Drawing.Size(23, 23)
@@ -372,7 +372,7 @@ Partial Class dlgImgSelect
         Me.pnlTopImages.Location = New System.Drawing.Point(3, 3)
         Me.pnlTopImages.Name = "pnlTopImages"
         Me.tblImgSelectTop.SetRowSpan(Me.pnlTopImages, 2)
-        Me.pnlTopImages.Size = New System.Drawing.Size(1299, 197)
+        Me.pnlTopImages.Size = New System.Drawing.Size(1309, 197)
         Me.pnlTopImages.TabIndex = 3
         '
         'StatusStrip1
@@ -380,7 +380,7 @@ Partial Class dlgImgSelect
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblStatus, Me.pbStatus})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 689)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1334, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1344, 22)
         Me.StatusStrip1.TabIndex = 4
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -410,7 +410,7 @@ Partial Class dlgImgSelect
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(1334, 711)
+        Me.ClientSize = New System.Drawing.Size(1344, 711)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.pnlImgSelect)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
