@@ -769,6 +769,16 @@ Public Class Enums
         ''' </summary>
         ''' <remarks></remarks>
         ScraperSingle_TVShow = 54
+        ''' <summary>
+        ''' Called when auto scraper finishs but before save to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        ScraperMulti_TVSeason = 55
+        ''' <summary>
+        ''' Called when single scraper finishs, tv season is already saved to DB
+        ''' </summary>
+        ''' <remarks></remarks>
+        ScraperSingle_TVSeason = 56
     End Enum
 
     Public Enum ScraperEventType As Integer
@@ -1155,16 +1165,16 @@ Public Class Functions
         End With
 
         With Master.DefaultOptions_TV
-            .bEpActors = Master.eSettings.TVScraperEpisodeActors
-            .bEpAired = Master.eSettings.TVScraperEpisodeAired
-            .bEpCredits = Master.eSettings.TVScraperEpisodeCredits
-            .bEpDirector = Master.eSettings.TVScraperEpisodeDirector
-            .bEpGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
-            .bEpPlot = Master.eSettings.TVScraperEpisodePlot
-            .bEpRating = Master.eSettings.TVScraperEpisodeRating
-            .bEpRuntime = Master.eSettings.TVScraperEpisodeRuntime
-            .bEpTitle = Master.eSettings.TVScraperEpisodeTitle
-            .bEpVotes = Master.eSettings.TVScraperEpisodeVotes
+            .bEpisodeActors = Master.eSettings.TVScraperEpisodeActors
+            .bEpisodeAired = Master.eSettings.TVScraperEpisodeAired
+            .bEpisodeCredits = Master.eSettings.TVScraperEpisodeCredits
+            .bEpisodeDirector = Master.eSettings.TVScraperEpisodeDirector
+            .bEpisodeGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
+            .bEpisodePlot = Master.eSettings.TVScraperEpisodePlot
+            .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
+            .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
+            .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
+            .bEpisodeVotes = Master.eSettings.TVScraperEpisodeVotes
             .bShowActors = Master.eSettings.TVScraperShowActors
             .bShowCert = Master.eSettings.TVScraperShowCert
             .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
@@ -1482,16 +1492,16 @@ Public Class Functions
     ''' <remarks></remarks>
     Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_TV, ByVal Options2 As Structures.ScrapeOptions_TV) As Structures.ScrapeOptions_TV
         Dim filterOptions As New Structures.ScrapeOptions_TV
-        filterOptions.bEpActors = Options.bEpActors AndAlso Options2.bEpActors
-        filterOptions.bEpAired = Options.bEpAired AndAlso Options2.bEpAired
-        filterOptions.bEpCredits = Options.bEpCredits AndAlso Options2.bEpCredits
-        filterOptions.bEpDirector = Options.bEpDirector AndAlso Options2.bEpDirector
-        filterOptions.bEpGuestStars = Options.bEpGuestStars AndAlso Options2.bEpGuestStars
-        filterOptions.bEpPlot = Options.bEpPlot AndAlso Options2.bEpPlot
-        filterOptions.bEpRating = Options.bEpRating AndAlso Options2.bEpRating
-        filterOptions.bEpRuntime = Options.bEpRuntime AndAlso Options2.bEpRuntime
-        filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
-        filterOptions.bEpVotes = Options.bEpVotes AndAlso Options2.bEpVotes
+        filterOptions.bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors
+        filterOptions.bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired
+        filterOptions.bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits
+        filterOptions.bEpisodeDirector = Options.bEpisodeDirector AndAlso Options2.bEpisodeDirector
+        filterOptions.bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars
+        filterOptions.bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot
+        filterOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
+        filterOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
+        filterOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
+        filterOptions.bEpisodeVotes = Options.bEpisodeVotes AndAlso Options2.bEpisodeVotes
         filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
         filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
@@ -1944,16 +1954,16 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure ScrapeOptions_TV
-        Dim bEpActors As Boolean
-        Dim bEpAired As Boolean
-        Dim bEpCredits As Boolean
-        Dim bEpDirector As Boolean
-        Dim bEpGuestStars As Boolean
-        Dim bEpPlot As Boolean
-        Dim bEpRating As Boolean
-        Dim bEpRuntime As Boolean
-        Dim bEpTitle As Boolean
-        Dim bEpVotes As Boolean
+        Dim bEpisodeActors As Boolean
+        Dim bEpisodeAired As Boolean
+        Dim bEpisodeCredits As Boolean
+        Dim bEpisodeDirector As Boolean
+        Dim bEpisodeGuestStars As Boolean
+        Dim bEpisodePlot As Boolean
+        Dim bEpisodeRating As Boolean
+        Dim bEpisodeRuntime As Boolean
+        Dim bEpisodeTitle As Boolean
+        Dim bEpisodeVotes As Boolean
         Dim bSeasonAired As Boolean
         Dim bSeasonPlot As Boolean
         Dim bShowActors As Boolean

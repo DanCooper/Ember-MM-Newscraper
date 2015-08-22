@@ -54,6 +54,7 @@ Public Class frmMain
     Friend WithEvents bwRewrite_Movies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwTVScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwTVEpisodeScraper As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwTVSeasonScraper As New System.ComponentModel.BackgroundWorker
 
     Public fCommandLine As New CommandLine
 
@@ -2603,7 +2604,7 @@ Public Class frmMain
 
     Private Sub bwTVScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvshowscraped", 3, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVShow(CLng(e.UserState))
         Else
@@ -2737,9 +2738,140 @@ Public Class frmMain
 
     Private Sub bwTVEpisodeScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVEpisodeScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"episodecraped", 3, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString, Nothing}))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvepisodescraped", 3, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVEpisode(CLng(e.UserState))
+        Else
+            Me.tspbLoading.Value += e.ProgressPercentage
+            Me.SetStatus(e.UserState.ToString)
+        End If
+    End Sub
+
+    Private Sub bwTVSeasonScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVSeasonScraper.RunWorkerCompleted
+        Dim Res As Results = DirectCast(e.Result, Results)
+        If Master.isCL Then
+            Me.ScraperDone = True
+        End If
+
+        If Res.ScrapeType = Enums.ScrapeType.SingleScrape Then
+            Me.InfoDownloaded_TVSeason(Res.DBElement)
+        ElseIf Res.Cancelled Then
+            'Reload last partially scraped TVSeason from disk to get clean informations in DB
+            Me.Reload_TVSeason(Res.DBElement.ID, False, True, False)
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+            Me.btnCancel.Visible = False
+            Me.lblCanceling.Visible = False
+            Me.prbCanceling.Visible = False
+            Me.pnlCancel.Visible = False
+            Me.SetControlsEnabled(True)
+        Else
+            Me.FillList(False, False, False)
+            If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+                Me.SelectRow_TVSeason(Me.dgvTVSeasons.SelectedRows(0).Index)
+            Else
+                Me.ClearInfo()
+            End If
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+            Me.btnCancel.Visible = False
+            Me.lblCanceling.Visible = False
+            Me.prbCanceling.Visible = False
+            Me.pnlCancel.Visible = False
+            Me.SetControlsEnabled(True)
+        End If
+    End Sub
+
+    Private Sub bwTVSeasonScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVSeasonScraper.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Dim Cancelled As Boolean = False
+        Dim DBScrapeSeason As New Database.DBElement
+
+        logger.Trace("Starting TV Season scrape")
+
+        For Each tScrapeItem As ScrapeItem In Args.ScrapeList
+            Dim tURL As String = String.Empty
+            Dim tUrlList As New List(Of Themes)
+
+            Cancelled = False
+
+            If bwTVSeasonScraper.CancellationPending Then Exit For
+
+            dScrapeRow = tScrapeItem.DataRow
+
+            DBScrapeSeason = Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idSeason")), True)
+            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
+
+            logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
+
+            If tScrapeItem.ScrapeModifier.MainNFO Then
+                If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
+                    Cancelled = True
+                End If
+            Else
+                ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
+                If String.IsNullOrEmpty(DBScrapeSeason.TVSeason.TVDB) AndAlso (tScrapeItem.ScrapeModifier.SeasonBanner Or tScrapeItem.ScrapeModifier.SeasonFanart Or _
+                                                                               tScrapeItem.ScrapeModifier.SeasonLandscape Or tScrapeItem.ScrapeModifier.SeasonPoster) Then
+                    Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
+                    If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
+                        Exit For
+                    End If
+                End If
+            End If
+
+            If bwTVSeasonScraper.CancellationPending Then Exit For
+
+            If Not Cancelled Then
+                'get all images
+                If tScrapeItem.ScrapeModifier.AllSeasonsBanner OrElse _
+                    tScrapeItem.ScrapeModifier.AllSeasonsFanart OrElse _
+                    tScrapeItem.ScrapeModifier.AllSeasonsLandscape OrElse _
+                    tScrapeItem.ScrapeModifier.AllSeasonsPoster OrElse _
+                    tScrapeItem.ScrapeModifier.SeasonBanner OrElse _
+                    tScrapeItem.ScrapeModifier.SeasonFanart OrElse _
+                    tScrapeItem.ScrapeModifier.SeasonLandscape OrElse _
+                    tScrapeItem.ScrapeModifier.SeasonPoster Then
+
+                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
+                            Using dImgSelect As New dlgImgSelect()
+                                If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason, True) = DialogResult.OK Then
+                                    DBScrapeSeason = dImgSelect.Result
+                                End If
+                            End Using
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredImages As New MediaContainers.ImagesContainer
+                            Dim newPreferredEpisodeImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
+                            Dim newPreferredSeasonImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
+                            Images.SetDefaultImages(DBScrapeSeason, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason, newPreferredSeasonImages, newPreferredEpisodeImages)
+                            DBScrapeSeason.ImagesContainer = newPreferredImages
+                        End If
+                    End If
+                End If
+
+                If bwTVSeasonScraper.CancellationPending Then Exit For
+
+                If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVSeason, Nothing, Nothing, False, DBScrapeSeason)
+                    Master.DB.SaveTVSeasonToDB(DBScrapeSeason, False)
+                    bwTVSeasonScraper.ReportProgress(-2, DBScrapeSeason.ID)
+                End If
+            End If
+
+            logger.Trace(String.Format("Ended scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
+        Next
+
+        e.Result = New Results With {.DBElement = DBScrapeSeason, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVSeasonScraper.CancellationPending}
+        logger.Trace("Ended TV Season scrape")
+    End Sub
+
+    Private Sub bwTVSeasonScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVSeasonScraper.ProgressChanged
+        If e.ProgressPercentage = -1 Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvseasonscraped", 3, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString, Nothing}))
+        ElseIf e.ProgressPercentage = -2 Then
+            RefreshRow_TVSeason(CLng(e.UserState))
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -5623,7 +5755,7 @@ doCancel:
         If Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-            Me.CreateScrapeList_TVEpisode(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
+            Me.CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
         End If
     End Sub
 
@@ -5649,7 +5781,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
-        If Me.dgvTVShows.SelectedRows.Count = 1 Then
+        If Me.dgvTVShows.SelectedRows.Count > 0 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withEpisodes, True)
@@ -5731,8 +5863,11 @@ doCancel:
     End Sub
 
     Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
-        Me.SetControlsEnabled(False, True)
-        'ModulesManager.Instance.TVScrapeSeason(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVSeasons.Item("Season", Me.dgvTVSeasons.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultOptions_TV)
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+            Dim ScrapeModifier As New Structures.ScrapeModifier
+            Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
+            Me.CreateScrapeList_TVSeason(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
+        End If
     End Sub
 
     Private Sub mnuMainToolsSortFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSortFiles.Click, cmnuTrayToolsSortFiles.Click
@@ -5795,7 +5930,7 @@ doCancel:
 
     Private Sub mnuMovieCustom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeSubmenuCustom.Click
         Me.SetControlsEnabled(False)
-        Using dUpdate As New dlgUpdateMedia
+        Using dUpdate As New dlgCustomScraper
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
@@ -5971,7 +6106,7 @@ doCancel:
                 Me.cmnuMovieChangeAuto.Visible = False
                 Me.cmnuMovieEdit.Visible = False
                 Me.cmnuMovieEditMetaData.Visible = False
-                Me.cmnuMovieReSel.Visible = True
+                Me.cmnuMovieRescrapeSelected.Visible = True
                 Me.cmnuMovieRescrape.Visible = False
                 Me.cmnuMovieUpSel.Visible = True
                 'Me.cmuRenamer.Visible = False
@@ -6019,7 +6154,7 @@ doCancel:
                     Me.cmnuMovieChangeAuto.Visible = True
                     Me.cmnuMovieEdit.Visible = True
                     Me.cmnuMovieEditMetaData.Visible = True
-                    Me.cmnuMovieReSel.Visible = True
+                    Me.cmnuMovieRescrapeSelected.Visible = True
                     Me.cmnuMovieRescrape.Visible = True
                     Me.cmnuMovieUpSel.Visible = True
                     Me.cmnuMovieSep3.Visible = True
@@ -10985,6 +11120,68 @@ doCancel:
                     mnuScrapeModifierTheme.Visible = False
                     mnuScrapeModifierTrailer.Enabled = False
                     mnuScrapeModifierTrailer.Visible = False
+                Case "tvepisode"
+                    mnuScrapeModifierActorthumbs.Enabled = .TVEpisodeActorThumbsAnyEnabled
+                    mnuScrapeModifierActorthumbs.Visible = True
+                    mnuScrapeModifierBanner.Enabled = False
+                    mnuScrapeModifierBanner.Visible = False
+                    mnuScrapeModifierCharacterArt.Enabled = False
+                    mnuScrapeModifierCharacterArt.Visible = False
+                    mnuScrapeModifierClearArt.Enabled = False
+                    mnuScrapeModifierClearArt.Visible = False
+                    mnuScrapeModifierClearLogo.Enabled = False
+                    mnuScrapeModifierClearLogo.Visible = False
+                    mnuScrapeModifierDiscArt.Enabled = False
+                    mnuScrapeModifierDiscArt.Visible = False
+                    mnuScrapeModifierExtrafanarts.Enabled = False
+                    mnuScrapeModifierExtrafanarts.Visible = False
+                    mnuScrapeModifierExtrathumbs.Enabled = False
+                    mnuScrapeModifierExtrathumbs.Visible = False
+                    mnuScrapeModifierFanart.Enabled = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierLandscape.Enabled = False
+                    mnuScrapeModifierLandscape.Visible = False
+                    mnuScrapeModifierMetaData.Enabled = .TVScraperMetaDataScan
+                    mnuScrapeModifierMetaData.Visible = True
+                    mnuScrapeModifierNFO.Enabled = True
+                    mnuScrapeModifierNFO.Visible = True
+                    mnuScrapeModifierPoster.Enabled = .TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    mnuScrapeModifierPoster.Visible = True
+                    mnuScrapeModifierTheme.Enabled = False
+                    mnuScrapeModifierTheme.Visible = False
+                    mnuScrapeModifierTrailer.Enabled = False
+                    mnuScrapeModifierTrailer.Visible = False
+                Case "tvseason"
+                    mnuScrapeModifierActorthumbs.Enabled = False
+                    mnuScrapeModifierActorthumbs.Visible = False
+                    mnuScrapeModifierBanner.Enabled = .TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+                    mnuScrapeModifierBanner.Visible = True
+                    mnuScrapeModifierCharacterArt.Enabled = False
+                    mnuScrapeModifierCharacterArt.Visible = False
+                    mnuScrapeModifierClearArt.Enabled = False
+                    mnuScrapeModifierClearArt.Visible = False
+                    mnuScrapeModifierClearLogo.Enabled = False
+                    mnuScrapeModifierClearLogo.Visible = False
+                    mnuScrapeModifierDiscArt.Enabled = False
+                    mnuScrapeModifierDiscArt.Visible = False
+                    mnuScrapeModifierExtrafanarts.Enabled = False
+                    mnuScrapeModifierExtrafanarts.Visible = False
+                    mnuScrapeModifierExtrathumbs.Enabled = False
+                    mnuScrapeModifierExtrathumbs.Visible = False
+                    mnuScrapeModifierFanart.Enabled = .TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+                    mnuScrapeModifierFanart.Visible = True
+                    mnuScrapeModifierLandscape.Enabled = .TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+                    mnuScrapeModifierLandscape.Visible = True
+                    mnuScrapeModifierMetaData.Enabled = False
+                    mnuScrapeModifierMetaData.Visible = False
+                    mnuScrapeModifierNFO.Enabled = False
+                    mnuScrapeModifierNFO.Visible = False
+                    mnuScrapeModifierPoster.Enabled = .TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+                    mnuScrapeModifierPoster.Visible = True
+                    mnuScrapeModifierTheme.Enabled = False
+                    mnuScrapeModifierTheme.Visible = False
+                    mnuScrapeModifierTrailer.Enabled = False
+                    mnuScrapeModifierTrailer.Visible = False
                 Case "tvshow"
                     mnuScrapeModifierActorthumbs.Enabled = .TVShowActorThumbsAnyEnabled
                     mnuScrapeModifierActorthumbs.Visible = True
@@ -11064,8 +11261,11 @@ doCancel:
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
             Case "actorthumbs"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainActorThumbs, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeActorThumbs, True)
             Case "banner"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsBanner, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonBanner, True)
             Case "characterart"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainCharacterArt, True)
             Case "clearart"
@@ -11080,16 +11280,27 @@ doCancel:
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
             Case "fanart"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsFanart, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonFanart, True)
             Case "landscape"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsLandscape, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
             Case "meta"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeMeta, True)
             Case "nfo"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeNFO, True)
             Case "poster"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsPoster, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonPoster, True)
             Case "subtitle"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainSubtitle, True)
+                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeSubtitle, True)
             Case "theme"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTheme, True)
             Case "trailer"
@@ -11140,6 +11351,10 @@ doCancel:
                 Me.CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifier)
             Case "movieset"
                 Me.CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
+            Case "tvepisode"
+                Me.CreateScrapeList_TVEpisode(Type, Master.DefaultOptions_TV, ScrapeModifier)
+            Case "tvseason"
+                Me.CreateScrapeList_TVSeason(Type, Master.DefaultOptions_TV, ScrapeModifier)
             Case "tvshow"
                 Me.CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifier)
         End Select
@@ -11729,20 +11944,22 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_TVEpisode(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_TVEpisode(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
-        If selected Then
-            'create snapshoot list of selected episodes
-            For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
-            Next
-        Else
-            For Each sRow As DataRow In Me.dtTVEpisodes.Rows
-                DataRowList.Add(sRow)
-            Next
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+                'create snapshoot list of selected tv episode
+                For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
+                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+                Next
+            Case Else
+                For Each sRow As DataRow In Me.dtTVEpisodes.Rows
+                    DataRowList.Add(sRow)
+                Next
+        End Select
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
         Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse _
@@ -11788,55 +12005,48 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
-        If Not selected Then
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-                Case Enums.ScrapeType.MissingAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-                Case Enums.ScrapeType.MissingAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-                Case Enums.ScrapeType.MissingSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-                Case Enums.ScrapeType.NewAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-                Case Enums.ScrapeType.NewAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-                Case Enums.ScrapeType.NewSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-                Case Enums.ScrapeType.MarkedAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-                Case Enums.ScrapeType.MarkedAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-                Case Enums.ScrapeType.MarkedSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-                Case Enums.ScrapeType.FilterAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-                Case Enums.ScrapeType.FilterAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        Else
-            Select Case sType
-                Case Enums.ScrapeType.AllAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-                Case Enums.ScrapeType.AllAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-                Case Enums.ScrapeType.AllSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-                Case Enums.ScrapeType.SingleField
-                    Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-            End Select
-        End If
+        Select Case sType
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+            Case Enums.ScrapeType.MissingAuto
+                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+            Case Enums.ScrapeType.MissingAsk
+                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+            Case Enums.ScrapeType.MissingSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+            Case Enums.ScrapeType.NewAsk
+                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+            Case Enums.ScrapeType.NewAuto
+                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+            Case Enums.ScrapeType.NewSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+            Case Enums.ScrapeType.MarkedAsk
+                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+            Case Enums.ScrapeType.MarkedAuto
+                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+            Case Enums.ScrapeType.MarkedSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+            Case Enums.ScrapeType.FilterAsk
+                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+            Case Enums.ScrapeType.SingleField
+                Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        End Select
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
             Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -11853,6 +12063,162 @@ doCancel:
         bwTVEpisodeScraper.WorkerSupportsCancellation = True
         bwTVEpisodeScraper.WorkerReportsProgress = True
         bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+    End Sub
+
+    Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
+        If Not String.IsNullOrEmpty(DBTVSeason.TVShow.Title) Then
+            Me.tslLoading.Text = Master.eLang.GetString(80, "Verifying TV Season Details:")
+            Application.DoEvents()
+
+            Edit_TVSeason(DBTVSeason)
+        End If
+
+        Me.pnlCancel.Visible = False
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        Me.SetStatus(String.Empty)
+        Me.SetControlsEnabled(True)
+        Me.EnableFilters_Shows(True)
+    End Sub
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
+    Private Sub InfoDownloadedPercent_TVSeason(ByVal iPercent As Integer)
+        If Me.ReportDownloadPercent = True Then
+            Me.tspbLoading.Value = iPercent
+            Me.Refresh()
+        End If
+    End Sub
+
+    Private Sub CreateScrapeList_TVSeason(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
+        Dim DataRowList As New List(Of DataRow)
+        Dim ScrapeList As New List(Of ScrapeItem)
+
+        Select Case sType
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+                Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
+                'create snapshoot list of selected tv season
+                For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
+                    DataRowList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+                Next
+            Case Else
+                For Each sRow As DataRow In Me.dtTVSeasons.Rows
+                    DataRowList.Add(sRow)
+                Next
+        End Select
+
+        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
+        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
+        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
+        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
+        Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+        Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+        Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+
+        'create ScrapeList of tv seasons acording to scrapetype
+        For Each drvRow As DataRow In DataRowList
+            If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
+
+            Dim sModifier As New Structures.ScrapeModifier
+            sModifier.DoSearch = ScrapeModifier.DoSearch
+            sModifier.AllSeasonsBanner = ScrapeModifier.AllSeasonsBanner AndAlso AllSeasonsBannerAllowed AndAlso CInt(drvRow.Item("Season")) = 999
+            sModifier.AllSeasonsFanart = ScrapeModifier.AllSeasonsFanart AndAlso AllSeasonsFanartAllowed AndAlso CInt(drvRow.Item("Season")) = 999
+            sModifier.AllSeasonsLandscape = ScrapeModifier.AllSeasonsLandscape AndAlso AllSeasonsLandscapeAllowed AndAlso CInt(drvRow.Item("Season")) = 999
+            sModifier.AllSeasonsPoster = ScrapeModifier.AllSeasonsPoster AndAlso AllSeasonsPosterAllowed AndAlso CInt(drvRow.Item("Season")) = 999
+            sModifier.SeasonBanner = ScrapeModifier.SeasonBanner AndAlso SeasonBannerAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
+            sModifier.SeasonFanart = ScrapeModifier.SeasonFanart AndAlso SeasonFanartAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
+            sModifier.SeasonLandscape = ScrapeModifier.SeasonLandscape AndAlso SeasonLandscapeAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
+            sModifier.SeasonPoster = ScrapeModifier.SeasonPoster AndAlso SeasonPosterAllowed AndAlso Not CInt(drvRow.Item("Season")) = 999
+
+            Select Case sType
+                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+                    If Not Convert.ToBoolean(drvRow.Item("New")) Then Continue For
+                Case Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MarkedSkip
+                    If Not Convert.ToBoolean(drvRow.Item("Mark")) Then Continue For
+                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+                    Dim index As Integer = Me.bsTVShows.Find("idShow", drvRow.Item(0))
+                    If Not index >= 0 Then Continue For
+                Case Enums.ScrapeType.MissingAsk, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.MissingSkip
+                    If Not String.IsNullOrEmpty(drvRow.Item("BannerPath").ToString) Then sModifier.SeasonBanner = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("FanartPath").ToString) Then sModifier.SeasonFanart = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.SeasonLandscape = False
+                    If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.SeasonPoster = False
+            End Select
+            ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifier = sModifier})
+        Next
+
+        Me.SetControlsEnabled(False)
+
+        Me.tspbLoading.Value = 0
+        If ScrapeList.Count > 1 Then
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.tspbLoading.Maximum = ScrapeList.Count
+        Else
+            Me.tspbLoading.Maximum = 100
+            Me.tspbLoading.Style = ProgressBarStyle.Marquee
+        End If
+
+        Select Case sType
+            Case Enums.ScrapeType.AllAsk
+                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+            Case Enums.ScrapeType.AllAuto
+                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+            Case Enums.ScrapeType.AllSkip
+                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+            Case Enums.ScrapeType.MissingAuto
+                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+            Case Enums.ScrapeType.MissingAsk
+                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+            Case Enums.ScrapeType.MissingSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+            Case Enums.ScrapeType.NewAsk
+                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+            Case Enums.ScrapeType.NewAuto
+                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+            Case Enums.ScrapeType.NewSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+            Case Enums.ScrapeType.MarkedAsk
+                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+            Case Enums.ScrapeType.MarkedAuto
+                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+            Case Enums.ScrapeType.MarkedSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+            Case Enums.ScrapeType.FilterAsk
+                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+            Case Enums.ScrapeType.SelectedAsk
+                Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+            Case Enums.ScrapeType.SelectedAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+            Case Enums.ScrapeType.SelectedSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+            Case Enums.ScrapeType.SingleField
+                Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        End Select
+
+        If Not sType = Enums.ScrapeType.SingleScrape Then
+            Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+            Me.lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+            Me.btnCancel.Visible = True
+            Me.lblCanceling.Visible = False
+            Me.prbCanceling.Visible = False
+            Me.pnlCancel.Visible = True
+        End If
+
+        Me.tslLoading.Visible = True
+        Me.tspbLoading.Visible = True
+        Application.DoEvents()
+        bwTVSeasonScraper.WorkerSupportsCancellation = True
+        bwTVSeasonScraper.WorkerReportsProgress = True
+        bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
     End Sub
 
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
@@ -15733,7 +16099,7 @@ doCancel:
                 .cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
                 .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
-                .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieRescrapeSelected.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
                 .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
                 .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
                 .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")

@@ -200,15 +200,15 @@ Public Class IMDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup_TV = New frmSettingsHolder_TV
         LoadSettings_TV()
-        _setup_TV.chkScraperEpActors.Checked = ConfigOptions_TV.bEpActors
-        _setup_TV.chkScraperEpAired.Checked = ConfigOptions_TV.bEpAired
-        _setup_TV.chkScraperEpCredits.Checked = ConfigOptions_TV.bEpCredits
-        _setup_TV.chkScraperEpDirector.Checked = ConfigOptions_TV.bEpDirector
-        _setup_TV.chkScraperEpGuestStars.Checked = ConfigOptions_TV.bEpGuestStars
-        _setup_TV.chkScraperEpPlot.Checked = ConfigOptions_TV.bEpPlot
-        _setup_TV.chkScraperEpRating.Checked = ConfigOptions_TV.bEpRating
-        _setup_TV.chkScraperEpTitle.Checked = ConfigOptions_TV.bEpTitle
-        _setup_TV.chkScraperEpVotes.Checked = ConfigOptions_TV.bEpVotes
+        _setup_TV.chkScraperEpActors.Checked = ConfigOptions_TV.bEpisodeActors
+        _setup_TV.chkScraperEpAired.Checked = ConfigOptions_TV.bEpisodeAired
+        _setup_TV.chkScraperEpCredits.Checked = ConfigOptions_TV.bEpisodeCredits
+        _setup_TV.chkScraperEpDirector.Checked = ConfigOptions_TV.bEpisodeDirector
+        _setup_TV.chkScraperEpGuestStars.Checked = ConfigOptions_TV.bEpisodeGuestStars
+        _setup_TV.chkScraperEpPlot.Checked = ConfigOptions_TV.bEpisodePlot
+        _setup_TV.chkScraperEpRating.Checked = ConfigOptions_TV.bEpisodeRating
+        _setup_TV.chkScraperEpTitle.Checked = ConfigOptions_TV.bEpisodeTitle
+        _setup_TV.chkScraperEpVotes.Checked = ConfigOptions_TV.bEpisodeVotes
         _setup_TV.chkScraperShowActors.Checked = ConfigOptions_TV.bShowActors
         _setup_TV.chkScraperShowCert.Checked = ConfigOptions_TV.bShowCert
         _setup_TV.chkScraperShowCountry.Checked = ConfigOptions_TV.bShowCountry
@@ -278,15 +278,15 @@ Public Class IMDB_Data
     End Sub
 
     Sub LoadSettings_TV()
-        ConfigOptions_TV.bEpActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeCredits = clsAdvancedSettings.GetBooleanSetting("DoCredits", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeGuestStars = clsAdvancedSettings.GetBooleanSetting("DoGuestStars", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodePlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
+        ConfigOptions_TV.bEpisodeVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVEpisode)
         ConfigOptions_TV.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.TVShow)
@@ -343,15 +343,15 @@ Public Class IMDB_Data
 
     Sub SaveSettings_TV()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bEpActors, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoAired", ConfigOptions_TV.bEpAired, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoCredits", ConfigOptions_TV.bEpCredits, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions_TV.bEpDirector, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoGuestStars", ConfigOptions_TV.bEpGuestStars, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bEpPlot, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bEpRating, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpTitle, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpVotes, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bEpisodeActors, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoAired", ConfigOptions_TV.bEpisodeAired, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoCredits", ConfigOptions_TV.bEpisodeCredits, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions_TV.bEpisodeDirector, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoGuestStars", ConfigOptions_TV.bEpisodeGuestStars, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bEpisodePlot, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpisodeVotes, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bShowActors, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCert", ConfigOptions_TV.bShowCert, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCountry", ConfigOptions_TV.bShowCountry, , , Enums.ContentType.TVShow)
@@ -413,15 +413,15 @@ Public Class IMDB_Data
     End Sub
 
     Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_TV.SaveSetupScraper
-        ConfigOptions_TV.bEpActors = _setup_TV.chkScraperEpActors.Checked
-        ConfigOptions_TV.bEpAired = _setup_TV.chkScraperEpAired.Checked
-        ConfigOptions_TV.bEpCredits = _setup_TV.chkScraperEpCredits.Checked
-        ConfigOptions_TV.bEpDirector = _setup_TV.chkScraperEpDirector.Checked
-        ConfigOptions_TV.bEpGuestStars = _setup_TV.chkScraperEpGuestStars.Checked
-        ConfigOptions_TV.bEpPlot = _setup_TV.chkScraperEpPlot.Checked
-        ConfigOptions_TV.bEpRating = _setup_TV.chkScraperEpRating.Checked
-        ConfigOptions_TV.bEpTitle = _setup_TV.chkScraperEpTitle.Checked
-        ConfigOptions_TV.bEpVotes = _setup_TV.chkScraperEpVotes.Checked
+        ConfigOptions_TV.bEpisodeActors = _setup_TV.chkScraperEpActors.Checked
+        ConfigOptions_TV.bEpisodeAired = _setup_TV.chkScraperEpAired.Checked
+        ConfigOptions_TV.bEpisodeCredits = _setup_TV.chkScraperEpCredits.Checked
+        ConfigOptions_TV.bEpisodeDirector = _setup_TV.chkScraperEpDirector.Checked
+        ConfigOptions_TV.bEpisodeGuestStars = _setup_TV.chkScraperEpGuestStars.Checked
+        ConfigOptions_TV.bEpisodePlot = _setup_TV.chkScraperEpPlot.Checked
+        ConfigOptions_TV.bEpisodeRating = _setup_TV.chkScraperEpRating.Checked
+        ConfigOptions_TV.bEpisodeTitle = _setup_TV.chkScraperEpTitle.Checked
+        ConfigOptions_TV.bEpisodeVotes = _setup_TV.chkScraperEpVotes.Checked
         ConfigOptions_TV.bShowActors = _setup_TV.chkScraperShowActors.Checked
         ConfigOptions_TV.bShowCert = _setup_TV.chkScraperShowCert.Checked
         ConfigOptions_TV.bShowCreator = _setup_TV.chkScraperShowCreator.Checked

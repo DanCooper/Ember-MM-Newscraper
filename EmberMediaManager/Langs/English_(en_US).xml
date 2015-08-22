@@ -78,7 +78,7 @@
   <string id="77">Ask (Require Input If No Exact Match)</string>
   <string id="78">Local Browse</string>
   <string id="79">Scrape</string>
-  <string id="80"></string>
+  <string id="80">Verifying TV Season Details:</string>
   <string id="81">Custom Scraper...</string>
   <string id="82">Update Library</string>
   <string id="83">Media Centers</string>
@@ -245,8 +245,8 @@
   <string id="244">Votes:</string>
   <string id="245">Rating:</string>
   <string id="246">Title:</string>
-  <string id="247"></string>
-  <string id="248"></string>
+  <string id="247">Season Scraped</string>
+  <string id="248">Show Scraped</string>
   <string id="249"></string>
   <string id="250"></string>
   <string id="251"></string>

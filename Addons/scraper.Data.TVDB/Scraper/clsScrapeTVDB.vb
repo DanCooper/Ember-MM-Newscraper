@@ -419,7 +419,7 @@ Namespace TVDBs
             End If
 
             'Aired
-            If FilteredOptions.bEpAired Then
+            If FilteredOptions.bEpisodeAired Then
                 Dim ScrapedDate As String = CStr(EpisodeInfo.FirstAired)
                 If Not String.IsNullOrEmpty(ScrapedDate) Then
                     Dim RelDate As Date
@@ -433,7 +433,7 @@ Namespace TVDBs
             End If
 
             'Credits
-            If FilteredOptions.bEpCredits Then
+            If FilteredOptions.bEpisodeCredits Then
                 If EpisodeInfo.Writer IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Writer) Then
                     Dim CreditsList As New List(Of String)
                     Dim charsToTrim() As Char = {"|"c, ","c}
@@ -445,7 +445,7 @@ Namespace TVDBs
             End If
 
             'Writer
-            If FilteredOptions.bEpDirector Then
+            If FilteredOptions.bEpisodeDirector Then
                 If EpisodeInfo.Director IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Director) Then
                     Dim DirectorsList As New List(Of String)
                     Dim charsToTrim() As Char = {"|"c, ","c}
@@ -457,33 +457,33 @@ Namespace TVDBs
             End If
 
             'Guest Stars
-            If FilteredOptions.bEpGuestStars Then
+            If FilteredOptions.bEpisodeGuestStars Then
                 If EpisodeInfo.GuestStars IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.GuestStars) Then
                     nEpisode.GuestStars.AddRange(StringToListOfPerson(EpisodeInfo.GuestStars))
                 End If
             End If
 
             'Plot
-            If FilteredOptions.bEpPlot Then
+            If FilteredOptions.bEpisodePlot Then
                 If EpisodeInfo.Overview IsNot Nothing Then
                     nEpisode.Plot = EpisodeInfo.Overview
                 End If
             End If
 
             'Rating
-            If FilteredOptions.bEpRating Then
+            If FilteredOptions.bEpisodeRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.Rating)
             End If
 
             'Title
-            If FilteredOptions.bEpTitle Then
+            If FilteredOptions.bEpisodeTitle Then
                 If EpisodeInfo.Name IsNot Nothing Then
                     nEpisode.Title = EpisodeInfo.Name
                 End If
             End If
 
             'Votes
-            If FilteredOptions.bEpVotes Then
+            If FilteredOptions.bEpisodeVotes Then
                 nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
             End If
 

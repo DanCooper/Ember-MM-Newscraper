@@ -954,7 +954,7 @@ Public Class NFO
             End If
 
             'Title
-            If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpTitle AndAlso _
+            If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpisodeTitle AndAlso _
                 scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
                 DBTVSeason.TVSeason.Title = scrapedseason.Title
                 new_Title = True
@@ -1023,7 +1023,7 @@ Public Class NFO
             End If
 
             'Actors
-            If (DBTVEpisode.TVEpisode.Actors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpActors AndAlso _
+            If (DBTVEpisode.TVEpisode.Actors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpisodeActors AndAlso _
                 scrapedepisode.Actors.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
 
                 'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
@@ -1055,7 +1055,7 @@ Public Class NFO
             End If
 
             'Aired
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bEpAired AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Aired) OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bEpisodeAired AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Aired) AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
                 DBTVEpisode.TVEpisode.Aired = scrapedepisode.Aired
                 new_Aired = True
@@ -1074,7 +1074,7 @@ Public Class NFO
             End If
 
             'Directors
-            If (DBTVEpisode.TVEpisode.Directors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpDirector AndAlso _
+            If (DBTVEpisode.TVEpisode.Directors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpisodeDirector AndAlso _
                 scrapedepisode.Directors.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeDirector AndAlso Not new_Directors Then
                 DBTVEpisode.TVEpisode.Directors.Clear()
                 DBTVEpisode.TVEpisode.Directors.AddRange(scrapedepisode.Directors)
@@ -1084,7 +1084,7 @@ Public Class NFO
             End If
 
             'GuestStars
-            If (DBTVEpisode.TVEpisode.GuestStars.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpGuestStars AndAlso _
+            If (DBTVEpisode.TVEpisode.GuestStars.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpisodeGuestStars AndAlso _
                 scrapedepisode.GuestStars.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
 
                 'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
@@ -1116,7 +1116,7 @@ Public Class NFO
             End If
 
             'Plot
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso ScrapeOptions.bEpPlot AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Plot) OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso ScrapeOptions.bEpisodePlot AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Plot) AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
                 DBTVEpisode.TVEpisode.Plot = scrapedepisode.Plot
                 new_Plot = True
@@ -1125,7 +1125,7 @@ Public Class NFO
             End If
 
             'Rating
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Rating) OrElse DBTVEpisode.TVEpisode.Rating = "0" OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpRating AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Rating) OrElse DBTVEpisode.TVEpisode.Rating = "0" OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Rating) AndAlso Not scrapedepisode.Rating = "0" AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
                 DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
                 new_Rating = True
@@ -1134,7 +1134,7 @@ Public Class NFO
             End If
 
             'Runtime
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Runtime) OrElse DBTVEpisode.TVEpisode.Runtime = "0" OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso ScrapeOptions.bEpRuntime AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Runtime) OrElse DBTVEpisode.TVEpisode.Runtime = "0" OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso ScrapeOptions.bEpisodeRuntime AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Runtime) AndAlso Not scrapedepisode.Runtime = "0" AndAlso Master.eSettings.TVScraperEpisodeRuntime AndAlso Not new_Runtime Then
                 DBTVEpisode.TVEpisode.Runtime = scrapedepisode.Runtime
                 new_Runtime = True
@@ -1143,7 +1143,7 @@ Public Class NFO
             End If
 
             'Title
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpTitle AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Title) OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpisodeTitle AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Title) AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
                 DBTVEpisode.TVEpisode.Title = scrapedepisode.Title
                 new_Title = True
@@ -1152,7 +1152,7 @@ Public Class NFO
             End If
 
             'Votes
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Votes) OrElse DBTVEpisode.TVEpisode.Votes = "0" OrElse Not Master.eSettings.TVLockEpisodeVotes) AndAlso ScrapeOptions.bEpVotes AndAlso _
+            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Votes) OrElse DBTVEpisode.TVEpisode.Votes = "0" OrElse Not Master.eSettings.TVLockEpisodeVotes) AndAlso ScrapeOptions.bEpisodeVotes AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Votes) AndAlso Not scrapedepisode.Votes = "0" AndAlso Master.eSettings.TVScraperEpisodeVotes AndAlso Not new_Votes Then
                 DBTVEpisode.TVEpisode.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
                 new_Votes = True

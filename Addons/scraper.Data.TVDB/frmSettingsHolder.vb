@@ -104,15 +104,15 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SettingsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        chkScraperEpActors.CheckedChanged, _
-        chkScraperEpAired.CheckedChanged, _
-        chkScraperEpCredits.CheckedChanged, _
-        chkScraperEpDirector.CheckedChanged, _
-        chkScraperEpGuestStars.CheckedChanged, _
-        chkScraperEpPlot.CheckedChanged, _
-        chkScraperEpRating.CheckedChanged, _
-        chkScraperEpTitle.CheckedChanged, _
-        chkScraperEpVotes.CheckedChanged, _
+        chkScraperEpisodeActors.CheckedChanged, _
+        chkScraperEpisodeAired.CheckedChanged, _
+        chkScraperEpisodeCredits.CheckedChanged, _
+        chkScraperEpisodeDirector.CheckedChanged, _
+        chkScraperEpisodeGuestStars.CheckedChanged, _
+        chkScraperEpisodePlot.CheckedChanged, _
+        chkScraperEpisodeRating.CheckedChanged, _
+        chkScraperEpisodeTitle.CheckedChanged, _
+        chkScraperEpisodeVotes.CheckedChanged, _
         chkScraperShowActors.CheckedChanged, _
         chkScraperShowGenre.CheckedChanged, _
         chkScraperShowMPAA.CheckedChanged, _

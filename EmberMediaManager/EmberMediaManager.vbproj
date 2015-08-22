@@ -332,10 +332,10 @@
     <Compile Include="dlgTVSource.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgUpdateMedia.designer.vb">
-      <DependentUpon>dlgUpdateMedia.vb</DependentUpon>
+    <Compile Include="dlgCustomScraper.designer.vb">
+      <DependentUpon>dlgCustomScraper.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgUpdateMedia.vb">
+    <Compile Include="dlgCustomScraper.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgWizard.Designer.vb">
@@ -461,8 +461,8 @@
     <EmbeddedResource Include="dlgTVSource.resx">
       <DependentUpon>dlgTVSource.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgUpdateMedia.resx">
-      <DependentUpon>dlgUpdateMedia.vb</DependentUpon>
+    <EmbeddedResource Include="dlgCustomScraper.resx">
+      <DependentUpon>dlgCustomScraper.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>

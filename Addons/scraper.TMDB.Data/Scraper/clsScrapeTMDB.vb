@@ -921,7 +921,7 @@ Namespace TMDB
             End If
 
             'Cast (Actors)
-            If FilteredOptions.bEpActors Then
+            If FilteredOptions.bEpisodeActors Then
                 If EpisodeInfo.Credits IsNot Nothing AndAlso EpisodeInfo.Credits.Cast IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.Credits.Cast
                         nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
@@ -933,7 +933,7 @@ Namespace TMDB
             End If
 
             'Aired
-            If FilteredOptions.bEpAired Then
+            If FilteredOptions.bEpisodeAired Then
                 Dim ScrapedDate As String = CStr(EpisodeInfo.AirDate)
                 If Not String.IsNullOrEmpty(ScrapedDate) Then
                     Dim RelDate As Date
@@ -947,13 +947,13 @@ Namespace TMDB
             End If
 
             'Director / Writer
-            If FilteredOptions.bEpCredits OrElse FilteredOptions.bEpDirector Then
+            If FilteredOptions.bEpisodeCredits OrElse FilteredOptions.bEpisodeDirector Then
                 If EpisodeInfo.Credits IsNot Nothing AndAlso EpisodeInfo.Credits.Crew IsNot Nothing Then
                     For Each aCrew As TMDbLib.Objects.General.Crew In EpisodeInfo.Credits.Crew
-                        If FilteredOptions.bEpCredits AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
+                        If FilteredOptions.bEpisodeCredits AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
                             nEpisode.Credits.Add(aCrew.Name)
                         End If
-                        If FilteredOptions.bEpDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
+                        If FilteredOptions.bEpisodeDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
                             nEpisode.Directors.Add(aCrew.Name)
                         End If
                     Next
@@ -961,7 +961,7 @@ Namespace TMDB
             End If
 
             'Guest Stars
-            If FilteredOptions.bEpGuestStars Then
+            If FilteredOptions.bEpisodeGuestStars Then
                 If EpisodeInfo.GuestStars IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.GuestStars
                         nEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name, _
@@ -973,26 +973,26 @@ Namespace TMDB
             End If
 
             'Plot
-            If FilteredOptions.bEpPlot Then
+            If FilteredOptions.bEpisodePlot Then
                 If EpisodeInfo.Overview IsNot Nothing Then
                     nEpisode.Plot = EpisodeInfo.Overview
                 End If
             End If
 
             'Rating
-            If FilteredOptions.bEpRating Then
+            If FilteredOptions.bEpisodeRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.VoteAverage)
             End If
 
             'Title
-            If FilteredOptions.bEpTitle Then
+            If FilteredOptions.bEpisodeTitle Then
                 If EpisodeInfo.Name IsNot Nothing Then
                     nEpisode.Title = EpisodeInfo.Name
                 End If
             End If
 
             'Votes
-            If FilteredOptions.bEpVotes Then
+            If FilteredOptions.bEpisodeVotes Then
                 nEpisode.Votes = CStr(EpisodeInfo.VoteCount)
             End If
 

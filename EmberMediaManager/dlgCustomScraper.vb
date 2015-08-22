@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgUpdateMedia
+Public Class dlgCustomScraper
 
 #Region "Fields"
 
@@ -666,10 +666,10 @@ Public Class dlgUpdateMedia
         Me.gbUpdateType.Text = Master.eLang.GetString(387, "Update Mode")
         Me.lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
         Me.lblTopTitle.Text = Me.Text
-        Me.rbUpdateModifier_All.Text = Master.eLang.GetString(68, "All Movies")
-        Me.rbUpdateModifier_Marked.Text = Master.eLang.GetString(80, "Marked Movies")
-        Me.rbUpdateModifier_Missing.Text = Master.eLang.GetString(78, "Movies Missing Items")
-        Me.rbUpdateModifier_New.Text = Master.eLang.GetString(79, "New Movies")
+        Me.rbUpdateModifier_All.Text = Master.eLang.GetString(68, "All")
+        Me.rbUpdateModifier_Marked.Text = Master.eLang.GetString(48, "Marked")
+        Me.rbUpdateModifier_Missing.Text = Master.eLang.GetString(40, "Missing Items")
+        Me.rbUpdateModifier_New.Text = Master.eLang.GetString(47, "New")
         Me.rbUpdate_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
         Me.rbUpdate_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
         Me.rbUpdate_Skip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")

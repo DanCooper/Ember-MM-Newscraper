@@ -1,8 +1,8 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
-Partial Class dlgUpdateMedia
+Partial Class dlgCustomScraper
     Inherits System.Windows.Forms.Form
 
-    #Region "Fields"
+#Region "Fields"
 
     Friend WithEvents chkModAll As System.Windows.Forms.CheckBox
     Friend WithEvents chkOptsCast As System.Windows.Forms.CheckBox
@@ -74,7 +74,7 @@ Partial Class dlgUpdateMedia
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgUpdateMedia))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgCustomScraper))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDescription = New System.Windows.Forms.Label()
@@ -209,10 +209,10 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_All.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_All.Location = New System.Drawing.Point(6, 19)
         Me.rbUpdateModifier_All.Name = "rbUpdateModifier_All"
-        Me.rbUpdateModifier_All.Size = New System.Drawing.Size(77, 17)
+        Me.rbUpdateModifier_All.Size = New System.Drawing.Size(38, 17)
         Me.rbUpdateModifier_All.TabIndex = 0
         Me.rbUpdateModifier_All.TabStop = True
-        Me.rbUpdateModifier_All.Text = "All Movies"
+        Me.rbUpdateModifier_All.Text = "All"
         Me.rbUpdateModifier_All.UseVisualStyleBackColor = True
         '
         'gbUpdateModifier
@@ -236,9 +236,9 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_Marked.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(126, 42)
         Me.rbUpdateModifier_Marked.Name = "rbUpdateModifier_Marked"
-        Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(103, 17)
+        Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(64, 17)
         Me.rbUpdateModifier_Marked.TabIndex = 3
-        Me.rbUpdateModifier_Marked.Text = "Marked Movies"
+        Me.rbUpdateModifier_Marked.Text = "Marked"
         Me.rbUpdateModifier_Marked.UseVisualStyleBackColor = True
         '
         'rbUpdateModifier_New
@@ -248,9 +248,9 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_New.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_New.Location = New System.Drawing.Point(6, 42)
         Me.rbUpdateModifier_New.Name = "rbUpdateModifier_New"
-        Me.rbUpdateModifier_New.Size = New System.Drawing.Size(87, 17)
+        Me.rbUpdateModifier_New.Size = New System.Drawing.Size(48, 17)
         Me.rbUpdateModifier_New.TabIndex = 1
-        Me.rbUpdateModifier_New.Text = "New Movies"
+        Me.rbUpdateModifier_New.Text = "New"
         Me.rbUpdateModifier_New.UseVisualStyleBackColor = True
         '
         'rbUpdateModifier_Missing
@@ -259,9 +259,9 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_Missing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(126, 20)
         Me.rbUpdateModifier_Missing.Name = "rbUpdateModifier_Missing"
-        Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(134, 17)
+        Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(95, 17)
         Me.rbUpdateModifier_Missing.TabIndex = 2
-        Me.rbUpdateModifier_Missing.Text = "Movies Missing Items"
+        Me.rbUpdateModifier_Missing.Text = "Missing Items"
         Me.rbUpdateModifier_Missing.UseVisualStyleBackColor = True
         '
         'gbUpdateType
@@ -973,7 +973,7 @@ Partial Class dlgUpdateMedia
         Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 385)
         Me.pnlUpdateMedia.TabIndex = 3
         '
-        'dlgUpdateMedia
+        'dlgCustomScraper
         '
         Me.AcceptButton = Me.Update_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -988,7 +988,7 @@ Partial Class dlgUpdateMedia
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgUpdateMedia"
+        Me.Name = "dlgCustomScraper"
         Me.Text = "Custom Scraper"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

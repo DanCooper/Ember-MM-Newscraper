@@ -117,6 +117,12 @@ Public Class NotificationsModule
                         ShowIt = True
                     Case _params(0).ToString = "moviescraped" AndAlso eSettings.OnMovieScraped
                         ShowIt = True
+                    Case _params(0).ToString = "tvepisodescraped" AndAlso eSettings.OnNewEp
+                        ShowIt = True
+                    Case _params(0).ToString = "tvseasonscraped" AndAlso eSettings.OnNewEp
+                        ShowIt = True
+                    Case _params(0).ToString = "tvshowscraped" AndAlso eSettings.OnNewEp
+                        ShowIt = True
                     Case _params(0).ToString = "newep" AndAlso eSettings.OnNewEp
                         ShowIt = True
                     Case _params(0).ToString = "info"

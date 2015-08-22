@@ -2145,7 +2145,7 @@ Public Class Database
                     SQLReader.Read()
                     _TVDB.IsLock = CBool(SQLReader("Lock"))
                     _TVDB.IsMark = CBool(SQLReader("Mark"))
-                    _TVDB.ShowID = CInt(SQLReader("idShow"))
+                    _TVDB.ShowID = Convert.ToInt64(SQLReader("idShow"))
                     _TVDB.ShowPath = LoadTVShowPathFromDB(Convert.ToInt64(SQLReader("idShow")))
                     _TVDB.TVSeason = New MediaContainers.SeasonDetails
                     With _TVDB.TVSeason
