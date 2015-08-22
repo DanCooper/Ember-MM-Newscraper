@@ -34,14 +34,14 @@ Partial Class dlgEditTVShow
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
         Me.lblEpisodeSorting = New System.Windows.Forms.Label()
-        Me.tpEFanarts = New System.Windows.Forms.TabPage()
-        Me.lblEFanartsSize = New System.Windows.Forms.Label()
+        Me.tpExtrafanarts = New System.Windows.Forms.TabPage()
+        Me.lblExtrafanartsSize = New System.Windows.Forms.Label()
         Me.pnlShowEFanartsSetAsFanart = New System.Windows.Forms.Panel()
-        Me.btnEFanartsSetAsFanart = New System.Windows.Forms.Button()
-        Me.pnlEFanartsBG = New System.Windows.Forms.Panel()
-        Me.btnEFanartsRefresh = New System.Windows.Forms.Button()
-        Me.btnEFanartsRemove = New System.Windows.Forms.Button()
-        Me.pbEFanarts = New System.Windows.Forms.PictureBox()
+        Me.btnExtrafanartsSetAsFanart = New System.Windows.Forms.Button()
+        Me.pnlExtrafanarts = New System.Windows.Forms.Panel()
+        Me.btnExtrafanartsRefresh = New System.Windows.Forms.Button()
+        Me.btnExtrafanartsRemove = New System.Windows.Forms.Button()
+        Me.pbExtrafanarts = New System.Windows.Forms.PictureBox()
         Me.tpFanart = New System.Windows.Forms.TabPage()
         Me.btnSetFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveFanart = New System.Windows.Forms.Button()
@@ -139,9 +139,9 @@ Partial Class dlgEditTVShow
         Me.tcEdit = New System.Windows.Forms.TabControl()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tpEFanarts.SuspendLayout()
+        Me.tpExtrafanarts.SuspendLayout()
         Me.pnlShowEFanartsSetAsFanart.SuspendLayout()
-        CType(Me.pbEFanarts, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbExtrafanarts, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpClearLogo.SuspendLayout()
@@ -276,91 +276,91 @@ Partial Class dlgEditTVShow
         '
         'tpEFanarts
         '
-        Me.tpEFanarts.Controls.Add(Me.lblEFanartsSize)
-        Me.tpEFanarts.Controls.Add(Me.pnlShowEFanartsSetAsFanart)
-        Me.tpEFanarts.Controls.Add(Me.pnlEFanartsBG)
-        Me.tpEFanarts.Controls.Add(Me.btnEFanartsRefresh)
-        Me.tpEFanarts.Controls.Add(Me.btnEFanartsRemove)
-        Me.tpEFanarts.Controls.Add(Me.pbEFanarts)
-        Me.tpEFanarts.Location = New System.Drawing.Point(4, 22)
-        Me.tpEFanarts.Name = "tpEFanarts"
-        Me.tpEFanarts.Size = New System.Drawing.Size(836, 463)
-        Me.tpEFanarts.TabIndex = 12
-        Me.tpEFanarts.Text = "Extrafanarts"
-        Me.tpEFanarts.UseVisualStyleBackColor = True
+        Me.tpExtrafanarts.Controls.Add(Me.lblExtrafanartsSize)
+        Me.tpExtrafanarts.Controls.Add(Me.pnlShowEFanartsSetAsFanart)
+        Me.tpExtrafanarts.Controls.Add(Me.pnlExtrafanarts)
+        Me.tpExtrafanarts.Controls.Add(Me.btnExtrafanartsRefresh)
+        Me.tpExtrafanarts.Controls.Add(Me.btnExtrafanartsRemove)
+        Me.tpExtrafanarts.Controls.Add(Me.pbExtrafanarts)
+        Me.tpExtrafanarts.Location = New System.Drawing.Point(4, 22)
+        Me.tpExtrafanarts.Name = "tpEFanarts"
+        Me.tpExtrafanarts.Size = New System.Drawing.Size(836, 463)
+        Me.tpExtrafanarts.TabIndex = 12
+        Me.tpExtrafanarts.Text = "Extrafanarts"
+        Me.tpExtrafanarts.UseVisualStyleBackColor = True
         '
-        'lblEFanartsSize
+        'lblExtrafanartsSize
         '
-        Me.lblEFanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEFanartsSize.Location = New System.Drawing.Point(178, 10)
-        Me.lblEFanartsSize.Name = "lblEFanartsSize"
-        Me.lblEFanartsSize.Size = New System.Drawing.Size(104, 23)
-        Me.lblEFanartsSize.TabIndex = 23
-        Me.lblEFanartsSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEFanartsSize.Visible = False
+        Me.lblExtrafanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblExtrafanartsSize.Location = New System.Drawing.Point(178, 10)
+        Me.lblExtrafanartsSize.Name = "lblExtrafanartsSize"
+        Me.lblExtrafanartsSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblExtrafanartsSize.TabIndex = 23
+        Me.lblExtrafanartsSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblExtrafanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblExtrafanartsSize.Visible = False
         '
         'pnlShowEFanartsSetAsFanart
         '
         Me.pnlShowEFanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlShowEFanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlShowEFanartsSetAsFanart.Controls.Add(Me.btnEFanartsSetAsFanart)
+        Me.pnlShowEFanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
         Me.pnlShowEFanartsSetAsFanart.Location = New System.Drawing.Point(719, 403)
         Me.pnlShowEFanartsSetAsFanart.Name = "pnlShowEFanartsSetAsFanart"
         Me.pnlShowEFanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlShowEFanartsSetAsFanart.TabIndex = 21
         '
-        'btnEFanartsSetAsFanart
+        'btnExtrafanartsSetAsFanart
         '
-        Me.btnEFanartsSetAsFanart.Enabled = False
-        Me.btnEFanartsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnEFanartsSetAsFanart.Image = CType(resources.GetObject("btnEFanartsSetAsFanart.Image"), System.Drawing.Image)
-        Me.btnEFanartsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEFanartsSetAsFanart.Location = New System.Drawing.Point(2, 3)
-        Me.btnEFanartsSetAsFanart.Name = "btnEFanartsSetAsFanart"
-        Me.btnEFanartsSetAsFanart.Size = New System.Drawing.Size(103, 32)
-        Me.btnEFanartsSetAsFanart.TabIndex = 0
-        Me.btnEFanartsSetAsFanart.Text = "Set As Fanart"
-        Me.btnEFanartsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEFanartsSetAsFanart.UseVisualStyleBackColor = True
+        Me.btnExtrafanartsSetAsFanart.Enabled = False
+        Me.btnExtrafanartsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnExtrafanartsSetAsFanart.Image = CType(resources.GetObject("btnExtrafanartsSetAsFanart.Image"), System.Drawing.Image)
+        Me.btnExtrafanartsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnExtrafanartsSetAsFanart.Location = New System.Drawing.Point(2, 3)
+        Me.btnExtrafanartsSetAsFanart.Name = "btnExtrafanartsSetAsFanart"
+        Me.btnExtrafanartsSetAsFanart.Size = New System.Drawing.Size(103, 32)
+        Me.btnExtrafanartsSetAsFanart.TabIndex = 0
+        Me.btnExtrafanartsSetAsFanart.Text = "Set As Fanart"
+        Me.btnExtrafanartsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnExtrafanartsSetAsFanart.UseVisualStyleBackColor = True
         '
-        'pnlEFanartsBG
+        'pnlExtrafanarts
         '
-        Me.pnlEFanartsBG.AutoScroll = True
-        Me.pnlEFanartsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEFanartsBG.Location = New System.Drawing.Point(6, 8)
-        Me.pnlEFanartsBG.Name = "pnlEFanartsBG"
-        Me.pnlEFanartsBG.Size = New System.Drawing.Size(165, 408)
-        Me.pnlEFanartsBG.TabIndex = 22
+        Me.pnlExtrafanarts.AutoScroll = True
+        Me.pnlExtrafanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlExtrafanarts.Location = New System.Drawing.Point(6, 8)
+        Me.pnlExtrafanarts.Name = "pnlExtrafanarts"
+        Me.pnlExtrafanarts.Size = New System.Drawing.Size(165, 408)
+        Me.pnlExtrafanarts.TabIndex = 22
         '
-        'btnEFanartsRefresh
+        'btnExtrafanartsRefresh
         '
-        Me.btnEFanartsRefresh.Image = CType(resources.GetObject("btnEFanartsRefresh.Image"), System.Drawing.Image)
-        Me.btnEFanartsRefresh.Location = New System.Drawing.Point(88, 422)
-        Me.btnEFanartsRefresh.Name = "btnEFanartsRefresh"
-        Me.btnEFanartsRefresh.Size = New System.Drawing.Size(23, 23)
-        Me.btnEFanartsRefresh.TabIndex = 19
-        Me.btnEFanartsRefresh.UseVisualStyleBackColor = True
+        Me.btnExtrafanartsRefresh.Image = CType(resources.GetObject("btnExtrafanartsRefresh.Image"), System.Drawing.Image)
+        Me.btnExtrafanartsRefresh.Location = New System.Drawing.Point(88, 422)
+        Me.btnExtrafanartsRefresh.Name = "btnExtrafanartsRefresh"
+        Me.btnExtrafanartsRefresh.Size = New System.Drawing.Size(23, 23)
+        Me.btnExtrafanartsRefresh.TabIndex = 19
+        Me.btnExtrafanartsRefresh.UseVisualStyleBackColor = True
         '
-        'btnEFanartsRemove
+        'btnExtrafanartsRemove
         '
-        Me.btnEFanartsRemove.Image = CType(resources.GetObject("btnEFanartsRemove.Image"), System.Drawing.Image)
-        Me.btnEFanartsRemove.Location = New System.Drawing.Point(148, 422)
-        Me.btnEFanartsRemove.Name = "btnEFanartsRemove"
-        Me.btnEFanartsRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnEFanartsRemove.TabIndex = 20
-        Me.btnEFanartsRemove.UseVisualStyleBackColor = True
+        Me.btnExtrafanartsRemove.Image = CType(resources.GetObject("btnExtrafanartsRemove.Image"), System.Drawing.Image)
+        Me.btnExtrafanartsRemove.Location = New System.Drawing.Point(148, 422)
+        Me.btnExtrafanartsRemove.Name = "btnExtrafanartsRemove"
+        Me.btnExtrafanartsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnExtrafanartsRemove.TabIndex = 20
+        Me.btnExtrafanartsRemove.UseVisualStyleBackColor = True
         '
-        'pbEFanarts
+        'pbExtrafanarts
         '
-        Me.pbEFanarts.BackColor = System.Drawing.Color.DimGray
-        Me.pbEFanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbEFanarts.Location = New System.Drawing.Point(177, 8)
-        Me.pbEFanarts.Name = "pbEFanarts"
-        Me.pbEFanarts.Size = New System.Drawing.Size(653, 437)
-        Me.pbEFanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbEFanarts.TabIndex = 18
-        Me.pbEFanarts.TabStop = False
+        Me.pbExtrafanarts.BackColor = System.Drawing.Color.DimGray
+        Me.pbExtrafanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbExtrafanarts.Location = New System.Drawing.Point(177, 8)
+        Me.pbExtrafanarts.Name = "pbExtrafanarts"
+        Me.pbExtrafanarts.Size = New System.Drawing.Size(653, 437)
+        Me.pbExtrafanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbExtrafanarts.TabIndex = 18
+        Me.pbExtrafanarts.TabStop = False
         '
         'tpFanart
         '
@@ -1431,7 +1431,7 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Controls.Add(Me.tpClearArt)
         Me.tcEdit.Controls.Add(Me.tpClearLogo)
         Me.tcEdit.Controls.Add(Me.tpFanart)
-        Me.tcEdit.Controls.Add(Me.tpEFanarts)
+        Me.tcEdit.Controls.Add(Me.tpExtrafanarts)
         Me.tcEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tcEdit.Location = New System.Drawing.Point(4, 70)
         Me.tcEdit.Name = "tcEdit"
@@ -1464,9 +1464,9 @@ Partial Class dlgEditTVShow
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tpEFanarts.ResumeLayout(False)
+        Me.tpExtrafanarts.ResumeLayout(False)
         Me.pnlShowEFanartsSetAsFanart.ResumeLayout(False)
-        CType(Me.pbEFanarts, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbExtrafanarts, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFanart.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpClearLogo.ResumeLayout(False)
@@ -1509,14 +1509,14 @@ Partial Class dlgEditTVShow
     Friend WithEvents lblOrdering As System.Windows.Forms.Label
     Friend WithEvents cbEpisodeSorting As System.Windows.Forms.ComboBox
     Friend WithEvents lblEpisodeSorting As System.Windows.Forms.Label
-    Friend WithEvents tpEFanarts As System.Windows.Forms.TabPage
-    Friend WithEvents lblEFanartsSize As System.Windows.Forms.Label
+    Friend WithEvents tpExtrafanarts As System.Windows.Forms.TabPage
+    Friend WithEvents lblExtrafanartsSize As System.Windows.Forms.Label
     Friend WithEvents pnlShowEFanartsSetAsFanart As System.Windows.Forms.Panel
-    Friend WithEvents btnEFanartsSetAsFanart As System.Windows.Forms.Button
-    Friend WithEvents pnlEFanartsBG As System.Windows.Forms.Panel
-    Friend WithEvents btnEFanartsRefresh As System.Windows.Forms.Button
-    Friend WithEvents btnEFanartsRemove As System.Windows.Forms.Button
-    Friend WithEvents pbEFanarts As System.Windows.Forms.PictureBox
+    Friend WithEvents btnExtrafanartsSetAsFanart As System.Windows.Forms.Button
+    Friend WithEvents pnlExtrafanarts As System.Windows.Forms.Panel
+    Friend WithEvents btnExtrafanartsRefresh As System.Windows.Forms.Button
+    Friend WithEvents btnExtrafanartsRemove As System.Windows.Forms.Button
+    Friend WithEvents pbExtrafanarts As System.Windows.Forms.PictureBox
     Friend WithEvents tpFanart As System.Windows.Forms.TabPage
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button

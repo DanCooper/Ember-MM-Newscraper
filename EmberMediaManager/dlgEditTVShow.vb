@@ -38,17 +38,12 @@ Public Class dlgEditTVShow
     Private tmpRating As String
 
     'Extrafanarts
-    Private efDeleteList As New List(Of String)
-    Private EFanartsIndex As Integer = -1
-    Private EFanartsList As New List(Of ExtraImages)
-    Private EFanartsExtractor As New List(Of String)
     Private EFanartsWarning As Boolean = True
-    Private hasClearedEF As Boolean = False
     Private iEFCounter As Integer = 0
     Private iEFLeft As Integer = 1
     Private iEFTop As Integer = 1
-    Private pbEFImage() As PictureBox
-    Private pnlEFImage() As Panel
+    Private pbExtrafanartsImage() As PictureBox
+    Private pnlExtrafanartsImage() As Panel
 
 #End Region 'Fields
 
@@ -76,6 +71,83 @@ Public Class dlgEditTVShow
         Me.tmpDBElement = DBTVShow
         Return MyBase.ShowDialog()
     End Function
+
+    Private Sub AddExtrafanartImage(ByVal sDescription As String, ByVal iIndex As Integer, tImage As MediaContainers.Image)
+        Try
+            ReDim Preserve Me.pnlExtrafanartsImage(iIndex)
+            ReDim Preserve Me.pbExtrafanartsImage(iIndex)
+            Me.pnlExtrafanartsImage(iIndex) = New Panel()
+            Me.pbExtrafanartsImage(iIndex) = New PictureBox()
+            Me.pbExtrafanartsImage(iIndex).Name = iIndex.ToString
+            Me.pnlExtrafanartsImage(iIndex).Name = iIndex.ToString
+            Me.pnlExtrafanartsImage(iIndex).Size = New Size(128, 72)
+            Me.pbExtrafanartsImage(iIndex).Size = New Size(128, 72)
+            Me.pnlExtrafanartsImage(iIndex).BackColor = Color.White
+            Me.pnlExtrafanartsImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            Me.pbExtrafanartsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            Me.pnlExtrafanartsImage(iIndex).Tag = tImage
+            Me.pbExtrafanartsImage(iIndex).Tag = tImage
+            Me.pbExtrafanartsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            Me.pnlExtrafanartsImage(iIndex).Left = iEFLeft
+            Me.pbExtrafanartsImage(iIndex).Left = 0
+            Me.pnlExtrafanartsImage(iIndex).Top = iEFTop
+            Me.pbExtrafanartsImage(iIndex).Top = 0
+            Me.pnlExtrafanarts.Controls.Add(Me.pnlExtrafanartsImage(iIndex))
+            Me.pnlExtrafanartsImage(iIndex).Controls.Add(Me.pbExtrafanartsImage(iIndex))
+            Me.pnlExtrafanartsImage(iIndex).BringToFront()
+            AddHandler pbExtrafanartsImage(iIndex).Click, AddressOf pbExtrafanartsImage_Click
+            AddHandler pnlExtrafanartsImage(iIndex).Click, AddressOf pnlExtrafanartsImage_Click
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Me.iEFTop += 74
+
+    End Sub
+
+    Private Sub pbExtrafanartsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
+    End Sub
+
+    Private Sub pnlExtrafanartsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
+    End Sub
+
+    Private Sub DoSelectExtrafanart(ByVal iIndex As Integer, tImg As MediaContainers.Image)
+        Me.pbExtrafanarts.Image = tImg.ImageOriginal.Image
+        Me.pbExtrafanarts.Tag = tImg
+        Me.btnExtrafanartsSetAsFanart.Enabled = True
+        Me.lblExtrafanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbExtrafanarts.Image.Width, Me.pbExtrafanarts.Image.Height)
+        Me.lblExtrafanartsSize.Visible = True
+    End Sub
+
+    Private Sub btnExtrafanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRemove.Click
+        RemoveExtrafanart()
+    End Sub
+
+    Private Sub RemoveExtrafanart()
+        If pbExtrafanarts.Tag IsNot Nothing Then
+            Me.tmpDBElement.ImagesContainer.Extrafanarts.Remove(DirectCast(Me.pbExtrafanarts.Tag, MediaContainers.Image))
+            Me.RefreshExtrafanarts()
+            Me.lblExtrafanartsSize.Text = ""
+            Me.lblExtrafanartsSize.Visible = False
+        End If
+    End Sub
+
+    Private Sub btnExtrafanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsSetAsFanart.Click
+        If Me.pbExtrafanarts.Tag IsNot Nothing Then
+            Me.tmpDBElement.ImagesContainer.Fanart = DirectCast(Me.pbExtrafanarts.Tag, MediaContainers.Image)
+            Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+            Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub btnExtrafanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRefresh.Click
+        Me.RefreshExtrafanarts()
+    End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
         If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
@@ -117,39 +189,6 @@ Public Class dlgEditTVShow
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-    End Sub
-
-    Private Sub AddEFImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrafanart As ExtraImages)
-        Try
-            ReDim Preserve Me.pnlEFImage(iIndex)
-            ReDim Preserve Me.pbEFImage(iIndex)
-            Me.pnlEFImage(iIndex) = New Panel()
-            Me.pbEFImage(iIndex) = New PictureBox()
-            Me.pbEFImage(iIndex).Name = iIndex.ToString
-            Me.pnlEFImage(iIndex).Name = iIndex.ToString
-            Me.pnlEFImage(iIndex).Size = New Size(128, 72)
-            Me.pbEFImage(iIndex).Size = New Size(128, 72)
-            Me.pnlEFImage(iIndex).BackColor = Color.White
-            Me.pnlEFImage(iIndex).BorderStyle = BorderStyle.FixedSingle
-            Me.pbEFImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-            Me.pnlEFImage(iIndex).Tag = Extrafanart.Image
-            Me.pbEFImage(iIndex).Tag = Extrafanart.Image
-            Me.pbEFImage(iIndex).Image = CType(Extrafanart.Image.Image.Clone(), Image)
-            Me.pnlEFImage(iIndex).Left = iEFLeft
-            Me.pbEFImage(iIndex).Left = 0
-            Me.pnlEFImage(iIndex).Top = iEFTop
-            Me.pbEFImage(iIndex).Top = 0
-            Me.pnlEFanartsBG.Controls.Add(Me.pnlEFImage(iIndex))
-            Me.pnlEFImage(iIndex).Controls.Add(Me.pbEFImage(iIndex))
-            Me.pnlEFImage(iIndex).BringToFront()
-            AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
-            AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Me.iEFTop += 74
-
     End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
@@ -717,37 +756,7 @@ Public Class dlgEditTVShow
         End Try
     End Sub
 
-    Private Sub btnEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRefresh.Click
-        Me.RefreshEFanarts()
-    End Sub
-
-    Private Sub btnEFanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRemove.Click
-        'Me.DeleteEFanarts()
-        Me.RefreshEFanarts()
-        Me.lblEFanartsSize.Text = ""
-        Me.lblEFanartsSize.Visible = False
-    End Sub
-
-    Private Sub btnEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsSetAsFanart.Click
-        If Not String.IsNullOrEmpty(Me.EFanartsList.Item(Me.EFanartsIndex).Path) AndAlso Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(0, 1) = ":" Then
-            Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
-        Else
-            Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
-        End If
-        If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-            Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-            Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
-
-            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-            Me.lblFanartSize.Visible = True
-        End If
-    End Sub
-
     Private Sub BuildStars(ByVal sinRating As Single)
-        '//
-        ' Convert # rating to star images
-        '\\
-
         Try
             'f'in MS and them leaving control arrays out of VB.NET
             With Me
@@ -992,52 +1001,21 @@ Public Class dlgEditTVShow
         End Try
     End Sub
 
-    Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
-        If hasClearedEF Then LoadEFanarts()
-    End Sub
-
-    Private Sub bwEFanarts_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEFanarts.RunWorkerCompleted
-        Try
-            If EFanartsList.Count > 0 Then
-                For Each tEFanart As ExtraImages In EFanartsList
-                    AddEFImage(tEFanart.Name, tEFanart.Index, tEFanart)
-                Next
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Try
-            If Me.pnlEFImage IsNot Nothing Then
-                For Each Pan In Me.pnlEFImage
-                    CType(Pan.Tag, Images).Dispose()
-                Next
-            End If
-            If Me.pbEFImage IsNot Nothing Then
-                For Each Pan In Me.pbEFImage
-                    CType(Pan.Tag, Images).Dispose()
-                    Pan.Image.Dispose()
-                Next
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
+        CleanUp()
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
     Private Sub CleanUp()
         Try
-            If Me.pnlEFImage IsNot Nothing Then
-                For Each Pan In Me.pnlEFImage
+            If Me.pnlExtrafanartsImage IsNot Nothing Then
+                For Each Pan In Me.pnlExtrafanartsImage
                     CType(Pan.Tag, Images).Dispose()
                 Next
             End If
-            If Me.pbEFImage IsNot Nothing Then
-                For Each Pan In Me.pbEFImage
+            If Me.pbExtrafanartsImage IsNot Nothing Then
+                For Each Pan In Me.pbExtrafanartsImage
                     CType(Pan.Tag, Images).Dispose()
                     Pan.Image.Dispose()
                 Next
@@ -1074,7 +1052,7 @@ Public Class dlgEditTVShow
             If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tcEdit.TabPages.Remove(tpCharacterArt)
             If Not Master.eSettings.TVShowClearArtAnyEnabled Then Me.tcEdit.TabPages.Remove(tpClearArt)
             If Not Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tcEdit.TabPages.Remove(tpClearLogo)
-            If Not Master.eSettings.TVShowEFanartsAnyEnabled Then Me.tcEdit.TabPages.Remove(tpEFanarts)
+            If Not Master.eSettings.TVShowExtrafanartsAnyEnabled Then Me.tcEdit.TabPages.Remove(tpExtrafanarts)
             If Not Master.eSettings.TVShowFanartAnyEnabled Then Me.tcEdit.TabPages.Remove(tpFanart)
             If Not Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tcEdit.TabPages.Remove(tpLandscape)
             If Not Master.eSettings.TVShowPosterAnyEnabled Then Me.tcEdit.TabPages.Remove(tpPoster)
@@ -1106,19 +1084,6 @@ Public Class dlgEditTVShow
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End If
-    End Sub
-
-    Private Sub DoSelectEF(ByVal iIndex As Integer, tPoster As MediaContainers.Image)
-        Try
-            Me.pbEFanarts.Image = tPoster.ImageOriginal.Image
-            Me.pbEFanarts.Tag = tPoster
-            Me.btnEFanartsSetAsFanart.Enabled = True
-            Me.EFanartsIndex = iIndex
-            Me.lblEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEFanarts.Image.Width, Me.pbEFanarts.Image.Height)
-            Me.lblEFanartsSize.Visible = True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub EditActor()
@@ -1207,6 +1172,7 @@ Public Class dlgEditTVShow
 
             'Images and TabPages
 
+            'Banner
             If Master.eSettings.TVShowBannerAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner) Then
                     .btnSetBannerScrape.Enabled = False
@@ -1222,6 +1188,7 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpBanner)
             End If
 
+            'CharacterArt
             If Master.eSettings.TVShowCharacterArtAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt) Then
                     .btnSetCharacterArtScrape.Enabled = False
@@ -1237,6 +1204,7 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpCharacterArt)
             End If
 
+            'ClearArt
             If Master.eSettings.TVShowClearArtAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt) Then
                     .btnSetClearArtScrape.Enabled = False
@@ -1252,6 +1220,7 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpClearArt)
             End If
 
+            'ClearLogo
             If Master.eSettings.TVShowClearLogoAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo) Then
                     .btnSetClearLogoScrape.Enabled = False
@@ -1267,6 +1236,23 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpClearLogo)
             End If
 
+            'Extrafanarts
+            If Master.eSettings.TVShowExtrafanartsAnyEnabled Then
+                'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                '.btnSetFanartScrape.Enabled = False
+                'End If
+                If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
+                    Dim iIndex As Integer = 0
+                    For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
+                        AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                        iIndex += 1
+                    Next
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpExtrafanarts)
+            End If
+
+            'Fanart
             If Master.eSettings.TVShowFanartAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     .btnSetFanartScrape.Enabled = False
@@ -1282,6 +1268,7 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpFanart)
             End If
 
+            'Landscape
             If Master.eSettings.TVShowLandscapeAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape) Then
                     .btnSetLandscapeScrape.Enabled = False
@@ -1297,6 +1284,7 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpLandscape)
             End If
 
+            'Poster
             If Master.eSettings.TVShowPosterAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster) Then
                     .btnSetPosterScrape.Enabled = False
@@ -1335,65 +1323,6 @@ Public Class dlgEditTVShow
                 Me.txtMPAA.Text = Me.lbMPAA.SelectedItem.ToString
             End If
         End If
-    End Sub
-
-    Private Sub LoadEFanarts()
-        Dim EF_tPath As String = String.Empty
-        Dim EF_lFI As New List(Of String)
-        Dim EF_i As Integer = 0
-        Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
-
-        For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainExtrafanarts)
-            If Directory.Exists(a) Then
-                EF_lFI.AddRange(Directory.GetFiles(a))
-            End If
-        Next
-
-        Try
-            If EF_lFI.Count > 0 Then
-
-                ' load local Extrafanarts
-                If EF_lFI.Count > 0 Then
-                    For Each fanart As String In EF_lFI
-                        Dim EFImage As New Images
-                        If Me.bwEFanarts.CancellationPending Then Return
-                        If Not Me.efDeleteList.Contains(fanart) Then
-                            EFImage.FromFile(fanart)
-                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                            EF_i += 1
-                            If EF_i >= EF_max Then Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            ' load scraped Extrafanarts
-            If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
-                If Not EF_i >= EF_max Then
-                    For Each fanart As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
-                        'Dim EFImage As New Images
-                        'If Not String.IsNullOrEmpty(fanart) Then
-                        '    EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
-                        'End If
-                        'If EFImage.Image IsNot Nothing Then
-                        '    EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
-                        '    EF_i += 1
-                        '    If EF_i >= EF_max Then Exit For
-                        'End If
-                    Next
-                End If
-            End If
-
-            If EF_i >= EF_max AndAlso EFanartsWarning Then
-                MessageBox.Show(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                EFanartsWarning = False 'show warning only one time
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        EF_lFI = Nothing
     End Sub
 
     Private Sub LoadGenres()
@@ -1446,10 +1375,6 @@ Public Class dlgEditTVShow
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
-    End Sub
-
-    Private Sub pbEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
@@ -1865,29 +1790,20 @@ Public Class dlgEditTVShow
         End Try
     End Sub
 
-    Private Sub pnlEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
-    End Sub
+    Private Sub RefreshExtrafanarts()
+        'Me.pnlExtrafanarts.AutoScrollPosition = New Point(0, 0)
+        iEFTop = 1
+        While Me.pnlExtrafanarts.Controls.Count > 0
+            Me.pnlExtrafanarts.Controls(0).Dispose()
+        End While
 
-    Private Sub RefreshEFanarts()
-        Try
-            If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
-            While Me.bwEFanarts.IsBusy
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
-
-            Me.iEFTop = 1 ' set first image top position back to 1
-            Me.EFanartsList.Clear()
-            While Me.pnlEFanartsBG.Controls.Count > 0
-                Me.pnlEFanartsBG.Controls(0).Dispose()
-            End While
-
-            Me.bwEFanarts.WorkerSupportsCancellation = True
-            Me.bwEFanarts.RunWorkerAsync()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
+            Dim iIndex As Integer = 0
+            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
+                AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                iIndex += 1
+            Next
+        End If
     End Sub
 
     Private Sub SelectMPAA()
@@ -2051,7 +1967,7 @@ Public Class dlgEditTVShow
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Text = sTitle
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.btnEFanartsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
+        Me.btnExtrafanartsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colRole.Text = Master.eLang.GetString(233, "Role")
         Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
@@ -2075,7 +1991,7 @@ Public Class dlgEditTVShow
         Me.tpClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
         Me.tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
         Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
-        Me.tpEFanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
+        Me.tpExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.tpLandscape.Text = Master.eLang.GetString(1035, "Landscape")
         Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")

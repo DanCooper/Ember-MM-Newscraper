@@ -7537,7 +7537,7 @@ Public Class Settings
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
     End Function
 
-    Public Function TVShowEFanartsAnyEnabled() As Boolean
+    Public Function TVShowExtrafanartsAnyEnabled() As Boolean
         Return TVShowExtrafanartsFrodo OrElse _
             (TVUseExpert AndAlso TVShowExtrafanartsExpert)
     End Function
