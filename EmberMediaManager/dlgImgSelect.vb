@@ -214,6 +214,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImgSelectNew_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        Me.pnlLoading.Location = New Point(CInt((Me.pnlImageList.Left + (Me.pnlImageList.Width / 2)) - Me.pnlLoading.Width / 2), CInt((Me.pnlImageList.Top + (Me.pnlImageList.Height / 2)) - Me.pnlLoading.Height / 2))
         tmrReorderMainList.Stop()
         tmrReorderMainList.Start()
     End Sub
@@ -608,6 +609,8 @@ Public Class dlgImgSelect
         Me.currListImageSelectedSeason = tTag.iSeason
         Me.currListImageSelectedImageType = tTag.ImageType
 
+        Me.pnlLoading.Visible = True
+
         Select Case tTag.ImageType
             Case Enums.ModifierType.AllSeasonsBanner
                 If LoadedMainBanner AndAlso LoadedSeasonBanner Then FillImageList(tTag)
@@ -654,6 +657,9 @@ Public Class dlgImgSelect
 
     Private Sub FillImageList(ByRef tTag As iTag)
         Dim iCount As Integer = 0
+
+        Me.pnlLoading.Visible = False
+        Application.DoEvents()
 
         Select Case tTag.ImageType
             Case Enums.ModifierType.AllSeasonsBanner
