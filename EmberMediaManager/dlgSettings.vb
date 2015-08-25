@@ -2863,6 +2863,7 @@ Public Class dlgSettings
             End If
             Me.chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
             Me.chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
+            Me.chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             Me.chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
             Me.chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
             If .MovieImagesPrefLanguageOnly Then
@@ -2926,6 +2927,7 @@ Public Class dlgSettings
                 Me.txtMovieSetFanartWidth.Text = .MovieSetFanartWidth.ToString
             End If
             Me.chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
+            Me.chkMovieSetImagesCacheEnabled.Checked = .MovieSetImagesCacheEnabled
             Me.chkMovieSetImagesDisplayImageSelect.Checked = .MovieSetImagesDisplayImageSelect
             If .MovieSetImagesPrefLanguageOnly Then
                 Me.chkMovieSetImagesPrefLanguageOnly.Checked = True
@@ -3032,6 +3034,7 @@ Public Class dlgSettings
             Me.chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             Me.chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
+            Me.chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
             Me.chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
             If .TVImagesPrefLanguageOnly Then
                 Me.chkTVImagesPrefLanguageOnly.Checked = True
@@ -4641,6 +4644,7 @@ Public Class dlgSettings
             .MovieGeneralMarkNew = Me.chkMovieGeneralMarkNew.Checked
             .MovieGeneralMediaListSorting.Clear()
             .MovieGeneralMediaListSorting.AddRange(Me.MovieGeneralMediaListSorting)
+            .MovieImagesCacheEnabled = Me.chkMovieImagesCacheEnabled.Checked
             .MovieImagesDisplayImageSelect = Me.chkMovieImagesDisplayImageSelect.Checked
             .MovieImagesGetBlankImages = Me.chkMovieImagesGetBlankImages.Checked
             .MovieImagesGetEnglishImages = Me.chkMovieImagesGetEnglishImages.Checked
@@ -4710,6 +4714,7 @@ Public Class dlgSettings
             .MovieSetGeneralMarkNew = Me.chkMovieSetGeneralMarkNew.Checked
             .MovieSetGeneralMediaListSorting.Clear()
             .MovieSetGeneralMediaListSorting.AddRange(Me.MovieSetGeneralMediaListSorting)
+            .MovieSetImagesCacheEnabled = Me.chkMovieSetImagesCacheEnabled.Checked
             .MovieSetImagesDisplayImageSelect = Me.chkMovieSetImagesDisplayImageSelect.Checked
             .MovieSetImagesGetBlankImages = Me.chkMovieSetImagesGetBlankImages.Checked
             .MovieSetImagesGetEnglishImages = Me.chkMovieSetImagesGetEnglishImages.Checked
@@ -4867,6 +4872,7 @@ Public Class dlgSettings
             .TVGeneralSeasonListSorting.AddRange(Me.TVGeneralSeasonListSorting)
             .TVGeneralShowListSorting.Clear()
             .TVGeneralShowListSorting.AddRange(Me.TVGeneralShowListSorting)
+            .TVImagesCacheEnabled = Me.chkTVImagesCacheEnabled.Checked
             .TVImagesDisplayImageSelect = Me.chkTVImagesDisplayImageSelect.Checked
             .TVImagesGetBlankImages = Me.chkTVImagesGetBlankImages.Checked
             .TVImagesGetEnglishImages = Me.chkTVImagesGetEnglishImages.Checked
@@ -5712,6 +5718,12 @@ Public Class dlgSettings
         Dim strEnabledClickScrape As String = Master.eLang.GetString(849, "Enable Click Scrape")
         Me.chkMovieClickScrape.Text = strEnabledClickScrape
         Me.chkMovieSetClickScrape.Text = strEnabledClickScrape
+
+        'Enable Image Caching
+        Dim strEnableImageCaching As String = Master.eLang.GetString(249, "Enable Image Caching")
+        Me.chkMovieImagesCacheEnabled.Text = strEnableImageCaching
+        Me.chkMovieSetImagesCacheEnabled.Text = strEnableImageCaching
+        Me.chkTVImagesCacheEnabled.Text = strEnableImageCaching
 
         'Enable Theme Support
         Dim strEnableThemeSupport As String = Master.eLang.GetString(1082, "Enable Theme Support")
@@ -7371,6 +7383,7 @@ Public Class dlgSettings
         chkMovieFanartPrefOnly.CheckedChanged, _
         chkMovieGeneralIgnoreLastScan.CheckedChanged, _
         chkMovieGeneralMarkNew.CheckedChanged, _
+        chkMovieImagesCacheEnabled.CheckedChanged, _
         chkMovieImagesDisplayImageSelect.CheckedChanged, _
         chkMovieImagesGetBlankImages.CheckedChanged, _
         chkMovieImagesGetEnglishImages.CheckedChanged, _
@@ -7453,6 +7466,7 @@ Public Class dlgSettings
         chkMovieSetFanartOverwrite.CheckedChanged, _
         chkMovieSetFanartPrefOnly.CheckedChanged, _
         chkMovieSetGeneralMarkNew.CheckedChanged, _
+        chkMovieSetImagesCacheEnabled.CheckedChanged, _
         chkMovieSetImagesGetBlankImages.CheckedChanged, _
         chkMovieSetImagesGetEnglishImages.CheckedChanged, _
         chkMovieSetLandscapeExtended.CheckedChanged, _
@@ -7492,6 +7506,7 @@ Public Class dlgSettings
         chkTVGeneralIgnoreLastScan.CheckedChanged, _
         chkTVGeneralMarkNewEpisodes.CheckedChanged, _
         chkTVGeneralMarkNewShows.CheckedChanged, _
+        chkTVImagesCacheEnabled.CheckedChanged, _
         chkTVImagesDisplayImageSelect.CheckedChanged, _
         chkTVImagesGetBlankImages.CheckedChanged, _
         chkTVImagesGetEnglishImages.CheckedChanged, _

@@ -93,7 +93,6 @@ Partial Public Class clsXMLSettings
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
     Private _moviediscartoverwrite As Boolean
-    Private _movieimagesdisplayimageselect As Boolean
     Private _moviedisplayyear As Boolean
     Private _movieefanartsheight As Integer
     Private _movieefanartslimit As Integer
@@ -129,6 +128,8 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegeneralmarknew As Boolean
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
+    Private _movieimagescacheenabled As Boolean
+    Private _movieimagesdisplayimageselect As Boolean
     Private _movieimagesgetblankimages As Boolean
     Private _movieimagesgetenglishimages As Boolean
     Private _movieimagespreflanguage As String
@@ -242,7 +243,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetclickscrape As Boolean
     Private _moviesetclickscrapeask As Boolean
     Private _moviesetdiscartoverwrite As Boolean
-    Private _moviesetimagesdisplayimageselect As Boolean
     Private _moviesetfanartheight As Integer
     Private _moviesetfanartoverwrite As Boolean
     Private _moviesetfanartprefsizeonly As Boolean
@@ -251,6 +251,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralmarknew As Boolean
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
+    Private _moviesetimagescacheenabled As Boolean
+    Private _moviesetimagesdisplayimageselect As Boolean
     Private _moviesetimagesgetblankimages As Boolean
     Private _moviesetimagesgetenglishimages As Boolean
     Private _moviesetimagespreflanguage As String
@@ -356,6 +358,7 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralmarknewshows As Boolean
     Private _tvgeneralseasonlistsorting As List(Of ListSorting)
     Private _tvgeneralshowlistsorting As List(Of ListSorting)
+    Private _tvimagescacheenabled As Boolean
     Private _tvimagesdisplayimageselect As Boolean
     Private _tvimagesgetblankimages As Boolean
     Private _tvimagesgetenglishimages As Boolean
@@ -1327,6 +1330,33 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvdisplaystatus = value
+        End Set
+    End Property
+
+    Public Property MovieImagesCacheEnabled() As Boolean
+        Get
+            Return Me._movieimagescacheenabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieimagescacheenabled = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesCacheEnabled() As Boolean
+        Get
+            Return Me._moviesetimagescacheenabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetimagescacheenabled = value
+        End Set
+    End Property
+
+    Public Property TVImagesCacheEnabled() As Boolean
+        Get
+            Return Me._tvimagescacheenabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagescacheenabled = value
         End Set
     End Property
 

@@ -99,6 +99,7 @@ Partial Class dlgSettings
         Me.tblMovieImagesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieImagesNotSaveURLToNfo = New System.Windows.Forms.CheckBox()
         Me.chkMovieImagesDisplayImageSelect = New System.Windows.Forms.CheckBox()
+        Me.chkMovieImagesCacheEnabled = New System.Windows.Forms.CheckBox()
         Me.gbMovieImagesLandscapeOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieImagesLandscapeOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieLandscapeOverwrite = New System.Windows.Forms.CheckBox()
@@ -908,6 +909,7 @@ Partial Class dlgSettings
         Me.tblTVImagesGlobal = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVImagesOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkTVImagesCacheEnabled = New System.Windows.Forms.CheckBox()
         Me.chkTVImagesNotSaveURLToNfo = New System.Windows.Forms.CheckBox()
         Me.chkTVImagesDisplayImageSelect = New System.Windows.Forms.CheckBox()
         Me.gbTVImagesLanguageOpts = New System.Windows.Forms.GroupBox()
@@ -1183,6 +1185,7 @@ Partial Class dlgSettings
         Me.tblTVScraperMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVScraperUseSRuntimeForEp = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperUseDisplaySeasonEpisode = New System.Windows.Forms.CheckBox()
+        Me.chkTVScraperCleanFields = New System.Windows.Forms.CheckBox()
         Me.cbMovieScraperCertLang = New System.Windows.Forms.ComboBox()
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
         Me.txtMovieScraperOutlineLimit = New System.Windows.Forms.TextBox()
@@ -1489,6 +1492,7 @@ Partial Class dlgSettings
         Me.cbMovieSetImagesPrefLanguage = New System.Windows.Forms.ComboBox()
         Me.gbMovieSetImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetImagesOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkMovieSetImagesCacheEnabled = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetImagesDisplayImageSelect = New System.Windows.Forms.CheckBox()
         Me.gbMovieSetImagesPosterOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetImagesPosterOpts = New System.Windows.Forms.TableLayoutPanel()
@@ -1537,7 +1541,6 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkTVScraperCleanFields = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -2808,10 +2811,12 @@ Partial Class dlgSettings
         Me.tblMovieImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImagesOpts.Controls.Add(Me.chkMovieImagesNotSaveURLToNfo, 0, 1)
         Me.tblMovieImagesOpts.Controls.Add(Me.chkMovieImagesDisplayImageSelect, 0, 0)
+        Me.tblMovieImagesOpts.Controls.Add(Me.chkMovieImagesCacheEnabled, 0, 2)
         Me.tblMovieImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieImagesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieImagesOpts.Name = "tblMovieImagesOpts"
-        Me.tblMovieImagesOpts.RowCount = 3
+        Me.tblMovieImagesOpts.RowCount = 4
+        Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -2842,6 +2847,20 @@ Partial Class dlgSettings
         Me.chkMovieImagesDisplayImageSelect.TabIndex = 3
         Me.chkMovieImagesDisplayImageSelect.Text = "Display ""Image Select"" dialog while single scraping"
         Me.chkMovieImagesDisplayImageSelect.UseVisualStyleBackColor = true
+        '
+        'chkMovieImagesCacheEnabled
+        '
+        Me.chkMovieImagesCacheEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieImagesCacheEnabled.AutoSize = true
+        Me.chkMovieImagesCacheEnabled.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkMovieImagesCacheEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieImagesCacheEnabled.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieImagesCacheEnabled.Name = "chkMovieImagesCacheEnabled"
+        Me.chkMovieImagesCacheEnabled.Size = New System.Drawing.Size(140, 17)
+        Me.chkMovieImagesCacheEnabled.TabIndex = 2
+        Me.chkMovieImagesCacheEnabled.Text = "Enable Image Caching"
+        Me.chkMovieImagesCacheEnabled.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkMovieImagesCacheEnabled.UseVisualStyleBackColor = true
         '
         'gbMovieImagesLandscapeOpts
         '
@@ -13156,17 +13175,33 @@ Partial Class dlgSettings
         Me.tblTVImagesOpts.ColumnCount = 2
         Me.tblTVImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVImagesOpts.Controls.Add(Me.chkTVImagesCacheEnabled, 0, 2)
         Me.tblTVImagesOpts.Controls.Add(Me.chkTVImagesNotSaveURLToNfo, 0, 1)
         Me.tblTVImagesOpts.Controls.Add(Me.chkTVImagesDisplayImageSelect, 0, 0)
         Me.tblTVImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVImagesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVImagesOpts.Name = "tblTVImagesOpts"
-        Me.tblTVImagesOpts.RowCount = 3
+        Me.tblTVImagesOpts.RowCount = 4
+        Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesOpts.Size = New System.Drawing.Size(292, 73)
         Me.tblTVImagesOpts.TabIndex = 17
+        '
+        'chkTVImagesCacheEnabled
+        '
+        Me.chkTVImagesCacheEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVImagesCacheEnabled.AutoSize = true
+        Me.chkTVImagesCacheEnabled.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVImagesCacheEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVImagesCacheEnabled.Location = New System.Drawing.Point(3, 49)
+        Me.chkTVImagesCacheEnabled.Name = "chkTVImagesCacheEnabled"
+        Me.chkTVImagesCacheEnabled.Size = New System.Drawing.Size(140, 17)
+        Me.chkTVImagesCacheEnabled.TabIndex = 4
+        Me.chkTVImagesCacheEnabled.Text = "Enable Image Caching"
+        Me.chkTVImagesCacheEnabled.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkTVImagesCacheEnabled.UseVisualStyleBackColor = true
         '
         'chkTVImagesNotSaveURLToNfo
         '
@@ -16892,6 +16927,18 @@ Partial Class dlgSettings
         Me.chkTVScraperUseDisplaySeasonEpisode.TabIndex = 2
         Me.chkTVScraperUseDisplaySeasonEpisode.Text = "Add <displayseason> and <displayepisode> to special episodes"
         Me.chkTVScraperUseDisplaySeasonEpisode.UseVisualStyleBackColor = true
+        '
+        'chkTVScraperCleanFields
+        '
+        Me.chkTVScraperCleanFields.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVScraperCleanFields.AutoSize = true
+        Me.chkTVScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperCleanFields.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVScraperCleanFields.Name = "chkTVScraperCleanFields"
+        Me.chkTVScraperCleanFields.Size = New System.Drawing.Size(147, 17)
+        Me.chkTVScraperCleanFields.TabIndex = 79
+        Me.chkTVScraperCleanFields.Text = "Cleanup disabled fields"
+        Me.chkTVScraperCleanFields.UseVisualStyleBackColor = true
         '
         'cbMovieScraperCertLang
         '
@@ -20819,15 +20866,31 @@ Partial Class dlgSettings
         Me.tblMovieSetImagesOpts.ColumnCount = 2
         Me.tblMovieSetImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetImagesOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieSetImagesOpts.Controls.Add(Me.chkMovieSetImagesCacheEnabled, 0, 1)
         Me.tblMovieSetImagesOpts.Controls.Add(Me.chkMovieSetImagesDisplayImageSelect, 0, 0)
         Me.tblMovieSetImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSetImagesOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSetImagesOpts.Name = "tblMovieSetImagesOpts"
-        Me.tblMovieSetImagesOpts.RowCount = 2
+        Me.tblMovieSetImagesOpts.RowCount = 3
+        Me.tblMovieSetImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesOpts.Size = New System.Drawing.Size(292, 73)
         Me.tblMovieSetImagesOpts.TabIndex = 17
+        '
+        'chkMovieSetImagesCacheEnabled
+        '
+        Me.chkMovieSetImagesCacheEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieSetImagesCacheEnabled.AutoSize = true
+        Me.chkMovieSetImagesCacheEnabled.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkMovieSetImagesCacheEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetImagesCacheEnabled.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieSetImagesCacheEnabled.Name = "chkMovieSetImagesCacheEnabled"
+        Me.chkMovieSetImagesCacheEnabled.Size = New System.Drawing.Size(140, 17)
+        Me.chkMovieSetImagesCacheEnabled.TabIndex = 4
+        Me.chkMovieSetImagesCacheEnabled.Text = "Enable Image Caching"
+        Me.chkMovieSetImagesCacheEnabled.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkMovieSetImagesCacheEnabled.UseVisualStyleBackColor = true
         '
         'chkMovieSetImagesDisplayImageSelect
         '
@@ -21506,18 +21569,6 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
         Me.tblSettingsFooter.TabIndex = 0
-        '
-        'chkTVScraperCleanFields
-        '
-        Me.chkTVScraperCleanFields.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVScraperCleanFields.AutoSize = true
-        Me.chkTVScraperCleanFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVScraperCleanFields.Location = New System.Drawing.Point(3, 3)
-        Me.chkTVScraperCleanFields.Name = "chkTVScraperCleanFields"
-        Me.chkTVScraperCleanFields.Size = New System.Drawing.Size(147, 17)
-        Me.chkTVScraperCleanFields.TabIndex = 79
-        Me.chkTVScraperCleanFields.Text = "Cleanup disabled fields"
-        Me.chkTVScraperCleanFields.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -23822,4 +23873,7 @@ End Sub
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAALandscape As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAPoster As System.Windows.Forms.Label
     Friend WithEvents chkTVScraperCleanFields As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieImagesCacheEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVImagesCacheEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSetImagesCacheEnabled As System.Windows.Forms.CheckBox
 End Class

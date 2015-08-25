@@ -4259,6 +4259,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieImagesCacheEnabled() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieImagesCacheEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieImagesCacheEnabled = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesCacheEnabled() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetImagesCacheEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetImagesCacheEnabled = value
+        End Set
+    End Property
+
+    Public Property TVImagesCacheEnabled() As Boolean
+        Get
+            Return Settings._XMLSettings.TVImagesCacheEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesCacheEnabled = value
+        End Set
+    End Property
+
     Public Property MovieImagesGetBlankImages() As Boolean
         Get
             Return Settings._XMLSettings.MovieImagesGetBlankImages
@@ -6724,6 +6751,7 @@ Public Class Settings
         Me.MovieGeneralIgnoreLastScan = True
         Me.MovieGeneralMarkNew = False
         Me.MovieGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieImagesCacheEnabled = False
         Me.MovieImagesDisplayImageSelect = True
         Me.MovieImagesGetBlankImages = False
         Me.MovieImagesGetEnglishImages = False
@@ -6846,6 +6874,7 @@ Public Class Settings
         Me.MovieSetFanartWidth = 0
         Me.MovieSetGeneralMarkNew = False
         Me.MovieSetGeneralMediaListSorting = New List(Of ListSorting)
+        Me.MovieSetImagesCacheEnabled = False
         Me.MovieSetImagesDisplayImageSelect = True
         Me.MovieSetImagesGetBlankImages = False
         Me.MovieSetImagesGetEnglishImages = False
@@ -6953,6 +6982,7 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
+        Me.TVImagesCacheEnabled = False
         Me.TVImagesDisplayImageSelect = True
         Me.TVImagesGetBlankImages = False
         Me.TVImagesGetEnglishImages = False

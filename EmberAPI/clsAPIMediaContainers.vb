@@ -20,6 +20,7 @@
 
 Imports System.Xml.Serialization
 Imports System.Text.RegularExpressions
+Imports System.IO
 
 Namespace MediaContainers
 
@@ -3201,6 +3202,7 @@ Namespace MediaContainers
 
         Private _cacheoriginalpath As String
         Private _cachethumbpath As String
+        Private _contenttype As Enums.ContentType
         Private _disc As Integer
         Private _disctype As String
         Private _episode As Integer
@@ -3258,6 +3260,12 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 Me._cachethumbpath = value
             End Set
+        End Property
+
+        Public ReadOnly Property ContentType() As Enums.ContentType
+            Get
+                Return Me._contenttype
+            End Get
         End Property
 
         Public Property Disc() As Integer
@@ -3493,6 +3501,10 @@ Namespace MediaContainers
 
 #Region "Methods"
 
+        Public Sub New(ByVal tContentType As Enums.ContentType)
+            Me._contenttype = tContentType
+        End Sub
+
         Public Sub Clear()
             Me._cachethumbpath = String.Empty
             Me._disc = 0
@@ -3565,6 +3577,43 @@ Namespace MediaContainers
                     Me._tvpostersize = Enums.TVPosterSize.Any
                     Me._tvseasonpostersize = Enums.TVSeasonPosterSize.Any
             End Select
+        End Sub
+
+        Public Sub Download(Optional needFullsize As Boolean = False)
+            Dim doCache As Boolean = False
+
+            Select Case Me.ContentType
+                Case Enums.ContentType.Movie
+                    doCache = Master.eSettings.MovieImagesCacheEnabled
+                Case Enums.ContentType.MovieSet
+                    doCache = Master.eSettings.MovieSetImagesCacheEnabled
+                Case Enums.ContentType.TV
+                    doCache = Master.eSettings.TVImagesCacheEnabled
+            End Select
+
+            If Me.ImageOriginal.Image Is Nothing Then
+                If File.Exists(Me.LocalFilePath) Then
+                    Me.ImageOriginal.FromFile(Me.LocalFilePath)
+                ElseIf File.Exists(Me.CacheThumbPath) AndAlso Not needFullsize Then
+                    Me.ImageThumb.FromFile(Me.CacheThumbPath)
+                ElseIf File.Exists(Me.CacheOriginalPath) Then
+                    Me.ImageOriginal.FromFile(Me.CacheOriginalPath)
+                Else
+                    If Not String.IsNullOrEmpty(Me.URLThumb) AndAlso Not needFullsize Then
+                        Me.ImageThumb.FromWeb(Me.URLThumb)
+                        If doCache AndAlso Not String.IsNullOrEmpty(Me.CacheOriginalPath) AndAlso Me.ImageThumb.Image IsNot Nothing Then
+                            Directory.CreateDirectory(Directory.GetParent(Me.CacheThumbPath).FullName)
+                            Me.ImageThumb.Save(Me.CacheThumbPath)
+                        End If
+                    ElseIf Not String.IsNullOrEmpty(Me.URLOriginal) Then
+                        Me.ImageOriginal.FromWeb(Me.URLOriginal)
+                        If doCache AndAlso Not String.IsNullOrEmpty(Me.CacheOriginalPath) AndAlso Me.ImageOriginal.Image IsNot Nothing Then
+                            Directory.CreateDirectory(Directory.GetParent(Me.CacheOriginalPath).FullName)
+                            Me.ImageOriginal.Save(Me.CacheOriginalPath)
+                        End If
+                    End If
+                End If
+            End If
         End Sub
 
         Public Function CompareTo(ByVal other As [Image]) As Integer Implements IComparable(Of [Image]).CompareTo
@@ -4503,6 +4552,131 @@ Namespace MediaContainers
             Me._mainfanarts.Clear()
             Me._mainlandscapes.Clear()
             Me._mainposters.Clear()
+        End Sub
+
+        Public Sub CreateCachePaths(ByVal tContentType As Enums.ContentType, ByVal tDBElement As Database.DBElement)
+            Dim sID As String = String.Empty
+            Dim sPath As String = String.Empty
+
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    sID = tDBElement.Movie.ID
+                    If String.IsNullOrEmpty(sID) Then
+                        sID = tDBElement.Movie.TMDBID
+                    End If
+                    sPath = Path.Combine(Master.TempPath, String.Concat("Movies", Path.DirectorySeparatorChar, sID))
+                Case Enums.ContentType.MovieSet
+                    sID = tDBElement.MovieSet.TMDB
+                    sPath = Path.Combine(Master.TempPath, String.Concat("MovieSets", Path.DirectorySeparatorChar, sID))
+                Case Enums.ContentType.TV
+                    sID = tDBElement.TVShow.TVDB
+                    sPath = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID))
+                Case Else
+                    Throw New ArgumentOutOfRangeException("wrong tContentType", "value must be Movie, MovieSet or TV")
+                    Return
+            End Select
+
+            If String.IsNullOrEmpty(sID) Then
+                sID = "Unknown"
+            End If
+
+            For Each tImg As MediaContainers.Image In Me.EpisodeFanarts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("episodefanarts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("episodefanarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.EpisodePosters
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("episodeposters", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("episodeposters\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainBanners
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainbanners", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("mainbanners\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainCharacterArts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("maincharacterarts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("maincharacterarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainClearArts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("maincleararts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("maincleararts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainClearLogos
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainclearlogos", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("mainclearlogos\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainDiscArts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("maindiscarts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("maindiscarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainFanarts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainfanarts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("mainfanarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainLandscapes
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("mainlandscapes\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.MainPosters
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("mainposters", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("mainposters\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.SeasonBanners
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("seasonbanners", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("seasonbanners\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.SeasonFanarts
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("seasonfanarts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("seasonfanarts\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.SeasonLandscapes
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("seasonlandscapes", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("seasonlandscapes\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
+
+            For Each tImg As MediaContainers.Image In Me.SeasonPosters
+                tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("seasonposters", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                If Not String.IsNullOrEmpty(tImg.URLThumb) Then
+                    tImg.CacheThumbPath = Path.Combine(sPath, String.Concat("seasonposters\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))
+                End If
+            Next
         End Sub
 
         Public Sub Sort(ByRef ContentType As Enums.ContentType)

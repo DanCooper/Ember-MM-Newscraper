@@ -140,7 +140,6 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsAPICache.vb" />
     <Compile Include="clsAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />

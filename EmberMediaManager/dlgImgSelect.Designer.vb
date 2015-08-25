@@ -388,7 +388,7 @@ Partial Class dlgImgSelect
         '
         Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(1196, 17)
+        Me.lblStatus.Size = New System.Drawing.Size(1227, 17)
         Me.lblStatus.Spring = True
         Me.lblStatus.Text = "Downloading"
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight

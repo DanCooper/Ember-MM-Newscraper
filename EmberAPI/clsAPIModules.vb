@@ -1343,6 +1343,8 @@ Public Class ModulesManager
                 'sorting
                 ImagesContainer.Sort(Enums.ContentType.Movie)
 
+                'create cache paths
+                ImagesContainer.CreateCachePaths(Enums.ContentType.Movie, DBMovie)
             End If
 
             Return ret.Cancelled
@@ -1396,6 +1398,8 @@ Public Class ModulesManager
             'sorting
             ImagesContainer.Sort(Enums.ContentType.MovieSet)
 
+            'create cache paths
+            ImagesContainer.CreateCachePaths(Enums.ContentType.MovieSet, DBMovieSet)
         End If
 
         Return ret.Cancelled
@@ -1484,6 +1488,8 @@ Public Class ModulesManager
                 'sorting
                 ImagesContainer.Sort(Enums.ContentType.TV)
 
+                'create cache paths
+                ImagesContainer.CreateCachePaths(Enums.ContentType.TV, DBTV)
             End If
 
             Return ret.Cancelled

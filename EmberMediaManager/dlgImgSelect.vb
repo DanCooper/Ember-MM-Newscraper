@@ -282,97 +282,97 @@ Public Class dlgImgSelect
 
         'Episode Fanart
         If DoEpisodeFanart Then
-            For Each sEpisode As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
-                DownloadAndCache(sEpisode.ImagesContainer.Fanart, False)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+                tImg.ImagesContainer.Fanart.Download()
             Next
         End If
 
         'Episode Poster
         If DoEpisodePoster Then
-            For Each sEpisode As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
-                DownloadAndCache(sEpisode.ImagesContainer.Poster, False)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+                tImg.ImagesContainer.Poster.Download()
             Next
         End If
 
         'Main Banner
         If (DoMainBanner OrElse DoAllSeasonsBanner OrElse DoSeasonBanner) AndAlso Me.tDBElementResult.ImagesContainer.Banner.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Banner, False)
+            Me.tDBElementResult.ImagesContainer.Banner.Download()
         End If
 
         'Main CharacterArt
         If DoMainCharacterArt AndAlso Me.tDBElementResult.ImagesContainer.CharacterArt.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.CharacterArt, False)
+            Me.tDBElementResult.ImagesContainer.CharacterArt.Download()
         End If
 
         'Main ClearArt
         If DoMainClearArt AndAlso Me.tDBElementResult.ImagesContainer.ClearArt.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.ClearArt, False)
+            Me.tDBElementResult.ImagesContainer.ClearArt.Download()
         End If
 
         'Main ClearLogo
         If DoMainClearLogo AndAlso Me.tDBElementResult.ImagesContainer.ClearLogo.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.ClearLogo, False)
+            Me.tDBElementResult.ImagesContainer.ClearLogo.Download()
         End If
 
         'Main DiscArt
         If DoMainDiscArt AndAlso Me.tDBElementResult.ImagesContainer.DiscArt.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.DiscArt, False)
+            Me.tDBElementResult.ImagesContainer.DiscArt.Download()
         End If
 
         'Main Extrafanarts
         If DoMainExtrafanarts AndAlso Me.tDBElementResult.ImagesContainer.Extrafanarts.Count > 0 Then
-            For Each img In tDBElementResult.ImagesContainer.Extrafanarts
-                DownloadAndCache(img, False)
+            For Each tImg In tDBElementResult.ImagesContainer.Extrafanarts
+                tImg.Download()
             Next
         End If
 
         'Main Extrathumbs
         If DoMainExtrathumbs AndAlso Me.tDBElementResult.ImagesContainer.Extrathumbs.Count > 0 Then
-            For Each img In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-                DownloadAndCache(img, False)
+            For Each tImg In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
+                tImg.Download()
             Next
         End If
 
         'Main Fanart
         If (DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart) AndAlso Me.tDBElementResult.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Fanart, False)
+            Me.tDBElementResult.ImagesContainer.Fanart.Download()
         End If
 
         'Main Landscape
         If (DoMainLandscape OrElse DoAllSeasonsLandscape OrElse DoSeasonLandscape) AndAlso Me.tDBElementResult.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Landscape, False)
+            Me.tDBElementResult.ImagesContainer.Landscape.Download()
         End If
 
         'Main Poster
         If (DoMainPoster OrElse DoAllSeasonsPoster OrElse DoEpisodePoster OrElse DoSeasonPoster) AndAlso Me.tDBElementResult.ImagesContainer.Poster.ImageOriginal.Image Is Nothing Then
-            DownloadAndCache(Me.tDBElementResult.ImagesContainer.Poster, False)
+            Me.tDBElementResult.ImagesContainer.Poster.Download()
         End If
 
         'Season Banner
         If DoSeasonBanner Then
-            For Each sSeason As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Banner.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                DownloadAndCache(sSeason.ImagesContainer.Banner, False)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Banner.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+                tImg.ImagesContainer.Banner.Download()
             Next
         End If
 
         'Season Fanart
         If DoSeasonFanart Then
-            For Each sSeason As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                DownloadAndCache(sSeason.ImagesContainer.Fanart, False)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+                tImg.ImagesContainer.Fanart.Download()
             Next
         End If
 
         'Season Landscape
         If DoSeasonLandscape Then
-            For Each sSeason As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                DownloadAndCache(sSeason.ImagesContainer.Landscape, False)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+                tImg.ImagesContainer.Landscape.Download()
             Next
         End If
 
         'Season Poster
         If DoSeasonPoster Then
-            For Each sSeason As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                DownloadAndCache(sSeason.ImagesContainer.Poster, False)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+                tImg.ImagesContainer.Poster.Download()
             Next
         End If
     End Function
@@ -389,7 +389,7 @@ Public Class dlgImgSelect
         'Main Posters
         If DoMainPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -404,7 +404,7 @@ Public Class dlgImgSelect
         'Main Banners
         If DoMainBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -419,7 +419,7 @@ Public Class dlgImgSelect
         'Main CharacterArts
         If DoMainCharacterArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -433,7 +433,7 @@ Public Class dlgImgSelect
         'Main ClearArts
         If DoMainClearArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearArts
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -447,7 +447,7 @@ Public Class dlgImgSelect
         'Main ClearLogos
         If DoMainClearLogo Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -461,7 +461,7 @@ Public Class dlgImgSelect
         'Main Discarts
         If DoMainDiscArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -475,7 +475,7 @@ Public Class dlgImgSelect
         'Main Fanarts
         If DoMainFanart OrElse DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -494,7 +494,7 @@ Public Class dlgImgSelect
         'Main Landscapes
         If DoMainLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -509,7 +509,7 @@ Public Class dlgImgSelect
         'Season Banners
         If DoSeasonBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -524,7 +524,7 @@ Public Class dlgImgSelect
         'Season Fanarts
         If DoSeasonFanart OrElse DoAllSeasonsFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -539,7 +539,7 @@ Public Class dlgImgSelect
         'Season Landscapes
         If DoSeasonLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -554,7 +554,7 @@ Public Class dlgImgSelect
         'Season Posters
         If DoSeasonPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -569,7 +569,7 @@ Public Class dlgImgSelect
         'Episode Fanarts
         If DoEpisodeFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -583,7 +583,7 @@ Public Class dlgImgSelect
         'Episode Posters
         If DoEpisodePoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
-                DownloadAndCache(tImg, False)
+                tImg.Download()
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -597,30 +597,6 @@ Public Class dlgImgSelect
         Return False
     End Function
 
-    Private Sub DownloadAndCache(ByRef tImage As MediaContainers.Image, ByVal doCache As Boolean, Optional needFullsize As Boolean = False)
-        If tImage.ImageOriginal.Image Is Nothing Then
-            If File.Exists(tImage.LocalFilePath) Then
-                tImage.ImageOriginal.FromFile(tImage.LocalFilePath)
-            ElseIf File.Exists(tImage.CacheThumbPath) AndAlso Not needFullsize Then
-                tImage.ImageThumb.FromFile(tImage.CacheThumbPath)
-            Else
-                If Not String.IsNullOrEmpty(tImage.URLThumb) AndAlso Not needFullsize Then
-                    tImage.ImageThumb.FromWeb(tImage.URLThumb)
-                    If tImage.ImageThumb.Image IsNot Nothing AndAlso doCache Then
-                        Directory.CreateDirectory(Directory.GetParent(tImage.CacheThumbPath).FullName)
-                        tImage.ImageThumb.Save(tImage.CacheThumbPath)
-                    End If
-                ElseIf Not String.IsNullOrEmpty(tImage.URLOriginal) Then
-                    tImage.ImageOriginal.FromWeb(tImage.URLOriginal)
-                    If tImage.ImageOriginal.Image IsNot Nothing AndAlso doCache Then
-                        Directory.CreateDirectory(Directory.GetParent(tImage.LocalFilePath).FullName)
-                        tImage.ImageOriginal.Save(tImage.LocalFilePath)
-                    End If
-                End If
-            End If
-        End If
-    End Sub
-
     Private Sub SetUp()
         Me.btnOK.Text = Master.eLang.GetString(179, "OK")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
@@ -628,6 +604,9 @@ Public Class dlgImgSelect
 
     Private Sub CreateImageList(ByVal tTag As iTag)
         ClearImageList()
+
+        Me.currListImageSelectedSeason = tTag.iSeason
+        Me.currListImageSelectedImageType = tTag.ImageType
 
         Select Case tTag.ImageType
             Case Enums.ModifierType.AllSeasonsBanner
@@ -675,11 +654,6 @@ Public Class dlgImgSelect
 
     Private Sub FillImageList(ByRef tTag As iTag)
         Dim iCount As Integer = 0
-
-        ClearImageList()
-
-        Me.currListImageSelectedSeason = tTag.iSeason
-        Me.currListImageSelectedImageType = tTag.ImageType
 
         Select Case tTag.ImageType
             Case Enums.ModifierType.AllSeasonsBanner
@@ -1309,7 +1283,7 @@ Public Class dlgImgSelect
 
     Private Sub Image_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim tImage As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, iTag).Image
-        DownloadAndCache(tImage, False, True)
+        tImage.Download(True)
 
         If tImage.ImageOriginal.Image IsNot Nothing Then
             ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
