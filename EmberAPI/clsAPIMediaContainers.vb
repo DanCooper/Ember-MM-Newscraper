@@ -3202,7 +3202,6 @@ Namespace MediaContainers
 
         Private _cacheoriginalpath As String
         Private _cachethumbpath As String
-        Private _contenttype As Enums.ContentType
         Private _disc As Integer
         Private _disctype As String
         Private _episode As Integer
@@ -3260,12 +3259,6 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 Me._cachethumbpath = value
             End Set
-        End Property
-
-        Public ReadOnly Property ContentType() As Enums.ContentType
-            Get
-                Return Me._contenttype
-            End Get
         End Property
 
         Public Property Disc() As Integer
@@ -3501,10 +3494,6 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub New(ByVal tContentType As Enums.ContentType)
-            Me._contenttype = tContentType
-        End Sub
-
         Public Sub Clear()
             Me._cachethumbpath = String.Empty
             Me._disc = 0
@@ -3579,10 +3568,10 @@ Namespace MediaContainers
             End Select
         End Sub
 
-        Public Sub Download(Optional needFullsize As Boolean = False)
+        Public Sub Download(ByVal tContentType As Enums.ContentType, Optional needFullsize As Boolean = False)
             Dim doCache As Boolean = False
 
-            Select Case Me.ContentType
+            Select Case tContentType
                 Case Enums.ContentType.Movie
                     doCache = Master.eSettings.MovieImagesCacheEnabled
                 Case Enums.ContentType.MovieSet
@@ -4564,21 +4553,26 @@ Namespace MediaContainers
                     If String.IsNullOrEmpty(sID) Then
                         sID = tDBElement.Movie.TMDBID
                     End If
+                    If String.IsNullOrEmpty(sID) Then
+                        sID = "Unknown"
+                    End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("Movies", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.MovieSet
                     sID = tDBElement.MovieSet.TMDB
+                    If String.IsNullOrEmpty(sID) Then
+                        sID = "Unknown"
+                    End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("MovieSets", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.TV
                     sID = tDBElement.TVShow.TVDB
+                    If String.IsNullOrEmpty(sID) Then
+                        sID = "Unknown"
+                    End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID))
                 Case Else
                     Throw New ArgumentOutOfRangeException("wrong tContentType", "value must be Movie, MovieSet or TV")
                     Return
             End Select
-
-            If String.IsNullOrEmpty(sID) Then
-                sID = "Unknown"
-            End If
 
             For Each tImg As MediaContainers.Image In Me.EpisodeFanarts
                 tImg.CacheOriginalPath = Path.Combine(sPath, String.Concat("episodefanarts", Path.DirectorySeparatorChar, Path.GetFileName(tImg.URLOriginal)))

@@ -283,96 +283,96 @@ Public Class dlgImgSelect
         'Episode Fanart
         If DoEpisodeFanart Then
             For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
-                tImg.ImagesContainer.Fanart.Download()
+                tImg.ImagesContainer.Fanart.Download(tContentType)
             Next
         End If
 
         'Episode Poster
         If DoEpisodePoster Then
             For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
-                tImg.ImagesContainer.Poster.Download()
+                tImg.ImagesContainer.Poster.Download(tContentType)
             Next
         End If
 
         'Main Banner
         If (DoMainBanner OrElse DoAllSeasonsBanner OrElse DoSeasonBanner) AndAlso Me.tDBElementResult.ImagesContainer.Banner.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.Banner.Download()
+            Me.tDBElementResult.ImagesContainer.Banner.Download(tContentType)
         End If
 
         'Main CharacterArt
         If DoMainCharacterArt AndAlso Me.tDBElementResult.ImagesContainer.CharacterArt.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.CharacterArt.Download()
+            Me.tDBElementResult.ImagesContainer.CharacterArt.Download(tContentType)
         End If
 
         'Main ClearArt
         If DoMainClearArt AndAlso Me.tDBElementResult.ImagesContainer.ClearArt.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.ClearArt.Download()
+            Me.tDBElementResult.ImagesContainer.ClearArt.Download(tContentType)
         End If
 
         'Main ClearLogo
         If DoMainClearLogo AndAlso Me.tDBElementResult.ImagesContainer.ClearLogo.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.ClearLogo.Download()
+            Me.tDBElementResult.ImagesContainer.ClearLogo.Download(tContentType)
         End If
 
         'Main DiscArt
         If DoMainDiscArt AndAlso Me.tDBElementResult.ImagesContainer.DiscArt.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.DiscArt.Download()
+            Me.tDBElementResult.ImagesContainer.DiscArt.Download(tContentType)
         End If
 
         'Main Extrafanarts
         If DoMainExtrafanarts AndAlso Me.tDBElementResult.ImagesContainer.Extrafanarts.Count > 0 Then
             For Each tImg In tDBElementResult.ImagesContainer.Extrafanarts
-                tImg.Download()
+                tImg.Download(tContentType)
             Next
         End If
 
         'Main Extrathumbs
         If DoMainExtrathumbs AndAlso Me.tDBElementResult.ImagesContainer.Extrathumbs.Count > 0 Then
             For Each tImg In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-                tImg.Download()
+                tImg.Download(tContentType)
             Next
         End If
 
         'Main Fanart
         If (DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart) AndAlso Me.tDBElementResult.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.Fanart.Download()
+            Me.tDBElementResult.ImagesContainer.Fanart.Download(tContentType)
         End If
 
         'Main Landscape
         If (DoMainLandscape OrElse DoAllSeasonsLandscape OrElse DoSeasonLandscape) AndAlso Me.tDBElementResult.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.Landscape.Download()
+            Me.tDBElementResult.ImagesContainer.Landscape.Download(tContentType)
         End If
 
         'Main Poster
         If (DoMainPoster OrElse DoAllSeasonsPoster OrElse DoEpisodePoster OrElse DoSeasonPoster) AndAlso Me.tDBElementResult.ImagesContainer.Poster.ImageOriginal.Image Is Nothing Then
-            Me.tDBElementResult.ImagesContainer.Poster.Download()
+            Me.tDBElementResult.ImagesContainer.Poster.Download(tContentType)
         End If
 
         'Season Banner
         If DoSeasonBanner Then
             For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Banner.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                tImg.ImagesContainer.Banner.Download()
+                tImg.ImagesContainer.Banner.Download(tContentType)
             Next
         End If
 
         'Season Fanart
         If DoSeasonFanart Then
             For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                tImg.ImagesContainer.Fanart.Download()
+                tImg.ImagesContainer.Fanart.Download(tContentType)
             Next
         End If
 
         'Season Landscape
         If DoSeasonLandscape Then
             For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                tImg.ImagesContainer.Landscape.Download()
+                tImg.ImagesContainer.Landscape.Download(tContentType)
             Next
         End If
 
         'Season Poster
         If DoSeasonPoster Then
             For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
-                tImg.ImagesContainer.Poster.Download()
+                tImg.ImagesContainer.Poster.Download(tContentType)
             Next
         End If
     End Function
@@ -389,7 +389,7 @@ Public Class dlgImgSelect
         'Main Posters
         If DoMainPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -404,7 +404,7 @@ Public Class dlgImgSelect
         'Main Banners
         If DoMainBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -419,7 +419,7 @@ Public Class dlgImgSelect
         'Main CharacterArts
         If DoMainCharacterArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -433,7 +433,7 @@ Public Class dlgImgSelect
         'Main ClearArts
         If DoMainClearArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearArts
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -447,7 +447,7 @@ Public Class dlgImgSelect
         'Main ClearLogos
         If DoMainClearLogo Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -461,7 +461,7 @@ Public Class dlgImgSelect
         'Main Discarts
         If DoMainDiscArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -475,7 +475,7 @@ Public Class dlgImgSelect
         'Main Fanarts
         If DoMainFanart OrElse DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -494,7 +494,7 @@ Public Class dlgImgSelect
         'Main Landscapes
         If DoMainLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -509,7 +509,7 @@ Public Class dlgImgSelect
         'Season Banners
         If DoSeasonBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -524,7 +524,7 @@ Public Class dlgImgSelect
         'Season Fanarts
         If DoSeasonFanart OrElse DoAllSeasonsFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -539,7 +539,7 @@ Public Class dlgImgSelect
         'Season Landscapes
         If DoSeasonLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -554,7 +554,7 @@ Public Class dlgImgSelect
         'Season Posters
         If DoSeasonPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -569,7 +569,7 @@ Public Class dlgImgSelect
         'Episode Fanarts
         If DoEpisodeFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -583,7 +583,7 @@ Public Class dlgImgSelect
         'Episode Posters
         If DoEpisodePoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
-                tImg.Download()
+                tImg.Download(tContentType)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -1283,7 +1283,7 @@ Public Class dlgImgSelect
 
     Private Sub Image_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim tImage As MediaContainers.Image = DirectCast(DirectCast(sender, PictureBox).Tag, iTag).Image
-        tImage.Download(True)
+        tImage.Download(tContentType, True)
 
         If tImage.ImageOriginal.Image IsNot Nothing Then
             ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
@@ -2001,98 +2001,38 @@ Public Class dlgImgSelect
         Me.pbStatus.Visible = True
 
         'Banner
-        If tDBElementResult.ImagesContainer.Banner.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Banner.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.Banner.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.Banner.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.Banner.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Banner.URLOriginal) Then
-                tDBElementResult.ImagesContainer.Banner.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.Banner.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.Banner.Download(tContentType, True)
 
         'CharacterArt
-        If tDBElementResult.ImagesContainer.CharacterArt.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.CharacterArt.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.CharacterArt.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.CharacterArt.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.CharacterArt.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.CharacterArt.URLOriginal) Then
-                tDBElementResult.ImagesContainer.CharacterArt.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.CharacterArt.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.CharacterArt.Download(tContentType, True)
 
         'ClearArt
-        If tDBElementResult.ImagesContainer.ClearArt.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearArt.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.ClearArt.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.ClearArt.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.ClearArt.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearArt.URLOriginal) Then
-                tDBElementResult.ImagesContainer.ClearArt.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.ClearArt.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.ClearArt.Download(tContentType, True)
 
         'ClearLogo
-        If tDBElementResult.ImagesContainer.ClearLogo.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearLogo.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.ClearLogo.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.ClearLogo.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.ClearLogo.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.ClearLogo.URLOriginal) Then
-                tDBElementResult.ImagesContainer.ClearLogo.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.ClearLogo.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.ClearLogo.Download(tContentType, True)
 
         'DiscArt
-        If tDBElementResult.ImagesContainer.DiscArt.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.DiscArt.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.DiscArt.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.DiscArt.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.DiscArt.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.DiscArt.URLOriginal) Then
-                tDBElementResult.ImagesContainer.DiscArt.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.DiscArt.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.DiscArt.Download(tContentType, True)
 
         'Extrafanarts
         For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrafanarts
-            If img.ImageOriginal.Image Is Nothing Then
-                If Not String.IsNullOrEmpty(img.LocalFilePath) AndAlso File.Exists(img.LocalFilePath) Then
-                    img.ImageOriginal.FromFile(img.LocalFilePath)
-                ElseIf Not String.IsNullOrEmpty(img.URLOriginal) Then
-                    img.ImageOriginal.FromWeb(img.URLOriginal)
-                End If
-            End If
+            img.Download(tContentType, True)
         Next
 
         'Extrathumbs
         For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            If img.ImageOriginal.Image Is Nothing Then
-                If Not String.IsNullOrEmpty(img.LocalFilePath) AndAlso File.Exists(img.LocalFilePath) Then
-                    img.ImageOriginal.FromFile(img.LocalFilePath)
-                ElseIf Not String.IsNullOrEmpty(img.URLOriginal) Then
-                    img.ImageOriginal.FromWeb(img.URLOriginal)
-                End If
-            End If
+            img.Download(tContentType, True)
         Next
 
         'Fanart
-        If tDBElementResult.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Fanart.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.Fanart.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.Fanart.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.Fanart.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Fanart.URLOriginal) Then
-                tDBElementResult.ImagesContainer.Fanart.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.Fanart.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.Fanart.Download(tContentType, True)
 
         'Landscape
-        If tDBElementResult.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Landscape.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.Landscape.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.Landscape.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.Landscape.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Landscape.URLOriginal) Then
-                tDBElementResult.ImagesContainer.Landscape.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.Landscape.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.Landscape.Download(tContentType, True)
 
         'Poster
-        If tDBElementResult.ImagesContainer.Poster.ImageOriginal.Image Is Nothing Then
-            If Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Poster.LocalFilePath) AndAlso File.Exists(tDBElementResult.ImagesContainer.Poster.LocalFilePath) Then
-                tDBElementResult.ImagesContainer.Poster.ImageOriginal.FromFile(tDBElementResult.ImagesContainer.Poster.LocalFilePath)
-            ElseIf Not String.IsNullOrEmpty(tDBElementResult.ImagesContainer.Poster.URLOriginal) Then
-                tDBElementResult.ImagesContainer.Poster.ImageOriginal.FromWeb(tDBElementResult.ImagesContainer.Poster.URLOriginal)
-            End If
-        End If
+        tDBElementResult.ImagesContainer.Poster.Download(tContentType, True)
 
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
