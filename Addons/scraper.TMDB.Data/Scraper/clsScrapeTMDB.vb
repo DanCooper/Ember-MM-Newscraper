@@ -984,6 +984,12 @@ Namespace TMDB
                 nEpisode.Rating = CStr(EpisodeInfo.VoteAverage)
             End If
 
+            'ThumbPoster
+            If EpisodeInfo.StillPath IsNot Nothing Then
+                nEpisode.ThumbPoster.URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & EpisodeInfo.StillPath
+                nEpisode.ThumbPoster.URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & EpisodeInfo.StillPath
+            End If
+
             'Title
             If FilteredOptions.bEpisodeTitle Then
                 If EpisodeInfo.Name IsNot Nothing Then

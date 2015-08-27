@@ -4432,19 +4432,32 @@ doCancel:
 
     Private Sub cmnuEpisodeChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeChange.Click
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
+        Dim ID As Long = Convert.ToInt64(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
+        Dim ShowID As Long = Convert.ToInt64(Me.dgvTVEpisodes.Item("idShow", indX).Value)
 
         Me.SetControlsEnabled(False, True)
-        Dim tEpisode As MediaContainers.EpisodeDetails = ModulesManager.Instance.ChangeEpisode(Convert.ToInt32(Me.currTV.ShowID), Me.currTV.TVShow.TVDB, Me.currTV.Language)
 
-        If tEpisode IsNot Nothing Then
-            Me.currTV.TVEpisode = tEpisode
+        Dim tmpEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True, False)
+        Dim tmpShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False, False)
 
-            Master.DB.SaveTVEpisodeToDB(Me.currTV, False, True, False, True)
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
+        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withEpisodes, True)
 
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {False, False, False}), Me.currTV)
-            RefreshRow_TVEpisode(ID)
+        If Not ModulesManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifier, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, True) Then
+            If tmpShow.Episodes.Count > 0 Then
+                Dim dlgChangeEp As New dlgTVChangeEp(tmpShow)
+                If dlgChangeEp.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If dlgChangeEp.Result.Count > 0 Then
+                        Master.DB.ChangeTVEpisode(tmpEpisode, dlgChangeEp.Result, False)
+                    End If
+                End If
+            Else
+                MessageBox.Show(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), Master.eLang.GetString(944, "No Known Episodes"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
         End If
+
+        RefreshRow_TVShow(ShowID, True)
 
         Me.SetControlsEnabled(True)
     End Sub
@@ -13853,7 +13866,7 @@ doCancel:
     ''' </summary>
     ''' <param name="ShowID"></param>
     ''' <remarks></remarks>
-    Private Sub RefreshRow_TVShow(ByVal ShowID As Long)
+    Private Sub RefreshRow_TVShow(ByVal ShowID As Long, Optional ByVal Force As Boolean = False)
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
         Dim newTable As New DataTable
 
@@ -13870,7 +13883,7 @@ doCancel:
             End If
         End If
 
-        If Me.dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID AndAlso Me.currList = 0 Then
+        If Me.dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(Me.dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID AndAlso (Me.currList = 0 OrElse Force) Then
             Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
         End If
     End Sub

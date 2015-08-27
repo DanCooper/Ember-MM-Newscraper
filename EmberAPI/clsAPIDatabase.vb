@@ -3788,6 +3788,30 @@ Public Class Database
         Return _tagDB
     End Function
 
+    Public Sub ChangeTVEpisode(ByVal _episode As Database.DBElement, ByVal ListOfEpisodes As List(Of MediaContainers.EpisodeDetails), Optional ByVal Batchmode As Boolean = False)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        Using SQLPCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+
+            'first step: remove all existing episode informations for this file and set it to "Missing"
+            DeleteTVEpFromDBByPath(_episode.Filename, False, Batchmode)
+
+            'second step: create new episode DBElements and save it to database
+            For Each tEpisode As MediaContainers.EpisodeDetails In ListOfEpisodes
+                Dim newEpisode As New DBElement
+                newEpisode = CType(_episode.CloneDeep, DBElement)
+                newEpisode.FilenameID = -1
+                newEpisode.ID = -1
+                newEpisode.TVEpisode = tEpisode
+                newEpisode.TVEpisode.FileInfo = _episode.TVEpisode.FileInfo
+                SaveTVEpisodeToDB(newEpisode, True, True, Batchmode, True)
+            Next
+        End Using
+        If Not Batchmode Then SQLtransaction.Commit()
+
+        Dim params As New List(Of Object)(New Object() {False, False, False, True, _episode.Source})
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
+    End Sub
     ''' <summary>
     ''' Saves all episode information from a Database.DBElement object to the database
     ''' </summary>

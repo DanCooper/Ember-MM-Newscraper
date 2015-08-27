@@ -179,6 +179,16 @@ Namespace TVDBs
             Return R
         End Function
         ''' <summary>
+        ''' Workaround to fix the theTVDB bug
+        ''' </summary>
+        ''' <param name="tvdbID"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Async Function GetFullSeriesById(ByVal tvdbID As Integer) As Task(Of TVDB.Model.SeriesDetails)
+            Dim Result As TVDB.Model.SeriesDetails = Await _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror)
+            Return Result
+        End Function
+        ''' <summary>
         ''' 
         ''' </summary>
         ''' <param name="strID">TVDB ID</param>
@@ -197,10 +207,11 @@ Namespace TVDBs
 
             If bwTVDB.CancellationPending Then Return Nothing
 
-            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(CInt(strID), _SpecialSettings.Language, _TVDBMirror).Result
-            If Results Is Nothing Then
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(strID)))
+            If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If
+            Dim Results = APIResult.Result
 
             nShow.Scrapersource = "TVDB"
             nShow.TVDB = CStr(Results.Series.Id)
@@ -332,9 +343,14 @@ Namespace TVDBs
             Return True
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByVal tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Try
-                Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror).Result
+                Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
+                If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
+                    Return Nothing
+                End If
+                Dim Results = APIResult.Result
+
                 Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.Number = EpisodeNumber AndAlso f.SeasonNumber = SeasonNumber)
                 If Not EpisodeInfo Is Nothing Then
                     Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
@@ -348,11 +364,12 @@ Namespace TVDBs
             End Try
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef tvdbID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
-            Dim Results As TVDB.Model.SeriesDetails = _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror).Result
-            If Results Is Nothing Then
+        Public Function GetTVEpisodeInfo(ByVal tvdbID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
+            If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If
+            Dim Results = APIResult.Result
 
             Dim EpisodeInfo As TVDB.Model.Episode = Results.Series.Episodes.FirstOrDefault(Function(f) f.FirstAired = CDate(Aired))
             Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
@@ -473,6 +490,11 @@ Namespace TVDBs
             'Rating
             If FilteredOptions.bEpisodeRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.Rating)
+            End If
+
+            'ThumbPoster
+            If EpisodeInfo.PictureFilename IsNot Nothing Then
+                nEpisode.ThumbPoster.URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", EpisodeInfo.PictureFilename)
             End If
 
             'Title

@@ -991,6 +991,7 @@ Public Class NFO
         Dim new_Rating As Boolean = False
         Dim new_Runtime As Boolean = False
         Dim new_Season As Boolean = False
+        Dim new_ThumbPoster As Boolean = False
         Dim new_Title As Boolean = False
         Dim new_Votes As Boolean = False
 
@@ -1023,7 +1024,7 @@ Public Class NFO
             End If
 
             'Actors
-            If (DBTVEpisode.TVEpisode.Actors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpisodeActors AndAlso _
+            If (DBTVEpisode.TVEpisode.Actors.Count = 0 OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso ScrapeOptions.bEpisodeActors AndAlso _
                 scrapedepisode.Actors.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
 
                 'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
@@ -1064,7 +1065,7 @@ Public Class NFO
             End If
 
             'Credits
-            If (DBTVEpisode.TVEpisode.Credits.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso _
+            If (DBTVEpisode.TVEpisode.Credits.Count = 0 OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso _
                 scrapedepisode.Credits.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeCredits AndAlso Not new_Credits Then
                 DBTVEpisode.TVEpisode.Credits.Clear()
                 DBTVEpisode.TVEpisode.Credits.AddRange(scrapedepisode.Credits)
@@ -1074,7 +1075,7 @@ Public Class NFO
             End If
 
             'Directors
-            If (DBTVEpisode.TVEpisode.Directors.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpisodeDirector AndAlso _
+            If (DBTVEpisode.TVEpisode.Directors.Count = 0 OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpisodeDirector AndAlso _
                 scrapedepisode.Directors.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeDirector AndAlso Not new_Directors Then
                 DBTVEpisode.TVEpisode.Directors.Clear()
                 DBTVEpisode.TVEpisode.Directors.AddRange(scrapedepisode.Directors)
@@ -1084,7 +1085,7 @@ Public Class NFO
             End If
 
             'GuestStars
-            If (DBTVEpisode.TVEpisode.GuestStars.Count < 1 OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpisodeGuestStars AndAlso _
+            If (DBTVEpisode.TVEpisode.GuestStars.Count = 0 OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso ScrapeOptions.bEpisodeGuestStars AndAlso _
                 scrapedepisode.GuestStars.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
 
                 'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
@@ -1140,6 +1141,12 @@ Public Class NFO
                 new_Runtime = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRuntime AndAlso Not Master.eSettings.TVLockEpisodeRuntime Then
                 DBTVEpisode.TVEpisode.Runtime = String.Empty
+            End If
+
+            'ThumbPoster
+            If (Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLOriginal) OrElse Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLThumb)) AndAlso Not new_ThumbPoster Then
+                DBTVEpisode.TVEpisode.ThumbPoster = scrapedepisode.ThumbPoster
+                new_ThumbPoster = True
             End If
 
             'Title

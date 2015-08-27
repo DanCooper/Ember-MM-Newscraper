@@ -42,16 +42,12 @@ Namespace MediaContainers
         Private _episodeabsolute As Integer
         Private _episodecombined As Double
         Private _episodedvd As Double
-        Private _fanart As New MediaContainers.Image
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _gueststars As New List(Of Person)
         Private _imdb As String
         Private _lastplayed As String
-        Private _localfile As String
         Private _playcount As String
         Private _plot As String
-        Private _poster As New MediaContainers.Image
-        Private _posterurl As String
         Private _rating As String
         Private _runtime As String
         Private _scrapersource As String
@@ -59,6 +55,7 @@ Namespace MediaContainers
         Private _seasoncombined As Integer
         Private _seasondvd As Integer
         Private _subepisode As Integer
+        Private _thumbposter As New MediaContainers.Image
         Private _title As String
         Private _tmdb As String
         Private _tvdb As String
@@ -437,44 +434,19 @@ Namespace MediaContainers
                 End If
             End Get
         End Property
-
+        ''' <summary>
+        ''' Poster Thumb for preview in search results
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         <XmlIgnore()> _
-        Public Property Poster() As MediaContainers.Image
+        Public Property ThumbPoster() As MediaContainers.Image
             Get
-                Return Me._poster
+                Return Me._thumbposter
             End Get
             Set(ByVal value As MediaContainers.Image)
-                Me._poster = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public Property PosterURL() As String
-            Get
-                Return Me._posterurl
-            End Get
-            Set(ByVal value As String)
-                Me._posterurl = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public Property LocalFile() As String
-            Get
-                Return Me._localfile
-            End Get
-            Set(ByVal value As String)
-                Me._localfile = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public Property Fanart() As MediaContainers.Image
-            Get
-                Return Me._fanart
-            End Get
-            Set(ByVal value As MediaContainers.Image)
-                Me._fanart = value
+                Me._thumbposter = value
             End Set
         End Property
 
@@ -622,22 +594,19 @@ Namespace MediaContainers
             Me._episodeabsolute = -1
             Me._episodecombined = -1
             Me._episodedvd = -1
-            Me._fanart = New MediaContainers.Image
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._gueststars.Clear()
             Me._imdb = String.Empty
             Me._lastplayed = String.Empty
-            Me._localfile = String.Empty
             Me._playcount = String.Empty
             Me._plot = String.Empty
-            Me._poster = New MediaContainers.Image
-            Me._posterurl = String.Empty
             Me._rating = String.Empty
             Me._runtime = String.Empty
             Me._season = -1
             Me._seasoncombined = -1
             Me._seasondvd = -1
             Me._subepisode = -1
+            Me._thumbposter = New MediaContainers.Image
             Me._tmdb = String.Empty
             Me._tvdb = String.Empty
             Me._title = String.Empty
@@ -813,6 +782,7 @@ Namespace MediaContainers
         'Private _watched As String
         Private _actors As New List(Of Person)
         Private _thumb As New List(Of String)
+        Private _thumbposter As New MediaContainers.Image
         Private _fanart As New Fanart
         Private _xsets As New List(Of [Set])
         Private _ysets As New SetContainer
@@ -824,6 +794,7 @@ Namespace MediaContainers
         Private _scrapersource As String
         Private _datemodified As String
         Private _lastplayed As String
+
 #End Region 'Fields
 
 #Region "Constructors"
@@ -1484,6 +1455,21 @@ Namespace MediaContainers
             Get
                 Return Me._thumb.Count > 0
             End Get
+        End Property
+        ''' <summary>
+        ''' Poster Thumb for preview in search results
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <XmlIgnore()> _
+        Public Property ThumbPoster() As MediaContainers.Image
+            Get
+                Return Me._thumbposter
+            End Get
+            Set(ByVal value As MediaContainers.Image)
+                Me._thumbposter = value
+            End Set
         End Property
 
         <XmlElement("fanart")> _
@@ -3495,6 +3481,7 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
+            Me._cacheoriginalpath = String.Empty
             Me._cachethumbpath = String.Empty
             Me._disc = 0
             Me._disctype = String.Empty
@@ -3580,7 +3567,7 @@ Namespace MediaContainers
                     doCache = Master.eSettings.TVImagesCacheEnabled
             End Select
 
-            If Me.ImageOriginal.Image Is Nothing Then
+            If (Me.ImageOriginal.Image Is Nothing AndAlso needFullsize) OrElse Me.ImageThumb.Image Is Nothing Then
                 If File.Exists(Me.LocalFilePath) Then
                     Me.ImageOriginal.FromFile(Me.LocalFilePath)
                 ElseIf File.Exists(Me.CacheThumbPath) AndAlso Not needFullsize Then
@@ -3590,7 +3577,7 @@ Namespace MediaContainers
                 Else
                     If Not String.IsNullOrEmpty(Me.URLThumb) AndAlso Not needFullsize Then
                         Me.ImageThumb.FromWeb(Me.URLThumb)
-                        If doCache AndAlso Not String.IsNullOrEmpty(Me.CacheOriginalPath) AndAlso Me.ImageThumb.Image IsNot Nothing Then
+                        If doCache AndAlso Not String.IsNullOrEmpty(Me.CacheThumbPath) AndAlso Me.ImageThumb.Image IsNot Nothing Then
                             Directory.CreateDirectory(Directory.GetParent(Me.CacheThumbPath).FullName)
                             Me.ImageThumb.Save(Me.CacheThumbPath)
                         End If
