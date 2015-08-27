@@ -197,7 +197,7 @@ Public Class dlgImgSelect
     Private Sub dlgImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         AddHandler Me.MouseWheel, AddressOf MouseWheelEvent
 
-        Functions.PNLDoubleBuffer(Me.pnlImageList)
+        Functions.PNLDoubleBuffer(Me.pnlImgSelectMain)
 
         Me.SetUp()
     End Sub
@@ -214,7 +214,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImgSelectNew_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        Me.pnlLoading.Location = New Point(CInt((Me.pnlImageList.Left + (Me.pnlImageList.Width / 2)) - Me.pnlLoading.Width / 2), CInt((Me.pnlImageList.Top + (Me.pnlImageList.Height / 2)) - Me.pnlLoading.Height / 2))
+        Me.pnlLoading.Location = New Point(CInt((Me.pnlImgSelectMain.Left + (Me.pnlImgSelectMain.Width / 2)) - Me.pnlLoading.Width / 2), CInt((Me.pnlImgSelectMain.Top + (Me.pnlImgSelectMain.Height / 2)) - Me.pnlLoading.Height / 2))
         tmrReorderMainList.Stop()
         tmrReorderMainList.Start()
     End Sub
@@ -1069,7 +1069,7 @@ Public Class dlgImgSelect
         Me.lblImageList_Language(iIndex).Tag = tTag
         Me.lblImageList_Resolution(iIndex).Tag = tTag
         Me.lblImageList_Scraper(iIndex).Tag = tTag
-        Me.pnlImageList.Controls.Add(Me.pnlImageList_Panel(iIndex))
+        Me.pnlImgSelectMain.Controls.Add(Me.pnlImageList_Panel(iIndex))
         Me.pnlImageList_Panel(iIndex).Controls.Add(Me.pbImageList_Image(iIndex))
         Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_DiscType(iIndex))
         Me.pnlImageList_Panel(iIndex).Controls.Add(Me.lblImageList_Language(iIndex))
@@ -1084,7 +1084,7 @@ Public Class dlgImgSelect
         AddHandler lblImageList_Resolution(iIndex).Click, AddressOf lblImageList_Click
         AddHandler lblImageList_Scraper(iIndex).Click, AddressOf lblImageList_Click
 
-        If Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft + Me.iImageList_Size_Panel.Width > Me.pnlImageList.Width - 20 Then
+        If Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft + Me.iImageList_Size_Panel.Width > Me.pnlImgSelectMain.Width - 20 Then
             Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
             Me.iImageList_NextTop = Me.iImageList_NextTop + Me.iImageList_Size_Panel.Height + Me.iImageList_DistanceTop
         Else
@@ -1205,27 +1205,27 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
-        Dim vScrollPosition As Integer = pnlImageList.VerticalScroll.Value
+        Dim vScrollPosition As Integer = pnlImgSelectMain.VerticalScroll.Value
         vScrollPosition -= Math.Sign(e.Delta) * 50
         vScrollPosition = Math.Max(0, vScrollPosition)
-        vScrollPosition = Math.Min(vScrollPosition, pnlImageList.VerticalScroll.Maximum)
-        pnlImageList.AutoScrollPosition = New Point(pnlImageList.AutoScrollPosition.X, vScrollPosition)
-        pnlImageList.Invalidate()
+        vScrollPosition = Math.Min(vScrollPosition, pnlImgSelectMain.VerticalScroll.Maximum)
+        pnlImgSelectMain.AutoScrollPosition = New Point(pnlImgSelectMain.AutoScrollPosition.X, vScrollPosition)
+        pnlImgSelectMain.Invalidate()
     End Sub
 
     Private Sub ReorderImageList()
         Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
         Me.iImageList_NextTop = Me.iImageList_DistanceTop
 
-        If Me.pnlImageList.Controls.Count > 0 Then
-            Me.pnlImageList.SuspendLayout()
-            Me.pnlImageList.AutoScrollPosition = New Point With {.X = 0, .Y = 0}
+        If Me.pnlImgSelectMain.Controls.Count > 0 Then
+            Me.pnlImgSelectMain.SuspendLayout()
+            Me.pnlImgSelectMain.AutoScrollPosition = New Point With {.X = 0, .Y = 0}
             For iIndex As Integer = 0 To Me.pnlImageList_Panel.Count - 1
                 If Me.pnlImageList_Panel(iIndex) IsNot Nothing Then
                     Me.pnlImageList_Panel(iIndex).Left = iImageList_NextLeft
                     Me.pnlImageList_Panel(iIndex).Top = iImageList_NextTop
 
-                    If Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft + Me.iImageList_Size_Panel.Width > Me.pnlImageList.Width - 20 Then
+                    If Me.iImageList_NextLeft + Me.iImageList_Size_Panel.Width + Me.iImageList_DistanceLeft + Me.iImageList_Size_Panel.Width > Me.pnlImgSelectMain.Width - 20 Then
                         Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
                         Me.iImageList_NextTop = Me.iImageList_NextTop + Me.iImageList_Size_Panel.Height + Me.iImageList_DistanceTop
                     Else
@@ -1233,8 +1233,8 @@ Public Class dlgImgSelect
                     End If
                 End If
             Next
-            Me.pnlImageList.ResumeLayout()
-            Me.pnlImageList.Update()
+            Me.pnlImgSelectMain.ResumeLayout()
+            Me.pnlImgSelectMain.Update()
         End If
     End Sub
 
@@ -1258,7 +1258,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub cbSubImageType_MouseLeave(sender As Object, e As EventArgs) Handles cbSubImageType.MouseLeave
-        Me.pnlImageList.Focus()
+        Me.pnlImgSelectMain.Focus()
     End Sub
 
     Private Sub cbSubImageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSubImageType.SelectedIndexChanged
@@ -1272,7 +1272,7 @@ Public Class dlgImgSelect
                 CreateImageList(Me.currSubImage)
             End If
         End If
-        Me.pnlImageList.Focus()
+        Me.pnlImgSelectMain.Focus()
     End Sub
 
     Private Sub pbImageList_Click(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -1388,6 +1388,7 @@ Public Class dlgImgSelect
         End If
 
         Me.currSubImage = tTag
+        Me.currSubImageSelectedType = tTag.ImageType
         If Not Me.currListImageSelectedImageType = tTag.ImageType OrElse Not Me.currListImageSelectedSeason = tTag.iSeason Then
             CreateImageList(tTag)
         End If
@@ -1686,7 +1687,7 @@ Public Class dlgImgSelect
         Me.iImageList_NextLeft = Me.iImageList_DistanceLeft
         Me.iImageList_NextTop = Me.iImageList_DistanceTop
 
-        If Me.pnlImageList.Controls.Count > 0 Then
+        If Me.pnlImgSelectMain.Controls.Count > 0 Then
             For iIndex As Integer = 0 To Me.pnlImageList_Panel.Count - 1
                 If Me.pnlImageList_Panel(iIndex) IsNot Nothing Then
                     If Me.lblImageList_DiscType(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.lblImageList_DiscType(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.lblImageList_DiscType(iIndex))
@@ -1694,7 +1695,7 @@ Public Class dlgImgSelect
                     If Me.lblImageList_Resolution(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.lblImageList_Resolution(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.lblImageList_Resolution(iIndex))
                     If Me.lblImageList_Scraper(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.lblImageList_Scraper(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.lblImageList_Scraper(iIndex))
                     If Me.pbImageList_Image(iIndex) IsNot Nothing AndAlso Me.pnlImageList_Panel(iIndex).Contains(Me.pbImageList_Image(iIndex)) Then Me.pnlImageList_Panel(iIndex).Controls.Remove(Me.pbImageList_Image(iIndex))
-                    If Me.pnlImageList.Contains(Me.pnlImageList_Panel(iIndex)) Then Me.pnlImageList.Controls.Remove(Me.pnlImageList_Panel(iIndex))
+                    If Me.pnlImgSelectMain.Contains(Me.pnlImageList_Panel(iIndex)) Then Me.pnlImgSelectMain.Controls.Remove(Me.pnlImageList_Panel(iIndex))
                 End If
             Next
         End If
@@ -1989,9 +1990,9 @@ Public Class dlgImgSelect
         Me.DeselectAllListImages()
         Me.DeselectAllSubImages()
         Me.DeselectAllTopImages()
-        Me.pnlImageList.Enabled = False
-        Me.pnlSubImages.Enabled = False
-        Me.pnlTopImages.Enabled = False
+        Me.pnlImgSelectLeft.Enabled = False
+        Me.pnlImgSelectMain.Enabled = False
+        Me.pnlImgSelectTop.Enabled = False
 
         If Me.bwImgDefaults.IsBusy Then Me.bwImgDefaults.CancelAsync()
         If Me.bwImgDownload.IsBusy Then Me.bwImgDownload.CancelAsync()
