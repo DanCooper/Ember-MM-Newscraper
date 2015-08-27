@@ -1838,6 +1838,7 @@ Namespace MediaContainers
             Me._studios.Clear()
             Me._tagline = String.Empty
             Me._thumb.Clear()
+            Me._thumbposter = New MediaContainers.Image
             Me._title = String.Empty
             Me._tmdbcolid = String.Empty
             Me._top250 = String.Empty
