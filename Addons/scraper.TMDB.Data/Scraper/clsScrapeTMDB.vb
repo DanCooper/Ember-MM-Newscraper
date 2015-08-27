@@ -1328,24 +1328,31 @@ Namespace TMDB
             End If
 
             If Movies.TotalResults > 0 Then
-                Dim t1 As String = String.Empty
-                Dim t2 As String = String.Empty
                 TotP = Movies.TotalPages
                 While Page <= TotP AndAlso Page <= 3
                     If Movies.Results IsNot Nothing Then
                         For Each aMovie In Movies.Results
-                            If aMovie.Title Is Nothing OrElse (aMovie.Title IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(aMovie.Title))) Then
-                                If aMovie.OriginalTitle IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMovie.OriginalTitle)) Then
-                                    t1 = CStr(aMovie.OriginalTitle)
-                                End If
-                            Else
-                                t1 = CStr(aMovie.Title)
+                            Dim tOriginalTitle As String = String.Empty
+                            Dim tPlot As String = String.Empty
+                            Dim tThumbPoster As MediaContainers.Image = New MediaContainers.Image
+                            Dim tTitle As String = String.Empty
+                            Dim tYear As String = String.Empty
+
+                            If aMovie.OriginalTitle IsNot Nothing Then tOriginalTitle = aMovie.OriginalTitle
+                            If aMovie.Overview IsNot Nothing Then tPlot = aMovie.Overview
+                            If aMovie.PosterPath IsNot Nothing Then
+                                tThumbPoster.URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & aMovie.PosterPath
+                                tThumbPoster.URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & aMovie.PosterPath
                             End If
-                            If aMovie.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMovie.ReleaseDate)) Then
-                                t2 = CStr(aMovie.ReleaseDate.Value.Year)
-                            End If
-                            Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie(String.Empty, t1, t2, 0)
-                            lNewMovie.TMDBID = CStr(aMovie.Id)
+                            If aMovie.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(aMovie.ReleaseDate)) Then tYear = CStr(aMovie.ReleaseDate.Value.Year)
+                            If aMovie.Title IsNot Nothing Then tTitle = aMovie.Title
+
+                            Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie With {.OriginalTitle = tOriginalTitle, _
+                                                                                                     .Plot = tPlot, _
+                                                                                                     .Title = tTitle, _
+                                                                                                     .ThumbPoster = tThumbPoster, _
+                                                                                                     .TMDBID = CStr(aMovie.Id), _
+                                                                                                     .Year = tYear}
                             R.Matches.Add(lNewMovie)
                         Next
                     End If
