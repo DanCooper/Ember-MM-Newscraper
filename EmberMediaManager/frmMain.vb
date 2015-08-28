@@ -14808,6 +14808,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.MovieSet)
+
                 Me.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item("idSet", iRow).Value))
                 Me.FillScreenInfoWith_MovieSet()
 
@@ -14826,10 +14827,11 @@ doCancel:
             Threading.Thread.Sleep(50)
         End While
 
+        Me.ClearInfo()
+
         If Me.dgvTVEpisodes.Rows.Count >= iRow Then
             If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
-                Me.ClearInfo()
                 Me.ShowNoInfo(True, Enums.ContentType.TVEpisode)
 
                 Me.currTV = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
@@ -14862,6 +14864,7 @@ doCancel:
                 Not Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", iRow).Value) Then
                 If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Me.ShowNoInfo(True, Enums.ContentType.TVSeason)
+
                 Me.currTV = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), True)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
 
@@ -14897,6 +14900,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("NfoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVShow)
+
                 Me.currTV = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value), False, False, True, False)
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item("idShow", iRow).Value))
 
