@@ -3082,8 +3082,6 @@ doCancel:
     End Sub
 
     Private Sub bwReload_TVShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwReload_TVShows.DoWork
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-
         Dim iCount As Integer = 0
         Dim ShowIDs As New Dictionary(Of Long, String)
         Dim doFill As Boolean = False
@@ -3096,7 +3094,7 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In ShowIDs
                 If Me.bwReload_TVShows.CancellationPending Then Return
                 Me.bwReload_TVShows.ReportProgress(iCount, KVP.Value)
-                If Me.Reload_TVShow(KVP.Key, True, False, Args.withSeasons) Then
+                If Me.Reload_TVShow(KVP.Key, True, False, True) Then
                     doFill = True
                 Else
                     Me.bwReload_TVShows.ReportProgress(-1, KVP.Key)
@@ -10660,6 +10658,7 @@ doCancel:
                 Me.mnuMainToolsOfflineHolder.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfNoMovies = True}
                 Me.mnuMainToolsReloadMovies.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 Me.mnuMainToolsReloadMovieSets.Tag = New Structures.ModulesMenus With {.ForMovieSets = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
+                Me.mnuMainToolsReloadTVShows.Tag = New Structures.ModulesMenus With {.ForTVShows = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 Me.mnuMainToolsRewriteMovieContent.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 Me.mnuMainToolsSortFiles.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
 
@@ -13730,6 +13729,10 @@ doCancel:
         ReloadAll_MovieSet()
     End Sub
 
+    Private Sub mnuMainToolsReloadTVShows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadTVShows.Click
+        ReloadAll_TVShow()
+    End Sub
+
     Private Sub mnuMainToolsRewriteMovieContent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteMovieContent.Click
         RewriteAll_Movie()
     End Sub
@@ -15895,6 +15898,21 @@ doCancel:
                 Dim strPosterOnly As String = Master.eLang.GetString(72, "Poster Only")
                 .mnuScrapeModifierPoster.Text = strPosterOnly
 
+                'Reload All Movies
+                Dim strReloadAllMovies As String = Master.eLang.GetString(18, "Re&load All Movies")
+                .cmnuTrayToolsReloadMovies.Text = strReloadAllMovies
+                .mnuMainToolsReloadMovies.Text = strReloadAllMovies
+
+                'Reload All MovieSets
+                Dim strReloadAllMovieSets As String = Master.eLang.GetString(1208, "Reload All MovieSets")
+                .cmnuTrayToolsReloadMovieSets.Text = strReloadAllMovieSets
+                .mnuMainToolsReloadMovieSets.Text = strReloadAllMovieSets
+
+                'Reload All TV Shows
+                Dim strReloadAllTVShows As String = Master.eLang.GetString(250, "Reload All TV Shows")
+                .cmnuTrayToolsReloadTVShows.Text = strReloadAllTVShows
+                .mnuMainToolsReloadTVShows.Text = strReloadAllTVShows
+
                 'Scrape Movies
                 Dim strScrapeMovies As String = Master.eLang.GetString(67, "Scrape Movies")
                 .mnuScrapeMovies.Text = strScrapeMovies
@@ -16248,8 +16266,6 @@ doCancel:
                 .mnuMainToolsCleanFiles.Text = Master.eLang.GetString(9, "&Clean Files")
                 .mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear &All Caches")
                 .mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
-                .mnuMainToolsReloadMovies.Text = Master.eLang.GetString(18, "Re&load All Movies")
-                .mnuMainToolsReloadMovieSets.Text = Master.eLang.GetString(1208, "Reload All MovieSets")
                 .mnuMainToolsRewriteMovieContent.Text = Master.eLang.GetString(1298, "Rewrite All Movie Content")
                 .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
@@ -16282,7 +16298,6 @@ doCancel:
                 .cmnuTrayToolsCleanFiles.Text = .mnuMainToolsCleanFiles.Text
                 .cmnuTrayToolsClearCache.Text = .mnuMainToolsClearCache.Text
                 .cmnuTrayToolsOfflineHolder.Text = .mnuMainToolsOfflineHolder.Text
-                .cmnuTrayToolsReloadMovies.Text = .mnuMainToolsReloadMovies.Text
                 .cmnuTrayToolsSortFiles.Text = .mnuMainToolsSortFiles.Text
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
