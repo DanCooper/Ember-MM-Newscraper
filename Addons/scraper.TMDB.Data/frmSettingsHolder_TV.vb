@@ -101,7 +101,7 @@ Public Class frmSettingsHolder_TV
         chkScraperEpisodePlot.CheckedChanged, _
         chkScraperEpisodeRating.CheckedChanged, _
         chkScraperEpisodeTitle.CheckedChanged, _
-        chkScraperEpisodeVotes.CheckedChanged, _
+ _
         chkScraperShowActors.CheckedChanged, _
         chkScraperShowCert.CheckedChanged, _
         chkScraperShowCountry.CheckedChanged, _
@@ -114,8 +114,7 @@ Public Class frmSettingsHolder_TV
         chkScraperShowRuntime.CheckedChanged, _
         chkScraperShowStatus.CheckedChanged, _
         chkScraperShowStudio.CheckedChanged, _
-        chkScraperShowTitle.CheckedChanged, _
-        chkScraperShowVotes.CheckedChanged
+        chkScraperShowTitle.CheckedChanged
 
         RaiseEvent ModuleSettingsChanged()
     End Sub

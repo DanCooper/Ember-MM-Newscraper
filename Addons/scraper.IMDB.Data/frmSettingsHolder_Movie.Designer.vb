@@ -48,7 +48,6 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTitle = New System.Windows.Forms.CheckBox()
         Me.chkOutline = New System.Windows.Forms.CheckBox()
         Me.chkRating = New System.Windows.Forms.CheckBox()
-        Me.chkVotes = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkCertification = New System.Windows.Forms.CheckBox()
@@ -60,6 +59,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkWriters = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
+        Me.chkStudiowithDistributors = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkCountryAbbreviation = New System.Windows.Forms.CheckBox()
@@ -75,7 +75,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
-        Me.chkStudiowithDistributors = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -218,7 +217,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(484, 182)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(482, 182)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -241,19 +240,18 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOutline, 0, 5)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkVotes, 1, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTop250, 1, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAA, 1, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertification, 1, 4)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 1, 5)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 1, 6)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenre, 2, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCast, 2, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirector, 2, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTop250, 1, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAA, 1, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertification, 1, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 1, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 1, 5)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenre, 1, 6)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountry, 2, 4)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudio, 2, 5)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudiowithDistributors, 2, 6)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirector, 2, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCast, 2, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountry, 2, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudio, 2, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudiowithDistributors, 2, 5)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -266,7 +264,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(478, 161)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(476, 161)
         Me.tblScraperFieldsOpts.TabIndex = 1
         '
         'gbScraperFieldsCredits
@@ -274,7 +272,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsCredits.AutoSize = True
         Me.gbScraperFieldsCredits.Controls.Add(Me.tblScraperFieldsCredits)
         Me.gbScraperFieldsCredits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(352, 3)
+        Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(350, 3)
         Me.gbScraperFieldsCredits.Name = "gbScraperFieldsCredits"
         Me.tblScraperFieldsOpts.SetRowSpan(Me.gbScraperFieldsCredits, 6)
         Me.gbScraperFieldsCredits.Size = New System.Drawing.Size(123, 132)
@@ -449,29 +447,17 @@ Partial Class frmSettingsHolder_Movie
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkRating.Location = New System.Drawing.Point(101, 3)
         Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(91, 17)
+        Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 6
-        Me.chkRating.Text = "IMDB Rating"
+        Me.chkRating.Text = "Rating"
         Me.chkRating.UseVisualStyleBackColor = True
-        '
-        'chkVotes
-        '
-        Me.chkVotes.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkVotes.AutoSize = True
-        Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVotes.Location = New System.Drawing.Point(101, 26)
-        Me.chkVotes.Name = "chkVotes"
-        Me.chkVotes.Size = New System.Drawing.Size(86, 17)
-        Me.chkVotes.TabIndex = 7
-        Me.chkVotes.Text = "IMDB Votes"
-        Me.chkVotes.UseVisualStyleBackColor = True
         '
         'chkTop250
         '
         Me.chkTop250.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTop250.AutoSize = True
         Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTop250.Location = New System.Drawing.Point(101, 49)
+        Me.chkTop250.Location = New System.Drawing.Point(101, 26)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
         Me.chkTop250.TabIndex = 16
@@ -483,7 +469,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkMPAA.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMPAA.AutoSize = True
         Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMPAA.Location = New System.Drawing.Point(101, 72)
+        Me.chkMPAA.Location = New System.Drawing.Point(101, 49)
         Me.chkMPAA.Name = "chkMPAA"
         Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
         Me.chkMPAA.TabIndex = 80
@@ -495,7 +481,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkCertification.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkCertification.AutoSize = True
         Me.chkCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCertification.Location = New System.Drawing.Point(101, 95)
+        Me.chkCertification.Location = New System.Drawing.Point(101, 72)
         Me.chkCertification.Name = "chkCertification"
         Me.chkCertification.Size = New System.Drawing.Size(89, 17)
         Me.chkCertification.TabIndex = 3
@@ -507,7 +493,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkRuntime.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRuntime.Location = New System.Drawing.Point(101, 118)
+        Me.chkRuntime.Location = New System.Drawing.Point(101, 95)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkRuntime.TabIndex = 5
@@ -519,7 +505,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(101, 141)
+        Me.chkTrailer.Location = New System.Drawing.Point(101, 118)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 17
@@ -531,7 +517,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkGenre.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGenre.AutoSize = True
         Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(198, 3)
+        Me.chkGenre.Location = New System.Drawing.Point(101, 141)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(57, 17)
         Me.chkGenre.TabIndex = 15
@@ -543,7 +529,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkCast.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkCast.AutoSize = True
         Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(198, 26)
+        Me.chkCast.Location = New System.Drawing.Point(196, 26)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(48, 17)
         Me.chkCast.TabIndex = 12
@@ -555,7 +541,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkDirector.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkDirector.AutoSize = True
         Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDirector.Location = New System.Drawing.Point(198, 49)
+        Me.chkDirector.Location = New System.Drawing.Point(196, 49)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(67, 17)
         Me.chkDirector.TabIndex = 13
@@ -567,7 +553,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkWriters.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(198, 72)
+        Me.chkWriters.Location = New System.Drawing.Point(196, 72)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(105, 17)
         Me.chkWriters.TabIndex = 14
@@ -579,7 +565,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkCountry.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkCountry.AutoSize = True
         Me.chkCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountry.Location = New System.Drawing.Point(198, 95)
+        Me.chkCountry.Location = New System.Drawing.Point(196, 3)
         Me.chkCountry.Name = "chkCountry"
         Me.chkCountry.Size = New System.Drawing.Size(67, 17)
         Me.chkCountry.TabIndex = 18
@@ -591,12 +577,26 @@ Partial Class frmSettingsHolder_Movie
         Me.chkStudio.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkStudio.AutoSize = True
         Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudio.Location = New System.Drawing.Point(198, 118)
+        Me.chkStudio.Location = New System.Drawing.Point(196, 95)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(60, 17)
         Me.chkStudio.TabIndex = 8
         Me.chkStudio.Text = "Studio"
         Me.chkStudio.UseVisualStyleBackColor = True
+        '
+        'chkStudiowithDistributors
+        '
+        Me.chkStudiowithDistributors.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkStudiowithDistributors.AutoSize = True
+        Me.chkStudiowithDistributors.Enabled = False
+        Me.chkStudiowithDistributors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkStudiowithDistributors.Location = New System.Drawing.Point(196, 118)
+        Me.chkStudiowithDistributors.Name = "chkStudiowithDistributors"
+        Me.chkStudiowithDistributors.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkStudiowithDistributors.Size = New System.Drawing.Size(148, 17)
+        Me.chkStudiowithDistributors.TabIndex = 82
+        Me.chkStudiowithDistributors.Text = "include Distributors"
+        Me.chkStudiowithDistributors.UseVisualStyleBackColor = True
         '
         'gbScraperOpts
         '
@@ -606,7 +606,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 191)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(484, 140)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(482, 140)
         Me.gbScraperOpts.TabIndex = 97
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -638,7 +638,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperOpts.Size = New System.Drawing.Size(478, 119)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(476, 119)
         Me.tblScraperOpts.TabIndex = 1
         '
         'chkCountryAbbreviation
@@ -805,20 +805,6 @@ Partial Class frmSettingsHolder_Movie
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'chkStudiowithDistributors
-        '
-        Me.chkStudiowithDistributors.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkStudiowithDistributors.AutoSize = True
-        Me.chkStudiowithDistributors.Enabled = False
-        Me.chkStudiowithDistributors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudiowithDistributors.Location = New System.Drawing.Point(198, 141)
-        Me.chkStudiowithDistributors.Name = "chkStudiowithDistributors"
-        Me.chkStudiowithDistributors.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkStudiowithDistributors.Size = New System.Drawing.Size(148, 17)
-        Me.chkStudiowithDistributors.TabIndex = 82
-        Me.chkStudiowithDistributors.Text = "include Distributors"
-        Me.chkStudiowithDistributors.UseVisualStyleBackColor = True
-        '
         'frmSettingsHolder_Movie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -891,7 +877,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkDirector As System.Windows.Forms.CheckBox
     Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
     Friend WithEvents chkCast As System.Windows.Forms.CheckBox
-    Friend WithEvents chkVotes As System.Windows.Forms.CheckBox
     Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkRelease As System.Windows.Forms.CheckBox

@@ -391,6 +391,7 @@ Namespace TMDB
             'Rating
             If FilteredOptions.bRating Then
                 nMovie.Rating = CStr(Movie.VoteAverage)
+                nMovie.Votes = CStr(Movie.VoteCount)
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -482,13 +483,6 @@ Namespace TMDB
                 If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
                     nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & aTrailers(0).Key
                 End If
-            End If
-
-            If bwTMDB.CancellationPending Then Return Nothing
-
-            'Votes
-            If FilteredOptions.bVotes Then
-                nMovie.Votes = CStr(Movie.VoteCount)
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -759,6 +753,7 @@ Namespace TMDB
             'Rating
             If FilteredOptions.bShowRating Then
                 nShow.Rating = CStr(Show.VoteAverage)
+                nShow.Votes = CStr(Show.VoteCount)
             End If
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -817,11 +812,6 @@ Namespace TMDB
             'End If
 
             If bwTMDB.CancellationPending Then Return Nothing
-
-            'Votes
-            If FilteredOptions.bShowVotes Then
-                nShow.Votes = CStr(Show.VoteCount)
-            End If
 
             'Seasons and Episodes
             For Each aSeason As TMDbLib.Objects.TvShows.TvSeason In Show.Seasons
@@ -982,6 +972,7 @@ Namespace TMDB
             'Rating
             If FilteredOptions.bEpisodeRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.VoteAverage)
+                nEpisode.Votes = CStr(EpisodeInfo.VoteCount)
             End If
 
             'ThumbPoster
@@ -995,11 +986,6 @@ Namespace TMDB
                 If EpisodeInfo.Name IsNot Nothing Then
                     nEpisode.Title = EpisodeInfo.Name
                 End If
-            End If
-
-            'Votes
-            If FilteredOptions.bEpisodeVotes Then
-                nEpisode.Votes = CStr(EpisodeInfo.VoteCount)
             End If
 
             Return nEpisode

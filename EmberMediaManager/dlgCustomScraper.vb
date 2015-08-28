@@ -101,7 +101,6 @@ Public Class dlgCustomScraper
         chkOptsTitle.Checked = False
         chkOptsTop250.Checked = False
         chkOptsTrailer.Checked = False
-        chkOptsVotes.Checked = False
         chkOptsWriters.Checked = False
         chkOptsYear.Checked = False
 
@@ -197,8 +196,6 @@ Public Class dlgCustomScraper
                 chkOptsTop250.Enabled = False
                 chkOptsTrailer.Checked = True
                 chkOptsTrailer.Enabled = False
-                chkOptsVotes.Checked = True
-                chkOptsVotes.Enabled = False
                 chkOptsWriters.Checked = True
                 chkOptsWriters.Enabled = False
                 chkOptsYear.Checked = True
@@ -226,7 +223,6 @@ Public Class dlgCustomScraper
                 chkOptsTitle.Enabled = True
                 chkOptsTop250.Enabled = True
                 chkOptsTrailer.Enabled = True
-                chkOptsVotes.Enabled = True
                 chkOptsWriters.Enabled = True
                 chkOptsYear.Enabled = True
             End If
@@ -236,7 +232,7 @@ Public Class dlgCustomScraper
                 chkOptsMPAA.Checked OrElse chkOptsCert.Checked OrElse chkOptsMusicBy.Checked OrElse chkOptsOriginalTitle.Checked OrElse _
                 chkOptsOutline.Checked OrElse chkOptsPlot.Checked OrElse chkOptsProducers.Checked OrElse chkOptsRating.Checked OrElse _
                 chkOptsRelease.Checked OrElse chkOptsRuntime.Checked OrElse chkOptsStudio.Checked OrElse chkOptsTagline.Checked OrElse _
-                chkOptsTitle.Checked OrElse chkOptsTrailer.Checked OrElse chkOptsVotes.Checked OrElse chkOptsVotes.Checked OrElse _
+                chkOptsTitle.Checked OrElse chkOptsTrailer.Checked OrElse _
                 chkOptsWriters.Checked OrElse chkOptsYear.Checked OrElse chkOptsTop250.Checked OrElse chkOptsCountry.Checked OrElse _
                 chkOptsCollectionID.Checked Then
                     Update_Button.Enabled = True
@@ -460,11 +456,6 @@ Public Class dlgCustomScraper
         CheckEnable()
     End Sub
 
-    Private Sub chkOptsVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsVotes.CheckedChanged
-        CustomUpdater.Options.bVotes = chkOptsVotes.Checked
-        CheckEnable()
-    End Sub
-
     Private Sub chkOptsWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsWriters.CheckedChanged
         CustomUpdater.Options.bWriters = chkOptsWriters.Checked
         CheckEnable()
@@ -657,7 +648,6 @@ Public Class dlgCustomScraper
         Me.chkOptsTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkOptsTop250.Text = Master.eLang.GetString(591, "Top 250")
         Me.chkOptsTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkOptsVotes.Text = Master.eLang.GetString(399, "Votes")
         Me.chkOptsWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkOptsYear.Text = Master.eLang.GetString(278, "Year")
         Me.gbOptions.Text = Master.eLang.GetString(390, "Options")

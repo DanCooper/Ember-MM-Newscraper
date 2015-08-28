@@ -30,7 +30,6 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkOptsCountry As System.Windows.Forms.CheckBox
     Friend WithEvents chkOptsTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkModTrailer As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOptsVotes As System.Windows.Forms.CheckBox
     Friend WithEvents chkOptsWriters As System.Windows.Forms.CheckBox
     Friend WithEvents chkOptsYear As System.Windows.Forms.CheckBox
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
@@ -127,7 +126,6 @@ Partial Class dlgCustomScraper
         Me.chkOptsDirector = New System.Windows.Forms.CheckBox()
         Me.chkOptsTagline = New System.Windows.Forms.CheckBox()
         Me.chkOptsCast = New System.Windows.Forms.CheckBox()
-        Me.chkOptsVotes = New System.Windows.Forms.CheckBox()
         Me.chkOptsTrailer = New System.Windows.Forms.CheckBox()
         Me.chkOptsRating = New System.Windows.Forms.CheckBox()
         Me.chkOptsRelease = New System.Windows.Forms.CheckBox()
@@ -587,7 +585,6 @@ Partial Class dlgCustomScraper
         Me.gbOptions.Controls.Add(Me.chkOptsDirector)
         Me.gbOptions.Controls.Add(Me.chkOptsTagline)
         Me.gbOptions.Controls.Add(Me.chkOptsCast)
-        Me.gbOptions.Controls.Add(Me.chkOptsVotes)
         Me.gbOptions.Controls.Add(Me.chkOptsTrailer)
         Me.gbOptions.Controls.Add(Me.chkOptsRating)
         Me.gbOptions.Controls.Add(Me.chkOptsRelease)
@@ -862,20 +859,6 @@ Partial Class dlgCustomScraper
         Me.chkOptsCast.TabIndex = 14
         Me.chkOptsCast.Text = "Cast"
         Me.chkOptsCast.UseVisualStyleBackColor = True
-        '
-        'chkOptsVotes
-        '
-        Me.chkOptsVotes.AutoSize = True
-        Me.chkOptsVotes.Checked = True
-        Me.chkOptsVotes.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkOptsVotes.Enabled = False
-        Me.chkOptsVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOptsVotes.Location = New System.Drawing.Point(6, 184)
-        Me.chkOptsVotes.Name = "chkOptsVotes"
-        Me.chkOptsVotes.Size = New System.Drawing.Size(55, 17)
-        Me.chkOptsVotes.TabIndex = 7
-        Me.chkOptsVotes.Text = "Votes"
-        Me.chkOptsVotes.UseVisualStyleBackColor = True
         '
         'chkOptsTrailer
         '

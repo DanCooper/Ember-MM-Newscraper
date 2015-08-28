@@ -397,7 +397,7 @@
   <string id="396">Runtime</string>
   <string id="397">Tagline</string>
   <string id="398">TeraCopy.exe not found</string>
-  <string id="399">Votes</string>
+  <string id="399"></string>
   <string id="400">Rating</string>
   <string id="401">MPAA</string>
   <string id="402">Ember Startup Wizard</string>
@@ -1328,7 +1328,7 @@
   <string id="1236"></string>
   <string id="1237"></string>
   <string id="1238"></string>
-  <string id="1239">IMDB Rating</string>
+  <string id="1239"></string>
   <string id="1240"></string>
   <string id="1241"></string>
   <string id="1242"></string>
@@ -1339,9 +1339,9 @@
   <string id="1247"></string>
   <string id="1248">Using a Personal API Key reduces the time you have to wait for new images to show up from 7 days to 48 hours.</string>
   <string id="1249">Show scraped results in detailed view</string>
-  <string id="1250">TMDB Rating</string>
-  <string id="1251">TMDB Votes</string>
-  <string id="1252">IMDB Votes</string>
+  <string id="1250"></string>
+  <string id="1251"></string>
+  <string id="1252"></string>
   <string id="1253">Scraperresults</string>
   <string id="1254">Only data in selected tabs will be used!</string>
   <string id="1255">Display Image Names</string>

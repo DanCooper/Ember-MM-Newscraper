@@ -470,7 +470,6 @@ Public Class dlgIMDBSearchResults_Movie
         aOpt.bTitle = True
         aOpt.bTop250 = False
         aOpt.bTrailer = False
-        aOpt.bVotes = False
         aOpt.bWriters = False
         aOpt.bYear = True
 

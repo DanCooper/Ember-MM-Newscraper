@@ -285,6 +285,7 @@ Namespace TVDBs
             'Rating
             If FilteredOptions.bShowRating Then
                 nShow.Rating = CStr(Results.Series.Rating)
+                nShow.Votes = CStr(Results.Series.RatingCount)
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -313,13 +314,6 @@ Namespace TVDBs
             'Title
             If FilteredOptions.bShowTitle Then
                 nShow.Title = Results.Series.Name
-            End If
-
-            If bwTVDB.CancellationPending Then Return Nothing
-
-            'Votes
-            If FilteredOptions.bShowVotes Then
-                nShow.Votes = CStr(Results.Series.RatingCount)
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -490,6 +484,7 @@ Namespace TVDBs
             'Rating
             If FilteredOptions.bEpisodeRating Then
                 nEpisode.Rating = CStr(EpisodeInfo.Rating)
+                nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
             End If
 
             'ThumbPoster
@@ -502,11 +497,6 @@ Namespace TVDBs
                 If EpisodeInfo.Name IsNot Nothing Then
                     nEpisode.Title = EpisodeInfo.Name
                 End If
-            End If
-
-            'Votes
-            If FilteredOptions.bEpisodeVotes Then
-                nEpisode.Votes = CStr(EpisodeInfo.RatingCount)
             End If
 
             Return nEpisode

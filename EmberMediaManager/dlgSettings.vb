@@ -2894,7 +2894,6 @@ Public Class dlgSettings
             Me.chkMovieLockTitle.Checked = .MovieLockTitle
             Me.chkMovieLockTop250.Checked = .MovieLockTop250
             Me.chkMovieLockTrailer.Checked = .MovieLockTrailer
-            Me.chkMovieLockVotes.Checked = .MovieLockVotes
             Me.chkMovieLockCredits.Checked = .MovieLockCredits
             Me.chkMovieLockYear.Checked = .MovieLockYear
             Me.chkMoviePosterOverwrite.Checked = .MoviePosterOverwrite
@@ -2982,7 +2981,6 @@ Public Class dlgSettings
             Me.chkMovieScraperTop250.Checked = .MovieScraperTop250
             Me.chkMovieScraperTrailer.Checked = .MovieScraperTrailer
             Me.chkMovieScraperUseMDDuration.Checked = .MovieScraperUseMDDuration
-            Me.chkMovieScraperVotes.Checked = .MovieScraperVotes
             Me.chkMovieScraperCredits.Checked = .MovieScraperCredits
             Me.chkMovieScraperXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
             Me.chkMovieScraperYear.Checked = .MovieScraperYear
@@ -3047,7 +3045,6 @@ Public Class dlgSettings
             Me.chkTVLockEpisodeRating.Checked = .TVLockEpisodeRating
             Me.chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
             Me.chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
-            Me.chkTVLockEpisodeVotes.Checked = .TVLockEpisodeVotes
             Me.chkTVLockShowCert.Checked = .TVLockShowCert
             Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
             Me.chkTVLockShowMPAA.Checked = .TVLockShowMPAA
@@ -3058,7 +3055,6 @@ Public Class dlgSettings
             Me.chkTVLockShowStatus.Checked = .TVLockShowStatus
             Me.chkTVLockShowStudio.Checked = .TVLockShowStudio
             Me.chkTVLockShowTitle.Checked = .TVLockShowTitle
-            Me.chkTVLockShowVotes.Checked = .TVLockShowVotes
             Me.chkTVScanOrderModify.Checked = .TVScanOrderModify
             Me.chkTVScraperCleanFields.Checked = .TVScraperCleanFields
             Me.chkTVScraperEpisodeActors.Checked = .TVScraperEpisodeActors
@@ -3070,7 +3066,6 @@ Public Class dlgSettings
             Me.chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
             Me.chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
             Me.chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
-            Me.chkTVScraperEpisodeVotes.Checked = .TVScraperEpisodeVotes
             Me.chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
             Me.chkTVScraperShowActors.Checked = .TVScraperShowActors
             Me.chkTVScraperShowCert.Checked = .TVScraperShowCert
@@ -3089,7 +3084,6 @@ Public Class dlgSettings
             Me.chkTVScraperShowStatus.Checked = .TVScraperShowStatus
             Me.chkTVScraperShowStudio.Checked = .TVScraperShowStudio
             Me.chkTVScraperShowTitle.Checked = .TVScraperShowTitle
-            Me.chkTVScraperShowVotes.Checked = .TVScraperShowVotes
             Me.chkTVScraperUseDisplaySeasonEpisode.Checked = .TVScraperUseDisplaySeasonEpisode
             Me.chkTVScraperUseMDDuration.Checked = .TVScraperUseMDDuration
             Me.chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
@@ -4680,7 +4674,6 @@ Public Class dlgSettings
             .MovieLockTitle = Me.chkMovieLockTitle.Checked
             .MovieLockTop250 = Me.chkMovieLockTop250.Checked
             .MovieLockTrailer = Me.chkMovieLockTrailer.Checked
-            .MovieLockVotes = Me.chkMovieLockVotes.Checked
             .MovieLockCredits = Me.chkMovieLockCredits.Checked
             .MovieLockYear = Me.chkMovieLockYear.Checked
             .MovieMetadataPerFileType.Clear()
@@ -4795,7 +4788,6 @@ Public Class dlgSettings
             .MovieScraperTrailer = Me.chkMovieScraperTrailer.Checked
             .MovieScraperUseDetailView = Me.chkMovieScraperDetailView.Checked
             .MovieScraperUseMDDuration = Me.chkMovieScraperUseMDDuration.Checked
-            .MovieScraperVotes = Me.chkMovieScraperVotes.Checked
             .MovieScraperCredits = Me.chkMovieScraperCredits.Checked
             .MovieScraperXBMCTrailerFormat = Me.chkMovieScraperXBMCTrailerFormat.Checked
             .MovieScraperYear = Me.chkMovieScraperYear.Checked
@@ -4884,7 +4876,6 @@ Public Class dlgSettings
             .TVLockEpisodeRating = Me.chkTVLockEpisodeRating.Checked
             .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
             .TVLockEpisodeTitle = Me.chkTVLockEpisodeTitle.Checked
-            .TVLockEpisodeVotes = Me.chkTVLockEpisodeVotes.Checked
             .TVLockShowCert = Me.chkTVLockShowCert.Checked
             .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
             .TVLockShowMPAA = Me.chkTVLockShowMPAA.Checked
@@ -4895,7 +4886,6 @@ Public Class dlgSettings
             .TVLockShowStatus = Me.chkTVLockShowStatus.Checked
             .TVLockShowStudio = Me.chkTVLockShowStudio.Checked
             .TVLockShowTitle = Me.chkTVLockShowTitle.Checked
-            .TVLockShowVotes = Me.chkTVLockShowVotes.Checked
             .TVMetadataPerFileType.Clear()
             .TVMetadataPerFileType.AddRange(Me.TVMeta)
             .TVMultiPartMatching = Me.txtTVSourcesRegexMultiPartMatching.Text
@@ -4911,7 +4901,6 @@ Public Class dlgSettings
             .TVScraperEpisodeRating = Me.chkTVScraperEpisodeRating.Checked
             .TVScraperEpisodeRuntime = Me.chkTVScraperEpisodeRuntime.Checked
             .TVScraperEpisodeTitle = Me.chkTVScraperEpisodeTitle.Checked
-            .TVScraperEpisodeVotes = Me.chkTVScraperEpisodeVotes.Checked
             .TVScraperMetaDataScan = Me.chkTVScraperMetaDataScan.Checked
             .TVScraperOptionsOrdering = CType(Me.cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
             .TVScraperShowActors = Me.chkTVScraperShowActors.Checked
@@ -4939,7 +4928,6 @@ Public Class dlgSettings
             .TVScraperShowStatus = Me.chkTVScraperShowStatus.Checked
             .TVScraperShowStudio = Me.chkTVScraperShowStudio.Checked
             .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
-            .TVScraperShowVotes = Me.chkTVScraperShowVotes.Checked
             .TVScraperUseDisplaySeasonEpisode = Me.chkTVScraperUseDisplaySeasonEpisode.Checked
             .TVScraperUseMDDuration = Me.chkTVScraperUseMDDuration.Checked
             .TVScraperUseSRuntimeForEp = Me.chkTVScraperUseSRuntimeForEp.Checked
@@ -6297,9 +6285,7 @@ Public Class dlgSettings
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
 
         'Votes
-        Dim strVotes As String = Master.eLang.GetString(399, "Votes")
-        Me.lblMovieScraperGlobalVotes.Text = strVotes
-        Me.lblTVScraperGlobalVotes.Text = strVotes
+        'Dim strVotes As String = Master.eLang.GetString(399, "Votes")
 
         'Writers
         Dim strWriters As String = Master.eLang.GetString(394, "Writers")
@@ -7412,7 +7398,6 @@ Public Class dlgSettings
         chkMovieLockTitle.CheckedChanged, _
         chkMovieLockTop250.CheckedChanged, _
         chkMovieLockTrailer.CheckedChanged, _
-        chkMovieLockVotes.CheckedChanged, _
         chkMovieLockYear.CheckedChanged, _
         chkMoviePosterOverwrite.CheckedChanged, _
         chkMoviePosterPrefOnly.CheckedChanged, _
@@ -7444,7 +7429,6 @@ Public Class dlgSettings
         chkMovieScraperTitle.CheckedChanged, _
         chkMovieScraperTop250.CheckedChanged, _
         chkMovieScraperTrailer.CheckedChanged, _
-        chkMovieScraperVotes.CheckedChanged, _
         chkMovieScraperXBMCTrailerFormat.CheckedChanged, _
         chkMovieScraperYear.CheckedChanged, _
         chkMovieSetBannerExtended.CheckedChanged, _
@@ -7517,7 +7501,6 @@ Public Class dlgSettings
         chkTVLockEpisodeRating.CheckedChanged, _
         chkTVLockEpisodeRuntime.CheckedChanged, _
         chkTVLockEpisodeTitle.CheckedChanged, _
-        chkTVLockEpisodeVotes.CheckedChanged, _
         chkTVLockShowGenre.CheckedChanged, _
         chkTVLockShowMPAA.CheckedChanged, _
         chkTVLockShowOriginalTitle.CheckedChanged, _
@@ -7527,7 +7510,6 @@ Public Class dlgSettings
         chkTVLockShowStatus.CheckedChanged, _
         chkTVLockShowStudio.CheckedChanged, _
         chkTVLockShowTitle.CheckedChanged, _
-        chkTVLockShowVotes.CheckedChanged, _
         chkTVScanOrderModify.CheckedChanged, _
         chkTVScraperCleanFields.CheckedChanged, _
         chkTVScraperEpisodeActors.CheckedChanged, _
@@ -7539,7 +7521,6 @@ Public Class dlgSettings
         chkTVScraperEpisodeRating.CheckedChanged, _
         chkTVScraperEpisodeRuntime.CheckedChanged, _
         chkTVScraperEpisodeTitle.CheckedChanged, _
-        chkTVScraperEpisodeVotes.CheckedChanged, _
         chkTVScraperShowActors.CheckedChanged, _
         chkTVScraperShowEpiGuideURL.CheckedChanged, _
         chkTVScraperShowGenre.CheckedChanged, _
@@ -7551,7 +7532,6 @@ Public Class dlgSettings
         chkTVScraperShowStatus.CheckedChanged, _
         chkTVScraperShowStudio.CheckedChanged, _
         chkTVScraperShowTitle.CheckedChanged, _
-        chkTVScraperShowVotes.CheckedChanged, _
         chkTVScraperUseDisplaySeasonEpisode.CheckedChanged, _
         chkTVScraperUseSRuntimeForEp.CheckedChanged, _
         chkTVSeasonBannerFrodo.CheckedChanged, _

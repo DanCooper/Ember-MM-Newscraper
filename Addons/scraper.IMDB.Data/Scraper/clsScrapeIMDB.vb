@@ -326,9 +326,10 @@ Namespace IMDB
                 'Rating
                 If FilteredOptions.bRating Then
                     Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
-                    If String.IsNullOrEmpty(RegexRating) = False Then
+                    If Not String.IsNullOrEmpty(RegexRating) Then
                         nMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
                     End If
+                    nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -338,13 +339,6 @@ Namespace IMDB
                     'Get first IMDB trailer if possible
                     Dim trailers As List(Of String) = GetTrailers(nMovie.IMDBID)
                     nMovie.Trailer = trailers.FirstOrDefault()
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Votes
-                If FilteredOptions.bVotes Then
-                    nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -801,12 +795,6 @@ mPlot:          'Plot
                     If String.IsNullOrEmpty(RegexRating) = False Then
                         nShow.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
                     End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Votes
-                If FilteredOptions.bShowVotes Then
                     nShow.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
                 End If
 
@@ -1141,6 +1129,7 @@ mPlot:          'Plot
             ''Rating
             'If Options.bShowRating Then
             '    nShow.Rating = CStr(Show.VoteAverage)
+            '    nShow.Votes = CStr(Show.VoteCount)
             'End If
 
             'If bwTMDB.CancellationPending Then Return Nothing
@@ -1199,11 +1188,6 @@ mPlot:          'Plot
             ''End If
 
             'If bwTMDB.CancellationPending Then Return Nothing
-
-            ''Votes
-            'If Options.bShowVotes Then
-            '    nShow.Votes = CStr(Show.VoteCount)
-            'End If
 
             ''Episodes
             'If withEpisodes Then

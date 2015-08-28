@@ -1117,7 +1117,6 @@ Public Class Functions
             .bTitle = Not Master.eSettings.MovieLockTitle
             .bTop250 = True
             .bTrailer = Not Master.eSettings.MovieLockTrailer
-            .bVotes = True
             .bWriters = True
             .bYear = True
         End With
@@ -1154,7 +1153,6 @@ Public Class Functions
             .bTitle = Master.eSettings.MovieScraperTitle
             .bTop250 = Master.eSettings.MovieScraperTop250
             .bTrailer = Master.eSettings.MovieScraperTrailer
-            .bVotes = Master.eSettings.MovieScraperVotes
             .bWriters = Master.eSettings.MovieScraperCredits
             .bYear = Master.eSettings.MovieScraperYear
         End With
@@ -1174,7 +1172,6 @@ Public Class Functions
             .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
             .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
             .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
-            .bEpisodeVotes = Master.eSettings.TVScraperEpisodeVotes
             .bShowActors = Master.eSettings.TVScraperShowActors
             .bShowCert = Master.eSettings.TVScraperShowCert
             .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
@@ -1188,7 +1185,6 @@ Public Class Functions
             .bShowStatus = Master.eSettings.TVScraperShowStatus
             .bShowStudio = Master.eSettings.TVScraperShowStudio
             .bShowTitle = Master.eSettings.TVScraperShowTitle
-            .bShowVotes = Master.eSettings.TVScraperShowVotes
         End With
     End Sub
     ''' <summary>
@@ -1459,7 +1455,6 @@ Public Class Functions
         filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
         filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
         filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
-        filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
         filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
         'workaround since following switches don't have global data scraper settings (IMDB only)
@@ -1501,7 +1496,6 @@ Public Class Functions
         filterOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
         filterOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
         filterOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
-        filterOptions.bEpisodeVotes = Options.bEpisodeVotes AndAlso Options2.bEpisodeVotes
         filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
         filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
         filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
@@ -1519,7 +1513,6 @@ Public Class Functions
         filterOptions.bShowStatus = Options.bShowStatus AndAlso Options2.bShowStatus
         filterOptions.bShowStudio = Options.bShowStudio AndAlso Options2.bShowStudio
         filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
-        filterOptions.bShowVotes = Options.bShowVotes AndAlso Options2.bShowVotes
         Return filterOptions
     End Function
 
@@ -1936,7 +1929,6 @@ Public Class Structures
         Dim bCountry As Boolean
         Dim bTags As Boolean
         Dim bTrailer As Boolean
-        Dim bVotes As Boolean
         Dim bWriters As Boolean
         Dim bYear As Boolean
     End Structure
@@ -1963,7 +1955,6 @@ Public Class Structures
         Dim bEpisodeRating As Boolean
         Dim bEpisodeRuntime As Boolean
         Dim bEpisodeTitle As Boolean
-        Dim bEpisodeVotes As Boolean
         Dim bSeasonAired As Boolean
         Dim bSeasonPlot As Boolean
         Dim bShowActors As Boolean
@@ -1981,7 +1972,6 @@ Public Class Structures
         Dim bShowStatus As Boolean
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean
-        Dim bShowVotes As Boolean
     End Structure
 
     Public Structure SettingsResult

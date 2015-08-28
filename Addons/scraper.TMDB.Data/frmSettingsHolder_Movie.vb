@@ -156,7 +156,7 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
+    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -200,14 +200,13 @@ Public Class frmSettingsHolder_Movie
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkRating.Text = Master.eLang.GetString(1250, "TMDB Rating")
+        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkVotes.Text = Master.eLang.GetString(1251, "TMDB Votes")
         Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")

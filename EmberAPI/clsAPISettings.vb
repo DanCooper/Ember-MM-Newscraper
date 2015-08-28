@@ -616,15 +616,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVLockEpisodeVotes() As Boolean
-        Get
-            Return Settings._XMLSettings.TVLockEpisodeVotes
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVLockEpisodeVotes = value
-        End Set
-    End Property
-
     Public Property TVEpisodePosterHeight() As Integer
         Get
             Return Settings._XMLSettings.TVEpisodePosterHeight
@@ -1013,15 +1004,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperVotes() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieScraperVotes
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperVotes = value
-        End Set
-    End Property
-
     Public Property MovieScraperCredits() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCredits
@@ -1343,15 +1325,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieLockTop250 = value
-        End Set
-    End Property
-
-    Public Property MovieLockVotes() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieLockVotes
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLockVotes = value
         End Set
     End Property
 
@@ -3233,15 +3206,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVScraperEpisodeVotes() As Boolean
-        Get
-            Return Settings._XMLSettings.TVScraperEpisodeVotes
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVScraperEpisodeVotes = value
-        End Set
-    End Property
-
     Public Property TVScraperShowActors() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperShowActors
@@ -3383,15 +3347,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowTitle = value
-        End Set
-    End Property
-
-    Public Property TVScraperShowVotes() As Boolean
-        Get
-            Return Settings._XMLSettings.TVScraperShowVotes
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVScraperShowVotes = value
         End Set
     End Property
 
@@ -3725,15 +3680,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVLockShowCert = value
-        End Set
-    End Property
-
-    Public Property TVLockShowVotes() As Boolean
-        Get
-            Return Settings._XMLSettings.TVLockShowVotes
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVLockShowVotes = value
         End Set
     End Property
 
@@ -6783,7 +6729,6 @@ Public Class Settings
         Me.MovieLockTitle = False
         Me.MovieLockTop250 = False
         Me.MovieLockTrailer = False
-        Me.MovieLockVotes = False
         Me.MovieLockCredits = False
         Me.MovieLockYear = False
         Me.MovieMetadataPerFileType = New List(Of MetadataPerType)
@@ -6849,7 +6794,6 @@ Public Class Settings
         Me.MovieScraperUseDetailView = False
         Me.MovieScraperUseMDDuration = True
         Me.MovieScraperCertFSK = False
-        Me.MovieScraperVotes = True
         Me.MovieScraperCredits = True
         Me.MovieScraperXBMCTrailerFormat = False
         Me.MovieScraperYear = True
@@ -6999,7 +6943,6 @@ Public Class Settings
         Me.TVLockEpisodeRating = False
         Me.TVLockEpisodeRuntime = False
         Me.TVLockEpisodeTitle = False
-        Me.TVLockEpisodeVotes = False
         Me.TVLockShowActors = False
         Me.TVLockShowCert = False
         Me.TVLockShowCountry = False
@@ -7013,7 +6956,6 @@ Public Class Settings
         Me.TVLockShowStatus = False
         Me.TVLockShowStudio = False
         Me.TVLockShowTitle = False
-        Me.TVLockShowVotes = False
         Me.TVMetadataPerFileType = New List(Of MetadataPerType)
         Me.TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         Me.TVScanOrderModify = False
@@ -7029,7 +6971,6 @@ Public Class Settings
         Me.TVScraperEpisodeRating = True
         Me.TVScraperEpisodeRuntime = True
         Me.TVScraperEpisodeTitle = True
-        Me.TVScraperEpisodeVotes = True
         Me.TVScraperMetaDataScan = True
         Me.TVScraperOptionsOrdering = Enums.Ordering.Standard
         Me.TVScraperShowActors = True
@@ -7052,7 +6993,6 @@ Public Class Settings
         Me.TVScraperShowStatus = True
         Me.TVScraperShowStudio = True
         Me.TVScraperShowTitle = True
-        Me.TVScraperShowVotes = True
         Me.TVScraperUseDisplaySeasonEpisode = True
         Me.TVScraperUseMDDuration = True
         Me.TVScraperUseSRuntimeForEp = True

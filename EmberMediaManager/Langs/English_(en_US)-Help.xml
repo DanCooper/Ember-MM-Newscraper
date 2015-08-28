@@ -19,7 +19,6 @@
   <string control="IMDBMovieInfo_chkDirector">Enable scraping movie director.</string>
   <string control="IMDBMovieInfo_chkTagline">Enable scraping movie tagline.</string>
   <string control="IMDBMovieInfo_chkCast">Enable scraping movie cast.</string>
-  <string control="IMDBMovieInfo_chkVotes">Enable scraping movie votes.</string>
   <string control="IMDBMovieInfo_chkTrailer">Enable scraping movie trailer url.</string>
   <string control="IMDBMovieInfo_chkRating">Enable scraping movie rating.</string>
   <string control="IMDBMovieInfo_chkRelease">Enable scraping movie release date.</string>
@@ -55,7 +54,6 @@
   <string control="TMDBMovieInfo_chkGenre">Enable scraping movie genre.</string>
   <string control="TMDBMovieInfo_chkTagline">Enable scraping movie tagline.</string>
   <string control="TMDBMovieInfo_chkCast">Enable scraping movie cast.</string>
-  <string control="TMDBMovieInfo_chkVotes">Enable scraping movie votes.</string>
   <string control="TMDBMovieInfo_chkTrailer"></string>
   <string control="TMDBMovieInfo_chkRating">Enable scraping movie rating.</string>
   <string control="TMDBMovieInfo_chkRelease">Enable scraping movie release date.</string>
@@ -335,7 +333,6 @@
   <string control="Core_chkDirector">Enable scraping movie director.</string>
   <string control="Core_chkTagline">Enable scraping movie tagline.</string>
   <string control="Core_chkCast">Enable scraping movie cast.</string>
-  <string control="Core_chkVotes">Enable scraping movie votes.</string>
   <string control="Core_chkTrailer">Enable scraping movie trailer url.</string>
   <string control="Core_chkRating">Enable scraping movie rating.</string>
   <string control="Core_chkRelease">Enable scraping movie release date.</string>

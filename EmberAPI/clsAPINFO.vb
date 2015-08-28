@@ -67,7 +67,6 @@ Public Class NFO
         Dim new_Title As Boolean = False
         Dim new_Top250 As Boolean = False
         Dim new_Trailer As Boolean = False
-        Dim new_Votes As Boolean = False
         Dim new_Year As Boolean = False
 
         'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
@@ -266,9 +265,11 @@ Public Class NFO
             If (String.IsNullOrEmpty(DBMovie.Movie.Rating) OrElse DBMovie.Movie.Rating = "0" OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bRating AndAlso _
                 Not String.IsNullOrEmpty(scrapedmovie.Rating) AndAlso Not scrapedmovie.Rating = "0" AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
                 DBMovie.Movie.Rating = scrapedmovie.Rating
+                DBMovie.Movie.Votes = Regex.Replace(scrapedmovie.Votes, "\D", String.Empty)
                 new_Rating = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
                 DBMovie.Movie.Rating = String.Empty
+                DBMovie.Movie.Votes = String.Empty
             End If
 
             'ReleaseDate
@@ -359,15 +360,6 @@ Public Class NFO
                 new_Trailer = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTrailer AndAlso Not Master.eSettings.MovieLockTrailer Then
                 DBMovie.Movie.Trailer = String.Empty
-            End If
-
-            'Votes
-            If (String.IsNullOrEmpty(DBMovie.Movie.Votes) OrElse DBMovie.Movie.Votes = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso ScrapeOptions.bVotes AndAlso _
-                Not String.IsNullOrEmpty(scrapedmovie.Votes) AndAlso Not scrapedmovie.Votes = "0" AndAlso Master.eSettings.MovieScraperVotes AndAlso Not new_Votes Then
-                DBMovie.Movie.Votes = Regex.Replace(scrapedmovie.Votes, "\D", String.Empty)
-                new_Votes = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperVotes AndAlso Not Master.eSettings.MovieLockVotes Then
-                DBMovie.Movie.Votes = String.Empty
             End If
 
             'Year
@@ -528,7 +520,6 @@ Public Class NFO
         Dim new_Title As Boolean = False
         Dim new_OriginalTitle As Boolean = False
         Dim new_Trailer As Boolean = False
-        Dim new_Votes As Boolean = False
 
         Dim KnownEpisodesIndex As New List(Of KnownEpisode)
         Dim KnownSeasonsIndex As New List(Of Integer)
@@ -686,9 +677,11 @@ Public Class NFO
             If (String.IsNullOrEmpty(DBTV.TVShow.Rating) OrElse DBTV.TVShow.Rating = "0" OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bShowRating AndAlso _
                 Not String.IsNullOrEmpty(scrapedshow.Rating) AndAlso Not scrapedshow.Rating = "0" AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
                 DBTV.TVShow.Rating = scrapedshow.Rating
+                DBTV.TVShow.Votes = Regex.Replace(scrapedshow.Votes, "\D", String.Empty)
                 new_Rating = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
                 DBTV.TVShow.Rating = String.Empty
+                DBTV.TVShow.Votes = String.Empty
             End If
 
             'Runtime
@@ -748,15 +741,6 @@ Public Class NFO
                 new_Title = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowTitle AndAlso Not Master.eSettings.TVLockShowTitle Then
                 DBTV.TVShow.Title = String.Empty
-            End If
-
-            'Votes
-            If (String.IsNullOrEmpty(DBTV.TVShow.Votes) OrElse DBTV.TVShow.Votes = "0" OrElse Not Master.eSettings.MovieLockVotes) AndAlso ScrapeOptions.bShowVotes AndAlso _
-                Not String.IsNullOrEmpty(scrapedshow.Votes) AndAlso Not scrapedshow.Votes = "0" AndAlso Master.eSettings.TVScraperShowVotes AndAlso Not new_Votes Then
-                DBTV.TVShow.Votes = Regex.Replace(scrapedshow.Votes, "\D", String.Empty)
-                new_Votes = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowVotes AndAlso Not Master.eSettings.TVLockShowVotes Then
-                DBTV.TVShow.Votes = String.Empty
             End If
 
             '    'Credits
@@ -993,7 +977,6 @@ Public Class NFO
         Dim new_Season As Boolean = False
         Dim new_ThumbPoster As Boolean = False
         Dim new_Title As Boolean = False
-        Dim new_Votes As Boolean = False
 
         ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
         'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
@@ -1129,9 +1112,11 @@ Public Class NFO
             If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Rating) OrElse DBTVEpisode.TVEpisode.Rating = "0" OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso _
                 Not String.IsNullOrEmpty(scrapedepisode.Rating) AndAlso Not scrapedepisode.Rating = "0" AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
                 DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
+                DBTVEpisode.TVEpisode.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
                 new_Rating = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
                 DBTVEpisode.TVEpisode.Rating = String.Empty
+                DBTVEpisode.TVEpisode.Votes = String.Empty
             End If
 
             'Runtime
@@ -1156,15 +1141,6 @@ Public Class NFO
                 new_Title = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeTitle AndAlso Not Master.eSettings.TVLockEpisodeTitle Then
                 DBTVEpisode.TVEpisode.Title = String.Empty
-            End If
-
-            'Votes
-            If (String.IsNullOrEmpty(DBTVEpisode.TVEpisode.Votes) OrElse DBTVEpisode.TVEpisode.Votes = "0" OrElse Not Master.eSettings.TVLockEpisodeVotes) AndAlso ScrapeOptions.bEpisodeVotes AndAlso _
-                Not String.IsNullOrEmpty(scrapedepisode.Votes) AndAlso Not scrapedepisode.Votes = "0" AndAlso Master.eSettings.TVScraperEpisodeVotes AndAlso Not new_Votes Then
-                DBTVEpisode.TVEpisode.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
-                new_Votes = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeVotes AndAlso Not Master.eSettings.TVLockEpisodeVotes Then
-                DBTVEpisode.TVEpisode.Votes = String.Empty
             End If
         Next
 

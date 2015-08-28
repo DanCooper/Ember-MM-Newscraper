@@ -197,7 +197,6 @@ Public Class TMDB_Data
         _setup_Movie.chkTagline.Checked = ConfigOptions_Movie.bTagline
         _setup_Movie.chkTitle.Checked = ConfigOptions_Movie.bTitle
         _setup_Movie.chkTrailer.Checked = ConfigOptions_Movie.bTrailer
-        _setup_Movie.chkVotes.Checked = ConfigOptions_Movie.bVotes
         _setup_Movie.chkWriters.Checked = ConfigOptions_Movie.bWriters
         _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
@@ -275,7 +274,6 @@ Public Class TMDB_Data
         _setup_TV.chkScraperEpisodePlot.Checked = ConfigOptions_TV.bEpisodePlot
         _setup_TV.chkScraperEpisodeRating.Checked = ConfigOptions_TV.bEpisodeRating
         _setup_TV.chkScraperEpisodeTitle.Checked = ConfigOptions_TV.bEpisodeTitle
-        _setup_TV.chkScraperEpisodeVotes.Checked = ConfigOptions_TV.bEpisodeVotes
         _setup_TV.chkScraperShowActors.Checked = ConfigOptions_TV.bShowActors
         _setup_TV.chkScraperShowCert.Checked = ConfigOptions_TV.bShowCert
         _setup_TV.chkScraperShowCountry.Checked = ConfigOptions_TV.bShowCountry
@@ -289,7 +287,6 @@ Public Class TMDB_Data
         _setup_TV.chkScraperShowStatus.Checked = ConfigOptions_TV.bShowStatus
         _setup_TV.chkScraperShowStudio.Checked = ConfigOptions_TV.bShowStudio
         _setup_TV.chkScraperShowTitle.Checked = ConfigOptions_TV.bShowTitle
-        _setup_TV.chkScraperShowVotes.Checked = ConfigOptions_TV.bShowVotes
         _setup_TV.txtApiKey.Text = strPrivateAPIKey
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
@@ -339,7 +336,6 @@ Public Class TMDB_Data
         ConfigOptions_Movie.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.Movie)
         ConfigOptions_Movie.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.ContentType.Movie)
         ConfigOptions_Movie.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.ContentType.Movie)
-        ConfigOptions_Movie.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.Movie)
         ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.ContentType.Movie)
         ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
 
@@ -370,7 +366,6 @@ Public Class TMDB_Data
         ConfigOptions_TV.bEpisodePlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
         ConfigOptions_TV.bEpisodeRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
         ConfigOptions_TV.bEpisodeTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions_TV.bEpisodeVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVEpisode)
         ConfigOptions_TV.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.TVShow)
@@ -385,7 +380,6 @@ Public Class TMDB_Data
         ConfigOptions_TV.bShowStatus = clsAdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
         ConfigOptions_TV.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
-        ConfigOptions_TV.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVShow)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.TV)
         _SpecialSettings_TV.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.ContentType.TV)
@@ -419,7 +413,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoTitle", ConfigOptions_Movie.bTitle, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTop250", ConfigOptions_Movie.bTop250, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoTrailer", ConfigOptions_Movie.bTrailer, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings_Movie.FallBackEng, , , Enums.ContentType.Movie)
@@ -450,7 +443,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoPlot", ConfigOptions_TV.bEpisodePlot, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bEpisodeVotes, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoActors", ConfigOptions_TV.bShowActors, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCert", ConfigOptions_TV.bShowCert, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCountry", ConfigOptions_TV.bShowCountry, , , Enums.ContentType.TVShow)
@@ -464,7 +456,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoStatus", ConfigOptions_TV.bShowStatus, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStudio", ConfigOptions_TV.bShowStudio, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoTitle", ConfigOptions_TV.bShowTitle, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_TV.bShowVotes, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings_TV.FallBackEng, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("GetAdultItems", _SpecialSettings_TV.GetAdultItems, , , Enums.ContentType.TV)
             settings.SetSetting("APIKey", _setup_TV.txtApiKey.Text, , , Enums.ContentType.TV)
@@ -494,7 +485,6 @@ Public Class TMDB_Data
         ConfigOptions_Movie.bTitle = _setup_Movie.chkTitle.Checked
         ConfigOptions_Movie.bTop250 = False
         ConfigOptions_Movie.bTrailer = _setup_Movie.chkTrailer.Checked
-        ConfigOptions_Movie.bVotes = _setup_Movie.chkVotes.Checked
         ConfigOptions_Movie.bWriters = _setup_Movie.chkWriters.Checked
         ConfigOptions_Movie.bYear = _setup_Movie.chkYear.Checked
         _SpecialSettings_Movie.FallBackEng = _setup_Movie.chkFallBackEng.Checked
@@ -531,7 +521,6 @@ Public Class TMDB_Data
         ConfigOptions_TV.bEpisodePlot = _setup_TV.chkScraperEpisodePlot.Checked
         ConfigOptions_TV.bEpisodeRating = _setup_TV.chkScraperEpisodeRating.Checked
         ConfigOptions_TV.bEpisodeTitle = _setup_TV.chkScraperEpisodeTitle.Checked
-        ConfigOptions_TV.bEpisodeVotes = _setup_TV.chkScraperEpisodeVotes.Checked
         ConfigOptions_TV.bShowActors = _setup_TV.chkScraperShowActors.Checked
         ConfigOptions_TV.bShowCert = _setup_TV.chkScraperShowCert.Checked
         ConfigOptions_TV.bShowCreator = _setup_TV.chkScraperShowCreator.Checked
@@ -544,7 +533,6 @@ Public Class TMDB_Data
         ConfigOptions_TV.bShowStatus = _setup_TV.chkScraperShowStatus.Checked
         ConfigOptions_TV.bShowStudio = _setup_TV.chkScraperShowStudio.Checked
         ConfigOptions_TV.bShowTitle = _setup_TV.chkScraperShowTitle.Checked
-        ConfigOptions_TV.bShowVotes = _setup_TV.chkScraperShowVotes.Checked
         _SpecialSettings_TV.FallBackEng = _setup_TV.chkFallBackEng.Checked
         _SpecialSettings_TV.GetAdultItems = _setup_TV.chkGetAdultItems.Checked
         SaveSettings_TV()

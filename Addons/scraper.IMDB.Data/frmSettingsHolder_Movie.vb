@@ -207,10 +207,6 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
 
     Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
@@ -268,7 +264,7 @@ Public Class frmSettingsHolder_Movie
         Me.chkPartialTitles.Text = Master.eLang.GetString(1183, "Partial Titles")
         Me.chkPopularTitles.Text = Master.eLang.GetString(1182, "Popular Titles")
         Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
-        Me.chkRating.Text = Master.eLang.GetString(1239, "IMDB Rating")
+        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkShortTitles.Text = Master.eLang.GetString(837, "Short Titles")
@@ -279,7 +275,6 @@ Public Class frmSettingsHolder_Movie
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkTvTitles.Text = Master.eLang.GetString(1184, "TV Movie Titles")
         Me.chkVideoTitles.Text = Master.eLang.GetString(1185, "Video Titles")
-        Me.chkVotes.Text = Master.eLang.GetString(1252, "IMDB Votes")
         Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.gbScraperFieldsCredits.Text = Master.eLang.GetString(729, "Credits")

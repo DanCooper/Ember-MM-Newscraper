@@ -173,10 +173,6 @@ Public Class frmSettingsHolder_TV
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -241,10 +237,6 @@ Public Class frmSettingsHolder_TV
 
     End Sub
 
-    Private Sub chkScraperShowVotes_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowVotes.CheckedChanged
-
-    End Sub
-
     Private Sub chkScraperEpTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpTitle.CheckedChanged
 
     End Sub
@@ -278,10 +270,6 @@ Public Class frmSettingsHolder_TV
     End Sub
 
     Private Sub chkScraperEpRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpRating.CheckedChanged
-
-    End Sub
-
-    Private Sub chkScraperEpVotes_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpVotes.CheckedChanged
 
     End Sub
 

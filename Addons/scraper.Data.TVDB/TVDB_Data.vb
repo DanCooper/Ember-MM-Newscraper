@@ -108,7 +108,6 @@ Public Class TVDB_Data
         _setup.chkScraperEpisodePlot.Checked = ConfigOptions.bEpisodePlot
         _setup.chkScraperEpisodeRating.Checked = ConfigOptions.bEpisodeRating
         _setup.chkScraperEpisodeTitle.Checked = ConfigOptions.bEpisodeTitle
-        _setup.chkScraperEpisodeVotes.Checked = ConfigOptions.bEpisodeVotes
         _setup.chkScraperShowActors.Checked = ConfigOptions.bShowActors
         _setup.chkScraperShowEpisodeGuide.Checked = ConfigOptions.bShowEpisodeGuide
         _setup.chkScraperShowGenre.Checked = ConfigOptions.bShowGenre
@@ -120,7 +119,6 @@ Public Class TVDB_Data
         _setup.chkScraperShowStatus.Checked = ConfigOptions.bShowStatus
         _setup.chkScraperShowStudio.Checked = ConfigOptions.bShowStudio
         _setup.chkScraperShowTitle.Checked = ConfigOptions.bShowTitle
-        _setup.chkScraperShowVotes.Checked = ConfigOptions.bShowVotes
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
             _setup.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
@@ -154,7 +152,6 @@ Public Class TVDB_Data
         ConfigOptions.bEpisodePlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
         ConfigOptions.bEpisodeRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
         ConfigOptions.bEpisodeTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
-        ConfigOptions.bEpisodeVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVEpisode)
         ConfigOptions.bShowActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
         ConfigOptions.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("DoEpisodeGuide", False, , Enums.ContentType.TVShow)
         ConfigOptions.bShowGenre = clsAdvancedSettings.GetBooleanSetting("DoGenre", True, , Enums.ContentType.TVShow)
@@ -166,7 +163,6 @@ Public Class TVDB_Data
         ConfigOptions.bShowStatus = clsAdvancedSettings.GetBooleanSetting("DoStatus", True, , Enums.ContentType.TVShow)
         ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.ContentType.TVShow)
         ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVShow)
-        ConfigOptions.bShowVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.ContentType.TVShow)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "")
         _SpecialSettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
@@ -185,7 +181,6 @@ Public Class TVDB_Data
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bEpisodePlot, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigOptions.bShowRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoTitle", ConfigOptions.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bEpisodeVotes, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoActors", ConfigOptions.bShowActors, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoEpisodeGuide", ConfigOptions.bShowEpisodeGuide, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoGenre", ConfigOptions.bShowGenre, , , Enums.ContentType.TVShow)
@@ -196,7 +191,6 @@ Public Class TVDB_Data
             settings.SetBooleanSetting("DoStatus", ConfigOptions.bShowStatus, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStudio", ConfigOptions.bShowStudio, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoTitle", ConfigOptions.bShowTitle, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bShowVotes, , , Enums.ContentType.TVShow)
             settings.SetSetting("APIKey", _setup.txtApiKey.Text)
         End Using
     End Sub
@@ -210,7 +204,6 @@ Public Class TVDB_Data
         ConfigOptions.bEpisodePlot = _setup.chkScraperEpisodePlot.Checked
         ConfigOptions.bEpisodeRating = _setup.chkScraperEpisodeRating.Checked
         ConfigOptions.bEpisodeTitle = _setup.chkScraperEpisodeTitle.Checked
-        ConfigOptions.bEpisodeVotes = _setup.chkScraperEpisodeVotes.Checked
         ConfigOptions.bShowActors = _setup.chkScraperShowActors.Checked
         ConfigOptions.bShowEpisodeGuide = _setup.chkScraperShowEpisodeGuide.Checked
         ConfigOptions.bShowGenre = _setup.chkScraperShowGenre.Checked
@@ -222,7 +215,6 @@ Public Class TVDB_Data
         ConfigOptions.bShowStatus = _setup.chkScraperShowStatus.Checked
         ConfigOptions.bShowStudio = _setup.chkScraperShowStudio.Checked
         ConfigOptions.bShowTitle = _setup.chkScraperShowTitle.Checked
-        ConfigOptions.bShowVotes = _setup.chkScraperShowVotes.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

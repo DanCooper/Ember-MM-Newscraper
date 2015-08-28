@@ -490,9 +490,6 @@
     <Content Include="Defaults\DefaultAdvancedSettings - MovieSources.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\DefaultAdvancedSettings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Defaults\DefaultGenres.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

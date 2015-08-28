@@ -14681,7 +14681,6 @@ doCancel:
     Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
         cScrapeOptions.bRating = True
-        cScrapeOptions.bVotes = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
