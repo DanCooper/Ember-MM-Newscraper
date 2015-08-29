@@ -1706,7 +1706,7 @@ Public Class Database
                 Dim movie As DBElement
                 While SQLreader.Read
                     movie = New DBElement
-                    movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                    movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")), False)
                     _moviesetDB.MovieList.Add(movie)
                 End While
             End Using

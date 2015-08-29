@@ -1718,14 +1718,11 @@ Public Class frmMain
                         End If
 
                         Dim ResImg As Image
-                        Dim Poster As New Images
-                        If Movie.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                            Poster = Movie.ImagesContainer.Poster.ImageOriginal
-                        ElseIf Not String.IsNullOrEmpty(Movie.ImagesContainer.Poster.LocalFilePath) Then
-                            Poster.FromFile(Movie.ImagesContainer.Poster.LocalFilePath)
+                        If Movie.ImagesContainer.Poster.ImageOriginal.Image Is Nothing AndAlso Not String.IsNullOrEmpty(Movie.ImagesContainer.Poster.LocalFilePath) Then
+                            Movie.ImagesContainer.Poster.Download(Enums.ContentType.Movie, True)
                         End If
                         If Movie.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                            ResImg = CType(Poster.Image.Clone(), Image)
+                            ResImg = CType(Movie.ImagesContainer.Poster.ImageOriginal.Image.Clone(), Image)
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
                             Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
                         Else
