@@ -478,14 +478,14 @@ Public Class FileFolderRenamer
 
                         'second step: get all list of all episode paths
                         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLNewcommand.CommandText = String.Concat("SELECT ID, TVEpPath FROM TVEpPaths WHERE TVEpPath LIKE '", srcDir, "%';")
+                            SQLNewcommand.CommandText = String.Concat("SELECT idFile, strFilename FROM files WHERE strFilename LIKE '", srcDir, "%';")
                             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                                 While SQLReader.Read
-                                    Dim oldPath As String = SQLReader("TVEpPath").ToString
+                                    Dim oldPath As String = SQLReader("strFilename").ToString
                                     Using SQLCommandPath As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                        SQLCommandPath.CommandText = String.Concat("UPDATE TVEpPaths SET TVEpPath = (?) WHERE ID =", SQLReader("ID").ToString, ";")
-                                        Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommandPath.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
-                                        parTVEpPath.Value = oldPath.Replace(srcDir, destDir)
+                                        SQLCommandPath.CommandText = String.Concat("UPDATE files SET strFilename = (?) WHERE idFile =", SQLReader("idFile").ToString, ";")
+                                        Dim parFilename As SQLite.SQLiteParameter = SQLCommandPath.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+                                        parFilename.Value = oldPath.Replace(srcDir, destDir)
                                         SQLCommandPath.ExecuteNonQuery()
                                     End Using
                                 End While
@@ -746,7 +746,7 @@ Public Class FileFolderRenamer
                 'first step: get a list of all seasons
                 Dim aSeasonsList As New List(Of Integer)
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT Season FROM episode WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, ";")
+                    SQLNewcommand.CommandText = String.Concat("SELECT Season FROM episode WHERE idFile = ", _tmpTVEpisode.FilenameID, ";")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
                             If Not aSeasonsList.Contains(Convert.ToInt32(SQLReader("Season"))) Then aSeasonsList.Add(Convert.ToInt32(SQLReader("Season")))
@@ -759,7 +759,7 @@ Public Class FileFolderRenamer
                 For Each aSeason As Integer In aSeasonsList
                     Dim aEpisodesList As New List(Of Episode)
                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title, SubEpisode FROM episode WHERE TVEpPathID = ", _tmpTVEpisode.FilenameID, " AND Season = ", aSeason, ";")
+                        SQLNewcommand.CommandText = String.Concat("SELECT idEpisode, Episode, Title, SubEpisode FROM episode WHERE idFile = ", _tmpTVEpisode.FilenameID, " AND Season = ", aSeason, ";")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                             While SQLReader.Read
                                 Dim aEpisode As New Episode

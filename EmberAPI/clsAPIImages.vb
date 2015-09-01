@@ -586,9 +586,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -620,9 +620,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -654,9 +654,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -688,9 +688,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2157,9 +2157,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2221,9 +2221,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2284,9 +2284,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2342,9 +2342,9 @@ Public Class Images
             'get first episode of season (YAMJ need that for epsiodes without separate season folders)
             Try
                 Dim dtEpisodes As New DataTable
-                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", mShow.ShowID, " AND Season = ", mShow.TVSeason.Season, " ORDER BY Episode;"))
                 If dtEpisodes.Rows.Count > 0 Then
-                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)

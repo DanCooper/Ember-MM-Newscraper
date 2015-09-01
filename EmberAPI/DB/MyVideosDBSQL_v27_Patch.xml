@@ -1,0 +1,682 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v27_to_v28">
+    <command type="DB">
+      <description>rename table TVEpPaths to files</description>
+      <execute>
+        ALTER TABLE TVEpPaths
+        RENAME TO files;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit table files</description>
+      <execute>
+        CREATE TABLE files01(
+        ID,
+        TVEpPath
+        );
+
+        INSERT INTO files01
+        SELECT
+        ID,
+        TVEpPath
+        FROM files;
+
+        DROP TABLE files;
+
+        CREATE TABLE files (
+        idFile    integer PRIMARY KEY AUTOINCREMENT,
+        strFilename  text NOT NULL
+        );
+        CREATE UNIQUE INDEX UniqueFilename ON files (strFilename);
+
+        INSERT INTO files
+        (idFile,
+        strFilename)
+        SELECT
+        ID,
+        TVEpPath
+        FROM files01;
+
+        DROP TABLE files01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>remove field Missing/NeedsSave / rename field TVEPPathID to idFile in table episode</description>
+      <execute>
+        CREATE TABLE episode01(
+        idEpisode,
+        idShow,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        TVEpPathID,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB
+        );
+
+        INSERT INTO episode01
+        SELECT
+        idEpisode,
+        idShow,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        TVEpPathID,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB
+        FROM episode;
+
+        DROP TABLE episode;
+
+        CREATE TABLE episode (
+        idEpisode       integer PRIMARY KEY AUTOINCREMENT,
+        idShow          integer NOT NULL,
+        idFile          integer NOT NULL,
+        Episode         integer,
+        Title           text,
+        "New"           bool DEFAULT 0,
+        Mark            bool NOT NULL DEFAULT 0,
+        Source          text NOT NULL,
+        Lock            bool NOT NULL DEFAULT 0,
+        Season          integer,
+        Rating          text,
+        Plot            text,
+        Aired           text,
+        Director        text,
+        Credits         text,
+        NfoPath         text,
+        Playcount       text,
+        DisplaySeason   integer,
+        DisplayEpisode  integer,
+        DateAdded       integer,
+        Runtime         text,
+        Votes           text,
+        VideoSource     text,
+        HasSub          bool NOT NULL DEFAULT 0,
+        SubEpisode      integer,
+        iLastPlayed     integer,
+        strIMDB         text,
+        strTMDB         text,
+        strTVDB         text
+        );
+
+        INSERT INTO episode
+        (idEpisode,
+        idShow,
+        idFile,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB)
+        SELECT
+        idEpisode,
+        idShow,
+        TVEpPathID,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Source,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        Director,
+        Credits,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB
+        FROM episode01;
+
+        DROP TABLE episode01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit view episodelist</description>
+      <execute>
+        DROP VIEW episodelist;
+
+        CREATE VIEW episodelist
+        AS
+        SELECT
+        episode.*,
+        fanart.url AS FanartPath,
+        poster.url AS PosterPath,
+        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
+        FROM
+        episode
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
+        AND (fanart.media_type = 'episode')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
+        AND (poster.media_type = 'episode')
+        AND (poster.type = 'thumb');
+      </execute>
+    </command>
+    <command type="DB">
+      <description>remove field NeedsSave in table movie</description>
+      <execute>
+        CREATE TABLE movie01(
+        idMovie,
+        MoviePath,
+        Type,
+        ListTitle,
+        HasSub,
+        "New",
+        Mark,
+        Source,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Country,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Genre,
+        Studio,
+        Runtime,
+        ReleaseDate,
+        Director,
+        Credits,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        UseFolder,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed
+        );
+
+        INSERT INTO movie01
+        SELECT
+        idMovie,
+        MoviePath,
+        Type,
+        ListTitle,
+        HasSub,
+        "New",
+        Mark,
+        Source,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Country,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Genre,
+        Studio,
+        Runtime,
+        ReleaseDate,
+        Director,
+        Credits,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        UseFolder,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed
+        FROM movie;
+
+        DROP TABLE movie;
+
+        CREATE TABLE movie (
+        idMovie         integer PRIMARY KEY AUTOINCREMENT,
+        MoviePath       text,
+        Type            bool,
+        ListTitle       text,
+        HasSub          bool NOT NULL DEFAULT 0,
+        "New"           bool NOT NULL DEFAULT 0,
+        Mark            bool NOT NULL DEFAULT 0,
+        Source          text,
+        Imdb            text,
+        Lock            bool,
+        Title           text,
+        OriginalTitle   text,
+        Year            text,
+        Rating          text,
+        Votes           text,
+        MPAA            text,
+        Top250          text,
+        Country         text,
+        Outline         text,
+        Plot            text,
+        Tagline         text,
+        Certification   text,
+        Genre           text,
+        Studio          text,
+        Runtime         text,
+        ReleaseDate     text,
+        Director        text,
+        Credits         text,
+        Playcount       text,
+        Trailer         text,
+        EThumbsPath     text,
+        NfoPath         text,
+        TrailerPath     text,
+        SubPath         text,
+        FanartURL       text,
+        UseFolder       bool,
+        OutOfTolerance  bool,
+        VideoSource     text,
+        SortTitle       text,
+        DateAdded       integer,
+        EFanartsPath    text,
+        ThemePath       text,
+        TMDB            text,
+        TMDBColID       text,
+        DateModified    integer,
+        MarkCustom1     bool NOT NULL DEFAULT 0,
+        MarkCustom2     bool NOT NULL DEFAULT 0,
+        MarkCustom3     bool NOT NULL DEFAULT 0,
+        MarkCustom4     bool NOT NULL DEFAULT 0,
+        HasSet          bool NOT NULL DEFAULT 0,
+        iLastPlayed     integer
+        );
+
+        INSERT INTO movie
+        (idMovie,
+        MoviePath,
+        Type,
+        ListTitle,
+        HasSub,
+        "New",
+        Mark,
+        Source,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Country,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Genre,
+        Studio,
+        Runtime,
+        ReleaseDate,
+        Director,
+        Credits,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        UseFolder,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed)
+        SELECT
+        idMovie,
+        MoviePath,
+        Type,
+        ListTitle,
+        HasSub,
+        "New",
+        Mark,
+        Source,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Country,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Genre,
+        Studio,
+        Runtime,
+        ReleaseDate,
+        Director,
+        Credits,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        UseFolder,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed
+        FROM movie01;
+
+        DROP TABLE movie01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>remove field NeedsSave in table tvshow</description>
+      <execute>
+        CREATE TABLE tvshow01(
+        idShow,
+        ListTitle,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB
+        );
+
+        INSERT INTO tvshow01
+        SELECT
+        idShow,
+        ListTitle,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB
+        FROM tvshow;
+
+        DROP TABLE tvshow;
+
+        CREATE TABLE tvshow (
+        idShow          integer PRIMARY KEY AUTOINCREMENT,
+        ListTitle       text,
+        "New"           bool DEFAULT 0,
+        Mark            bool NOT NULL DEFAULT 0,
+        TVShowPath      text NOT NULL,
+        Source          text NOT NULL,
+        TVDB            text,
+        Lock            bool NOT NULL DEFAULT 0,
+        EpisodeGuide    text,
+        Plot            text,
+        Genre           text,
+        Premiered       text,
+        Studio          text,
+        MPAA            text,
+        Rating          text,
+        NfoPath         text,
+        Language        text,
+        Ordering        integer NOT NULL DEFAULT 0,
+        Status          text,
+        ThemePath       text,
+        EFanartsPath    text,
+        Runtime         text,
+        Title           text,
+        Votes           text,
+        EpisodeSorting  integer NOT NULL DEFAULT 0,
+        SortTitle       text,
+        strIMDB         text,
+        strTMDB         text
+        );
+        CREATE UNIQUE INDEX UniqueTVShowPath ON tvshow (TVShowPath);
+
+        INSERT INTO tvshow
+        (idShow,
+        ListTitle,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB)
+        SELECT
+        idShow,
+        ListTitle,
+        "New",
+        Mark,
+        TVShowPath,
+        Source,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Genre,
+        Premiered,
+        Studio,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB
+        FROM tvshow01;
+
+        DROP TABLE tvshow01;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

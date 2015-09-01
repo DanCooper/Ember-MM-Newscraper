@@ -3048,6 +3048,7 @@ doCancel:
     Private Sub bwReload_MovieSets_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwReload_MovieSets.DoWork
         Dim iCount As Integer = 0
         Dim MovieSetIDs As New Dictionary(Of Long, String)
+        Dim doFill As Boolean = False
 
         For Each sRow As DataRow In Me.dtMovieSets.Rows
             MovieSetIDs.Add(Convert.ToInt64(sRow.Item("idSet")), sRow.Item("ListTitle").ToString)
@@ -3057,24 +3058,39 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In MovieSetIDs
                 If Me.bwReload_MovieSets.CancellationPending Then Return
                 Me.bwReload_MovieSets.ReportProgress(iCount, KVP.Value)
-                Me.Reload_MovieSet(KVP.Key, True)
+                If Me.Reload_MovieSet(KVP.Key, True) Then
+                    doFill = True
+                Else
+                    Me.bwReload_MovieSets.ReportProgress(-1, KVP.Key)
+                End If
                 iCount += 1
             Next
             SQLtransaction.Commit()
         End Using
+        e.Result = New Results With {.doFill = doFill}
     End Sub
 
     Private Sub bwReload_MovieSets_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwReload_MovieSets.ProgressChanged
-        Me.SetStatus(e.UserState.ToString)
-        Me.tspbLoading.Value = e.ProgressPercentage
+        If e.ProgressPercentage = -1 Then
+            RefreshRow_MovieSet(CLng(e.UserState))
+        Else
+            Me.SetStatus(e.UserState.ToString)
+            Me.tspbLoading.Value = e.ProgressPercentage
+        End If
     End Sub
 
     Private Sub bwReload_MovieSets_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwReload_MovieSets.RunWorkerCompleted
+        Dim Res As Results = DirectCast(e.Result, Results)
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
 
-        Me.FillList(False, True, False)
+        If Res.doFill Then
+            FillList(False, True, False)
+        Else
+            DoTitleCheck()
+            Me.SetControlsEnabled(True)
+        End If
         Me.Cursor = Cursors.Default
     End Sub
 
@@ -4591,8 +4607,8 @@ doCancel:
             If doOpen Then
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        If Not CBool(sRow.Cells("Missing").Value) Then
-                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", sRow.Cells("TVEpPathID").Value.ToString, ";")
+                        If Not Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then
+                            SQLCommand.CommandText = String.Concat("SELECT strFilename FROM files WHERE idFile = ", sRow.Cells("idFile").Value.ToString, ";")
                             ePath = SQLCommand.ExecuteScalar.ToString
 
                             If Not String.IsNullOrEmpty(ePath) Then
@@ -5484,7 +5500,7 @@ doCancel:
         If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                    If Not Convert.ToInt64(sRow.Cells("TVEpPathID").Value) = -1 Then 'skipping missing episodes
+                    If Not Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then 'skipping missing episodes
                         If Me.Reload_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False) Then
                             doFill = True
                         Else
@@ -5723,7 +5739,7 @@ doCancel:
             Dim idShow As Integer = CInt(Me.dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                 If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
-                If Not Convert.ToBoolean(sRow.Cells("Missing").Value) Then
+                If Not Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then
                     Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells("idEpisode").Value), False, False, True) 'set the episode as "missing episode"
                 Else
                     Master.DB.DeleteTVEpFromDB(Convert.ToInt32(sRow.Cells("idEpisode").Value), True, False, True) 'remove the "missing episode" from DB
@@ -7109,7 +7125,7 @@ doCancel:
         'text fields
         If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse _
             colName = "Title") AndAlso e.RowIndex >= 0 Then
-            If Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", e.RowIndex).Value) Then
+            If Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
                 e.CellStyle.ForeColor = Color.Gray
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                 e.CellStyle.SelectionForeColor = Color.LightGray
@@ -7131,7 +7147,7 @@ doCancel:
         If e.ColumnIndex >= 2 AndAlso e.RowIndex >= 0 Then
 
             'background
-            If Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", e.RowIndex).Value) Then
+            If Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
                 e.CellStyle.BackColor = Color.White
                 e.CellStyle.SelectionBackColor = Color.DarkGray
             ElseIf Convert.ToBoolean(Me.dgvTVEpisodes.Item("Lock", e.RowIndex).Value) Then
@@ -7253,7 +7269,7 @@ doCancel:
                     Me.cmnuEpisode.Enabled = True
 
                     For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
-                        If Convert.ToBoolean(sRow.Cells("Missing").Value) Then
+                        If Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then
                             hasMissing = True
                             Exit For
                         End If
@@ -7317,7 +7333,7 @@ doCancel:
                         Me.cmnuEpisode.Enabled = True
                     End If
 
-                    If Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", dgvHTI.RowIndex).Value) Then hasMissing = True
+                    If Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", dgvHTI.RowIndex).Value) = -1 Then hasMissing = True
 
                     If hasMissing Then
                         Me.ShowEpisodeMenuItems(False)
@@ -13933,10 +13949,10 @@ doCancel:
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Dim DBMovieSet As New Database.DBElement
 
-        DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+        DBMovieSet = Master.DB.LoadMovieSetFromDB(ID, False)
 
         fScanner.LoadMovieSet(DBMovieSet, False, BatchMode)
-        RefreshRow_MovieSet(DBMovieSet.ID)
+        If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
 
         Return False
     End Function
@@ -14825,13 +14841,13 @@ doCancel:
 
         If Me.dgvTVEpisodes.Rows.Count >= iRow Then
             If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) Then
+                String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", iRow).Value) = -1 Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVEpisode)
 
                 Me.currTV = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
                 Me.FillScreenInfoWith_TVEpisode()
 
-                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item("Missing", iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", iRow).Value) = -1 AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuEpisode.Enabled = True
                 End If
             Else
