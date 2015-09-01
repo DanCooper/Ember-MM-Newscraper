@@ -2676,7 +2676,7 @@ Public Class frmMain
             DBScrapeEpisode = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idEpisode")), True)
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            If tScrapeItem.ScrapeModifier.MainNFO Then
+            If tScrapeItem.ScrapeModifier.EpisodeNFO Then
                 If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                 End If
@@ -13740,10 +13740,13 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub RefreshRow_Movie(ByVal MovieID As Long)
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", MovieID))
-        Dim newRow = newTable.Rows.Item(0)
+        If newTable.Rows.Count > 0 Then
+            newRow = newTable.Rows.Item(0)
+        End If
 
         Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idMovie")) = MovieID Select drvRow
 
@@ -13766,10 +13769,13 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub RefreshRow_MovieSet(ByVal MovieSetID As Long)
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", MovieSetID))
-        Dim newRow = newTable.Rows.Item(0)
+        If newTable.Rows.Count > 0 Then
+            newRow = newTable.Rows.Item(0)
+        End If
 
         Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSet")) = MovieSetID Select drvRow
 
@@ -13792,26 +13798,17 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVEpisode(ByVal EpisodeID As Long)
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
-        'Dim EpisodeChanged As Boolean = False
+        Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
-        'Dim SeasonChanged As Boolean = False
-        'Dim ShowID As Integer = -1
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
-        Dim newRow = newTable.Rows.Item(0)
+        If newTable.Rows.Count > 0 Then
+            newRow = newTable.Rows.Item(0)
+        End If
 
         Dim dRow = From drvRow In dtTVEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idEpisode")) = EpisodeID Select drvRow
 
         If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
-            'If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item("Season")) = tmpShowDb.TVEp.Season Then
-            '    SeasonChanged = True
-            '    ShowID = Convert.ToInt32(tmpShowDb.ShowID)
-            'End If
-            'If Not Convert.ToInt32(DirectCast(dRow(0), DataRow).Item("Episode")) = tmpShowDb.TVEp.Episode Then
-            '    EpisodeChanged = True
-            '    ShowID = Convert.ToInt32(tmpShowDb.ShowID)
-            'End If
-
             If Me.InvokeRequired Then
                 Me.Invoke(myDelegate, New Object() {dRow(0), newRow})
             Else
@@ -13830,10 +13827,13 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVSeason(ByVal SeasonID As Long)
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
-        Dim newRow = newTable.Rows.Item(0)
+        If newTable.Rows.Count > 0 Then
+            newRow = newTable.Rows.Item(0)
+        End If
 
         Dim dRow = From drvRow In dtTVSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSeason")) = SeasonID Select drvRow
 
@@ -13868,10 +13868,13 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVShow(ByVal ShowID As Long, Optional ByVal Force As Boolean = False)
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ShowID))
-        Dim newRow = newTable.Rows.Item(0)
+        If newTable.Rows.Count > 0 Then
+            newRow = newTable.Rows.Item(0)
+        End If
 
         Dim dRow = From drvRow In dtTVShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idShow")) = ShowID Select drvRow
 
@@ -13950,15 +13953,10 @@ doCancel:
 
         DBTVEpisode = Master.DB.LoadTVEpisodeFromDB(ID, True)
 
+        If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
+
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
-
-            'check if this episode is a MultiEpisode
-            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLCommand.CommandText = String.Format("SELECT COUNT(*) FROM episode WHERE TVEpPathID = {0}", DBTVEpisode.FilenameID)
-                epCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
-            End Using
-
-            fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False, epCount > 1)
+            fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _

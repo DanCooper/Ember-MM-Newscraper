@@ -851,14 +851,23 @@ Public Class Scanner
         DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, True)
     End Sub
 
-    Public Function LoadTVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean, Optional isMultiEpisode As Boolean = False) As List(Of Integer)
+    Public Function LoadTVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As List(Of Integer)
         Dim SeasonsList As New List(Of Integer)
+        Dim existingEpisodeList As New List(Of EpisodeItem)
         Dim ToNfo As Boolean = False
+
+        'first we have to create a list of all already existing episode information for this file path
+        If Not isNew Then
+            Dim EpisodeList As List(Of Database.DBElement) = Master.DB.LoadAllTVEpisodesFromDBByTVEpPathID(DBTVEpisode.FilenameID, False, False)
+            For Each eEpisode As Database.DBElement In EpisodeList
+                existingEpisodeList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
+            Next
+        End If
 
         GetTVEpisodeFolderContents(DBTVEpisode)
 
         For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
-            'It's a clone needed to prevent overwriting of information of MultiEpisodes
+            'It's a clone needed to prevent overwriting information of MultiEpisodes
             Dim cEpisode As Database.DBElement = CType(DBTVEpisode.CloneDeep, Database.DBElement)
             ToNfo = False
 
@@ -968,21 +977,27 @@ Public Class Scanner
                 cEpisode.VideoSource = cEpisode.TVEpisode.VideoSource
             End If
 
-            If Not isNew AndAlso isMultiEpisode Then
-                'get idEpisode from database based on TVEpPathID, Season and Episode number
+            If Not isNew Then
                 Dim EpisodeID As Long = -1
-                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE TVEpPathID = {0} AND Season = {1} AND Episode = {2}", cEpisode.FilenameID, cEpisode.TVEpisode.Season, cEpisode.TVEpisode.Episode)
-                    EpisodeID = Convert.ToInt64(SQLCommand.ExecuteScalar)
-                End Using
-                If Not EpisodeID = -1 Then
-                    cEpisode.ID = EpisodeID
 
-                    'Do the Save
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
-                    'add the season number to list
-                    SeasonsList.Add(cEpisode.TVEpisode.Season)
+                Dim eEpisode = existingEpisodeList.FirstOrDefault(Function(f) f.Episode = cEpisode.TVEpisode.Episode AndAlso f.Season = cEpisode.TVEpisode.Season)
+                If eEpisode IsNot Nothing Then
+                    'if an existing episode was found we use that idEpisode and remove the entry from the "existingEpisodeList" (remaining entries are deleted at the end)
+                    EpisodeID = eEpisode.idEpisode
+                    existingEpisodeList.Remove(eEpisode)
                 End If
+
+                If Not EpisodeID = -1 Then
+                    'old episode entry found, we re-use the idEpisode
+                    cEpisode.ID = EpisodeID
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, True, Batchmode, ToNfo)
+                Else
+                    'no existing episode found or the season or episode number has changed => we have to add it as new episode
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, True, Batchmode, ToNfo)
+                End If
+
+                'add the season number to list
+                SeasonsList.Add(cEpisode.TVEpisode.Season)
             Else
                 'Do the Save
                 Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
@@ -992,6 +1007,12 @@ Public Class Scanner
 
             If ReportProgress Then Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", cEpisode.TVShow.Title, cEpisode.TVEpisode.Title)})
         Next
+
+        If Not isNew Then
+            For Each eEpisode As EpisodeItem In existingEpisodeList
+                Master.DB.DeleteTVEpFromDB(eEpisode.idEpisode, False, False, Batchmode)
+            Next
+        End If
 
         Return SeasonsList
     End Function
@@ -1870,6 +1891,7 @@ Public Class Scanner
         Private _aired As String
         Private _bydate As Boolean
         Private _episode As Integer
+        Private _idepisode As Long
         Private _season As Integer
         Private _subepisode As Integer
 
@@ -1912,6 +1934,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property idEpisode() As Long
+            Get
+                Return _idepisode
+            End Get
+            Set(ByVal value As Long)
+                _idepisode = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return _season
@@ -1938,6 +1969,7 @@ Public Class Scanner
             Me._aired = String.Empty
             Me._bydate = False
             Me._episode = -1
+            Me._idepisode = -1
             Me._season = -1
             Me._subepisode = -1
         End Sub

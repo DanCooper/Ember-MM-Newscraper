@@ -1824,6 +1824,25 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
+    Public Function LoadAllTVEpisodesFromDBByTVEpPathID(ByVal TVEpPathID As Long, ByVal withShow As Boolean, Optional ByVal withImages As Boolean = True) As List(Of Database.DBElement)
+        If TVEpPathID < 0 Then Throw New ArgumentOutOfRangeException("TVEpPathID", "Value must be >= 0, was given: " & TVEpPathID)
+
+        Dim _TVEpisodesList As New List(Of Database.DBElement)
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE TVEpPathID = {0};", TVEpPathID)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        _TVEpisodesList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, withImages))
+                    End While
+                End If
+            End Using
+        End Using
+
+        Return _TVEpisodesList
+    End Function
+
     Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, ByVal withImages As Boolean) As List(Of Database.DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
