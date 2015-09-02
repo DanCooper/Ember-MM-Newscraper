@@ -143,6 +143,20 @@
         strTVDB         text
         );
 
+        CREATE TRIGGER delete_episode
+        AFTER DELETE
+        ON episode
+        BEGIN
+        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM files WHERE idFile=old.idFile;
+        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
+        END;
+
         INSERT INTO episode
         (idEpisode,
         idShow,
@@ -398,6 +412,25 @@
         iLastPlayed     integer
         );
 
+        CREATE TRIGGER delete_movie
+        AFTER DELETE
+        ON movie
+        BEGIN
+        DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSets WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
+        END;
+
         INSERT INTO movie
         (idMovie,
         MoviePath,
@@ -605,7 +638,24 @@
         strIMDB         text,
         strTMDB         text
         );
-        CREATE UNIQUE INDEX UniqueTVShowPath ON tvshow (TVShowPath);
+
+        CREATE UNIQUE INDEX UniqueTVShowPath
+        ON tvshow
+        (TVShowPath);
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
+        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
+        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        END;
 
         INSERT INTO tvshow
         (idShow,

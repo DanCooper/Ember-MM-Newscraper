@@ -487,13 +487,16 @@ Public Class Database
                     logger.Info("Removing episodes with no more existing tvshows")
                     SQLcommand.CommandText = "DELETE FROM episode WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
-                    logger.Info("Removing orphaned episode paths")
+                    logger.Info("Removing episodes with orphaned paths")
+                    SQLcommand.CommandText = "DELETE FROM episode WHERE NOT EXISTS (SELECT files.idFile FROM files WHERE files.idFile = episode.idFile OR episode.idFile = -1)"
+                    SQLcommand.ExecuteNonQuery()
+                    logger.Info("Removing orphaned paths")
                     SQLcommand.CommandText = "DELETE FROM files WHERE NOT EXISTS (SELECT episode.idFile FROM episode WHERE episode.idFile = files.idFile AND NOT episode.idFile = -1)"
                     SQLcommand.ExecuteNonQuery()
                 End Using
 
                 logger.Info("Removing seasons with no more existing episodes")
-                CleanSeasons(True)
+                CleanEmptySeasons(True)
                 logger.Info("Cleaning tv shows done")
             End If
 
@@ -591,7 +594,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
     ''' <remarks></remarks>
-    Public Sub CleanSeasons(Optional ByVal BatchMode As Boolean = False)
+    Public Sub CleanEmptySeasons(Optional ByVal BatchMode As Boolean = False)
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -939,7 +942,7 @@ Public Class Database
                             SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", ID, ";")
                             SQLECommand.ExecuteNonQuery()
 
-                            If DoCleanSeasons Then Master.DB.CleanSeasons(True)
+                            If DoCleanSeasons Then Master.DB.CleanEmptySeasons(True)
                         ElseIf Not Convert.ToInt64(SQLReader("idFile")) = -1 Then 'already marked as missing, no need for another query
                             SQLECommand.CommandText = String.Concat("DELETE FROM files WHERE idFile = ", Convert.ToInt64(SQLReader("idFile")), ";")
                             SQLECommand.ExecuteNonQuery()
@@ -962,7 +965,7 @@ Public Class Database
         End Using
         If Not BatchMode Then
             SQLtransaction.Commit()
-            Master.DB.CleanSeasons()
+            Master.DB.CleanEmptySeasons()
         End If
 
         Return True
@@ -976,7 +979,7 @@ Public Class Database
             Using SQLPReader As SQLite.SQLiteDataReader = SQLPCommand.ExecuteReader
                 While SQLPReader.Read
                     Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idFile = ", SQLPReader("ID"), ";")
+                        SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idFile = ", SQLPReader("idFile"), ";")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
                                 DeleteTVEpFromDB(CInt(SQLReader("idEpisode")), Force, False, BatchMode)
@@ -1023,7 +1026,7 @@ Public Class Database
     Public Function DeleteTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
         If iSeason < 0 Then Throw New ArgumentOutOfRangeException("iSeason", "Value must be >= 0, was given: " & iSeason)
-        
+
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -2906,7 +2909,7 @@ Public Class Database
                 While SQLreader.Read
                     Dim newExtrafanartsPath As String = String.Empty
                     If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then newExtrafanartsPath = SQLreader("EFanartsPath").ToString
-                        newExtrafanartsPath = Directory.GetParent(newExtrafanartsPath).FullName
+                    newExtrafanartsPath = Directory.GetParent(newExtrafanartsPath).FullName
                     Using SQLcommand_update_paths As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                         SQLcommand_update_paths.CommandText = String.Format("UPDATE {0} SET EFanartsPath=? WHERE {1}={2}", table, idField, SQLreader(idField))
                         Dim par_ExtrafanartsPath As SQLite.SQLiteParameter = SQLcommand_update_paths.Parameters.Add("par_EFanartsPath", DbType.String, 0, "EFanartsPath")
@@ -3873,7 +3876,7 @@ Public Class Database
                     Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                         If SQLreader.HasRows Then
                             SQLreader.Read()
-                            PathID = Convert.ToInt64(SQLreader("ID"))
+                            PathID = Convert.ToInt64(SQLreader("idFile"))
                         Else
                             Using SQLpcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                 SQLpcommand.CommandText = String.Concat("INSERT INTO files (", _
@@ -4482,6 +4485,8 @@ Public Class Database
                 SaveTVSeasonToDB(nSeason, True)
             Next
         End If
+
+        CleanEmptySeasons(True)
 
         'save episode informations
         If withEpisodes AndAlso _show.Episodes IsNot Nothing AndAlso _show.Episodes.Count > 0 Then
