@@ -140,7 +140,7 @@ Public Class dlgDeleteConfirm
                         End If
 
                     Next
-                    If Me._deltype = Enums.DelType.Seasons OrElse Me._deltype = Enums.DelType.Episodes Then Master.DB.CleanSeasons(True)
+                    If Me._deltype = Enums.DelType.Seasons OrElse Me._deltype = Enums.DelType.Episodes Then Master.DB.CleanEmptySeasons(True)
                     SQLtransaction.Commit()
                 End Using
             End With
@@ -243,24 +243,24 @@ Public Class dlgDeleteConfirm
                                 ItemParentNode.SelectedImageKey = "MOVIE"
                                 ItemParentNode.Tag = Season
 
-                                SQLDelCommand.CommandText = String.Concat("SELECT idEpisode, TVEpPathID FROM episode WHERE idShow = ", Season.Value, " AND Season = ", Season.Key, ";")
+                                SQLDelCommand.CommandText = String.Concat("SELECT idEpisode, idFile FROM episode WHERE idShow = ", Season.Value, " AND Season = ", Season.Key, ";")
                                 Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
                                     While SQLDelReader.Read
                                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                            SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("TVEpPathID"), ";")
+                                            SQLCommand.CommandText = String.Concat("SELECT strFilename FROM files WHERE idFile = ", SQLDelReader("idFile"), ";")
                                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                                 If SQLReader.HasRows Then
                                                     SQLReader.Read()
-                                                    If Functions.IsSeasonDirectory(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName) Then
+                                                    If Functions.IsSeasonDirectory(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName) Then
                                                         Try
-                                                            AddFolderNode(ItemParentNode, New IO.DirectoryInfo(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.tbn", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            AddFolderNode(ItemParentNode, New IO.DirectoryInfo(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).Parent.FullName, String.Format("season{0}.tbn", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.tbn", Season.Key.ToString))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).Parent.FullName, String.Format("season{0}.tbn", Season.Key.ToString))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.jpg", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).Parent.FullName, String.Format("season{0}.jpg", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).Parent.FullName, String.Format("season{0}.jpg", Season.Key.ToString))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).Parent.FullName, String.Format("season{0}.jpg", Season.Key.ToString))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
                                                         Catch
                                                             .Nodes.Remove(ItemParentNode)
@@ -268,20 +268,20 @@ Public Class dlgDeleteConfirm
                                                         Exit While
                                                     Else
                                                         Try
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, IO.Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
-                                                            AddFileNode(ItemParentNode, New IO.FileInfo(SQLReader("TVEpPath").ToString))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName, IO.Path.GetFileNameWithoutExtension(SQLReader("strFilename").ToString))
+                                                            AddFileNode(ItemParentNode, New IO.FileInfo(SQLReader("strFilename").ToString))
                                                             If IO.File.Exists(String.Concat(ePath, ".nfo")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".nfo")))
                                                             If IO.File.Exists(String.Concat(ePath, ".tbn")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".tbn")))
                                                             If IO.File.Exists(String.Concat(ePath, ".jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".jpg")))
                                                             If IO.File.Exists(String.Concat(ePath, "-fanart.jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, "-fanart.jpg")))
                                                             If IO.File.Exists(String.Concat(ePath, ".fanart.jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".fanart.jpg")))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.tbn", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName, String.Format("season{0}.tbn", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.tbn", Season.Key.ToString))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName, String.Format("season{0}.tbn", Season.Key.ToString))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.jpg", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName, String.Format("season{0}.jpg", Season.Key.ToString.PadLeft(2, Convert.ToChar("0"))))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
-                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, String.Format("season{0}.jpg", Season.Key.ToString))
+                                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName, String.Format("season{0}.jpg", Season.Key.ToString))
                                                             If IO.File.Exists(ePath) Then AddFileNode(ItemParentNode, New IO.FileInfo(ePath))
                                                         Catch
                                                             .Nodes.Remove(ItemParentNode)
@@ -308,13 +308,13 @@ Public Class dlgDeleteConfirm
                                 ItemParentNode.SelectedImageKey = "MOVIE"
                                 ItemParentNode.Tag = Ep
 
-                                SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", Ep, ";")
+                                SQLCommand.CommandText = String.Concat("SELECT strFilename FROM files WHERE idFile = ", Ep, ";")
                                 Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                     If SQLReader.HasRows Then
                                         SQLReader.Read()
                                         Try
-                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("TVEpPath").ToString).FullName, IO.Path.GetFileNameWithoutExtension(SQLReader("TVEpPath").ToString))
-                                            AddFileNode(ItemParentNode, New IO.FileInfo(SQLReader("TVEpPath").ToString))
+                                            ePath = IO.Path.Combine(IO.Directory.GetParent(SQLReader("strFilename").ToString).FullName, IO.Path.GetFileNameWithoutExtension(SQLReader("strFilename").ToString))
+                                            AddFileNode(ItemParentNode, New IO.FileInfo(SQLReader("strFilename").ToString))
                                             If IO.File.Exists(String.Concat(ePath, ".nfo")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".nfo")))
                                             If IO.File.Exists(String.Concat(ePath, ".tbn")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".tbn")))
                                             If IO.File.Exists(String.Concat(ePath, ".jpg")) Then AddFileNode(ItemParentNode, New IO.FileInfo(String.Concat(ePath, ".jpg")))

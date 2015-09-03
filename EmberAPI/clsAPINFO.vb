@@ -44,7 +44,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByVal DBMovie As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie) As Database.DBElement
+    Public Shared Function MergeDataScraperResults_Movie(ByVal DBMovie As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.Movie), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -430,7 +430,7 @@ Public Class NFO
         Return DBMovie
     End Function
 
-    Public Shared Function MergeDataScraperResults(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Database.DBElement
+    Public Shared Function MergeDataScraperResults_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.MovieSet), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Plot As Boolean = False
@@ -498,7 +498,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByVal DBTV As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.TVShow), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Database.DBElement
+    Public Shared Function MergeDataScraperResults_TV(ByVal DBTV As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.TVShow), ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal withEpisodes As Boolean) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -763,7 +763,8 @@ Public Class NFO
             'Create KnownEpisodes index (season and episode number)
             If withEpisodes Then
                 For Each kEpisode As MediaContainers.EpisodeDetails In scrapedshow.KnownEpisodes
-                    Dim nKnownEpisode As New KnownEpisode With {.Episode = kEpisode.Episode, _
+                    Dim nKnownEpisode As New KnownEpisode With {.AiredDate = kEpisode.Aired, _
+                                                                .Episode = kEpisode.Episode, _
                                                                 .EpisodeAbsolute = kEpisode.EpisodeAbsolute, _
                                                                 .EpisodeCombined = kEpisode.EpisodeCombined, _
                                                                 .EpisodeDVD = kEpisode.EpisodeDVD, _
@@ -825,7 +826,7 @@ Public Class NFO
 
             If lSeasonList IsNot Nothing AndAlso lSeasonList.Count > 0 Then
                 For Each nSeason As Database.DBElement In lSeasonList
-                    MergeDataScraperResults(nSeason, ScrapedSeasonList, ScrapeOptions)
+                    MergeDataScraperResults_TVSeason(nSeason, ScrapedSeasonList, ScrapeOptions)
                 Next
             Else
                 'no existing season found -> add it as "missing" season
@@ -836,7 +837,7 @@ Public Class NFO
                     .ShowPath = DBTV.ShowPath, _
                     .TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
                 mSeason = Master.DB.AddTVShowInfoToDBElement(mSeason, DBTV)
-                DBTV.Seasons.Add(MergeDataScraperResults(mSeason, ScrapedSeasonList, ScrapeOptions))
+                DBTV.Seasons.Add(MergeDataScraperResults_TVSeason(mSeason, ScrapedSeasonList, ScrapeOptions))
             End If
         Next
 
@@ -847,11 +848,12 @@ Public Class NFO
                 lEpisode = Master.DB.AddTVShowInfoToDBElement(lEpisode, DBTV)
             Next
 
-            For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex
+            For Each aKnownEpisode As KnownEpisode In KnownEpisodesIndex.OrderBy(Function(f) f.Episode).OrderBy(Function(f) f.Season)
 
                 'convert the episode and season number if needed
                 Dim iEpisode As Integer = -1
                 Dim iSeason As Integer = -1
+                Dim strAiredDate As String = aKnownEpisode.AiredDate
                 If DBTV.Ordering = Enums.Ordering.Absolute Then
                     iEpisode = aKnownEpisode.EpisodeAbsolute
                 ElseIf DBTV.Ordering = Enums.Ordering.DVD Then
@@ -862,40 +864,66 @@ Public Class NFO
                     iSeason = aKnownEpisode.Season
                 End If
 
-                'create a list of specified episode informations from all scrapers
-                Dim ScrapedEpisodeList As New List(Of MediaContainers.EpisodeDetails)
-                For Each nShow As MediaContainers.TVShow In ScrapedList
-                    For Each nEpisodeDetails As MediaContainers.EpisodeDetails In nShow.KnownEpisodes.Where(Function(f) f.Episode = aKnownEpisode.Episode AndAlso f.Season = aKnownEpisode.Season)
-                        ScrapedEpisodeList.Add(nEpisodeDetails)
+                If Not iEpisode = -1 AndAlso Not iSeason = -1 Then
+                    'create a list of specified episode informations from all scrapers
+                    Dim ScrapedEpisodeList As New List(Of MediaContainers.EpisodeDetails)
+                    For Each nShow As MediaContainers.TVShow In ScrapedList
+                        For Each nEpisodeDetails As MediaContainers.EpisodeDetails In nShow.KnownEpisodes.Where(Function(f) f.Episode = aKnownEpisode.Episode AndAlso f.Season = aKnownEpisode.Season)
+                            ScrapedEpisodeList.Add(nEpisodeDetails)
+                        Next
                     Next
-                Next
 
-                'check if we have a local episode file for this scraped episode
-                Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
+                    'check if we have a local episode file for this scraped episode
+                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename) AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
 
-                If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
-                    For Each nEpisode As Database.DBElement In lEpisodeList
-                        MergeDataScraperResults(nEpisode, ScrapedEpisodeList, ScrapeOptions)
-                    Next
-                Else
-
-                    'no local episode found -> add it as "missing" episode
-                    Dim mEpisode As New Database.DBElement With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
-                    mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
-                    MergeDataScraperResults(mEpisode, ScrapedEpisodeList, ScrapeOptions)
-                    If mEpisode.TVEpisode.TitleSpecified Then
-                        DBTV.Episodes.Add(mEpisode)
+                    If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
+                        For Each nEpisode As Database.DBElement In lEpisodeList
+                            MergeDataScraperResults_TVEpisode(nEpisode, ScrapedEpisodeList, ScrapeOptions)
+                        Next
                     Else
-                        logger.Warn(String.Format("Can't add {0}: S{1}E{2}: No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
+                        'try to get the episode by AiredDate
+                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename) AndAlso Not String.IsNullOrEmpty(f.TVEpisode.Aired) AndAlso f.TVEpisode.Aired = strAiredDate)
+
+                        If dEpisodeList IsNot Nothing AndAlso dEpisodeList.Count > 0 Then
+                            For Each nEpisode As Database.DBElement In dEpisodeList
+                                MergeDataScraperResults_TVEpisode(nEpisode, ScrapedEpisodeList, ScrapeOptions)
+                                'we have to add the proper season and episode number if the episode was found by AiredDate
+                                nEpisode.TVEpisode.Episode = iEpisode
+                                nEpisode.TVEpisode.Season = iSeason
+                            Next
+                        Else
+                            'no local episode found -> add it as "missing" episode
+                            Dim mEpisode As New Database.DBElement With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
+                            mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
+                            MergeDataScraperResults_TVEpisode(mEpisode, ScrapedEpisodeList, ScrapeOptions)
+                            If mEpisode.TVEpisode.TitleSpecified Then
+                                DBTV.Episodes.Add(mEpisode)
+                            Else
+                                logger.Warn(String.Format("Can't add {0}: S{1}E{2}: No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
+                            End If
+                        End If
                     End If
+                Else
+                    logger.Warn("No valid episode or season number found")
                 End If
             Next
         End If
 
+        'cleanup seasons they don't have any episode
+        Dim iIndex As Integer = 0
+        While iIndex <= DBTV.Seasons.Count - 1
+            Dim iSeason As Integer = DBTV.Seasons.Item(iIndex).TVSeason.Season
+            If Not iSeason = 999 AndAlso DBTV.Episodes.Where(Function(f) f.TVEpisode.Season = iSeason).Count = 0 Then
+                DBTV.Seasons.RemoveAt(iIndex)
+            Else
+                iIndex += 1
+            End If
+        End While
+
         Return DBTV
     End Function
 
-    Public Shared Function MergeDataScraperResults(ByRef DBTVSeason As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.SeasonDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
+    Public Shared Function MergeDataScraperResults_TVSeason(ByRef DBTVSeason As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.SeasonDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Aired As Boolean = False
@@ -960,7 +988,7 @@ Public Class NFO
     ''' 
     ''' 2014/09/01 Cocotus - First implementation: Moved all global lock settings in various data scrapers to this function, only apply them once and not in every data scraper module! Should be more maintainable!
     ''' </remarks>
-    Public Shared Function MergeDataScraperResults(ByRef DBTVEpisode As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
+    Private Shared Function MergeDataScraperResults_TVEpisode(ByRef DBTVEpisode As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
 
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
@@ -1147,6 +1175,63 @@ Public Class NFO
         'Add GuestStars to Actors
         If DBTVEpisode.TVEpisode.GuestStars.Count > 0 AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
             DBTVEpisode.TVEpisode.Actors.AddRange(DBTVEpisode.TVEpisode.GuestStars)
+        End If
+
+        Return DBTVEpisode
+    End Function
+
+    Public Shared Function MergeDataScraperResults_TVEpisode_Single(ByRef DBTVEpisode As Database.DBElement, ByVal ScrapedList As List(Of MediaContainers.EpisodeDetails), ByVal ScrapeOptions As Structures.ScrapeOptions_TV) As Database.DBElement
+        Dim KnownEpisodesIndex As New List(Of KnownEpisode)
+
+        For Each kEpisode As MediaContainers.EpisodeDetails In ScrapedList
+            Dim nKnownEpisode As New KnownEpisode With {.AiredDate = kEpisode.Aired, _
+                                                        .Episode = kEpisode.Episode, _
+                                                        .EpisodeAbsolute = kEpisode.EpisodeAbsolute, _
+                                                        .EpisodeCombined = kEpisode.EpisodeCombined, _
+                                                        .EpisodeDVD = kEpisode.EpisodeDVD, _
+                                                        .Season = kEpisode.Season, _
+                                                        .SeasonCombined = kEpisode.SeasonCombined, _
+                                                        .SeasonDVD = kEpisode.SeasonDVD}
+            If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
+                KnownEpisodesIndex.Add(nKnownEpisode)
+
+                'try to get an episode information with more numbers
+            ElseIf KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season AndAlso _
+                        ((nKnownEpisode.EpisodeAbsolute > -1 AndAlso Not f.EpisodeAbsolute = nKnownEpisode.EpisodeAbsolute) OrElse _
+                         (nKnownEpisode.EpisodeCombined > -1 AndAlso Not f.EpisodeCombined = nKnownEpisode.EpisodeCombined) OrElse _
+                         (nKnownEpisode.EpisodeDVD > -1 AndAlso Not f.EpisodeDVD = nKnownEpisode.EpisodeDVD) OrElse _
+                         (nKnownEpisode.SeasonCombined > -1 AndAlso Not f.SeasonCombined = nKnownEpisode.SeasonCombined) OrElse _
+                         (nKnownEpisode.SeasonDVD > -1 AndAlso Not f.SeasonDVD = nKnownEpisode.SeasonDVD))).Count = 1 Then
+                Dim toRemove As KnownEpisode = KnownEpisodesIndex.FirstOrDefault(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season)
+                KnownEpisodesIndex.Remove(toRemove)
+                KnownEpisodesIndex.Add(nKnownEpisode)
+            End If
+        Next
+
+        If KnownEpisodesIndex.Count = 1 Then
+            'convert the episode and season number if needed
+            Dim iEpisode As Integer = -1
+            Dim iSeason As Integer = -1
+            Dim strAiredDate As String = KnownEpisodesIndex.Item(0).AiredDate
+            If DBTVEpisode.Ordering = Enums.Ordering.Absolute Then
+                iEpisode = KnownEpisodesIndex.Item(0).EpisodeAbsolute
+            ElseIf DBTVEpisode.Ordering = Enums.Ordering.DVD Then
+                iEpisode = CInt(KnownEpisodesIndex.Item(0).EpisodeDVD)
+                iSeason = KnownEpisodesIndex.Item(0).SeasonDVD
+            ElseIf DBTVEpisode.Ordering = Enums.Ordering.Standard Then
+                iEpisode = KnownEpisodesIndex.Item(0).Episode
+                iSeason = KnownEpisodesIndex.Item(0).Season
+            End If
+
+            If Not iEpisode = -1 AndAlso Not iSeason = -1 Then
+                MergeDataScraperResults_TVEpisode(DBTVEpisode, ScrapedList, ScrapeOptions)
+                If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
+                If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
+            Else
+                logger.Warn("No valid episode or season number found")
+            End If
+        Else
+            logger.Warn("Episode could not be clearly determined.")
         End If
 
         Return DBTVEpisode
@@ -2278,12 +2363,12 @@ Public Class NFO
                     End If
 
                     Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
+                        SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
                         Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
-                        Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
+                        Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
 
                         parID.Value = tvEpToSave.ID
-                        parTVEpPath.Value = tvEpToSave.Filename
+                        parFilename.Value = tvEpToSave.Filename
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLreader.Read
@@ -2544,6 +2629,7 @@ Public Class NFO
 
 #Region "Fields"
 
+        Private _aireddate As String
         Private _episode As Integer
         Private _episodeabsolute As Integer
         Private _episodecombined As Double
@@ -2563,6 +2649,15 @@ Public Class NFO
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property AiredDate() As String
+            Get
+                Return Me._aireddate
+            End Get
+            Set(ByVal value As String)
+                Me._aireddate = value
+            End Set
+        End Property
 
         Public Property Episode() As Integer
             Get
@@ -2632,8 +2727,14 @@ Public Class NFO
 #Region "Methods"
 
         Public Sub Clear()
+            Me._aireddate = String.Empty
             Me._episode = -1
+            Me._episodeabsolute = -1
+            Me._episodecombined = -1
+            Me._episodedvd = -1
             Me._season = -1
+            Me._seasoncombined = -1
+            Me._seasondvd = -1
         End Sub
 
 #End Region 'Methods

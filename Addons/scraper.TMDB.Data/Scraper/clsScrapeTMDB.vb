@@ -603,7 +603,7 @@ Namespace TMDB
 
             If (Show Is Nothing AndAlso Not _SpecialSettings.FallBackEng) OrElse (Show Is Nothing AndAlso ShowE Is Nothing) OrElse _
                 (Not Show.Id > 0 AndAlso Not _SpecialSettings.FallBackEng) OrElse (Not Show.Id > 0 AndAlso Not ShowE.Id > 0) Then
-                logger.Error(String.Concat("Can't scrape or movie not found: ", strID))
+                logger.Error(String.Format("Can't scrape or tv show not found: tmdbID:{0}", strID))
                 Return False
             End If
 
@@ -886,6 +886,12 @@ Namespace TMDB
 
         Public Function GetTVEpisodeInfo(ByRef tmdbID As Integer, ByRef SeasonNumber As Integer, ByRef EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
             Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = _TMDBApi.GetTvEpisode(tmdbID, SeasonNumber, EpisodeNumber, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds)
+
+            If EpisodeInfo Is Nothing OrElse EpisodeInfo.Id Is Nothing OrElse Not EpisodeInfo.Id > 0 Then
+                logger.Error(String.Format("Can't scrape or episode not found: tmdbID={0}, Season{1}, Episode{2}", tmdbID, SeasonNumber, EpisodeNumber))
+                Return Nothing
+            End If
+
             Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
             Return nEpisode
         End Function
@@ -925,7 +931,7 @@ Namespace TMDB
             'Aired
             If FilteredOptions.bEpisodeAired Then
                 Dim ScrapedDate As String = CStr(EpisodeInfo.AirDate)
-                If Not String.IsNullOrEmpty(ScrapedDate) Then
+                If Not String.IsNullOrEmpty(ScrapedDate) AndAlso Not ScrapedDate = "00:00:00" Then
                     Dim RelDate As Date
                     If Date.TryParse(ScrapedDate, RelDate) Then
                         'always save date in same date format not depending on users language setting!

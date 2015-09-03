@@ -1127,7 +1127,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBMovie = NFO.MergeDataScraperResults(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
+                DBMovie = NFO.MergeDataScraperResults_Movie(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
             End If
             Return ret.Cancelled
         Else
@@ -1186,7 +1186,7 @@ Public Class ModulesManager
             Next
 
             'Merge scraperresults considering global datascraper settings
-            DBMovieSet = NFO.MergeDataScraperResults(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
+            DBMovieSet = NFO.MergeDataScraperResults_MovieSet(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
         End If
         Return ret.Cancelled
         'Else
@@ -1248,7 +1248,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
+                DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
             End If
             Return ret.Cancelled
         Else
@@ -1289,7 +1289,7 @@ Public Class ModulesManager
                 Next
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults(DBTV, ScrapedList, ScrapeOptions)
+                DBTV = NFO.MergeDataScraperResults_TVEpisode_Single(DBTV, ScrapedList, ScrapeOptions)
             End If
             Return ret.Cancelled
         Else

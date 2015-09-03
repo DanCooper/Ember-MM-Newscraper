@@ -290,81 +290,87 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="DBMovieSet">MovieSetContainer object.</param>
     Public Sub GetMovieSetFolderContents(ByRef DBMovieSet As Database.DBElement)
-        Dim fList As New List(Of String)    'all other files list
-        Dim fPath As String = Master.eSettings.MovieSetPathMSAA
-
         'remove all known paths
         DBMovieSet.ImagesContainer = New MediaContainers.ImagesContainer
         DBMovieSet.NfoPath = String.Empty
 
-        'first add files to filelists
-        Try
-            fList.AddRange(Directory.GetFiles(fPath))
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
         'banner
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Banner.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainBanner)
-                DBMovieSet.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Banner.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.Banner.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
         'clearart
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearArt)
-                DBMovieSet.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.ClearArt.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
         'clearlogo
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainClearLogo)
-                DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
         'discart
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.DiscArt.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainDiscArt)
-                DBMovieSet.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.DiscArt.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
         'fanart
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Fanart.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainFanart)
-                DBMovieSet.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.Fanart.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
         'landscape
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Landscape.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainLandscape)
-                DBMovieSet.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.Landscape.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
 
         'nfo
         If String.IsNullOrEmpty(DBMovieSet.NfoPath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainNFO)
-                DBMovieSet.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.NfoPath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.NfoPath = a
+                    Exit For
+                End If
             Next
         End If
 
         'poster
         If String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Poster.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet.MovieSet.Title, Enums.ModifierType.MainPoster)
-                DBMovieSet.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBMovieSet.ImagesContainer.Poster.LocalFilePath) Then Exit For
+                If File.Exists(a) Then
+                    DBMovieSet.ImagesContainer.Poster.LocalFilePath = a
+                    Exit For
+                End If
             Next
         End If
     End Sub
@@ -461,9 +467,9 @@ Public Class Scanner
         'get first episode of season (YAMJ need that for epsiodes without separate season folders)
         Try
             Dim dtEpisodes As New DataTable
-            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
+            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = episode.idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
             If dtEpisodes.Rows.Count > 0 Then
-                strSeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                strSeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -848,19 +854,28 @@ Public Class Scanner
         If isNew AndAlso Master.eSettings.MovieSetGeneralMarkNew Then
             DBMovieSet.IsMark = True
         End If
-        DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, True)
+        DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, Not OldTitle = DBMovieSet.MovieSet.Title)
     End Sub
 
-    Public Function LoadTVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean, Optional isMultiEpisode As Boolean = False) As List(Of Integer)
+    Public Function LoadTVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As List(Of Integer)
         Dim SeasonsList As New List(Of Integer)
-        Dim ToNfo As Boolean = False
+        Dim existingEpisodeList As New List(Of EpisodeItem)
+
+        'first we have to create a list of all already existing episode information for this file path
+        If Not isNew Then
+            Dim EpisodeList As List(Of Database.DBElement) = Master.DB.LoadAllTVEpisodesFromDBByFileID(DBTVEpisode.FilenameID, False, False)
+            For Each eEpisode As Database.DBElement In EpisodeList
+                existingEpisodeList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
+            Next
+        End If
 
         GetTVEpisodeFolderContents(DBTVEpisode)
 
         For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
-            'It's a clone needed to prevent overwriting of information of MultiEpisodes
+            Dim ToNfo As Boolean = False
+
+            'It's a clone needed to prevent overwriting information of MultiEpisodes
             Dim cEpisode As Database.DBElement = CType(DBTVEpisode.CloneDeep, Database.DBElement)
-            ToNfo = False
 
             If sEpisode.byDate Then
                 If Not String.IsNullOrEmpty(cEpisode.NfoPath) Then
@@ -968,30 +983,42 @@ Public Class Scanner
                 cEpisode.VideoSource = cEpisode.TVEpisode.VideoSource
             End If
 
-            If Not isNew AndAlso isMultiEpisode Then
-                'get idEpisode from database based on TVEpPathID, Season and Episode number
+            If Not isNew Then
                 Dim EpisodeID As Long = -1
-                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE TVEpPathID = {0} AND Season = {1} AND Episode = {2}", cEpisode.FilenameID, cEpisode.TVEpisode.Season, cEpisode.TVEpisode.Episode)
-                    EpisodeID = Convert.ToInt64(SQLCommand.ExecuteScalar)
-                End Using
-                If Not EpisodeID = -1 Then
-                    cEpisode.ID = EpisodeID
 
-                    'Do the Save
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
-                    'add the season number to list
-                    SeasonsList.Add(cEpisode.TVEpisode.Season)
+                Dim eEpisode = existingEpisodeList.FirstOrDefault(Function(f) f.Episode = cEpisode.TVEpisode.Episode AndAlso f.Season = cEpisode.TVEpisode.Season)
+                If eEpisode IsNot Nothing Then
+                    'if an existing episode was found we use that idEpisode and remove the entry from the "existingEpisodeList" (remaining entries are deleted at the end)
+                    EpisodeID = eEpisode.idEpisode
+                    existingEpisodeList.Remove(eEpisode)
                 End If
+
+                If Not EpisodeID = -1 Then
+                    'old episode entry found, we re-use the idEpisode
+                    cEpisode.ID = EpisodeID
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, False, Batchmode, ToNfo)
+                Else
+                    'no existing episode found or the season or episode number has changed => we have to add it as new episode
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, True, Batchmode, ToNfo)
+                End If
+
+                'add the season number to list
+                SeasonsList.Add(cEpisode.TVEpisode.Season)
             Else
                 'Do the Save
-                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
+                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, False, Batchmode, ToNfo)
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             End If
 
             If ReportProgress Then Me.bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", cEpisode.TVShow.Title, cEpisode.TVEpisode.Title)})
         Next
+
+        If Not isNew Then
+            For Each eEpisode As EpisodeItem In existingEpisodeList
+                Master.DB.DeleteTVEpFromDB(eEpisode.idEpisode, False, False, Batchmode)
+            Next
+        End If
 
         Return SeasonsList
     End Function
@@ -1628,10 +1655,10 @@ Public Class Scanner
 
                     TVEpisodePaths.Clear()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                        SQLcommand.CommandText = "SELECT strFilename FROM files;"
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLreader.Read
-                                TVEpisodePaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                                TVEpisodePaths.Add(SQLreader("strFilename").ToString.ToLower)
                                 If Me.bwPrelim.CancellationPending Then
                                     e.Cancel = True
                                     Return
@@ -1751,10 +1778,10 @@ Public Class Scanner
 
             TVEpisodePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
+                SQLcommand.CommandText = "SELECT strFilename FROM files;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        TVEpisodePaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                        TVEpisodePaths.Add(SQLreader("strFilename").ToString.ToLower)
                         If Me.bwPrelim.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -1870,6 +1897,7 @@ Public Class Scanner
         Private _aired As String
         Private _bydate As Boolean
         Private _episode As Integer
+        Private _idepisode As Long
         Private _season As Integer
         Private _subepisode As Integer
 
@@ -1912,6 +1940,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property idEpisode() As Long
+            Get
+                Return _idepisode
+            End Get
+            Set(ByVal value As Long)
+                _idepisode = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return _season
@@ -1938,6 +1975,7 @@ Public Class Scanner
             Me._aired = String.Empty
             Me._bydate = False
             Me._episode = -1
+            Me._idepisode = -1
             Me._season = -1
             Me._subepisode = -1
         End Sub
