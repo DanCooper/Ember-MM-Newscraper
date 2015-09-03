@@ -50,7 +50,6 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
         Public Sub New(ByVal host As Host)
-
             _currenthost = Nothing
             _currenthost = host
             Init()

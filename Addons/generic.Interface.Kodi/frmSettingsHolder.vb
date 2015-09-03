@@ -258,6 +258,4 @@ Public Class frmSettingsHolder
 #Region "Nested Types"
 #End Region 'Nested Types
 
-
-
 End Class

@@ -44,27 +44,18 @@ Public Class KodiInterface
     Private _enabled As Boolean = False
     Private _Name As String = "Kodi"
     Private _setup As frmSettingsHolder
+    Private cmnuKodi_MovieSets As New System.Windows.Forms.ToolStripMenuItem
     Private cmnuKodi_Movies As New System.Windows.Forms.ToolStripMenuItem
-    Private cmnuKodi_Episodes As New System.Windows.Forms.ToolStripMenuItem
-    Private cmnuKodi_Shows As New System.Windows.Forms.ToolStripMenuItem
-    Private cmnuKodi_Sets As New System.Windows.Forms.ToolStripMenuItem
-    Private cmnuKodi_Seasons As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuKodi_TVEpisodes As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuKodi_TVSeasons As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuKodi_TVShows As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuSep_MovieSets As New System.Windows.Forms.ToolStripSeparator
     Private cmnuSep_Movies As New System.Windows.Forms.ToolStripSeparator
-    Private cmnuSep_Episodes As New System.Windows.Forms.ToolStripSeparator
-    Private cmnuSep_Shows As New System.Windows.Forms.ToolStripSeparator
-    Private cmnuSep_Sets As New System.Windows.Forms.ToolStripSeparator
-    Private cmnuSep_Seasons As New System.Windows.Forms.ToolStripSeparator
-    Private WithEvents cmnuKodiSync_Movie As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuKodiSync_TVEpisode As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuKodiSync_TVShow As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuKodiSync_TVSeason As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuKodiSync_Movieset As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsKodi As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsKodiCleanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsKodiScanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuMainToolsKodi As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuMainToolsKodiCleanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuMainToolsKodiScanVideoLibrary As New System.Windows.Forms.ToolStripMenuItem
+    Private cmnuSep_TVEpisodes As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_TVSeasons As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_TVShows As New System.Windows.Forms.ToolStripSeparator
+    Private mnuMainToolsKodi As New System.Windows.Forms.ToolStripMenuItem
+    Private mnuTrayToolsKodi As New System.Windows.Forms.ToolStripMenuItem
 
     'structure used to store Update Movie/TV/Movieset-Tasks for Kodi Interface
     Private Structure KodiTask
@@ -445,92 +436,171 @@ Public Class KodiInterface
             End Try
         End If
     End Sub
+
+    Private Sub CreateContextMenu(ByRef tMenu As ToolStripMenuItem, ByVal tContentType As Enums.ContentType)
+        If MySettings.KodiHosts.host IsNot Nothing AndAlso MySettings.KodiHosts.host.ToList.Count = 1 Then
+            Dim mnuHostSyncItem As New ToolStripMenuItem
+            mnuHostSyncItem.Image = New Bitmap(My.Resources.menuSync)
+            mnuHostSyncItem.Tag = MySettings.KodiHosts.host(0)
+            mnuHostSyncItem.Text = Master.eLang.GetString(1446, "Sync")
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_Movie_Click
+                Case Enums.ContentType.MovieSet
+                    AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_MovieSet_Click
+                Case Enums.ContentType.TVEpisode
+                    AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVEpisode_Click
+                Case Enums.ContentType.TVSeason
+                    AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVSeason_Click
+                Case Enums.ContentType.TVShow
+                    AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVShow_Click
+            End Select
+            tMenu.DropDownItems.Add(mnuHostSyncItem)
+        ElseIf MySettings.KodiHosts.host IsNot Nothing AndAlso MySettings.KodiHosts.host.ToList.Count > 1 Then
+            For Each kHost As Host In MySettings.KodiHosts.host.ToList
+                Dim mnuHost As New ToolStripMenuItem
+                mnuHost.Image = New Bitmap(My.Resources.icon)
+                mnuHost.Text = kHost.name
+                Dim mnuHostSyncItem As New ToolStripMenuItem
+                mnuHostSyncItem.Image = New Bitmap(My.Resources.menuSync)
+                mnuHostSyncItem.Tag = kHost
+                mnuHostSyncItem.Text = Master.eLang.GetString(1446, "Sync")
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_Movie_Click
+                    Case Enums.ContentType.MovieSet
+                        AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_MovieSet_Click
+                    Case Enums.ContentType.TVEpisode
+                        AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVEpisode_Click
+                    Case Enums.ContentType.TVSeason
+                        AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVSeason_Click
+                    Case Enums.ContentType.TVShow
+                        AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVShow_Click
+                End Select
+                mnuHost.DropDownItems.Add(mnuHostSyncItem)
+                tMenu.DropDownItems.Add(mnuHost)
+            Next
+        Else
+            Dim mnuDummy As New ToolStripMenuItem
+            mnuDummy.Enabled = False
+            mnuDummy.Text = Master.eLang.GetString(1447, "No Host Configured!")
+            tMenu.DropDownItems.Add(mnuDummy)
+        End If
+    End Sub
+
+    Private Sub CreateToolsMenu(ByRef tMenu As ToolStripMenuItem)
+        If MySettings.KodiHosts.host IsNot Nothing AndAlso MySettings.KodiHosts.host.ToList.Count = 1 Then
+            Dim mnuHostScanVideoLibrary As New ToolStripMenuItem
+            mnuHostScanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
+            mnuHostScanVideoLibrary.Tag = MySettings.KodiHosts.host(0)
+            mnuHostScanVideoLibrary.Text = Master.eLang.GetString(82, "Update Library")
+            AddHandler mnuHostScanVideoLibrary.Click, AddressOf mnuHostScanVideoLibrary_Click
+            tMenu.DropDownItems.Add(mnuHostScanVideoLibrary)
+            Dim mnuHostCleanVideoLibrary As New ToolStripMenuItem
+            mnuHostCleanVideoLibrary.Image = New Bitmap(My.Resources.menuClean)
+            mnuHostCleanVideoLibrary.Tag = MySettings.KodiHosts.host(0)
+            mnuHostCleanVideoLibrary.Text = Master.eLang.GetString(709, "Clean Database")
+            AddHandler mnuHostCleanVideoLibrary.Click, AddressOf mnuHostCleanVideoLibrary_Click
+            tMenu.DropDownItems.Add(mnuHostCleanVideoLibrary)
+        ElseIf MySettings.KodiHosts.host IsNot Nothing AndAlso MySettings.KodiHosts.host.ToList.Count > 1 Then
+            For Each kHost As Host In MySettings.KodiHosts.host.ToList
+                Dim mnuHost As New ToolStripMenuItem
+                mnuHost.Image = New Bitmap(My.Resources.icon)
+                mnuHost.Text = kHost.name
+                Dim mnuHostScanVideoLibrary As New ToolStripMenuItem
+                mnuHostScanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
+                mnuHostScanVideoLibrary.Tag = kHost
+                mnuHostScanVideoLibrary.Text = Master.eLang.GetString(82, "Update Library")
+                AddHandler mnuHostScanVideoLibrary.Click, AddressOf mnuHostScanVideoLibrary_Click
+                mnuHost.DropDownItems.Add(mnuHostScanVideoLibrary)
+                Dim mnuHostCleanVideoLibrary As New ToolStripMenuItem
+                mnuHostCleanVideoLibrary.Image = New Bitmap(My.Resources.menuClean)
+                mnuHostCleanVideoLibrary.Tag = kHost
+                mnuHostCleanVideoLibrary.Text = Master.eLang.GetString(709, "Clean Database")
+                AddHandler mnuHostCleanVideoLibrary.Click, AddressOf mnuHostCleanVideoLibrary_Click
+                mnuHost.DropDownItems.Add(mnuHostCleanVideoLibrary)
+                tMenu.DropDownItems.Add(mnuHost)
+            Next
+        Else
+            Dim mnuDummy As New ToolStripMenuItem
+            mnuDummy.Enabled = False
+            mnuDummy.Text = Master.eLang.GetString(1447, "No Host Configured!")
+            tMenu.DropDownItems.Add(mnuDummy)
+        End If
+    End Sub
+
+    Private Sub PopulateMenus()
+        Dim tsi As New ToolStripMenuItem
+
+        'mnuMainTools menu
+        mnuMainToolsKodi.DropDownItems.Clear()
+        mnuMainToolsKodi.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsKodi.Text = "Kodi"
+        mnuMainToolsKodi.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForMovieSets = True, .IfTabMovieSets = True, .ForTVShows = True, .IfTabTVShows = True}
+        CreateToolsMenu(mnuMainToolsKodi)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsKodi)
+
+        'mnuTrayTools
+        mnuTrayToolsKodi.DropDownItems.Clear()
+        mnuTrayToolsKodi.Image = New Bitmap(My.Resources.icon)
+        mnuTrayToolsKodi.Text = "Kodi"
+        CreateToolsMenu(mnuTrayToolsKodi)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuTrayToolsKodi)
+
+        'cmnuMovies
+        cmnuKodi_Movies.DropDownItems.Clear()
+        cmnuKodi_Movies.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_Movies.Text = "Kodi"
+        cmnuKodi_Movies.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        CreateContextMenu(cmnuKodi_Movies, Enums.ContentType.Movie)
+        SetToolsStripItem_Movies(cmnuSep_Movies)
+        SetToolsStripItem_Movies(cmnuKodi_Movies)
+
+        'cmnuMovieSets
+        cmnuKodi_MovieSets.DropDownItems.Clear()
+        cmnuKodi_MovieSets.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_MovieSets.Text = "Kodi"
+        cmnuKodi_MovieSets.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        CreateContextMenu(cmnuKodi_MovieSets, Enums.ContentType.MovieSet)
+        SetToolsStripItem_MovieSets(cmnuSep_MovieSets)
+        SetToolsStripItem_MovieSets(cmnuKodi_MovieSets)
+
+        'cmnuTVEpisodes
+        cmnuKodi_TVEpisodes.DropDownItems.Clear()
+        cmnuKodi_TVEpisodes.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_TVEpisodes.Text = "Kodi"
+        cmnuKodi_TVEpisodes.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        CreateContextMenu(cmnuKodi_TVEpisodes, Enums.ContentType.TVEpisode)
+        SetToolsStripItem_TVEpisodes(cmnuSep_TVEpisodes)
+        SetToolsStripItem_TVEpisodes(cmnuKodi_TVEpisodes)
+
+        'cmnuTVSeasons
+        cmnuKodi_TVSeasons.DropDownItems.Clear()
+        cmnuKodi_TVSeasons.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_TVSeasons.Text = "Kodi"
+        cmnuKodi_TVSeasons.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        CreateContextMenu(cmnuKodi_TVSeasons, Enums.ContentType.TVSeason)
+        SetToolsStripItem_TVSeasons(cmnuSep_TVSeasons)
+        SetToolsStripItem_TVSeasons(cmnuKodi_TVSeasons)
+
+        'cmnuTVShows
+        cmnuKodi_TVShows.DropDownItems.Clear()
+        cmnuKodi_TVShows.Image = New Bitmap(My.Resources.icon)
+        cmnuKodi_TVShows.Text = "Kodi"
+        cmnuKodi_TVShows.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        CreateContextMenu(cmnuKodi_TVShows, Enums.ContentType.TVShow)
+        SetToolsStripItem_TVShows(cmnuSep_TVShows)
+        SetToolsStripItem_TVShows(cmnuKodi_TVShows)
+    End Sub
+
     ''' <summary>
     ''' Actions on module startup (Ember startup) and runtime if module is enabled
     ''' </summary>
     ''' <remarks></remarks>
     Sub Enable()
-        Dim tsi As New ToolStripMenuItem
-
-        'mnuMainTools menu
-        mnuMainToolsKodi.Image = New Bitmap(My.Resources.icon)
-        mnuMainToolsKodi.Text = "Kodi"
-        mnuMainToolsKodi.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForMovieSets = True, .IfTabMovieSets = True, .ForTVShows = True, .IfTabTVShows = True}
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        mnuMainToolsKodiScanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
-        mnuMainToolsKodiScanVideoLibrary.Text = Master.eLang.GetString(82, "Update Library")
-        mnuMainToolsKodi.DropDownItems.Add(mnuMainToolsKodiScanVideoLibrary)
-        mnuMainToolsKodiCleanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
-        mnuMainToolsKodiCleanVideoLibrary.Text = Master.eLang.GetString(709, "Clean Database")
-        mnuMainToolsKodi.DropDownItems.Add(mnuMainToolsKodiCleanVideoLibrary)
-        AddToolsStripItem(tsi, mnuMainToolsKodi)
-
-        'cmnuTrayTools
-        cmnuTrayToolsKodi.Image = New Bitmap(My.Resources.icon)
-        cmnuTrayToolsKodi.Text = "Kodi"
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        cmnuTrayToolsKodiScanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
-        cmnuTrayToolsKodiScanVideoLibrary.Text = Master.eLang.GetString(82, "Update Library")
-        cmnuTrayToolsKodi.DropDownItems.Add(cmnuTrayToolsKodiScanVideoLibrary)
-        cmnuTrayToolsKodiCleanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
-        cmnuTrayToolsKodiCleanVideoLibrary.Text = Master.eLang.GetString(709, "Clean Database")
-        cmnuTrayToolsKodi.DropDownItems.Add(cmnuTrayToolsKodiCleanVideoLibrary)
-        AddToolsStripItem(tsi, cmnuTrayToolsKodi)
-
-        'cmnuMovies
-        cmnuKodi_Movies.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_Movies.Text = "Kodi"
-        cmnuKodi_Movies.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        cmnuKodiSync_Movie.Image = New Bitmap(My.Resources.menuSync)
-        cmnuKodiSync_Movie.Text = Master.eLang.GetString(1446, "Sync")
-        cmnuKodi_Movies.DropDownItems.Add(cmnuKodiSync_Movie)
-
-        SetToolsStripItem_Movies(cmnuSep_Movies)
-        SetToolsStripItem_Movies(cmnuKodi_Movies)
-
-        'cmnuEpisodes
-        cmnuKodi_Episodes.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_Episodes.Text = "Kodi"
-        cmnuKodi_Episodes.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        cmnuKodiSync_TVEpisode.Image = New Bitmap(My.Resources.menuSync)
-        cmnuKodiSync_TVEpisode.Text = Master.eLang.GetString(1446, "Sync")
-        cmnuKodi_Episodes.DropDownItems.Add(cmnuKodiSync_TVEpisode)
-
-        SetToolsStripItem_TVEpisodes(cmnuSep_Episodes)
-        SetToolsStripItem_TVEpisodes(cmnuKodi_Episodes)
-
-        'cmnuShows
-        cmnuKodi_Shows.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_Shows.Text = "Kodi"
-        cmnuKodi_Shows.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        cmnuKodiSync_TVShow.Image = New Bitmap(My.Resources.menuSync)
-        cmnuKodiSync_TVShow.Text = Master.eLang.GetString(1446, "Sync")
-        cmnuKodi_Shows.DropDownItems.Add(cmnuKodiSync_TVShow)
-
-        SetToolsStripItem_TVShows(cmnuSep_Shows)
-        SetToolsStripItem_TVShows(cmnuKodi_Shows)
-
-        'cmnuSeasons
-        cmnuKodi_Seasons.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_Seasons.Text = "Kodi"
-        cmnuKodi_Seasons.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        cmnuKodiSync_TVSeason.Image = New Bitmap(My.Resources.menuSync)
-        cmnuKodiSync_TVSeason.Text = Master.eLang.GetString(1446, "Sync")
-        cmnuKodi_Seasons.DropDownItems.Add(cmnuKodiSync_TVSeason)
-
-        SetToolsStripItem_TVSeasons(cmnuSep_Seasons)
-        SetToolsStripItem_TVSeasons(cmnuKodi_Seasons)
-
-        'cmnuSets
-        cmnuKodi_Sets.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_Sets.Text = "Kodi"
-        cmnuKodi_Sets.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        cmnuKodiSync_Movieset.Image = New Bitmap(My.Resources.menuSync)
-        cmnuKodiSync_Movieset.Text = Master.eLang.GetString(1446, "Sync")
-        cmnuKodi_Sets.DropDownItems.Add(cmnuKodiSync_Movieset)
-
-        SetToolsStripItem_MovieSets(cmnuSep_Sets)
-        SetToolsStripItem_MovieSets(cmnuKodi_Sets)
+        PopulateMenus()
     End Sub
     ''' <summary>
     '''  Actions on module startup (Ember startup) and runtime if module is disabled
@@ -547,23 +617,23 @@ Public Class KodiInterface
 
         'cmnuTrayTools
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(cmnuTrayToolsKodi)
+        tsi.DropDownItems.Remove(mnuTrayToolsKodi)
 
         'cmnuMovies
         RemoveToolsStripItem_Movies(cmnuSep_Movies)
         RemoveToolsStripItem_Movies(cmnuKodi_Movies)
         'cmnuEpisodes
-        RemoveToolsStripItem_TVEpisodes(cmnuSep_Episodes)
-        RemoveToolsStripItem_TVEpisodes(cmnuKodi_Episodes)
+        RemoveToolsStripItem_TVEpisodes(cmnuSep_TVEpisodes)
+        RemoveToolsStripItem_TVEpisodes(cmnuKodi_TVEpisodes)
         'cmnuShows
-        RemoveToolsStripItem_TVShows(cmnuSep_Shows)
-        RemoveToolsStripItem_TVShows(cmnuKodi_Shows)
+        RemoveToolsStripItem_TVShows(cmnuSep_TVShows)
+        RemoveToolsStripItem_TVShows(cmnuKodi_TVShows)
         'cmnuSeasons
-        RemoveToolsStripItem_TVSeasons(cmnuSep_Seasons)
-        RemoveToolsStripItem_TVSeasons(cmnuKodi_Seasons)
+        RemoveToolsStripItem_TVSeasons(cmnuSep_TVSeasons)
+        RemoveToolsStripItem_TVSeasons(cmnuKodi_TVSeasons)
         'cmnuSets
-        RemoveToolsStripItem_MovieSets(cmnuSep_Sets)
-        RemoveToolsStripItem_MovieSets(cmnuKodi_Sets)
+        RemoveToolsStripItem_MovieSets(cmnuSep_MovieSets)
+        RemoveToolsStripItem_MovieSets(cmnuKodi_MovieSets)
     End Sub
     ''' <summary>
     ''' Load and fill controls of settings page of module
@@ -587,7 +657,7 @@ Public Class KodiInterface
             Me._setup.cbPlayCountHost.Enabled = True
         End If
         Me._setup.cbPlayCountHost.Items.Clear()
-        If Not MySettings.KodiHosts Is Nothing Then
+        If MySettings.KodiHosts.host IsNot Nothing Then
             For Each host In MySettings.KodiHosts.host
                 Me._setup.lbHosts.Items.Add(host.name)
                 Me._setup.cbPlayCountHost.Items.Add(host.name)
@@ -618,6 +688,7 @@ Public Class KodiInterface
         MySettings.SyncPlayCount = _setup.chkPlayCount.Checked
         MySettings.SyncPlayCountHost = If(Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing, Me._setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
         SaveSettings()
+        If Me.Enabled Then PopulateMenus()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
             RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -663,7 +734,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Update details of movie in Kodi DB
     ''' </remarks>
-    Private Async Sub cmnuKodiSync_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_Movie.Click
+    Private Async Sub cmnuHostSyncItem_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
@@ -715,7 +786,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation
     ''' Update details of movieset in Kodi DB
     ''' </remarks>
-    Private Async Sub cmnuKodiSync_Movieset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_Movieset.Click
+    Private Async Sub cmnuHostSyncItem_MovieSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.Item(0, indX).Value)
@@ -754,7 +825,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Update details of episode in Kodi DB
     ''' </remarks>
-    Private Async Sub cmnuKodiSync_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVEpisode.Click
+    Private Async Sub cmnuHostSyncItem_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.Item(0, indX).Value)
@@ -806,7 +877,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation
     ''' Update details of season in Kodi DB
     ''' </remarks>
-    Private Async Sub cmnuKodiSync_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVSeason.Click
+    Private Async Sub cmnuHostSyncItem_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.Item(0, indX).Value)
@@ -850,7 +921,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Update details of tvshow in Kodi DB
     ''' </remarks>
-    Private Async Sub cmnuKodiSync_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuKodiSync_TVShow.Click
+    Private Async Sub cmnuHostSyncItem_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If MySettings.KodiHosts.host.ToList.Count > 0 Then
             Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Item(0, indX).Value)
@@ -887,47 +958,43 @@ Public Class KodiInterface
         End If
     End Sub
     ''' <summary>
-    '''  Clean video library of host
+    '''  Clean video library of submitted host
     ''' </summary>
-    ''' <param name="sender">main Kodi menu "Clean Video Library"</param>
+    ''' <param name="sender"></param>
     ''' <remarks>
-    ''' 2015/06/04 Cocotus - First implementation
     ''' </remarks>
-    Private Async Sub mnuHostCleanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsKodiCleanVideoLibrary.Click, cmnuTrayToolsKodiCleanVideoLibrary.Click
-        If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            For Each host In MySettings.KodiHosts.host.ToList
-                Dim _APIKodi As New Kodi.APIKodi(host)
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
-                Dim response = Await _APIKodi.CleanVideoLibrary()
-                If response = Nothing Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1451, "Cleaning Failed"), Nothing}))
-                Else
-                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
-                End If
-            Next
+    Private Async Sub mnuHostCleanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
+        If Host IsNot Nothing Then
+            Dim _APIKodi As New Kodi.APIKodi(Host)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.name & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
+            Dim response = Await _APIKodi.CleanVideoLibrary()
+            If response = Nothing Then
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.name & " | " & Master.eLang.GetString(1451, "Cleaning Failed"), Nothing}))
+            Else
+                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
+            End If
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
     ''' <summary>
-    '''  Scan video library of host
+    '''  Scan video library of submitted host
     ''' </summary>
-    ''' <param name="sender">main Kodi menu "Update Video Library"</param>
+    ''' <param name="sender"></param>
     ''' <remarks>
-    ''' 2015/06/04 Cocotus - First implementation
     ''' </remarks>
-    Private Async Sub mnuHostScanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsKodiScanVideoLibrary.Click, cmnuTrayToolsKodiScanVideoLibrary.Click
-        If MySettings.KodiHosts.host.ToList.Count > 0 Then
-            For Each host In MySettings.KodiHosts.host.ToList
-                Dim _APIKodi As New Kodi.APIKodi(host)
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
-                Dim response = Await _APIKodi.ScanVideoLibrary()
-                If response = Nothing Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), host.name & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
-                Else
-                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
-                End If
-            Next
+    Private Async Sub mnuHostScanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
+        If Host IsNot Nothing Then
+            Dim _APIKodi As New Kodi.APIKodi(Host)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.name & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
+            Dim response = Await _APIKodi.ScanVideoLibrary()
+            If response = Nothing Then
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.name & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
+            Else
+                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
+            End If
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
