@@ -929,10 +929,10 @@ Public Class Database
                         If Not Force Then
                             'check if there is another episode with same season and episode number (in this case we don't need a another "Missing" episode)
                             Using SQLcommand_select As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand
-                                SQLcommand_select.CommandText = String.Format("SELECT COUNT(episode.idEpisode) AS Count FROM episode WHERE NOT idEpisode = {0} AND Season = {1} AND Episode = {2} AND idShow = {3}", ID, SQLReader("Season"), SQLReader("Episode"), SQLReader("idShow"))
+                                SQLcommand_select.CommandText = String.Format("SELECT COUNT(episode.idEpisode) AS eCount FROM episode WHERE NOT idEpisode = {0} AND Season = {1} AND Episode = {2} AND idShow = {3}", ID, SQLReader("Season"), SQLReader("Episode"), SQLReader("idShow"))
                                 Using SQLReader_select As SQLite.SQLiteDataReader = SQLcommand_select.ExecuteReader
                                     While SQLReader_select.Read
-                                        If CInt(SQLReader_select("Count")) > 0 Then doesExist = True
+                                        If CInt(SQLReader_select("eCount")) > 0 Then doesExist = True
                                     End While
                                 End Using
                             End Using
@@ -944,8 +944,20 @@ Public Class Database
 
                             If DoCleanSeasons Then Master.DB.CleanEmptySeasons(True)
                         ElseIf Not Convert.ToInt64(SQLReader("idFile")) = -1 Then 'already marked as missing, no need for another query
-                            SQLECommand.CommandText = String.Concat("DELETE FROM files WHERE idFile = ", Convert.ToInt64(SQLReader("idFile")), ";")
-                            SQLECommand.ExecuteNonQuery()
+                            'check if there is another episode that use the same idFile
+                            Dim multiEpisode As Boolean = False
+                            Using SQLcommand_select As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand
+                                SQLcommand_select.CommandText = String.Format("SELECT COUNT(episode.idFile) AS eCount FROM episode WHERE idFile = {0}", Convert.ToInt64(SQLReader("idFile")))
+                                Using SQLReader_select As SQLite.SQLiteDataReader = SQLcommand_select.ExecuteReader
+                                    While SQLReader_select.Read
+                                        If CInt(SQLReader_select("eCount")) > 1 Then multiEpisode = True
+                                    End While
+                                End Using
+                            End Using
+                            If Not multiEpisode Then
+                                SQLECommand.CommandText = String.Concat("DELETE FROM files WHERE idFile = ", Convert.ToInt64(SQLReader("idFile")), ";")
+                                SQLECommand.ExecuteNonQuery()
+                            End If
                             SQLECommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", ID, ";")
                             SQLECommand.ExecuteNonQuery()
                             SQLECommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", ID, ";")
@@ -3834,10 +3846,10 @@ Public Class Database
     ''' </summary>
     ''' <param name="_episode">Database.DBElement object to save to the database</param>
     ''' <param name="IsNew">Is this a new episode (not already present in database)?</param>
-    ''' <param name="WithSeason">If <c>True</c>, also save season information</param>
+    ''' <param name="doSeasonCheck">If <c>True</c> then check if it's needed to create a new season for this episode</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVEpisodeToDB(ByVal _episode As Database.DBElement, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
+    Public Function SaveTVEpisodeToDB(ByVal _episode As Database.DBElement, ByVal IsNew As Boolean, ByVal doSeasonCheck As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -4195,7 +4207,17 @@ Public Class Database
                     End If
                 End Using
 
-                'If WithSeason Then SaveTVSeasonToDB(_TVEpDB, True)
+                If doSeasonCheck Then
+                    Using SQLSeasonCheck As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLSeasonCheck.CommandText = String.Format("SELECT idSeason FROM seasons WHERE idShow = {0} AND Season = {1}", _episode.ShowID, _episode.TVEpisode.Season)
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLSeasonCheck.ExecuteReader()
+                            If Not SQLreader.HasRows Then
+                                Dim _season As New DBElement With {.ShowID = _episode.ShowID, .TVSeason = New MediaContainers.SeasonDetails With {.Season = _episode.TVEpisode.Season}}
+                                SaveTVSeasonToDB(_season, True)
+                            End If
+                        End Using
+                    End Using
+                End If
             End If
         End Using
         If Not BatchMode Then SQLtransaction.Commit()

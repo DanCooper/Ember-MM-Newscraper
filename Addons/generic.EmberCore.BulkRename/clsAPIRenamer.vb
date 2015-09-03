@@ -1628,9 +1628,9 @@ Public Class FileFolderRenamer
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 If String.IsNullOrEmpty(tvSource) Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0 AND New = 1;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE NOT idFile = -1 AND New = 1;")
                 Else
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "';")
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE NOT idFile = -1 AND New = 1 AND Source = '", tvSource, "';")
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
@@ -1638,9 +1638,9 @@ Public Class FileFolderRenamer
                     End If
                 End Using
                 If String.IsNullOrEmpty(tvSource) Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 AND New = 1 ORDER BY idShow ASC, Season ASC, Episode ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE NOT idFile = -1 AND New = 1 ORDER BY idShow ASC, Season ASC, Episode ASC;")
                 Else
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE Missing = 0 AND New = 1 AND Source = '", tvSource, "' ORDER BY idShow ASC, Season ASC, Episode ASC;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE NOT idFile = -1 AND New = 1 AND Source = '", tvSource, "' ORDER BY idShow ASC, Season ASC, Episode ASC;")
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then

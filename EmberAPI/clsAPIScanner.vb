@@ -467,7 +467,7 @@ Public Class Scanner
         'get first episode of season (YAMJ need that for epsiodes without separate season folders)
         Try
             Dim dtEpisodes As New DataTable
-            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
+            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = episode.idFile) WHERE idShow = ", DBTVSeason.ShowID, " AND Season = ", DBTVSeason.TVSeason.Season, " ORDER BY Episode;"))
             If dtEpisodes.Rows.Count > 0 Then
                 strSeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
             End If
@@ -860,7 +860,6 @@ Public Class Scanner
     Public Function LoadTVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As List(Of Integer)
         Dim SeasonsList As New List(Of Integer)
         Dim existingEpisodeList As New List(Of EpisodeItem)
-        Dim ToNfo As Boolean = False
 
         'first we have to create a list of all already existing episode information for this file path
         If Not isNew Then
@@ -873,9 +872,10 @@ Public Class Scanner
         GetTVEpisodeFolderContents(DBTVEpisode)
 
         For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
+            Dim ToNfo As Boolean = False
+
             'It's a clone needed to prevent overwriting information of MultiEpisodes
             Dim cEpisode As Database.DBElement = CType(DBTVEpisode.CloneDeep, Database.DBElement)
-            ToNfo = False
 
             If sEpisode.byDate Then
                 If Not String.IsNullOrEmpty(cEpisode.NfoPath) Then
@@ -996,7 +996,7 @@ Public Class Scanner
                 If Not EpisodeID = -1 Then
                     'old episode entry found, we re-use the idEpisode
                     cEpisode.ID = EpisodeID
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, True, Batchmode, ToNfo)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, False, Batchmode, ToNfo)
                 Else
                     'no existing episode found or the season or episode number has changed => we have to add it as new episode
                     Master.DB.SaveTVEpisodeToDB(cEpisode, True, True, Batchmode, ToNfo)
@@ -1006,7 +1006,7 @@ Public Class Scanner
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             Else
                 'Do the Save
-                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, True, Batchmode, ToNfo)
+                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, False, Batchmode, ToNfo)
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             End If
