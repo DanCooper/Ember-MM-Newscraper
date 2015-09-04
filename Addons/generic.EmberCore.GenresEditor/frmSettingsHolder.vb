@@ -206,8 +206,8 @@ Public Class frmSettingsHolder
     End Sub
     Private Sub btnRemoveGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveGenre.Click
         If dgvGenres.SelectedCells.Count > 0 Then
-            dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
             xmlGenres.listOfGenres.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
+            dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
