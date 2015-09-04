@@ -88,7 +88,7 @@ Public Class clsAdvancedSettings
     Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
         Try
             Dim Assembly As String = cAssembly
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -112,7 +112,7 @@ Public Class clsAdvancedSettings
     Public Shared Function GetSetting(ByVal key As String, ByVal defvalue As String, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As String
         Dim Assembly As String = cAssembly
         Try
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -138,7 +138,7 @@ Public Class clsAdvancedSettings
             logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
         End If
         Dim Assembly As String = cAssembly
-        If Assembly = "" Then
+        If Assembly = String.Empty Then
             Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
@@ -157,7 +157,7 @@ Public Class clsAdvancedSettings
         End If
         Try
             Dim Assembly As String = cAssembly
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -171,7 +171,7 @@ Public Class clsAdvancedSettings
     Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As List(Of AdvancedSettingsComplexSettingsTableItem)
         Try
             Dim Assembly As String = cAssembly
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -191,7 +191,7 @@ Public Class clsAdvancedSettings
         End If
         Try
             Dim Assembly As String = cAssembly
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -287,7 +287,7 @@ Public Class clsAdvancedSettings
         End If
         Try
             Dim Assembly As String = cAssembly
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -298,7 +298,7 @@ Public Class clsAdvancedSettings
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
                     _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
-                                                                                    .DefaultValue = If(isDefault, Convert.ToString(value), "")})
+                                                                                    .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty)})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
                 End If
@@ -306,7 +306,7 @@ Public Class clsAdvancedSettings
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Content = cContent AndAlso f.Section = Assembly)
                 If v Is Nothing Then
                     _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
-                                                                                    .DefaultValue = If(isDefault, Convert.ToString(value), ""), .Content = cContent})
+                                                                                    .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty), .Content = cContent})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = Convert.ToString(value)
                 End If
@@ -325,7 +325,7 @@ Public Class clsAdvancedSettings
         End If
         Try
             Dim Assembly As String = cAssembly
-            If Assembly = "" Then
+            If Assembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
@@ -337,7 +337,7 @@ Public Class clsAdvancedSettings
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
                     _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, _
-                                                                                    .DefaultValue = If(isDefault, value, "")})
+                                                                                    .DefaultValue = If(isDefault, value, String.Empty)})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
                 End If
@@ -345,7 +345,7 @@ Public Class clsAdvancedSettings
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
                 If v Is Nothing Then
                     _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, _
-                                                                                    .DefaultValue = If(isDefault, value, ""), .Content = cContent})
+                                                                                    .DefaultValue = If(isDefault, value, String.Empty), .Content = cContent})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = value
                 End If
