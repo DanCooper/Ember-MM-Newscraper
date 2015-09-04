@@ -31,9 +31,9 @@ Public Class dlgHost
     'backgroundworker used for JSON request(s) like Populate Sources/Check Connection in this form
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     'current edited host
-    Public currentHost As New Host
+    Public currentHost As New KodiInterface.Host
     'list of all configured KodiHosts (beside currentHost)
-    Public lstAllHosts As New List(Of Host)
+    Public lstAllHosts As New List(Of KodiInterface.Host)
     'all sources of current host
     Private currentHostSources As New List(Of XBMCRPC.List.Items.SourcesItem)
     'JSONRPC version of host - may be retrieved manually if user hits "Check Connection" button
@@ -68,22 +68,21 @@ Public Class dlgHost
         'check if existing host is edited ("Edit" button in setting form) or a new host is created("Add" button in setting form)
         If Not currentHost Is Nothing Then
             'load data of currently edited host into controls
-            Me.txtLabel.Text = currentHost.name
+            Me.txtLabel.Text = currentHost.Label
             Me.txtHostIP.Text = currentHost.address
             Me.txtWebPort.Text = CStr(currentHost.port)
             Me.txtUsername.Text = currentHost.username
             Me.txtPassword.Text = currentHost.password
             chkHostRealTimeSync.Checked = currentHost.realtimesync
-            Me.txtHostMoviesetPath.Text = currentHost.moviesetpath
+            Me.txtHostMoviesetPath.Text = currentHost.MovieSetArtworksPath
         Else
             'new host entry
-            currentHost = New Host
+            currentHost = New KodiInterface.Host
         End If
         'load sources of selected host and display values in datagrid
         PopulateHostSources()
         dgvHostSources.Enabled = True
     End Sub
-
     ''' <summary>
     ''' Actions on module startup
     ''' </summary>
@@ -136,28 +135,37 @@ Public Class dlgHost
             Dim i As Integer = dgvHostSources.Rows.Add(sPath)
             Dim dcbRemotesource As DataGridViewComboBoxCell = DirectCast(dgvHostSources.Rows(i).Cells(1), DataGridViewComboBoxCell)
             Dim dcbSourceType As DataGridViewComboBoxCell = DirectCast(dgvHostSources.Rows(i).Cells(2), DataGridViewComboBoxCell)
-            Dim ltype As New List(Of String)
-            ltype.Add("movie")
-            ltype.Add("tvshow")
+
+            Dim items As New Dictionary(Of String, Enums.ContentType)
+            items.Add(Master.eLang.None, Enums.ContentType.None)
+            items.Add(Master.eLang.GetString(36, "Movies"), Enums.ContentType.Movie)
+            items.Add(Master.eLang.GetString(653, "TV Shows"), Enums.ContentType.TV)
+            'Me.cbMoviePosterPrefSize.DataSource = items.ToList
+            'Me.cbMoviePosterPrefSize.DisplayMember = "Key"
+            'Me.cbMoviePosterPrefSize.ValueMember = "Value"
+
+            'Dim ltype As New List(Of String)
+            'ltype.Add("movie")
+            'ltype.Add("tvshow")
             Dim l As New List(Of String)
-            l.Add("") 'Empty Entry for combobox
-            If Not currentHost.source Is Nothing AndAlso Not currentHost.source(0) Is Nothing Then
+            l.Add(String.Empty) 'Empty Entry for combobox
+            If currentHost.Sources IsNot Nothing AndAlso currentHost.Sources(0) IsNot Nothing Then
                 'don't add kodi music/picture paths to Ember (for now...)
-                For Each ksource In currentHost.source
-                    If Not String.IsNullOrEmpty(ksource.remotepath) AndAlso Not l.Contains(ksource.remotepath) AndAlso (ksource.type = "movie" OrElse ksource.type = "tvshow") Then
-                        l.Add(ksource.remotepath)
+                For Each ksource In currentHost.Sources
+                    If Not String.IsNullOrEmpty(ksource.RemotePath) AndAlso Not l.Contains(ksource.RemotePath) AndAlso (ksource.ContentType = Enums.ContentType.Movie OrElse ksource.ContentType = Enums.ContentType.TV) Then
+                        l.Add(ksource.RemotePath)
                     End If
                 Next
             End If
             dcbRemotesource.DataSource = l.ToArray
             'dcbSourceType.DataSource = ltype.ToArray
             'try to load corresponding remotepath and type for current Ember Source from host settings
-            If Not currentHost.source Is Nothing AndAlso Not currentHost.source(0) Is Nothing Then
+            If currentHost.Sources IsNot Nothing AndAlso currentHost.Sources(0) IsNot Nothing Then
                 'don't add kodi music/picture paths to Ember (for now...)
-                For Each ksource In currentHost.source
-                    If Not String.IsNullOrEmpty(ksource.remotepath) AndAlso s = ksource.applicationpath AndAlso (ksource.type = "movie" OrElse ksource.type = "tvshow") Then
-                        dcbRemotesource.Value = ksource.remotepath
-                        dcbSourceType.Value = ksource.type
+                For Each ksource In currentHost.Sources
+                    If Not String.IsNullOrEmpty(ksource.RemotePath) AndAlso s = ksource.LocalPath AndAlso (ksource.ContentType = Enums.ContentType.Movie OrElse ksource.ContentType = Enums.ContentType.TV) Then
+                        dcbRemotesource.Value = ksource.RemotePath
+                        dcbSourceType.Value = ksource.ContentType
                         Exit For
                     End If
                 Next
@@ -187,7 +195,7 @@ Public Class dlgHost
         txtUsername.Enabled = False
         dgvHostSources.Enabled = False
         'set currentHost
-        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked, .moviesetpath = txtHostMoviesetPath.Text}
+        currentHost = New KodiInterface.Host With {.Label = txtLabel.Text, .Address = txtHostIP.Text, .Port = CInt(txtWebPort.Text), .Username = txtUsername.Text, .Password = txtPassword.Text, .RealTimeSync = chkHostRealTimeSync.Checked, .MovieSetArtworksPath = txtHostMoviesetPath.Text}
         'start request in backgroundworker -> getSources
         bwLoadInfo.RunWorkerAsync(1)
         While bwLoadInfo.IsBusy
@@ -269,14 +277,14 @@ Public Class dlgHost
 
         JsonHostversion = ""
         'set currentHost
-        currentHost = New Host With {.name = txtLabel.Text, .address = txtHostIP.Text, .port = CInt(txtWebPort.Text), .username = txtUsername.Text, .password = txtPassword.Text, .realtimesync = chkHostRealTimeSync.Checked, .moviesetpath = txtHostMoviesetPath.Text}
+        currentHost = New KodiInterface.Host With {.Label = txtLabel.Text, .Address = txtHostIP.Text, .Port = CInt(txtWebPort.Text), .Username = txtUsername.Text, .Password = txtPassword.Text, .RealTimeSync = chkHostRealTimeSync.Checked, .MovieSetArtworksPath = txtHostMoviesetPath.Text}
         'start backgroundworker: check for JSONversion
         bwLoadInfo.RunWorkerAsync(2)
         While bwLoadInfo.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
-        If JsonHostversion = "" Then
+        If JsonHostversion = String.Empty Then
             MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
             MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostversion, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -291,7 +299,7 @@ Public Class dlgHost
     ''' 2015/06/27 Cocotus - First implementation
     ''' </remarks>
     Private Sub dgvHostSources_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvHostSources.CellFormatting
-        If e.ColumnIndex = 2 AndAlso (e.Value Is Nothing OrElse e.Value.ToString = "") Then
+        If e.ColumnIndex = 2 AndAlso (e.Value Is Nothing OrElse e.Value.ToString = String.Empty) Then
             ' default value
             e.Value = "movie"
         End If
@@ -324,7 +332,7 @@ Public Class dlgHost
         End If
 
         For Each host In lstAllHosts
-            If host.name = txtLabel.Text Then
+            If host.Label = txtLabel.Text Then
                 MessageBox.Show(Master.eLang.GetString(1439, "The name you are attempting to use for this host is already in use. Please choose another!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Sub
             End If

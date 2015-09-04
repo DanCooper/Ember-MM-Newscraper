@@ -47,16 +47,16 @@ Partial Class dlgHost
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.gbHostMoviesetPath = New System.Windows.Forms.GroupBox()
+        Me.tblHostMoviesetPath = New System.Windows.Forms.TableLayoutPanel()
         Me.txtHostMoviesetPath = New System.Windows.Forms.TextBox()
         Me.tblHost = New System.Windows.Forms.TableLayoutPanel()
-        Me.tblHostMoviesetPath = New System.Windows.Forms.TableLayoutPanel()
         Me.gbHostDetails.SuspendLayout()
         Me.tblHostDetails.SuspendLayout()
         CType(Me.dgvHostSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoading.SuspendLayout()
         Me.gbHostMoviesetPath.SuspendLayout()
-        Me.tblHost.SuspendLayout()
         Me.tblHostMoviesetPath.SuspendLayout()
+        Me.tblHost.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnHostPopulateSources
@@ -355,6 +355,22 @@ Partial Class dlgHost
         Me.gbHostMoviesetPath.TabStop = False
         Me.gbHostMoviesetPath.Text = "Kodi MovieSet Artwork Folder"
         '
+        'tblHostMoviesetPath
+        '
+        Me.tblHostMoviesetPath.AutoSize = True
+        Me.tblHostMoviesetPath.ColumnCount = 1
+        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblHostMoviesetPath.Controls.Add(Me.txtHostMoviesetPath, 0, 0)
+        Me.tblHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblHostMoviesetPath.Location = New System.Drawing.Point(3, 18)
+        Me.tblHostMoviesetPath.Name = "tblHostMoviesetPath"
+        Me.tblHostMoviesetPath.RowCount = 1
+        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
+        Me.tblHostMoviesetPath.Size = New System.Drawing.Size(555, 28)
+        Me.tblHostMoviesetPath.TabIndex = 2
+        '
         'txtHostMoviesetPath
         '
         Me.txtHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
@@ -387,24 +403,8 @@ Partial Class dlgHost
         Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblHost.Size = New System.Drawing.Size(734, 447)
+        Me.tblHost.Size = New System.Drawing.Size(664, 355)
         Me.tblHost.TabIndex = 91
-        '
-        'tblHostMoviesetPath
-        '
-        Me.tblHostMoviesetPath.AutoSize = True
-        Me.tblHostMoviesetPath.ColumnCount = 1
-        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblHostMoviesetPath.Controls.Add(Me.txtHostMoviesetPath, 0, 0)
-        Me.tblHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblHostMoviesetPath.Location = New System.Drawing.Point(3, 18)
-        Me.tblHostMoviesetPath.Name = "tblHostMoviesetPath"
-        Me.tblHostMoviesetPath.RowCount = 1
-        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblHostMoviesetPath.Size = New System.Drawing.Size(555, 28)
-        Me.tblHostMoviesetPath.TabIndex = 2
         '
         'dlgHost
         '
@@ -413,7 +413,7 @@ Partial Class dlgHost
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(734, 447)
+        Me.ClientSize = New System.Drawing.Size(664, 355)
         Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.tblHost)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
@@ -431,10 +431,10 @@ Partial Class dlgHost
         Me.pnlLoading.ResumeLayout(False)
         Me.gbHostMoviesetPath.ResumeLayout(False)
         Me.gbHostMoviesetPath.PerformLayout()
-        Me.tblHost.ResumeLayout(False)
-        Me.tblHost.PerformLayout()
         Me.tblHostMoviesetPath.ResumeLayout(False)
         Me.tblHostMoviesetPath.PerformLayout()
+        Me.tblHost.ResumeLayout(False)
+        Me.tblHost.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

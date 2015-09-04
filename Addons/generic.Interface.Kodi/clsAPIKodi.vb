@@ -32,7 +32,7 @@ Namespace Kodi
 
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
-        Private _currenthost As New Host
+        Private _currenthost As New KodiInterface.Host
         'current selected client
         Private _kodi As XBMCRPC.Client
         'helper object, needed for communication client (notification, eventhandler support)
@@ -49,7 +49,7 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Sub New(ByVal host As Host)
+        Public Sub New(ByVal host As KodiInterface.Host)
             _currenthost = Nothing
             _currenthost = host
             Init()
@@ -61,12 +61,12 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
         Friend Sub Init()
-            'dispose old client before initalizing new ones (just to be safe)
+            'dispose old client before initalizing new ones (just to be safe) 
             If _kodi IsNot Nothing Then
                 _kodi.Dispose()
             End If
             'now initialize new client object
-            _kodi = New Client(platformServices, _currenthost.address, _currenthost.port, _currenthost.username, _currenthost.password)
+            _kodi = New Client(platformServices, _currenthost.Address, _currenthost.Port, _currenthost.Username, _currenthost.Password)
             'Listen to Kodi Events
             AddHandler _kodi.VideoLibrary.OnScanFinished, AddressOf VideoLibrary_OnScanFinished
             AddHandler _kodi.VideoLibrary.OnCleanFinished, AddressOf VideoLibrary_OnCleanFinished
@@ -80,7 +80,7 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnScanFinished(ByVal sender As String, ByVal data As Object)
             'Finished updating video library
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.name & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
         End Sub
         ''' <summary>
         ''' Triggered as soon as cleaning of video library is finished
@@ -89,7 +89,7 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnCleanFinished(ByVal sender As String, ByVal data As Object)
             'Finished cleaning of video library
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.name & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
         End Sub
 
 #Region "Movie API"
@@ -180,17 +180,17 @@ Namespace Kodi
 
             If kMovies.movies IsNot Nothing Then
                 If kMovies.movies.Count = 1 Then
-                    logger.Trace(String.Concat("[APIKodi] SearchMovieByFilename: " & _currenthost.name & ": """ & Filename & """ found in host database! [ID:", kMovies.movies.Item(0).movieid, "]"))
+                    logger.Trace(String.Concat("[APIKodi] SearchMovieByFilename: " & _currenthost.Label & ": """ & Filename & """ found in host database! [ID:", kMovies.movies.Item(0).movieid, "]"))
                     Return kMovies.movies.Item(0)
                 ElseIf kMovies.movies.Count > 1 Then
-                    logger.Warn(String.Concat("[APIKodi] SearchMovieByFilename: " & _currenthost.name & ": """ & Filename & """ MORE THAN ONE movie found in host database!"))
+                    logger.Warn(String.Concat("[APIKodi] SearchMovieByFilename: " & _currenthost.Label & ": """ & Filename & """ MORE THAN ONE movie found in host database!"))
                     'TODO: add some comparisons to find the correct movie like:
                     'path, IMDB ID, year ...
                     Return Nothing
                 End If
             End If
 
-            logger.Trace(String.Concat("[APIKodi] SearchMovieByFilename: " & _currenthost.name & ": """ & Filename & """ NOT found in host database!"))
+            logger.Trace(String.Concat("[APIKodi] SearchMovieByFilename: " & _currenthost.Label & ": """ & Filename & """ NOT found in host database!"))
             Return Nothing
         End Function
         ''' <summary>
@@ -207,10 +207,10 @@ Namespace Kodi
 
             If kMovies.movies IsNot Nothing Then
                 If kMovies.movies.Count = 1 Then
-                    logger.Trace(String.Concat("[APIKodi] SearchMovieByPath: " & _currenthost.name & ": """ & LocalPath & """ found in host database! [ID:", kMovies.movies.Item(0).movieid, "]"))
+                    logger.Trace(String.Concat("[APIKodi] SearchMovieByPath: " & _currenthost.Label & ": """ & LocalPath & """ found in host database! [ID:", kMovies.movies.Item(0).movieid, "]"))
                     Return kMovies.movies.Item(0)
                 ElseIf kMovies.movies.Count > 1 Then
-                    logger.Warn(String.Concat("[APIKodi] SearchMovieByPath: " & _currenthost.name & ": """ & LocalPath & """ MORE THAN ONE movie found in host database!"))
+                    logger.Warn(String.Concat("[APIKodi] SearchMovieByPath: " & _currenthost.Label & ": """ & LocalPath & """ MORE THAN ONE movie found in host database!"))
                     'TODO: add some comparisons to find the correct movie like:
                     'path, IMDB ID, year ...
                     'or try to search movie by filename
@@ -218,7 +218,7 @@ Namespace Kodi
                 End If
             End If
 
-            logger.Trace(String.Concat("[APIKodi] SearchMovieByPath: " & _currenthost.name & ": """ & LocalPath & """ NOT found in host database!"))
+            logger.Trace(String.Concat("[APIKodi] SearchMovieByPath: " & _currenthost.Label & ": """ & LocalPath & """ NOT found in host database!"))
             Return Nothing
         End Function
         ''' <summary>
@@ -254,7 +254,7 @@ Namespace Kodi
 
                 'movie isn't in database of host -> scan directory
                 If KodiID = -1 Then
-                    logger.Warn("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & uMovie.Filename & ": Not found in database, scan directory...")
+                    logger.Warn("[APIKodi] UpdateMovieInfo: " & _currenthost.Label & ": " & uMovie.Filename & ": Not found in database, scan directory...")
                     Await ScanVideoPath(EmbermovieID, Enums.ContentType.Movie).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
@@ -380,11 +380,11 @@ Namespace Kodi
                     ' dateadded:=mdateAdded, _
 
                     If response.Contains("error") Then
-                        logger.Error("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & response)
+                        logger.Error("[APIKodi] UpdateMovieInfo: " & _currenthost.Label & ": " & response)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uMovie.Filename, """")
+                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.Label & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uMovie.Filename, """")
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache)
@@ -397,7 +397,7 @@ Namespace Kodi
                         Return True
                     End If
                 Else
-                    logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uMovie.Filename, """")
+                    logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.Label & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uMovie.Filename, """")
                     '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uMovie.Filename, Nothing}))
                     Return False
                 End If
@@ -445,7 +445,7 @@ Namespace Kodi
                 'compare by movieset title
                 For Each tMovieSet In kMovies.sets
                     If tMovieSet.title.ToLower = DBMovieSet.MovieSet.Title.ToLower Then
-                        logger.Trace(String.Concat("[APIKodi] SearchMovieSetByDetails: " & _currenthost.name & ": """ & DBMovieSet.MovieSet.Title & """ found in host database! [ID:", tMovieSet.setid, "]"))
+                        logger.Trace(String.Concat("[APIKodi] SearchMovieSetByDetails: " & _currenthost.Label & ": """ & DBMovieSet.MovieSet.Title & """ found in host database! [ID:", tMovieSet.setid, "]"))
                         Return tMovieSet
                     End If
                 Next
@@ -461,7 +461,7 @@ Namespace Kodi
                     If KodiMovie IsNot Nothing Then
                         For Each tMovieSet In kMovies.sets
                             If tMovieSet.setid = KodiMovie.setid Then
-                                logger.Trace(String.Concat("[APIKodi] SearchMovieSetByDetails: " & _currenthost.name & ": """ & DBMovieSet.MovieSet.Title & """ found in host database by movie """, KodiMovie.title, """! [ID:", tMovieSet.setid, "]"))
+                                logger.Trace(String.Concat("[APIKodi] SearchMovieSetByDetails: " & _currenthost.Label & ": """ & DBMovieSet.MovieSet.Title & """ found in host database by movie """, KodiMovie.title, """! [ID:", tMovieSet.setid, "]"))
                                 Return tMovieSet
                             End If
                         Next
@@ -469,7 +469,7 @@ Namespace Kodi
                 Next
             End If
 
-            logger.Trace(String.Concat("[APIKodi] SearchMovieSetByDetails: " & _currenthost.name & ": """ & DBMovieSet.MovieSet.Title & """ NOT found in host database!"))
+            logger.Trace(String.Concat("[APIKodi] SearchMovieSetByDetails: " & _currenthost.Label & ": """ & DBMovieSet.MovieSet.Title & """ NOT found in host database!"))
             Return Nothing
         End Function
         ''' <summary>
@@ -501,7 +501,7 @@ Namespace Kodi
 
                 'movieset isn't in database of host -> scan directory
                 If KodiID = -1 Then
-                    logger.Warn("[APIKodi] UpdateMovieSetInfo: " & _currenthost.name & ": """ & uMovieset.MovieSet.Title & """ NOT found in database, abort process...")
+                    logger.Warn("[APIKodi] UpdateMovieSetInfo: " & _currenthost.Label & ": """ & uMovieset.MovieSet.Title & """ NOT found in database, abort process...")
                     'what to do in this case?
                 End If
 
@@ -541,15 +541,15 @@ Namespace Kodi
 
 
                     If response.Contains("error") Then
-                        logger.Error("[APIKodi] UpdateMovieSetInfo: " & _currenthost.name & ": " & response)
+                        logger.Error("[APIKodi] UpdateMovieSetInfo: " & _currenthost.Label & ": " & response)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateMovieSetInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uMovieset.MovieSet.Title, """")
+                        logger.Trace("[APIKodi] UpdateMovieSetInfo: " & _currenthost.Label & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uMovieset.MovieSet.Title, """")
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this MovieSet
-                        Dim resTextures = Await RemoveTextures(_currenthost.moviesetpath)
+                        Dim resTextures = Await RemoveTextures(_currenthost.MovieSetArtworksPath)
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
@@ -558,7 +558,7 @@ Namespace Kodi
                         Return True
                     End If
                 Else
-                    logger.Trace("[APIKodi] UpdateMovieSetInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": """ & uMovieset.MovieSet.Title, """")
+                    logger.Trace("[APIKodi] UpdateMovieSetInfo: " & _currenthost.Label & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": """ & uMovieset.MovieSet.Title, """")
                     '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uMovie.Filename, Nothing}))
                     Return False
                 End If
@@ -624,7 +624,7 @@ Namespace Kodi
                 ShowID = KodiTVShow.tvshowid
             End If
             If ShowID < 1 Then
-                logger.Trace(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.name & ": """ & LocalPath_Filename & """ NOT found in host database!"))
+                logger.Trace(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.Label & ": """ & LocalPath_Filename & """ NOT found in host database!"))
                 Return Nothing
             End If
 
@@ -635,10 +635,10 @@ Namespace Kodi
 
             If kTVEpisodes.episodes IsNot Nothing Then
                 If kTVEpisodes.episodes.Count = 1 Then
-                    logger.Trace(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.name & ": """ & LocalPath_Filename & """ found in host database! [ID:", kTVEpisodes.episodes.Item(0).episodeid, "]"))
+                    logger.Trace(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.Label & ": """ & LocalPath_Filename & """ found in host database! [ID:", kTVEpisodes.episodes.Item(0).episodeid, "]"))
                     Return kTVEpisodes.episodes.Item(0)
                 ElseIf kTVEpisodes.episodes.Count > 1 Then
-                    logger.Warn(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.name & ": """ & LocalPath_Filename & """ MORE THAN ONE episode found in host database!"))
+                    logger.Warn(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.Label & ": """ & LocalPath_Filename & """ MORE THAN ONE episode found in host database!"))
                     'TODO: add some comparisons to find the correct episode like:
                     'path, TVDB ID, year ...
                     'or try to search movie by filename
@@ -646,7 +646,7 @@ Namespace Kodi
                 End If
             End If
 
-            logger.Trace(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.name & ": """ & LocalPath_Filename & """ NOT found in host database!"))
+            logger.Trace(String.Concat("[APIKodi] SearchTVEpisodeByDetails: " & _currenthost.Label & ": """ & LocalPath_Filename & """ NOT found in host database!"))
             Return Nothing
         End Function
         ''' <summary>
@@ -681,7 +681,7 @@ Namespace Kodi
 
                 'episode isn't in database of host -> scan directory
                 If KodiID = -1 Then
-                    logger.Warn("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
+                    logger.Warn("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.Label & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
                     Await ScanVideoPath(EmberepisodeID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
@@ -751,11 +751,11 @@ Namespace Kodi
 
 
                     If response.Contains("error") Then
-                        logger.Error("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": " & response)
+                        logger.Error("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.Label & ": " & response)
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uEpisode.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uEpisode.Filename, """")
+                        logger.Trace("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.Label & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uEpisode.Filename, """")
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uEpisode.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Epsiode
@@ -768,7 +768,7 @@ Namespace Kodi
                         Return True
                     End If
                 Else
-                    logger.Trace("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": """ & uEpisode.Filename, """")
+                    logger.Trace("[APIKodi] UpdateTVEpisodeInfo: " & _currenthost.Label & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": """ & uEpisode.Filename, """")
                     ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uEpisode.Filename, Nothing}))
                     Return False
                 End If
@@ -805,7 +805,7 @@ Namespace Kodi
                 ShowID = KodiTVShow.tvshowid
             End If
             If ShowID < 1 Then
-                logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.name & ": """ & LocalPath_TVShow & """ NOT found in host database!"))
+                logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.Label & ": """ & LocalPath_TVShow & """ NOT found in host database!"))
                 Return Nothing
             End If
 
@@ -815,12 +815,12 @@ Namespace Kodi
             If kTVSeasons.seasons IsNot Nothing Then
                 Dim result = kTVSeasons.seasons.FirstOrDefault(Function(f) f.season = If(Season = 999, -1, Season))
                 If result IsNot Nothing Then
-                    logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.name & ": """ & LocalPath_TVShow & """ found in host database! [ID:", result.seasonid, "]"))
+                    logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.Label & ": """ & LocalPath_TVShow & """ found in host database! [ID:", result.seasonid, "]"))
                     Return result
                 End If
             End If
 
-            logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.name & ": """ & LocalPath_TVShow & """ NOT found in host database!"))
+            logger.Trace(String.Concat("[APIKodi] SearchTVSeasonByDetails: " & _currenthost.Label & ": """ & LocalPath_TVShow & """ NOT found in host database!"))
             Return Nothing
         End Function
         ''' <summary>
@@ -853,7 +853,7 @@ Namespace Kodi
 
                 'season isn't in database of host -> scan show directory?
                 If KodiID = -1 Then
-                    logger.Warn("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": Season " & uSeason.TVEpisode.Season & ": Not found in database, abort process...")
+                    logger.Warn("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.Label & ": Season " & uSeason.TVEpisode.Season & ": Not found in database, abort process...")
                     'what to do in this case?
                     Await ScanVideoPath(EmberseasonID, Enums.ContentType.TVShow).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
@@ -887,11 +887,11 @@ Namespace Kodi
                                                                              art:=artwork).ConfigureAwait(False)
 
                     If response.Contains("error") Then
-                        logger.Error("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & response)
+                        logger.Error("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.Label & ": " & response)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uMovie.Filename, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVSeason.Season)
+                        logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.Label & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVSeason.Season)
                         ' ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uMovie.Filename, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Season
@@ -904,7 +904,7 @@ Namespace Kodi
                         Return True
                     End If
                 Else
-                    logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uSeason.TVSeason.Season)
+                    logger.Trace("[APIKodi] UpdateTVSeasonInfo: " & _currenthost.Label & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": " & uSeason.TVSeason.Season)
                     '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uMovie.Filename, Nothing}))
                     Return False
                 End If
@@ -980,17 +980,17 @@ Namespace Kodi
 
             If kTVShows.tvshows IsNot Nothing Then
                 If kTVShows.tvshows.Count = 1 Then
-                    logger.Trace(String.Concat("[APIKodi] SearchTVShowByPath: " & _currenthost.name & ": """ & LocalPath & """ found in host database! [ID:", kTVShows.tvshows.Item(0).tvshowid, "]"))
+                    logger.Trace(String.Concat("[APIKodi] SearchTVShowByPath: " & _currenthost.Label & ": """ & LocalPath & """ found in host database! [ID:", kTVShows.tvshows.Item(0).tvshowid, "]"))
                     Return kTVShows.tvshows.Item(0)
                 ElseIf kTVShows.tvshows.Count > 1 Then
-                    logger.Warn(String.Concat("[APIKodi] SearchTVShowByPath: " & _currenthost.name & ": """ & LocalPath & """ MORE THAN ONE tv show found in host database!"))
+                    logger.Warn(String.Concat("[APIKodi] SearchTVShowByPath: " & _currenthost.Label & ": """ & LocalPath & """ MORE THAN ONE tv show found in host database!"))
                     'TODO: add some comparisons to find the correct tv show like:
                     'TMDB ID, ...
                     Return Nothing
                 End If
             End If
 
-            logger.Trace(String.Concat("[APIKodi] SearchTVShowByPath: " & _currenthost.name & ": """ & LocalPath & """ NOT found in host database!"))
+            logger.Trace(String.Concat("[APIKodi] SearchTVShowByPath: " & _currenthost.Label & ": """ & LocalPath & """ NOT found in host database!"))
             Return Nothing
         End Function
         ''' <summary>
@@ -1025,7 +1025,7 @@ Namespace Kodi
 
                 'TVShow isn't in database of host -> scan directory
                 If KodiID = -1 Then
-                    logger.Warn("[APIKodi] UpdateTVShowInfo: " & _currenthost.name & ": """ & uTVShow.ShowPath & """: Not found in database, scan directory...")
+                    logger.Warn("[APIKodi] UpdateTVShowInfo: " & _currenthost.Label & ": """ & uTVShow.ShowPath & """: Not found in database, scan directory...")
                     Await ScanVideoPath(EmbershowID, Enums.ContentType.TVShow).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
@@ -1133,11 +1133,11 @@ Namespace Kodi
                     'lastplayed:=mlastplayed, _
 
                     If response.Contains("error") Then
-                        logger.Error("[APIKodi] UpdateTVShowInfo: " & _currenthost.name & ": " & response)
+                        logger.Error("[APIKodi] UpdateTVShowInfo: " & _currenthost.Label & ": " & response)
                         '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync Failed") & ": " & uTVShow.ShowPath, Nothing}))
                         Return False
                     Else
-                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.name & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uTVShow.ShowPath, """")
+                        logger.Trace("[APIKodi] UpdateMovieInfo: " & _currenthost.Label & ": " & If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": """ & uTVShow.ShowPath, """")
                         '  ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Sync OK") & ": " & uTVShow.ShowPath, New Bitmap(My.Resources.logo)}))
 
                         'Remove old textures (cache) 'TODO: Limit to images of this Show (exkl. all season and episode images)
@@ -1150,7 +1150,7 @@ Namespace Kodi
                         Return True
                     End If
                 Else
-                    logger.Trace("[APIKodi] UpdateTVShowInfo: " & _currenthost.name & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": """ & uTVShow.ShowPath, """")
+                    logger.Trace("[APIKodi] UpdateTVShowInfo: " & _currenthost.Label & ": " & Master.eLang.GetString(1453, "Not Found On Host") & ": """ & uTVShow.ShowPath, """")
                     '   ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", _currenthost.name & " | " & Master.eLang.GetString(9999, "Not Found On Host") & ": " & uTVShow.ShowPath, Nothing}))
                     Return False
                 End If
@@ -1189,7 +1189,7 @@ Namespace Kodi
                         Dim KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
                         If KodiMovie Is Nothing Then
                             'movie isn't in database of host -> scan directory
-                            logger.Warn("[APIKodi] GetPlayCount: " & _currenthost.name & ": " & uMovie.Filename & ": Not found in database, scan directory...")
+                            logger.Warn("[APIKodi] GetPlayCount: " & _currenthost.Label & ": " & uMovie.Filename & ": Not found in database, scan directory...")
                             Await ScanVideoPath(EmbervideofileID, Enums.ContentType.Movie).ConfigureAwait(False)
                             'wait a bit before trying going on, as scan might take a while on Kodi...
                             Threading.Thread.Sleep(1000) 'TODO better solution for this?!
@@ -1220,7 +1220,7 @@ Namespace Kodi
                         Dim KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season).ConfigureAwait(False)
                         If KodiEpsiode Is Nothing Then
                             'episode isn't in database of host -> scan directory
-                            logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.name & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
+                            logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.Label & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
                             Await ScanVideoPath(EmbervideofileID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                             'wait a bit before trying going on, as scan might take a while on Kodi...
                             Threading.Thread.Sleep(1000) 'TODO better solution for this?!
@@ -1248,7 +1248,7 @@ Namespace Kodi
                             Return False
                         End If
                     Case Else
-                        logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.name & ": No videotype specified, Abort!")
+                        logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.Label & ": No videotype specified, Abort!")
                         Return False
                 End Select
             Catch ex As Exception
@@ -1272,7 +1272,7 @@ Namespace Kodi
                 End If
                 Dim response As String = ""
                 response = Await _kodi.VideoLibrary.Clean.ConfigureAwait(False)
-                logger.Trace("[APIKodi] CleanVideoLibrary: " & _currenthost.name)
+                logger.Trace("[APIKodi] CleanVideoLibrary: " & _currenthost.Label)
                 Return response
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1294,7 +1294,7 @@ Namespace Kodi
                 End If
                 Dim response As String = ""
                 response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
-                logger.Trace("[APIKodi] ScanVideoLibrary: " & _currenthost.name)
+                logger.Trace("[APIKodi] ScanVideoLibrary: " & _currenthost.Label)
                 Return response
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1327,7 +1327,7 @@ Namespace Kodi
                 For Each remotesource In tmplist
                     Dim newsource As New List.Items.SourcesItem
                     If remotesource.file.StartsWith(MultiPath) Then
-                        logger.Warn("[APIKodi] GetSources: " & _currenthost.name & ": " & remotesource.file & " - Multipath format, try to split...")
+                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": " & remotesource.file & " - Multipath format, try to split...")
                         'remove "multipath://" from path and split on "/"
                         'i.e multipath://nfs%3a%2f%2f192.168.2.200%2fMedia_1%2fMovie%2f/nfs%3a%2f%2f192.168.2.200%2fMedia_2%2fMovie%2f/
                         For Each path As String In remotesource.file.Remove(0, MultiPath.Length).Split("/"c)
@@ -1340,7 +1340,7 @@ Namespace Kodi
                             End If
                         Next
                     Else
-                        logger.Warn("[APIKodi] GetSources: " & _currenthost.name & ": """ & remotesource.file, """")
+                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": """ & remotesource.file, """")
                         newsource.file = remotesource.file
                         newsource.label = remotesource.label
                         lstremotesources.Add(newsource)
@@ -1447,7 +1447,7 @@ Namespace Kodi
                         uPath = Directory.GetParent(uEpisode.Filename).FullName
                     End If
                 Case Else
-                    logger.Warn("[APIKodi] ScanVideoPath: " & _currenthost.name & ": No videotype specified, Abort!")
+                    logger.Warn("[APIKodi] ScanVideoPath: " & _currenthost.Label & ": No videotype specified, Abort!")
                     Return False
             End Select
 
@@ -1457,10 +1457,10 @@ Namespace Kodi
             End If
             Dim response = Await _kodi.VideoLibrary.Scan(uPath).ConfigureAwait(False)
             If response.Contains("error") Then
-                logger.Error(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": """ & uPath, """ ", response))
+                logger.Error(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.Label & ": """ & uPath, """ ", response))
                 Return False
             Else
-                logger.Trace(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.name & ": """ & uPath, """ ", response))
+                logger.Trace(String.Concat("[APIKodi] ScanVideoPath: " & _currenthost.Label & ": """ & uPath, """ ", response))
                 Return True
             End If
         End Function
@@ -1563,23 +1563,23 @@ Namespace Kodi
             Dim RemotePath As String = String.Empty
             Dim RemoteIsUNC As Boolean = False
 
-            For Each Source In _currenthost.source
+            For Each Source In _currenthost.Sources
                 Dim tLocalSource As String = String.Empty
                 'add a directory separator at the end of the path to distinguish between
                 'D:\Movies
                 'D:\Movies Shared
                 '(needed for "LocalPath.ToLower.StartsWith(tLocalSource)"
-                If Source.applicationpath.Contains(Path.DirectorySeparatorChar) Then
-                    tLocalSource = If(Source.applicationpath.EndsWith(Path.DirectorySeparatorChar), Source.applicationpath, String.Concat(Source.applicationpath, Path.DirectorySeparatorChar)).Trim
-                ElseIf Source.applicationpath.Contains(Path.AltDirectorySeparatorChar) Then
-                    tLocalSource = If(Source.applicationpath.EndsWith(Path.AltDirectorySeparatorChar), Source.applicationpath, String.Concat(Source.applicationpath, Path.AltDirectorySeparatorChar)).Trim
+                If Source.LocalPath.Contains(Path.DirectorySeparatorChar) Then
+                    tLocalSource = If(Source.LocalPath.EndsWith(Path.DirectorySeparatorChar), Source.LocalPath, String.Concat(Source.LocalPath, Path.DirectorySeparatorChar)).Trim
+                ElseIf Source.LocalPath.Contains(Path.AltDirectorySeparatorChar) Then
+                    tLocalSource = If(Source.LocalPath.EndsWith(Path.AltDirectorySeparatorChar), Source.LocalPath, String.Concat(Source.LocalPath, Path.AltDirectorySeparatorChar)).Trim
                 End If
                 If LocalPath.ToLower.StartsWith(tLocalSource.ToLower) Then
                     Dim tRemoteSource As String = String.Empty
-                    If Source.remotepath.Contains(Path.DirectorySeparatorChar) Then
-                        tRemoteSource = If(Source.remotepath.EndsWith(Path.DirectorySeparatorChar), Source.remotepath, String.Concat(Source.remotepath, Path.DirectorySeparatorChar)).Trim
-                    ElseIf Source.remotepath.Contains(Path.AltDirectorySeparatorChar) Then
-                        tRemoteSource = If(Source.remotepath.EndsWith(Path.AltDirectorySeparatorChar), Source.remotepath, String.Concat(Source.remotepath, Path.AltDirectorySeparatorChar)).Trim
+                    If Source.RemotePath.Contains(Path.DirectorySeparatorChar) Then
+                        tRemoteSource = If(Source.RemotePath.EndsWith(Path.DirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.DirectorySeparatorChar)).Trim
+                    ElseIf Source.RemotePath.Contains(Path.AltDirectorySeparatorChar) Then
+                        tRemoteSource = If(Source.RemotePath.EndsWith(Path.AltDirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.AltDirectorySeparatorChar)).Trim
                         RemoteIsUNC = True
                     End If
                     RemotePath = LocalPath.Replace(tLocalSource, tRemoteSource)
@@ -1601,7 +1601,7 @@ Namespace Kodi
         ''' <returns></returns>
         ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)</remarks>
         Function GetRemoteMovieSetPath(ByVal LocalPath As String) As String
-            Dim HostPath As String = _currenthost.moviesetpath
+            Dim HostPath As String = _currenthost.MovieSetArtworksPath
             Dim RemotePath As String = String.Empty
             Dim RemoteIsUNC As Boolean = False
 
