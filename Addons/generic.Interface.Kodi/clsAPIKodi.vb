@@ -1165,6 +1165,171 @@ Namespace Kodi
 
 #Region "General API"
         ''' <summary>
+        ''' Clean video library of host
+        ''' </summary>
+        ''' <returns>string with status message, if failed: Nothing</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' </remarks>
+        Public Async Function CleanVideoLibrary() As Task(Of String)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] CleanVideoLibrary: No client initialized! Abort!")
+                    Return Nothing
+                End If
+                Dim response As String = ""
+                response = Await _kodi.VideoLibrary.Clean.ConfigureAwait(False)
+                logger.Trace("[APIKodi] CleanVideoLibrary: " & _currenthost.Label)
+                Return response
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
+        End Function
+        ''' <summary>
+        ''' Get JSONRPC version of host
+        ''' </summary>
+        ''' <param name="kHost">specific host to query</param>
+        ''' <remarks>
+        ''' 2015/06/29 Cocotus - First implementation
+        ''' </remarks>
+        Public Shared Function GetJSONHostVersion(ByVal kHost As KodiInterface.Host) As String
+            Try
+                Dim _APIKodi As New Kodi.APIKodi(kHost)
+                Return _APIKodi.GetHostJSONVersion.Result
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return String.Empty
+            End Try
+        End Function
+        ''' <summary>
+        ''' Get JSON RPC version of host
+        ''' </summary>
+        ''' <returns>string which contains exact JSONRPC version, Nothing: Empty string</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' </remarks>
+        Public Async Function GetHostJSONVersion() As Task(Of String)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] GetHostJSONVersion: No client initialized! Abort!")
+                    Return Nothing
+                End If
+
+                Dim response = Await _kodi.JSONRPC.Version.ConfigureAwait(False)
+                Dim codename As String = ""
+                'see codename table here: http://kodi.wiki/view/JSON-RPC_API
+                Select Case response.version.major.ToString & response.version.minor
+                    Case "2"
+                        codename = "Dharma "
+                    Case "4"
+                        codename = "Eden "
+                    Case "60"
+                        codename = "Frodo "
+                    Case "614"
+                        codename = "Gotham "
+                    Case "621"
+                        codename = "Helix "
+                End Select
+                Return codename & response.version.major.ToString & "." & response.version.minor
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return ""
+            End Try
+        End Function
+        ''' <summary>
+        ''' Get all sources configured in Kodi host
+        ''' </summary>
+        ''' <param name="mediaType">type of source (default: video)</param>
+        ''' <returns>list of sources</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' 2015/07/05 Cocotus - Added multipath support, i.e nfs://192.168.2.200/Media_1/Movie/nfs://192.168.2.200/Media_2/Movie/
+        ''' </remarks>
+        Public Async Function GetSources(Optional mediaType As Files.Media = Files.Media.video) As Task(Of List(Of List.Items.SourcesItem))
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] GetSources: No client initialized! Abort!")
+                    Return Nothing
+                End If
+
+                Dim response = Await _kodi.Files.GetSources(mediaType).ConfigureAwait(False)
+                Dim tmplist = response.sources.ToList
+
+                'type multipath sources contain multiple paths
+                Dim lstremotesources As New List(Of List.Items.SourcesItem)
+                Dim paths As New List(Of String)
+                Const MultiPath As String = "multipath://"
+                For Each remotesource In tmplist
+                    Dim newsource As New List.Items.SourcesItem
+                    If remotesource.file.StartsWith(MultiPath) Then
+                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": " & remotesource.file & " - Multipath format, try to split...")
+                        'remove "multipath://" from path and split on "/"
+                        'i.e multipath://nfs%3a%2f%2f192.168.2.200%2fMedia_1%2fMovie%2f/nfs%3a%2f%2f192.168.2.200%2fMedia_2%2fMovie%2f/
+                        For Each path As String In remotesource.file.Remove(0, MultiPath.Length).Split("/"c)
+                            If Not String.IsNullOrEmpty(path) Then
+                                newsource = New List.Items.SourcesItem
+                                'URL decode each item
+                                newsource.file = Web.HttpUtility.UrlDecode(path)
+                                newsource.label = remotesource.label
+                                lstremotesources.Add(newsource)
+                            End If
+                        Next
+                    Else
+                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": """ & remotesource.file, """")
+                        newsource.file = remotesource.file
+                        newsource.label = remotesource.label
+                        lstremotesources.Add(newsource)
+                    End If
+                Next
+                Return lstremotesources
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
+        End Function
+        ''' <summary>
+        ''' Get all video sources configured in host
+        ''' </summary>
+        ''' <param name="kHost">specific host to query</param>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' Called from dlgHost.vb when user hits "Populate" button to get host sources
+        ''' </remarks>
+        Public Shared Function GetSources(ByVal kHost As KodiInterface.Host) As List(Of XBMCRPC.List.Items.SourcesItem)
+            Dim listSources As New List(Of XBMCRPC.List.Items.SourcesItem)
+            Try
+                Dim _APIKodi As New Kodi.APIKodi(kHost)
+                listSources = _APIKodi.GetSources(XBMCRPC.Files.Media.video).Result
+                Return listSources
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+            Return listSources
+        End Function
+        ''' <summary>
+        ''' Scan video library of Kodi host
+        ''' </summary>
+        ''' <returns>string with status message, if failed: Nothing</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' </remarks>
+        Public Async Function ScanVideoLibrary() As Task(Of String)
+            Try
+                If _kodi Is Nothing Then
+                    logger.Warn("[APIKodi] CleanVideoLibrary: No client initialized! Abort!")
+                    Return Nothing
+                End If
+                Dim response As String = ""
+                response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
+                logger.Trace("[APIKodi] ScanVideoLibrary: " & _currenthost.Label)
+                Return response
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
+        End Function
+        ''' <summary>
         ''' Sync playcount for specific episode/movie between Kodi host and EmberDB
         ''' </summary>
         ''' <param name="EmbervideofileID">ID of specific videoitem (EmberDB)</param>
@@ -1254,137 +1419,6 @@ Namespace Kodi
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return False
-            End Try
-        End Function
-
-        ''' <summary>
-        ''' Clean video library of host
-        ''' </summary>
-        ''' <returns>string with status message, if failed: Nothing</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' </remarks>
-        Public Async Function CleanVideoLibrary() As Task(Of String)
-            Try
-                If _kodi Is Nothing Then
-                    logger.Warn("[APIKodi] CleanVideoLibrary: No client initialized! Abort!")
-                    Return Nothing
-                End If
-                Dim response As String = ""
-                response = Await _kodi.VideoLibrary.Clean.ConfigureAwait(False)
-                logger.Trace("[APIKodi] CleanVideoLibrary: " & _currenthost.Label)
-                Return response
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return Nothing
-            End Try
-        End Function
-        ''' <summary>
-        ''' Scan video library of Kodi host
-        ''' </summary>
-        ''' <returns>string with status message, if failed: Nothing</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' </remarks>
-        Public Async Function ScanVideoLibrary() As Task(Of String)
-            Try
-                If _kodi Is Nothing Then
-                    logger.Warn("[APIKodi] CleanVideoLibrary: No client initialized! Abort!")
-                    Return Nothing
-                End If
-                Dim response As String = ""
-                response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
-                logger.Trace("[APIKodi] ScanVideoLibrary: " & _currenthost.Label)
-                Return response
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return Nothing
-            End Try
-        End Function
-        ''' <summary>
-        ''' Get all sources configured in Kodi host
-        ''' </summary>
-        ''' <param name="mediaType">type of source (default: video)</param>
-        ''' <returns>list of sources</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' 2015/07/05 Cocotus - Added multipath support, i.e nfs://192.168.2.200/Media_1/Movie/nfs://192.168.2.200/Media_2/Movie/
-        ''' </remarks>
-        Public Async Function GetSources(Optional mediaType As Files.Media = Files.Media.video) As Task(Of List(Of List.Items.SourcesItem))
-            Try
-                If _kodi Is Nothing Then
-                    logger.Warn("[APIKodi] GetSources: No client initialized! Abort!")
-                    Return Nothing
-                End If
-
-                Dim response = Await _kodi.Files.GetSources(mediaType).ConfigureAwait(False)
-                Dim tmplist = response.sources.ToList
-
-                'type multipath sources contain multiple paths
-                Dim lstremotesources As New List(Of List.Items.SourcesItem)
-                Dim paths As New List(Of String)
-                Const MultiPath As String = "multipath://"
-                For Each remotesource In tmplist
-                    Dim newsource As New List.Items.SourcesItem
-                    If remotesource.file.StartsWith(MultiPath) Then
-                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": " & remotesource.file & " - Multipath format, try to split...")
-                        'remove "multipath://" from path and split on "/"
-                        'i.e multipath://nfs%3a%2f%2f192.168.2.200%2fMedia_1%2fMovie%2f/nfs%3a%2f%2f192.168.2.200%2fMedia_2%2fMovie%2f/
-                        For Each path As String In remotesource.file.Remove(0, MultiPath.Length).Split("/"c)
-                            If Not String.IsNullOrEmpty(path) Then
-                                newsource = New List.Items.SourcesItem
-                                'URL decode each item
-                                newsource.file = Web.HttpUtility.UrlDecode(path)
-                                newsource.label = remotesource.label
-                                lstremotesources.Add(newsource)
-                            End If
-                        Next
-                    Else
-                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": """ & remotesource.file, """")
-                        newsource.file = remotesource.file
-                        newsource.label = remotesource.label
-                        lstremotesources.Add(newsource)
-                    End If
-                Next
-                Return lstremotesources
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return Nothing
-            End Try
-        End Function
-        ''' <summary>
-        ''' Get JSON RPC version of host
-        ''' </summary>
-        ''' <returns>string which contains exact JSONRPC version, Nothing: Empty string</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' </remarks>
-        Public Async Function GetHostJSONVersion() As Task(Of String)
-            Try
-                If _kodi Is Nothing Then
-                    logger.Warn("[APIKodi] GetHostJSONVersion: No client initialized! Abort!")
-                    Return Nothing
-                End If
-
-                Dim response = Await _kodi.JSONRPC.Version.ConfigureAwait(False)
-                Dim codename As String = ""
-                'see codename table here: http://kodi.wiki/view/JSON-RPC_API
-                Select Case response.version.major.ToString & response.version.minor
-                    Case "2"
-                        codename = "Dharma "
-                    Case "4"
-                        codename = "Eden "
-                    Case "60"
-                        codename = "Frodo "
-                    Case "614"
-                        codename = "Gotham "
-                    Case "621"
-                        codename = "Helix "
-                End Select
-                Return codename & response.version.major.ToString & "." & response.version.minor
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return ""
             End Try
         End Function
         ''' <summary>

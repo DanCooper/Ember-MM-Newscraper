@@ -419,9 +419,6 @@
     <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConverts.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\DefaultHosts.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Defaults\DefaultCertLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -86,12 +86,21 @@ Public Class frmSettingsHolder
     ''' Instead of reloading XML Kodi settings we will use "xmlHosts" as it's always up to date
     ''' </remarks>
     Private Sub ReloadKodiHosts()
+        Dim oldPlayCountHost As String = String.Empty
+        If Me.cbPlayCountHost.Items.Count > 0 Then
+            oldPlayCountHost = Me.cbPlayCountHost.SelectedItem.ToString
+        End If
+        Me.btnEditHost.Enabled = False
+        Me.btnRemoveHost.Enabled = False
         Me.cbPlayCountHost.Items.Clear()
         Me.lbHosts.Items.Clear()
         For Each host In HostList
             Me.lbHosts.Items.Add(host.Label)
             Me.cbPlayCountHost.Items.Add(host.Label)
         Next
+        If Me.cbPlayCountHost.Items.Contains(oldPlayCountHost) Then
+            Me.cbPlayCountHost.SelectedItem = oldPlayCountHost
+        End If
     End Sub
 
     ''' <summary>
@@ -133,89 +142,37 @@ Public Class frmSettingsHolder
             End If
         End If
     End Sub
-
     ''' <summary>
     ''' Open host dialog to enter a new host
     ''' </summary>
-    ''' <param name="sender">"Add"-button in Form</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' Open Host Edit window for user to enter new host data
-    ''' Result (if hit "OK"): Add new host entry to global xmlHosts and refresh view afterwards
-    ''' </remarks>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnAddHost_Click(sender As Object, e As EventArgs) Handles btnAddHost.Click
-        'Using dlg As New dlgHost
-        '    dlg.currentHost = Nothing
-        '    dlg.lstAllHosts.Clear()
-        '    dlg.lstAllHosts = xmlHosts.Host.ToList
-        '    If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-        '        Dim tmphost As KodiInterface.Host
-        '        tmphost = New KodiInterface.Host With {.Label = dlg.txtLabel.Text, .Address = dlg.txtHostIP.Text, .Port = CInt(dlg.txtWebPort.Text), .Username = dlg.txtUsername.Text, .Password = dlg.txtPassword.Text, .RealTimeSync = dlg.chkHostRealTimeSync.Checked, .MovieSetArtworksPath = dlg.txtHostMoviesetPath.Text}
-        '        For i = 0 To dlg.dgvHostSources.Rows.Count - 1
-        '            If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
-        '                Dim tmpsource As New KodiInterface.Source
-        '                tmpsource.ContentType = CStr(dlg.dgvHostSources.Rows(i).Cells(2).FormattedValue)
-        '                tmpsource.LocalPath = CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)
-        '                tmpsource.RemotePath = CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)
-        '                ReDim Preserve tmphost.Sources(i)
-        '                tmphost.Sources(i) = tmpsource
-        '            End If
-        '        Next
-        '        ReDim Preserve xmlHosts.Host(xmlHosts.Host.Count)
-        '        xmlHosts.Host(xmlHosts.Host.Count - 1) = tmphost
-        '        RaiseEvent ModuleSettingsChanged()
-        '        Me.ReloadKodiHosts()
-        '    End If
-        'End Using
+        Dim newHost As New KodiInterface.Host
+        Dim dlgNew As New dlgHost(newHost)
+        If dlgNew.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Me.HostList.Add(dlgNew.Result)
+            ReloadKodiHosts()
+        End If
     End Sub
-
     ''' <summary>
-    ''' Open host dialog to modify existing host data
+    ''' Open host dialog to modify a host
     ''' </summary>
-    ''' <param name="sender">"Edit"-button in Form</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' Open Host Edit window for user to edit existing host data of selected host in list
-    ''' Result (if hit "OK"): Submit changes of host entry to global xmlHosts and refresh view afterwards
-    ''' </remarks>
-    Private Sub btnEditHost_Click(sender As Object, e As EventArgs) Handles btnEditHost.Click
-        'Dim iSel As Integer = Me.lbHosts.SelectedIndex
-        'If Me.lbHosts.SelectedItems.Count > 0 Then
-        '    'Dim dlgEditHost As New dlgHost()
-        '    Using dlg As New dlgHost
-        '        dlg.lstAllHosts.Clear()
-        '        dlg.currentHost = Nothing
-        '        dlg.lstAllHosts = xmlHosts.Host.Where(Function(y) y.name <> Me.lbHosts.SelectedItem.ToString).ToList
-        '        dlg.currentHost = xmlHosts.Host.FirstOrDefault(Function(y) y.name = Me.lbHosts.SelectedItem.ToString)
-        '        If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-        '            Dim tmphost As KodiInterface.Host
-        '            tmphost = xmlHosts.Host.FirstOrDefault(Function(y) y.name = Me.lbHosts.SelectedItem.ToString)
-        '            tmphost.Label = dlg.txtLabel.Text
-        '            tmphost.Address = dlg.txtHostIP.Text
-        '            tmphost.Port = CInt(dlg.txtWebPort.Text)
-        '            tmphost.Username = dlg.txtUsername.Text
-        '            tmphost.Password = dlg.txtPassword.Text
-        '            tmphost.RealTimeSync = dlg.chkHostRealTimeSync.Checked
-        '            tmphost.MovieSetArtworksPath = dlg.txtHostMoviesetPath.Text
-        '            'clear  all sources, we will add them again...
-        '            '' Array.Clear(tmphost.source, 0, tmphost.source.Length)
-        '            ReDim tmphost.Sources(0)
-        '            For i = 0 To dlg.dgvHostSources.Rows.Count - 1
-        '                If Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)) Then
-        '                    Dim tmpsource As New KodiInterface.Source
-        '                    tmpsource.ContentType = CStr(dlg.dgvHostSources.Rows(i).Cells(2).FormattedValue)
-        '                    tmpsource.LocalPath = CStr(dlg.dgvHostSources.Rows(i).Cells(0).Value)
-        '                    tmpsource.RemotePath = CStr(dlg.dgvHostSources.Rows(i).Cells(1).Value)
-        '                    ReDim Preserve tmphost.Sources(i)
-        '                    tmphost.Sources(i) = tmpsource
-        '                End If
-        '            Next
-        '            RaiseEvent ModuleSettingsChanged()
-        '            Me.ReloadKodiHosts()
-        '        End If
-        '        btnEditHost.Enabled = False
-        '    End Using
-        'End If
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnEditHost_Click(sender As Object, e As EventArgs) Handles btnEditHost.Click, lbHosts.DoubleClick
+        If Me.lbHosts.SelectedItems.Count > 0 Then
+            Dim oldHost As KodiInterface.Host = HostList.FirstOrDefault(Function(f) f.Label = Me.lbHosts.SelectedItem.ToString)
+            If oldHost IsNot Nothing Then
+                Dim dlgNew As New dlgHost(oldHost)
+                If dlgNew.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    oldHost = dlgNew.Result
+                    ReloadKodiHosts()
+                End If
+            End If
+        End If
     End Sub
 
     ''' <summary>
@@ -229,8 +186,10 @@ Public Class frmSettingsHolder
     Private Sub lbHosts_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbHosts.SelectedIndexChanged
         If Me.lbHosts.SelectedItems.Count > 0 Then
             btnEditHost.Enabled = True
+            btnRemoveHost.Enabled = True
         Else
             btnEditHost.Enabled = False
+            btnRemoveHost.Enabled = False
         End If
     End Sub
 

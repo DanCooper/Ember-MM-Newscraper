@@ -974,41 +974,6 @@ Public Class KodiInterface
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
     End Sub
-    ''' <summary>
-    ''' Get all video sources configured in host
-    ''' </summary>
-    ''' <param name="kHost">specific host to query</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' Called from dlgHost.vb when user hits "Populate" button to get host sources
-    ''' </remarks>
-    Public Shared Function GetSources(ByVal kHost As Host) As List(Of XBMCRPC.List.Items.SourcesItem)
-        Dim listSources As New List(Of XBMCRPC.List.Items.SourcesItem)
-        Try
-            Dim _APIKodi As New Kodi.APIKodi(kHost)
-            listSources = _APIKodi.GetSources(XBMCRPC.Files.Media.video).Result
-            Return listSources
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-        Return listSources
-    End Function
-    ''' <summary>
-    ''' Get JSONRPC version of host
-    ''' </summary>
-    ''' <param name="kHost">specific host to query</param>
-    ''' <remarks>
-    ''' 2015/06/29 Cocotus - First implementation
-    ''' </remarks>
-    Public Shared Function GetJSONHostVersion(ByVal kHost As Host) As String
-        Try
-            Dim _APIKodi As New Kodi.APIKodi(kHost)
-            Return _APIKodi.GetHostJSONVersion.Result
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
-    End Function
 
     Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
         If control.Owner IsNot Nothing Then
