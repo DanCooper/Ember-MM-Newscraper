@@ -664,18 +664,19 @@ Public Class KodiInterface
     ''' </remarks>
     Private Sub cmnuHostSyncItem_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If _SpecialSettings.Hosts.Count > 0 Then
-            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
-            Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
-                If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
-                    'add job to tasklist and get everything done
-                    TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_Movie, .dbelement = DBElement})
-                    If TasksDone Then Me.RunTasks()
-                Else
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
+                Dim ID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
+                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                    If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
+                        'add job to tasklist and get everything done
+                        TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_Movie, .dbelement = DBElement})
+                        If TasksDone Then Me.RunTasks()
+                    Else
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                    End If
                 End If
-            End If
+            Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -690,10 +691,9 @@ Public Class KodiInterface
     ''' </remarks>
     Private Sub cmnuHostSyncItem_MovieSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If _SpecialSettings.Hosts.Count > 0 Then
-            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.Item(0, indX).Value)
-            Dim DBElement As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID, False)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows
+                Dim ID As Long = Convert.ToInt64(sRow.Cells("idSet").Value)
+                Dim DBElement As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID, False)
                 If Not String.IsNullOrEmpty(DBElement.MovieSet.Title) Then
                     'add job to tasklist and get everything done
                     TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_MovieSet, .dbelement = DBElement})
@@ -701,7 +701,7 @@ Public Class KodiInterface
                 Else
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                 End If
-            End If
+            Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -716,18 +716,19 @@ Public Class KodiInterface
     ''' </remarks>
     Private Sub cmnuHostSyncItem_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If _SpecialSettings.Hosts.Count > 0 Then
-            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.Item(0, indX).Value)
-            Dim DBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True, False)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
-                If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
-                    'add job to tasklist and get everything done
-                    TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_TVEpisode, .dbelement = DBElement})
-                    If TasksDone Then Me.RunTasks()
-                Else
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
+                Dim ID As Long = Convert.ToInt64(sRow.Cells("idEpisode").Value)
+                Dim DBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True, False)
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                    If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
+                        'add job to tasklist and get everything done
+                        TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_TVEpisode, .dbelement = DBElement})
+                        If TasksDone Then Me.RunTasks()
+                    Else
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                    End If
                 End If
-            End If
+            Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -742,14 +743,15 @@ Public Class KodiInterface
     ''' </remarks>
     Private Sub cmnuHostSyncItem_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If _SpecialSettings.Hosts.Count > 0 Then
-            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.Item(0, indX).Value)
-            Dim DBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
-                'add job to tasklist and get everything done
-                TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_TVSeason, .dbelement = DBElement})
-                If TasksDone Then Me.RunTasks()
-            End If
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows
+                Dim ID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
+                Dim DBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                    'add job to tasklist and get everything done
+                    TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_TVSeason, .dbelement = DBElement})
+                    If TasksDone Then Me.RunTasks()
+                End If
+            Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -764,18 +766,19 @@ Public Class KodiInterface
     ''' </remarks>
     Private Sub cmnuHostSyncItem_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If _SpecialSettings.Hosts.Count > 0 Then
-            Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Item(0, indX).Value)
-            Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False, False)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
-                If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
-                    'add job to tasklist and get everything done
-                    TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_TVShow, .dbelement = DBElement})
-                    If TasksDone Then Me.RunTasks()
-                Else
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
+                Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
+                Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False, False)
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                    If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
+                        'add job to tasklist and get everything done
+                        TaskList.Add(New KodiTask With {.mType = Enums.ModuleEventType.Sync_TVShow, .dbelement = DBElement})
+                        If TasksDone Then Me.RunTasks()
+                    Else
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                    End If
                 End If
-            End If
+            Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
