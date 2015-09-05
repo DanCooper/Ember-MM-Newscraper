@@ -1609,15 +1609,11 @@ Public Class dlgEditMovie
                 End If
 
                 Me.chkMark.Checked = Me.tmpDBElement.IsMark
-                'cocotus, 2013/02 Playcount/Watched state support added
-                'When Edit Movie-Page is loaded, checkbox will be unchecked of playcount=0 or not set at all... 
-                If Me.tmpDBElement.Movie.PlayCount = "" Or Me.tmpDBElement.Movie.PlayCount = "0" Then
-                    Me.chkWatched.Checked = False
-                Else
-                    'Playcount <> Empty and not 0 -> Tag filled -> Checked!
+                If Me.tmpDBElement.Movie.PlayCountSpecified Then
                     Me.chkWatched.Checked = True
+                Else
+                    Me.chkWatched.Checked = False
                 End If
-                'cocotus end
 
                 If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Title) Then
                     .txtTitle.Text = Me.tmpDBElement.Movie.Title
@@ -2586,15 +2582,15 @@ Public Class dlgEditMovie
                 'if watched-checkbox is checked -> save Playcount=1 in nfo
                 If chkWatched.Checked Then
                     'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If String.IsNullOrEmpty(Me.tmpDBElement.Movie.PlayCount) Or Me.tmpDBElement.Movie.PlayCount = "0" Then
-                        Me.tmpDBElement.Movie.PlayCount = "1"
+                    If Not Me.tmpDBElement.Movie.PlayCountSpecified Then
+                        Me.tmpDBElement.Movie.PlayCount = 1
                         Me.tmpDBElement.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If Integer.TryParse(Me.tmpDBElement.Movie.PlayCount, 0) AndAlso CInt(Me.tmpDBElement.Movie.PlayCount) > 0 Then
-                        Me.tmpDBElement.Movie.PlayCount = ""
-                        Me.tmpDBElement.Movie.LastPlayed = ""
+                    If Me.tmpDBElement.Movie.PlayCountSpecified Then
+                        Me.tmpDBElement.Movie.PlayCount = 0
+                        Me.tmpDBElement.Movie.LastPlayed = String.Empty
                     End If
                 End If
                 'cocotus End

@@ -46,7 +46,7 @@ Namespace MediaContainers
         Private _gueststars As New List(Of Person)
         Private _imdb As String
         Private _lastplayed As String
-        Private _playcount As String
+        Private _playcount As Integer
         Private _plot As String
         Private _rating As String
         Private _runtime As String
@@ -312,11 +312,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("playcount")> _
-        Public Property Playcount() As String
+        Public Property Playcount() As Integer
             Get
                 Return Me._playcount
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 Me._playcount = value
             End Set
         End Property
@@ -324,7 +324,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property PlaycountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._playcount)
+                Return Me._playcount > 0
             End Get
         End Property
 
@@ -598,7 +598,7 @@ Namespace MediaContainers
             Me._gueststars.Clear()
             Me._imdb = String.Empty
             Me._lastplayed = String.Empty
-            Me._playcount = String.Empty
+            Me._playcount = 0
             Me._plot = String.Empty
             Me._rating = String.Empty
             Me._runtime = String.Empty
@@ -778,7 +778,7 @@ Namespace MediaContainers
         Private _plot As String
         Private _runtime As String
         Private _trailer As String
-        Private _playcount As String
+        Private _playcount As Integer
         'Private _watched As String
         Private _actors As New List(Of Person)
         Private _thumb As New List(Of String)
@@ -1339,11 +1339,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("playcount")> _
-        Public Property PlayCount() As String
+        Public Property PlayCount() As Integer
             Get
                 Return Me._playcount
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 Me._playcount = value
             End Set
         End Property
@@ -1351,7 +1351,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property PlayCountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._playcount) AndAlso Not Me._playcount = "0"
+                Return Me._playcount > 0
             End Get
         End Property
 
@@ -1828,7 +1828,7 @@ Namespace MediaContainers
             Me._mpaa = String.Empty
             Me._originaltitle = String.Empty
             Me._outline = String.Empty
-            Me._playcount = String.Empty
+            Me._playcount = 0
             Me._plot = String.Empty
             Me._rating = String.Empty
             Me._releaseDate = String.Empty
@@ -1874,7 +1874,7 @@ Namespace MediaContainers
             Me._studios.Clear()
             Me._directors.Clear()
             Me._credits.Clear()
-            Me._playcount = String.Empty
+            Me._playcount = 0
             Me._thumb.Clear()
             Me._fanart = New Fanart
             Me._actors.Clear()

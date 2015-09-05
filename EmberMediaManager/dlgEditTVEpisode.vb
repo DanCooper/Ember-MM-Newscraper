@@ -535,11 +535,10 @@ Public Class dlgEditTVEpisode
             .pbStar10.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
-            If Me.tmpDBElement.TVEpisode.Playcount = "" Or Me.tmpDBElement.TVEpisode.Playcount = "0" Then
-                Me.chkWatched.Checked = False
-            Else
-                'Playcount <> Empty and not 0 -> Tag filled -> Checked!
+            If Me.tmpDBElement.TVEpisode.PlaycountSpecified Then
                 Me.chkWatched.Checked = True
+            Else
+                Me.chkWatched.Checked = False
             End If
             If Not String.IsNullOrEmpty(Me.tmpDBElement.TVEpisode.LastPlayed) Then
                 Dim timecode As Double = 0
@@ -974,15 +973,15 @@ Public Class dlgEditTVEpisode
 
             If chkWatched.Checked Then
                 'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                If String.IsNullOrEmpty(Me.tmpDBElement.TVEpisode.Playcount) Or Me.tmpDBElement.TVEpisode.Playcount = "0" Then
-                    Me.tmpDBElement.TVEpisode.Playcount = "1"
+                If Not Me.tmpDBElement.TVEpisode.PlaycountSpecified Then
+                    Me.tmpDBElement.TVEpisode.Playcount = 1
                     Me.tmpDBElement.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 End If
             Else
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                If Integer.TryParse(Me.tmpDBElement.TVEpisode.Playcount, 0) AndAlso CInt(Me.tmpDBElement.TVEpisode.Playcount) > 0 Then
-                    Me.tmpDBElement.TVEpisode.Playcount = ""
-                    Me.tmpDBElement.TVEpisode.LastPlayed = ""
+                If Me.tmpDBElement.TVEpisode.PlaycountSpecified Then
+                    Me.tmpDBElement.TVEpisode.Playcount = 0
+                    Me.tmpDBElement.TVEpisode.LastPlayed = String.Empty
                 End If
             End If
 

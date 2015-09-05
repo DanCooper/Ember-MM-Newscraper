@@ -781,14 +781,14 @@ Public Class Scanner
 
         If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie.Filename, False, Enums.ModifierType.MainWatchedFile)
-                If Not String.IsNullOrEmpty(DBMovie.Movie.PlayCount) AndAlso Not DBMovie.Movie.PlayCount = "0" Then
+                If DBMovie.Movie.PlayCountSpecified Then
                     If Not File.Exists(a) Then
                         Dim fs As FileStream = File.Create(a)
                         fs.Close()
                     End If
                 Else
                     If File.Exists(a) Then
-                        DBMovie.Movie.PlayCount = "1"
+                        DBMovie.Movie.PlayCount = 1
                         ToNfo = True
                     End If
                 End If
