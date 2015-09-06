@@ -249,8 +249,9 @@ Public Class dlgEditMovie
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.CleanUp()
-        ' ***
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Abort
         Me.Close()
     End Sub
@@ -475,8 +476,9 @@ Public Class dlgEditMovie
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.CleanUp()
-        ' ***
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
         Me.Close()
     End Sub
@@ -1425,6 +1427,7 @@ Public Class dlgEditMovie
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.CleanUp()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -1448,31 +1451,6 @@ Public Class dlgEditMovie
             If Directory.Exists(Path.Combine(Master.TempPath, "DashTrailer")) Then
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "DashTrailer"))
             End If
-
-            If Me.pnlExtrafanartsImage IsNot Nothing Then
-                For Each Pan In Me.pnlExtrafanartsImage
-                    CType(Pan.Tag, Images).Dispose()
-                Next
-            End If
-            If Me.pbExtrafanartsImage IsNot Nothing Then
-                For Each Pan In Me.pbExtrafanartsImage
-                    CType(Pan.Tag, Images).Dispose()
-                    Pan.Image.Dispose()
-                Next
-            End If
-
-            If Me.pnlExtrathumbsImage IsNot Nothing Then
-                For Each Pan In Me.pnlExtrathumbsImage
-                    CType(Pan.Tag, Images).Dispose()
-                Next
-            End If
-            If Me.pbExtrathumbsImage IsNot Nothing Then
-                For Each Pan In Me.pbExtrathumbsImage
-                    CType(Pan.Tag, Images).Dispose()
-                    Pan.Image.Dispose()
-                Next
-            End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

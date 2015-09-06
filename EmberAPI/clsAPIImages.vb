@@ -3040,6 +3040,8 @@ Public Class Images
                         DefaultImagesContainer.Extrafanarts.AddRange(DBElement.ImagesContainer.Extrafanarts)
                     End If
                 End If
+            Else
+                DefaultImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
             End If
         Else
             DefaultImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
@@ -3069,6 +3071,8 @@ Public Class Images
                         DefaultImagesContainer.Extrathumbs.AddRange(DBElement.ImagesContainer.Extrathumbs)
                     End If
                 End If
+            Else
+                DefaultImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
             End If
         Else
             DefaultImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs

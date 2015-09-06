@@ -387,6 +387,8 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.CleanUp()
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -404,7 +406,6 @@ Public Class dlgEditTVEpisode
             If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
                 File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
             End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
