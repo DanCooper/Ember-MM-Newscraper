@@ -1893,7 +1893,7 @@ Public Class dlgEditTVShow
                 End If
 
                 If ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(Me.tmpDBElement.ShowPath, Enums.ModifierType.MainActorThumbs)
+                    For Each a In FileUtils.GetFilenameList.TVShow(tmpDBElement, Enums.ModifierType.MainActorThumbs)
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)

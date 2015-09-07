@@ -1640,32 +1640,8 @@ Public Class NFO
         Return tNonConf
     End Function
 
-    Public Shared Function GetNfoPath_Movie(ByVal sPath As String, ByVal isSingle As Boolean) As String
-        '//
-        ' Get the proper path to NFO
-        '\\
-
-        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModifierType.MainNFO)
-            If File.Exists(a) Then
-                Return a
-            End If
-        Next
-
-        If Not isSingle Then
-            Return String.Empty
-        Else
-            'return movie path so we can use it for looking for non-conforming nfos
-            Return sPath
-        End If
-
-    End Function
-
-    Public Shared Function GetNfoPath_MovieSet(ByVal sPath As String) As String
-        '//
-        ' Get the proper path to NFO
-        '\\
-
-        For Each a In FileUtils.GetFilenameList.MovieSet(sPath, Enums.ModifierType.MainNFO)
+    Public Shared Function GetNfoPath_MovieSet(ByVal DBElement As Database.DBElement) As String
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBElement, Enums.ModifierType.MainNFO)
             If File.Exists(a) Then
                 Return a
             End If
@@ -2219,7 +2195,7 @@ Public Class NFO
                     End If
                 End If
 
-                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.IsSingle, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.Movie(movieToSave, Enums.ModifierType.MainNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(a, False)
                     End If
@@ -2265,7 +2241,7 @@ Public Class NFO
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
-                For Each a In FileUtils.GetFilenameList.MovieSet(moviesetToSave.MovieSet.Title, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.MovieSet(moviesetToSave, Enums.ModifierType.MainNFO)
                     'If Not Master.eSettings.GeneralOverwriteNfo Then
                     '    RenameNonConfNfo(a, False)
                     'End If
@@ -2438,16 +2414,9 @@ Public Class NFO
             If Not String.IsNullOrEmpty(tvShowToSave.ShowPath) Then
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
 
-                Dim tPath As String = String.Empty
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
-
-                tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
-
-                If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameShowNonConfNfo(tPath)
-                End If
 
                 'Boxee support
                 If Master.eSettings.TVUseBoxee Then
@@ -2465,25 +2434,31 @@ Public Class NFO
                     End If
                 End If
 
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        Try
-                            File.SetAttributes(tPath, FileAttributes.Normal)
-                        Catch ex As Exception
-                            fAttWritable = False
-                        End Try
+                For Each a In FileUtils.GetFilenameList.TVShow(tvShowToSave, Enums.ModifierType.MainNFO)
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                        RenameShowNonConfNfo(a)
                     End If
 
-                    Using xmlSW As New StreamWriter(tPath)
-                        tvShowToSave.NfoPath = tPath
-                        xmlSer.Serialize(xmlSW, tvShowToSave.TVShow)
-                    End Using
+                    doesExist = File.Exists(a)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
 
-                    If doesExist And fAttWritable Then File.SetAttributes(tPath, fAtt)
-                End If
+                        If doesExist Then
+                            fAtt = File.GetAttributes(a)
+                            Try
+                                File.SetAttributes(a, FileAttributes.Normal)
+                            Catch ex As Exception
+                                fAttWritable = False
+                            End Try
+                        End If
+
+                        Using xmlSW As New StreamWriter(a)
+                            tvShowToSave.NfoPath = a
+                            xmlSer.Serialize(xmlSW, tvShowToSave.TVShow)
+                        End Using
+
+                        If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+                    End If
+                Next
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
