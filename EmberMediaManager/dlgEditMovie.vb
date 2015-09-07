@@ -249,8 +249,9 @@ Public Class dlgEditMovie
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.CleanUp()
-        ' ***
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Abort
         Me.Close()
     End Sub
@@ -475,8 +476,9 @@ Public Class dlgEditMovie
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.CleanUp()
-        ' ***
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
         Me.Close()
     End Sub
@@ -1425,6 +1427,7 @@ Public Class dlgEditMovie
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.ThemeStop()
         Me.TrailerStop()
+
         Me.CleanUp()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -1448,31 +1451,6 @@ Public Class dlgEditMovie
             If Directory.Exists(Path.Combine(Master.TempPath, "DashTrailer")) Then
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "DashTrailer"))
             End If
-
-            If Me.pnlExtrafanartsImage IsNot Nothing Then
-                For Each Pan In Me.pnlExtrafanartsImage
-                    CType(Pan.Tag, Images).Dispose()
-                Next
-            End If
-            If Me.pbExtrafanartsImage IsNot Nothing Then
-                For Each Pan In Me.pbExtrafanartsImage
-                    CType(Pan.Tag, Images).Dispose()
-                    Pan.Image.Dispose()
-                Next
-            End If
-
-            If Me.pnlExtrathumbsImage IsNot Nothing Then
-                For Each Pan In Me.pnlExtrathumbsImage
-                    CType(Pan.Tag, Images).Dispose()
-                Next
-            End If
-            If Me.pbExtrathumbsImage IsNot Nothing Then
-                For Each Pan In Me.pbExtrathumbsImage
-                    CType(Pan.Tag, Images).Dispose()
-                    Pan.Image.Dispose()
-                Next
-            End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1609,15 +1587,11 @@ Public Class dlgEditMovie
                 End If
 
                 Me.chkMark.Checked = Me.tmpDBElement.IsMark
-                'cocotus, 2013/02 Playcount/Watched state support added
-                'When Edit Movie-Page is loaded, checkbox will be unchecked of playcount=0 or not set at all... 
-                If Me.tmpDBElement.Movie.PlayCount = "" Or Me.tmpDBElement.Movie.PlayCount = "0" Then
-                    Me.chkWatched.Checked = False
-                Else
-                    'Playcount <> Empty and not 0 -> Tag filled -> Checked!
+                If Me.tmpDBElement.Movie.PlayCountSpecified Then
                     Me.chkWatched.Checked = True
+                Else
+                    Me.chkWatched.Checked = False
                 End If
-                'cocotus end
 
                 If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Title) Then
                     .txtTitle.Text = Me.tmpDBElement.Movie.Title
@@ -2586,15 +2560,15 @@ Public Class dlgEditMovie
                 'if watched-checkbox is checked -> save Playcount=1 in nfo
                 If chkWatched.Checked Then
                     'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If String.IsNullOrEmpty(Me.tmpDBElement.Movie.PlayCount) Or Me.tmpDBElement.Movie.PlayCount = "0" Then
-                        Me.tmpDBElement.Movie.PlayCount = "1"
+                    If Not Me.tmpDBElement.Movie.PlayCountSpecified Then
+                        Me.tmpDBElement.Movie.PlayCount = 1
                         Me.tmpDBElement.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If Integer.TryParse(Me.tmpDBElement.Movie.PlayCount, 0) AndAlso CInt(Me.tmpDBElement.Movie.PlayCount) > 0 Then
-                        Me.tmpDBElement.Movie.PlayCount = ""
-                        Me.tmpDBElement.Movie.LastPlayed = ""
+                    If Me.tmpDBElement.Movie.PlayCountSpecified Then
+                        Me.tmpDBElement.Movie.PlayCount = 0
+                        Me.tmpDBElement.Movie.LastPlayed = String.Empty
                     End If
                 End If
                 'cocotus End

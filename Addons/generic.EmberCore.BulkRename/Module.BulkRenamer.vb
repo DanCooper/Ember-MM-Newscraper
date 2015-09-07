@@ -160,7 +160,7 @@ Public Class BulkRenamerModule
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
             Cursor.Current = Cursors.WaitCursor
             FileFolderRenamer.RenameSingle_Movie(DBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, True, True)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID, indX}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID}))
             Cursor.Current = Cursors.Default
         End If
     End Sub
@@ -172,7 +172,7 @@ Public Class BulkRenamerModule
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
             Cursor.Current = Cursors.WaitCursor
             FileFolderRenamer.RenameSingle_Episode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, True, True)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID}))
             Cursor.Current = Cursors.Default
         End If
     End Sub
@@ -184,7 +184,7 @@ Public Class BulkRenamerModule
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
             Cursor.Current = Cursors.WaitCursor
             FileFolderRenamer.RenameSingle_Show(DBElement, MySettings.FoldersPattern_Shows, False, False, True, True)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID, indX}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID}))
             Cursor.Current = Cursors.Default
         End If
     End Sub
@@ -197,7 +197,7 @@ Public Class BulkRenamerModule
             Using dRenameManual As New dlgRenameManual_Movie(DBElement)
                 Select Case dRenameManual.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID, indX}))
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID}))
                 End Select
             End Using
         End If
@@ -211,7 +211,7 @@ Public Class BulkRenamerModule
             Using dRenameManual As New dlgRenameManual_TVEpisode(DBElement)
                 Select Case dRenameManual.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID, indX}))
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID}))
                 End Select
             End Using
         End If
@@ -225,7 +225,7 @@ Public Class BulkRenamerModule
             Using dRenameManual As New dlgRenameManual_TVShow(DBElement)
                 Select Case dRenameManual.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID, indX}))
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID}))
                 End Select
             End Using
         End If

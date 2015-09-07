@@ -473,7 +473,7 @@ Public Class dlgExportMovies
                         row = row.Replace("<$COUNTRY>", StringUtils.HtmlEncode(_curMovie.Movie.Country))
                         row = row.Replace("<$IDMOVIEDB>", StringUtils.HtmlEncode(_curMovie.Movie.IDMovieDB))
                         row = row.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(_curMovie.Movie.OriginalTitle))
-                        row = row.Replace("<$PLAYCOUNT>", StringUtils.HtmlEncode(_curMovie.Movie.PlayCount))
+                        row = row.Replace("<$PLAYCOUNT>", CStr(_curMovie.Movie.PlayCount))
                         row = row.Replace("<$STUDIO>", StringUtils.HtmlEncode(_curMovie.Movie.Studio))
                         row = row.Replace("<$TOP250>", StringUtils.HtmlEncode(_curMovie.Movie.Top250))
                         row = row.Replace("<$TRAILER>", StringUtils.HtmlEncode(_curMovie.Movie.Trailer))

@@ -249,7 +249,7 @@
   <string id="248">Show Scraped</string>
   <string id="249">Enable Image Caching</string>
   <string id="250">Reload All TV Shows</string>
-  <string id="251"></string>
+  <string id="251">All Tasks Done</string>
   <string id="252"></string>
   <string id="253"></string>
   <string id="254"></string>
@@ -1527,7 +1527,7 @@
   <string id="1436">Please enter a unique name for host!</string>
   <string id="1437">You must enter an IP for this host!</string>
   <string id="1438">You must enter a port for this host!</string>
-  <string id="1439">The name you are attempting to use for this host is already in use. Please choose another!</string>
+  <string id="1439">Run Tasks</string>
   <string id="1440">Edit</string>
   <string id="1441">Send Notifications</string>
   <string id="1442">Please Scrape In Ember First!</string>
