@@ -1023,7 +1023,7 @@ Public Class Scanner
         Return SeasonsList
     End Function
 
-    Public Sub LoadTVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean)
+    Public Sub LoadTVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ByVal ReportProgress As Boolean)
         Dim newSeasonsIndex As New List(Of Integer)
         Dim toNfo As Boolean = False
 
