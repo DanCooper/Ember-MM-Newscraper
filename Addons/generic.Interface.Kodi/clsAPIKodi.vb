@@ -265,7 +265,7 @@ Namespace Kodi
         ''' updates all movie fields which are filled/set in Ember (also paths of images)
         ''' at the moment the movie to update on host is identified by searching and comparing filename of movie(special handling for DVDs/Blurays), meaning there might be problems when filename is appearing more than once in movie library
         ''' </remarks>
-        Public Async Function UpdateMovieInfo(ByVal lngID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateMovieInfo(ByVal lngMovieID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateMovieInfo: No host initialized! Abort!")
                 Return False
@@ -273,7 +273,7 @@ Namespace Kodi
 
             Dim blnNeedSave As Boolean = False
             Dim isNew As Boolean = False
-            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngID, False)
+            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngMovieID, False)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uMovie.Movie.Title))
@@ -291,7 +291,7 @@ Namespace Kodi
                 'movie isn't in database of host -> scan directory
                 If KodiID = -1 Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uMovie.Movie.Title))
-                    Await ScanVideoPath(lngID, Enums.ContentType.Movie).ConfigureAwait(False)
+                    Await ScanVideoPath(lngMovieID, Enums.ContentType.Movie).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
@@ -434,8 +434,8 @@ Namespace Kodi
                             Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovie.Movie.Title).ConfigureAwait(False)
                         End If
                         If blnNeedSave Then
-                            Master.DB.SaveMovieToDB(uMovie, False, False, True)
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uMovie.Movie.Title))
+                            Master.DB.SaveMovieToDB(uMovie, False, False, True)
                             'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {uMovie.ID}))
                         End If
                         logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovie.Movie.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
@@ -535,14 +535,14 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation, main code by DanCooper
         ''' updates all movieset fields which are filled/set in Ember (also paths of images)
         ''' </remarks>
-        Public Async Function UpdateMovieSetInfo(ByVal lngEmbermoviesetID As Long, ByVal blnSendHostNotification As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateMovieSetInfo(ByVal lngMovieSetID As Long, ByVal blnSendHostNotification As Boolean) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateMovieSetInfo: No host initialized! Abort!")
                 Return False
             End If
 
             Dim isNew As Boolean = False
-            Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(lngEmbermoviesetID, False)
+            Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(lngMovieSetID, False)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uMovieset.MovieSet.Title))
@@ -739,7 +739,7 @@ Namespace Kodi
         ''' updates all episode fields (also pathes of images)
         ''' at the moment episode on host is identified by searching and comparing filename of episode
         ''' </remarks>
-        Public Async Function UpdateTVEpisodeInfo(ByVal lngEmberepisodeID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateTVEpisodeInfo(ByVal lngTVEpisodeID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateTVEpisodeInfo: No host initialized! Abort!")
                 Return False
@@ -747,7 +747,7 @@ Namespace Kodi
 
             Dim needSave As Boolean = False
             Dim isNew As Boolean = False
-            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(lngEmberepisodeID, True, False)
+            Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(lngTVEpisodeID, True, False)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uEpisode.TVEpisode.Title))
@@ -762,7 +762,7 @@ Namespace Kodi
                 'episode isn't in database of host -> scan directory
                 If KodiID = -1 Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
-                    Await ScanVideoPath(lngEmberepisodeID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
+                    Await ScanVideoPath(lngTVEpisodeID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season, uEpisode.TVEpisode.Episode).ConfigureAwait(False)
@@ -849,8 +849,8 @@ Namespace Kodi
                             Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEpisode.Title).ConfigureAwait(False)
                         End If
                         If needSave Then
-                            Master.DB.SaveTVEpisodeToDB(uEpisode, False, False, True)
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uEpisode.TVEpisode.Title))
+                            Master.DB.SaveTVEpisodeToDB(uEpisode, False, False, True)
                             'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {uEpisode.ID}))
                         End If
                         logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | {2} on host", _currenthost.Label, uEpisode.TVEpisode.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
@@ -928,14 +928,14 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation, main code by DanCooper
         ''' updates all movieset fields which are filled/set in Ember (also paths of images)
         ''' </remarks>
-        Public Async Function UpdateTVSeasonInfo(ByVal EmberseasonID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateTVSeasonInfo(ByVal lngTVSeasonID As Long, ByVal SendHostNotification As Boolean) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Warn("[APIKodi] UpdateTVSeasonInfo: No host initialized! Abort!")
                 Return False
             End If
 
             Dim isNew As Boolean = False
-            Dim uSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(EmberseasonID, True, False)
+            Dim uSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(lngTVSeasonID, True, False)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | Start syncing process...", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season))
@@ -1114,14 +1114,14 @@ Namespace Kodi
         ''' updates all TVShow fields (also paths of images)
         ''' at the moment TVShow on host is identified by searching and comparing path of TVShow
         ''' </remarks>
-        Public Async Function UpdateTVShowInfo(ByVal lngEmbershowID As Long, ByVal blnSendHostNotification As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateTVShowInfo(ByVal lngTVShowID As Long, ByVal blnSendHostNotification As Boolean) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateTVShowInfo: No host initialized! Abort!")
                 Return False
             End If
 
             Dim isNew As Boolean = False
-            Dim uTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(lngEmbershowID, False, False, False)
+            Dim uTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(lngTVShowID, False, False, False)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uTVShow.TVShow.Title))
@@ -1136,7 +1136,7 @@ Namespace Kodi
                 'TVShow isn't in database of host -> scan directory
                 If KodiID = -1 Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uTVShow.TVShow.Title))
-                    Await ScanVideoPath(lngEmbershowID, Enums.ContentType.TVShow).ConfigureAwait(False)
+                    Await ScanVideoPath(lngTVShowID, Enums.ContentType.TVShow).ConfigureAwait(False)
                     'wait a bit before trying going on, as scan might take a while on Kodi...
                     Threading.Thread.Sleep(1000) 'TODO better solution for this?!
                     KodiTVShow = Await SearchTVShowByPath(uTVShow.ShowPath).ConfigureAwait(False)
