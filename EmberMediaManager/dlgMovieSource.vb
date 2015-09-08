@@ -150,8 +150,8 @@ Public Class dlgMovieSource
         Me.SetUp()
         Try
             If Me._id >= 0 Then
-                Dim s As Structures.MovieSource = Master.MovieSources.FirstOrDefault(Function(y) y.id = Me._id.ToString)
-                If Not s.id Is Nothing Then
+                Dim s As Structures.MovieSource = Master.MovieSources.FirstOrDefault(Function(y) y.ID = Me._id.ToString)
+                If Not s.ID Is Nothing Then
                     Me.txtSourceName.Text = s.Name
                     Me.txtSourcePath.Text = s.Path
                     Me.chkExclude.Checked = s.Exclude

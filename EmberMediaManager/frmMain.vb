@@ -15281,6 +15281,7 @@ doCancel:
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
                 Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False)
                 tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuShowLanguageLanguages.Text).abbreviation
+                tmpDBTVShow.TVShow.Language = tmpDBTVShow.Language
                 Master.DB.SaveTVShowToDB(tmpDBTVShow, False, False, True, True)
                 RefreshRow_TVShow(tmpDBTVShow.ID)
             Next

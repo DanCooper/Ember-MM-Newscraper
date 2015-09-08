@@ -757,43 +757,43 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Private _title As String
-        Private _originaltitle As String
-        Private _sorttitle As String
-        Private _year As String
-        Private _releaseDate As String
-        Private _top250 As String
-        Private _countries As New List(Of String)
-        Private _rating As String
-        Private _votes As String
-        Private _mpaa As String
-        Private _certifications As New List(Of String)
-        Private _tags As New List(Of String)
-        Private _genres As New List(Of String)
-        Private _studios As New List(Of String)
-        Private _directors As New List(Of String)
-        Private _credits As New List(Of String)
-        Private _tagline As String
-        Private _outline As String
-        Private _plot As String
-        Private _runtime As String
-        Private _trailer As String
-        Private _playcount As String
-        'Private _watched As String
         Private _actors As New List(Of Person)
+        Private _certifications As New List(Of String)
+        Private _countries As New List(Of String)
+        Private _credits As New List(Of String)
+        Private _dateadded As String
+        Private _datemodified As String
+        Private _directors As New List(Of String)
+        Private _fanart As New Fanart
+        Private _fileInfo As New MediaInfo.Fileinfo
+        Private _genres As New List(Of String)
+        Private _language As String
+        Private _lastplayed As String
+        Private _lev As Integer
+        Private _mpaa As String
+        Private _originaltitle As String
+        Private _outline As String
+        Private _playcount As String
+        Private _plot As String
+        Private _rating As String
+        Private _releaseDate As String
+        Private _runtime As String
+        Private _scrapersource As String
+        Private _sorttitle As String
+        Private _studios As New List(Of String)
+        Private _tagline As String
+        Private _tags As New List(Of String)
         Private _thumb As New List(Of String)
         Private _thumbposter As New MediaContainers.Image
-        Private _fanart As New Fanart
-        Private _xsets As New List(Of [Set])
-        Private _ysets As New SetContainer
-        Private _fileInfo As New MediaInfo.Fileinfo
-        Private _lev As Integer
-        Private _videosource As String
+        Private _title As String
         Private _tmdbcolid As String
-        Private _dateadded As String
-        Private _scrapersource As String
-        Private _datemodified As String
-        Private _lastplayed As String
+        Private _top250 As String
+        Private _trailer As String
+        Private _videosource As String
+        Private _votes As String
+        Private _xsets As New List(Of [Set])
+        Private _year As String
+        Private _ysets As New SetContainer
 
 #End Region 'Fields
 
@@ -920,6 +920,23 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 Me.MovieID.ID = value
             End Set
+        End Property
+
+        <XmlElement("language")> _
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
         End Property
 
         <XmlElement("year")> _
@@ -1813,6 +1830,7 @@ Namespace MediaContainers
 
         Public Sub Clear()
             'Me._imdbid = String.Empty
+            Me.MovieID.Clear()
             Me._actors.Clear()
             Me._certifications.Clear()
             Me._countries.Clear()
@@ -1822,8 +1840,8 @@ Namespace MediaContainers
             Me._directors.Clear()
             Me._fanart = New Fanart
             Me._fileInfo = New MediaInfo.Fileinfo
-            Me._tags.Clear()
             Me._genres.Clear()
+            Me._language = String.Empty
             Me._lev = 0
             Me._mpaa = String.Empty
             Me._originaltitle = String.Empty
@@ -1837,6 +1855,7 @@ Namespace MediaContainers
             Me._sorttitle = String.Empty
             Me._studios.Clear()
             Me._tagline = String.Empty
+            Me._tags.Clear()
             Me._thumb.Clear()
             Me._thumbposter = New MediaContainers.Image
             Me._title = String.Empty
@@ -1848,44 +1867,6 @@ Namespace MediaContainers
             Me._xsets.Clear()
             Me._year = String.Empty
             Me._ysets = New SetContainer
-            Me.MovieID.Clear()
-        End Sub
-
-        Public Sub ClearForOfflineHolder()
-            'Me._imdbid = String.Empty
-            'Me._title = String.Empty
-            Me._originaltitle = String.Empty
-            Me._sorttitle = String.Empty
-            'Me._year = String.Empty
-            Me._rating = String.Empty
-            Me._votes = String.Empty
-            Me._mpaa = String.Empty
-            Me._top250 = String.Empty
-            Me._countries.Clear()
-            Me._outline = String.Empty
-            Me._plot = String.Empty
-            Me._tagline = String.Empty
-            Me._trailer = String.Empty
-            Me._certifications.Clear()
-            Me._tags.Clear()
-            Me._genres.Clear()
-            Me._runtime = String.Empty
-            Me._releaseDate = String.Empty
-            Me._studios.Clear()
-            Me._directors.Clear()
-            Me._credits.Clear()
-            Me._playcount = String.Empty
-            Me._thumb.Clear()
-            Me._fanart = New Fanart
-            Me._actors.Clear()
-            ' Me._fileInfo = New MediaInfo.Fileinfo
-            Me._ysets = New SetContainer
-            Me._xsets.Clear()
-            Me._lev = 0
-            'Me._videosource = String.Empty
-            Me._dateadded = String.Empty
-            Me._datemodified = String.Empty
-            Me.MovieID.Clear()
         End Sub
 
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
@@ -2507,6 +2488,7 @@ Namespace MediaContainers
         Private _imdb As String
         Private _knownepisodes As New List(Of MediaContainers.EpisodeDetails)
         Private _knownseasons As New List(Of MediaContainers.SeasonDetails)
+        Private _language As String
         Private _mpaa As String
         Private _originaltitle As String
         Private _plot As String
@@ -2643,6 +2625,23 @@ Namespace MediaContainers
         Public ReadOnly Property TMDBSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._tmdb)
+            End Get
+        End Property
+
+        <XmlElement("language")> _
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
             End Get
         End Property
 
@@ -3151,6 +3150,7 @@ Namespace MediaContainers
             _imdb = String.Empty
             _knownepisodes.Clear()
             _knownseasons.Clear()
+            _language = String.Empty
             _mpaa = String.Empty
             _originaltitle = String.Empty
             _plot = String.Empty

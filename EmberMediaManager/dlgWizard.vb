@@ -971,7 +971,7 @@ Public Class dlgWizard
         lvMovies.Items.Clear()
         Master.DB.LoadMovieSourcesFromDB()
         For Each s As Structures.MovieSource In Master.MovieSources
-            lvItem = New ListViewItem(s.id)
+            lvItem = New ListViewItem(s.ID)
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
             tmppath = s.Path
