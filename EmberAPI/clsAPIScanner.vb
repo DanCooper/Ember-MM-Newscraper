@@ -790,6 +790,7 @@ Public Class Scanner
                 Next
             End If
 
+            'VideoSource
             Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
@@ -801,6 +802,14 @@ Public Class Scanner
                 DBMovie.VideoSource = DBMovie.Movie.VideoSource
             End If
 
+            'Language
+            If Not String.IsNullOrEmpty(DBMovie.Movie.Language) Then
+                DBMovie.Language = DBMovie.Movie.Language
+            Else
+                DBMovie.Movie.Language = DBMovie.Language
+            End If
+
+            'MarkNew
             If isNew AndAlso Master.eSettings.MovieGeneralMarkNew Then
                 DBMovie.IsMark = True
             End If
@@ -1045,14 +1054,22 @@ Public Class Scanner
                     End If
                 End If
 
-                'search local actor thumb for each actor in NFO
-                If DBTVShow.TVShow.Actors.Count > 0 AndAlso DBTVShow.ActorThumbs.Count > 0 Then
-                    For Each actor In DBTVShow.TVShow.Actors
-                        actor.ThumbPath = DBTVShow.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-                    Next
-                End If
-
                 If Not String.IsNullOrEmpty(DBTVShow.ListTitle) Then
+
+                    'search local actor thumb for each actor in NFO
+                    If DBTVShow.TVShow.Actors.Count > 0 AndAlso DBTVShow.ActorThumbs.Count > 0 Then
+                        For Each actor In DBTVShow.TVShow.Actors
+                            actor.ThumbPath = DBTVShow.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                        Next
+                    End If
+
+                    'Language
+                    If Not String.IsNullOrEmpty(DBTVShow.TVShow.Language) Then
+                        DBTVShow.Language = DBTVShow.TVShow.Language
+                    Else
+                        DBTVShow.TVShow.Language = DBTVShow.Language
+                    End If
+
                     Master.DB.SaveTVShowToDB(DBTVShow, isNew, False, Batchmode)
                 End If
             Else
@@ -1269,7 +1286,7 @@ Public Class Scanner
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean)
+    Public Sub ScanForMovieFiles(ByVal sPath As String, ByVal sSource As String, ByVal sLang As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean)
         Dim currMovieContainer As Database.DBElement
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
@@ -1341,6 +1358,7 @@ Public Class Scanner
                         currMovieContainer.Filename = tFile
                         currMovieContainer.GetYear = bGetYear
                         currMovieContainer.IsSingle = True
+                        currMovieContainer.Language = sLang
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         currMovieContainer.UseFolder = True
@@ -1384,6 +1402,7 @@ Public Class Scanner
                         currMovieContainer.Filename = s
                         currMovieContainer.GetYear = bGetYear
                         currMovieContainer.IsSingle = bSingle
+                        currMovieContainer.Language = sLang
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         currMovieContainer.UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)
@@ -1428,10 +1447,11 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="sPath">Path of source.</param>
+    ''' <param name="sLang">Default language of source.</param>
     ''' <param name="bRecur">Scan directory recursively?</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanMovieSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean, ByVal doScan As Boolean)
+    Public Sub ScanMovieSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal sLang As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal bGetYear As Boolean, ByVal doScan As Boolean)
         If Directory.Exists(sPath) Then
             Dim sMoviePath As String = String.Empty
 
@@ -1441,7 +1461,7 @@ Public Class Scanner
             Try
 
                 'check if there are any movies in the parent folder
-                If doScan Then ScanForMovieFiles(sPath, sSource, bUseFolder, bSingle, bGetYear)
+                If doScan Then ScanForMovieFiles(sPath, sSource, sLang, bUseFolder, bSingle, bGetYear)
 
                 If Master.eSettings.MovieScanOrderModify Then
                     Try
@@ -1458,9 +1478,9 @@ Public Class Scanner
                 For Each inDir As DirectoryInfo In dList
 
                     If Me.bwPrelim.CancellationPending Then Return
-                    ScanForMovieFiles(inDir.FullName, sSource, bUseFolder, bSingle, bGetYear)
+                    ScanForMovieFiles(inDir.FullName, sSource, sLang, bUseFolder, bSingle, bGetYear)
                     If bRecur Then
-                        ScanMovieSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle, bGetYear, False)
+                        ScanMovieSourceDir(sSource, inDir.FullName, sLang, bRecur, bUseFolder, bSingle, bGetYear, False)
                     End If
                 Next
 
@@ -1612,7 +1632,7 @@ Public Class Scanner
                     Me.MoviePaths = Master.DB.GetMoviePaths
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            ScanMovieSourceDir(eSource.Name, Args.Folder, eSource.Recursive, eSource.UseFolderName, eSource.IsSingle, eSource.GetYear, True)
+                            ScanMovieSourceDir(eSource.Name, Args.Folder, eSource.Language, eSource.Recursive, eSource.UseFolderName, eSource.IsSingle, eSource.GetYear, True)
                         End Using
                         SQLtransaction.Commit()
                     End Using
@@ -1704,9 +1724,9 @@ Public Class Scanner
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Not String.IsNullOrEmpty(Args.SourceName) Then
-                        SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, GetYear FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
+                        SQLcommand.CommandText = String.Format("SELECT * FROM Sources WHERE Name = ""{0}"";", Args.SourceName)
                     Else
-                        SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, GetYear FROM Sources WHERE Exclude = 0;"
+                        SQLcommand.CommandText = "SELECT * FROM Sources WHERE Exclude = 0;"
                     End If
 
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1732,7 +1752,7 @@ Public Class Scanner
                                     Catch ex As Exception
                                         logger.Error(New StackFrame().GetMethod().Name, ex)
                                     End Try
-                                    ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), Convert.ToBoolean(SQLreader("GetYear")), True)
+                                    ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), Convert.ToBoolean(SQLreader("GetYear")), True)
                                 End If
                                 If Me.bwPrelim.CancellationPending Then
                                     e.Cancel = True

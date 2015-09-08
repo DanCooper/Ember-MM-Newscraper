@@ -4252,7 +4252,7 @@ Public Class dlgSettings
         lvMovieSources.Items.Clear()
         Master.DB.LoadMovieSourcesFromDB()
         For Each s As Structures.MovieSource In Master.MovieSources
-            lvItem = New ListViewItem(s.id)
+            lvItem = New ListViewItem(s.ID)
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
             lvItem.SubItems.Add(If(s.Recursive, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))

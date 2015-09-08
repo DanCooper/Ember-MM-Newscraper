@@ -1823,27 +1823,28 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure MovieSource
-        Dim id As String
+        Dim Exclude As Boolean
+        Dim GetYear As Boolean
+        Dim ID As String
+        Dim IsSingle As Boolean
+        Dim Language As String
         Dim Name As String
         Dim Path As String
         Dim Recursive As Boolean
         Dim UseFolderName As Boolean
-        Dim IsSingle As Boolean
-        Dim Exclude As Boolean
-        Dim GetYear As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing a TV source path and its metadata
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure TVSource
-        Dim id As String
-        Dim Name As String
-        Dim Path As String
-        Dim Language As String
-        Dim Ordering As Enums.Ordering
-        Dim Exclude As Boolean
         Dim EpisodeSorting As Enums.EpisodeSorting
+        Dim Exclude As Boolean
+        Dim ID As String
+        Dim Language As String
+        Dim Name As String
+        Dim Ordering As Enums.Ordering
+        Dim Path As String
     End Structure
     ''' <summary>
     ''' Structure representing a tag in the database
@@ -1851,8 +1852,8 @@ Public Class Structures
     ''' <remarks></remarks>
     Public Structure DBMovieTag
         Dim ID As Integer
-        Dim Title As String
         Dim Movies As List(Of Database.DBElement)
+        Dim Title As String
     End Structure
 
     Public Structure Scans

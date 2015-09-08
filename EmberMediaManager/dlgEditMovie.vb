@@ -1742,7 +1742,7 @@ Public Class dlgEditMovie
                     lvItem.SubItems.Add(imdbAct.ThumbURL)
                 Next
 
-                If Not Me.tmpDBElement.Filename = String.Empty AndAlso Me.tmpDBElement.Movie.VideoSource = "" Then
+                If Not String.IsNullOrEmpty(Me.tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(Me.tmpDBElement.Movie.VideoSource) Then
                     Dim vSource As String = APIXML.GetVideoSource(Me.tmpDBElement.Filename, False)
                     If Not String.IsNullOrEmpty(vSource) Then
                         Me.tmpDBElement.VideoSource = vSource
