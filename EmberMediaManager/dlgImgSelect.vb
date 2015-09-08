@@ -1887,12 +1887,12 @@ Public Class dlgImgSelect
                 Me.currSubImage = CreateImageTag(sImg, eImageType, iSeason)
                 RefreshSubImage(Me.currSubImage)
             Case Enums.ModifierType.MainExtrafanarts
-                If MessageBox.Show("Text", "Title", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
+                If MessageBox.Show(Master.eLang.GetString(265, "Are you sure you want to reset to the default list of Extrafanarts?"), Master.eLang.GetString(253, "Reload default list"), MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
                     tDBElementResult.ImagesContainer.Extrafanarts = tDefaultImagesContainer.Extrafanarts
                     CreateSubImages()
                 End If
             Case Enums.ModifierType.MainExtrathumbs
-                If MessageBox.Show("Text", "Title", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
+                If MessageBox.Show(Master.eLang.GetString(266, "Are you sure you want to reset to the default list of Extrathumbs?"), Master.eLang.GetString(253, "Reload default list"), MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
                     tDBElementResult.ImagesContainer.Extrathumbs = tDefaultImagesContainer.Extrathumbs
                     CreateSubImages()
                 End If
