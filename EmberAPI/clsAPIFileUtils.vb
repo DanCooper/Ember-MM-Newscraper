@@ -1713,7 +1713,7 @@ Namespace FileUtils
             Return FilenameList
         End Function
         ''' <summary>
-        ''' Creates a list of filenames to save or read movie content
+        ''' Creates a list of filenames to save or read movieset content
         ''' </summary>
         ''' <param name="mType"></param>
         ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
@@ -2006,7 +2006,6 @@ Namespace FileUtils
         Public Shared Function TVShow(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            Dim fShowTitle As String = DBElement.TVShow.Title
             Dim fShowPath As String = DBElement.ShowPath
             Dim fShowFolder As String = Path.GetFileName(fShowPath)
 
@@ -2024,7 +2023,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsBannerExpert) Then
                             For Each a In .TVAllSeasonsBannerExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2034,7 +2033,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-fanart.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsFanartExpert) Then
                             For Each a In .TVAllSeasonsFanartExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2045,7 +2044,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsLandscapeExpert) Then
                             For Each a In .TVAllSeasonsLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2055,7 +2054,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-poster.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVAllSeasonsPosterExpert) Then
                             For Each a In .TVAllSeasonsPosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2067,7 +2066,7 @@ Namespace FileUtils
                         If .TVUseYAMJ AndAlso .TVShowBannerYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.banner.jpg")))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowBannerExpert) Then
                             For Each a In .TVShowBannerExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2078,7 +2077,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVShowCharacterArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "characterart.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowCharacterArtExpert) Then
                             For Each a In .TVShowCharacterArtExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2089,7 +2088,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVShowClearArtExtended Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearArtExpert) Then
                             For Each a In .TVShowClearArtExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2100,7 +2099,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVShowClearLogoExtended Then FilenameList.Add(Path.Combine(fShowPath, "clearlogo.png"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowClearLogoExpert) Then
                             For Each a In .TVShowClearLogoExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2119,7 +2118,7 @@ Namespace FileUtils
                         If .TVUseYAMJ AndAlso .TVShowFanartYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.fanart.jpg")))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowFanartExpert) Then
                             For Each a In .TVShowFanartExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2130,7 +2129,7 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVShowLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "landscape.jpg"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowLandscapeExpert) Then
                             For Each a In .TVShowLandscapeExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2140,7 +2139,7 @@ Namespace FileUtils
                         FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowNFOExpert) Then
                             For Each a In .TVShowNFOExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
@@ -2152,7 +2151,7 @@ Namespace FileUtils
                         If .TVUseYAMJ AndAlso .TVShowPosterYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.jpg")))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowPosterExpert) Then
                             For Each a In .TVShowPosterExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a.Replace("<showtitle>", fShowTitle)))
+                                FilenameList.Add(Path.Combine(fShowPath, a))
                             Next
                         End If
                     End With
