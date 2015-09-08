@@ -668,7 +668,7 @@ Public Class KodiInterface
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         _SpecialSettings.SendNotifications = Me._setup.chkNotification.Checked
-        _SpecialSettings.SyncPlayCounts = _setup.chkPlayCount.Checked
+        _SpecialSettings.SyncPlayCounts = _setup.chkPlayCount.Checked AndAlso Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing
         _SpecialSettings.SyncPlayCountsHost = If(Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing, Me._setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
         SaveSettings()
         If Me.Enabled Then PopulateMenus()
