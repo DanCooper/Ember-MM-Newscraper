@@ -26,6 +26,7 @@ Imports NLog
 Public Class dlgTVSource
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private currNameText As String = String.Empty
@@ -139,8 +140,8 @@ Public Class dlgTVSource
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
-            Me.cbSourceLanguage.Text <> String.Empty AndAlso Me.cbSourceOrdering.Text <> String.Empty AndAlso _
-            Me.cbSourceEpisodeSorting.Text <> String.Empty AndAlso isValid Then
+            Not String.IsNullOrEmpty(Me.cbSourceLanguage.Text) AndAlso Not String.IsNullOrEmpty(Me.cbSourceOrdering.Text) AndAlso _
+            Not String.IsNullOrEmpty(Me.cbSourceEpisodeSorting.Text) AndAlso isValid Then
             Me.OK_Button.Enabled = True
         End If
 

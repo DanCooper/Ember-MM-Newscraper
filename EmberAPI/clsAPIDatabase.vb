@@ -699,7 +699,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 29
+        Dim MyVideosDBVersion As Integer = 30
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1748,7 +1748,7 @@ Public Class Database
     Public Sub LoadMovieSourcesFromDB()
         Master.MovieSources.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, Path, Recursive, Foldername, Single, LastScan, Exclude, GetYear FROM Sources;"
+            SQLcommand.CommandText = "SELECT * FROM Sources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -1761,6 +1761,7 @@ Public Class Database
                         msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
                         msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
                         msource.GetYear = Convert.ToBoolean(SQLreader("GetYear"))
+                        msource.Language = SQLreader("Language").ToString
                         Master.MovieSources.Add(msource)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2573,6 +2574,15 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
 
+            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 30
+                        PrepareMovieLanguage(True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
@@ -2958,6 +2968,20 @@ Public Class Database
                     End Using
                 End While
             End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub PrepareMovieLanguage(ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Set all language to ""en"" for all movies...")
+
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "UPDATE movie SET Language = 'en';"
+            SQLcommand.ExecuteNonQuery()
         End Using
 
         If Not BatchMode Then SQLtransaction.Commit()

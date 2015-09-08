@@ -6137,6 +6137,7 @@ doCancel:
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
                     Dim setWatched As Boolean = False
+                    Me.cmnuMovieSep4.Visible = True
 
                     Me.cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
@@ -6170,6 +6171,10 @@ doCancel:
                     Me.cmnuMovieGenresAdd.Enabled = False
                     Me.cmnuMovieGenresSet.Enabled = False
                     Me.cmnuMovieGenresRemove.Enabled = False
+
+                    Me.cmnuMovieLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
+                    Me.cmnuMovieLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    Me.cmnuMovieLanguageSet.Enabled = False
                 Else
                     Me.cmnuMovieChange.Visible = True
                     Me.cmnuMovieChangeAuto.Visible = True
@@ -6203,6 +6208,10 @@ doCancel:
                     Me.cmnuMovieGenresAdd.Enabled = False
                     Me.cmnuMovieGenresSet.Enabled = False
                     Me.cmnuMovieGenresRemove.Enabled = False
+
+                    Dim Lang As String = CStr(Me.dgvMovies.Item("Language", e.RowIndex).Value)
+                    Me.cmnuMovieLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                    Me.cmnuMovieLanguageSet.Enabled = False
                 End If
             Else
                 Me.cmnuMovie.Enabled = False
@@ -10883,6 +10892,14 @@ doCancel:
         cmnuMovieGenresSet.Enabled = True
     End Sub
 
+    Private Sub cmnumovieLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.DropDown
+        Me.cmnuMovieLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
+    End Sub
+
+    Private Sub cmnumovieLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.SelectedIndexChanged
+        Me.cmnuMovieLanguageSet.Enabled = True
+    End Sub
+
     Private Sub cmnuShowLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.DropDown
         Me.cmnuShowLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
     End Sub
@@ -15276,10 +15293,23 @@ doCancel:
         End Using
     End Sub
 
+    Private Sub cmnumovieLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageSet.Click
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value), False)
+                tmpDBMovie.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuMovieLanguageLanguages.Text).abbreviation
+                tmpDBMovie.Movie.Language = tmpDBMovie.Language
+                Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True)
+                RefreshRow_Movie(tmpDBMovie.ID)
+            Next
+            SQLtransaction.Commit()
+        End Using
+    End Sub
+
     Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False)
+                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False, False)
                 tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuShowLanguageLanguages.Text).abbreviation
                 tmpDBTVShow.TVShow.Language = tmpDBTVShow.Language
                 Master.DB.SaveTVShowToDB(tmpDBTVShow, False, False, True, True)
@@ -15401,6 +15431,9 @@ doCancel:
 
             Me.clbFilterDataFields_Movies.Items.Clear()
             Me.clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tagline", "Title", "Trailer", "Votes", "Year"})
+
+            Me.cmnuMovieLanguageLanguages.Items.Clear()
+            Me.cmnuMovieLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
             Me.cmnuShowLanguageLanguages.Items.Clear()
             Me.cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
@@ -15933,6 +15966,12 @@ doCancel:
                 .mnuScrapeTVShows.Text = strScrapeTVShows
                 .cmnuTrayScrapeTVShows.Text = strScrapeTVShows
 
+                'Set
+                Dim strSet As String = Master.eLang.GetString(29, "Set")
+                .cmnuMovieGenresSet.Text = strSet
+                .cmnuMovieLanguageSet.Text = strSet
+                .cmnuShowLanguageSet.Text = strSet
+
                 'Theme Only
                 Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
                 .mnuScrapeModifierTheme.Text = strThemeOnly
@@ -16123,7 +16162,6 @@ doCancel:
                 .cmnuMovieGenres.Text = Master.eLang.GetString(20, "Genre")
                 .cmnuMovieGenresAdd.Text = Master.eLang.GetString(28, "Add")
                 .cmnuMovieGenresRemove.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuMovieGenresSet.Text = Master.eLang.GetString(29, "Set")
                 .cmnuMovieGenresTitle.Text = Master.eLang.GetString(27, ">> Select Genre <<")
                 .cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
@@ -16297,7 +16335,6 @@ doCancel:
                 .cmnuMovieSetReload.Text = .cmnuMovieReload.Text
                 .cmnuMovieSetRemove.Text = .cmnuMovieRemove.Text
                 .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuShowLanguageSet.Text = cmnuMovieGenresSet.Text
                 .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
                 .cmnuTrayToolsBackdrops.Text = .mnuMainToolsBackdrops.Text
                 .cmnuTrayToolsCleanFiles.Text = .mnuMainToolsCleanFiles.Text

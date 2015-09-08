@@ -28,6 +28,7 @@ Imports System.Diagnostics
 Public Class dlgMovieSource
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private currNameText As String = String.Empty
@@ -39,6 +40,7 @@ Public Class dlgMovieSource
     Private tmppath As String
     Private prevPath As String = String.Empty
     Private prevSource As String = String.Empty
+
 #End Region 'Fields
 
 #Region "Methods"
@@ -52,10 +54,6 @@ Public Class dlgMovieSource
     End Sub
 
     Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
-        '//
-        ' Overload to pass data
-        '\\
-
         Me._id = id
 
         Return MyBase.ShowDialog()
@@ -63,12 +61,14 @@ Public Class dlgMovieSource
 
     Public Overloads Function ShowDialog(ByVal SearchPath As String) As Windows.Forms.DialogResult
         Me.tmppath = SearchPath
+
         Return MyBase.ShowDialog()
     End Function
 
     Public Overloads Function ShowDialog(ByVal SearchPath As String, ByVal FolderPath As String) As Windows.Forms.DialogResult
         Me.tmppath = SearchPath
         Me.txtSourcePath.Text = FolderPath
+
         Return MyBase.ShowDialog()
     End Function
 
@@ -96,6 +96,12 @@ Public Class dlgMovieSource
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
+    End Sub
+
+    Private Sub cbSourceLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceLanguage.SelectedIndexChanged
+        Me.OK_Button.Enabled = False
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Enabled = True
     End Sub
 
     Private Sub CheckConditions()
@@ -127,7 +133,8 @@ Public Class dlgMovieSource
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
+        If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
+            Not String.IsNullOrEmpty(Me.cbSourceLanguage.Text) AndAlso isValid Then
             Me.OK_Button.Enabled = True
         End If
     End Sub
@@ -152,14 +159,21 @@ Public Class dlgMovieSource
             If Me._id >= 0 Then
                 Dim s As Structures.MovieSource = Master.MovieSources.FirstOrDefault(Function(y) y.ID = Me._id.ToString)
                 If Not s.ID Is Nothing Then
-                    Me.txtSourceName.Text = s.Name
-                    Me.txtSourcePath.Text = s.Path
+                    Me.autoName = False
+                    If Me.cbSourceLanguage.Items.Count > 0 Then
+                        Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = s.Language).name
+                    End If
                     Me.chkExclude.Checked = s.Exclude
+                    Me.chkGetYear.Checked = s.GetYear
                     Me.chkScanRecursive.Checked = s.Recursive
                     Me.chkSingle.Checked = s.IsSingle
                     Me.chkUseFolderName.Checked = s.UseFolderName
-                    Me.chkGetYear.Checked = s.GetYear
-                    Me.autoName = False
+                    Me.txtSourceName.Text = s.Name
+                    Me.txtSourcePath.Text = s.Path
+                End If
+            Else
+                If Me.cbSourceLanguage.Items.Count > 0 Then
+                    Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieGeneralLanguage).name
                 End If
             End If
         Catch ex As Exception
@@ -198,9 +212,9 @@ Public Class dlgMovieSource
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?), lastscan = (?), exclude = (?), getyear = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?), lastscan = (?), exclude = (?), getyear = (?) , Language = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan, Exclude, GetYear) VALUES (?,?,?,?,?,?,?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan, Exclude, GetYear, Language) VALUES (?,?,?,?,?,?,?,?,?);"
                     End If
                     Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
@@ -210,6 +224,7 @@ Public Class dlgMovieSource
                     Dim parLastScan As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
                     Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "Exclude")
                     Dim parGetYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGetYear", DbType.Boolean, 0, "GetYear")
+                    Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
                     parRecur.Value = chkScanRecursive.Checked
@@ -218,6 +233,11 @@ Public Class dlgMovieSource
                     parLastScan.Value = DateTime.Now
                     parExclude.Value = chkExclude.Checked
                     parGetYear.Value = chkGetYear.Checked
+                    If cbSourceLanguage.Text <> String.Empty Then
+                        parLanguage.Value = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+                    Else
+                        parLanguage.Value = "en"
+                    End If
 
                     SQLcommand.ExecuteNonQuery()
                 End Using
@@ -242,12 +262,16 @@ Public Class dlgMovieSource
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
+        Me.lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
         Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
         Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
         Me.chkSingle.Text = Master.eLang.GetString(202, "Movies are in separate folders *")
         Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
         Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
         Me.fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")
+
+        Me.cbSourceLanguage.Items.Clear()
+        Me.cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
     End Sub
 
     Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick

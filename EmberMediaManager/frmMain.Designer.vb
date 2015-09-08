@@ -62,11 +62,13 @@ Partial Class frmMain
         Me.mnuMainToolsOfflineHolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsClearCache = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMainToolsCleanDB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsReloadMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsReloadMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsReloadTVShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsRewriteMovieContent = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuMainToolsCleanDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsExport = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsExportMovies = New System.Windows.Forms.ToolStripMenuItem()
@@ -238,6 +240,9 @@ Partial Class frmMain
         Me.cmnuMovieUpSelTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelWriter = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelYear = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieLanguage = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieLanguageLanguages = New System.Windows.Forms.ToolStripComboBox()
+        Me.cmnuMovieLanguageSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChangeAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSep4 = New System.Windows.Forms.ToolStripSeparator()
@@ -658,15 +663,15 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsbMediaCenters = New System.Windows.Forms.ToolStripSplitButton()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -694,10 +699,11 @@ Partial Class frmMain
         Me.cmnuTrayToolsOfflineHolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator25 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuTrayToolsClearCache = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayToolsCleanDB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuTrayToolsReloadMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayToolsReloadMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayToolsReloadTVShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayToolsCleanDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator26 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSeparator22 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuTraySettings = New System.Windows.Forms.ToolStripMenuItem()
@@ -717,9 +723,6 @@ Partial Class frmMain
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain,System.ComponentModel.ISupportInitialize).BeginInit
@@ -1219,6 +1222,20 @@ Partial Class frmMain
         Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsClearCache.Text = "Clear &All Caches"
         '
+        'mnuMainToolsCleanDB
+        '
+        Me.mnuMainToolsCleanDB.Image = CType(resources.GetObject("mnuMainToolsCleanDB.Image"),System.Drawing.Image)
+        Me.mnuMainToolsCleanDB.Name = "mnuMainToolsCleanDB"
+        Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
+            Or System.Windows.Forms.Keys.D),System.Windows.Forms.Keys)
+        Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsCleanDB.Text = "Clean &Database"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(349, 6)
+        '
         'mnuMainToolsReloadMovies
         '
         Me.mnuMainToolsReloadMovies.Image = CType(resources.GetObject("mnuMainToolsReloadMovies.Image"),System.Drawing.Image)
@@ -1244,21 +1261,17 @@ Partial Class frmMain
         Me.mnuMainToolsReloadTVShows.Tag = ""
         Me.mnuMainToolsReloadTVShows.Text = "Reload All TV Shows"
         '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(349, 6)
+        '
         'mnuMainToolsRewriteMovieContent
         '
         Me.mnuMainToolsRewriteMovieContent.Image = CType(resources.GetObject("mnuMainToolsRewriteMovieContent.Image"),System.Drawing.Image)
         Me.mnuMainToolsRewriteMovieContent.Name = "mnuMainToolsRewriteMovieContent"
         Me.mnuMainToolsRewriteMovieContent.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsRewriteMovieContent.Text = "Rewrite All Movie Content"
-        '
-        'mnuMainToolsCleanDB
-        '
-        Me.mnuMainToolsCleanDB.Image = CType(resources.GetObject("mnuMainToolsCleanDB.Image"),System.Drawing.Image)
-        Me.mnuMainToolsCleanDB.Name = "mnuMainToolsCleanDB"
-        Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt)  _
-            Or System.Windows.Forms.Keys.D),System.Windows.Forms.Keys)
-        Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(352, 22)
-        Me.mnuMainToolsCleanDB.Text = "Clean &Database"
         '
         'mnuMainToolsSeparator2
         '
@@ -2629,9 +2642,9 @@ Partial Class frmMain
         '
         'cmnuMovie
         '
-        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieSep1, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.cmnuMovieSep2, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuMovieSep3, Me.cmnuMovieRescrape, Me.cmnuMovieRescrapeSelected, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieSep4, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieSep5, Me.cmnuMovieRemove})
+        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieSep1, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.cmnuMovieSep2, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuMovieSep3, Me.cmnuMovieRescrape, Me.cmnuMovieRescrapeSelected, Me.cmnuMovieUpSel, Me.cmnuMovieLanguage, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieSep4, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieSep5, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 430)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 452)
         '
         'cmnuMovieTitle
         '
@@ -3103,6 +3116,27 @@ Partial Class frmMain
         Me.cmnuMovieUpSelYear.Name = "cmnuMovieUpSelYear"
         Me.cmnuMovieUpSelYear.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelYear.Text = "Year"
+        '
+        'cmnuMovieLanguage
+        '
+        Me.cmnuMovieLanguage.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieLanguageLanguages, Me.cmnuMovieLanguageSet})
+        Me.cmnuMovieLanguage.Name = "cmnuMovieLanguage"
+        Me.cmnuMovieLanguage.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuMovieLanguage.Text = "Change Language"
+        '
+        'cmnuMovieLanguageLanguages
+        '
+        Me.cmnuMovieLanguageLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmnuMovieLanguageLanguages.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+        Me.cmnuMovieLanguageLanguages.Name = "cmnuMovieLanguageLanguages"
+        Me.cmnuMovieLanguageLanguages.Size = New System.Drawing.Size(135, 23)
+        Me.cmnuMovieLanguageLanguages.Sorted = true
+        '
+        'cmnuMovieLanguageSet
+        '
+        Me.cmnuMovieLanguageSet.Name = "cmnuMovieLanguageSet"
+        Me.cmnuMovieLanguageSet.Size = New System.Drawing.Size(195, 22)
+        Me.cmnuMovieLanguageSet.Text = "Set"
         '
         'cmnuMovieChange
         '
@@ -8084,6 +8118,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovieSets
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -8125,14 +8160,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
-        'cmnuTrayScrapeMovies
+        'cmnuTrayScrapeTVShows
         '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"),System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"),System.Drawing.Image)
+        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
+        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
+        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'mnuScrapeMovieSets
         '
@@ -8192,6 +8227,15 @@ Partial Class frmMain
         Me.tsbMediaCenters.Text = "Media Centers"
         Me.tsbMediaCenters.Visible = false
         '
+        'cmnuTrayScrapeMovies
+        '
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"),System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        '
         'cmnuTrayScrapeMovieSets
         '
         Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
@@ -8200,15 +8244,6 @@ Partial Class frmMain
         Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
         Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
-        '
-        'cmnuTrayScrapeTVShows
-        '
-        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"),System.Drawing.Image)
-        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
-        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
-        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'ilColumnIcons
         '
@@ -8279,7 +8314,7 @@ Partial Class frmMain
         '
         Me.cmnuTray.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayTitle, Me.ToolStripSeparator21, Me.cmnuTrayUpdate, Me.cmnuTrayScrapeMovies, Me.cmnuTrayScrapeMovieSets, Me.cmnuTrayScrapeTVShows, Me.ToolStripSeparator23, Me.cmnuTrayTools, Me.ToolStripSeparator22, Me.cmnuTraySettings, Me.ToolStripSeparator13, Me.cmnuTrayExit})
         Me.cmnuTray.Name = "cmnuTrayIcon"
-        Me.cmnuTray.Size = New System.Drawing.Size(195, 226)
+        Me.cmnuTray.Size = New System.Drawing.Size(195, 204)
         Me.cmnuTray.Text = "Ember Media Manager"
         '
         'cmnuTrayTitle
@@ -8306,13 +8341,13 @@ Partial Class frmMain
         'cmnuTrayUpdateMovies
         '
         Me.cmnuTrayUpdateMovies.Name = "cmnuTrayUpdateMovies"
-        Me.cmnuTrayUpdateMovies.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuTrayUpdateMovies.Size = New System.Drawing.Size(125, 22)
         Me.cmnuTrayUpdateMovies.Text = "Movies"
         '
         'cmnuTrayUpdateShows
         '
         Me.cmnuTrayUpdateShows.Name = "cmnuTrayUpdateShows"
-        Me.cmnuTrayUpdateShows.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuTrayUpdateShows.Size = New System.Drawing.Size(125, 22)
         Me.cmnuTrayUpdateShows.Text = "TV Shows"
         '
         'ToolStripSeparator23
@@ -8373,6 +8408,18 @@ Partial Class frmMain
         Me.cmnuTrayToolsClearCache.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsClearCache.Text = "Clear All Caches"
         '
+        'cmnuTrayToolsCleanDB
+        '
+        Me.cmnuTrayToolsCleanDB.Image = CType(resources.GetObject("cmnuTrayToolsCleanDB.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsCleanDB.Name = "cmnuTrayToolsCleanDB"
+        Me.cmnuTrayToolsCleanDB.Size = New System.Drawing.Size(289, 22)
+        Me.cmnuTrayToolsCleanDB.Text = "Clean Database"
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(286, 6)
+        '
         'cmnuTrayToolsReloadMovies
         '
         Me.cmnuTrayToolsReloadMovies.Image = CType(resources.GetObject("cmnuTrayToolsReloadMovies.Image"),System.Drawing.Image)
@@ -8393,13 +8440,6 @@ Partial Class frmMain
         Me.cmnuTrayToolsReloadTVShows.Name = "cmnuTrayToolsReloadTVShows"
         Me.cmnuTrayToolsReloadTVShows.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsReloadTVShows.Text = "Reload All TV Shows"
-        '
-        'cmnuTrayToolsCleanDB
-        '
-        Me.cmnuTrayToolsCleanDB.Image = CType(resources.GetObject("cmnuTrayToolsCleanDB.Image"),System.Drawing.Image)
-        Me.cmnuTrayToolsCleanDB.Name = "cmnuTrayToolsCleanDB"
-        Me.cmnuTrayToolsCleanDB.Size = New System.Drawing.Size(289, 22)
-        Me.cmnuTrayToolsCleanDB.Text = "Clean Database"
         '
         'ToolStripSeparator26
         '
@@ -8514,21 +8554,6 @@ Partial Class frmMain
         '
         'tmrRunTasks
         '
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(349, 6)
-        '
-        'ToolStripSeparator3
-        '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(349, 6)
-        '
-        'ToolStripSeparator4
-        '
-        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(286, 6)
         '
         'frmMain
         '
@@ -9627,4 +9652,7 @@ End Sub
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieLanguage As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieLanguageLanguages As System.Windows.Forms.ToolStripComboBox
+    Friend WithEvents cmnuMovieLanguageSet As System.Windows.Forms.ToolStripMenuItem
 End Class

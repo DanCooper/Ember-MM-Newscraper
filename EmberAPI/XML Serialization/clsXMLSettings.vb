@@ -126,6 +126,7 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralcustommarker4name As String
     Private _moviegeneralflaglang As String
     Private _moviegeneralignorelastscan As Boolean
+    Private _moviegenerallanguage As String
     Private _moviegeneralmarknew As Boolean
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
     Private _movieimagescacheenabled As Boolean
@@ -991,6 +992,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._generalshowgenrestext = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralLanguage() As String
+        Get
+            Return Me._moviegenerallanguage
+        End Get
+        Set(ByVal value As String)
+            Me._moviegenerallanguage = If(String.IsNullOrEmpty(value), "en", value)
         End Set
     End Property
 

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v29_to_v30">
+    <command type="DB">
+      <description>add Language to Sources</description>
+      <execute>
+        ALTER TABLE Sources ADD COLUMN Language TEXT NOT NULL DEFAULT en;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add Language to movie</description>
+      <execute>
+        ALTER TABLE movie ADD COLUMN Language TEXT;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

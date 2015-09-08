@@ -3219,6 +3219,20 @@ Public Class dlgSettings
             End Try
 
             Try
+                Me.cbMovieGeneralLang.Items.Clear()
+                Me.cbMovieGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
+                If Me.cbMovieGeneralLang.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.MovieGeneralLanguage) Then
+                        Me.cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieGeneralLanguage).name
+                    Else
+                        Me.cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Try
                 Me.cbTVScraperShowCertLang.Items.Clear()
                 Me.cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
                 Me.cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
@@ -3239,7 +3253,11 @@ Public Class dlgSettings
                 Me.cbTVGeneralLang.Items.Clear()
                 Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
                 If Me.cbTVGeneralLang.Items.Count > 0 Then
-                    Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
+                    If Not String.IsNullOrEmpty(.TVGeneralLanguage) Then
+                        Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
+                    Else
+                        Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                    End If
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -4635,6 +4653,9 @@ Public Class dlgSettings
             .MovieGeneralCustomMarker4Name = Me.txtMovieGeneralCustomMarker4.Text
             .MovieGeneralFlagLang = If(Me.cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbMovieLanguageOverlay.Text)
             .MovieGeneralIgnoreLastScan = Me.chkMovieGeneralIgnoreLastScan.Checked
+            If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
+                .MovieGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbMovieGeneralLang.Text).abbreviation
+            End If
             .MovieGeneralMarkNew = Me.chkMovieGeneralMarkNew.Checked
             .MovieGeneralMediaListSorting.Clear()
             .MovieGeneralMediaListSorting.AddRange(Me.MovieGeneralMediaListSorting)
@@ -4855,7 +4876,7 @@ Public Class dlgSettings
             .TVGeneralIgnoreLastScan = Me.chkTVGeneralIgnoreLastScan.Checked
             'cocotus, 2014/05/21 Fixed: If cbTVGeneralLang.Text is empty it will crash here -> no AdvancedSettings.xml will be built/saved!!(happens when user has not yet set TVLanguage via Fetch language button!)
             'old:    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
-            If cbTVGeneralLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
                 .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVGeneralLang.Text).abbreviation
             End If
             .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
@@ -5634,6 +5655,7 @@ Public Class dlgSettings
 
         'Default Language
         Dim strDefaultLanguage As String = Master.eLang.GetString(1166, "Default Language")
+        Me.lblMovieSourcesDefaultsLanguage.Text = String.Concat(strDefaultLanguage, ":")
         Me.lblTVSourcesDefaultsLanguage.Text = String.Concat(strDefaultLanguage, ":")
 
         'Defaults
@@ -5641,10 +5663,15 @@ Public Class dlgSettings
         Me.gbMovieSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
         Me.gbMovieSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
         Me.gbMovieSourcesFileNamingKodiDefaultsOpts.Text = strDefaults
-        Me.gbTVSourcesDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesFileNamingBoxeeDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesFileNamingNMTDefaultsOpts.Text = strDefaults
         Me.gbTVSourcesFileNamingKodiDefaultsOpts.Text = strDefaults
+
+        'Defaults for new Sources
+        Dim strDefaultsForNewSources As String = Master.eLang.GetString(252, "Defaults for new Sources")
+        Me.gbMovieSourcesDefaultsOpts.Text = strDefaultsForNewSources
+        Me.gbTVSourcesDefaultsOpts.Text = strDefaultsForNewSources
+
 
         'Defaults by File Type
         Dim strDefaultsByFileType As String = Master.eLang.GetString(625, "Defaults by File Type")
@@ -7307,6 +7334,7 @@ Public Class dlgSettings
         cbMovieEFanartsPrefSize.SelectedIndexChanged, _
         cbMovieEThumbsPrefSize.SelectedIndexChanged, _
         cbMovieFanartPrefSize.SelectedIndexChanged, _
+        cbMovieGeneralLang.SelectedIndexChanged, _
         cbMovieImagesPrefLanguage.SelectedIndexChanged, _
         cbMovieLanguageOverlay.SelectedIndexChanged, _
         cbMoviePosterPrefSize.SelectedIndexChanged, _

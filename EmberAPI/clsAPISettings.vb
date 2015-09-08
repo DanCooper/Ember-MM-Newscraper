@@ -92,6 +92,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieGeneralLanguage() As String
+        Get
+            Return Settings._XMLSettings.MovieGeneralLanguage
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieGeneralLanguage = If(String.IsNullOrEmpty(value), "en", value)
+        End Set
+    End Property
+
     Public Property TVGeneralLanguage() As String
         Get
             Return Settings._XMLSettings.TVGeneralLanguage
@@ -6695,6 +6704,7 @@ Public Class Settings
         Me.MovieGeneralCustomMarker4Name = String.Empty
         Me.MovieGeneralFlagLang = String.Empty
         Me.MovieGeneralIgnoreLastScan = True
+        Me.MovieGeneralLanguage = "en"
         Me.MovieGeneralMarkNew = False
         Me.MovieGeneralMediaListSorting = New List(Of ListSorting)
         Me.MovieImagesCacheEnabled = False
