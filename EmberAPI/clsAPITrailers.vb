@@ -119,7 +119,7 @@ Public Class Trailers
     ''' </summary>
     ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieTrailer(ByVal mMovie As Database.DBElement)
+    Public Shared Sub DeleteMovieTrailers(ByVal mMovie As Database.DBElement)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -267,9 +267,9 @@ Public Class Trailers
             End If
             Directory.CreateDirectory(tmpPath)
             RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
-            tTrailerAudio = WebPage.DownloadFile(sTrailer.AudioURL, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
+            tTrailerAudio = WebPage.DownloadFile(sTrailer.URLAudioStream, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
             RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
-            tTrailerVideo = WebPage.DownloadFile(sTrailer.VideoURL, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
+            tTrailerVideo = WebPage.DownloadFile(sTrailer.URLVideoStream, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
             RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
             Using ffmpeg As New Process()
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -298,7 +298,7 @@ Public Class Trailers
             End If
         Else
             Try
-                tTrailerOutput = WebPage.DownloadFile(sTrailer.VideoURL, "", True, "trailer")
+                tTrailerOutput = WebPage.DownloadFile(sTrailer.URLVideoStream, "", True, "trailer")
                 If Not String.IsNullOrEmpty(tTrailerOutput) Then
 
                     If Me._ms IsNot Nothing Then
@@ -311,13 +311,13 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailer.VideoURL)
+                    logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
                 Else
-                    logger.Warn("Trailer NOT downloaded: " & sTrailer.VideoURL)
+                    logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.VideoURL & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">", ex)
             End Try
         End If
 
@@ -326,7 +326,7 @@ Public Class Trailers
     ''' <summary>
     ''' Loads this trailer from the supplied URL
     ''' </summary>
-    ''' <param name="sURL">URL to the trailer file</param>
+    ''' <param name="sURL">URL to the trailer</param>
     ''' <remarks></remarks>
     Public Sub FromWeb(ByVal sURL As String)
         Dim WebPage As New HTTP
@@ -374,10 +374,10 @@ Public Class Trailers
 
             'Check 1 Youtube/IMDB handling: At this point trailers from Youtube and IMDB don't have quality property set, so let's analyze the quality of given trailer and set correct trailerurl/quality of each trailerlink in list
             For Each aUrl As MediaContainers.Trailer In TrailerList
-                If YouTube.UrlUtils.IsYouTubeURL(aUrl.VideoURL) Then
+                If YouTube.UrlUtils.IsYouTubeURL(aUrl.URLVideoStream) Then
                     Dim YT As New YouTube.Scraper
                     Dim Trailer As YouTube.VideoLinkItem
-                    YT.GetVideoLinks(aUrl.VideoURL)
+                    YT.GetVideoLinks(aUrl.URLVideoStream)
 
                     Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
 
@@ -475,11 +475,11 @@ Public Class Trailers
                     If Trailer IsNot Nothing Then
                         aUrl.isDash = Trailer.isDash
                         aUrl.Quality = Trailer.FormatQuality
-                        aUrl.VideoURL = Trailer.URL
+                        aUrl.URLVideoStream = Trailer.URL
                         If aUrl.isDash Then
                             Dim TrailerAudio As YouTube.AudioLinkItem = YT.YouTubeLinks.AudioLinks.Item(0)
                             If TrailerAudio IsNot Nothing Then
-                                aUrl.AudioURL = TrailerAudio.URL
+                                aUrl.URLAudioStream = TrailerAudio.URL
                             Else
                                 'If no audio stream could be found we only download the video stream.
                                 aUrl.isDash = False
@@ -497,179 +497,179 @@ Public Class Trailers
                     '    aUrl.Extention = correctextension.Remove(tmpInvalidChar)
                     'End If
 
-                ElseIf Regex.IsMatch(aUrl.VideoURL, "https?:\/\/.*imdb.*") Then
+                ElseIf Regex.IsMatch(aUrl.URLVideoStream, "https?:\/\/.*imdb.*") Then
                     Dim IMDb As New IMDb.Scraper
-                    IMDb.GetVideoLinks(aUrl.VideoURL)
+                    IMDb.GetVideoLinks(aUrl.URLVideoStream)
                     If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
                         tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefVideoQual).URL
-                        aUrl.VideoURL = tLink
+                        aUrl.URLVideoStream = tLink
                         aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual
                     Else
                         Select Case Master.eSettings.MovieTrailerMinVideoQual
                             Case Enums.TrailerVideoQuality.Any
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HQ480p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ360p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ240p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN
                                 End If
                             Case Enums.TrailerVideoQuality.HD1080p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 End If
                             Case Enums.TrailerVideoQuality.HD720p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 End If
                             Case Enums.TrailerVideoQuality.HQ480p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HQ480p
                                 End If
                             Case Enums.TrailerVideoQuality.SQ360p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HQ480p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ360p
                                 End If
                             Case Enums.TrailerVideoQuality.SQ240p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HQ480p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ360p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ240p
                                 End If
                             Case Enums.TrailerVideoQuality.SQ144p
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HQ480p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ360p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ240p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
                                 End If
                             Case Enums.TrailerVideoQuality.UNKNOWN
                                 If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD1080p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HD720p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.HQ480p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ360p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ240p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.SQ144p
                                 ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
                                     tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
-                                    aUrl.VideoURL = tLink
+                                    aUrl.URLVideoStream = tLink
                                     aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN
                                 End If
                         End Select
                     End If
                     'set trailer extension
-                    aUrl.WebTrailer.Extention = Path.GetExtension(aUrl.VideoURL)
-                    Dim tmpInvalidChar As Integer = aUrl.WebTrailer.Extention.IndexOf("?")
+                    aUrl.TrailerOriginal.Extention = Path.GetExtension(aUrl.URLVideoStream)
+                    Dim tmpInvalidChar As Integer = aUrl.TrailerOriginal.Extention.IndexOf("?")
                     If tmpInvalidChar > -1 Then
-                        Dim correctextension As String = aUrl.WebTrailer.Extention
-                        aUrl.WebTrailer.Extention = correctextension.Remove(tmpInvalidChar)
+                        Dim correctextension As String = aUrl.TrailerOriginal.Extention
+                        aUrl.TrailerOriginal.Extention = correctextension.Remove(tmpInvalidChar)
                     End If
                 End If
             Next
@@ -721,80 +721,80 @@ Public Class Trailers
             For Each aUrl As MediaContainers.Trailer In TrailerList
 
                 If aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual Then
-                    tLink = aUrl.VideoURL
+                    tLink = aUrl.URLVideoStream
                 Else
                     Select Case Master.eSettings.MovieTrailerMinVideoQual
                         Case Enums.TrailerVideoQuality.Any
-                            tLink = aUrl.VideoURL
+                            tLink = aUrl.URLVideoStream
                         Case Enums.TrailerVideoQuality.HD1080p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                         Case Enums.TrailerVideoQuality.HD720p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                         Case Enums.TrailerVideoQuality.HQ480p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                         Case Enums.TrailerVideoQuality.SQ360p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                         Case Enums.TrailerVideoQuality.SQ240p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ240p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                         Case Enums.TrailerVideoQuality.SQ144p
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ240p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ144p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                         Case Enums.TrailerVideoQuality.UNKNOWN
                             If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ240p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ144p Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             ElseIf aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN Then
-                                tLink = aUrl.VideoURL
+                                tLink = aUrl.URLVideoStream
                             End If
                     End Select
                 End If
@@ -807,7 +807,7 @@ Public Class Trailers
         End Try
     End Function
 
-    Public Function SaveAsMovieTrailer(ByRef mMovie As Database.DBElement) As String
+    Public Function SaveAsMovieTrailer(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -818,9 +818,8 @@ Public Class Trailers
             End Try
 
             Dim fExt As String = Path.GetExtension(Me._ext)
-            '2014/09/26 before saving current trailer, check if we should delete existing trailer(s) - do this only if new trailer to save exists!
-            If Master.eSettings.MovieTrailerDeleteExisting AndAlso fExt <> "" Then
-                DeleteMovieTrailer(mMovie)
+            If Master.eSettings.MovieTrailerDeleteExisting AndAlso Not String.IsNullOrEmpty(fExt) Then
+                DeleteMovieTrailers(mMovie)
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTrailer)
@@ -864,7 +863,7 @@ Public Class Trailers
     Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.TrailerPath) OrElse .MovieTrailerOverwrite) AndAlso _
+                If (String.IsNullOrEmpty(mMovie.Trailer.LocalFilePath) OrElse .MovieTrailerOverwrite) AndAlso _
                     (.MovieTrailerEden OrElse .MovieTrailerFrodo OrElse .MovieTrailerNMJ OrElse .MovieTrailerYAMJ) OrElse _
                     (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse _
                             Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertSingle))) Then

@@ -131,7 +131,7 @@ Namespace IMDB
                                         sHTTP = New HTTP
                                         Dim DetailsPage As String = sHTTP.DownloadData(Details)
                                         Dim trailerLenght As String = Regex.Match(DetailsPage, "duration title-hover"">\((?<LENGHT>.*?)\)</span>").Groups(1).Value.ToString
-                                        _trailerlist.Add(New MediaContainers.Trailer With {.VideoURL = Website, .Title = TrailerTitle, .WebURL = Website, .Duration = trailerLenght, .Source = "IMDB"})
+                                        _trailerlist.Add(New MediaContainers.Trailer With {.URLVideoStream = Website, .Title = TrailerTitle, .URLWebsite = Website, .Duration = trailerLenght, .Source = "IMDB"})
                                     Next
                                 Next
                             End If

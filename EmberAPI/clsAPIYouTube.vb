@@ -192,7 +192,7 @@ Namespace YouTube
                     tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
                     tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                     If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                        tList.Add(New MediaContainers.Trailer With {.VideoURL = tLink, .WebURL = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
+                        tList.Add(New MediaContainers.Trailer With {.URLVideoStream = tLink, .URLWebsite = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
                     End If
                 Next
             Catch ex As TimeoutException

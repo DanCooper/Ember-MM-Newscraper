@@ -322,7 +322,7 @@ Namespace Kodi
                     Dim mSortTitle As String = uMovie.Movie.SortTitle
                     Dim mTagline As String = uMovie.Movie.Tagline
                     Dim mTitle As String = uMovie.Movie.Title
-                    Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.TrailerPath), GetRemotePath(uMovie.TrailerPath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, String.Empty))
+                    Dim mTrailer As String = If(Not String.IsNullOrEmpty(uMovie.Trailer.LocalFilePath), GetRemotePath(uMovie.Trailer.LocalFilePath), If(uMovie.Movie.TrailerSpecified, uMovie.Movie.Trailer, String.Empty))
                     If mTrailer Is Nothing Then mTrailer = String.Empty
 
                     'digit grouping symbol for Votes count

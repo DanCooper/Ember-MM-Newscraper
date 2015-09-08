@@ -126,15 +126,15 @@ Public Class dlgTrailerSelect
         For Each aUrl In nList
             Dim itm As ListViewItem
             str(0) = ID.ToString
-            str(1) = aUrl.VideoURL.ToString
-            str(2) = aUrl.WebURL.ToString
+            str(1) = aUrl.URLVideoStream.ToString
+            str(2) = aUrl.URLWebsite.ToString
             str(3) = aUrl.Title.ToString
             str(4) = aUrl.Duration.ToString
             str(5) = aUrl.Quality.ToString
             str(6) = aUrl.Type.ToString
             str(7) = aUrl.Source.ToString
             str(8) = aUrl.Scraper.ToString
-            str(9) = aUrl.WebTrailer.Extention.ToString
+            str(9) = aUrl.TrailerOriginal.Extention.ToString
             itm = New ListViewItem(str)
             lvTrailers.Items.Add(itm)
             ID = ID + 1
@@ -156,9 +156,9 @@ Public Class dlgTrailerSelect
             If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(Me.txtLocalTrailer.Text)) AndAlso File.Exists(Me.txtLocalTrailer.Text) Then
                 If CloseDialog Then
                     If Me._noDownload Then
-                        Results.WebURL = Me.txtLocalTrailer.Text
+                        Results.URLWebsite = Me.txtLocalTrailer.Text
                     Else
-                        Results.WebTrailer.FromFile(Me.txtLocalTrailer.Text)
+                        Results.TrailerOriginal.FromFile(Me.txtLocalTrailer.Text)
                     End If
 
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -178,7 +178,7 @@ Public Class dlgTrailerSelect
                 sFormat = dFormats.ShowDialog(Me.txtManualTrailerLink.Text)
             End Using
             If Me._noDownload Then
-                Results.WebURL = sFormat.VideoURL
+                Results.URLWebsite = sFormat.VideoURL
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -204,7 +204,7 @@ Public Class dlgTrailerSelect
             didCancel = True
         ElseIf StringUtils.isValidURL(Me.txtManualTrailerLink.Text) Then
             If Me._noDownload Then
-                Results.WebURL = Me.txtManualTrailerLink.Text
+                Results.URLWebsite = Me.txtManualTrailerLink.Text
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -217,7 +217,7 @@ Public Class dlgTrailerSelect
         Else
             If YouTube.UrlUtils.IsYouTubeURL(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
                 If Me._noDownload Then
-                    Results.WebURL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Results.URLWebsite = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -240,7 +240,7 @@ Public Class dlgTrailerSelect
                     sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
                 End Using
                 If Me._noDownload Then
-                    Results.WebURL = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Results.URLWebsite = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -255,7 +255,7 @@ Public Class dlgTrailerSelect
                 End If
             Else
                 If Me._noDownload Then
-                    Results.WebURL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Results.URLWebsite = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -397,8 +397,8 @@ Public Class dlgTrailerSelect
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Results.WebTrailer.FromWeb(Args.Parameter)
-            Results.WebURL = Args.Parameter.VideoURL
+            Results.TrailerOriginal.FromWeb(Args.Parameter)
+            Results.URLWebsite = Args.Parameter.VideoURL
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try

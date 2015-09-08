@@ -239,10 +239,10 @@ Namespace Davestrailerpage
                                                     'trailer description
                                                     trailer.Title = trailerresult.Groups(1).Value
                                                     'trailer URLs
-                                                    trailer.VideoURL = trailerlink.Groups(1).Value
-                                                    trailer.WebURL = trailerlink.Groups(1).Value
+                                                    trailer.URLVideoStream = trailerlink.Groups(1).Value
+                                                    trailer.URLWebsite = trailerlink.Groups(1).Value
                                                     'trailer extension
-                                                    trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                                    trailer.TrailerOriginal.Extention = IO.Path.GetExtension(trailer.URLVideoStream)
                                                     'trailer source
                                                     trailer.Source = "Davestrailer"
                                                     '..and most important: trailer quality
@@ -280,10 +280,10 @@ Namespace Davestrailerpage
                                                 'trailer description
                                                 trailer.Title = trailerlink.Groups(2).Value
                                                 'trailer URLs
-                                                trailer.VideoURL = trailerlink.Groups(1).Value
-                                                trailer.WebURL = trailerlink.Groups(1).Value
+                                                trailer.URLVideoStream = trailerlink.Groups(1).Value
+                                                trailer.URLWebsite = trailerlink.Groups(1).Value
                                                 'trailer extension
-                                                trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                                trailer.TrailerOriginal.Extention = IO.Path.GetExtension(trailer.URLVideoStream)
                                                 'trailer source
                                                 trailer.Source = "Davestrailer"
                                                 '..and most important: trailer quality

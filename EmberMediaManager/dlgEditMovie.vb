@@ -278,7 +278,7 @@ Public Class dlgEditMovie
         Try
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
-                tURL = dlgTrlS.Results.WebURL
+                tURL = dlgTrlS.Results.URLWebsite
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
@@ -1108,8 +1108,8 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.Trailer.WebTrailer.FromFile(ofdLocalFiles.FileName)
-                Me.tmpDBElement.Trailer.WebTrailer.isEdit = True
+                Me.tmpDBElement.Trailer.TrailerOriginal.FromFile(ofdLocalFiles.FileName)
+                Me.tmpDBElement.Trailer.TrailerOriginal.isEdit = True
                 TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
             End If
         Catch ex As Exception
@@ -1157,7 +1157,7 @@ Public Class dlgEditMovie
 
     Private Sub TrailerPlaylistAdd(ByVal Trailer As MediaContainers.Trailer)
         If AnyTrailerPlayerEnabled Then
-            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.VideoURL})
+            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URLVideoStream})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
         End If
     End Sub
@@ -1911,11 +1911,7 @@ Public Class dlgEditMovie
 
                     'Trailer
                     If Master.eSettings.MovieTrailerAnyEnabled Then
-                        If Not String.IsNullOrEmpty(Me.tmpDBElement.TrailerPath) AndAlso Me.tmpDBElement.TrailerPath.Substring(0, 1) = ":" Then
-                            Me.tmpDBElement.Trailer.WebTrailer.FromWeb(Me.tmpDBElement.TrailerPath.Substring(1, Me.tmpDBElement.TrailerPath.Length - 1))
-                            TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
-                        ElseIf Not String.IsNullOrEmpty(Me.tmpDBElement.TrailerPath) Then
-                            Me.tmpDBElement.Trailer.WebTrailer.FromFile(Me.tmpDBElement.TrailerPath)
+                        If Not String.IsNullOrEmpty(Me.tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(Me.tmpDBElement.Trailer.URLVideoStream) Then
                             TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
                         End If
                     Else
