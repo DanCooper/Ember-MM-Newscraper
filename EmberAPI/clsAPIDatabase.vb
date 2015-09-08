@@ -699,7 +699,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 28
+        Dim MyVideosDBVersion As Integer = 29
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1468,7 +1468,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Studio")) Then .Studio = SQLreader("Studio").ToString
                         If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
                         If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
-                        If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
+                        If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = Convert.ToInt32(SQLreader("PlayCount"))
                         If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieImagesNotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDBID = SQLreader("TMDB").ToString
@@ -1990,7 +1990,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
                         If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
-                        If Not DBNull.Value.Equals(SQLreader("Playcount")) Then .Playcount = SQLreader("Playcount").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Playcount")) Then .Playcount = Convert.ToInt32(SQLreader("Playcount"))
                         If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
@@ -3044,7 +3044,7 @@ Public Class Database
             Dim par_movie_ReleaseDate As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ReleaseDate", DbType.String, 0, "ReleaseDate")
             Dim par_movie_Director As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Director", DbType.String, 0, "Director")
             Dim par_movie_Credits As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Credits", DbType.String, 0, "Credits")
-            Dim par_movie_Playcount As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Playcount", DbType.String, 0, "Playcount")
+            Dim par_movie_Playcount As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Playcount", DbType.Int32, 0, "Playcount")
             Dim par_movie_Trailer As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Trailer", DbType.String, 0, "Trailer")
             Dim par_movie_NfoPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_NfoPath", DbType.String, 0, "NfoPath")
             Dim par_movie_TrailerPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TrailerPath", DbType.String, 0, "TrailerPath")
@@ -3192,7 +3192,9 @@ Public Class Database
                 par_movie_MPAA.Value = .MPAA
                 par_movie_OriginalTitle.Value = .OriginalTitle
                 par_movie_Outline.Value = .Outline
-                par_movie_Playcount.Value = If(Not String.IsNullOrEmpty(.PlayCount) AndAlso CInt(.PlayCount) > 0, .PlayCount, Nothing) 'need to be NOTHING instead of "0"
+                If .PlayCountSpecified Then 'need to be NOTHING instead of "0"
+                    par_movie_Playcount.Value = .PlayCount
+                End If
                 par_movie_Plot.Value = .Plot
                 par_movie_Rating.Value = .Rating
                 par_movie_ReleaseDate.Value = .ReleaseDate
@@ -3588,7 +3590,7 @@ Public Class Database
 
         If Not BatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, _movieDB)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Nothing, False, _movieDB)
 
         Return _movieDB
     End Function
@@ -3707,7 +3709,7 @@ Public Class Database
 
         If Not BatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, _moviesetDB)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, Nothing, False, _moviesetDB)
 
         Return _moviesetDB
     End Function
@@ -3945,7 +3947,7 @@ Public Class Database
             Dim parDirector As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirector", DbType.String, 0, "Director")
             Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
             Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
-            Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+            Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.Int32, 0, "Playcount")
             Dim parDisplaySeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
             Dim parDisplayEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplayEpisode", DbType.String, 0, "DisplayEpisode")
             Dim parDateAdded As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.UInt64, 0, "DateAdded")
@@ -4039,7 +4041,9 @@ Public Class Database
                 parAired.Value = .Aired
                 parDirector.Value = .Director
                 parCredits.Value = .OldCredits
-                parPlaycount.Value = If(Not String.IsNullOrEmpty(.Playcount) AndAlso CInt(.Playcount) > 0, .Playcount, Nothing) 'need to be NOTHING instead of "0"
+                If .PlaycountSpecified Then 'need to be NOTHING instead of "0"
+                    parPlaycount.Value = .Playcount
+                End If
                 parRuntime.Value = .Runtime
                 parVotes.Value = NumUtils.CleanVotes(.Votes)
                 If .SubEpisodeSpecified Then
@@ -4228,7 +4232,7 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
 
         If _episode.FilenameID > -1 Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, _episode)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
         End If
 
         Return _episode
@@ -4321,7 +4325,7 @@ Public Class Database
 
         If Not BatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, _season)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, Nothing, False, _season)
 
         Return _season
     End Function
@@ -4524,7 +4528,7 @@ Public Class Database
 
         If Not BatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, _show)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, Nothing, False, _show)
 
         Return _show
     End Function

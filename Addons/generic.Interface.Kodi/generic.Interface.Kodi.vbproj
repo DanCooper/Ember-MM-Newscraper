@@ -96,7 +96,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsXMLHosts.vb" />
     <Compile Include="clsAPIKodi.vb" />
     <Compile Include="dlgHost.Designer.vb">
       <DependentUpon>dlgHost.vb</DependentUpon>

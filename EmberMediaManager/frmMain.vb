@@ -2038,7 +2038,7 @@ Public Class frmMain
             logger.Trace(String.Concat("Start scraping: ", OldListTitle))
 
             DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idMovie")))
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_Movie, Args.ScrapeList.Count = 1) Then
@@ -15051,19 +15051,19 @@ doCancel:
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                 Dim hasWatched As Boolean = False
-                Dim currPlaycount As String = String.Empty
+                Dim currPlaycount As Integer
 
                 Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
 
                 currPlaycount = tmpDBMovie.Movie.PlayCount
-                hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+                hasWatched = tmpDBMovie.Movie.PlayCountSpecified
 
                 If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
-                    tmpDBMovie.Movie.PlayCount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    tmpDBMovie.Movie.PlayCount = If(tmpDBMovie.Movie.PlayCountSpecified, currPlaycount, 1)
                 ElseIf Not hasWatched Then
-                    tmpDBMovie.Movie.PlayCount = "1"
+                    tmpDBMovie.Movie.PlayCount = 1
                 Else
-                    tmpDBMovie.Movie.PlayCount = "0"
+                    tmpDBMovie.Movie.PlayCount = 0
                 End If
 
                 Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True)
@@ -15092,20 +15092,20 @@ doCancel:
             Dim idShow As Integer = CInt(Me.dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
                 If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
-                Dim currPlaycount As String = String.Empty
+                Dim currPlaycount As Integer
                 Dim hasWatched As Boolean = False
 
                 Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False)
 
-                currPlaycount = Convert.ToString(sRow.Cells("Playcount").Value)
-                hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+                currPlaycount = tmpDBTVEpisode.TVEpisode.Playcount
+                hasWatched = tmpDBTVEpisode.TVEpisode.PlaycountSpecified
 
                 If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
-                    tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                    tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, currPlaycount, 1)
                 ElseIf Not hasWatched Then
-                    tmpDBTVEpisode.TVEpisode.Playcount = "1"
+                    tmpDBTVEpisode.TVEpisode.Playcount = 1
                 Else
-                    tmpDBTVEpisode.TVEpisode.Playcount = "0"
+                    tmpDBTVEpisode.TVEpisode.Playcount = 0
                 End If
 
                 Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, False, True, True)
@@ -15146,21 +15146,21 @@ doCancel:
                     Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
                     If Not ShowsList.Contains(iShow) Then ShowsList.Add(iShow)
                     Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Playcount FROM episode WHERE Missing = 0 AND idShow = {0} AND Season = {1};", iShow, iSeason)
+                        SQLcommand_get.CommandText = String.Format("SELECT idEpisode FROM episode WHERE NOT idFile = -1 AND idShow = {0} AND Season = {1};", iShow, iSeason)
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
                             While SQLreader.Read
-                                Dim currPlaycount As String = String.Empty
+                                Dim currPlaycount As Integer
 
                                 Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
 
-                                currPlaycount = SQLreader("Playcount").ToString
+                                currPlaycount = tmpDBTVEpisode.TVEpisode.Playcount
 
                                 If Me.dgvTVSeasons.SelectedRows.Count > 1 AndAlso setWatched Then
-                                    tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, currPlaycount, 1)
                                 ElseIf Not hasWatched Then
-                                    tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, currPlaycount, 1)
                                 Else
-                                    tmpDBTVEpisode.TVEpisode.Playcount = "0"
+                                    tmpDBTVEpisode.TVEpisode.Playcount = 0
                                 End If
 
                                 Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, False, True, True)
@@ -15200,22 +15200,22 @@ doCancel:
                 Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
                 Dim ShowID As Integer = CInt(sRow.Cells("idShow").Value)
                 Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Season, Playcount FROM episode WHERE Missing = 0 AND idShow = {0};", ShowID)
+                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Season FROM episode WHERE NOT idFile = -1 AND idShow = {0};", ShowID)
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
                         While SQLreader.Read
                             If Not SeasonsList.Contains(CInt(SQLreader("Season"))) Then SeasonsList.Add(CInt(SQLreader("Season")))
-                            Dim currPlaycount As String = String.Empty
+                            Dim currPlaycount As Integer
 
                             Dim tmpDBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False)
 
-                            currPlaycount = SQLreader("Playcount").ToString
+                            currPlaycount = tmpDBTVEpisode.TVEpisode.Playcount
 
                             If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso setWatched Then
-                                tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, currPlaycount, 1)
                             ElseIf Not hasWatched Then
-                                tmpDBTVEpisode.TVEpisode.Playcount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, currPlaycount, 1)
                             Else
-                                tmpDBTVEpisode.TVEpisode.Playcount = "0"
+                                tmpDBTVEpisode.TVEpisode.Playcount = 0
                             End If
 
                             Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, False, True, True)
