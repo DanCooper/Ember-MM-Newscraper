@@ -760,6 +760,8 @@ Public Class Database
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteMovieFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        If ID < 0 Then Throw New ArgumentOutOfRangeException("idMovie", "Value must be >= 0, was given: " & ID)
+
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -803,7 +805,7 @@ Public Class Database
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.RemoveSet(ID)
-                    SaveMovieToDB(movie, False, BatchMode, True)
+                    SaveMovieToDB(movie, False, BatchMode, True, False)
                 Next
             End If
 
@@ -888,7 +890,7 @@ Public Class Database
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.Tags.Remove(tagName)
-                    SaveMovieToDB(movie, False, BatchMode, True)
+                    SaveMovieToDB(movie, False, BatchMode, True, False)
                 Next
             End If
 
@@ -3013,9 +3015,10 @@ Public Class Database
     ''' <param name="_movieDB">Media.Movie object to save to the database</param>
     ''' <param name="IsNew">Is this a new movie (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
-    ''' <param name="ToDisk">Create NFO and Images</param>
+    ''' <param name="ToNFo">Save informations to NFO</param>
+    ''' <param name="ToDisk">Save Images, Themes and Trailers to disk</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieToDB(ByVal _movieDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
+    Public Function SaveMovieToDB(ByVal _movieDB As Database.DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean) As Database.DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3170,10 +3173,8 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
             'art Table be be linked later
-            If ToDisk Then
-                NFO.SaveMovieToNFO(_movieDB)
-                _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
-            End If
+            If ToNFO Then NFO.SaveMovieToNFO(_movieDB)
+            If ToDisk Then _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
 
             par_movie_MoviePath.Value = _movieDB.Filename
             par_movie_Type.Value = _movieDB.IsSingle
@@ -3726,7 +3727,7 @@ Public Class Database
             If MoviesInSet.Count > 0 Then
                 For Each tMovie In MoviesInSet
                     tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.TMDB)
-                    Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True)
+                    Master.DB.SaveMovieToDB(tMovie.DBMovie, False, BatchMode, True, False)
                 Next
             End If
         End If
@@ -3747,7 +3748,7 @@ Public Class Database
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieTagToDB(ByVal _tagDB As Structures.DBMovieTag, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False, Optional ByVal withMovies As Boolean = False) As Structures.DBMovieTag
+    Public Function SaveMovieTagToDB(ByVal _tagDB As Structures.DBMovieTag, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNfo As Boolean, ByVal withMovies As Boolean) As Structures.DBMovieTag
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -3828,7 +3829,7 @@ Public Class Database
                     mMovie = LoadMovieFromDB(tMovie.ID)
                     tMovie = mMovie
                     mMovie.Movie.AddTag(_tagDB.Title)
-                    Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True)
+                    Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True, False)
                 Next
             End If
             'clean nfo of movies who aren't part of tag anymore (remove tag)
@@ -3838,7 +3839,7 @@ Public Class Database
                     mMovie = LoadMovieFromDB(tMovie.ID)
                     tMovie = mMovie
                     mMovie.Movie.Tags.Remove(_tagDB.Title)
-                    Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True)
+                    Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True, False)
                 Next
             End If
         End If
@@ -3864,7 +3865,7 @@ Public Class Database
                 newEpisode.ID = -1
                 newEpisode.TVEpisode = tEpisode
                 newEpisode.TVEpisode.FileInfo = _episode.TVEpisode.FileInfo
-                SaveTVEpisodeToDB(newEpisode, True, True, Batchmode, True)
+                SaveTVEpisodeToDB(newEpisode, True, Batchmode, True, True, True)
             Next
         End Using
         If Not Batchmode Then SQLtransaction.Commit()
@@ -3880,7 +3881,7 @@ Public Class Database
     ''' <param name="doSeasonCheck">If <c>True</c> then check if it's needed to create a new season for this episode</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVEpisodeToDB(ByVal _episode As Database.DBElement, ByVal IsNew As Boolean, ByVal doSeasonCheck As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
+    Public Function SaveTVEpisodeToDB(ByVal _episode As Database.DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal doSeasonCheck As Boolean) As Database.DBElement
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -4039,10 +4040,8 @@ Public Class Database
 
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
-            If ToDisk Then
-                NFO.SaveTVEpToNFO(_episode)
-                _episode.ImagesContainer.SaveAllImages(_episode, Enums.ContentType.TVEpisode)
-            End If
+            If ToNFO Then NFO.SaveTVEpToNFO(_episode)
+            If ToDisk Then _episode.ImagesContainer.SaveAllImages(_episode, Enums.ContentType.TVEpisode)
 
             parTVShowID.Value = _episode.ShowID
             parNfoPath.Value = _episode.NfoPath
@@ -4267,7 +4266,7 @@ Public Class Database
     ''' <param name="_season">Database.DBElement representing the season to be stored.</param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Function SaveTVSeasonToDB(ByRef _season As Database.DBElement, Optional ByVal BatchMode As Boolean = False) As Database.DBElement
+    Public Function SaveTVSeasonToDB(ByRef _season As Database.DBElement, ByVal BatchMode As Boolean) As Database.DBElement
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4360,7 +4359,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVShowToDB(ByRef _show As Database.DBElement, ByVal IsNew As Boolean, withEpisodes As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToDisk As Boolean = False) As Database.DBElement
+    Public Function SaveTVShowToDB(ByRef _show As Database.DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal withEpisodes As Boolean) As Database.DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -4432,10 +4431,8 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also Save Images to get ExtrafanartsPath
             'art Table be be linked later
-            If ToDisk Then
-                NFO.SaveTVShowToNFO(_show)
-                _show.ImagesContainer.SaveAllImages(_show, Enums.ContentType.TVShow)
-            End If
+            If ToNFO Then NFO.SaveTVShowToNFO(_show)
+            If ToDisk Then _show.ImagesContainer.SaveAllImages(_show, Enums.ContentType.TVShow)
 
             parExtrafanartsPath.Value = _show.ExtrafanartsPath
             parNfoPath.Value = _show.NfoPath
@@ -4546,7 +4543,7 @@ Public Class Database
         'save episode informations
         If withEpisodes AndAlso _show.Episodes IsNot Nothing AndAlso _show.Episodes.Count > 0 Then
             For Each nEpisode As Database.DBElement In _show.Episodes
-                SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), False, True, True)
+                SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), True, True, True, False)
             Next
         End If
 

@@ -816,9 +816,9 @@ Public Class Scanner
 
             'Do the Save
             If ToNfo AndAlso Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, True)
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, True, False)
             Else
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode)
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, False, False)
             End If
         End If
     End Sub
@@ -992,17 +992,17 @@ Public Class Scanner
                 If Not EpisodeID = -1 Then
                     'old episode entry found, we re-use the idEpisode
                     cEpisode.ID = EpisodeID
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, False, Batchmode, ToNfo)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, Batchmode, ToNfo, ToNfo, False)
                 Else
                     'no existing episode found or the season or episode number has changed => we have to add it as new episode
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, True, Batchmode, ToNfo)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, Batchmode, ToNfo, ToNfo, True)
                 End If
 
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             Else
-                'Do the Save
-                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, False, Batchmode, ToNfo)
+                'Do the Save, no Season check, we add a new seasons whit tv show
+                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, Batchmode, ToNfo, ToNfo, False)
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             End If
@@ -1070,7 +1070,7 @@ Public Class Scanner
                         DBTVShow.TVShow.Language = DBTVShow.Language
                     End If
 
-                    Master.DB.SaveTVShowToDB(DBTVShow, isNew, False, Batchmode)
+                    Master.DB.SaveTVShowToDB(DBTVShow, isNew, Batchmode, True, False, False)
                 End If
             Else
                 Dim newEpisodes As List(Of Database.DBElement) = DBTVShow.Episodes

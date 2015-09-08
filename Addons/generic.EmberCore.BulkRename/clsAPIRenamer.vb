@@ -142,7 +142,7 @@ Public Class FileFolderRenamer
                     iProg += 1
                     If Not f.ID = -1 Then
                         _tvDB = Master.DB.LoadTVEpisodeFromDB(f.ID, True)
-                        DoRenameSingle_Episode(f, _tvDB, True, False, False, True, sfunction, iProg)
+                        DoRenameSingle_Episode(f, _tvDB, True, False, True, sfunction, iProg)
                     End If
                 Next
                 SQLtransaction.Commit()
@@ -160,7 +160,7 @@ Public Class FileFolderRenamer
                 iProg += 1
                 If Not f.ID = -1 Then
                     _movieDB = Master.DB.LoadMovieFromDB(f.ID)
-                    DoRenameSingle_Movie(f, _movieDB, True, False, False, True, sfunction, iProg)
+                    DoRenameSingle_Movie(f, _movieDB, True, False, True, sfunction, iProg)
                 End If
             Next
         Catch ex As Exception
@@ -168,7 +168,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Shared Sub DoRenameSingle_Episode(ByVal _frename As FileRename, ByRef _tv As Database.DBElement, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
+    Private Shared Sub DoRenameSingle_Episode(ByVal _frename As FileRename, ByRef _tv As Database.DBElement, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
         Try
             If Not _frename.IsLocked AndAlso Not _frename.FileExist Then
                 Dim getError As Boolean = False
@@ -257,7 +257,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Episode(_tv, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                     If toDB Then
-                        Master.DB.SaveTVEpisodeToDB(_tv, False, False, BatchMode, toDisk)
+                        Master.DB.SaveTVEpisodeToDB(_tv, False, BatchMode, False, False, False)
                     End If
 
                     Dim fileCount As Integer = 0
@@ -292,7 +292,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Shared Sub DoRenameSingle_Movie(ByVal _frename As FileRename, ByRef _movie As Database.DBElement, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
+    Private Shared Sub DoRenameSingle_Movie(ByVal _frename As FileRename, ByRef _movie As Database.DBElement, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean, Optional ByVal sfunction As ShowProgress = Nothing, Optional ByVal iProg As Integer = 0)
         Try
             If Not _movie.IsLock AndAlso Not _frename.FileExist Then
                 Dim getError As Boolean = False
@@ -385,7 +385,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Movie(_movie, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                     If toDB Then
-                        Master.DB.SaveMovieToDB(_movie, False, BatchMode, toDisk)
+                        Master.DB.SaveMovieToDB(_movie, False, BatchMode, False, False)
                     End If
 
                     If Not _frename.IsSingle Then
@@ -421,7 +421,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Shared Sub DoRenameSingle_Show(ByVal _frename As FileRename, ByRef _tv As Database.DBElement, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Private Shared Sub DoRenameSingle_Show(ByVal _frename As FileRename, ByRef _tv As Database.DBElement, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
             If Not _tv.IsLock AndAlso Not _frename.DirExist Then
                 Dim getError As Boolean = False
@@ -452,7 +452,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Show(_tv, srcDir, destDir)
 
                     If toDB Then
-                        Master.DB.SaveTVShowToDB(_tv, False, False, BatchMode, toDisk)
+                        Master.DB.SaveTVShowToDB(_tv, False, BatchMode, False, False, False)
                         Master.DB.SaveTVSeasonToDB(_tv, BatchMode)
                     End If
 
@@ -505,10 +505,10 @@ Public Class FileFolderRenamer
                         End Using
 
                         For Each aEpisode In aEpisodesList
-                            Dim tmpTV As New Database.DBElement
-                            tmpTV = Master.DB.LoadTVEpisodeFromDB(aEpisode, False)
-                            UpdatePaths_Show(tmpTV, srcDir, destDir)
-                            Master.DB.SaveTVEpisodeToDB(tmpTV, False, BatchMode)
+                            Dim tmpTVEpisode As New Database.DBElement
+                            tmpTVEpisode = Master.DB.LoadTVEpisodeFromDB(aEpisode, False, False)
+                            UpdatePaths_Show(tmpTVEpisode, srcDir, destDir)
+                            Master.DB.SaveTVEpisodeToDB(tmpTVEpisode, False, BatchMode, False, False, False)
                         Next
 
                     Catch ex As Exception
@@ -1685,47 +1685,47 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Public Shared Sub RenameSingle_Episode(ByRef _tmpEpisode As Database.DBElement, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Public Shared Sub RenameSingle_Episode(ByRef _tmpEpisode As Database.DBElement, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim EpisodeFile As New FileRename
 
         EpisodeFile = GetInfo_Episode(_tmpEpisode)
         Process_Episode(EpisodeFile, folderPatternSeasons, filePatternEpisodes)
 
         If EpisodeFile.IsRenamed Then
-            DoRenameSingle_Episode(EpisodeFile, _tmpEpisode, BatchMode, toDisk, ShowError, toDB)
+            DoRenameSingle_Episode(EpisodeFile, _tmpEpisode, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveTVEpisodeToDB(_tmpEpisode, False, True, BatchMode, toDisk)
+                Master.DB.SaveTVEpisodeToDB(_tmpEpisode, False, BatchMode, False, False, False)
             End If
         End If
     End Sub
 
-    Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Database.DBElement, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Public Shared Sub RenameSingle_Movie(ByRef _tmpMovie As Database.DBElement, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
         MovieFile = GetInfo_Movie(_tmpMovie)
         Process_Movie(MovieFile, folderPattern, filePattern)
 
         If MovieFile.IsRenamed Then
-            DoRenameSingle_Movie(MovieFile, _tmpMovie, BatchMode, toDisk, ShowError, toDB)
+            DoRenameSingle_Movie(MovieFile, _tmpMovie, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveMovieToDB(_tmpMovie, False, BatchMode, False)
+                Master.DB.SaveMovieToDB(_tmpMovie, False, BatchMode, False, False)
             End If
         End If
     End Sub
 
-    Public Shared Sub RenameSingle_Show(ByRef _tmpShow As Database.DBElement, ByVal folderPatternShows As String, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+    Public Shared Sub RenameSingle_Show(ByRef _tmpShow As Database.DBElement, ByVal folderPatternShows As String, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim ShowFile As New FileRename
 
         ShowFile = GetInfo_Show(_tmpShow)
         Process_Show(ShowFile, folderPatternShows)
 
         If ShowFile.IsRenamed Then
-            DoRenameSingle_Show(ShowFile, _tmpShow, BatchMode, toDisk, ShowError, toDB)
+            DoRenameSingle_Show(ShowFile, _tmpShow, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveTVShowToDB(_tmpShow, False, BatchMode, False)
+                Master.DB.SaveTVShowToDB(_tmpShow, False, BatchMode, False, False, False)
             End If
         End If
     End Sub

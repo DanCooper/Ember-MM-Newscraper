@@ -87,7 +87,7 @@ Public Class frmSettingsHolder
     ''' </remarks>
     Private Sub ReloadKodiHosts()
         Dim oldPlayCountHost As String = String.Empty
-        If Me.cbPlayCountHost.Items.Count > 0 Then
+        If Me.cbPlayCountHost.Items.Count > 0 AndAlso Me.cbPlayCountHost.SelectedItem IsNot Nothing Then
             oldPlayCountHost = Me.cbPlayCountHost.SelectedItem.ToString
         End If
         Me.btnEditHost.Enabled = False

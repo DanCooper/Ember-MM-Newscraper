@@ -1402,7 +1402,7 @@ Public Class dlgTrakttvManager
                         tmpMovie = Master.DB.LoadMovieFromDB(CLng(srow.Item("idMovie")))
                         tmpMovie.Movie.PlayCount = watchedMovieData.Plays
                         tmpMovie.Movie.LastPlayed = CStr(watchedMovieData.LastWatchedAt)
-                        Master.DB.SaveMovieToDB(tmpMovie, False, False, True)
+                        Master.DB.SaveMovieToDB(tmpMovie, False, False, True, False)
                         Exit For
                     End If
                 Next
@@ -1446,7 +1446,7 @@ Public Class dlgTrakttvManager
                                 If isDate Then
                                     tmpshow.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
-                                Master.DB.SaveTVEpisodeToDB(tmpshow, False, False, True)
+                                Master.DB.SaveTVEpisodeToDB(tmpshow, False, True, True, False, False)
                                 'Updated episode in Ember, next episode please!
                                 Exit For
                             End If

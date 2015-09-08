@@ -542,10 +542,10 @@ Public Class dlgTagManager
             If tmovie.Movie.Title.EndsWith("_TODELETE") Then
                 tmovie.Movie.Tags.Remove(tag.Name)
                 tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", "")
-                Master.DB.SaveMovieToDB(tmovie, False, True, True)
+                Master.DB.SaveMovieToDB(tmovie, False, True, True, False)
             Else
                 tmovie.Movie.Tags.Add(tag.Name)
-                Master.DB.SaveMovieToDB(tmovie, False, True, True)
+                Master.DB.SaveMovieToDB(tmovie, False, True, True, False)
             End If
         Next
     End Sub

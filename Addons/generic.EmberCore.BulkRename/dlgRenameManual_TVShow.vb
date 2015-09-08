@@ -43,7 +43,7 @@ Public Class dlgRenameManual_TVShow
     End Sub
 
     Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle_Show(_DBElement, txtFolder.Text, False, False, True, True)
+        FileFolderRenamer.RenameSingle_Show(_DBElement, txtFolder.Text, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted

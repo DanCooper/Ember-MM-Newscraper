@@ -435,7 +435,7 @@ Namespace Kodi
                         End If
                         If blnNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uMovie.Movie.Title))
-                            Master.DB.SaveMovieToDB(uMovie, False, False, True)
+                            Master.DB.SaveMovieToDB(uMovie, False, False, True, False)
                             'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {uMovie.ID}))
                         End If
                         logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovie.Movie.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
@@ -850,7 +850,7 @@ Namespace Kodi
                         End If
                         If needSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uEpisode.TVEpisode.Title))
-                            Master.DB.SaveTVEpisodeToDB(uEpisode, False, False, True)
+                            Master.DB.SaveTVEpisodeToDB(uEpisode, False, False, True, False, False)
                             'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {uEpisode.ID}))
                         End If
                         logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | {2} on host", _currenthost.Label, uEpisode.TVEpisode.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
@@ -1434,99 +1434,6 @@ Namespace Kodi
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return Nothing
-            End Try
-        End Function
-        ''' <summary>
-        ''' Sync playcount for specific episode/movie between Kodi host and EmberDB
-        ''' </summary>
-        ''' <param name="EmbervideofileID">ID of specific videoitem (EmberDB)</param>
-        ''' <param name="EmbervideofileID">type of videoitem (EmberDB), at the moment following is supported: movie, tvshow, episode</param>
-        ''' <returns>true=sync successful, false=error</returns>
-        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
-        ''' <remarks>
-        ''' 2015/07/09 Cocotus - First implementation
-        ''' At the moment we read and save playcount/lastplayed value of Kodi video item (movie or episode) to EmberDB. We don't overwrite Kodi playcount data
-        ''' </remarks>
-        Public Async Function SyncPlaycount(ByVal lngEmbervideofileID As Long, ByVal ContentType As Enums.ContentType) As Task(Of Boolean)
-            If _kodi Is Nothing Then
-                logger.Error("[APIKodi] SyncPlaycount: No host initialized! Abort!")
-                Return False
-            End If
-
-            Try
-                Select Case ContentType
-                    Case Enums.ContentType.Movie
-                        Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngEmbervideofileID)
-
-                        'search movie ID in Kodi DB
-                        Dim KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
-                        If KodiMovie Is Nothing Then
-                            'movie isn't in database of host -> scan directory
-                            logger.Warn("[APIKodi] GetPlayCount: " & _currenthost.Label & ": " & uMovie.Filename & ": Not found in database, scan directory...")
-                            Await ScanVideoPath(lngEmbervideofileID, Enums.ContentType.Movie).ConfigureAwait(False)
-                            'wait a bit before trying going on, as scan might take a while on Kodi...
-                            Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                            KodiMovie = Await SearchMovieByPath(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
-                        End If
-                        'if host information retrieved, update playcount/lastplayed in EmberDB
-                        If Not KodiMovie Is Nothing Then
-                            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                                uMovie.Movie.PlayCount = KodiMovie.playcount
-                                'check date format
-                                'should be: 2014-09-01  09:10:11
-                                Dim myDateString As String = KodiMovie.lastplayed
-                                Dim myDate As DateTime
-                                Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                                If isDate Then
-                                    uMovie.Movie.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                End If
-                                Master.DB.SaveMovieToDB(uMovie, False, False, True)
-                                SQLtransaction.Commit()
-                            End Using
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Enums.ContentType.TVEpisode
-                        Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(lngEmbervideofileID, True)
-                        'search movie ID in Kodi DB
-                        Dim KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season, uEpisode.TVEpisode.Episode).ConfigureAwait(False)
-                        If KodiEpsiode Is Nothing Then
-                            'episode isn't in database of host -> scan directory
-                            logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.Label & ": """ & uEpisode.Filename & """: Not found in database, scan directory...")
-                            Await ScanVideoPath(lngEmbervideofileID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
-                            'wait a bit before trying going on, as scan might take a while on Kodi...
-                            Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                            KodiEpsiode = Await SearchTVEpisodeByDetails(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season, uEpisode.TVEpisode.Episode).ConfigureAwait(False)
-                        End If
-                        'if host information retrieved, update playcount/lastplayed in EmberDB
-                        If Not KodiEpsiode Is Nothing Then
-                            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                                Dim tmpshow As New Database.DBElement
-                                tmpshow = Master.DB.LoadTVEpisodeFromDB(lngEmbervideofileID, True)
-                                tmpshow.TVEpisode.Playcount = KodiEpsiode.playcount
-                                'check date format
-                                'should be: 2014-09-01  09:10:11
-                                Dim myDateString As String = KodiEpsiode.lastplayed
-                                Dim myDate As DateTime
-                                Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                                If isDate Then
-                                    tmpshow.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                End If
-                                Master.DB.SaveTVEpisodeToDB(tmpshow, False, False, True)
-                                SQLtransaction.Commit()
-                            End Using
-                            Return True
-                        Else
-                            Return False
-                        End If
-                    Case Else
-                        logger.Warn("[APIKodi] SyncPlaycount: " & _currenthost.Label & ": No videotype specified, Abort!")
-                        Return False
-                End Select
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return False
             End Try
         End Function
         ''' <summary>
