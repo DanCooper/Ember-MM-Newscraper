@@ -1090,7 +1090,6 @@ Public Class Scanner
                             If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
                                 tmpSeason = New Database.DBElement
                                 tmpSeason.Filename = DBTVEpisode.Filename
-                                tmpSeason.ID = -1
                                 tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = iSeason}
                                 tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVShow)
                                 GetTVSeasonFolderContents(tmpSeason)
@@ -1103,16 +1102,17 @@ Public Class Scanner
             End If
 
             'create the All Seasons entry if needed
-            Dim tmpAllSeasons As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
-            If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
-                tmpAllSeasons = New Database.DBElement
-                tmpAllSeasons.Filename = Path.Combine(DBTVShow.ShowPath, "file.ext")
-                tmpAllSeasons.ID = -1
-                tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
-                tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTVShow)
-                GetTVSeasonFolderContents(tmpAllSeasons)
-                DBTVShow.Seasons.Add(tmpAllSeasons)
-                newSeasonsIndex.Add(tmpAllSeasons.TVSeason.Season)
+            If isNew Then
+                Dim tmpAllSeasons As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
+                If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
+                    tmpAllSeasons = New Database.DBElement
+                    tmpAllSeasons.Filename = Path.Combine(DBTVShow.ShowPath, "file.ext")
+                    tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
+                    tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTVShow)
+                    GetTVSeasonFolderContents(tmpAllSeasons)
+                    DBTVShow.Seasons.Add(tmpAllSeasons)
+                    newSeasonsIndex.Add(tmpAllSeasons.TVSeason.Season)
+                End If
             End If
 
             'save all new seasons to DB

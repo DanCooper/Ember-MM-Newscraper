@@ -1896,6 +1896,7 @@ Public Class Structures
         Dim SeasonBanner As Boolean
         Dim SeasonFanart As Boolean
         Dim SeasonLandscape As Boolean
+        Dim SeasonNFO As Boolean
         Dim SeasonPoster As Boolean
         Dim withEpisodes As Boolean
         Dim withSeasons As Boolean

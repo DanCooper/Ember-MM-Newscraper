@@ -2808,7 +2808,7 @@ Public Class frmMain
 
             logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
 
-            If tScrapeItem.ScrapeModifier.MainNFO Then
+            If tScrapeItem.ScrapeModifier.SeasonNFO Then
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                 End If
@@ -13974,7 +13974,7 @@ doCancel:
         Dim DBTVEpisode As New Database.DBElement
         Dim epCount As Integer = 0
 
-        DBTVEpisode = Master.DB.LoadTVEpisodeFromDB(ID, True)
+        DBTVEpisode = Master.DB.LoadTVEpisodeFromDB(ID, True, False)
 
         If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
 
@@ -14043,145 +14043,6 @@ doCancel:
                 Return False
             End If
         End If
-
-
-
-
-
-
-        'If Not BatchMode Then
-        '    Me.tspbLoading.Style = ProgressBarStyle.Continuous
-        '    Me.tspbLoading.Value = 0
-
-        '    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-        '        SQLCommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS COUNT FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
-        '        Me.tspbLoading.Maximum = Convert.ToInt32(SQLCommand.ExecuteScalar)
-        '        SQLCommand.CommandText = String.Concat("SELECT COUNT(idSeason) AS COUNT FROM seasons WHERE idShow = ", ID, ";")
-        '        Me.tspbLoading.Maximum = Me.tspbLoading.Maximum + Convert.ToInt32(SQLCommand.ExecuteScalar)
-        '    End Using
-
-        '    Me.tslLoading.Text = String.Concat(Master.eLang.GetString(562, "Reloading Show"), ":")
-        '    Me.tslLoading.Visible = True
-        '    Me.tspbLoading.Visible = True
-        '    Application.DoEvents()
-        'End If
-
-        'Dim tmpShowDb As New Database.DBElement
-        'Dim tmpShow As New MediaContainers.TVShow
-        'Dim newTable As New DataTable
-
-        'Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
-
-        'Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        'If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-
-        'tmpShowDb = Master.DB.LoadTVFullShowFromDB(ID)
-
-        'If tmpShowDb.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpShowDb, Not BatchMode) Then
-
-        '    If String.IsNullOrEmpty(tmpShowDb.NfoPath) Then
-        '        Dim sNFO As String = NFO.GetShowNfoPath(tmpShowDb.ShowPath)
-        '        tmpShowDb.NfoPath = sNFO
-        '        tmpShow = NFO.LoadTVShowFromNFO(sNFO)
-        '    Else
-        '        tmpShow = NFO.LoadTVShowFromNFO(tmpShowDb.NfoPath)
-        '    End If
-        '    tmpShowDb.TVShow = tmpShow
-
-        '    If String.IsNullOrEmpty(tmpShowDb.TVShow.Title) Then
-        '        tmpShowDb.ListTitle = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath))
-        '        tmpShowDb.TVShow.Title = StringUtils.FilterName_TVShow(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
-        '    Else
-        '        Dim tTitle As String = StringUtils.SortTokens_TV(tmpShowDb.TVShow.Title)
-        '        If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tmpShowDb.TVShow.Status) Then
-        '            tmpShowDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpShowDb.TVShow.Status)
-        '        Else
-        '            tmpShowDb.ListTitle = tTitle
-        '        End If
-        '    End If
-
-        '    fScanner.GetTVShowFolderContents(tmpShowDb)
-
-        '    Master.DB.SaveTVShowToDB(tmpShowDb, False, withEpisodes, BatchMode)
-        '    RefreshRow_TVShow(tmpShowDb.ID)
-
-        '    'If Not BatchMode Then
-        '    '    Me.tspbLoading.Value += 1
-        '    '    Application.DoEvents()
-        '    'End If
-
-        '    If withSeasons Then
-        '        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-        '            SQLCommand.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ID, ";")
-        '            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-        '                While SQLReader.Read
-        '                    If Not BatchMode Then
-        '                        Me.tspbLoading.Value += 1
-        '                        Application.DoEvents()
-        '                        Threading.Thread.Sleep(50)
-        '                    End If
-        '                    Me.Reload_TVSeason(Convert.ToInt32(SQLReader("idSeason")), True)
-        '                End While
-        '            End Using
-        '        End Using
-        '    End If
-
-        '    If withEpisodes Then
-        '        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-        '            SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idShow = ", ID, " AND Missing = 0;")
-        '            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-        '                While SQLReader.Read
-        '                    If Not BatchMode Then
-        '                        Me.tspbLoading.Value += 1
-        '                        Application.DoEvents()
-        '                        Threading.Thread.Sleep(50)
-        '                    End If
-        '                    Me.Reload_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), True, True)
-        '                End While
-        '            End Using
-        '        End Using
-
-        '        Master.DB.CleanSeasons(True)
-        '    End If
-        'Else
-        '    If Not BatchMode AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
-        '                                                 Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
-        '                                             Master.eLang.GetString(776, "Remove tv show from library"), _
-        '                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-        '        Master.DB.DeleteTVShowFromDB(ID, withEpisodes)
-        '        Return True
-        '    Else
-        '        Return False
-        '    End If
-        'End If
-
-        'If Not BatchMode Then
-        '    SQLtransaction.Commit()
-        '    SQLtransaction = Nothing
-
-        '    Dim selI As Integer = 0
-
-        '    If Me.dgvTVShows.SelectedRows.Count > 0 Then selI = Me.dgvTVShows.SelectedRows(0).Index
-
-        '    Me.dgvTVShows.ClearSelection()
-        '    Me.dgvTVShows.CurrentCell = Nothing
-
-        '    If Me.dgvTVShows.RowCount - 1 < selI Then selI = Me.dgvTVShows.RowCount
-
-        '    Me.ClearInfo()
-        '    Me.dgvTVSeasons.DataSource = Nothing
-        '    Me.dgvTVEpisodes.DataSource = Nothing
-        '    Me.prevRow_TVShow = -2
-        '    Me.currRow_TVShow = -1
-
-        '    If Me.dgvTVShows.RowCount > 0 Then
-        '        Me.dgvTVShows.Rows(selI).Cells("ListTitle").Selected = True
-        '        Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(selI).Cells("ListTitle")
-        '    End If
-
-        '    Me.tslLoading.Visible = False
-        '    Me.tspbLoading.Visible = False
-        'End If
 
         Return False
     End Function
