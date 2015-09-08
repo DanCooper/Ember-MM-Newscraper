@@ -1066,9 +1066,7 @@ Public Class Images
     ''' Stores the Image to the supplied <paramref name="sPath"/>
     ''' </summary>
     ''' <param name="sPath">Location to store the image</param>
-    ''' <param name="iQuality"><c>Integer</c> value representing <c>Encoder.Quality</c>. 0 is lowest quality, 100 is highest</param>
     ''' <param name="sUrl">URL of desired image</param>
-    ''' <param name="doResize"></param>
     ''' <remarks></remarks>
     Public Sub Save(ByVal sPath As String, Optional ByVal sUrl As String = "")
         '2013/11/26 Dekker500 - This method is a swiss army knife. Completely different behaviour based on what parameter is supplied. Break it down a bit for a more logical flow (if I set a path and URL and quality but no resize, it'll happily ignore everything but the path)

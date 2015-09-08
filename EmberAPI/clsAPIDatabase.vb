@@ -3174,7 +3174,10 @@ Public Class Database
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
             'art Table be be linked later
             If ToNFO Then NFO.SaveMovieToNFO(_movieDB)
-            If ToDisk Then _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+            If ToDisk Then
+                _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+                _movieDB.TrailerPath = _movieDB.Trailer.WebTrailer.SaveAsMovieTrailer(_movieDB)
+            End If
 
             par_movie_MoviePath.Value = _movieDB.Filename
             par_movie_Type.Value = _movieDB.IsSingle
@@ -5018,6 +5021,7 @@ Public Class Database
         Private _source As String
         Private _subtitles As New List(Of MediaInfo.Subtitle)
         Private _themepath As String
+        Private _trailer As New MediaContainers.Trailer
         Private _trailerpath As String
         Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
@@ -5352,6 +5356,15 @@ Public Class Database
             End Set
         End Property
 
+        Public Property Trailer() As MediaContainers.Trailer
+            Get
+                Return Me._trailer
+            End Get
+            Set(ByVal value As MediaContainers.Trailer)
+                Me._trailer = value
+            End Set
+        End Property
+
         Public Property TrailerPath() As String
             Get
                 Return Me._trailerpath
@@ -5442,6 +5455,7 @@ Public Class Database
             Me._source = String.Empty
             Me._subtitles = New List(Of MediaInfo.Subtitle)
             Me._themepath = String.Empty
+            Me._trailer = New MediaContainers.Trailer
             Me._trailerpath = String.Empty
             Me._tvepisode = Nothing
             Me._tvseason = Nothing

@@ -27,15 +27,16 @@ Imports System.Xml
 Imports EmberAPI
 Imports NLog
 
+<Serializable()> _
 Public Class Trailers
     Implements IDisposable
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _isEdit As Boolean
-    Private _toRemove As Boolean
 
     Private _ms As MemoryStream
     Private Ret As Byte()
@@ -74,20 +75,6 @@ Public Class Trailers
             _isEdit = value
         End Set
     End Property
-    ''' <summary>
-    ''' trigger to remove trailer
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property toRemove() As Boolean
-        Get
-            Return _toRemove
-        End Get
-        Set(ByVal value As Boolean)
-            _toRemove = value
-        End Set
-    End Property
 
 #End Region 'Properties
 
@@ -104,9 +91,9 @@ Public Class Trailers
             Me.Dispose(True)
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
+
         _ext = String.Empty
         _isEdit = False
-        _toRemove = False
     End Sub
 
     Public Sub Cancel()
@@ -820,7 +807,7 @@ Public Class Trailers
         End Try
     End Function
 
-    Public Function SaveAsMovieTrailer(ByVal mMovie As Database.DBElement) As String
+    Public Function SaveAsMovieTrailer(ByRef mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -836,7 +823,6 @@ Public Class Trailers
                 DeleteMovieTrailer(mMovie)
             End If
 
-
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTrailer)
                 If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
                     Save(String.Concat(a, fExt))
@@ -847,6 +833,7 @@ Public Class Trailers
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
         Return strReturn
     End Function
 
