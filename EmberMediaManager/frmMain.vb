@@ -2093,10 +2093,11 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                            Dim dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie, True) = Windows.Forms.DialogResult.OK Then
-                                DBScrapeMovie = dImgSelect.Result
-                            End If
+                            Using dImgSelect As New dlgImgSelect
+                                If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie, True) = Windows.Forms.DialogResult.OK Then
+                                    DBScrapeMovie = dImgSelect.Result
+                                End If
+                            End Using
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2430,10 +2431,11 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
-                            Dim dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
-                                DBScrapeMovieSet = dImgSelect.Result
-                            End If
+                            Using dImgSelect As New dlgImgSelect
+                                If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie, True) = DialogResult.OK Then
+                                    DBScrapeMovieSet = dImgSelect.Result
+                                End If
+                            End Using
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2575,10 +2577,11 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                            Dim dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, True) = DialogResult.OK Then
-                                DBScrapeShow = dImgSelect.Result
-                            End If
+                            Using dImgSelect As New dlgImgSelect
+                                If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, True) = DialogResult.OK Then
+                                    DBScrapeShow = dImgSelect.Result
+                                End If
+                            End Using
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2728,10 +2731,11 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                            Dim dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode, True) = DialogResult.OK Then
-                                DBScrapeEpisode = dImgSelect.Result
-                            End If
+                            Using dImgSelect As New dlgImgSelect
+                                If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode, True) = DialogResult.OK Then
+                                    DBScrapeEpisode = dImgSelect.Result
+                                End If
+                            End Using
 
                         Else 'autoscraping
                         End If
@@ -2854,10 +2858,11 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                            Dim dImgSelect As New dlgImgSelect()
-                            If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason, True) = DialogResult.OK Then
-                                DBScrapeSeason = dImgSelect.Result
-                            End If
+                            Using dImgSelect As New dlgImgSelect
+                                If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason, True) = DialogResult.OK Then
+                                    DBScrapeSeason = dImgSelect.Result
+                                End If
+                            End Using
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
