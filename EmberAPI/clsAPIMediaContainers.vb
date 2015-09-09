@@ -5104,7 +5104,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.Movie
 
                         'Movie Trailer
-                        If .Trailer.TrailerOriginal IsNot Nothing Then
+                        If .Trailer.TrailerOriginal IsNot Nothing AndAlso .Trailer.TrailerOriginal.hasMemoryStream Then
                             .Trailer.LocalFilePath = .Trailer.TrailerOriginal.SaveAsMovieTrailer(DBElement)
                         ElseIf Not String.IsNullOrEmpty(.Trailer.URLVideoStream) Then
                             .Trailer.TrailerOriginal.FromWeb(.Trailer)

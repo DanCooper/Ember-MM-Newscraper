@@ -67,6 +67,12 @@ Public Class Trailers
         End Set
     End Property
 
+    Public ReadOnly Property hasMemoryStream() As Boolean
+        Get
+            Return _ms IsNot Nothing
+        End Get
+    End Property
+
     Public Property isEdit() As Boolean
         Get
             Return _isEdit
