@@ -21,7 +21,7 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class YouTube_trailer
+Public Class YouTube_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
 

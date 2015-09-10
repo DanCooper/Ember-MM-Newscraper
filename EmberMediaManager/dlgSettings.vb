@@ -1766,12 +1766,20 @@ Public Class dlgSettings
         End Try
     End Sub
 
-
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
-        Me.SetApplyButton(True)
         If Not Me.cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
             Handle_SetupNeedsRestart()
         End If
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbMovieTrailerPrefVideoQual_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTrailerPrefVideoQual.SelectedIndexChanged
+        If CType(Me.cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value = Enums.TrailerVideoQuality.Any Then
+            Me.cbMovieTrailerMinVideoQual.Enabled = False
+        Else
+            Me.cbMovieTrailerMinVideoQual.Enabled = True
+        End If
+        Me.SetApplyButton(True)
     End Sub
 
     Private Sub CheckHideSettings()
@@ -7344,7 +7352,6 @@ Public Class dlgSettings
         cbMovieSetImagesPrefLanguage.SelectedIndexChanged, _
         cbMovieSetPosterPrefSize.SelectedIndexChanged, _
         cbMovieTrailerMinVideoQual.SelectedIndexChanged, _
-        cbMovieTrailerPrefVideoQual.SelectedIndexChanged, _
         cbTVASBannerPrefType.SelectedIndexChanged, _
         cbTVASFanartPrefSize.SelectedIndexChanged, _
         cbTVASPosterPrefSize.SelectedIndexChanged, _

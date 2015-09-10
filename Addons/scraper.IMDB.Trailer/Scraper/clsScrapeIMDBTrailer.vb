@@ -84,7 +84,7 @@ Namespace IMDB
                     Dim nPattern As String = "<title>.*?\((?<TITLE>.*?)\).*?</title>"   'Trailer title inside brakets
                     Dim mPattern As String = "<title>(?<TITLE>.*?)</title>"             'Trailer title without brakets
 
-                    SearchURL = String.Concat(BaseURL, "/title/tt", IMDBID, "/videogallery/content_type-Trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
+                    SearchURL = String.Concat(BaseURL, "/title/tt", IMDBID, "/videogallery/content_type-trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
 
                     'download trailer website
                     _ImdbTrailerPage = sHTTP.DownloadData(SearchURL)
@@ -131,7 +131,7 @@ Namespace IMDB
                                         sHTTP = New HTTP
                                         Dim DetailsPage As String = sHTTP.DownloadData(Details)
                                         Dim trailerLenght As String = Regex.Match(DetailsPage, "duration title-hover"">\((?<LENGHT>.*?)\)</span>").Groups(1).Value.ToString
-                                        _trailerlist.Add(New MediaContainers.Trailer With {.URLVideoStream = Website, .Title = TrailerTitle, .URLWebsite = Website, .Duration = trailerLenght, .Source = "IMDB"})
+                                        _trailerlist.Add(New MediaContainers.Trailer With {.Title = TrailerTitle, .URLWebsite = Website, .Duration = trailerLenght, .Source = "IMDB"})
                                     Next
                                 Next
                             End If

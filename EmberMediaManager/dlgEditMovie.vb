@@ -278,7 +278,7 @@ Public Class dlgEditMovie
         Try
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
-                tURL = dlgTrlS.Results.URLWebsite
+                tURL = dlgTrlS.Result.URLWebsite
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
@@ -1073,7 +1073,7 @@ Public Class dlgEditMovie
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
-                tResults = dlgTrlS.Results
+                tResults = dlgTrlS.Result
                 Me.tmpDBElement.Trailer = tResults
                 TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
             End If
@@ -1090,7 +1090,7 @@ Public Class dlgEditMovie
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
-                Me.tmpDBElement.Trailer = dlgTrlS.Results
+                Me.tmpDBElement.Trailer = dlgTrlS.Result
                 TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
             End If
         Catch ex As Exception

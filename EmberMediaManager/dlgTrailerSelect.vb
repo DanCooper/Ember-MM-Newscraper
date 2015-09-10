@@ -33,7 +33,7 @@ Public Class dlgTrailerSelect
     Friend WithEvents bwParseTrailer As New System.ComponentModel.BackgroundWorker
 
     Private tMovie As New Database.DBElement
-    Private _results As New MediaContainers.Trailer
+    Private _result As New MediaContainers.Trailer
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
     Private sPath As String
@@ -45,12 +45,12 @@ Public Class dlgTrailerSelect
 
 #Region "Properties"
 
-    Public Property Results As MediaContainers.Trailer
+    Public Property Result As MediaContainers.Trailer
         Get
-            Return _results
+            Return _result
         End Get
         Set(value As MediaContainers.Trailer)
-            _results = value
+            _result = value
         End Set
     End Property
 
@@ -156,9 +156,9 @@ Public Class dlgTrailerSelect
             If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(Me.txtLocalTrailer.Text)) AndAlso File.Exists(Me.txtLocalTrailer.Text) Then
                 If CloseDialog Then
                     If Me._noDownload Then
-                        Results.URLWebsite = Me.txtLocalTrailer.Text
+                        Result.URLWebsite = Me.txtLocalTrailer.Text
                     Else
-                        Results.TrailerOriginal.FromFile(Me.txtLocalTrailer.Text)
+                        Result.TrailerOriginal.FromFile(Me.txtLocalTrailer.Text)
                     End If
 
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -178,7 +178,7 @@ Public Class dlgTrailerSelect
                 sFormat = dFormats.ShowDialog(Me.txtManualTrailerLink.Text)
             End Using
             If Me._noDownload Then
-                Results.URLWebsite = sFormat.VideoURL
+                Result.URLWebsite = sFormat.VideoURL
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -204,7 +204,7 @@ Public Class dlgTrailerSelect
             didCancel = True
         ElseIf StringUtils.isValidURL(Me.txtManualTrailerLink.Text) Then
             If Me._noDownload Then
-                Results.URLWebsite = Me.txtManualTrailerLink.Text
+                Result.URLWebsite = Me.txtManualTrailerLink.Text
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -215,15 +215,15 @@ Public Class dlgTrailerSelect
                 Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = ManualTrailer, .bType = CloseDialog})
             End If
         Else
-            If YouTube.UrlUtils.IsYouTubeURL(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
+            If YouTube.UrlUtils.IsYouTubeURL(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then
                 If Me._noDownload Then
-                    Results.URLWebsite = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Result.URLWebsite = Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
                     Dim sFormat As New TrailerLinksContainer
                     Using dFormats As New dlgTrailerFormat
-                        sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
+                        sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
                     End Using
                     If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
                         Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
@@ -234,13 +234,13 @@ Public Class dlgTrailerSelect
                         didCancel = True
                     End If
                 End If
-            ElseIf Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*imdb.*") Then
+            ElseIf Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString, "https?:\/\/.*imdb.*") Then
                 Dim sFormat As New TrailerLinksContainer
                 Using dFormats As New dlgTrailerFormat
-                    sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
+                    sFormat = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
                 End Using
                 If Me._noDownload Then
-                    Results.URLWebsite = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Result.URLWebsite = Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -255,7 +255,7 @@ Public Class dlgTrailerSelect
                 End If
             Else
                 If Me._noDownload Then
-                    Results.URLWebsite = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
                 Else
@@ -397,8 +397,8 @@ Public Class dlgTrailerSelect
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Results.TrailerOriginal.FromWeb(Args.Parameter)
-            Results.URLWebsite = Args.Parameter.VideoURL
+            Result.TrailerOriginal.FromWeb(Args.Parameter)
+            Result.URLWebsite = Args.Parameter.VideoURL
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -445,7 +445,7 @@ Public Class dlgTrailerSelect
         End While
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Results = Nothing
+        Me.Result = Nothing
         Me.Close()
     End Sub
 

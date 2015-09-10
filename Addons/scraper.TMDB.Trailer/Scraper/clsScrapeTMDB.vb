@@ -104,7 +104,6 @@ Namespace TMDB
                                    .Source = Video.Site, _
                                    .Title = tName, _
                                    .Type = GetVideoType(Video.Type), _
-                                   .URLVideoStream = tLink, _
                                    .URLWebsite = tLink})
                 Next
             End If

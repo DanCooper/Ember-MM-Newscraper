@@ -192,7 +192,7 @@ Namespace YouTube
                     tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
                     tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                     If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                        tList.Add(New MediaContainers.Trailer With {.URLVideoStream = tLink, .URLWebsite = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
+                        tList.Add(New MediaContainers.Trailer With {.URLWebsite = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
                     End If
                 Next
             Catch ex As TimeoutException
@@ -451,12 +451,12 @@ Namespace YouTube
 
                 If Not String.IsNullOrEmpty(vLink.Description) Then
                     If vLink.isDash Then
-                        vLink.URL = tStream.DownloadUrlDash
+                        vLink.URLVideoStream = tStream.DownloadUrlDash
                     Else
-                        vLink.URL = tStream.DownloadUrl
+                        vLink.URLVideoStream = tStream.DownloadUrl
                     End If
 
-                    If Not String.IsNullOrEmpty(vLink.URL) Then
+                    If Not String.IsNullOrEmpty(vLink.URLVideoStream) Then
                         DownloadLinks.VideoLinks.Add(vLink)
                     End If
                 ElseIf Not String.IsNullOrEmpty(aLink.Description) Then
@@ -797,7 +797,7 @@ Namespace YouTube
         Private _formatcodec As New Enums.TrailerVideoCodec
         Private _formatquality As New Enums.TrailerVideoQuality
         Private _isdash As Boolean
-        Private _url As String
+        Private _urlvideostream As String
 
 #End Region 'Fields
 
@@ -847,12 +847,12 @@ Namespace YouTube
             End Set
         End Property
 
-        Public Property URL() As String
+        Public Property URLVideoStream() As String
             Get
-                Return _url
+                Return _urlvideostream
             End Get
             Set(ByVal value As String)
-                _url = value
+                _urlvideostream = value
             End Set
         End Property
 
@@ -865,7 +865,7 @@ Namespace YouTube
             Me._formatcodec = Enums.TrailerVideoCodec.UNKNOWN
             Me._formatquality = Enums.TrailerVideoQuality.UNKNOWN
             Me._isdash = False
-            Me._url = String.Empty
+            Me._urlvideostream = String.Empty
         End Sub
 
         Public Function CompareTo(ByVal other As VideoLinkItem) As Integer Implements IComparable(Of VideoLinkItem).CompareTo
