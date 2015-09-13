@@ -2716,7 +2716,7 @@ Public Class frmMain
             If bwTVEpisodeScraper.CancellationPending Then Exit For
 
             If Not Cancelled Then
-                If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.MainMeta Then
+                If Master.eSettings.TVScraperMetaDataScan AndAlso (tScrapeItem.ScrapeModifier.MainMeta OrElse tScrapeItem.ScrapeModifier.EpisodeMeta) Then
                     MediaInfo.UpdateTVMediaInfo(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
@@ -11348,7 +11348,7 @@ doCancel:
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsLandscape, True)
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
-            Case "meta"
+            Case "meta", "metadata"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeMeta, True)
             Case "nfo"
