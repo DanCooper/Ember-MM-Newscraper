@@ -225,13 +225,13 @@ Namespace Apple
                         If Not zResult Is Nothing AndAlso zResult.Count > 0 Then
                             For ctr As Integer = 0 To zResult.Count - 1
                                 ' Step 4: Add scraped trailer to global list
-                                _trailerlist.Add(New MediaContainers.Trailer With {.VideoURL = zResult.Item(ctr).Groups(1).Value, .Title = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
+                                _trailerlist.Add(New MediaContainers.Trailer With {.URLVideoStream = zResult.Item(ctr).Groups(1).Value, .Title = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
                             Next
 
                             For Each trailer In _trailerlist
                                 Dim DLURL As String = String.Empty
                                 If TrailerWEBPageURL.EndsWith("/") = False Then TrailerWEBPageURL = TrailerWEBPageURL & "/"
-                                Dim TrailerSiteLink As String = String.Concat(TrailerWEBPageURL, trailer.VideoURL)
+                                Dim TrailerSiteLink As String = String.Concat(TrailerWEBPageURL, trailer.URLVideoStream)
                                 'i.e http://trailers.apple.com/trailers/wb/wrathofthetitans/includes/kronosfeature/large.html
 
                                 sHTTP = New HTTP
@@ -243,11 +243,11 @@ Namespace Apple
                                 If yResult.Count > 0 Then
                                     tDownloadURL = Web.HttpUtility.HtmlDecode(yResult.Item(0).Groups(1).Value)
                                     tDownloadURL = tDownloadURL.Replace("480p", prevQual)
-                                    trailer.WebURL = tDownloadURL
+                                    trailer.URLWebsite = tDownloadURL
                                     tDownloadURL = tDownloadURL.Replace("1080p", "h1080p")
                                     tDownloadURL = tDownloadURL.Replace("720p", "h720p")
                                     tDownloadURL = tDownloadURL.Replace("480p", "h480p")
-                                    trailer.VideoURL = tDownloadURL
+                                    trailer.URLVideoStream = tDownloadURL
                                     trailer.Source = "Apple"
                                     Select Case prevQual
                                         Case "1080p"
@@ -258,7 +258,7 @@ Namespace Apple
                                             trailer.Quality = Enums.TrailerVideoQuality.HQ480p
                                     End Select
                                     'set trailer extension
-                                    trailer.WebTrailer.Extention = IO.Path.GetExtension(trailer.VideoURL)
+                                    trailer.TrailerOriginal.Extention = IO.Path.GetExtension(trailer.URLVideoStream)
                                 End If
                             Next
                         End If

@@ -30,7 +30,7 @@ Public Class frmTVExtrator
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private PreviousFrameValue As Integer
-    Private _DBElement As Database.DBElement
+    Private _strFilename As String
 
 #End Region 'Fields
 
@@ -42,13 +42,13 @@ Public Class frmTVExtrator
 
 #Region "Methods"
 
-    Public Sub New(ByVal DBElement As Database.DBElement)
+    Public Sub New(ByVal strFilename As String)
         ' This call is required by the designer.
         InitializeComponent()
         Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
         Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
         Me.StartPosition = FormStartPosition.Manual
-        _DBElement = DBElement
+        _strFilename = strFilename
     End Sub
 
     Private Sub frmTVExtrator_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -88,7 +88,7 @@ Public Class frmTVExtrator
             Using ffmpeg As New Process()
 
                 ffmpeg.StartInfo.FileName = FrameExtrator.GetFFMpeg
-                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", _DBElement.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", _strFilename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -148,7 +148,7 @@ Public Class frmTVExtrator
 
             ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
             'ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currShow.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
-            ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -vframes 1 -y ""{2}""", tbFrame.Value, _DBElement.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+            ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -vframes 1 -y ""{2}""", tbFrame.Value, _strFilename, Path.Combine(Master.TempPath, "frame.jpg"))
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True

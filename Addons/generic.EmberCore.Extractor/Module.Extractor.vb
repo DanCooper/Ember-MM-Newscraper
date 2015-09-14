@@ -115,14 +115,15 @@ Public Class FrameExtrator
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.FrameExtrator_Movie
-                frmMovie = New frmMovieExtractor(_dbelement)
+                frmMovie = New frmMovieExtractor(_dbelement.Filename)
                 _params(0) = frmMovie.pnlExtrator
                 AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
             Case Enums.ModuleEventType.FrameExtrator_TVEpisode
-                frmTV = New frmTVExtrator(_dbelement)
+                frmTV = New frmTVExtrator(_dbelement.Filename)
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
                 _params(0) = frmTV.pnlExtrator
             Case Enums.ModuleEventType.RandomFrameExtrator
+                'TODO: check if it does not end with memory leak
                 Dim dbm As Database.DBElement = DirectCast(_params(0), Database.DBElement)
                 Dim auto As Integer = DirectCast(_params(1), Integer)
                 Dim edit As Boolean = DirectCast(_params(2), Boolean)

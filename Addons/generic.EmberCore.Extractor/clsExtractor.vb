@@ -25,7 +25,9 @@ Imports NLog
 Public Class ThumbGenerator
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
 #End Region
 
     #Region "Methods"

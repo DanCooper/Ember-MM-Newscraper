@@ -203,6 +203,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImageSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
         Me.lblStatus.Text = Master.eLang.GetString(953, "(Down)Loading Default Images...")
         Me.pbStatus.Style = ProgressBarStyle.Marquee
         Me.lblStatus.Visible = True

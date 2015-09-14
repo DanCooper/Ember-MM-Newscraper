@@ -812,13 +812,13 @@ Public Class Database
             'delete all movieset images and if this setting is enabled
             If Master.eSettings.MovieSetCleanFiles Then
                 Dim MovieSet As DBElement = Master.DB.LoadMovieSetFromDB(ID)
-                Images.DeleteMovieSetBanner(MovieSet)
-                Images.DeleteMovieSetClearArt(MovieSet)
-                Images.DeleteMovieSetClearLogo(MovieSet)
-                Images.DeleteMovieSetDiscArt(MovieSet)
-                Images.DeleteMovieSetFanart(MovieSet)
-                Images.DeleteMovieSetLandscape(MovieSet)
-                Images.DeleteMovieSetPoster(MovieSet)
+                Images.DeleteMovieSetBanners(MovieSet)
+                Images.DeleteMovieSetClearArts(MovieSet)
+                Images.DeleteMovieSetClearLogos(MovieSet)
+                Images.DeleteMovieSetDiscArts(MovieSet)
+                Images.DeleteMovieSetFanarts(MovieSet)
+                Images.DeleteMovieSetLandscapes(MovieSet)
+                Images.DeleteMovieSetPosters(MovieSet)
             End If
 
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1419,7 +1419,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
                     If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
                     _movieDB.IsSingle = Convert.ToBoolean(SQLreader("type"))
-                    If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.Trailer.LocalFilePath = SQLreader("TrailerPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then _movieDB.ExtrathumbsPath = SQLreader("EThumbsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _movieDB.ExtrafanartsPath = SQLreader("EFanartsPath").ToString
@@ -3174,7 +3174,10 @@ Public Class Database
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
             'art Table be be linked later
             If ToNFO Then NFO.SaveMovieToNFO(_movieDB)
-            If ToDisk Then _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+            If ToDisk Then
+                _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+                _movieDB.Trailer.SaveAllTrailers(_movieDB, Enums.ContentType.Movie)
+            End If
 
             par_movie_MoviePath.Value = _movieDB.Filename
             par_movie_Type.Value = _movieDB.IsSingle
@@ -3184,7 +3187,7 @@ Public Class Database
             par_movie_ExtrathumbsPath.Value = _movieDB.ExtrathumbsPath
             par_movie_NfoPath.Value = _movieDB.NfoPath
             par_movie_ThemePath.Value = _movieDB.ThemePath
-            par_movie_TrailerPath.Value = _movieDB.TrailerPath
+            par_movie_TrailerPath.Value = If(Not String.IsNullOrEmpty(_movieDB.Trailer.LocalFilePath), _movieDB.Trailer.LocalFilePath, String.Empty)
 
             If Not Master.eSettings.MovieImagesNotSaveURLToNfo Then
                 par_movie_FanartURL.Value = _movieDB.Movie.Fanart.URL
@@ -5018,7 +5021,7 @@ Public Class Database
         Private _source As String
         Private _subtitles As New List(Of MediaInfo.Subtitle)
         Private _themepath As String
-        Private _trailerpath As String
+        Private _trailer As New MediaContainers.Trailer
         Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
         Private _tvshow As MediaContainers.TVShow
@@ -5352,12 +5355,12 @@ Public Class Database
             End Set
         End Property
 
-        Public Property TrailerPath() As String
+        Public Property Trailer() As MediaContainers.Trailer
             Get
-                Return Me._trailerpath
+                Return Me._trailer
             End Get
-            Set(ByVal value As String)
-                Me._trailerpath = value
+            Set(ByVal value As MediaContainers.Trailer)
+                Me._trailer = value
             End Set
         End Property
 
@@ -5442,7 +5445,7 @@ Public Class Database
             Me._source = String.Empty
             Me._subtitles = New List(Of MediaInfo.Subtitle)
             Me._themepath = String.Empty
-            Me._trailerpath = String.Empty
+            Me._trailer = New MediaContainers.Trailer
             Me._tvepisode = Nothing
             Me._tvseason = Nothing
             Me._tvshow = Nothing

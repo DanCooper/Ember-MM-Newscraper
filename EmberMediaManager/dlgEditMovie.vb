@@ -43,7 +43,6 @@ Public Class dlgEditMovie
     Private ActorThumbsHasChanged As Boolean = False
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private MovieTrailer As New MediaContainers.Trailer
     Private MovieTheme As New Themes With {.isEdit = True}
     Private tmpRating As String = String.Empty
     Private AnyThemePlayerEnabled As Boolean = False
@@ -279,7 +278,7 @@ Public Class dlgEditMovie
         Try
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
-                tURL = dlgTrlS.Results.WebURL
+                tURL = dlgTrlS.Result.URLWebsite
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
@@ -439,8 +438,7 @@ Public Class dlgEditMovie
     Private Sub btnRemoveTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTrailer.Click
         Me.TrailerStop()
         Me.TrailerPlaylistClear()
-        Me.MovieTrailer.WebTrailer.Dispose()
-        Me.MovieTrailer.WebTrailer.toRemove = True
+        Me.tmpDBElement.Trailer = New MediaContainers.Trailer
     End Sub
 
     Private Sub btnExtrafanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRemove.Click
@@ -1075,9 +1073,9 @@ Public Class dlgEditMovie
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
-                tResults = dlgTrlS.Results
-                MovieTrailer = tResults
-                TrailerPlaylistAdd(MovieTrailer)
+                tResults = dlgTrlS.Result
+                Me.tmpDBElement.Trailer = tResults
+                TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1092,8 +1090,8 @@ Public Class dlgEditMovie
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
             If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
-                MovieTrailer = dlgTrlS.Results
-                TrailerPlaylistAdd(MovieTrailer)
+                Me.tmpDBElement.Trailer = dlgTrlS.Result
+                TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1110,9 +1108,9 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                MovieTrailer.WebTrailer.FromFile(ofdLocalFiles.FileName)
-                MovieTrailer.WebTrailer.isEdit = True
-                TrailerPlaylistAdd(MovieTrailer)
+                Me.tmpDBElement.Trailer.TrailerOriginal.FromFile(ofdLocalFiles.FileName)
+                Me.tmpDBElement.Trailer.TrailerOriginal.isEdit = True
+                TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1159,7 +1157,7 @@ Public Class dlgEditMovie
 
     Private Sub TrailerPlaylistAdd(ByVal Trailer As MediaContainers.Trailer)
         If AnyTrailerPlayerEnabled Then
-            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.VideoURL})
+            Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URLVideoStream})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
         End If
     End Sub
@@ -1477,9 +1475,6 @@ Public Class dlgEditMovie
     Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Me.MovieTheme.Dispose()
         Me.MovieTheme = Nothing
-
-        Me.MovieTrailer.WebTrailer.Dispose()
-        Me.MovieTrailer = Nothing
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -1915,16 +1910,12 @@ Public Class dlgEditMovie
                     End If
 
                     'Trailer
-                    If Not Master.eSettings.MovieTrailerAnyEnabled Then
+                    If Master.eSettings.MovieTrailerAnyEnabled Then
+                        If Not String.IsNullOrEmpty(Me.tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(Me.tmpDBElement.Trailer.URLVideoStream) Then
+                            TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
+                        End If
+                    Else
                         tcEdit.TabPages.Remove(tpTrailer)
-                    End If
-
-                    If Not String.IsNullOrEmpty(Me.tmpDBElement.TrailerPath) AndAlso Me.tmpDBElement.TrailerPath.Substring(0, 1) = ":" Then
-                        MovieTrailer.WebTrailer.FromWeb(Me.tmpDBElement.TrailerPath.Substring(1, Me.tmpDBElement.TrailerPath.Length - 1))
-                        TrailerPlaylistAdd(MovieTrailer)
-                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBElement.TrailerPath) Then
-                        MovieTrailer.WebTrailer.FromFile(Me.tmpDBElement.TrailerPath)
-                        TrailerPlaylistAdd(MovieTrailer)
                     End If
 
                     'DiscStub
@@ -2619,17 +2610,6 @@ Public Class dlgEditMovie
                 Else
                     Themes.DeleteMovieTheme(Me.tmpDBElement)
                     Me.tmpDBElement.ThemePath = String.Empty
-                End If
-
-                If Not String.IsNullOrEmpty(.MovieTrailer.WebTrailer.Extention) AndAlso Not MovieTrailer.WebTrailer.toRemove Then 'TODO: proper check, extention check is only a woraround
-                    If Master.eSettings.MovieTrailerDeleteExisting Then
-                        Trailers.DeleteMovieTrailer(Me.tmpDBElement)
-                    End If
-                    Dim tPath As String = .MovieTrailer.WebTrailer.SaveAsMovieTrailer(Me.tmpDBElement)
-                    Me.tmpDBElement.TrailerPath = tPath
-                Else
-                    Trailers.DeleteMovieTrailer(Me.tmpDBElement)
-                    Me.tmpDBElement.TrailerPath = String.Empty
                 End If
 
                 If Path.GetExtension(Me.tmpDBElement.Filename) = ".disc" Then

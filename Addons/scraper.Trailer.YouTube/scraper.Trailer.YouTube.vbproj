@@ -125,7 +125,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Scraper\clsScrapeYouTube.vb" />
-    <Compile Include="YouTube_trailer.vb" />
+    <Compile Include="YouTube_Trailer.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmSettingsHolder.resx">

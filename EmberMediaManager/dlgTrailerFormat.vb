@@ -200,7 +200,7 @@ Public Class dlgTrailerFormat
     Private Sub lbVideoFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbVideoFormats.SelectedIndexChanged
         Try
             If _isYouTube Then
-                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URL
+                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URLVideoStream
                 Me._trailerlinkscontainer.isDash = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).isDash
                 If Me._trailerlinkscontainer.isDash Then
                     Me.lbAudioFormats.Enabled = True
