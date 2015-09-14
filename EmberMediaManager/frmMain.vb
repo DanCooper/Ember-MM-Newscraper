@@ -7432,6 +7432,36 @@ doCancel:
             Else
                 SetWatchedStatus_TVSeason()
             End If
+
+        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso _
+            (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
+             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso _
+            Not bwTVSeasonScraper.IsBusy Then
+            Dim season As Int32 = CType(Me.dgvTVSeasons.Rows(e.RowIndex).Cells("idSeason").Value, Int32)
+            Dim objCell As DataGridViewCell = CType(Me.dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+            'EMM not able to scrape subtitles yet.
+            'So don't set status for it, but leave the option open for the future.
+            Me.dgvTVSeasons.ClearSelection()
+            Me.dgvTVSeasons.Rows(objCell.RowIndex).Selected = True
+            Me.currRow_TVSeason = objCell.RowIndex
+
+            Dim ScrapeModifier As New Structures.ScrapeModifier
+            Select Case colName
+                Case "BannerPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonBanner, True)
+                Case "FanartPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonFanart, True)
+                Case "LandscapePath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
+                Case "PosterPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonPoster, True)
+            End Select
+            If Master.eSettings.TVGeneralClickScrapeAsk Then
+                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifier)
+            Else
+                CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifier)
+            End If
         End If
     End Sub
 
@@ -7764,6 +7794,49 @@ doCancel:
                 End If
             Else
                 SetWatchedStatus_TVShow()
+            End If
+
+        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso _
+            (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
+            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
+            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+            colName = "ThemePath") AndAlso Not bwTVScraper.IsBusy Then
+            Dim tvshow As Int32 = CType(Me.dgvTVShows.Rows(e.RowIndex).Cells("idShow").Value, Int32)
+            Dim objCell As DataGridViewCell = CType(Me.dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+
+            'EMM not able to scrape subtitles yet.
+            'So don't set status for it, but leave the option open for the future.
+            Me.dgvTVShows.ClearSelection()
+            Me.dgvTVShows.Rows(objCell.RowIndex).Selected = True
+            Me.currRow_TVShow = objCell.RowIndex
+
+            Dim ScrapeModifier As New Structures.ScrapeModifier
+            Select Case colName
+                Case "BannerPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
+                Case "CharacterArtPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainCharacterArt, True)
+                Case "ClearArtPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
+                Case "ClearLogoPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
+                Case "EFanartsPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
+                Case "FanartPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
+                Case "LandscapePath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
+                Case "NfoPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
+                Case "PosterPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
+                Case "ThemePath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTheme, True)
+            End Select
+            If Master.eSettings.TVGeneralClickScrapeAsk Then
+                CreateScrapeList_TV(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifier)
+            Else
+                CreateScrapeList_TV(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifier)
             End If
         End If
     End Sub
