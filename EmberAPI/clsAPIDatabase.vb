@@ -484,6 +484,9 @@ Public Class Database
                     logger.Info("Removing tvshows with no more existing local episodes")
                     SQLcommand.CommandText = "DELETE FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow = tvshow.idShow AND NOT episode.idFile = -1);"
                     SQLcommand.ExecuteNonQuery()
+                    logger.Info("Removing seasons with no more existing tvshows")
+                    SQLcommand.CommandText = "DELETE FROM seasons WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
+                    SQLcommand.ExecuteNonQuery()
                     logger.Info("Removing episodes with no more existing tvshows")
                     SQLcommand.CommandText = "DELETE FROM episode WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
