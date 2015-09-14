@@ -1311,8 +1311,12 @@ Public Class Images
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next
-
-        Return Directory.GetParent(efPath).FullName
+        'If efPath is empty (i.e. expert setting enabled but expert extrafanart scraping disabled) it will cause Ember to crash, therefore do check first
+        If Not String.IsNullOrEmpty(efPath) Then
+            Return Directory.GetParent(efPath).FullName
+        Else
+            Return String.Empty
+        End If
     End Function
     ''' <summary>
     ''' Save the image as a movie's extrafanart
@@ -1382,7 +1386,12 @@ Public Class Images
             End If
         Next
 
-        Return Directory.GetParent(etPath).FullName
+        'If etPath is empty (i.e. expert setting enabled but expert extrathumb scraping disabled) it will cause Ember to crash, therefore do check first
+        If Not String.IsNullOrEmpty(etPath) Then
+            Return Directory.GetParent(etPath).FullName
+        Else
+            Return String.Empty
+        End If
     End Function
     ''' <summary>
     ''' Save the image as a movie's extrathumb
