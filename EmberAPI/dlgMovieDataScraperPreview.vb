@@ -99,6 +99,11 @@ Public Class dlgMovieDataScraperPreview
             Dim isActivatedOFDB As Boolean = False
             Dim isActivatedMoviepilot As Boolean = False
 
+            'scraperlist needs to be reversed to make sure the results of favorite scrapers are highlighted by default
+            If _ScrapedList.Count > 1 Then
+                _ScrapedList.Reverse()
+            End If
+
             For Each scraperresult In _ScrapedList
                 With Me
                     If scraperresult.Scrapersource.ToUpper = "IMDB" Then
