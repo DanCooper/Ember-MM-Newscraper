@@ -73,13 +73,13 @@ Public Class dlgFileInfo
                                 _DBElement.Movie.FileInfo = _FileInfo
                             End If
                         End If
-                        If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(595, "Video Stream") Then
+                        If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(595, "Video Streams") Then
                             _FileInfo.StreamDetails.Video.Add(DirectCast(stream, MediaInfo.Video))
                         End If
-                        If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(596, "Audio Stream") Then
+                        If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(596, "Audio Streams") Then
                             _FileInfo.StreamDetails.Audio.Add(DirectCast(stream, MediaInfo.Audio))
                         End If
-                        If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                        If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(597, "Subtitle Streams") Then
                             _FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream, MediaInfo.Subtitle))
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
@@ -132,13 +132,13 @@ Public Class dlgFileInfo
                         _DBElement.Movie.FileInfo = _FileInfo
                     End If
                 End If
-                If i.Tag.ToString = Master.eLang.GetString(595, "Video Stream") Then
+                If i.Tag.ToString = Master.eLang.GetString(595, "Video Streams") Then
                     _FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
                 End If
-                If i.Tag.ToString = Master.eLang.GetString(596, "Audio Stream") Then
+                If i.Tag.ToString = Master.eLang.GetString(596, "Audio Streams") Then
                     _FileInfo.StreamDetails.Audio.RemoveAt(Convert.ToInt16(i.Text))
                 End If
-                If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Streams") Then
                     _FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
                 End If
                 If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
@@ -182,13 +182,13 @@ Public Class dlgFileInfo
                                 _DBElement.Movie.FileInfo = _FileInfo
                             End If
                         End If
-                        If i.Tag.ToString = Master.eLang.GetString(595, "Video Stream") Then
+                        If i.Tag.ToString = Master.eLang.GetString(595, "Video Streams") Then
                             _FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Video)
                         End If
-                        If i.Tag.ToString = Master.eLang.GetString(596, "Audio Stream") Then
+                        If i.Tag.ToString = Master.eLang.GetString(596, "Audio Streams") Then
                             _FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Audio)
                         End If
-                        If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
+                        If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Streams") Then
                             _FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
@@ -288,7 +288,7 @@ Public Class dlgFileInfo
                     a = _FileInfo.StreamDetails.Audio(c)
                     If Not a Is Nothing Then
                         i = New ListViewItem
-                        i.Tag = Master.eLang.GetString(596, "Audio Stream")
+                        i.Tag = Master.eLang.GetString(596, "Audio Streams")
                         i.Text = c.ToString
                         i.SubItems.Add(a.Codec)
                         i.SubItems.Add(a.LongLanguage)
@@ -302,7 +302,7 @@ Public Class dlgFileInfo
             End If
             If _FileInfo.StreamDetails.Subtitle.Count > 0 Then
                 g = New ListViewGroup
-                g.Header = Master.eLang.GetString(597, "Subtitle Stream")
+                g.Header = Master.eLang.GetString(597, "Subtitle Streams")
                 lvStreams.Groups.Add(g)
                 c = 1
                 ' Fake Group Header

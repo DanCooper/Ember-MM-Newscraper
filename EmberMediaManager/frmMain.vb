@@ -44,7 +44,7 @@ Public Class frmMain
     Friend WithEvents bwLoadMovieSetPosters As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwMetaData As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
@@ -954,14 +954,14 @@ Public Class frmMain
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV AndAlso Not String.IsNullOrEmpty(Me.currTV.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
-            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+            If Me.bwMetaData.IsBusy Then Me.bwMetaData.CancelAsync()
 
             Me.txtMetaData.Clear()
             Me.pbMILoading.Visible = True
 
-            Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwMetaInfo.WorkerSupportsCancellation = True
-            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.DBElement = Me.currTV, .IsTV = True, .setEnabled = True})
+            Me.bwMetaData = New System.ComponentModel.BackgroundWorker
+            Me.bwMetaData.WorkerSupportsCancellation = True
+            Me.bwMetaData.RunWorkerAsync(New Arguments With {.DBElement = Me.currTV, .IsTV = True, .setEnabled = True})
         End If
     End Sub
     ''' <summary>
@@ -1556,7 +1556,7 @@ Public Class frmMain
         End If
 
         'wait for mediainfo to update the nfo
-        While bwMetaInfo.IsBusy
+        While bwMetaData.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1617,7 +1617,7 @@ Public Class frmMain
         'read nfo if it's there
 
         'wait for mediainfo to update the nfo
-        While bwMetaInfo.IsBusy
+        While bwMetaData.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1892,7 +1892,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwMetaInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMetaInfo.DoWork
+    Private Sub bwMetaData_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMetaData.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         Try
@@ -1906,7 +1906,7 @@ Public Class frmMain
                 e.Result = New Results With {.fileinfo = NFO.FIToString(Args.DBElement.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .DBElement = Args.DBElement}
             End If
 
-            If Me.bwMetaInfo.CancellationPending Then
+            If Me.bwMetaData.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
@@ -1918,7 +1918,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwMetaInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMetaInfo.RunWorkerCompleted
+    Private Sub bwbwMetaData_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMetaData.RunWorkerCompleted
         '//
         ' Thread finished: fill textbox with result
         '\\
@@ -2680,18 +2680,18 @@ Public Class frmMain
         logger.Trace("Starting EPISODE scrape")
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim OldListTitle As String = String.Empty
-            Dim NewListTitle As String = String.Empty
+            Dim OldEpisodeTitle As String = String.Empty
+            Dim NewEpisodeTitle As String = String.Empty
 
             Cancelled = False
 
             If bwTVEpisodeScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item("Title").ToString
-            bwTVEpisodeScraper.ReportProgress(1, OldListTitle)
+            OldEpisodeTitle = tScrapeItem.DataRow.Item("Title").ToString
+            bwTVEpisodeScraper.ReportProgress(1, OldEpisodeTitle)
 
             dScrapeRow = tScrapeItem.DataRow
 
-            logger.Trace(String.Concat("Start scraping: ", OldListTitle))
+            logger.Trace(String.Concat("Start scraping: ", OldEpisodeTitle))
 
             DBScrapeEpisode = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idEpisode")), True)
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
@@ -2716,15 +2716,15 @@ Public Class frmMain
             If bwTVEpisodeScraper.CancellationPending Then Exit For
 
             If Not Cancelled Then
-                If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.MainMeta Then
+                If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.EpisodeMeta Then
                     MediaInfo.UpdateTVMediaInfo(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
 
-                NewListTitle = DBScrapeEpisode.ListTitle
+                NewEpisodeTitle = DBScrapeEpisode.TVEpisode.Title
 
-                If Not NewListTitle = OldListTitle Then
-                    bwTVEpisodeScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+                If Not NewEpisodeTitle = OldEpisodeTitle Then
+                    bwTVEpisodeScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle))
                 End If
 
                 'get all images
@@ -2739,7 +2739,11 @@ Public Class frmMain
                                 End If
                             End Using
 
-                        Else 'autoscraping
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredImages As New MediaContainers.ImagesContainer
+                            Images.SetDefaultImages(DBScrapeEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode)
+                            DBScrapeEpisode.ImagesContainer = newPreferredImages
                         End If
                     End If
                 End If
@@ -2750,11 +2754,11 @@ Public Class frmMain
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, DBScrapeEpisode)
                     Master.DB.SaveTVEpisodeToDB(DBScrapeEpisode, False, False, tScrapeItem.ScrapeModifier.EpisodeNFO, True, True)
                     bwTVEpisodeScraper.ReportProgress(-2, DBScrapeEpisode.ID)
-                    bwTVEpisodeScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+                    bwTVEpisodeScraper.ReportProgress(-1, If(Not OldEpisodeTitle = NewEpisodeTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle), NewEpisodeTitle))
                 End If
             End If
 
-            logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
+            logger.Trace(String.Concat("Ended scraping: ", OldEpisodeTitle))
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeEpisode, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVEpisodeScraper.CancellationPending}
@@ -3202,7 +3206,7 @@ doCancel:
 
     Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
         Try
-            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -3224,7 +3228,7 @@ doCancel:
     End Sub
 
     Private Sub cbFilterLists_Movies_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterLists_Movies.SelectedIndexChanged
-        While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwCleanDB.IsBusy
+        While Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwCleanDB.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -3236,7 +3240,7 @@ doCancel:
     End Sub
 
     Private Sub cbFilterLists_MovieSets_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterLists_MovieSets.SelectedIndexChanged
-        While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwCleanDB.IsBusy
+        While Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwCleanDB.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -3248,7 +3252,7 @@ doCancel:
     End Sub
 
     Private Sub cbFilterLists_Shows_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbFilterLists_Shows.SelectedIndexChanged
-        While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
+        While Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -6105,7 +6109,7 @@ doCancel:
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
         If e.RowIndex < 0 Then Exit Sub
 
-        If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+        If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
@@ -6259,9 +6263,9 @@ doCancel:
 
             If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
-                Dim scrapeFor As String = ""
-                Dim scrapeType As String = ""
+                Dim movieTitle As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
+                Dim scrapeFor As String = String.Empty
+                Dim scrapeType As String = String.Empty
                 Select Case colName
                     Case "BannerPath"
                         scrapeFor = Master.eLang.GetString(1060, "Banner Only")
@@ -6301,7 +6305,7 @@ doCancel:
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
                 End If
 
-                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
+                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -6486,7 +6490,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
+                If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
                 Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy OrElse Me.bwRewrite_Movies.IsBusy Then Return
 
@@ -6602,6 +6606,7 @@ doCancel:
                 End If
                 Me.currRow_MovieSet = Me.dgvMovieSets.SelectedRows(0).Index
             End If
+
         ElseIf Master.eSettings.MovieSetClickScrape AndAlso _
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse _
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
@@ -6783,8 +6788,8 @@ doCancel:
             If Master.eSettings.MovieSetClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
                 oldStatus = GetStatus()
                 Dim movieSetName As String = Me.dgvMovieSets.Rows(e.RowIndex).Cells("SetName").Value.ToString
-                Dim scrapeFor As String = ""
-                Dim scrapeType As String = ""
+                Dim scrapeFor As String = String.Empty
+                Dim scrapeType As String = String.Empty
                 Select Case colName
                     Case "BannerPath"
                         scrapeFor = Master.eLang.GetString(1060, "Banner Only")
@@ -6974,7 +6979,7 @@ doCancel:
             Return
         End If
 
-        If colName = "Title" OrElse colName = "Playcount" OrElse Not Master.eSettings.TVEpisodeClickScrape Then
+        If colName = "Title" OrElse colName = "Playcount" OrElse Not Master.eSettings.TVGeneralClickScrape Then
             If Not colName = "Playcount" Then
                 If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
                     If Me.dgvTVEpisodes.RowCount > 0 Then
@@ -6995,40 +7000,43 @@ doCancel:
                 SetWatchedStatus_TVEpisode()
             End If
 
-            'ElseIf Master.eSettings.TVEpisodeClickScrape Then 'AndAlso Not bwMovieScraper.IsBusy Then
-            '    Dim episode As Int32 = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells(0).Value, Int32)
-            '    Dim objCell As DataGridViewCell = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso _
+            (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso _
+            Not bwTVEpisodeScraper.IsBusy Then
+            Dim episode As Int32 = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells("idEpisode").Value, Int32)
+            Dim objCell As DataGridViewCell = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
-            '    'EMM not able to scrape subtitles yet.
-            '    'So don't set status for it, but leave the option open for the future.
-            '    Me.dgvTVEpisodes.ClearSelection()
-            '    Me.dgvTVEpisodes.Rows(objCell.RowIndex).Selected = True
-            '    Me.currEpRow = objCell.RowIndex
-            'If Not Me.currList = 2 Then
-            '    Me.currList = 2
-            '    Me.prevEpRow = -1
-            '    Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
-            'End If
-            '    Select Case e.ColumnIndex
-            '        Case 4 'Poster
-            '            Functions.SetScraperMod(Enums.ModType.Poster, True)
-            '        Case 5 'Fanart
-            '            Functions.SetScraperMod(Enums.ModType.Fanart, True)
-            '        Case 6 'Nfo
-            '            Functions.SetScraperMod(Enums.ModType.NFO, True)
-            '    End Select
-            '    If Master.eSettings.TVEpisodeClickScrapeAsk Then
-            '        TVEpisodeScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultTVOptions)
-            '    Else
-            '        TVEpisodeScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultTVOptions)
-            '    End If
+            'EMM not able to scrape subtitles yet.
+            'So don't set status for it, but leave the option open for the future.
+            Me.dgvTVEpisodes.ClearSelection()
+            Me.dgvTVEpisodes.Rows(objCell.RowIndex).Selected = True
+            Me.currRow_TVEpisode = objCell.RowIndex
+
+            Dim ScrapeModifier As New Structures.ScrapeModifier
+            Select Case colName
+                Case "FanartPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
+                Case "NfoPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeNFO, True)
+                Case "PosterPath"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
+                Case "HasSub"
+                    'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
+                Case "MetaData" 'Metadata - need to add this column to the view.
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeMeta, True)
+            End Select
+            If Master.eSettings.TVGeneralClickScrapeAsk Then
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifier)
+            Else
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifier)
+            End If
         End If
     End Sub
 
     Private Sub dgvTVEpisodes_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellDoubleClick
         If e.RowIndex < 0 Then Exit Sub
 
-        If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwReload_MovieSets.IsBusy _
+        If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwReload_MovieSets.IsBusy _
             OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
@@ -7068,34 +7076,34 @@ doCancel:
             colName = "PosterPath" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVEpisodes.ShowCellToolTips = False
 
-            'If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
-            '    oldStatus = GetStatus()
-            '    Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
-            '    Dim scrapeFor As String = ""
-            '    Dim scrapeType As String = ""
-            '    Select Case colName
-            '        Case "FanartPath"
-            '            scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-            '        Case "NfoPath"
-            '            scrapeFor = Master.eLang.GetString(71, "NFO Only")
-            '        Case "MetaData"
-            '            scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
-            '        Case "PosterPath"
-            '            scrapeFor = Master.eLang.GetString(72, "Poster Only")
-            '        Case "HasSub"
-            '            scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
-            '    End Select
+            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVEpisodeScraper.IsBusy Then
+                oldStatus = GetStatus()
+                Dim episodeTitle As String = Me.dgvTVEpisodes.Rows(e.RowIndex).Cells("Title").Value.ToString
+                Dim scrapeFor As String = String.Empty
+                Dim scrapeType As String = String.Empty
+                Select Case colName
+                    Case "FanartPath"
+                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case "NfoPath"
+                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case "MetaData"
+                        scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                    Case "PosterPath"
+                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                    Case "HasSub"
+                        scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                End Select
 
-            '    If Master.eSettings.MovieClickScrapeAsk Then
-            '        scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-            '    Else
-            '        scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-            '    End If
+                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                Else
+                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                End If
 
-            '    Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
-            'Else
-            '    oldStatus = String.Empty
-            'End If
+                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", episodeTitle, scrapeFor, scrapeType))
+            Else
+                oldStatus = String.Empty
+            End If
         Else
             oldStatus = String.Empty
         End If
@@ -7237,7 +7245,7 @@ doCancel:
                 End If
             Next
         ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", indX).Value)
@@ -7404,7 +7412,7 @@ doCancel:
             Return
         End If
 
-        If colName = "SeasonText" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVSeasonClickScrape Then
+        If colName = "SeasonText" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVGeneralClickScrape Then
             If Not colName = "HasWatched" Then
                 If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
                     If Me.dgvTVSeasons.RowCount > 0 Then
@@ -7430,7 +7438,7 @@ doCancel:
     Private Sub dgvTVSeasons_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellDoubleClick
         If e.RowIndex < 0 Then Exit Sub
 
-        If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+        If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
@@ -7469,32 +7477,32 @@ doCancel:
             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVSeasons.ShowCellToolTips = False
 
-            'If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
-            '    oldStatus = GetStatus()
-            '    Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
-            '    Dim scrapeFor As String = ""
-            '    Dim scrapeType As String = ""
-            '    Select Case colName
-            '        Case "BannerPath"
-            '            scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-            '        Case "FanartPath"
-            '            scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-            '        Case "LandscapePath"
-            '            scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-            '        Case "PosterPath"
-            '            scrapeFor = Master.eLang.GetString(72, "Poster Only")
-            '    End Select
+            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
+                oldStatus = GetStatus()
+                Dim seasonTitle As String = Me.dgvTVSeasons.Rows(e.RowIndex).Cells("SeasonText").Value.ToString
+                Dim scrapeFor As String = String.Empty
+                Dim scrapeType As String = String.Empty
+                Select Case colName
+                    Case "BannerPath"
+                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                    Case "FanartPath"
+                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case "LandscapePath"
+                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                    Case "PosterPath"
+                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                End Select
 
-            '    If Master.eSettings.MovieClickScrapeAsk Then
-            '        scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-            '    Else
-            '        scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-            '    End If
+                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                Else
+                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                End If
 
-            '    Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
-            'Else
-            '    oldStatus = String.Empty
-            'End If
+                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", seasonTitle, scrapeFor, scrapeType))
+            Else
+                oldStatus = String.Empty
+            End If
         Else
             oldStatus = String.Empty
         End If
@@ -7621,7 +7629,7 @@ doCancel:
                 End If
             Next
         ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
@@ -7736,7 +7744,7 @@ doCancel:
             Return
         End If
 
-        If colName = "ListTitle" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVShowClickScrape Then
+        If colName = "ListTitle" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVGeneralClickScrape Then
             If Not colName = "HasWatched" Then
                 If Me.dgvTVShows.SelectedRows.Count > 0 Then
                     If Me.dgvTVShows.RowCount > 0 Then
@@ -7763,7 +7771,7 @@ doCancel:
     Private Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
         If e.RowIndex < 0 Then Exit Sub
 
-        If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+        If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
@@ -7804,42 +7812,44 @@ doCancel:
             colName = "ThemePath") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVShows.ShowCellToolTips = False
 
-            'If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
-            '    oldStatus = GetStatus()
-            '    Dim movieName As String = Me.dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
-            '    Dim scrapeFor As String = ""
-            '    Dim scrapeType As String = ""
-            '    Select Case colName
-            '        Case "BannerPath"
-            '            scrapeFor = Master.eLang.GetString(1060, "Banner Only")
-            '        Case "ClearArtPath"
-            '            scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
-            '        Case "ClearLogoPath"
-            '            scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
-            '        Case "EFanartsPath"
-            '            scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
-            '        Case "FanartPath"
-            '            scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-            '        Case "LandscapePath"
-            '            scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-            '        Case "NfoPath"
-            '            scrapeFor = Master.eLang.GetString(71, "NFO Only")
-            '        Case "PosterPath"
-            '            scrapeFor = Master.eLang.GetString(72, "Poster Only")
-            '        Case "ThemePath"
-            '            scrapeFor = Master.eLang.GetString(1125, "Theme Only")
-            '    End Select
+            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVScraper.IsBusy Then
+                oldStatus = GetStatus()
+                Dim tvshowTitle As String = Me.dgvTVShows.Rows(e.RowIndex).Cells("Title").Value.ToString
+                Dim scrapeFor As String = String.Empty
+                Dim scrapeType As String = String.Empty
+                Select Case colName
+                    Case "BannerPath"
+                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                    Case "CharacterArtPath"
+                        scrapeFor = Master.eLang.GetString(1121, "CharacterArt Only")
+                    Case "ClearArtPath"
+                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                    Case "ClearLogoPath"
+                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                    Case "EFanartsPath"
+                        scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                    Case "FanartPath"
+                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                    Case "LandscapePath"
+                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                    Case "NfoPath"
+                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case "PosterPath"
+                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                    Case "ThemePath"
+                        scrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                End Select
 
-            '    If Master.eSettings.MovieClickScrapeAsk Then
-            '        scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-            '    Else
-            '        scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-            '    End If
+                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                Else
+                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                End If
 
-            '    Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieName, scrapeFor, scrapeType))
-            'Else
-            '    oldStatus = String.Empty
-            'End If
+                Me.SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", tvshowTitle, scrapeFor, scrapeType))
+            Else
+                oldStatus = String.Empty
+            End If
         Else
             oldStatus = String.Empty
         End If
@@ -7979,7 +7989,7 @@ doCancel:
                 End If
             Next
         ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
-            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item("idShow", indX).Value)
@@ -10061,7 +10071,7 @@ doCancel:
             End If
 
             If Me.fScanner.IsBusy Then Me.fScanner.Cancel()
-            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+            If Me.bwMetaData.IsBusy Then Me.bwMetaData.CancelAsync()
             If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
             If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
             If Me.bwLoadMovieSetPosters.IsBusy Then Me.bwLoadMovieSetPosters.CancelAsync()
@@ -10080,7 +10090,7 @@ doCancel:
             pnlCancel.Visible = True
             Me.Refresh()
 
-            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy _
+            While Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy _
             OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy _
             OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy _
             OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy _
@@ -10982,14 +10992,14 @@ doCancel:
         Me.ShowNoInfo(False)
 
         If doMI Then
-            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
+            If Me.bwMetaData.IsBusy Then Me.bwMetaData.CancelAsync()
 
             Me.txtMetaData.Clear()
             Me.pbMILoading.Visible = True
 
-            Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwMetaInfo.WorkerSupportsCancellation = True
-            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .DBElement = Me.currMovie})
+            Me.bwMetaData = New System.ComponentModel.BackgroundWorker
+            Me.bwMetaData.WorkerSupportsCancellation = True
+            Me.bwMetaData.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .DBElement = Me.currMovie})
         End If
 
         If doInfo Then
@@ -11348,7 +11358,7 @@ doCancel:
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsLandscape, True)
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
-            Case "meta"
+            Case "metadata"
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
                 Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeMeta, True)
             Case "nfo"
@@ -14684,7 +14694,7 @@ doCancel:
                 Me.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item("idMovie", iRow).Value))
                 Me.FillScreenInfoWith_Movie()
 
-                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -14715,7 +14725,7 @@ doCancel:
                 Me.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item("idSet", iRow).Value))
                 Me.FillScreenInfoWith_MovieSet()
 
-                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -14740,7 +14750,7 @@ doCancel:
                 Me.currTV = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
                 Me.FillScreenInfoWith_TVEpisode()
 
-                If Not Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", iRow).Value) = -1 AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", iRow).Value) = -1 AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuEpisode.Enabled = True
                 End If
             Else
@@ -14771,7 +14781,7 @@ doCancel:
                 Me.currTV = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), True)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso _
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso _
                     Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso _
                     Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuSeason.Enabled = True
@@ -14807,7 +14817,7 @@ doCancel:
                 Me.currTV = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value), False, False, True, False)
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item("idShow", iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuShow.Enabled = True
                 End If
             Else
@@ -15558,7 +15568,7 @@ doCancel:
             End If
 
             'might as well wait for these
-            While Me.bwMetaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
+            While Me.bwMetaData.IsBusy OrElse Me.bwDownloadPic.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While

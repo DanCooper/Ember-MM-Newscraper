@@ -137,60 +137,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeClickScrape() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodeClickScrape
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeClickScrape = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeClickScrapeAsk() As Boolean
-        Get
-            Return Settings._XMLSettings.TVEpisodeClickScrapeAsk
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeClickScrapeAsk = value
-        End Set
-    End Property
-
-    Public Property TVSeasonClickScrape() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonClickScrape
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonClickScrape = value
-        End Set
-    End Property
-
-    Public Property TVSeasonClickScrapeAsk() As Boolean
-        Get
-            Return Settings._XMLSettings.TVSeasonClickScrapeAsk
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonClickScrapeAsk = value
-        End Set
-    End Property
-
-    Public Property TVShowClickScrape() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowClickScrape
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClickScrape = value
-        End Set
-    End Property
-
-    Public Property TVShowClickScrapeAsk() As Boolean
-        Get
-            Return Settings._XMLSettings.TVShowClickScrapeAsk
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClickScrapeAsk = value
-        End Set
-    End Property
-
     Public Property MovieBackdropsAuto() As Boolean
         Get
             Return Settings._XMLSettings.MovieBackdropsAuto
@@ -1502,6 +1448,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieSetGeneralMarkNew = value
+        End Set
+    End Property
+
+    Public Property TVGeneralClickScrape() As Boolean
+        Get
+            Return Settings._XMLSettings.TVGeneralClickScrape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVGeneralClickScrape = value
+        End Set
+    End Property
+
+    Public Property TVGeneralClickScrapeAsk() As Boolean
+        Get
+            Return Settings._XMLSettings.TVGeneralClickScrapeAsk
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVGeneralClickScrapeAsk = value
         End Set
     End Property
 
@@ -6906,8 +6870,6 @@ Public Class Settings
         Me.TVDisplayMissingEpisodes = True
         Me.TVDisplayStatus = False
         Me.TVEpisodeActorThumbsOverwrite = True
-        Me.TVEpisodeClickScrape = False
-        Me.TVEpisodeClickScrapeAsk = False
         Me.TVEpisodeFanartHeight = 0
         Me.TVEpisodeFanartOverwrite = True
         Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any
@@ -6927,6 +6889,8 @@ Public Class Settings
         Me.TVEpisodePosterResize = False
         Me.TVEpisodePosterWidth = 0
         Me.TVEpisodeProperCase = True
+        Me.TVGeneralClickScrape = False
+        Me.TVGeneralClickScrapeAsk = False
         Me.TVGeneralEpisodeListSorting = New List(Of ListSorting)
         Me.TVGeneralFlagLang = String.Empty
         Me.TVGeneralIgnoreLastScan = True
@@ -7013,8 +6977,6 @@ Public Class Settings
         Me.TVSeasonBannerPrefType = Enums.TVBannerType.Any
         Me.TVSeasonBannerResize = False
         Me.TVSeasonBannerWidth = 0
-        Me.TVSeasonClickScrape = False
-        Me.TVSeasonClickScrapeAsk = False
         Me.TVSeasonFanartHeight = 0
         Me.TVSeasonFanartOverwrite = True
         Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any
@@ -7045,8 +7007,6 @@ Public Class Settings
         Me.TVShowCharacterArtOverwrite = True
         Me.TVShowClearArtOverwrite = True
         Me.TVShowClearLogoOverwrite = True
-        Me.TVShowClickScrape = False
-        Me.TVShowClickScrapeAsk = False
         Me.TVShowEFanartsLimit = 4
         Me.TVShowEFanartsOverwrite = True
         Me.TVShowEFanartsPrefOnly = False

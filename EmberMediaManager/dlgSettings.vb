@@ -1800,6 +1800,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVGeneralClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVGeneralClickScrape.CheckedChanged
+        chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperStudio.CheckedChanged
         Me.SetApplyButton(True)
         Me.chkMovieScraperStudioWithImg.Enabled = Me.chkMovieScraperStudio.Checked
@@ -2971,7 +2976,6 @@ Public Class dlgSettings
             Me.chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
             Me.chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
             Me.chkMovieScraperMPAA.Checked = .MovieScraperMPAA
-            Me.txtMovieScraperMPAANotRated.Text = .MovieScraperMPAANotRated
             Me.chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
             Me.chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
             Me.chkMovieScraperOutline.Checked = .MovieScraperOutline
@@ -3037,6 +3041,8 @@ Public Class dlgSettings
                 Me.txtTVEpisodePosterWidth.Text = .TVEpisodePosterWidth.ToString
             End If
             Me.chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
+            Me.chkTVGeneralClickScrape.Checked = .TVGeneralClickScrape
+            Me.chkTVGeneralClickScrapeAsk.Checked = .TVGeneralClickScrapeAsk
             Me.chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             Me.chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
@@ -3166,6 +3172,7 @@ Public Class dlgSettings
             Me.txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
             Me.txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
             Me.txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
+            Me.txtMovieScraperMPAANotRated.Text = .MovieScraperMPAANotRated
             Me.txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
             Me.txtMovieScraperStudioLimit.Text = .MovieScraperStudioLimit.ToString
             Me.txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
@@ -3286,6 +3293,7 @@ Public Class dlgSettings
 
             Me.chkMovieClickScrapeAsk.Enabled = Me.chkMovieClickScrape.Checked
             Me.chkMovieSetClickScrapeAsk.Enabled = Me.chkMovieSetClickScrape.Checked
+            Me.chkTVGeneralClickScrapeAsk.Enabled = Me.chkTVGeneralClickScrape.Checked
             Me.txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
             Me.txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
 
@@ -4888,6 +4896,8 @@ Public Class dlgSettings
             If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
                 .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVGeneralLang.Text).abbreviation
             End If
+            .TVGeneralClickScrape = Me.chkTVGeneralClickScrape.Checked
+            .TVGeneralClickScrapeAsk = Me.chkTVGeneralClickScrapeAsk.Checked
             .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
             .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
             .TVGeneralSeasonListSorting.Clear()
@@ -5531,6 +5541,7 @@ Public Class dlgSettings
         Dim strAskOnClickScrape As String = Master.eLang.GetString(852, "Ask On Click Scrape")
         Me.chkMovieClickScrapeAsk.Text = strAskOnClickScrape
         Me.chkMovieSetClickScrapeAsk.Text = strAskOnClickScrape
+        Me.chkTVGeneralClickScrapeAsk.Text = strAskOnClickScrape
 
         'Automatically Resize:
         Dim strAutomaticallyResize As String = Master.eLang.GetString(481, "Automatically Resize:")
@@ -5742,6 +5753,7 @@ Public Class dlgSettings
         Dim strEnabledClickScrape As String = Master.eLang.GetString(849, "Enable Click Scrape")
         Me.chkMovieClickScrape.Text = strEnabledClickScrape
         Me.chkMovieSetClickScrape.Text = strEnabledClickScrape
+        Me.chkTVGeneralClickScrape.Text = strEnabledClickScrape
 
         'Enable Image Caching
         Dim strEnableImageCaching As String = Master.eLang.GetString(249, "Enable Image Caching")
@@ -7538,6 +7550,7 @@ Public Class dlgSettings
         chkTVEpisodePosterFrodo.CheckedChanged, _
         chkTVEpisodePosterOverwrite.CheckedChanged, _
         chkTVEpisodePosterYAMJ.CheckedChanged, _
+        chkTVGeneralClickScrapeAsk.CheckedChanged, _
         chkTVGeneralIgnoreLastScan.CheckedChanged, _
         chkTVGeneralMarkNewEpisodes.CheckedChanged, _
         chkTVGeneralMarkNewShows.CheckedChanged, _

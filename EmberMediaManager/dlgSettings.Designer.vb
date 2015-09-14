@@ -603,6 +603,8 @@ Partial Class dlgSettings
         Me.tblTVGeneralMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVGeneralMarkNewEpisodes = New System.Windows.Forms.CheckBox()
         Me.chkTVGeneralMarkNewShows = New System.Windows.Forms.CheckBox()
+        Me.chkTVGeneralClickScrape = New System.Windows.Forms.CheckBox()
+        Me.chkTVGeneralClickScrapeAsk = New System.Windows.Forms.CheckBox()
         Me.gbTVGeneralMediaListOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVGeneralMediaListOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVGeneralEpisodeListSorting = New System.Windows.Forms.GroupBox()
@@ -9364,7 +9366,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
-        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(139, 67)
+        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(292, 67)
         Me.gbTVGeneralMiscOpts.TabIndex = 0
         Me.gbTVGeneralMiscOpts.TabStop = false
         Me.gbTVGeneralMiscOpts.Text = "Miscellaneous"
@@ -9372,11 +9374,14 @@ Partial Class dlgSettings
         'tblTVGeneralMiscOpts
         '
         Me.tblTVGeneralMiscOpts.AutoSize = true
-        Me.tblTVGeneralMiscOpts.ColumnCount = 2
+        Me.tblTVGeneralMiscOpts.ColumnCount = 3
+        Me.tblTVGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewEpisodes, 0, 1)
         Me.tblTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralMarkNewShows, 0, 0)
+        Me.tblTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralClickScrape, 1, 0)
+        Me.tblTVGeneralMiscOpts.Controls.Add(Me.chkTVGeneralClickScrapeAsk, 1, 1)
         Me.tblTVGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVGeneralMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVGeneralMiscOpts.Name = "tblTVGeneralMiscOpts"
@@ -9384,7 +9389,7 @@ Partial Class dlgSettings
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(133, 46)
+        Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(286, 46)
         Me.tblTVGeneralMiscOpts.TabIndex = 74
         '
         'chkTVGeneralMarkNewEpisodes
@@ -9410,6 +9415,31 @@ Partial Class dlgSettings
         Me.chkTVGeneralMarkNewShows.TabIndex = 3
         Me.chkTVGeneralMarkNewShows.Text = "Mark New Shows"
         Me.chkTVGeneralMarkNewShows.UseVisualStyleBackColor = true
+        '
+        'chkTVGeneralClickScrape
+        '
+        Me.chkTVGeneralClickScrape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVGeneralClickScrape.AutoSize = true
+        Me.chkTVGeneralClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkTVGeneralClickScrape.Location = New System.Drawing.Point(136, 3)
+        Me.chkTVGeneralClickScrape.Name = "chkTVGeneralClickScrape"
+        Me.chkTVGeneralClickScrape.Size = New System.Drawing.Size(125, 17)
+        Me.chkTVGeneralClickScrape.TabIndex = 66
+        Me.chkTVGeneralClickScrape.Text = "Enable Click Scrape"
+        Me.chkTVGeneralClickScrape.UseVisualStyleBackColor = true
+        '
+        'chkTVGeneralClickScrapeAsk
+        '
+        Me.chkTVGeneralClickScrapeAsk.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVGeneralClickScrapeAsk.AutoSize = true
+        Me.chkTVGeneralClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkTVGeneralClickScrapeAsk.Location = New System.Drawing.Point(136, 26)
+        Me.chkTVGeneralClickScrapeAsk.Name = "chkTVGeneralClickScrapeAsk"
+        Me.chkTVGeneralClickScrapeAsk.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkTVGeneralClickScrapeAsk.Size = New System.Drawing.Size(147, 17)
+        Me.chkTVGeneralClickScrapeAsk.TabIndex = 67
+        Me.chkTVGeneralClickScrapeAsk.Text = "Ask On Click Scrape"
+        Me.chkTVGeneralClickScrapeAsk.UseVisualStyleBackColor = true
         '
         'gbTVGeneralMediaListOpts
         '
@@ -23827,4 +23857,6 @@ End Sub
     Friend WithEvents tblMovieSourcesDefaultsOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents cbMovieGeneralLang As System.Windows.Forms.ComboBox
     Friend WithEvents lblMovieSourcesDefaultsLanguage As System.Windows.Forms.Label
+    Friend WithEvents chkTVGeneralClickScrape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVGeneralClickScrapeAsk As System.Windows.Forms.CheckBox
 End Class
