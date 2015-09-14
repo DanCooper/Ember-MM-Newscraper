@@ -364,6 +364,7 @@ Public Class Trailers
         If TrailerList.Count = 0 Then Return False
         trlResult = Nothing
 
+        'If Any trailer quality, take the first one in TrailerList
         If Master.eSettings.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any Then
             trlResult = TrailerList.First
             If YouTube.UrlUtils.IsYouTubeURL(trlResult.URLWebsite) Then
@@ -371,20 +372,32 @@ Public Class Trailers
                 sYouTube.GetVideoLinks(trlResult.URLWebsite)
 
                 Dim Trailer As New YouTube.VideoLinkItem
-                If sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
+                If sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p)
+                ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p)
+                ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1440p)
+                ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps)
+                ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
+                ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps)
                 ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
                 ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
                 ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
                 ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
                 ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p)
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p)
+                ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps).Count > 0 Then
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps)
                 ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).Count > 0 Then
-                    Trailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN)
+                    Trailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN)
                 End If
 
                 If Trailer IsNot Nothing Then
@@ -407,140 +420,56 @@ Public Class Trailers
             End If
         End If
 
-
-        If trlResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    ''' <summary>
-    ''' Given a list of Trailers, determine which one best matches the user's
-    ''' configured preferred trailer format. Return that URL in the <paramref name="tUrl"/>
-    ''' parameter, and returns <c>True</c>.
-    ''' </summary>
-    ''' <param name="TrailerList"><c>List</c> of <c>MediaContainers.Trailer</c>s</param>
-    ''' <returns><c>True</c> if an appropriate trailer was found. The URL for the trailer is returned in
-    ''' <paramref name="tUrl"/>. <c>False</c> otherwise</returns>
-    ''' <remarks>
-    ''' This is used to determine the result of trailer scraping by going through all scraperesults of every trailer scraper and applying global scraper settings here (PrefQuality, MinQuality)!
-    ''' Note: Only one trailerresult will be used for downloading
-    ''' 2014/09/26 Cocotus - Modified this method a bit: Now trailer module order set by user will be considered, also do some filtering here (trailerdescription must contain string "trailer" or else the trailer wont be used (no more making ofs...))
-    ''' </remarks>
-    Public Shared Function GetPreferredTrailer(ByRef TrailerList As List(Of MediaContainers.Trailer), ByRef trlResult As MediaContainers.Trailer) As Boolean
-        If TrailerList.Count = 0 Then Return False
-        Dim tLink As String = String.Empty
-
-        Try
-
-            'Check 1 Youtube/IMDB handling: At this point trailers from Youtube and IMDB don't have quality property set, so let's analyze the quality of given trailer and set correct trailerurl/quality of each trailerlink in list
+        'Try to find first with PreferredQuality or save best quality stream URL to Trailer container
+        If trlResult Is Nothing Then
             For Each nTrailer As MediaContainers.Trailer In TrailerList
                 If YouTube.UrlUtils.IsYouTubeURL(nTrailer.URLWebsite) Then
-                    Dim YT As New YouTube.Scraper
-                    Dim Trailer As YouTube.VideoLinkItem
-                    YT.GetVideoLinks(nTrailer.URLWebsite)
+                    Dim sYouTube As New YouTube.Scraper
+                    Dim ytTrailer As YouTube.VideoLinkItem
+
+                    'get all qualities for this trailer
+                    sYouTube.GetVideoLinks(nTrailer.URLWebsite)
 
                     'try to get preferred quality
-                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
+                    ytTrailer = sYouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
 
-                    'try to get one with minimum quality
-                    If Trailer Is Nothing Then
-                        Select Case Master.eSettings.MovieTrailerMinVideoQual
-                            Case Enums.TrailerVideoQuality.Any
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN)
-                                End If
-                            Case Enums.TrailerVideoQuality.HD1080p
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                End If
-                            Case Enums.TrailerVideoQuality.HD720p
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                End If
-                            Case Enums.TrailerVideoQuality.HQ480p
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
-                                End If
-                            Case Enums.TrailerVideoQuality.SQ360p
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
-                                End If
-                            Case Enums.TrailerVideoQuality.SQ240p
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
-                                End If
-                            Case Enums.TrailerVideoQuality.SQ144p
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p)
-                                End If
-                            Case Enums.TrailerVideoQuality.UNKNOWN
-                                If YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p)
-                                ElseIf YT.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).Count > 0 Then
-                                    Trailer = YT.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN)
-                                End If
-                        End Select
+                    'try to get the best quality for search a Trailer that satisfies the minimum quality
+                    If ytTrailer Is Nothing Then
+                        If sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p60fps)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD2160p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1440p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD1080p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HD720p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.HQ480p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ360p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ240p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps)
+                        ElseIf sYouTube.YouTubeLinks.VideoLinks.FindAll(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN).Count > 0 Then
+                            ytTrailer = sYouTube.YouTubeLinks.VideoLinks.FirstOrDefault(Function(f) f.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN)
+                        End If
                     End If
 
-                    If Trailer IsNot Nothing Then
-                        nTrailer.isDash = Trailer.isDash
-                        nTrailer.Quality = Trailer.FormatQuality
-                        nTrailer.URLVideoStream = Trailer.URLVideoStream
+                    If ytTrailer IsNot Nothing Then
+                        nTrailer.isDash = ytTrailer.isDash
+                        nTrailer.Quality = ytTrailer.FormatQuality
+                        nTrailer.URLVideoStream = ytTrailer.URLVideoStream
                         If nTrailer.isDash Then
-                            Dim TrailerAudio As YouTube.AudioLinkItem = YT.YouTubeLinks.AudioLinks.Item(0)
+                            Dim TrailerAudio As YouTube.AudioLinkItem = sYouTube.YouTubeLinks.AudioLinks.Item(0)
                             If TrailerAudio IsNot Nothing Then
                                 nTrailer.URLAudioStream = TrailerAudio.URL
                             Else
@@ -550,183 +479,50 @@ Public Class Trailers
                         End If
                     End If
 
-                    ' It's not possible to get extension from YouTube URL. For this reason, it is not yet determined.
-
-                    ''set trailer extension
-                    'aUrl.Extention = Path.GetExtension(aUrl.URL)
-                    'Dim tmpInvalidChar As Integer = aUrl.Extention.IndexOf("?")
-                    'If tmpInvalidChar > -1 Then
-                    '    Dim correctextension As String = aUrl.Extention
-                    '    aUrl.Extention = correctextension.Remove(tmpInvalidChar)
-                    'End If
-
                 ElseIf Regex.IsMatch(nTrailer.URLWebsite, "https?:\/\/.*imdb.*") Then
                     Dim IMDb As New IMDb.Scraper
+                    Dim tLink As String = String.Empty
+
+                    'get all qualities for this trailer
                     IMDb.GetVideoLinks(nTrailer.URLWebsite)
+
+                    'try to get preferred quality
                     If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
                         tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefVideoQual).URL
                         nTrailer.URLVideoStream = tLink
                         nTrailer.Quality = Master.eSettings.MovieTrailerPrefVideoQual
                     Else
-                        Select Case Master.eSettings.MovieTrailerMinVideoQual
-                            Case Enums.TrailerVideoQuality.Any
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ240p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ144p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.UNKNOWN
-                                End If
-                            Case Enums.TrailerVideoQuality.HD1080p
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                End If
-                            Case Enums.TrailerVideoQuality.HD720p
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                End If
-                            Case Enums.TrailerVideoQuality.HQ480p
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                                End If
-                            Case Enums.TrailerVideoQuality.SQ360p
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
-                                End If
-                            Case Enums.TrailerVideoQuality.SQ240p
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ240p
-                                End If
-                            Case Enums.TrailerVideoQuality.SQ144p
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ240p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ144p
-                                End If
-                            Case Enums.TrailerVideoQuality.UNKNOWN
-                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ240p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.SQ144p
-                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
-                                    tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
-                                    nTrailer.URLVideoStream = tLink
-                                    nTrailer.Quality = Enums.TrailerVideoQuality.UNKNOWN
-                                End If
-                        End Select
+                        If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
+                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
+                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
+                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
+                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.SQ240p
+                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.SQ144p
+                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
+                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
+                            nTrailer.URLVideoStream = tLink
+                            nTrailer.Quality = Enums.TrailerVideoQuality.UNKNOWN
+                        End If
                     End If
+
                     'set trailer extension
                     nTrailer.TrailerOriginal.Extention = Path.GetExtension(nTrailer.URLVideoStream)
                     Dim tmpInvalidChar As Integer = nTrailer.TrailerOriginal.Extention.IndexOf("?")
@@ -735,139 +531,205 @@ Public Class Trailers
                         nTrailer.TrailerOriginal.Extention = correctextension.Remove(tmpInvalidChar)
                     End If
                 End If
-            Next
 
-            'At this point every trailer in UrlList will have correct quality property set - we can now decide which trailer to use
-            Dim lsttrailerresults As New List(Of MediaContainers.Trailer)
-            lsttrailerresults.AddRange(TrailerList)
-            'Check 2: Clean Up -> first remove all movies which don't have preferred quality and check if there's at least one left!
-            For i = lsttrailerresults.Count - 1 To 0 Step -1
-                If (lsttrailerresults(i).Quality <> Master.eSettings.MovieTrailerPrefVideoQual) OrElse Not lsttrailerresults(i).Title.ToLower.Contains("trailer") Then
-                    lsttrailerresults.RemoveAt(i)
+                If nTrailer.Quality = Master.eSettings.MovieTrailerPrefVideoQual Then
+                    trlResult = nTrailer
+                    Exit For
                 End If
             Next
+        End If
 
-            'Check 3: If there isnt any preferred trailer left after step 1, create list of MinPref-trailers
-            If lsttrailerresults.Count < 1 Then
-                lsttrailerresults.Clear()
-                lsttrailerresults.AddRange(TrailerList)
-                'Defaultvalue: all trailers with equal/better quality than 480p
-                Dim tqualities As String = "HD720pHD1080pHQ480p"
-                Select Case Master.eSettings.MovieTrailerMinVideoQual
-                    Case Enums.TrailerVideoQuality.HD1080p
-                        tqualities = "HD1080p"
-                    Case Enums.TrailerVideoQuality.HD720p
-                        tqualities = "HD720pHD1080p"
-                    Case Enums.TrailerVideoQuality.HQ480p
-                        tqualities = "HD720pHD1080pHQ480p"
-                    Case Enums.TrailerVideoQuality.SQ360p
-                        tqualities = "HD720pHD1080pHQ480pSQ360p"
-                    Case Enums.TrailerVideoQuality.SQ240p
-                        tqualities = "HD720pHD1080pHQ480pSQ360pSQ240p"
-                    Case Enums.TrailerVideoQuality.SQ144p
-                        tqualities = "HD720pHD1080pHQ480pSQ360pSQ240pSQ144p"
-                    Case Enums.TrailerVideoQuality.UNKNOWN
-                        tqualities = "HD720pHD1080pHQ480pSQ360pSQ240pSQ144pOTHERS"
-                End Select
-                'Build up alternative list
-                For i = lsttrailerresults.Count - 1 To 0 Step -1
-                    'Clean Up -> first remove all movies which don't have min quality and check if theres at least one left!
-                    If tqualities.Contains(lsttrailerresults(i).Quality.ToString) = False OrElse lsttrailerresults(i).Title.ToLower.Contains("trailer") = False Then
-                        lsttrailerresults.RemoveAt(i)
+        'no preferred Trailer quality found, try to get one that has the minimum quality
+        If trlResult Is Nothing Then
+            Select Case Master.eSettings.MovieTrailerMinVideoQual
+                Case Enums.TrailerVideoQuality.HD2160p60fps
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
                     End If
-                Next
-            End If
-            TrailerList.Clear()
-            TrailerList.AddRange(lsttrailerresults)
-            tLink = String.Empty
+                Case Enums.TrailerVideoQuality.HD2160p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    End If
+                Case Enums.TrailerVideoQuality.HD1440p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    End If
+                Case Enums.TrailerVideoQuality.HD1080p60fps
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    End If
+                Case Enums.TrailerVideoQuality.HD1080p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    End If
+                Case Enums.TrailerVideoQuality.HD720p60fps
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    End If
+                Case Enums.TrailerVideoQuality.HD720p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p)
+                    End If
+                Case Enums.TrailerVideoQuality.HQ480p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p)
+                    End If
+                Case Enums.TrailerVideoQuality.SQ360p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p)
+                    End If
+                Case Enums.TrailerVideoQuality.SQ240p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ240p)
+                    End If
+                Case Enums.TrailerVideoQuality.SQ144p
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ240p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ144p)
+                    End If
+                Case Enums.TrailerVideoQuality.SQ144p15fps
+                    If TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD2160p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1440p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD1080p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p60fps)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HD720p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.HQ480p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ360p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ240p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ240p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ144p).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ144p)
+                    ElseIf TrailerList.FindAll(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ144p15fps).Count > 0 Then
+                        trlResult = TrailerList.FirstOrDefault(Function(f) f.Quality = Enums.TrailerVideoQuality.SQ144p15fps)
+                    End If
+            End Select
+        End If
 
-            For Each aUrl As MediaContainers.Trailer In TrailerList
-
-                If aUrl.Quality = Master.eSettings.MovieTrailerPrefVideoQual Then
-                    tLink = aUrl.URLVideoStream
-                Else
-                    Select Case Master.eSettings.MovieTrailerMinVideoQual
-                        Case Enums.TrailerVideoQuality.Any
-                            tLink = aUrl.URLVideoStream
-                        Case Enums.TrailerVideoQuality.HD1080p
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                        Case Enums.TrailerVideoQuality.HD720p
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                        Case Enums.TrailerVideoQuality.HQ480p
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                        Case Enums.TrailerVideoQuality.SQ360p
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                        Case Enums.TrailerVideoQuality.SQ240p
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ240p Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                        Case Enums.TrailerVideoQuality.SQ144p
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ240p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ144p Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                        Case Enums.TrailerVideoQuality.UNKNOWN
-                            If aUrl.Quality = Enums.TrailerVideoQuality.HD1080p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HD720p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.HQ480p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ360p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ240p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.SQ144p Then
-                                tLink = aUrl.URLVideoStream
-                            ElseIf aUrl.Quality = Enums.TrailerVideoQuality.UNKNOWN Then
-                                tLink = aUrl.URLVideoStream
-                            End If
-                    End Select
-                End If
-            Next
+        If trlResult IsNot Nothing Then
             Return True
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+        Else
             Return False
-        End Try
+        End If
     End Function
 
     Public Function SaveAsMovieTrailer(ByVal mMovie As Database.DBElement) As String

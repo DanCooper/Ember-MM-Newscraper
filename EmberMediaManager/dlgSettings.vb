@@ -3943,17 +3943,18 @@ Public Class dlgSettings
     Private Sub LoadMovieTrailerQualities()
         Dim items As New Dictionary(Of String, Enums.TrailerVideoQuality)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.TrailerVideoQuality.Any)
-        items.Add("2160p", Enums.TrailerVideoQuality.HD2160p)
         items.Add("2160p 60fps", Enums.TrailerVideoQuality.HD2160p60fps)
+        items.Add("2160p", Enums.TrailerVideoQuality.HD2160p)
         items.Add("1440p", Enums.TrailerVideoQuality.HD1440p)
-        items.Add("1080p", Enums.TrailerVideoQuality.HD1080p)
         items.Add("1080p 60fps", Enums.TrailerVideoQuality.HD1080p60fps)
-        items.Add("720p", Enums.TrailerVideoQuality.HD720p)
+        items.Add("1080p", Enums.TrailerVideoQuality.HD1080p)
         items.Add("720p 60fps", Enums.TrailerVideoQuality.HD720p60fps)
+        items.Add("720p", Enums.TrailerVideoQuality.HD720p)
         items.Add("480p", Enums.TrailerVideoQuality.HQ480p)
         items.Add("360p", Enums.TrailerVideoQuality.SQ360p)
         items.Add("240p", Enums.TrailerVideoQuality.SQ240p)
         items.Add("144p", Enums.TrailerVideoQuality.SQ144p)
+        items.Add("144p 15fps", Enums.TrailerVideoQuality.SQ144p15fps)
         Me.cbMovieTrailerMinVideoQual.DataSource = items.ToList
         Me.cbMovieTrailerMinVideoQual.DisplayMember = "Key"
         Me.cbMovieTrailerMinVideoQual.ValueMember = "Value"
