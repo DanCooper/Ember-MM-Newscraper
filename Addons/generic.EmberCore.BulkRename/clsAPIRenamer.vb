@@ -1017,7 +1017,7 @@ Public Class FileFolderRenamer
 
             'OriginalTitle
             If _tmpMovie.Movie.OriginalTitle IsNot Nothing Then
-                MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> _tmpMovie.Movie.Title, _tmpMovie.Movie.OriginalTitle, String.Empty)
+                MovieFile.OriginalTitle = If(_tmpMovie.Movie.OriginalTitle <> String.Empty, _tmpMovie.Movie.OriginalTitle, MovieFile.Title)
             End If
 
             'Rating
