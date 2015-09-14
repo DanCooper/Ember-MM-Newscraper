@@ -276,6 +276,23 @@ Public Class ModulesManager
         Return TMDBID
     End Function
 
+    Public Function GetTVLanguages() As clsXMLTVDBLanguages
+        Dim ret As Interfaces.ModuleResult
+        Dim Langs As New clsXMLTVDBLanguages
+        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
+            Application.DoEvents()
+        End While
+        For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
+            Try
+                ret = _externalScraperModule.ProcessorModule.GetLanguages(Langs)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+            If ret.breakChain Then Exit For
+        Next
+        Return Langs
+    End Function
+
     Public Sub GetVersions()
         Dim dlgVersions As New dlgVersions
         Dim li As ListViewItem
@@ -1874,23 +1891,6 @@ Public Class ModulesManager
             Next
         End If
     End Sub
-
-    Public Function TVGetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
-        Dim ret As Interfaces.ModuleResult
-        Dim Langs As New clsXMLTVDBLanguages
-        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
-            Application.DoEvents()
-        End While
-        For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Try
-                ' ret = _externalScraperModule.ProcessorModule.GetLangs(sMirror, Langs)
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-            If ret.breakChain Then Exit For
-        Next
-        Return Langs
-    End Function
 
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
         'Dim testDBTV As Database.DBElement = Master.currTV

@@ -64,7 +64,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
-        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.TVGetLangs("thetvdb.com")
+        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.GetTVLanguages()
         Me.cbTVGeneralLang.Items.Clear()
         Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 

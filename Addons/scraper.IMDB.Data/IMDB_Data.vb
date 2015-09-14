@@ -431,6 +431,10 @@ Public Class IMDB_Data
         End If
     End Sub
 
+    Public Function GetLangs(ByRef Langs As clsXMLTVDBLanguages) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetLanguages
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.IMDBID)) Then
             logger.Error("Attempting to get studio for undefined movie")

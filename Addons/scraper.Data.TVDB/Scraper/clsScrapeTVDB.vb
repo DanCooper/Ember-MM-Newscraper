@@ -25,6 +25,7 @@ Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
+Imports System.Xml.Serialization
 
 Namespace TVDBs
 
@@ -187,6 +188,20 @@ Namespace TVDBs
         Private Async Function GetFullSeriesById(ByVal tvdbID As Integer) As Task(Of TVDB.Model.SeriesDetails)
             Dim Result As TVDB.Model.SeriesDetails = Await _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror)
             Return Result
+        End Function
+
+        Public Shared Function GetLanguages(ByVal sAPIKey As String) As clsXMLTVDBLanguages
+            Dim sHTTP As New HTTP
+            Dim aTVDBLang As New clsXMLTVDBLanguages
+
+            Dim apiXML As String = sHTTP.DownloadData(String.Format("http://thetvdb.com/api/{0}/languages.xml", sAPIKey))
+            sHTTP = Nothing
+            Using reader As StringReader = New StringReader(apiXML)
+                Dim xTVDBLang As New XmlSerializer(aTVDBLang.GetType)
+                aTVDBLang = CType(xTVDBLang.Deserialize(reader), clsXMLTVDBLanguages)
+            End Using
+
+            Return aTVDBLang
         End Function
         ''' <summary>
         ''' 

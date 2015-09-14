@@ -222,6 +222,13 @@ Public Class TVDB_Data
             _setup.Dispose()
         End If
     End Sub
+
+    Public Function GetLangs(ByRef Langs As clsXMLTVDBLanguages) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetLanguages
+        LoadSettings()
+
+        Langs = TVDBs.Scraper.GetLanguages(_SpecialSettings.APIKey)
+        Return New Interfaces.ModuleResult With {.breakChain = True}
+    End Function
     ''' <summary>
     '''  Scrape TVShowDetails from TVDB
     ''' </summary>

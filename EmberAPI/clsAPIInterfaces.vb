@@ -164,6 +164,7 @@ Public Class Interfaces
         Sub ScraperOrderChanged()
         Sub Init(ByVal sAssemblyName As String)
         Function InjectSetupScraper() As Containers.SettingsPanel
+        Function GetLanguages(ByRef Langs As clsXMLTVDBLanguages) As ModuleResult
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
         ''' <summary>
         ''' 
