@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgCustomScraper
+Public Class dlgCustomScraperMovie
 
 #Region "Fields"
 

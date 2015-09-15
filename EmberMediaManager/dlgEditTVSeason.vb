@@ -453,7 +453,7 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Master.DB.SaveTVSeasonToDB(Me.tmpDBElement, False)
+        Master.DB.SaveTVSeasonToDB(Me.tmpDBElement, False, True)
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()

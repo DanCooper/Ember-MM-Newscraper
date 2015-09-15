@@ -499,7 +499,7 @@ Public Class Database
                 End Using
 
                 logger.Info("Removing seasons with no more existing episodes")
-                CleanEmptySeasons(True)
+                DeleteEmptyTVSeasonsFromDB(True)
                 logger.Info("Cleaning tv shows done")
             End If
 
@@ -591,24 +591,6 @@ Public Class Database
             SQLcommand.CommandText = "VACUUM;"
             SQLcommand.ExecuteNonQuery()
         End Using
-    End Sub
-    ''' <summary>
-    ''' Remove from the database the TV seasons for which there are no episodes defined
-    ''' </summary>
-    ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
-    ''' <remarks></remarks>
-    Public Sub CleanEmptySeasons(Optional ByVal BatchMode As Boolean = False)
-        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-
-        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-        Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLCommand.CommandText = "DELETE FROM seasons WHERE NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999"
-            SQLCommand.ExecuteNonQuery()
-        End Using
-        If Not BatchMode Then SQLtransaction.Commit()
-        SQLtransaction = Nothing
-
-        If SQLtransaction IsNot Nothing Then SQLtransaction.Dispose()
     End Sub
     ''' <summary>
     ''' Remove the New flag from database entries (movies, tvshow, seasons, episode)
@@ -755,6 +737,24 @@ Public Class Database
         End Try
         Return isNew
     End Function
+    ''' <summary>
+    ''' Remove from the database the TV seasons for which there are no episodes defined
+    ''' </summary>
+    ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteEmptyTVSeasonsFromDB(Optional ByVal BatchMode As Boolean = False)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+
+        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLCommand.CommandText = "DELETE FROM seasons WHERE NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999"
+            SQLCommand.ExecuteNonQuery()
+        End Using
+        If Not BatchMode Then SQLtransaction.Commit()
+        SQLtransaction = Nothing
+
+        If SQLtransaction IsNot Nothing Then SQLtransaction.Dispose()
+    End Sub
 
     ''' <summary>
     ''' Remove all information related to a movie from the database.
@@ -947,7 +947,7 @@ Public Class Database
                             SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", ID, ";")
                             SQLECommand.ExecuteNonQuery()
 
-                            If DoCleanSeasons Then Master.DB.CleanEmptySeasons(True)
+                            If DoCleanSeasons Then Master.DB.DeleteEmptyTVSeasonsFromDB(True)
                         ElseIf Not Convert.ToInt64(SQLReader("idFile")) = -1 Then 'already marked as missing, no need for another query
                             'check if there is another episode that use the same idFile
                             Dim multiEpisode As Boolean = False
@@ -982,7 +982,7 @@ Public Class Database
         End Using
         If Not BatchMode Then
             SQLtransaction.Commit()
-            Master.DB.CleanEmptySeasons()
+            Master.DB.DeleteEmptyTVSeasonsFromDB()
         End If
 
         Return True
@@ -4251,7 +4251,7 @@ Public Class Database
                         Using SQLreader As SQLite.SQLiteDataReader = SQLSeasonCheck.ExecuteReader()
                             If Not SQLreader.HasRows Then
                                 Dim _season As New DBElement With {.ShowID = _episode.ShowID, .TVSeason = New MediaContainers.SeasonDetails With {.Season = _episode.TVEpisode.Season}}
-                                SaveTVSeasonToDB(_season, True)
+                                SaveTVSeasonToDB(_season, True, False)
                             End If
                         End Using
                     End Using
@@ -4272,7 +4272,7 @@ Public Class Database
     ''' <param name="_season">Database.DBElement representing the season to be stored.</param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Function SaveTVSeasonToDB(ByRef _season As Database.DBElement, ByVal BatchMode As Boolean) As Database.DBElement
+    Public Function SaveTVSeasonToDB(ByRef _season As Database.DBElement, ByVal BatchMode As Boolean, ByVal ToDisk As Boolean) As Database.DBElement
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4341,7 +4341,7 @@ Public Class Database
         _season.ID = ID
 
         'Images
-        _season.ImagesContainer.SaveAllImages(_season, Enums.ContentType.TVSeason)
+        If ToDisk Then _season.ImagesContainer.SaveAllImages(_season, Enums.ContentType.TVSeason)
 
         Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _season.ID, " AND media_type = 'season';")
@@ -4540,11 +4540,9 @@ Public Class Database
         'save season informations
         If _show.Seasons IsNot Nothing AndAlso _show.Seasons.Count > 0 Then
             For Each nSeason As Database.DBElement In _show.Seasons
-                SaveTVSeasonToDB(nSeason, True)
+                SaveTVSeasonToDB(nSeason, True, True)
             Next
         End If
-
-        CleanEmptySeasons(True)
 
         'save episode informations
         If withEpisodes AndAlso _show.Episodes IsNot Nothing AndAlso _show.Episodes.Count > 0 Then
@@ -4552,6 +4550,9 @@ Public Class Database
                 SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), True, True, True, False)
             Next
         End If
+
+        'delete empty seasons after saving all known episodes
+        DeleteEmptyTVSeasonsFromDB(True)
 
         If Not BatchMode Then SQLtransaction.Commit()
 

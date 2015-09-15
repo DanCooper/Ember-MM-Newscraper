@@ -993,7 +993,7 @@ Public Class Scanner
                         DBTVShow.TVShow.Language = DBTVShow.Language
                     End If
 
-                    Master.DB.SaveTVShowToDB(DBTVShow, isNew, Batchmode, True, False, False)
+                    Master.DB.SaveTVShowToDB(DBTVShow, isNew, Batchmode, False, False, False)
                 End If
             Else
                 Dim newEpisodes As List(Of Database.DBElement) = DBTVShow.Episodes
@@ -1009,10 +1009,10 @@ Public Class Scanner
 
                         'add seasons
                         For Each iSeason In SeasonList
-                            Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = DBTVEpisode.TVEpisode.Season)
+                            Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = iSeason)
                             If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
                                 tmpSeason = New Database.DBElement
-                                tmpSeason.Filename = DBTVEpisode.Filename
+                                tmpSeason.Filename = DBTVEpisode.Filename 'needed to check if the episode is inside a season folder or not
                                 tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = iSeason}
                                 tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVShow)
                                 GetTVSeasonFolderContents(tmpSeason)
@@ -1024,7 +1024,7 @@ Public Class Scanner
                 Next
             End If
 
-            'create the All Seasons entry if needed
+            'create the "* All Seasons" entry if needed
             If isNew Then
                 Dim tmpAllSeasons As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
                 If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
@@ -1042,7 +1042,7 @@ Public Class Scanner
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason.TVSeason IsNot Nothing Then
-                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode)
+                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, False)
                 End If
             Next
         End If

@@ -2351,6 +2351,10 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_MovieSet, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
+                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                        bwMovieSetScraper.CancelAsync()
+                    End If
                 End If
             Else
                 ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -2483,7 +2487,7 @@ Public Class frmMain
             Me.ScraperDone = True
         End If
 
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             Me.InfoDownloaded_TV(Res.DBElement)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped TVShow from disk to get clean informations in DB
@@ -2496,7 +2500,7 @@ Public Class frmMain
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         Else
-            Me.FillList(False, False, False)
+            'Me.FillList(False, False, False)
             If Me.dgvTVShows.SelectedRows.Count > 0 Then
                 Me.SelectRow_TVShow(Me.dgvTVShows.SelectedRows(0).Index)
             Else
@@ -2542,6 +2546,10 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
+                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                        bwTVScraper.CancelAsync()
+                    End If
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -2592,16 +2600,23 @@ Public Class frmMain
                             Dim newPreferredSeasonImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
                             Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, newPreferredSeasonImages, newPreferredEpisodeImages)
                             DBScrapeShow.ImagesContainer = newPreferredImages
-
-                            For Each tEpisode In DBScrapeShow.Episodes
-                                Dim epImagesContainer As New MediaContainers.SearchResultsContainer
-                                Dim imgResult As New MediaContainers.Image
-                                ModulesManager.Instance.ScrapeImage_TV(tEpisode, epImagesContainer, tScrapeItem.ScrapeModifier, False)
-                                Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEpisode.Season, tEpisode.TVEpisode.Episode)
-                                tEpisode.ImagesContainer.Poster = imgResult
-                            Next
                         End If
                     End If
+                End If
+
+                If tScrapeItem.ScrapeModifier.withEpisodes Then
+                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename))
+                        If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.EpisodeMeta Then
+                            MediaInfo.UpdateTVMediaInfo(tEpisode)
+                        End If
+                        If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse tScrapeItem.ScrapeModifier.EpisodePoster Then
+                            Dim epImagesContainer As New MediaContainers.SearchResultsContainer
+                            Dim imgResult As MediaContainers.Image = Nothing
+                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, epImagesContainer, tScrapeItem.ScrapeModifier, False)
+                            Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEpisode.Season, tEpisode.TVEpisode.Episode)
+                            tEpisode.ImagesContainer.Poster = imgResult
+                        End If
+                    Next
                 End If
 
                 If bwTVScraper.CancellationPending Then Exit For
@@ -2643,7 +2658,7 @@ Public Class frmMain
             Me.ScraperDone = True
         End If
 
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             Me.InfoDownloaded_TVEpisode(Res.DBElement)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped Episode from disk to get clean informations in DB
@@ -2656,7 +2671,7 @@ Public Class frmMain
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         Else
-            Me.FillList(False, False, False)
+            'Me.FillList(False, False, False)
             If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
                 Me.SelectRow_TVEpisode(Me.dgvTVShows.SelectedRows(0).Index)
             Else
@@ -2699,6 +2714,10 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.EpisodeNFO Then
                 If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
+                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        logger.Trace(String.Concat("Canceled scraping: ", OldEpisodeTitle))
+                        bwTVEpisodeScraper.CancelAsync()
+                    End If
                 End If
             Else
                 ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -2782,7 +2801,7 @@ Public Class frmMain
             Me.ScraperDone = True
         End If
 
-        If Res.ScrapeType = Enums.ScrapeType.SingleScrape Then
+        If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             Me.InfoDownloaded_TVSeason(Res.DBElement)
         ElseIf Res.Cancelled Then
             'Reload last partially scraped TVSeason from disk to get clean informations in DB
@@ -2795,7 +2814,7 @@ Public Class frmMain
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         Else
-            Me.FillList(False, False, False)
+            'Me.FillList(False, False, False)
             If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
                 Me.SelectRow_TVSeason(Me.dgvTVSeasons.SelectedRows(0).Index)
             Else
@@ -2836,6 +2855,10 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.SeasonNFO Then
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
+                    If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        logger.Trace(String.Concat("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
+                        bwTVSeasonScraper.CancelAsync()
+                    End If
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -2885,7 +2908,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVSeason, Nothing, Nothing, False, DBScrapeSeason)
-                    Master.DB.SaveTVSeasonToDB(DBScrapeSeason, False)
+                    Master.DB.SaveTVSeasonToDB(DBScrapeSeason, False, True)
                     bwTVSeasonScraper.ReportProgress(-2, DBScrapeSeason.ID)
                 End If
             End If
@@ -5977,7 +6000,7 @@ doCancel:
 
     Private Sub mnuMovieCustom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeSubmenuCustom.Click
         Me.SetControlsEnabled(False)
-        Using dUpdate As New dlgCustomScraper
+        Using dUpdate As New dlgCustomScraperMovie
             Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
             If Not CustomUpdater.Canceled Then
@@ -8384,7 +8407,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         DBTVSeason = dEditTVSeason.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
-                        Master.DB.SaveTVSeasonToDB(DBTVSeason, False)
+                        Master.DB.SaveTVSeasonToDB(DBTVSeason, False, True)
                         RefreshRow_TVSeason(DBTVSeason.ID)
                     Case Else
                         'If Me.InfoCleared Then Me.LoadInfo_TVSeason(CInt(DBTVSeason.ID)) 'TODO: 
@@ -12669,7 +12692,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         Me.RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -13155,7 +13178,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         Me.RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -13309,7 +13332,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         Me.RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -13440,7 +13463,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         Me.RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -14114,7 +14137,7 @@ doCancel:
 
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
             fScanner.GetTVSeasonFolderContents(DBTVSeason)
-            Master.DB.SaveTVSeasonToDB(DBTVSeason, BatchMode)
+            Master.DB.SaveTVSeasonToDB(DBTVSeason, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVSeason(DBTVSeason.ID)
         Else
             Return False

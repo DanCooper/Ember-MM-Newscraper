@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
-Partial Class dlgCustomScraper
+Partial Class dlgCustomScraperTV
     Inherits System.Windows.Forms.Form
 
 #Region "Fields"
@@ -73,7 +73,7 @@ Partial Class dlgCustomScraper
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgCustomScraper))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgCustomScraperTV))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDescription = New System.Windows.Forms.Label()

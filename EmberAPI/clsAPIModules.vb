@@ -1229,7 +1229,7 @@ Public Class ModulesManager
                 Application.DoEvents()
             End While
 
-            'clean DBTV if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
+            'clean DBTV if the tv show is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
                 DBTV.ExtrafanartsPath = String.Empty
                 DBTV.NfoPath = String.Empty
@@ -1361,7 +1361,7 @@ Public Class ModulesManager
                 ImagesContainer.Sort(Enums.ContentType.Movie)
 
                 'create cache paths
-                ImagesContainer.CreateCachePaths(Enums.ContentType.Movie, DBMovie)
+                ImagesContainer.CreateCachePaths(DBMovie, Enums.ContentType.Movie)
             End If
 
             Return ret.Cancelled
@@ -1416,7 +1416,7 @@ Public Class ModulesManager
             ImagesContainer.Sort(Enums.ContentType.MovieSet)
 
             'create cache paths
-            ImagesContainer.CreateCachePaths(Enums.ContentType.MovieSet, DBMovieSet)
+            ImagesContainer.CreateCachePaths(DBMovieSet, Enums.ContentType.MovieSet)
         End If
 
         Return ret.Cancelled
@@ -1506,7 +1506,7 @@ Public Class ModulesManager
                 ImagesContainer.Sort(Enums.ContentType.TV)
 
                 'create cache paths
-                ImagesContainer.CreateCachePaths(Enums.ContentType.TV, DBTV)
+                ImagesContainer.CreateCachePaths(DBTV, Enums.ContentType.TV)
             End If
 
             Return ret.Cancelled

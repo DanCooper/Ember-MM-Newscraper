@@ -188,6 +188,12 @@
     <Compile Include="dlgAddEditActor.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgCustomScraperTV.designer.vb">
+      <DependentUpon>dlgCustomScraperTV.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgCustomScraperTV.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgDeleteConfirm.Designer.vb">
       <DependentUpon>dlgDeleteConfirm.vb</DependentUpon>
     </Compile>
@@ -338,10 +344,10 @@
     <Compile Include="dlgTVSource.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgCustomScraper.designer.vb">
-      <DependentUpon>dlgCustomScraper.vb</DependentUpon>
+    <Compile Include="dlgCustomScraperMovie.designer.vb">
+      <DependentUpon>dlgCustomScraperMovie.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgCustomScraper.vb">
+    <Compile Include="dlgCustomScraperMovie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgWizard.Designer.vb">
@@ -390,6 +396,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgAddEditActor.resx">
       <DependentUpon>dlgAddEditActor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgCustomScraperTV.resx">
+      <DependentUpon>dlgCustomScraperTV.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgDeleteConfirm.resx">
       <DependentUpon>dlgDeleteConfirm.vb</DependentUpon>
@@ -471,8 +480,8 @@
     <EmbeddedResource Include="dlgTVSource.resx">
       <DependentUpon>dlgTVSource.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgCustomScraper.resx">
-      <DependentUpon>dlgCustomScraper.vb</DependentUpon>
+    <EmbeddedResource Include="dlgCustomScraperMovie.resx">
+      <DependentUpon>dlgCustomScraperMovie.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>

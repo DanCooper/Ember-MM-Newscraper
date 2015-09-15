@@ -894,7 +894,7 @@ Public Class Enums
     Public Enum TVEpisodePosterSize As Integer
         Any = 0
         HD1080 = 1
-        SD225 = 0      'TVDB has only 400 x 300 (400x225 for 16:9 images)
+        SD225 = 2      'TVDB has only 400 x 300 (400x225 for 16:9 images)
     End Enum
 
     Public Enum TVSeasonPosterSize As Integer
@@ -910,7 +910,7 @@ Public Class Enums
     Public Enum TrailerAudioCodec As Integer
         MP4 = 0
         WebM = 1
-        UNKNOWN = 3
+        UNKNOWN = 2
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options

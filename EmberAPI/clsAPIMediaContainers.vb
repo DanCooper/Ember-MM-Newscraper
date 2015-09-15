@@ -922,6 +922,13 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property IMDBIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(MovieID.ID)
+            End Get
+        End Property
+
         <XmlElement("language")> _
         Public Property Language() As String
             Get
@@ -3537,7 +3544,7 @@ Namespace MediaContainers
                     Me._tvfanartsize = Enums.TVFanartSize.HD720
                 Case "578"
                     Me._tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
-                Case "225"
+                Case "225", "300" '225 = 16:9 / 300 = 4:3
                     Me._tvepisodepostersize = Enums.TVEpisodePosterSize.SD225
                 Case "185"
                     Me._moviebannersize = Enums.MovieBannerSize.HD185
@@ -4531,7 +4538,7 @@ Namespace MediaContainers
             Me._mainposters.Clear()
         End Sub
 
-        Public Sub CreateCachePaths(ByVal tContentType As Enums.ContentType, ByVal tDBElement As Database.DBElement)
+        Public Sub CreateCachePaths(ByVal tDBElement As Database.DBElement, ByVal tContentType As Enums.ContentType)
             Dim sID As String = String.Empty
             Dim sPath As String = String.Empty
 
