@@ -1232,14 +1232,23 @@ Public Class ModulesManager
             'clean DBTV if the tv show is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
                 DBTV.ExtrafanartsPath = String.Empty
-                DBTV.NfoPath = String.Empty
-                DBTV.ThemePath = String.Empty
                 DBTV.ImagesContainer = New MediaContainers.ImagesContainer
+                DBTV.NfoPath = String.Empty
+                DBTV.Seasons.Clear()
+                DBTV.ThemePath = String.Empty
                 DBTV.TVShow = New MediaContainers.TVShow
 
                 Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTV.ShowPath), False)
 
                 DBTV.TVShow.Title = tmpTitle
+
+                For Each sEpisode As Database.DBElement In DBTV.Episodes
+                    Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
+                    Dim iSeason As Integer = sEpisode.TVEpisode.Season
+                    sEpisode.ImagesContainer = New MediaContainers.ImagesContainer
+                    sEpisode.NfoPath = String.Empty
+                    sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}
+                Next
             End If
 
             'create a clone of DBTV

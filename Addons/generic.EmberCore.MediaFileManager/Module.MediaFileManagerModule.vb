@@ -376,7 +376,7 @@ Public Class FileManagerExternalModule
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
                                                 DirectoryMove(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                                Master.DB.DeleteMovieFromDB(movieID)
+                                                Master.DB.DeleteMovieFromDB(movieID, False)
                                             Case "COPY"
                                                 DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
                                         End Select
@@ -396,7 +396,7 @@ Public Class FileManagerExternalModule
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
                                                 DirectoryMove(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(899, "Moving TV Show"))
-                                                Master.DB.DeleteTVShowFromDB(tShowID)
+                                                Master.DB.DeleteTVShowFromDB(tShowID, False)
                                             Case "COPY"
                                                 DirectoryCopy(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(900, "Copying TV Show"))
                                         End Select

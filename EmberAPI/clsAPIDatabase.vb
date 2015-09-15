@@ -738,17 +738,65 @@ Public Class Database
         Return isNew
     End Function
     ''' <summary>
-    ''' Remove from the database the TV seasons for which there are no episodes defined
+    ''' Remove all empty TV Seasons there are no episodes defined
     ''' </summary>
     ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
     ''' <remarks></remarks>
-    Public Sub DeleteEmptyTVSeasonsFromDB(Optional ByVal BatchMode As Boolean = False)
+    Public Sub DeleteEmptyTVSeasonsFromDB(ByVal BatchMode As Boolean)
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
         Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLCommand.CommandText = "DELETE FROM seasons WHERE NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999"
             SQLCommand.ExecuteNonQuery()
+        End Using
+        If Not BatchMode Then SQLtransaction.Commit()
+        SQLtransaction = Nothing
+
+        If SQLtransaction IsNot Nothing Then SQLtransaction.Dispose()
+    End Sub
+    ''' <summary>
+    ''' Remove all TV Episodes they are no longer valid (not in <c>ValidEpisodes</c> list)
+    ''' </summary>
+    ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteInvalidTVEpisodesFromDB(ByVal ValidEpisodes As List(Of DBElement), ByVal ShowID As Long, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+
+        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLCommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0};", ShowID)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
+                While SQLreader.Read
+                    If ValidEpisodes.Where(Function(f) f.ID = Convert.ToInt64(SQLreader("idEpisode"))).Count = 0 Then
+                        DeleteTVEpFromDB(Convert.ToInt64(SQLreader("idEpisode")), True, False, True)
+                    End If
+                End While
+            End Using
+        End Using
+        If Not BatchMode Then SQLtransaction.Commit()
+        SQLtransaction = Nothing
+
+        If SQLtransaction IsNot Nothing Then SQLtransaction.Dispose()
+    End Sub
+    ''' <summary>
+    ''' Remove all TV Seasons they are no longer valid (not in <c>ValidSeasons</c> list)
+    ''' </summary>
+    ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteInvalidTVSeasonsFromDB(ByVal ValidSeasons As List(Of DBElement), ByVal ShowID As Long, ByVal BatchMode As Boolean)
+        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+
+        If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+        Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLCommand.CommandText = String.Format("SELECT idSeason FROM seasons WHERE idShow = {0};", ShowID)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
+                While SQLreader.Read
+                    If ValidSeasons.Where(Function(f) f.ID = Convert.ToInt64(SQLreader("idSeason"))).Count = 0 Then
+                        DeleteTVSeasonFromDB(Convert.ToInt64(SQLreader("idSeason")), True)
+                    End If
+                End While
+            End Using
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
         SQLtransaction = Nothing
@@ -762,7 +810,7 @@ Public Class Database
     ''' <param name="ID">ID of the movie to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteMovieFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteMovieFromDB(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idMovie", "Value must be >= 0, was given: " & ID)
 
         Try
@@ -785,7 +833,7 @@ Public Class Database
     ''' <param name="ID">ID of the movieset to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteMovieSetFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteMovieSetFromDB(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         Try
             'first get a list of all movies in the movieset to remove the movieset information from NFO
             Dim moviesToSave As New List(Of Database.DBElement)
@@ -856,7 +904,7 @@ Public Class Database
     ''' <param name="Mode">1=tag of a movie, 2=tag of a show</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTagFromDB(ByVal ID As Long, ByVal Mode As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTagFromDB(ByVal ID As Long, ByVal Mode As Integer, ByVal BatchMode As Boolean) As Boolean
         Try
             'first get a list of all movies in the tag to remove the tag information from NFO
             Dim moviesToSave As New List(Of Database.DBElement)
@@ -920,7 +968,7 @@ Public Class Database
     ''' <param name="ID">ID of the episode to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTVEpFromDB(ByVal ID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVEpFromDB(ByVal ID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, ByVal BatchMode As Boolean) As Boolean
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         Dim doesExist As Boolean = False
 
@@ -980,15 +1028,17 @@ Public Class Database
                 End While
             End Using
         End Using
+
+        If DoCleanSeasons Then Master.DB.DeleteEmptyTVSeasonsFromDB(True)
+
         If Not BatchMode Then
             SQLtransaction.Commit()
-            Master.DB.DeleteEmptyTVSeasonsFromDB()
         End If
 
         Return True
     End Function
 
-    Public Function DeleteTVEpFromDBByPath(ByVal sPath As String, ByVal Force As Boolean, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVEpFromDBByPath(ByVal sPath As String, ByVal Force As Boolean, ByVal BatchMode As Boolean) As Boolean
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLPCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1016,7 +1066,7 @@ Public Class Database
     ''' </summary>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTVSeasonFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVSeasonFromDB(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idSeason", "Value must be >= 0, was given: " & ID)
 
         Try
@@ -1040,7 +1090,7 @@ Public Class Database
     ''' <param name="ShowID">ID of the tvshow to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal BatchMode As Boolean) As Boolean
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
         If iSeason < 0 Then Throw New ArgumentOutOfRangeException("iSeason", "Value must be >= 0, was given: " & iSeason)
 
@@ -1065,7 +1115,7 @@ Public Class Database
     ''' <param name="ID">ID of the tvshow to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteTVShowFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteTVShowFromDB(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idShow", "Value must be >= 0, was given: " & ID)
 
         Try
@@ -4538,17 +4588,19 @@ Public Class Database
         End Using
 
         'save season informations
-        If _show.Seasons IsNot Nothing AndAlso _show.Seasons.Count > 0 Then
+        If _show.SeasonsSpecified Then
             For Each nSeason As Database.DBElement In _show.Seasons
                 SaveTVSeasonToDB(nSeason, True, True)
             Next
+            DeleteInvalidTVSeasonsFromDB(_show.Seasons, _show.ID, True)
         End If
 
         'save episode informations
-        If withEpisodes AndAlso _show.Episodes IsNot Nothing AndAlso _show.Episodes.Count > 0 Then
+        If withEpisodes AndAlso _show.EpisodesSpecified Then
             For Each nEpisode As Database.DBElement In _show.Episodes
                 SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), True, True, True, False)
             Next
+            DeleteInvalidTVEpisodesFromDB(_show.Episodes, _show.ID, True)
         End If
 
         'delete empty seasons after saving all known episodes
@@ -5053,6 +5105,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property ActorThumbsSpecified() As Boolean
+            Get
+                Return Me._actorthumbs.Count > 0
+            End Get
+        End Property
+
         Public Property DateAdded() As Long
             Get
                 Return Me._dateadded
@@ -5080,6 +5138,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property EpisodesSpecified() As Boolean
+            Get
+                Return Me._episodes.Count > 0
+            End Get
+        End Property
+
         Public Property EpisodeSorting() As Enums.EpisodeSorting
             Get
                 Return Me._episodesorting
@@ -5098,6 +5162,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property ExtrafanartsPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._extrafanartspath)
+            End Get
+        End Property
+
         Public Property ExtrathumbsPath() As String
             Get
                 Return Me._extrathumbspath
@@ -5105,6 +5175,12 @@ Public Class Database
             Set(ByVal value As String)
                 Me._extrathumbspath = value
             End Set
+        End Property
+
+        Public ReadOnly Property ExtrathumbsPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._extrathumbspath)
+            End Get
         End Property
 
         Public Property Filename() As String
@@ -5116,6 +5192,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property FilenameSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._filename)
+            End Get
+        End Property
+
         Public Property FilenameID() As Long
             Get
                 Return Me._filenameid
@@ -5123,6 +5205,12 @@ Public Class Database
             Set(ByVal value As Long)
                 Me._filenameid = value
             End Set
+        End Property
+
+        Public ReadOnly Property FilenameIDSpecified() As Boolean
+            Get
+                Return Not Me._filenameid = -1
+            End Get
         End Property
 
         Public Property GetYear() As Boolean
@@ -5141,6 +5229,12 @@ Public Class Database
             Set(ByVal value As Long)
                 Me._id = value
             End Set
+        End Property
+
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not Me._id = -1
+            End Get
         End Property
 
         Public Property ImagesContainer() As MediaContainers.ImagesContainer
@@ -5233,6 +5327,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
         Public Property ListTitle() As String
             Get
                 Return Me._listtitle
@@ -5240,6 +5340,12 @@ Public Class Database
             Set(ByVal value As String)
                 Me._listtitle = value
             End Set
+        End Property
+
+        Public ReadOnly Property ListTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._listtitle)
+            End Get
         End Property
 
         Public Property Movie() As MediaContainers.Movie
@@ -5251,6 +5357,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property MovieSpecified() As Boolean
+            Get
+                Return Me._movie IsNot Nothing
+            End Get
+        End Property
+
         Public Property MovieList() As List(Of DBElement)
             Get
                 Return Me._movielist
@@ -5258,6 +5370,12 @@ Public Class Database
             Set(ByVal value As List(Of DBElement))
                 Me._movielist = value
             End Set
+        End Property
+
+        Public ReadOnly Property MovieListSpecified() As Boolean
+            Get
+                Return Me._movielist.Count > 0
+            End Get
         End Property
 
         Public Property MovieSet() As MediaContainers.MovieSet
@@ -5269,6 +5387,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property MovieSetSpecified() As Boolean
+            Get
+                Return Me._movieset IsNot Nothing
+            End Get
+        End Property
+
         Public Property NfoPath() As String
             Get
                 Return Me._nfopath
@@ -5276,6 +5400,12 @@ Public Class Database
             Set(ByVal value As String)
                 Me._nfopath = value
             End Set
+        End Property
+
+        Public ReadOnly Property NfoPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._nfopath)
+            End Get
         End Property
 
         Public Property Ordering() As Enums.Ordering
@@ -5305,6 +5435,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property SeasonsSpecified() As Boolean
+            Get
+                Return Me._seasons.Count > 0
+            End Get
+        End Property
+
         Public Property ShowID() As Long
             Get
                 Return Me._showid
@@ -5314,6 +5450,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property ShowIDSpecified() As Boolean
+            Get
+                Return Not Me._showid = -1
+            End Get
+        End Property
+
         Public Property ShowPath() As String
             Get
                 Return Me._showpath
@@ -5321,6 +5463,12 @@ Public Class Database
             Set(ByVal value As String)
                 Me._showpath = value
             End Set
+        End Property
+
+        Public ReadOnly Property ShowPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._showpath)
+            End Get
         End Property
 
         Public Property SortMethod() As Enums.SortMethod_MovieSet
@@ -5341,6 +5489,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property SourceSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._source)
+            End Get
+        End Property
+
         Public Property Subtitles() As List(Of MediaInfo.Subtitle)
             Get
                 Return Me._subtitles
@@ -5348,6 +5502,12 @@ Public Class Database
             Set(ByVal value As List(Of MediaInfo.Subtitle))
                 Me._subtitles = value
             End Set
+        End Property
+
+        Public ReadOnly Property SubtitlesSpecified() As Boolean
+            Get
+                Return Me._subtitles.Count > 0
+            End Get
         End Property
 
         Public Property ThemePath() As String
@@ -5359,6 +5519,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property ThemePathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._themepath)
+            End Get
+        End Property
+
         Public Property Trailer() As MediaContainers.Trailer
             Get
                 Return Me._trailer
@@ -5366,6 +5532,12 @@ Public Class Database
             Set(ByVal value As MediaContainers.Trailer)
                 Me._trailer = value
             End Set
+        End Property
+
+        Public ReadOnly Property TrailerSpecified() As Boolean
+            Get
+                Return Me._trailer.TrailerOriginal IsNot Nothing AndAlso Me._trailer.TrailerOriginal.hasMemoryStream
+            End Get
         End Property
 
         Public Property TVEpisode() As MediaContainers.EpisodeDetails
@@ -5377,6 +5549,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property TVEpisodeSpecified() As Boolean
+            Get
+                Return Me._tvepisode IsNot Nothing
+            End Get
+        End Property
+
         Public Property TVSeason() As MediaContainers.SeasonDetails
             Get
                 Return Me._tvseason
@@ -5386,6 +5564,12 @@ Public Class Database
             End Set
         End Property
 
+        Public ReadOnly Property TVSeasonSpecified() As Boolean
+            Get
+                Return Me._tvseason IsNot Nothing
+            End Get
+        End Property
+
         Public Property TVShow() As MediaContainers.TVShow
             Get
                 Return Me._tvshow
@@ -5393,6 +5577,12 @@ Public Class Database
             Set(ByVal value As MediaContainers.TVShow)
                 Me._tvshow = value
             End Set
+        End Property
+
+        Public ReadOnly Property TVShowSpecified() As Boolean
+            Get
+                Return Me._tvshow IsNot Nothing
+            End Get
         End Property
 
         Public Property UseFolder() As Boolean
@@ -5411,6 +5601,12 @@ Public Class Database
             Set(ByVal value As String)
                 Me._videosource = value
             End Set
+        End Property
+
+        Public ReadOnly Property VideoSourceSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._videosource)
+            End Get
         End Property
 
 #End Region 'Properties
