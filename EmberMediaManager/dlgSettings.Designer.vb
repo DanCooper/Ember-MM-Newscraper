@@ -1078,6 +1078,7 @@ Partial Class dlgSettings
         Me.txtTVEpisodePosterWidth = New System.Windows.Forms.TextBox()
         Me.lblTVEpisodePosterHeight = New System.Windows.Forms.Label()
         Me.txtTVEpisodePosterHeight = New System.Windows.Forms.TextBox()
+        Me.chkTVEpisodePosterPrefSizeOnly = New System.Windows.Forms.CheckBox()
         Me.gbTVImagesEpisodeFanartOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVImagesEpisodeFanartOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.txtTVEpisodeFanartHeight = New System.Windows.Forms.TextBox()
@@ -15409,7 +15410,8 @@ Partial Class dlgSettings
         'tblTVImagesEpisodePosterOpts
         '
         Me.tblTVImagesEpisodePosterOpts.AutoSize = true
-        Me.tblTVImagesEpisodePosterOpts.ColumnCount = 5
+        Me.tblTVImagesEpisodePosterOpts.ColumnCount = 6
+        Me.tblTVImagesEpisodePosterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVImagesEpisodePosterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVImagesEpisodePosterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVImagesEpisodePosterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -15421,8 +15423,9 @@ Partial Class dlgSettings
         Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.chkTVEpisodePosterResize, 0, 3)
         Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterWidth, 0, 4)
         Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.txtTVEpisodePosterWidth, 1, 4)
+        Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.txtTVEpisodePosterHeight, 4, 4)
+        Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.chkTVEpisodePosterPrefSizeOnly, 3, 1)
         Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.lblTVEpisodePosterHeight, 2, 4)
-        Me.tblTVImagesEpisodePosterOpts.Controls.Add(Me.txtTVEpisodePosterHeight, 3, 4)
         Me.tblTVImagesEpisodePosterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVImagesEpisodePosterOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVImagesEpisodePosterOpts.Name = "tblTVImagesEpisodePosterOpts"
@@ -15440,7 +15443,7 @@ Partial Class dlgSettings
         '
         Me.lblTVEpisodePosterPrefSize.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVEpisodePosterPrefSize.AutoSize = true
-        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.lblTVEpisodePosterPrefSize, 4)
+        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.lblTVEpisodePosterPrefSize, 5)
         Me.lblTVEpisodePosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVEpisodePosterPrefSize.Location = New System.Drawing.Point(3, 3)
         Me.lblTVEpisodePosterPrefSize.Name = "lblTVEpisodePosterPrefSize"
@@ -15450,21 +15453,21 @@ Partial Class dlgSettings
         '
         'cbTVEpisodePosterPrefSize
         '
-        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.cbTVEpisodePosterPrefSize, 4)
+        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.cbTVEpisodePosterPrefSize, 3)
         Me.cbTVEpisodePosterPrefSize.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbTVEpisodePosterPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTVEpisodePosterPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbTVEpisodePosterPrefSize.FormattingEnabled = true
         Me.cbTVEpisodePosterPrefSize.Location = New System.Drawing.Point(3, 23)
         Me.cbTVEpisodePosterPrefSize.Name = "cbTVEpisodePosterPrefSize"
-        Me.cbTVEpisodePosterPrefSize.Size = New System.Drawing.Size(233, 21)
+        Me.cbTVEpisodePosterPrefSize.Size = New System.Drawing.Size(177, 21)
         Me.cbTVEpisodePosterPrefSize.TabIndex = 9
         '
         'chkTVEpisodePosterOverwrite
         '
         Me.chkTVEpisodePosterOverwrite.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVEpisodePosterOverwrite.AutoSize = true
-        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.chkTVEpisodePosterOverwrite, 4)
+        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.chkTVEpisodePosterOverwrite, 5)
         Me.chkTVEpisodePosterOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkTVEpisodePosterOverwrite.Location = New System.Drawing.Point(3, 50)
         Me.chkTVEpisodePosterOverwrite.Name = "chkTVEpisodePosterOverwrite"
@@ -15477,7 +15480,7 @@ Partial Class dlgSettings
         '
         Me.chkTVEpisodePosterResize.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVEpisodePosterResize.AutoSize = true
-        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.chkTVEpisodePosterResize, 4)
+        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.chkTVEpisodePosterResize, 5)
         Me.chkTVEpisodePosterResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkTVEpisodePosterResize.Location = New System.Drawing.Point(3, 73)
         Me.chkTVEpisodePosterResize.Name = "chkTVEpisodePosterResize"
@@ -15511,6 +15514,7 @@ Partial Class dlgSettings
         '
         Me.lblTVEpisodePosterHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVEpisodePosterHeight.AutoSize = true
+        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.lblTVEpisodePosterHeight, 2)
         Me.lblTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblTVEpisodePosterHeight.Location = New System.Drawing.Point(121, 100)
         Me.lblTVEpisodePosterHeight.Name = "lblTVEpisodePosterHeight"
@@ -15527,6 +15531,19 @@ Partial Class dlgSettings
         Me.txtTVEpisodePosterHeight.Name = "txtTVEpisodePosterHeight"
         Me.txtTVEpisodePosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVEpisodePosterHeight.TabIndex = 5
+        '
+        'chkTVEpisodePosterPrefSizeOnly
+        '
+        Me.chkTVEpisodePosterPrefSizeOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVEpisodePosterPrefSizeOnly.AutoSize = true
+        Me.tblTVImagesEpisodePosterOpts.SetColumnSpan(Me.chkTVEpisodePosterPrefSizeOnly, 2)
+        Me.chkTVEpisodePosterPrefSizeOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.chkTVEpisodePosterPrefSizeOnly.Location = New System.Drawing.Point(186, 25)
+        Me.chkTVEpisodePosterPrefSizeOnly.Name = "chkTVEpisodePosterPrefSizeOnly"
+        Me.chkTVEpisodePosterPrefSizeOnly.Size = New System.Drawing.Size(50, 17)
+        Me.chkTVEpisodePosterPrefSizeOnly.TabIndex = 11
+        Me.chkTVEpisodePosterPrefSizeOnly.Text = "Only"
+        Me.chkTVEpisodePosterPrefSizeOnly.UseVisualStyleBackColor = true
         '
         'gbTVImagesEpisodeFanartOpts
         '
@@ -15578,7 +15595,7 @@ Partial Class dlgSettings
         Me.txtTVEpisodeFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVEpisodeFanartHeight.Enabled = false
         Me.txtTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtTVEpisodeFanartHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVEpisodeFanartHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVEpisodeFanartHeight.Name = "txtTVEpisodeFanartHeight"
         Me.txtTVEpisodeFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVEpisodeFanartHeight.TabIndex = 7
@@ -23859,4 +23876,5 @@ End Sub
     Friend WithEvents lblMovieSourcesDefaultsLanguage As System.Windows.Forms.Label
     Friend WithEvents chkTVGeneralClickScrape As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVGeneralClickScrapeAsk As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodePosterPrefSizeOnly As System.Windows.Forms.CheckBox
 End Class

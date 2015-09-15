@@ -3035,6 +3035,7 @@ Public Class dlgSettings
             End If
             Me.chkTVEpisodeNoFilter.Checked = .TVEpisodeNoFilter
             Me.chkTVEpisodePosterOverwrite.Checked = .TVEpisodePosterOverwrite
+            Me.chkTVEpisodePosterPrefSizeOnly.Checked = .TVEpisodePosterPrefSizeOnly
             Me.chkTVEpisodePosterResize.Checked = .TVEpisodePosterResize
             If .TVEpisodePosterResize Then
                 Me.txtTVEpisodePosterHeight.Text = .TVEpisodePosterHeight.ToString
@@ -4018,6 +4019,7 @@ Public Class dlgSettings
         Dim items3 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
         items3.Add(Master.eLang.GetString(745, "Any"), Enums.TVEpisodePosterSize.Any)
         items3.Add("1920x1080", Enums.TVEpisodePosterSize.HD1080)
+        items3.Add("1280x720", Enums.TVEpisodePosterSize.HD720)
         items3.Add("400x225", Enums.TVEpisodePosterSize.SD225)
         Me.cbTVEpisodePosterPrefSize.DataSource = items3.ToList
         Me.cbTVEpisodePosterPrefSize.DisplayMember = "Key"
@@ -4884,6 +4886,7 @@ Public Class dlgSettings
             .TVEpisodePosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterHeight.Text), Convert.ToInt32(Me.txtTVEpisodePosterHeight.Text), 0)
             .TVEpisodePosterOverwrite = Me.chkTVEpisodePosterOverwrite.Checked
             .TVEpisodePosterPrefSize = CType(Me.cbTVEpisodePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVEpisodePosterSize)).Value
+            .TVEpisodePosterPrefSizeOnly = Me.chkTVEpisodePosterPrefSizeOnly.Checked
             .TVEpisodePosterResize = Me.chkTVEpisodePosterResize.Checked
             .TVEpisodePosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVEpisodePosterWidth.Text), Convert.ToInt32(Me.txtTVEpisodePosterWidth.Text), 0)
             .TVEpisodeProperCase = Me.chkTVEpisodeProperCase.Checked
@@ -6035,6 +6038,7 @@ Public Class dlgSettings
         Me.chkTVASFanartPrefSizeOnly.Text = strOnly
         Me.chkTVASPosterPrefSizeOnly.Text = strOnly
         Me.chkTVEpisodeFanartPrefSizeOnly.Text = strOnly
+        Me.chkTVEpisodePosterPrefSizeOnly.Text = strOnly
         Me.chkTVSeasonBannerPrefSizeOnly.Text = strOnly
         Me.chkTVSeasonFanartPrefSizeOnly.Text = strOnly
         Me.chkTVSeasonPosterPrefSizeOnly.Text = strOnly
@@ -7539,16 +7543,21 @@ Public Class dlgSettings
         chkMovieXBMCProtectVTSBDMV.CheckedChanged, _
         chkMovieYAMJCompatibleSets.CheckedChanged, _
         chkTVASBannerOverwrite.CheckedChanged, _
+        chkTVASBannerPrefSizeOnly.CheckedChanged, _
         chkTVASFanartOverwrite.CheckedChanged, _
+        chkTVASFanartPrefSizeOnly.CheckedChanged, _
         chkTVASLandscapeOverwrite.CheckedChanged, _
         chkTVASPosterOverwrite.CheckedChanged, _
+        chkTVASPosterPrefSizeOnly.CheckedChanged, _
         chkTVCleanDB.CheckedChanged, _
         chkTVDisplayMissingEpisodes.CheckedChanged, _
         chkTVEpisodeActorThumbsFrodo.CheckedChanged, _
         chkTVEpisodeFanartOverwrite.CheckedChanged, _
+        chkTVEpisodeFanartPrefSizeOnly.CheckedChanged, _
         chkTVEpisodePosterBoxee.CheckedChanged, _
         chkTVEpisodePosterFrodo.CheckedChanged, _
         chkTVEpisodePosterOverwrite.CheckedChanged, _
+        chkTVEpisodePosterPrefSizeOnly.CheckedChanged, _
         chkTVEpisodePosterYAMJ.CheckedChanged, _
         chkTVGeneralClickScrapeAsk.CheckedChanged, _
         chkTVGeneralIgnoreLastScan.CheckedChanged, _
@@ -7600,9 +7609,11 @@ Public Class dlgSettings
         chkTVScraperUseSRuntimeForEp.CheckedChanged, _
         chkTVSeasonBannerFrodo.CheckedChanged, _
         chkTVSeasonBannerOverwrite.CheckedChanged, _
+        chkTVSeasonBannerPrefSizeOnly.CheckedChanged, _
         chkTVSeasonBannerYAMJ.CheckedChanged, _
         chkTVSeasonFanartFrodo.CheckedChanged, _
         chkTVSeasonFanartOverwrite.CheckedChanged, _
+        chkTVSeasonFanartPrefSizeOnly.CheckedChanged, _
         chkTVSeasonFanartYAMJ.CheckedChanged, _
         chkTVSeasonLandscapeAD.CheckedChanged, _
         chkTVSeasonLandscapeExtended.CheckedChanged, _
@@ -7610,12 +7621,14 @@ Public Class dlgSettings
         chkTVSeasonPosterBoxee.CheckedChanged, _
         chkTVSeasonPosterFrodo.CheckedChanged, _
         chkTVSeasonPosterOverwrite.CheckedChanged, _
+        chkTVSeasonPosterPrefSizeOnly.CheckedChanged, _
         chkTVSeasonPosterYAMJ.CheckedChanged, _
         chkTVShowActorThumbsExpert.CheckedChanged, _
         chkTVShowActorThumbsFrodo.CheckedChanged, _
         chkTVShowBannerBoxee.CheckedChanged, _
         chkTVShowBannerFrodo.CheckedChanged, _
         chkTVShowBannerOverwrite.CheckedChanged, _
+        chkTVShowBannerPrefSizeOnly.CheckedChanged, _
         chkTVShowBannerYAMJ.CheckedChanged, _
         chkTVShowCharacterArtAD.CheckedChanged, _
         chkTVShowCharacterArtExtended.CheckedChanged, _
@@ -7633,6 +7646,7 @@ Public Class dlgSettings
         chkTVShowFanartBoxee.CheckedChanged, _
         chkTVShowFanartFrodo.CheckedChanged, _
         chkTVShowFanartOverwrite.CheckedChanged, _
+        chkTVShowFanartPrefSizeOnly.CheckedChanged, _
         chkTVShowFanartYAMJ.CheckedChanged, _
         chkTVShowLandscapeAD.CheckedChanged, _
         chkTVShowLandscapeExtended.CheckedChanged, _
@@ -7640,6 +7654,7 @@ Public Class dlgSettings
         chkTVShowPosterBoxee.CheckedChanged, _
         chkTVShowPosterFrodo.CheckedChanged, _
         chkTVShowPosterOverwrite.CheckedChanged, _
+        chkTVShowPosterPrefSizeOnly.CheckedChanged, _
         chkTVShowPosterYAMJ.CheckedChanged, _
         chkTVShowThemeOverwrite.CheckedChanged, _
         tcFileSystemCleaner.SelectedIndexChanged, _

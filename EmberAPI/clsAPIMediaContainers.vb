@@ -3541,6 +3541,7 @@ Namespace MediaContainers
                     Me._tvfanartsize = Enums.TVFanartSize.HD1080
                 Case "720"
                     Me._moviefanartsize = Enums.MovieFanartSize.HD720
+                    Me._tvepisodepostersize = Enums.TVEpisodePosterSize.HD720
                     Me._tvfanartsize = Enums.TVFanartSize.HD720
                 Case "578"
                     Me._tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
