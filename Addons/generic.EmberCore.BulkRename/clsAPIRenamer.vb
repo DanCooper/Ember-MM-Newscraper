@@ -1623,7 +1623,7 @@ Public Class FileFolderRenamer
                 nextC = pattern.IndexOf("$X")
                 If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                     strCond = pattern.Substring(nextC + 2, 1)
-                    pattern = pattern.Replace(String.Concat("$X", strCond), "")
+                    pattern = pattern.Replace(String.Concat("$X", strCond), String.Empty)
                     pattern = pattern.Replace(" ", strCond)
                 End If
 
@@ -1651,6 +1651,21 @@ Public Class FileFolderRenamer
                     nextC = pattern.IndexOf("$?")
                 End While
 
+                'Lowercase all letters
+                nextC = pattern.IndexOf("$;")
+                If Not nextC = -1 Then
+                    pattern = pattern.ToLower
+                    pattern = pattern.Replace("$;", String.Empty)
+                End If
+
+                'Uppercase first letter in each word
+                nextC = pattern.IndexOf("$!")
+                If Not nextC = -1 Then
+                    pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
+                    pattern = pattern.Replace("$!", String.Empty)
+                End If
+
+                'Cleaning
                 If isPath Then
                     pattern = StringUtils.CleanPath(pattern)
                 Else

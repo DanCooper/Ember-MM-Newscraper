@@ -436,7 +436,6 @@ Partial Class dlgBulkRenamer_Movie
         Me.Controls.Add(Me.pnlTop)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(1008, 511)
         Me.Name = "dlgBulkRenamer_Movie"

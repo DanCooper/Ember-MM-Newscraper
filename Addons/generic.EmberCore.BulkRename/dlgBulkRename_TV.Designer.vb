@@ -373,7 +373,6 @@ Partial Class dlgBulkRenamer_TV
         Me.Controls.Add(Me.Rename_Button)
         Me.Controls.Add(Me.dgvEpisodesList)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgBulkRenamer_TV"
         Me.ShowInTaskbar = False
