@@ -1399,7 +1399,6 @@ Public Class Scanner
                 End If
 
                 For Each inDir As DirectoryInfo In dList
-
                     If Me.bwPrelim.CancellationPending Then Return
                     ScanForMovieFiles(inDir.FullName, sSource, sLang, bUseFolder, bSingle, bGetYear)
                     If bRecur Then
@@ -1500,6 +1499,7 @@ Public Class Scanner
 
                     For Each sDirs As DirectoryInfo In inList
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
+                        ScanTVSubDir(currShowContainer, sDirs.FullName)
                     Next
 
                     LoadTVShow(currShowContainer, True, True, True)
@@ -1510,6 +1510,19 @@ Public Class Scanner
             dInfo = Nothing
             inInfo = Nothing
         End If
+    End Sub
+
+    Private Sub ScanTVSubDir(ByRef tShow As Database.DBElement, ByVal strPath As String)
+        Dim inInfo As DirectoryInfo
+        Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
+
+        inInfo = New DirectoryInfo(strPath)
+        inList = inInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
+
+        For Each sDirs As DirectoryInfo In inList
+            Me.ScanForTVFiles(tShow, sDirs.FullName)
+            ScanTVSubDir(tShow, sDirs.FullName)
+        Next
     End Sub
 
     Public Sub Start(ByVal Scan As Structures.Scans, ByVal SourceName As String, ByVal Folder As String)

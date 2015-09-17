@@ -1623,7 +1623,7 @@ Public Class FileFolderRenamer
                 nextC = pattern.IndexOf("$X")
                 If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                     strCond = pattern.Substring(nextC + 2, 1)
-                    pattern = pattern.Replace(String.Concat("$X", strCond), "")
+                    pattern = pattern.Replace(String.Concat("$X", strCond), String.Empty)
                     pattern = pattern.Replace(" ", strCond)
                 End If
 
@@ -1651,6 +1651,21 @@ Public Class FileFolderRenamer
                     nextC = pattern.IndexOf("$?")
                 End While
 
+                'Lowercase all letters
+                nextC = pattern.IndexOf("$;")
+                If Not nextC = -1 Then
+                    pattern = pattern.ToLower
+                    pattern = pattern.Replace("$;", String.Empty)
+                End If
+
+                'Uppercase first letter in each word
+                nextC = pattern.IndexOf("$!")
+                If Not nextC = -1 Then
+                    pattern = Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(pattern)
+                    pattern = pattern.Replace("$!", String.Empty)
+                End If
+
+                'Cleaning
                 If isPath Then
                     pattern = StringUtils.CleanPath(pattern)
                 Else
@@ -1787,40 +1802,27 @@ Public Class FileFolderRenamer
         End If
     End Sub
 
-    Public Shared Function SelectMPAA(ByVal tMPAA As String) As String
-        If Not String.IsNullOrEmpty(tMPAA) Then
-            Try
-                Dim strMPAA As String = tMPAA
-                If strMPAA.ToLower.StartsWith("rated g") Then
-                    Return "G"
-                ElseIf strMPAA.ToLower.StartsWith("rated pg-13") Then
-                    Return "PG-13"
-                ElseIf strMPAA.ToLower.StartsWith("rated pg") Then
-                    Return "PG"
-                ElseIf strMPAA.ToLower.StartsWith("rated r") Then
-                    Return "R"
-                ElseIf strMPAA.ToLower.StartsWith("rated nc-17") Then
-                    Return "NC-17"
-                ElseIf strMPAA.Contains(":") Then 'might be a certification
-                    Dim tReturn As String = strMPAA.Split(Convert.ToChar(":")).Last
-                    'just in case
-                    For Each fnC As Char In Path.GetInvalidFileNameChars
-                        tReturn = tReturn.Replace(fnC, String.Empty)
-                    Next
-                    For Each fC As Char In Path.GetInvalidPathChars
-                        tReturn = tReturn.Replace(fC, String.Empty)
-                    Next
-                    Return tReturn
-                Else
-                    Return tMPAA
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+    Public Shared Function SelectMPAA(ByVal strMPAA As String) As String
+        If Not String.IsNullOrEmpty(strMPAA) Then
+            If strMPAA.ToLower.StartsWith("rated g") Then
+                Return "G"
+            ElseIf strMPAA.ToLower.StartsWith("rated pg-13") Then
+                Return "PG-13"
+            ElseIf strMPAA.ToLower.StartsWith("rated pg") Then
+                Return "PG"
+            ElseIf strMPAA.ToLower.StartsWith("rated r") Then
+                Return "R"
+            ElseIf strMPAA.ToLower.StartsWith("rated nc-17") Then
+                Return "NC-17"
+            ElseIf strMPAA.Contains(":") Then 'might be a certification
+                Dim strSplit As String = strMPAA.Split(Convert.ToChar(":")).Last
+                Return Regex.Replace(strSplit, "rated", String.Empty, RegexOptions.IgnoreCase).Trim
+            Else
+                Return strMPAA
+            End If
         Else
             Return String.Empty
         End If
-        Return String.Empty
     End Function
 
     Public Sub SetIsLocked_Episodes(ByVal path As String, ByVal filename As String, ByVal lock As Boolean)
