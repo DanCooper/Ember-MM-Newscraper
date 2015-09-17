@@ -1338,7 +1338,7 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
-                If Not a = String.Empty Then
+                If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
                     End If
@@ -1408,7 +1408,7 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
-                If Not a = String.Empty Then
+                If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
                     End If
