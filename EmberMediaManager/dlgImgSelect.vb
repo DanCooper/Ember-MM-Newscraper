@@ -1994,6 +1994,7 @@ Public Class dlgImgSelect
         Me.pnlImgSelectLeft.Enabled = False
         Me.pnlImgSelectMain.Enabled = False
         Me.pnlImgSelectTop.Enabled = False
+        Me.pnlLoading.Visible = False
 
         If Me.bwImgDefaults.IsBusy Then Me.bwImgDefaults.CancelAsync()
         If Me.bwImgDownload.IsBusy Then Me.bwImgDownload.CancelAsync()
