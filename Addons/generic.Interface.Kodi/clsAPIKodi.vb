@@ -38,7 +38,7 @@ Namespace Kodi
         'helper object, needed for communication client (notification, eventhandler support)
         Private platformServices As IPlatformServices = New PlatformServices
         'Private NotificationsEnabled As Boolean
-
+        Shared IsRunningTask As Boolean = False
 
 #End Region 'Fields
 
@@ -73,10 +73,7 @@ Namespace Kodi
             End If
             'now initialize new client object
             _kodi = New Client(platformServices, _currenthost.Address, _currenthost.Port, _currenthost.Username, _currenthost.Password)
-            'Listen to Kodi Events
-            'AddHandler _kodi.VideoLibrary.OnScanFinished, AddressOf VideoLibrary_OnScanFinished
-            'AddHandler _kodi.VideoLibrary.OnCleanFinished, AddressOf VideoLibrary_OnCleanFinished
-            '_kodi.StartNotificationListener()
+         
         End Sub
 
         ''' <summary>
@@ -86,7 +83,10 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnScanFinished(ByVal sender As String, ByVal data As Object)
             'Finished updating video library
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            RemoveHandler _kodi.VideoLibrary.OnScanFinished, AddressOf VideoLibrary_OnScanFinished
+            IsRunningTask = False
+            'cleanup NotificationListener disposing current communication object and make a new init (fix for crash in loop: https://github.com/DanCooper/Ember-MM-Newscraper/blob/master/KodiAPI/XBMCRPC/Client.cs#L131)
+            Init()
         End Sub
         ''' <summary>
         ''' Triggered as soon as cleaning of video library is finished
@@ -95,7 +95,10 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnCleanFinished(ByVal sender As String, ByVal data As Object)
             'Finished cleaning of video library
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            RemoveHandler _kodi.VideoLibrary.OnCleanFinished, AddressOf VideoLibrary_OnCleanFinished
+            IsRunningTask = False
+            'cleanup NotificationListener disposing current communication object and make a new init (fix for crash in loop: https://github.com/DanCooper/Ember-MM-Newscraper/blob/master/KodiAPI/XBMCRPC/Client.cs#L131)
+            Init()
         End Sub
 
 #Region "Movie API"
@@ -1283,8 +1286,16 @@ Namespace Kodi
             End If
 
             Try
+                'Listen to Kodi Events
+                AddHandler _kodi.VideoLibrary.OnCleanFinished, AddressOf VideoLibrary_OnCleanFinished
+                Await _kodi.StartNotificationListener()
                 Dim response As String = String.Empty
+                IsRunningTask = True
+
                 response = Await _kodi.VideoLibrary.Clean.ConfigureAwait(False)
+                While IsRunningTask = True
+                    'Still cleaning library
+                End While
                 logger.Trace("[APIKodi] CleanVideoLibrary: " & _currenthost.Label)
                 Return response
             Catch ex As Exception
@@ -1336,6 +1347,8 @@ Namespace Kodi
                         codename = "Gotham "
                     Case "621"
                         codename = "Helix "
+                    Case "625"
+                        codename = "Isengard "
                 End Select
                 Return codename & response.version.major.ToString & "." & response.version.minor
             Catch ex As Exception
@@ -1428,8 +1441,15 @@ Namespace Kodi
 
             Try
                 Dim response As String = String.Empty
+                'Listen to Kodi Events
+                AddHandler _kodi.VideoLibrary.OnScanFinished, AddressOf VideoLibrary_OnScanFinished
+                Await _kodi.StartNotificationListener()
+                IsRunningTask = True
                 response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
                 logger.Trace("[APIKodi] ScanVideoLibrary: " & _currenthost.Label)
+                While IsRunningTask = True
+                    'Still updating library
+                End While
                 Return response
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)

@@ -70,6 +70,12 @@ Public Class KodiInterface
     ''' <remarks></remarks>
     Private TasksDone As Boolean = True
 
+    ''' <summary>
+    ''' control variable: true=Doing DBUpdate/DBCleaning of KODI database blocking all other KodiSyncTasks, false= No DBUpdate/DBCleaning of KODI database at the moment
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private IsKodiDBUpdateRunning As Boolean = False
+
 #End Region 'Fields
 
 #Region "Events"
@@ -157,13 +163,18 @@ Public Class KodiInterface
     ''' </remarks>
     Private Async Sub RunTasks()
         Me.TasksDone = False
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1439, "Run Tasks"), New Bitmap(My.Resources.logo)}))
-        While Me.TaskList.Count > 0
-            Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).mDBElement, TaskList.Item(0).mHost)
-            Me.TaskList.RemoveAt(0)
-        End While
-        Me.TasksDone = True
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(251, "All Tasks Done"), New Bitmap(My.Resources.logo)}))
+        If IsKodiDBUpdateRunning = False Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1439, "Run Tasks"), New Bitmap(My.Resources.logo)}))
+            While Me.TaskList.Count > 0
+                Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).mDBElement, TaskList.Item(0).mHost)
+                Me.TaskList.RemoveAt(0)
+            End While
+            Me.TasksDone = True
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(251, "All Tasks Done"), New Bitmap(My.Resources.logo)}))
+        Else
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1457, "Kodi is busy right now. Please wait!"), New Bitmap(My.Resources.logo)}))
+            logger.Warn("[KodiInterface] RunTasks: CleanLibrary/DBUpdate is currently running. Stop RunTask job for now... ")
+        End If
     End Sub
 
     Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
@@ -839,14 +850,25 @@ Public Class KodiInterface
     Private Async Sub mnuHostCleanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
-            Dim _APIKodi As New Kodi.APIKodi(Host)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
-            Dim response = Await _APIKodi.CleanVideoLibrary()
-            If response = Nothing Then
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1451, "Cleaning Failed"), Nothing}))
+            'first check if theres currently a big DBUpdate running
+            If IsKodiDBUpdateRunning = False Then
+                Dim _APIKodi As New Kodi.APIKodi(Host)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
+                'block all other KodiSync Task during the process
+                IsKodiDBUpdateRunning = True
+                Dim response = Await _APIKodi.CleanVideoLibrary()
+                IsKodiDBUpdateRunning = False
+                If response = Nothing Then
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1451, "Cleaning Failed"), Nothing}))
+                Else
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
+                End If
+                RunTasks()
             Else
-                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1457, "Kodi is busy right now. Please wait!"), New Bitmap(My.Resources.logo)}))
             End If
+           
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -860,13 +882,22 @@ Public Class KodiInterface
     Private Async Sub mnuHostScanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
-            Dim _APIKodi As New Kodi.APIKodi(Host)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
-            Dim response = Await _APIKodi.ScanVideoLibrary()
-            If response = Nothing Then
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
+            'first check if theres currently a big DBUpdate running
+            If IsKodiDBUpdateRunning = False Then
+                Dim _APIKodi As New Kodi.APIKodi(Host)
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
+                'block all other KodiSync Task during the process
+                IsKodiDBUpdateRunning = True
+                Dim response = Await _APIKodi.ScanVideoLibrary()
+                IsKodiDBUpdateRunning = False
+                If response = Nothing Then
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
+                Else
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+                End If
+                RunTasks()
             Else
-                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1457, "Kodi is busy right now. Please wait!"), New Bitmap(My.Resources.logo)}))
             End If
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
