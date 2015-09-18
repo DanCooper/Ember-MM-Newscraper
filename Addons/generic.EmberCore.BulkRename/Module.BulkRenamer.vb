@@ -382,8 +382,6 @@ Public Class BulkRenamerModule
         Me._setup.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
         Me._setup.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
         Me._setup.txtFilePatternMovies.Text = MySettings.FilesPattern_Movies
-        Me._setup.chkBulkRenamer.Checked = MySettings.BulkRenamer
-        Me._setup.chkGenericModule.Checked = MySettings.GenericModule
         Me._setup.chkRenameEditMovies.Checked = MySettings.RenameEdit_Movies
         Me._setup.chkRenameEditEpisodes.Checked = MySettings.RenameEdit_Episodes
         Me._setup.chkRenameMultiMovies.Checked = MySettings.RenameMulti_Movies
@@ -416,8 +414,6 @@ Public Class BulkRenamerModule
         MySettings.RenameSingle_Movies = clsAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.Movie)
         MySettings.RenameSingle_Shows = clsAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.TVShow)
         MySettings.RenameUpdate_Episodes = clsAdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.ContentType.TVEpisode)
-        MySettings.BulkRenamer = clsAdvancedSettings.GetBooleanSetting("BulkRenamer", True)
-        MySettings.GenericModule = clsAdvancedSettings.GetBooleanSetting("GenericModule", True)
     End Sub
 
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
@@ -451,7 +447,6 @@ Public Class BulkRenamerModule
 
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
-        MySettings.BulkRenamer = Me._setup.chkBulkRenamer.Checked
         MySettings.FoldersPattern_Movies = Me._setup.txtFolderPatternMovies.Text
         MySettings.FoldersPattern_Seasons = Me._setup.txtFolderPatternSeasons.Text
         MySettings.FoldersPattern_Shows = Me._setup.txtFolderPatternShows.Text
@@ -464,7 +459,6 @@ Public Class BulkRenamerModule
         MySettings.RenameSingle_Movies = Me._setup.chkRenameSingleMovies.Checked
         MySettings.RenameSingle_Shows = Me._setup.chkRenameSingleShows.Checked
         MySettings.RenameUpdate_Episodes = Me._setup.chkRenameUpdateEpisodes.Checked
-        MySettings.GenericModule = Me._setup.chkGenericModule.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -487,8 +481,6 @@ Public Class BulkRenamerModule
             settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Movies, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Shows, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("RenameUpdate", MySettings.RenameUpdate_Episodes, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("BulkRenamer", MySettings.BulkRenamer)
-            settings.SetBooleanSetting("GenericModule", MySettings.GenericModule)
         End Using
     End Sub
 
@@ -500,13 +492,11 @@ Public Class BulkRenamerModule
 
 #Region "Fields"
 
-        Dim BulkRenamer As Boolean
         Dim FilesPattern_Episodes As String
         Dim FilesPattern_Movies As String
         Dim FoldersPattern_Movies As String
         Dim FoldersPattern_Seasons As String
         Dim FoldersPattern_Shows As String
-        Dim GenericModule As Boolean
         Dim RenameEdit_Movies As Boolean
         Dim RenameEdit_Episodes As Boolean
         Dim RenameMulti_Movies As Boolean

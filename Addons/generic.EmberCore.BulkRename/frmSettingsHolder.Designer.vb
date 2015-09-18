@@ -41,8 +41,6 @@ Partial Class frmSettingsHolder
         Me.chkRenameEditEpisodes = New System.Windows.Forms.CheckBox()
         Me.chkRenameUpdateEpisodes = New System.Windows.Forms.CheckBox()
         Me.btnFilePatternEpisodesReset = New System.Windows.Forms.Button()
-        Me.chkBulkRenamer = New System.Windows.Forms.CheckBox()
-        Me.chkGenericModule = New System.Windows.Forms.CheckBox()
         Me.gbRenamerPatternsMovie = New System.Windows.Forms.GroupBox()
         Me.tblRenamerPatternsMovie = New System.Windows.Forms.TableLayoutPanel()
         Me.chkRenameSingleMovies = New System.Windows.Forms.CheckBox()
@@ -54,7 +52,6 @@ Partial Class frmSettingsHolder
         Me.lblFilePatternMovies = New System.Windows.Forms.Label()
         Me.chkRenameEditMovies = New System.Windows.Forms.CheckBox()
         Me.btnFilePatternMoviesReset = New System.Windows.Forms.Button()
-        Me.lblTips = New System.Windows.Forms.Label()
         Me.gbPreview = New System.Windows.Forms.GroupBox()
         Me.tblPreview = New System.Windows.Forms.TableLayoutPanel()
         Me.lblSingleEpisodeFile = New System.Windows.Forms.Label()
@@ -68,8 +65,9 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
-        Me.pnlTips = New System.Windows.Forms.Panel()
         Me.tblTips = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblTips = New System.Windows.Forms.Label()
+        Me.pnlTips = New System.Windows.Forms.Panel()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
@@ -81,8 +79,8 @@ Partial Class frmSettingsHolder
         Me.tblPreview.SuspendLayout()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
-        Me.pnlTips.SuspendLayout()
         Me.tblTips.SuspendLayout()
+        Me.pnlTips.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -115,18 +113,14 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsMain.Controls.Add(Me.gbRenamerPatternsTV, 0, 3)
-        Me.tblSettingsMain.Controls.Add(Me.chkBulkRenamer, 0, 0)
-        Me.tblSettingsMain.Controls.Add(Me.chkGenericModule, 0, 1)
-        Me.tblSettingsMain.Controls.Add(Me.gbRenamerPatternsMovie, 0, 2)
-        Me.tblSettingsMain.Controls.Add(Me.gbPreview, 1, 4)
+        Me.tblSettingsMain.Controls.Add(Me.gbRenamerPatternsTV, 0, 1)
+        Me.tblSettingsMain.Controls.Add(Me.gbRenamerPatternsMovie, 0, 0)
+        Me.tblSettingsMain.Controls.Add(Me.gbPreview, 1, 2)
         Me.tblSettingsMain.Controls.Add(Me.pnlTips, 1, 0)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 6
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowCount = 4
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -138,11 +132,12 @@ Partial Class frmSettingsHolder
         '
         Me.gbRenamerPatternsTV.AutoSize = True
         Me.gbRenamerPatternsTV.Controls.Add(Me.tblRenamerPatternsTV)
+        Me.gbRenamerPatternsTV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbRenamerPatternsTV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbRenamerPatternsTV.Location = New System.Drawing.Point(3, 243)
+        Me.gbRenamerPatternsTV.Location = New System.Drawing.Point(3, 197)
         Me.gbRenamerPatternsTV.Name = "gbRenamerPatternsTV"
         Me.tblSettingsMain.SetRowSpan(Me.gbRenamerPatternsTV, 2)
-        Me.gbRenamerPatternsTV.Size = New System.Drawing.Size(321, 260)
+        Me.gbRenamerPatternsTV.Size = New System.Drawing.Size(322, 260)
         Me.gbRenamerPatternsTV.TabIndex = 5
         Me.gbRenamerPatternsTV.TabStop = False
         Me.gbRenamerPatternsTV.Text = "Default TV Renaming Patterns"
@@ -182,7 +177,7 @@ Partial Class frmSettingsHolder
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblRenamerPatternsTV.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblRenamerPatternsTV.Size = New System.Drawing.Size(315, 239)
+        Me.tblRenamerPatternsTV.Size = New System.Drawing.Size(316, 239)
         Me.tblRenamerPatternsTV.TabIndex = 7
         '
         'btnFolderPatternSeasonsReset
@@ -335,32 +330,13 @@ Partial Class frmSettingsHolder
         Me.btnFilePatternEpisodesReset.TabIndex = 7
         Me.btnFilePatternEpisodesReset.UseVisualStyleBackColor = True
         '
-        'chkBulkRenamer
-        '
-        Me.chkBulkRenamer.AutoSize = True
-        Me.chkBulkRenamer.Location = New System.Drawing.Point(3, 3)
-        Me.chkBulkRenamer.Name = "chkBulkRenamer"
-        Me.chkBulkRenamer.Size = New System.Drawing.Size(160, 17)
-        Me.chkBulkRenamer.TabIndex = 2
-        Me.chkBulkRenamer.Text = "Enable Bulk Renamer Tool"
-        Me.chkBulkRenamer.UseVisualStyleBackColor = True
-        '
-        'chkGenericModule
-        '
-        Me.chkGenericModule.AutoSize = True
-        Me.chkGenericModule.Location = New System.Drawing.Point(3, 26)
-        Me.chkGenericModule.Name = "chkGenericModule"
-        Me.chkGenericModule.Size = New System.Drawing.Size(190, 17)
-        Me.chkGenericModule.TabIndex = 1
-        Me.chkGenericModule.Text = "Enable Generic Rename Module"
-        Me.chkGenericModule.UseVisualStyleBackColor = True
-        '
         'gbRenamerPatternsMovie
         '
         Me.gbRenamerPatternsMovie.AutoSize = True
         Me.gbRenamerPatternsMovie.Controls.Add(Me.tblRenamerPatternsMovie)
+        Me.gbRenamerPatternsMovie.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbRenamerPatternsMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbRenamerPatternsMovie.Location = New System.Drawing.Point(3, 49)
+        Me.gbRenamerPatternsMovie.Location = New System.Drawing.Point(3, 3)
         Me.gbRenamerPatternsMovie.Name = "gbRenamerPatternsMovie"
         Me.gbRenamerPatternsMovie.Size = New System.Drawing.Size(322, 188)
         Me.gbRenamerPatternsMovie.TabIndex = 3
@@ -500,23 +476,13 @@ Partial Class frmSettingsHolder
         Me.btnFilePatternMoviesReset.TabIndex = 6
         Me.btnFilePatternMoviesReset.UseVisualStyleBackColor = True
         '
-        'lblTips
-        '
-        Me.lblTips.AutoSize = True
-        Me.lblTips.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblTips.Location = New System.Drawing.Point(3, 0)
-        Me.lblTips.Name = "lblTips"
-        Me.lblTips.Size = New System.Drawing.Size(404, 279)
-        Me.lblTips.TabIndex = 4
-        Me.lblTips.Text = "Tips List"
-        '
         'gbPreview
         '
         Me.gbPreview.AutoSize = True
         Me.gbPreview.Controls.Add(Me.tblPreview)
         Me.gbPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbPreview.Location = New System.Drawing.Point(331, 290)
+        Me.gbPreview.Location = New System.Drawing.Point(331, 244)
         Me.gbPreview.Name = "gbPreview"
         Me.gbPreview.Size = New System.Drawing.Size(412, 213)
         Me.gbPreview.TabIndex = 6
@@ -670,19 +636,6 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'pnlTips
-        '
-        Me.pnlTips.AutoSize = True
-        Me.pnlTips.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTips.Controls.Add(Me.tblTips)
-        Me.pnlTips.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlTips.Location = New System.Drawing.Point(331, 3)
-        Me.pnlTips.MaximumSize = New System.Drawing.Size(475, 360)
-        Me.pnlTips.Name = "pnlTips"
-        Me.tblSettingsMain.SetRowSpan(Me.pnlTips, 4)
-        Me.pnlTips.Size = New System.Drawing.Size(412, 281)
-        Me.pnlTips.TabIndex = 7
-        '
         'tblTips
         '
         Me.tblTips.AutoScroll = True
@@ -696,9 +649,32 @@ Partial Class frmSettingsHolder
         Me.tblTips.Name = "tblTips"
         Me.tblTips.RowCount = 1
         Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTips.Size = New System.Drawing.Size(410, 279)
+        Me.tblTips.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 279.0!))
+        Me.tblTips.Size = New System.Drawing.Size(410, 233)
         Me.tblTips.TabIndex = 5
+        '
+        'lblTips
+        '
+        Me.lblTips.AutoSize = True
+        Me.lblTips.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblTips.Location = New System.Drawing.Point(3, 0)
+        Me.lblTips.Name = "lblTips"
+        Me.lblTips.Size = New System.Drawing.Size(404, 233)
+        Me.lblTips.TabIndex = 4
+        Me.lblTips.Text = "Tips List"
+        '
+        'pnlTips
+        '
+        Me.pnlTips.AutoSize = True
+        Me.pnlTips.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTips.Controls.Add(Me.tblTips)
+        Me.pnlTips.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlTips.Location = New System.Drawing.Point(331, 3)
+        Me.pnlTips.MaximumSize = New System.Drawing.Size(475, 360)
+        Me.pnlTips.Name = "pnlTips"
+        Me.tblSettingsMain.SetRowSpan(Me.pnlTips, 2)
+        Me.pnlTips.Size = New System.Drawing.Size(412, 235)
+        Me.pnlTips.TabIndex = 7
         '
         'frmSettingsHolder
         '
@@ -732,10 +708,10 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
         Me.tblSettingsTop.PerformLayout()
-        Me.pnlTips.ResumeLayout(False)
-        Me.pnlTips.PerformLayout()
         Me.tblTips.ResumeLayout(False)
         Me.tblTips.PerformLayout()
+        Me.pnlTips.ResumeLayout(False)
+        Me.pnlTips.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -743,8 +719,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents chkBulkRenamer As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGenericModule As System.Windows.Forms.CheckBox
     Friend WithEvents gbRenamerPatternsMovie As System.Windows.Forms.GroupBox
     Friend WithEvents chkRenameSingleMovies As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameMultiMovies As System.Windows.Forms.CheckBox
@@ -752,7 +726,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents lblFolderPatternMovies As System.Windows.Forms.Label
     Friend WithEvents txtFilePatternMovies As System.Windows.Forms.TextBox
     Friend WithEvents txtFolderPatternMovies As System.Windows.Forms.TextBox
-    Friend WithEvents lblTips As System.Windows.Forms.Label
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
@@ -787,4 +760,5 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnFilePatternMoviesReset As System.Windows.Forms.Button
     Friend WithEvents pnlTips As System.Windows.Forms.Panel
     Friend WithEvents tblTips As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblTips As System.Windows.Forms.Label
 End Class
