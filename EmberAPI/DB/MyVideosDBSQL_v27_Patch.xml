@@ -42,7 +42,7 @@
       </execute>
     </command>
     <command type="DB">
-      <description>remove field Missing/NeedsSave / rename field TVEPPathID to idFile in table episode</description>
+      <description>remove field Missing/NeedsSave and rename field TVEPPathID to idFile in table episode</description>
       <execute>
         CREATE TABLE episode01(
         idEpisode,

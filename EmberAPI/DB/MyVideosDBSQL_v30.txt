@@ -650,7 +650,8 @@ CREATE VIEW episodelist
         SELECT
         episode.*,
         fanart.url AS FanartPath,
-        poster.url AS PosterPath
+        poster.url AS PosterPath,
+        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
         FROM
         episode
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
