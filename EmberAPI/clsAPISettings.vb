@@ -4259,21 +4259,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetImagesPrefLanguage() As String
+    Public Property MovieSetImagesMediaLanguageOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetImagesPrefLanguage
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.MovieSetImagesPrefLanguage = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesPrefLanguageOnly() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieSetImagesPrefLanguageOnly
+            Return Settings._XMLSettings.MovieSetImagesMediaLanguageOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetImagesPrefLanguageOnly = value
+            Settings._XMLSettings.MovieSetImagesMediaLanguageOnly = value
         End Set
     End Property
 
@@ -6796,8 +6787,7 @@ Public Class Settings
         Me.MovieSetImagesDisplayImageSelect = True
         Me.MovieSetImagesGetBlankImages = False
         Me.MovieSetImagesGetEnglishImages = False
-        Me.MovieSetImagesPrefLanguage = "en"
-        Me.MovieSetImagesPrefLanguageOnly = False
+        Me.MovieSetImagesMediaLanguageOnly = False
         Me.MovieSetLandscapeOverwrite = True
         Me.MovieSetLockPlot = False
         Me.MovieSetLockTitle = False

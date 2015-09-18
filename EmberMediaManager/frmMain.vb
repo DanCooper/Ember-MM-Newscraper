@@ -6781,6 +6781,9 @@ doCancel:
                     Me.cmnuMovieSetSortMethodMethods.SelectedIndex = -1
                     Me.cmnuMovieSetSortMethodSet.Enabled = False
 
+                    Me.cmnuMovieSetLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
+                    Me.cmnuMovieSetLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    Me.cmnuMovieSetLanguageSet.Enabled = False
                 Else
                     Me.cmnuMovieSetReload.Visible = True
                     Me.cmnuMovieSetMark.Visible = True
@@ -6810,6 +6813,10 @@ doCancel:
                     Dim SortMethod As Integer = CInt(Me.dgvMovieSets.Item("SortMethod", e.RowIndex).Value)
                     Me.cmnuMovieSetSortMethodMethods.Text = DirectCast(CInt(Me.dgvMovieSets.Item("SortMethod", e.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
                     Me.cmnuMovieSetSortMethodSet.Enabled = False
+
+                    Dim Lang As String = CStr(Me.dgvMovieSets.Item("Language", e.RowIndex).Value)
+                    Me.cmnuMovieSetLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                    Me.cmnuMovieSetLanguageSet.Enabled = False
                 End If
             Else
                 Me.cmnuMovieSet.Enabled = True
@@ -11065,12 +11072,20 @@ doCancel:
         cmnuMovieGenresSet.Enabled = True
     End Sub
 
-    Private Sub cmnumovieLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.DropDown
+    Private Sub cmnuMovieLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.DropDown
         Me.cmnuMovieLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
     End Sub
 
-    Private Sub cmnumovieLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.SelectedIndexChanged
+    Private Sub cmnuMovieLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.SelectedIndexChanged
         Me.cmnuMovieLanguageSet.Enabled = True
+    End Sub
+
+    Private Sub cmnuMovieSetLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageLanguages.DropDown
+        Me.cmnuMovieSetLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
+    End Sub
+
+    Private Sub cmnuMovieSetLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageLanguages.SelectedIndexChanged
+        Me.cmnuMovieSetLanguageSet.Enabled = True
     End Sub
 
     Private Sub cmnuShowLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.DropDown
@@ -15330,7 +15345,7 @@ doCancel:
         End Using
     End Sub
 
-    Private Sub cmnumovieLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageSet.Click
+    Private Sub cmnuMovieLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                 Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value), False)
@@ -15338,6 +15353,18 @@ doCancel:
                 tmpDBMovie.Movie.Language = tmpDBMovie.Language
                 Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
                 RefreshRow_Movie(tmpDBMovie.ID)
+            Next
+            SQLtransaction.Commit()
+        End Using
+    End Sub
+
+    Private Sub cmnuMovieSetLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageSet.Click
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt32(sRow.Cells("idSet").Value), False)
+                tmpDBMovieSet.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuMovieSetLanguageLanguages.Text).abbreviation
+                Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, True, False, False)
+                RefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()
         End Using
@@ -15471,6 +15498,9 @@ doCancel:
 
             Me.cmnuMovieLanguageLanguages.Items.Clear()
             Me.cmnuMovieLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+
+            Me.cmnuMovieSetLanguageLanguages.Items.Clear()
+            Me.cmnuMovieSetLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
             Me.cmnuShowLanguageLanguages.Items.Clear()
             Me.cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
@@ -16011,6 +16041,7 @@ doCancel:
                 Dim strSet As String = Master.eLang.GetString(29, "Set")
                 .cmnuMovieGenresSet.Text = strSet
                 .cmnuMovieLanguageSet.Text = strSet
+                .cmnuMovieSetLanguageSet.Text = strSet
                 .cmnuShowLanguageSet.Text = strSet
 
                 'Theme Only

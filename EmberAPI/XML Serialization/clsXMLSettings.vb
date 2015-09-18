@@ -254,8 +254,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetimagesdisplayimageselect As Boolean
     Private _moviesetimagesgetblankimages As Boolean
     Private _moviesetimagesgetenglishimages As Boolean
-    Private _moviesetimagespreflanguage As String
-    Private _moviesetimagespreflanguageonly As Boolean
+    Private _moviesetimagesmedialanguageonly As Boolean
     Private _moviesetlandscapeoverwrite As Boolean
     Private _moviesetlockplot As Boolean
     Private _moviesetlocktitle As Boolean
@@ -6209,21 +6208,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetImagesPrefLanguage() As String
+    Public Property MovieSetImagesMediaLanguageOnly() As Boolean
         Get
-            Return Me._moviesetimagespreflanguage
-        End Get
-        Set(ByVal value As String)
-            Me._moviesetimagespreflanguage = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesPrefLanguageOnly() As Boolean
-        Get
-            Return Me._moviesetimagespreflanguageonly
+            Return Me._moviesetimagesmedialanguageonly
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetimagespreflanguageonly = value
+            Me._moviesetimagesmedialanguageonly = value
         End Set
     End Property
 

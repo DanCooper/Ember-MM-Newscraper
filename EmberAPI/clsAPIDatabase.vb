@@ -684,7 +684,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 30
+        Dim MyVideosDBVersion As Integer = 31
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1738,6 +1738,7 @@ Public Class Database
                     SQLreader.Read()
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _moviesetDB.ListTitle = SQLreader("ListTitle").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("Language")) Then _moviesetDB.Language = SQLreader("Language").ToString
 
                     _moviesetDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "banner")
                     _moviesetDB.ImagesContainer.ClearArt.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "clearart")
@@ -2632,7 +2633,16 @@ Public Class Database
             Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                 Select Case Args.currVersion
                     Case Is < 30
-                        PrepareMovieLanguage(True)
+                        PrepareLanguage("movie", True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 31
+                        PrepareLanguage("sets", True)
                 End Select
 
                 SQLtransaction.Commit()
@@ -3028,14 +3038,14 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
-    Private Sub PrepareMovieLanguage(ByVal BatchMode As Boolean)
-        bwPatchDB.ReportProgress(-1, "Set all language to ""en"" for all movies...")
+    Private Sub PrepareLanguage(ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Set all language to ""en"" ...")
 
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "UPDATE movie SET Language = 'en';"
+            SQLcommand.CommandText = String.Format("UPDATE {0} SET Language = 'en';", table)
             SQLcommand.ExecuteNonQuery()
         End Using
 
@@ -3593,9 +3603,9 @@ Public Class Database
                                 'create new Set
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                                                                                     "ListTitle, NfoPath, ", _
-                                                                                     "TMDBColID, Plot, SetName, New, Mark, Lock", _
-                                                                                     ") VALUES (?,?,?,?,?,?,?,?);")
+                                                                                     "ListTitle, NfoPath, TMDBColID, Plot, SetName, ", _
+                                                                                     "New, Mark, Lock, SortMethod, Language", _
+                                                                                     ") VALUES (?,?,?,?,?,?,?,?,?,?);")
                                     Dim parSets_ListTitle As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ListTitle", DbType.String, 0, "ListTitle")
                                     Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
                                     Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
@@ -3604,6 +3614,8 @@ Public Class Database
                                     Dim parSets_New As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_New", DbType.Boolean, 0, "New")
                                     Dim parSets_Mark As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Mark", DbType.Boolean, 0, "Mark")
                                     Dim parSets_Lock As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Lock", DbType.Boolean, 0, "Lock")
+                                    Dim parSets_SortMethod As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SortMethod", DbType.Int32, 0, "SortMethod")
+                                    Dim parSets_Language As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Language", DbType.String, 0, "Language")
 
                                     parSets_SetName.Value = s.Title
                                     parSets_ListTitle.Value = StringUtils.SortTokens_MovieSet(s.Title)
@@ -3612,6 +3624,8 @@ Public Class Database
                                     parSets_NfoPath.Value = String.Empty
                                     parSets_New.Value = True
                                     parSets_Lock.Value = False
+                                    parSets_SortMethod.Value = Enums.SortMethod_MovieSet.Year
+                                    parSets_Language.Value = _movieDB.Language
 
                                     If Master.eSettings.MovieSetGeneralMarkNew Then
                                         parSets_Mark.Value = True
@@ -3692,14 +3706,12 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                 "ListTitle, NfoPath, ", _
-                 "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                 "ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                 "idSet, ListTitle, NfoPath, ", _
-                 "TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                 "idSet, ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.UInt64, 0, "idSet")
                 parMovieSetID.Value = _moviesetDB.ID
             End If
@@ -3712,6 +3724,7 @@ Public Class Database
             Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
             Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
             Dim parSortMethod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortMethod", DbType.Int16, 0, "SortMethod")
+            Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
 
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
@@ -3721,6 +3734,7 @@ Public Class Database
             End If
 
             parNfoPath.Value = _moviesetDB.NfoPath
+            parLanguage.Value = _moviesetDB.Language
 
             parNew.Value = IsNew
             parMark.Value = _moviesetDB.IsMark

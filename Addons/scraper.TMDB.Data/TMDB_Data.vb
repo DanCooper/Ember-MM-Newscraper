@@ -228,7 +228,6 @@ Public Class TMDB_Data
         _setup_MovieSet = New frmSettingsHolder_MovieSet
         LoadSettings_MovieSet()
         _setup_MovieSet.chkEnabled.Checked = _ScraperEnabled_MovieSet
-        _setup_MovieSet.cbPrefLanguage.Text = _SpecialSettings_MovieSet.PrefLanguage
         _setup_MovieSet.chkFallBackEng.Checked = _SpecialSettings_MovieSet.FallBackEng
         _setup_MovieSet.chkGetAdultItems.Checked = _SpecialSettings_MovieSet.GetAdultItems
         _setup_MovieSet.chkPlot.Checked = ConfigOptions_MovieSet.bPlot
@@ -352,7 +351,6 @@ Public Class TMDB_Data
         _SpecialSettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.ContentType.MovieSet)
         _SpecialSettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.ContentType.MovieSet)
         _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _SpecialSettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.ContentType.MovieSet)
     End Sub
 
     Sub LoadSettings_TV()
@@ -426,7 +424,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoTitle", ConfigOptions_MovieSet.bTitle, , , Enums.ContentType.MovieSet)
             settings.SetBooleanSetting("GetAdultItems", _SpecialSettings_MovieSet.GetAdultItems, , , Enums.ContentType.MovieSet)
             settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.ContentType.MovieSet)
-            settings.SetSetting("PrefLanguage", _SpecialSettings_MovieSet.PrefLanguage, , , Enums.ContentType.MovieSet)
         End Using
     End Sub
 
@@ -499,7 +496,6 @@ Public Class TMDB_Data
         ConfigOptions_MovieSet.bTitle = _setup_MovieSet.chkTitle.Checked
         _SpecialSettings_MovieSet.FallBackEng = _setup_MovieSet.chkFallBackEng.Checked
         _SpecialSettings_MovieSet.GetAdultItems = _setup_MovieSet.chkGetAdultItems.Checked
-        _SpecialSettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
         SaveSettings_MovieSet()
         If DoDispose Then
             RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movieset
@@ -676,6 +672,7 @@ Public Class TMDB_Data
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
+        _SpecialSettings_MovieSet.PrefLanguage = oDBElement.Language
 
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_MovieSet)
 

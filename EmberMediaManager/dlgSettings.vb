@@ -2780,7 +2780,6 @@ Public Class dlgSettings
             Me.cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
             Me.cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
             Me.cbMovieSetFanartPrefSize.SelectedValue = .MovieSetFanartPrefSize
-            Me.cbMovieSetImagesPrefLanguage.SelectedItem = .MovieSetImagesPrefLanguage
             Me.cbMovieSetPosterPrefSize.SelectedValue = .MovieSetPosterPrefSize
             Me.cbMovieTrailerMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
             Me.cbMovieTrailerPrefVideoQual.SelectedValue = .MovieTrailerPrefVideoQual
@@ -2939,8 +2938,8 @@ Public Class dlgSettings
             Me.chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
             Me.chkMovieSetImagesCacheEnabled.Checked = .MovieSetImagesCacheEnabled
             Me.chkMovieSetImagesDisplayImageSelect.Checked = .MovieSetImagesDisplayImageSelect
-            If .MovieSetImagesPrefLanguageOnly Then
-                Me.chkMovieSetImagesPrefLanguageOnly.Checked = True
+            If .MovieSetImagesMediaLanguageOnly Then
+                Me.chkMovieSetImagesMediaLanguageOnly.Checked = True
                 Me.chkMovieSetImagesGetBlankImages.Checked = .MovieSetImagesGetBlankImages
                 Me.chkMovieSetImagesGetEnglishImages.Checked = .MovieSetImagesGetEnglishImages
             End If
@@ -4743,8 +4742,7 @@ Public Class dlgSettings
             .MovieSetImagesDisplayImageSelect = Me.chkMovieSetImagesDisplayImageSelect.Checked
             .MovieSetImagesGetBlankImages = Me.chkMovieSetImagesGetBlankImages.Checked
             .MovieSetImagesGetEnglishImages = Me.chkMovieSetImagesGetEnglishImages.Checked
-            .MovieSetImagesPrefLanguage = Me.cbMovieSetImagesPrefLanguage.Text
-            .MovieSetImagesPrefLanguageOnly = Me.chkMovieSetImagesPrefLanguageOnly.Checked
+            .MovieSetImagesMediaLanguageOnly = Me.chkMovieSetImagesMediaLanguageOnly.Checked
             .MovieSetLandscapeOverwrite = Me.chkMovieSetLandscapeOverwrite.Checked
             .MovieSetLockPlot = Me.chkMovieSetLockPlot.Checked
             .MovieSetLockTitle = Me.chkMovieSetLockTitle.Checked
@@ -6051,7 +6049,7 @@ Public Class dlgSettings
         'Only Get Images for the Media Language
         Dim strOnlyImgMediaLang As String = Master.eLang.GetString(736, "Only Get Images for the Media Language")
         Me.chkMovieImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
-        Me.chkMovieSetImagesPrefLanguageOnly.Text = strOnlyImgMediaLang
+        Me.chkMovieSetImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
         Me.chkTVImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
 
         'Optional Images
@@ -7329,13 +7327,13 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieSetImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesPrefLanguageOnly.CheckedChanged
+    Private Sub chkMovieSetImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesMediaLanguageOnly.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkMovieSetImagesGetBlankImages.Enabled = Me.chkMovieSetImagesPrefLanguageOnly.Checked
-        Me.chkMovieSetImagesGetEnglishImages.Enabled = Me.chkMovieSetImagesPrefLanguageOnly.Checked
+        Me.chkMovieSetImagesGetBlankImages.Enabled = Me.chkMovieSetImagesMediaLanguageOnly.Checked
+        Me.chkMovieSetImagesGetEnglishImages.Enabled = Me.chkMovieSetImagesMediaLanguageOnly.Checked
 
-        If Not Me.chkMovieSetImagesPrefLanguageOnly.Checked Then
+        If Not Me.chkMovieSetImagesMediaLanguageOnly.Checked Then
             Me.chkMovieSetImagesGetBlankImages.Checked = False
             Me.chkMovieSetImagesGetEnglishImages.Checked = False
         End If
@@ -7370,7 +7368,7 @@ Public Class dlgSettings
         cbMovieScraperCertLang.SelectedIndexChanged, _
         cbMovieSetBannerPrefSize.SelectedIndexChanged, _
         cbMovieSetFanartPrefSize.SelectedIndexChanged, _
-        cbMovieSetImagesPrefLanguage.SelectedIndexChanged, _
+ _
         cbMovieSetPosterPrefSize.SelectedIndexChanged, _
         cbMovieTrailerMinVideoQual.SelectedIndexChanged, _
         cbTVASBannerPrefType.SelectedIndexChanged, _

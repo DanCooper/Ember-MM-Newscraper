@@ -4681,8 +4681,8 @@ Namespace MediaContainers
                 Case Enums.ContentType.MovieSet
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
-                    cSettings.MediaLanguage = Master.eSettings.MovieSetImagesPrefLanguage
-                    cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesPrefLanguageOnly
+                    cSettings.MediaLanguage = tDBElement.Language
+                    cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesMediaLanguageOnly
                 Case Enums.ContentType.TV
                     cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
