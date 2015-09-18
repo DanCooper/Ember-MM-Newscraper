@@ -87,7 +87,6 @@ Public Class frmSettingsHolder
 
     Sub SetUp()
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.lblPrefLanguage.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
@@ -98,10 +97,6 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub txtApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

@@ -102,7 +102,6 @@ Public Class TMDB_Trailer
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
         _setup.txtApiKey.Text = strPrivateAPIKey
-        _setup.cbPrefLanguage.Text = _SpecialSettings.PrefLanguage
         _setup.chkFallBackEng.Checked = _SpecialSettings.FallBackEng
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
@@ -133,7 +132,6 @@ Public Class TMDB_Trailer
         ConfigScrapeModifier.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
         _SpecialSettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _SpecialSettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
-        _SpecialSettings.PrefLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
 
     End Sub
@@ -142,6 +140,7 @@ Public Class TMDB_Trailer
         logger.Trace("Started scrape", New StackTrace().ToString())
 
         LoadSettings()
+        _SpecialSettings.PrefLanguage = DBMovie.Language
 
         If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
             DBMovie.Movie.TMDBID = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.ID)
@@ -161,13 +160,11 @@ Public Class TMDB_Trailer
         Using settings = New clsAdvancedSettings()
             settings.SetSetting("TMDBAPIKey", _setup.txtApiKey.Text)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings.FallBackEng)
-            settings.SetSetting("TMDBLanguage", _SpecialSettings.PrefLanguage)
             settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.MainTrailer)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Trailer_Movie.SaveSetupScraper
-        _SpecialSettings.PrefLanguage = _setup.cbPrefLanguage.Text
         _SpecialSettings.FallBackEng = _setup.chkFallBackEng.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
