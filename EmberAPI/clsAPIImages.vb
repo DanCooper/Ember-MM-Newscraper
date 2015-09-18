@@ -2482,7 +2482,12 @@ Public Class Images
             End If
         Next
 
-        Return Directory.GetParent(efPath).FullName
+        'If efPath is empty (i.e. expert setting enabled but expert extrafanart scraping disabled) it will cause Ember to crash, therefore do check first
+        If Not String.IsNullOrEmpty(efPath) Then
+            Return Directory.GetParent(efPath).FullName
+        Else
+            Return String.Empty
+        End If
     End Function
     ''' <summary>
     ''' Save the image as a tv show's extrafanart
@@ -2510,7 +2515,7 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
-                If Not a = String.Empty Then
+                If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
                     End If
