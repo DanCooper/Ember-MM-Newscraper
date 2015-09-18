@@ -5916,7 +5916,7 @@ doCancel:
         Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifier)
     End Sub
 
-    Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
+    Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonEdit.Click
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
         Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
@@ -6305,7 +6305,10 @@ doCancel:
 
         Me.dgvMovies.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
+        If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
@@ -7123,7 +7126,10 @@ doCancel:
 
         Me.dgvTVEpisodes.ShowCellToolTips = True
 
-        If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse _
+        If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "FanartPath" OrElse colName = "NfoPath" OrElse _
             colName = "PosterPath" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVEpisodes.ShowCellToolTips = False
 
@@ -7554,7 +7560,10 @@ doCancel:
 
         Me.dgvTVSeasons.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
+        If colName = "HasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(Me.dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVSeasons.ShowCellToolTips = False
 
@@ -7735,7 +7744,7 @@ doCancel:
                     Me.cmnuSeason.Enabled = True
                     Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                     Me.ToolStripSeparator16.Visible = False
-                    Me.cmnuSeasonChangeImages.Visible = False
+                    Me.cmnuSeasonEdit.Visible = False
                     Me.ToolStripSeparator14.Visible = False
                     Me.cmnuSeasonRescrape.Visible = False
                     Me.ToolStripSeparator15.Visible = False
@@ -7768,7 +7777,7 @@ doCancel:
 
                 Else
                     Me.ToolStripSeparator16.Visible = True
-                    Me.cmnuSeasonChangeImages.Visible = True
+                    Me.cmnuSeasonEdit.Visible = True
                     Me.ToolStripSeparator14.Visible = True
                     Me.cmnuSeasonRescrape.Visible = True
                     Me.ToolStripSeparator15.Visible = True
@@ -7783,7 +7792,7 @@ doCancel:
                     Me.cmnuSeasonMark.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     Me.cmnuSeasonLock.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     If Not CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999 Then Me.cmnuSeasonWatched.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
-                    Me.cmnuSeasonChangeImages.Enabled = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
+                    Me.cmnuSeasonEdit.Enabled = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
 
                     If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
                         Me.prevRow_TVSeason = -1
@@ -7930,7 +7939,10 @@ doCancel:
 
         Me.dgvTVShows.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
+        If colName = "HasWatched" AndAlso e.RowIndex >= 0 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
             colName = "ThemePath") AndAlso e.RowIndex >= 0 Then
@@ -15933,6 +15945,10 @@ doCancel:
                 Dim strDiscArtOnly As String = Master.eLang.GetString(1124, "DiscArt Only")
                 .mnuScrapeModifierDiscArt.Text = strDiscArtOnly
 
+                'Edit Season
+                Dim strEditSeason As String = Master.eLang.GetString(769, "Edit Season")
+                .cmnuSeasonEdit.Text = strEditSeason
+
                 'Extrafanarts Only
                 Dim strExtrafanartsOnly As String = Master.eLang.GetString(975, "Extrafanarts Only")
                 .mnuScrapeModifierExtrafanarts.Text = strExtrafanartsOnly
@@ -16233,7 +16249,6 @@ doCancel:
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
                 .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Data Field")
                 .cmnuSeasonRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
-                .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuSeasonMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuSeasonReload.Text = Master.eLang.GetString(22, "Reload")
