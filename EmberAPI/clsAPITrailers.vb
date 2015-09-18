@@ -403,7 +403,7 @@ Public Class Trailers
                 If Trailer IsNot Nothing Then
                     trlResult.isDash = Trailer.isDash
                     trlResult.Quality = Trailer.FormatQuality
-                    trlResult.URLVideoStream = Trailer.URLVideoStream
+                    trlResult.URLVideoStream = Trailer.URL
                     If trlResult.isDash Then
                         Dim TrailerAudio As YouTube.AudioLinkItem = sYouTube.YouTubeLinks.AudioLinks.Item(0)
                         If TrailerAudio IsNot Nothing Then
@@ -467,7 +467,7 @@ Public Class Trailers
                     If ytTrailer IsNot Nothing Then
                         nTrailer.isDash = ytTrailer.isDash
                         nTrailer.Quality = ytTrailer.FormatQuality
-                        nTrailer.URLVideoStream = ytTrailer.URLVideoStream
+                        nTrailer.URLVideoStream = ytTrailer.URL
                         If nTrailer.isDash Then
                             Dim TrailerAudio As YouTube.AudioLinkItem = sYouTube.YouTubeLinks.AudioLinks.Item(0)
                             If TrailerAudio IsNot Nothing Then
