@@ -2114,7 +2114,7 @@ Public Class frmMain
 
                 'Theme
                 If tScrapeItem.ScrapeModifier.MainTheme Then
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
                     If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                         tURL = String.Empty
                         If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
@@ -2150,7 +2150,7 @@ Public Class frmMain
 
                 'Trailer
                 If tScrapeItem.ScrapeModifier.MainTrailer Then
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(574, "Scraping Trailers"), ":"))
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(574, "Scraping Trailers"), ":"))
                     Dim SearchResults As New List(Of MediaContainers.Trailer)
                     If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ModifierType.MainTrailer, SearchResults) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
