@@ -137,7 +137,7 @@ Public Class frmSettingsHolder_TV
     Private Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")

@@ -89,7 +89,7 @@ Public Class frmSettingsHolder
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         Me.gbScraperTrailerOpts.Text = Master.eLang.GetString(283, "Trailers - Scraper specific")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)

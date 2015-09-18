@@ -143,7 +143,7 @@ Partial Class frmSettingsHolder
         Me.chkFallBackEng.Name = "chkFallBackEng"
         Me.chkFallBackEng.Size = New System.Drawing.Size(129, 17)
         Me.chkFallBackEng.TabIndex = 4
-        Me.chkFallBackEng.Text = "Fall back on english"
+        Me.chkFallBackEng.Text = "Fallback to english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
         'pbApiKeyInfo
