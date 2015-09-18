@@ -107,14 +107,6 @@ Public Class dlgTrailerFormat
                         lbVideoFormats.DisplayMember = "Description"
                         lbVideoFormats.ValueMember = "URL"
 
-                        Dim prevQualLink As YouTube.VideoLinkItem
-                        prevQualLink = YouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
-                        If prevQualLink IsNot Nothing Then
-                            Me.lbVideoFormats.SelectedItem = prevQualLink
-                        ElseIf Me.lbVideoFormats.Items.Count = 1 Then
-                            Me.lbVideoFormats.SelectedIndex = 0
-                        End If
-
                         Me.lbVideoFormats.Enabled = True
 
                         If YouTube.YouTubeLinks.AudioLinks.Count > 0 Then
@@ -129,6 +121,14 @@ Public Class dlgTrailerFormat
                             'End If
 
                             Me.lbAudioFormats.Enabled = True
+                        End If
+
+                        Dim prevQualLink As YouTube.VideoLinkItem
+                        prevQualLink = YouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
+                        If prevQualLink IsNot Nothing Then
+                            Me.lbVideoFormats.SelectedItem = prevQualLink
+                        ElseIf Me.lbVideoFormats.Items.Count = 1 Then
+                            Me.lbVideoFormats.SelectedIndex = 0
                         End If
                     Else
                         MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -200,7 +200,7 @@ Public Class dlgTrailerFormat
     Private Sub lbVideoFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbVideoFormats.SelectedIndexChanged
         Try
             If _isYouTube Then
-                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URLVideoStream
+                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URL
                 Me._trailerlinkscontainer.isDash = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).isDash
                 If Me._trailerlinkscontainer.isDash Then
                     Me.lbAudioFormats.Enabled = True

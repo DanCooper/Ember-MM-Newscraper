@@ -289,20 +289,8 @@ Public Class frmSettingsHolder
         Me.txtFolderPatternShows.Text = "$B\$Z"
     End Sub
 
-    Private Sub chkBulRenamer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBulkRenamer.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
-    End Sub
-
-    Private Sub chkGenericModule_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenericModule.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkOnError_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkRenameEditMovies_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameEditMovies.CheckedChanged
@@ -345,8 +333,6 @@ Public Class frmSettingsHolder
         Me.lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         Me.lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkGenericModule.Text = Master.eLang.GetString(288, "Enable Generic Rename Module")
-        Me.chkBulkRenamer.Text = Master.eLang.GetString(290, "Enable Bulk Renamer Tool")
         Me.lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
     End Sub
 

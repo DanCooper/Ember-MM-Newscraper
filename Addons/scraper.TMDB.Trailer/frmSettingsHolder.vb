@@ -87,10 +87,9 @@ Public Class frmSettingsHolder
 
     Sub SetUp()
         Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.lblPrefLanguage.Text = String.Concat(Master.eLang.GetString(741, "Preferred Language"), ":")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         Me.gbScraperTrailerOpts.Text = Master.eLang.GetString(283, "Trailers - Scraper specific")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
@@ -98,10 +97,6 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub txtApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

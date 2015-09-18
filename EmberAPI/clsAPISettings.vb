@@ -4232,12 +4232,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieImagesPrefLanguageOnly() As Boolean
+    Public Property MovieImagesMediaLanguageOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieImagesPrefLanguageOnly
+            Return Settings._XMLSettings.MovieImagesMediaLanguageOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieImagesPrefLanguageOnly = value
+            Settings._XMLSettings.MovieImagesMediaLanguageOnly = value
         End Set
     End Property
 
@@ -4304,12 +4304,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVImagesPrefLanguageOnly() As Boolean
+    Public Property TVImagesMediaLanguageOnly() As Boolean
         Get
-            Return Settings._XMLSettings.TVImagesPrefLanguageOnly
+            Return Settings._XMLSettings.TVImagesMediaLanguageOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVImagesPrefLanguageOnly = value
+            Settings._XMLSettings.TVImagesMediaLanguageOnly = value
         End Set
     End Property
 
@@ -6675,9 +6675,9 @@ Public Class Settings
         Me.MovieImagesDisplayImageSelect = True
         Me.MovieImagesGetBlankImages = False
         Me.MovieImagesGetEnglishImages = False
+        Me.MovieImagesMediaLanguageOnly = False
         Me.MovieImagesNotSaveURLToNfo = False
         Me.MovieImagesPrefLanguage = "en"
-        Me.MovieImagesPrefLanguageOnly = False
         Me.MovieIMDBURL = String.Empty
         Me.MovieLandscapeOverwrite = True
         Me.MovieLevTolerance = 0
@@ -6904,8 +6904,8 @@ Public Class Settings
         Me.TVImagesDisplayImageSelect = True
         Me.TVImagesGetBlankImages = False
         Me.TVImagesGetEnglishImages = False
+        Me.TVImagesMediaLanguageOnly = False
         Me.TVImagesPrefLanguage = "en"
-        Me.TVImagesPrefLanguageOnly = False
         Me.TVLockEpisodeActors = False
         Me.TVLockEpisodeAired = False
         Me.TVLockEpisodeCredits = False

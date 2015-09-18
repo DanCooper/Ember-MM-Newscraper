@@ -451,12 +451,12 @@ Namespace YouTube
 
                 If Not String.IsNullOrEmpty(vLink.Description) Then
                     If vLink.isDash Then
-                        vLink.URLVideoStream = tStream.DownloadUrlDash
+                        vLink.URL = tStream.DownloadUrlDash
                     Else
-                        vLink.URLVideoStream = tStream.DownloadUrl
+                        vLink.URL = tStream.DownloadUrl
                     End If
 
-                    If Not String.IsNullOrEmpty(vLink.URLVideoStream) Then
+                    If Not String.IsNullOrEmpty(vLink.URL) Then
                         DownloadLinks.VideoLinks.Add(vLink)
                     End If
                 ElseIf Not String.IsNullOrEmpty(aLink.Description) Then
@@ -797,7 +797,7 @@ Namespace YouTube
         Private _formatcodec As New Enums.TrailerVideoCodec
         Private _formatquality As New Enums.TrailerVideoQuality
         Private _isdash As Boolean
-        Private _urlvideostream As String
+        Private _url As String
 
 #End Region 'Fields
 
@@ -847,12 +847,12 @@ Namespace YouTube
             End Set
         End Property
 
-        Public Property URLVideoStream() As String
+        Public Property URL() As String
             Get
-                Return _urlvideostream
+                Return _url
             End Get
             Set(ByVal value As String)
-                _urlvideostream = value
+                _url = value
             End Set
         End Property
 
@@ -865,7 +865,7 @@ Namespace YouTube
             Me._formatcodec = Enums.TrailerVideoCodec.UNKNOWN
             Me._formatquality = Enums.TrailerVideoQuality.UNKNOWN
             Me._isdash = False
-            Me._urlvideostream = String.Empty
+            Me._url = String.Empty
         End Sub
 
         Public Function CompareTo(ByVal other As VideoLinkItem) As Integer Implements IComparable(Of VideoLinkItem).CompareTo

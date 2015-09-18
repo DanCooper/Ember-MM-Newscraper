@@ -195,7 +195,7 @@ Public Class frmSettingsHolder_Movie
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")

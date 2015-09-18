@@ -403,7 +403,7 @@ Public Class Trailers
                 If Trailer IsNot Nothing Then
                     trlResult.isDash = Trailer.isDash
                     trlResult.Quality = Trailer.FormatQuality
-                    trlResult.URLVideoStream = Trailer.URLVideoStream
+                    trlResult.URLVideoStream = Trailer.URL
                     If trlResult.isDash Then
                         Dim TrailerAudio As YouTube.AudioLinkItem = sYouTube.YouTubeLinks.AudioLinks.Item(0)
                         If TrailerAudio IsNot Nothing Then
@@ -414,9 +414,48 @@ Public Class Trailers
                         End If
                     End If
                 End If
+
             ElseIf Regex.IsMatch(trlResult.URLWebsite, "https?:\/\/.*imdb.*") Then
-                Dim IMDb As New IMDb.Scraper
-                IMDb.GetVideoLinks(trlResult.URLWebsite)
+                Dim sIMDb As New IMDb.Scraper
+                sIMDb.GetVideoLinks(trlResult.URLWebsite)
+
+                If sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD2160p60fps) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD2160p60fps).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD2160p60fps
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD2160p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD2160p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD2160p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1440p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD1440p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD1440p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p60fps) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p60fps).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD1080p60fps
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD1080p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p60fps) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p60fps).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD720p60fps
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HD720p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.HQ480p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.SQ360p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.SQ240p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.SQ144p
+                ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p15fps) Then
+                    trlResult.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p15fps).URL
+                    trlResult.Quality = Enums.TrailerVideoQuality.SQ144p15fps
+                End If
             End If
         End If
 
@@ -467,7 +506,7 @@ Public Class Trailers
                     If ytTrailer IsNot Nothing Then
                         nTrailer.isDash = ytTrailer.isDash
                         nTrailer.Quality = ytTrailer.FormatQuality
-                        nTrailer.URLVideoStream = ytTrailer.URLVideoStream
+                        nTrailer.URLVideoStream = ytTrailer.URL
                         If nTrailer.isDash Then
                             Dim TrailerAudio As YouTube.AudioLinkItem = sYouTube.YouTubeLinks.AudioLinks.Item(0)
                             If TrailerAudio IsNot Nothing Then
@@ -480,46 +519,52 @@ Public Class Trailers
                     End If
 
                 ElseIf Regex.IsMatch(nTrailer.URLWebsite, "https?:\/\/.*imdb.*") Then
-                    Dim IMDb As New IMDb.Scraper
-                    Dim tLink As String = String.Empty
+                    Dim sIMDb As New IMDb.Scraper
 
                     'get all qualities for this trailer
-                    IMDb.GetVideoLinks(nTrailer.URLWebsite)
+                    sIMDb.GetVideoLinks(nTrailer.URLWebsite)
 
                     'try to get preferred quality
-                    If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
-                        tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefVideoQual).URL
-                        nTrailer.URLVideoStream = tLink
+                    If sIMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
+                        nTrailer.URLVideoStream = sIMDb.VideoLinks(Master.eSettings.MovieTrailerPrefVideoQual).URL
                         nTrailer.Quality = Master.eSettings.MovieTrailerPrefVideoQual
                     Else
-                        If IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
-                            nTrailer.URLVideoStream = tLink
+                        If sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD2160p60fps) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD2160p60fps).URL
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD2160p60fps
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD2160p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD2160p).URL
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD2160p
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1440p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD1440p).URL
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD1440p
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p60fps) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p60fps).URL
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p60fps
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD1080p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD1080p).URL
                             nTrailer.Quality = Enums.TrailerVideoQuality.HD1080p
-                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
-                            nTrailer.URLVideoStream = tLink
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p60fps) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p60fps).URL
+                            nTrailer.Quality = Enums.TrailerVideoQuality.HD720p60fps
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HD720p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HD720p).URL
                             nTrailer.Quality = Enums.TrailerVideoQuality.HD720p
-                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
-                            nTrailer.URLVideoStream = tLink
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.HQ480p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.HQ480p).URL
                             nTrailer.Quality = Enums.TrailerVideoQuality.HQ480p
-                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
-                            nTrailer.URLVideoStream = tLink
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ360p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ360p).URL
                             nTrailer.Quality = Enums.TrailerVideoQuality.SQ360p
-                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
-                            nTrailer.URLVideoStream = tLink
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ240p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ240p).URL
                             nTrailer.Quality = Enums.TrailerVideoQuality.SQ240p
-                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
-                            nTrailer.URLVideoStream = tLink
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p).URL
                             nTrailer.Quality = Enums.TrailerVideoQuality.SQ144p
-                        ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.UNKNOWN) Then
-                            tLink = IMDb.VideoLinks(Enums.TrailerVideoQuality.UNKNOWN).URL
-                            nTrailer.URLVideoStream = tLink
-                            nTrailer.Quality = Enums.TrailerVideoQuality.UNKNOWN
+                        ElseIf sIMDb.VideoLinks.ContainsKey(Enums.TrailerVideoQuality.SQ144p15fps) Then
+                            nTrailer.URLVideoStream = sIMDb.VideoLinks(Enums.TrailerVideoQuality.SQ144p15fps).URL
+                            nTrailer.Quality = Enums.TrailerVideoQuality.SQ144p15fps
                         End If
                     End If
 

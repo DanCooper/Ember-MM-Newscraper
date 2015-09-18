@@ -154,9 +154,7 @@ Public Class IMDB_Trailer
         Dim tIMDBID As String = String.Empty
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-            tIMDBID = DBMovie.Movie.IMDBID
-
-            Dim tIMDBTrailer As New IMDB.Scraper(tIMDBID)
+            Dim tIMDBTrailer As New IMDB.Scraper(DBMovie.Movie.IMDBID)
 
             If tIMDBTrailer.TrailerList.Count > 0 Then
                 TrailerList = tIMDBTrailer.TrailerList

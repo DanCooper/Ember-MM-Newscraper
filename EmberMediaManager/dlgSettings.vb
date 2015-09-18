@@ -2776,7 +2776,6 @@ Public Class dlgSettings
             Me.cbMovieEFanartsPrefSize.SelectedValue = .MovieEFanartsPrefSize
             Me.cbMovieEThumbsPrefSize.SelectedValue = .MovieEThumbsPrefSize
             Me.cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
-            Me.cbMovieImagesPrefLanguage.SelectedItem = .MovieImagesPrefLanguage
             Me.cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
             Me.cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
             Me.cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
@@ -2791,7 +2790,6 @@ Public Class dlgSettings
             Me.cbTVASPosterPrefSize.SelectedValue = .TVASPosterPrefSize
             Me.cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
             Me.cbTVEpisodePosterPrefSize.SelectedValue = .TVEpisodePosterPrefSize
-            Me.cbTVImagesPrefLanguage.SelectedItem = .TVImagesPrefLanguage
             Me.cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             Me.cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
             Me.cbTVSeasonBannerPrefSize.SelectedValue = .TVSeasonBannerPrefSize
@@ -2878,12 +2876,12 @@ Public Class dlgSettings
             Me.chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
             Me.chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             Me.chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
-            Me.chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
-            If .MovieImagesPrefLanguageOnly Then
-                Me.chkMovieImagesPrefLanguageOnly.Checked = True
+            If .MovieImagesMediaLanguageOnly Then
+                Me.chkMovieImagesMediaLanguageOnly.Checked = True
                 Me.chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
                 Me.chkMovieImagesGetEnglishImages.Checked = .MovieImagesGetEnglishImages
             End If
+            Me.chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
             Me.chkMovieLandscapeOverwrite.Checked = .MovieLandscapeOverwrite
             Me.chkMovieLockActors.Checked = .MovieLockActors
             Me.chkMovieLockCert.Checked = .MovieLockCert
@@ -3049,8 +3047,8 @@ Public Class dlgSettings
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
             Me.chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
             Me.chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
-            If .TVImagesPrefLanguageOnly Then
-                Me.chkTVImagesPrefLanguageOnly.Checked = True
+            If .TVImagesMediaLanguageOnly Then
+                Me.chkTVImagesMediaLanguageOnly.Checked = True
                 Me.chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
                 Me.chkTVImagesGetEnglishImages.Checked = .TVImagesGetEnglishImages
             End If
@@ -4285,13 +4283,13 @@ Public Class dlgSettings
 
     Private Sub RefreshMovieSources()
         Dim lvItem As ListViewItem
-
         lvMovieSources.Items.Clear()
         Master.DB.LoadMovieSourcesFromDB()
         For Each s As Structures.MovieSource In Master.MovieSources
             lvItem = New ListViewItem(s.ID)
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
+            lvItem.SubItems.Add(s.Language)
             lvItem.SubItems.Add(If(s.Recursive, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(If(s.UseFolderName, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
@@ -4303,23 +4301,18 @@ Public Class dlgSettings
 
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
-        Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    lvItem = New ListViewItem(SQLreader("ID").ToString)
-                    lvItem.SubItems.Add(SQLreader("Name").ToString)
-                    lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name)
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering).ToString)
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Exclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting).ToString)
-                    lvTVSources.Items.Add(lvItem)
-                End While
-            End Using
-        End Using
+        Master.DB.LoadTVSourcesFromDB()
+        For Each s As Structures.TVSource In Master.TVSources
+            lvItem = New ListViewItem(s.ID)
+            lvItem.SubItems.Add(s.Name)
+            lvItem.SubItems.Add(s.Path)
+            lvItem.SubItems.Add(s.Language)
+            lvItem.SubItems.Add(s.Ordering.ToString)
+            lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+            lvItem.SubItems.Add(s.EpisodeSorting.ToString)
+            lvTVSources.Items.Add(lvItem)
+        Next
     End Sub
 
     Private Sub RefreshFileSystemExcludeDirs()
@@ -4420,8 +4413,8 @@ Public Class dlgSettings
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                         While Me.lvMovieSources.SelectedItems.Count > 0
-                            parSource.Value = lvMovieSources.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
+                            parSource.Value = lvMovieSources.SelectedItems(0).SubItems(0).Text
+                            SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE ID = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvMovieSources.Items.Remove(lvMovieSources.SelectedItems(0))
                         End While
@@ -4526,8 +4519,8 @@ Public Class dlgSettings
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                         While Me.lvTVSources.SelectedItems.Count > 0
-                            parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
+                            parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
+                            SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE ID = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
                         End While
@@ -4682,9 +4675,8 @@ Public Class dlgSettings
             .MovieImagesDisplayImageSelect = Me.chkMovieImagesDisplayImageSelect.Checked
             .MovieImagesGetBlankImages = Me.chkMovieImagesGetBlankImages.Checked
             .MovieImagesGetEnglishImages = Me.chkMovieImagesGetEnglishImages.Checked
+            .MovieImagesMediaLanguageOnly = Me.chkMovieImagesMediaLanguageOnly.Checked
             .MovieImagesNotSaveURLToNfo = Me.chkMovieImagesNotSaveURLToNfo.Checked
-            .MovieImagesPrefLanguage = Me.cbMovieImagesPrefLanguage.Text
-            .MovieImagesPrefLanguageOnly = Me.chkMovieImagesPrefLanguageOnly.Checked
             If Not String.IsNullOrEmpty(Me.txtMovieIMDBURL.Text) Then
                 .MovieIMDBURL = Me.txtMovieIMDBURL.Text.Replace("http://", String.Empty).Trim
             Else
@@ -4911,8 +4903,7 @@ Public Class dlgSettings
             .TVImagesDisplayImageSelect = Me.chkTVImagesDisplayImageSelect.Checked
             .TVImagesGetBlankImages = Me.chkTVImagesGetBlankImages.Checked
             .TVImagesGetEnglishImages = Me.chkTVImagesGetEnglishImages.Checked
-            .TVImagesPrefLanguage = Me.cbTVImagesPrefLanguage.Text
-            .TVImagesPrefLanguageOnly = Me.chkTVImagesPrefLanguageOnly.Checked
+            .TVImagesMediaLanguageOnly = Me.chkTVImagesMediaLanguageOnly.Checked
             .TVLockEpisodeLanguageA = Me.chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = Me.chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
@@ -5902,6 +5893,11 @@ Public Class dlgSettings
         Me.lblTVSeasonLandscapeExpert.Text = strLandscape
         Me.lblTVShowLandscapeExpert.Text = strLandscape
 
+        'Language
+        Dim strLanguage As String = Master.eLang.GetString(610, "Language")
+        Me.colMovieSourcesLanguage.Text = strLanguage
+        Me.colTVSourcesLanguage.Text = strLanguage
+
         'Language (Audio)
         Dim strLanguageAudio As String = Master.eLang.GetString(431, "Language (Audio)")
         Me.lblMovieScraperGlobalLanguageA.Text = strLanguageAudio
@@ -6010,6 +6006,11 @@ Public Class dlgSettings
         Dim strMovieSetListSorting As String = Master.eLang.GetString(491, "MovieSet List Sorting")
         Me.gbMovieSetGeneralMediaListSorting.Text = strMovieSetListSorting
 
+        'Name
+        Dim strName As String = Master.eLang.GetString(232, "Name")
+        Me.colMovieSourcesName.Text = strName
+        Me.colTVSourcesName.Text = strName
+
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
         Me.lblMovieSetNFOExpertParent.Text = strNFO
@@ -6047,11 +6048,11 @@ Public Class dlgSettings
         Me.chkTVShowFanartPrefSizeOnly.Text = strOnly
         Me.chkTVShowPosterPrefSizeOnly.Text = strOnly
 
-        'Only Get Images for the Selected Language
-        Dim strOnlyImgSelLang As String = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.chkMovieImagesPrefLanguageOnly.Text = strOnlyImgSelLang
-        Me.chkMovieSetImagesPrefLanguageOnly.Text = strOnlyImgSelLang
-        Me.chkTVImagesPrefLanguageOnly.Text = strOnlyImgSelLang
+        'Only Get Images for the Media Language
+        Dim strOnlyImgMediaLang As String = Master.eLang.GetString(736, "Only Get Images for the Media Language")
+        Me.chkMovieImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
+        Me.chkMovieSetImagesPrefLanguageOnly.Text = strOnlyImgMediaLang
+        Me.chkTVImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
 
         'Optional Images
         Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
@@ -6070,6 +6071,10 @@ Public Class dlgSettings
         Me.gbMovieSourcesFileNamingExpertVTSOptionalOpts.Text = strOptionalSettings
         Me.gbMovieSourcesFileNamingNMTOptionalOpts.Text = strOptionalSettings
         Me.gbMovieSourcesFileNamingKodiOptionalOpts.Text = strOptionalSettings
+
+        'Ordering
+        Dim strOrdering As String = Master.eLang.GetString(1167, "Ordering")
+        Me.colTVSourcesOrdering.Text = strOrdering
 
         'Original Title
         Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
@@ -6124,6 +6129,8 @@ Public Class dlgSettings
         Me.lblMovieSetPathExpertSingle.Text = strPath
         Me.lblMovieSetSourcesFilenamingKodiExtendedPath.Text = strPath
         Me.lblMovieSetSourcesFilenamingKodiMSAAPath.Text = strPath
+        Me.colMovieSourcesPath.Text = strPath
+        Me.colTVSourcesPath.Text = strPath
 
         'Plot
         Dim strPlot As String = Master.eLang.GetString(65, "Plot")
@@ -6197,6 +6204,10 @@ Public Class dlgSettings
         Me.lblTVSeasonBannerPrefType.Text = strPreferredType
         Me.lblTVShowBannerPrefType.Text = strPreferredType
 
+        'Recusive
+        Dim strRecursive = Master.eLang.GetString(411, "Recursive")
+        Me.colMovieSourcesRecur.Text = strRecursive
+
         'Release Date
         Dim strReleaseDate As String = Master.eLang.GetString(57, "Release Date")
         Me.lblMovieScraperGlobalReleaseDate.Text = strReleaseDate
@@ -6252,11 +6263,19 @@ Public Class dlgSettings
         Dim strShows As String = Master.eLang.GetString(680, "Shows")
         Me.lblTVScraperGlobalHeaderShows.Text = strShows
 
+        'Single Video
+        Dim strSingleVideo As String = Master.eLang.GetString(413, "Single Video")
+        Me.colMovieSourcesSingle.Text = strSingleVideo
+
         'Sort Tokens to Ignore
         Dim strSortTokens As String = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.gbMovieGeneralMediaListSortTokensOpts.Text = strSortTokens
         Me.gbMovieSetGeneralMediaListSortTokensOpts.Text = strSortTokens
         Me.gbTVGeneralMediaListSortTokensOpts.Text = strSortTokens
+
+        'Sorting
+        Dim strSorting As String = Master.eLang.GetString(895, "Sorting")
+        Me.colTVSourcesSorting.Text = strSorting
 
         'Status
         Dim strStatus As String = Master.eLang.GetString(215, "Status")
@@ -6335,6 +6354,10 @@ Public Class dlgSettings
 
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
+
+        'Use Folder Name
+        Dim strUseFolderName As String = Master.eLang.GetString(412, "Use Folder Name")
+        Me.colMovieSourcesFolder.Text = strUseFolderName
 
         'Votes
         'Dim strVotes As String = Master.eLang.GetString(399, "Votes")
@@ -6432,11 +6455,6 @@ Public Class dlgSettings
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
-        Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
-        Me.colName.Text = Master.eLang.GetString(232, "Name")
-        Me.colPath.Text = Master.eLang.GetString(410, "Path")
-        Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
-        Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
         Me.dgvMovieSetScraperTitleRenamer.Columns(0).HeaderText = Master.eLang.GetString(1277, "From")
         Me.dgvMovieSetScraperTitleRenamer.Columns(1).HeaderText = Master.eLang.GetString(1278, "To")
         Me.gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
@@ -6501,19 +6519,6 @@ Public Class dlgSettings
         Me.lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
         Me.lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(699, "Regex")
         Me.lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = Master.eLang.GetString(695, "Default Season")
-        Me.lvMovieSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
-        Me.lvMovieSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
-        Me.lvMovieSources.Columns(3).Text = Master.eLang.GetString(411, "Recursive")
-        Me.lvMovieSources.Columns(4).Text = Master.eLang.GetString(412, "Use Folder Name")
-        Me.lvMovieSources.Columns(5).Text = Master.eLang.GetString(413, "Single Video")
-        Me.lvMovieSources.Columns(6).Text = Master.eLang.GetString(264, "Exclude")
-        Me.lvMovieSources.Columns(7).Text = Master.eLang.GetString(586, "Get Year")
-        Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
-        Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
-        Me.lvTVSources.Columns(3).Text = Master.eLang.GetString(610, "Language")
-        Me.lvTVSources.Columns(4).Text = Master.eLang.GetString(1167, "Ordering")
-        Me.lvTVSources.Columns(5).Text = Master.eLang.GetString(264, "Exclude")
-        Me.lvTVSources.Columns(6).Text = "Sorting"
         Me.tpFileSystemCleanerExpert.Text = Master.eLang.GetString(439, "Expert")
         Me.tpFileSystemCleanerStandard.Text = Master.eLang.GetString(438, "Standard")
         Me.tpMovieSetFileNamingExpertParent.Text = Master.eLang.GetString(880, "Parent Folder")
@@ -7312,13 +7317,13 @@ Public Class dlgSettings
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
-    Private Sub chkMovieImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesPrefLanguageOnly.CheckedChanged
+    Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesMediaLanguageOnly.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkMovieImagesGetBlankImages.Enabled = Me.chkMovieImagesPrefLanguageOnly.Checked
-        Me.chkMovieImagesGetEnglishImages.Enabled = Me.chkMovieImagesPrefLanguageOnly.Checked
+        Me.chkMovieImagesGetBlankImages.Enabled = Me.chkMovieImagesMediaLanguageOnly.Checked
+        Me.chkMovieImagesGetEnglishImages.Enabled = Me.chkMovieImagesMediaLanguageOnly.Checked
 
-        If Not Me.chkMovieImagesPrefLanguageOnly.Checked Then
+        If Not Me.chkMovieImagesMediaLanguageOnly.Checked Then
             Me.chkMovieImagesGetBlankImages.Checked = False
             Me.chkMovieImagesGetEnglishImages.Checked = False
         End If
@@ -7336,13 +7341,13 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesPrefLanguageOnly.CheckedChanged
+    Private Sub chkTVImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesMediaLanguageOnly.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkTVImagesGetBlankImages.Enabled = Me.chkTVImagesPrefLanguageOnly.Checked
-        Me.chkTVImagesGetEnglishImages.Enabled = Me.chkTVImagesPrefLanguageOnly.Checked
+        Me.chkTVImagesGetBlankImages.Enabled = Me.chkTVImagesMediaLanguageOnly.Checked
+        Me.chkTVImagesGetEnglishImages.Enabled = Me.chkTVImagesMediaLanguageOnly.Checked
 
-        If Not Me.chkTVImagesPrefLanguageOnly.Checked Then
+        If Not Me.chkTVImagesMediaLanguageOnly.Checked Then
             Me.chkTVImagesGetBlankImages.Checked = False
             Me.chkTVImagesGetEnglishImages.Checked = False
         End If
@@ -7360,7 +7365,6 @@ Public Class dlgSettings
         cbMovieEThumbsPrefSize.SelectedIndexChanged, _
         cbMovieFanartPrefSize.SelectedIndexChanged, _
         cbMovieGeneralLang.SelectedIndexChanged, _
-        cbMovieImagesPrefLanguage.SelectedIndexChanged, _
         cbMovieLanguageOverlay.SelectedIndexChanged, _
         cbMoviePosterPrefSize.SelectedIndexChanged, _
         cbMovieScraperCertLang.SelectedIndexChanged, _
@@ -7375,7 +7379,6 @@ Public Class dlgSettings
         cbTVEpisodeFanartPrefSize.SelectedIndexChanged, _
         cbTVEpisodePosterPrefSize.SelectedIndexChanged, _
         cbTVGeneralLang.SelectedIndexChanged, _
-        cbTVImagesPrefLanguage.SelectedIndexChanged, _
         cbTVLanguageOverlay.SelectedIndexChanged, _
         cbTVScraperOptionsOrdering.SelectedIndexChanged, _
         cbTVSeasonBannerPrefType.SelectedIndexChanged, _

@@ -110,64 +110,70 @@ Namespace IMDb
             'Dim trailerTitle As String
             Dim Qualities As MatchCollection
 
-            'Dim nPattern As String = "<title>.*?\((?<TITLE>.*?)\).*?</title>"   'Trailer title inside brakets
-            'Dim mPattern As String = "<title>(?<TITLE>.*?)</title>"             'Trailer title without brakets
-            Dim qPattern As String = "imdb/single\?format=([0-9]+)p"            'Trailer qualities
+            Dim qPattern As String = "(http:\/\/www.imdb.com\/video\/imdb\/{0}\/imdb\/single\?format=.*?)&" 'Trailer qualities
+            Dim vPattern As String = "ffname"":""(?<QUAL>.*?)"".*?,""height.*?videoUrl"":""(?<LINK>.*?)"""
 
             Try
-                Dim Html As String = sHTTP.DownloadData(url)
+                'get trailer ID
+                Dim vID As String = Regex.Match(url, "vi[0-9]+").Groups(0).Value.ToString.Trim
 
-                If Html.ToLower.Contains("page not found") Then
-                    Html = String.Empty
-                End If
+                If Not String.IsNullOrEmpty(url) Then
+                    Dim Html As String = sHTTP.DownloadData(String.Concat(url, "/imdb/single"))
 
-                If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
-
-                ''go to specific trailer website
-                'trailerTitle = Regex.Match(Html, nPattern).Groups(1).Value.ToString.Trim
-                'If String.IsNullOrEmpty(trailerTitle) Then
-                '    trailerTitle = Regex.Match(Html, mPattern).Groups(1).Value.ToString.Trim
-                '    trailerTitle = trailerTitle.Replace("- IMDb", String.Empty).Trim
-                'End If
-
-                'get all qualities of a specific trailer
-                Qualities = Regex.Matches(Html, String.Concat(url, qPattern))
-                Dim trailerCollection As String() = From m As Object In Qualities Select CType(m, Match).Value Distinct.ToArray()
-
-                'get all download URLs of a specific trailer
-                For Each qual As String In trailerCollection
-                    Dim Link As New VideoLinkItem
-
-                    sHTTP = New HTTP
-                    Dim QualityPage As String = sHTTP.DownloadData(qual)
-                    sHTTP = Nothing
-                    Dim QualLink As Match = Regex.Match(QualityPage, "videoPlayerObject.*?viconst")
-                    Dim dowloadURL As MatchCollection = Regex.Matches(QualLink.Value, "ffname"":""(?<QUAL>.*?)"",""height.*?url"":""(?<LINK>.*?)""")
-                    Dim Resolution As String = dowloadURL.Item(0).Groups(1).Value
-
-                    Link.URL = dowloadURL.Item(0).Groups(2).Value
-
-                    Select Case Resolution
-                        Case "SD"
-                            Link.Description = "240p (MP4)"
-                            Link.FormatCodec = Enums.TrailerVideoCodec.MP4
-                            Link.FormatQuality = Enums.TrailerVideoQuality.SQ240p
-                        Case "480p"
-                            Link.Description = "480p (MP4)"
-                            Link.FormatCodec = Enums.TrailerVideoCodec.MP4
-                            Link.FormatQuality = Enums.TrailerVideoQuality.HQ480p
-                        Case "720p"
-                            Link.Description = "720p (MP4)"
-                            Link.FormatCodec = Enums.TrailerVideoCodec.MP4
-                            Link.FormatQuality = Enums.TrailerVideoQuality.HD720p
-                        Case Else
-                            Link.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
-                    End Select
-
-                    If Not String.IsNullOrEmpty(Link.URL) Then 'AndAlso sHTTP.IsValidURL(Link.URL) Then
-                        DownloadLinks.Add(Link)
+                    If Html.ToLower.Contains("page not found") Then
+                        Html = String.Empty
                     End If
-                Next
+
+                    If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
+
+                    ''go to specific trailer website
+                    'trailerTitle = Regex.Match(Html, nPattern).Groups(1).Value.ToString.Trim
+                    'If String.IsNullOrEmpty(trailerTitle) Then
+                    '    trailerTitle = Regex.Match(Html, mPattern).Groups(1).Value.ToString.Trim
+                    '    trailerTitle = trailerTitle.Replace("- IMDb", String.Empty).Trim
+                    'End If
+
+                    'get all qualities of a specific trailer
+                    Qualities = Regex.Matches(Html, String.Format(qPattern, vID))
+                    Dim trailerCollection As String() = From m As Object In Qualities Select CType(m, Match).Groups(1).Value Distinct.ToArray()
+
+                    'get all download URLs of a specific trailer
+                    For Each qual As String In trailerCollection
+                        Dim Link As New VideoLinkItem
+
+                        sHTTP = New HTTP
+                        Dim QualityPage As String = sHTTP.DownloadData(qual)
+                        sHTTP = Nothing
+                        Dim QualLink As Match = Regex.Match(QualityPage, "videoPlayerObject.*?viconst")
+                        Dim tDetails As MatchCollection = Regex.Matches(QualityPage, vPattern, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+                        If tDetails.Count > 0 Then
+                            Dim vQuality As String = tDetails.Item(0).Groups("QUAL").Value.ToString.Trim
+
+                            Link.URL = tDetails.Item(0).Groups("LINK").Value.ToString.Trim
+
+                            Select Case vQuality
+                                Case "SD"
+                                    Link.Description = "240p (MP4)"
+                                    Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                                    Link.FormatQuality = Enums.TrailerVideoQuality.SQ240p
+                                Case "480p"
+                                    Link.Description = "480p (MP4)"
+                                    Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                                    Link.FormatQuality = Enums.TrailerVideoQuality.HQ480p
+                                Case "720p"
+                                    Link.Description = "720p (MP4)"
+                                    Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                                    Link.FormatQuality = Enums.TrailerVideoQuality.HD720p
+                                Case Else
+                                    Link.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
+                            End Select
+
+                            If Not String.IsNullOrEmpty(Link.URL) Then 'AndAlso sHTTP.IsValidURL(Link.URL) Then
+                                DownloadLinks.Add(Link)
+                            End If
+                        End If
+                    Next
+                End If
 
                 Return DownloadLinks
 

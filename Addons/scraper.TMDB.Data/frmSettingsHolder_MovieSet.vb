@@ -128,7 +128,7 @@ Public Class frmSettingsHolder_MovieSet
     Private Sub SetUp()
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")

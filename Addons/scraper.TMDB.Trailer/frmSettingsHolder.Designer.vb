@@ -30,9 +30,7 @@ Partial Class frmSettingsHolder
         Me.tblScraperTrailerOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
-        Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.lblPrefLanguage = New System.Windows.Forms.Label()
         Me.lblApiKey = New System.Windows.Forms.Label()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
@@ -106,7 +104,7 @@ Partial Class frmSettingsHolder
         Me.gbScraperTrailerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperTrailerOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperTrailerOpts.Name = "gbScraperTrailerOpts"
-        Me.gbScraperTrailerOpts.Size = New System.Drawing.Size(432, 97)
+        Me.gbScraperTrailerOpts.Size = New System.Drawing.Size(432, 93)
         Me.gbScraperTrailerOpts.TabIndex = 96
         Me.gbScraperTrailerOpts.TabStop = False
         Me.gbScraperTrailerOpts.Text = "Trailers - Scraper specific"
@@ -114,20 +112,17 @@ Partial Class frmSettingsHolder
         'tblScraperTrailerOpts
         '
         Me.tblScraperTrailerOpts.AutoSize = True
-        Me.tblScraperTrailerOpts.ColumnCount = 5
+        Me.tblScraperTrailerOpts.ColumnCount = 4
         Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperTrailerOpts.Controls.Add(Me.chkFallBackEng, 2, 2)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.pbApiKeyInfo, 3, 1)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.cbPrefLanguage, 1, 2)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.lblEMMAPI, 2, 0)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.lblPrefLanguage, 0, 2)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.pbApiKeyInfo, 2, 1)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.lblEMMAPI, 1, 0)
         Me.tblScraperTrailerOpts.Controls.Add(Me.lblApiKey, 0, 0)
         Me.tblScraperTrailerOpts.Controls.Add(Me.btnUnlockAPI, 0, 1)
-        Me.tblScraperTrailerOpts.Controls.Add(Me.txtApiKey, 2, 1)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.txtApiKey, 1, 1)
+        Me.tblScraperTrailerOpts.Controls.Add(Me.chkFallBackEng, 0, 2)
         Me.tblScraperTrailerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperTrailerOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperTrailerOpts.Name = "tblScraperTrailerOpts"
@@ -136,43 +131,30 @@ Partial Class frmSettingsHolder
         Me.tblScraperTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperTrailerOpts.Size = New System.Drawing.Size(426, 76)
+        Me.tblScraperTrailerOpts.Size = New System.Drawing.Size(426, 72)
         Me.tblScraperTrailerOpts.TabIndex = 99
         '
         'chkFallBackEng
         '
         Me.chkFallBackEng.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkFallBackEng.AutoSize = True
-        Me.tblScraperTrailerOpts.SetColumnSpan(Me.chkFallBackEng, 2)
         Me.chkFallBackEng.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFallBackEng.Location = New System.Drawing.Point(171, 54)
+        Me.chkFallBackEng.Location = New System.Drawing.Point(3, 52)
         Me.chkFallBackEng.Name = "chkFallBackEng"
         Me.chkFallBackEng.Size = New System.Drawing.Size(129, 17)
         Me.chkFallBackEng.TabIndex = 4
-        Me.chkFallBackEng.Text = "Fall back on english"
+        Me.chkFallBackEng.Text = "Fallback to english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
-        'pbTMDBApiKeyInfo
+        'pbApiKeyInfo
         '
         Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbApiKeyInfo.Image"), System.Drawing.Image)
         Me.pbApiKeyInfo.Location = New System.Drawing.Point(407, 26)
-        Me.pbApiKeyInfo.Name = "pbTMDBApiKeyInfo"
+        Me.pbApiKeyInfo.Name = "pbApiKeyInfo"
         Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
         Me.pbApiKeyInfo.TabIndex = 5
         Me.pbApiKeyInfo.TabStop = False
-        '
-        'cbPrefLanguage
-        '
-        Me.cbPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.cbPrefLanguage.FormattingEnabled = True
-        Me.cbPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbPrefLanguage.Location = New System.Drawing.Point(120, 52)
-        Me.cbPrefLanguage.Name = "cbPrefLanguage"
-        Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
-        Me.cbPrefLanguage.TabIndex = 3
         '
         'lblEMMAPI
         '
@@ -186,22 +168,10 @@ Partial Class frmSettingsHolder
         Me.lblEMMAPI.TabIndex = 16
         Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
-        'lblPrefLanguage
-        '
-        Me.lblPrefLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPrefLanguage.AutoSize = True
-        Me.lblPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblPrefLanguage.Location = New System.Drawing.Point(3, 56)
-        Me.lblPrefLanguage.Name = "lblPrefLanguage"
-        Me.lblPrefLanguage.Size = New System.Drawing.Size(111, 13)
-        Me.lblPrefLanguage.TabIndex = 2
-        Me.lblPrefLanguage.Text = "Preferred Language:"
-        '
         'lblApiKey
         '
         Me.lblApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblApiKey.AutoSize = True
-        Me.tblScraperTrailerOpts.SetColumnSpan(Me.lblApiKey, 2)
         Me.lblApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblApiKey.Location = New System.Drawing.Point(3, 3)
         Me.lblApiKey.Name = "lblApiKey"
@@ -212,7 +182,6 @@ Partial Class frmSettingsHolder
         'btnUnlockAPI
         '
         Me.btnUnlockAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblScraperTrailerOpts.SetColumnSpan(Me.btnUnlockAPI, 2)
         Me.btnUnlockAPI.Location = New System.Drawing.Point(3, 23)
         Me.btnUnlockAPI.Name = "btnUnlockAPI"
         Me.btnUnlockAPI.Size = New System.Drawing.Size(162, 23)
@@ -359,7 +328,7 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
-        'frmTMDBTrailerSettingsHolder
+        'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -371,7 +340,7 @@ Partial Class frmSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmTMDBTrailerSettingsHolder"
+        Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -410,8 +379,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents gbScraperTrailerOpts As System.Windows.Forms.GroupBox
     Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
-    Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents lblApiKey As System.Windows.Forms.Label
     Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label

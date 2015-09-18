@@ -2040,6 +2040,7 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
+                bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_Movie, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2091,6 +2092,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifier.MainPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
                     If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
@@ -2112,6 +2114,7 @@ Public Class frmMain
 
                 'Theme
                 If tScrapeItem.ScrapeModifier.MainTheme Then
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
                     If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                         tURL = String.Empty
                         If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
@@ -2147,6 +2150,7 @@ Public Class frmMain
 
                 'Trailer
                 If tScrapeItem.ScrapeModifier.MainTrailer Then
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(574, "Scraping Trailers"), ":"))
                     Dim SearchResults As New List(Of MediaContainers.Trailer)
                     If Not ModulesManager.Instance.ScrapeTrailer_Movie(DBScrapeMovie, Enums.ModifierType.MainTrailer, SearchResults) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2246,6 +2250,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, tScrapeItem.ScrapeModifier.MainNFO, True)
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -2265,6 +2270,8 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_Movie(CLng(e.UserState))
+        ElseIf e.ProgressPercentage = -3 Then
+            Me.tslLoading.Text = e.UserState.ToString
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -2349,6 +2356,7 @@ Public Class frmMain
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
+                bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_MovieSet, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2435,6 +2443,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifier.MainPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
                     If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
@@ -2455,6 +2464,7 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
+                    bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
                         Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
                     Else
@@ -2475,6 +2485,8 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_MovieSet(CLng(e.UserState))
+        ElseIf e.ProgressPercentage = -3 Then
+            Me.tslLoading.Text = e.UserState.ToString
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -2544,6 +2556,7 @@ Public Class frmMain
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
+                bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2585,6 +2598,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifier.MainPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
@@ -2605,6 +2619,7 @@ Public Class frmMain
                 End If
 
                 If tScrapeItem.ScrapeModifier.withEpisodes Then
+                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(265, "Scraping Episode Images"), ":"))
                     For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename))
                         If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.EpisodeMeta Then
                             MediaInfo.UpdateTVMediaInfo(tEpisode)
@@ -2623,11 +2638,12 @@ Public Class frmMain
 
                 'Theme
                 If tScrapeItem.ScrapeModifier.MainTheme Then
-
+                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
                 End If
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVShow, Nothing, Nothing, False, DBScrapeShow)
+                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.SaveTVShowToDB(DBScrapeShow, False, False, tScrapeItem.ScrapeModifier.MainNFO, True, tScrapeItem.ScrapeModifier.withEpisodes)
                     bwTVScraper.ReportProgress(-2, DBScrapeShow.ID)
                     bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -2646,6 +2662,8 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvshowscraped", 3, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVShow(CLng(e.UserState))
+        ElseIf e.ProgressPercentage = -3 Then
+            Me.tslLoading.Text = e.UserState.ToString
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -2712,6 +2730,7 @@ Public Class frmMain
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifier.EpisodeNFO Then
+                bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2750,6 +2769,7 @@ Public Class frmMain
                 If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse _
                     tScrapeItem.ScrapeModifier.EpisodePoster Then
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(265, "Scraping Episode Images"), ":"))
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
@@ -2771,6 +2791,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, DBScrapeEpisode)
+                    bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.SaveTVEpisodeToDB(DBScrapeEpisode, False, False, tScrapeItem.ScrapeModifier.EpisodeNFO, True, True)
                     bwTVEpisodeScraper.ReportProgress(-2, DBScrapeEpisode.ID)
                     bwTVEpisodeScraper.ReportProgress(-1, If(Not OldEpisodeTitle = NewEpisodeTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle), NewEpisodeTitle))
@@ -2789,6 +2810,8 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvepisodescraped", 3, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVEpisode(CLng(e.UserState))
+        ElseIf e.ProgressPercentage = -3 Then
+            Me.tslLoading.Text = e.UserState.ToString
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -2853,6 +2876,7 @@ Public Class frmMain
             logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
 
             If tScrapeItem.ScrapeModifier.SeasonNFO Then
+                bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2885,6 +2909,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifier.SeasonPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                    bwTVSeasonScraper.ReportProgress(-3, "Scraping Season Images:")
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
@@ -2908,6 +2933,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVSeason, Nothing, Nothing, False, DBScrapeSeason)
+                    bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.SaveTVSeasonToDB(DBScrapeSeason, False, True)
                     bwTVSeasonScraper.ReportProgress(-2, DBScrapeSeason.ID)
                 End If
@@ -2925,6 +2951,8 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvseasonscraped", 3, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVSeason(CLng(e.UserState))
+        ElseIf e.ProgressPercentage = -3 Then
+            Me.tslLoading.Text = e.UserState.ToString
         Else
             Me.tspbLoading.Value += e.ProgressPercentage
             Me.SetStatus(e.UserState.ToString)
@@ -5888,7 +5916,7 @@ doCancel:
         Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifier)
     End Sub
 
-    Private Sub cmnuSeasonChangeImages_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonChangeImages.Click
+    Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonEdit.Click
         Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", indX).Value)
         Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
@@ -6277,7 +6305,10 @@ doCancel:
 
         Me.dgvMovies.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
+        If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
@@ -7095,7 +7126,10 @@ doCancel:
 
         Me.dgvTVEpisodes.ShowCellToolTips = True
 
-        If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse _
+        If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "FanartPath" OrElse colName = "NfoPath" OrElse _
             colName = "PosterPath" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVEpisodes.ShowCellToolTips = False
 
@@ -7526,7 +7560,10 @@ doCancel:
 
         Me.dgvTVSeasons.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
+        If colName = "HasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(Me.dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVSeasons.ShowCellToolTips = False
 
@@ -7707,7 +7744,7 @@ doCancel:
                     Me.cmnuSeason.Enabled = True
                     Me.cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                     Me.ToolStripSeparator16.Visible = False
-                    Me.cmnuSeasonChangeImages.Visible = False
+                    Me.cmnuSeasonEdit.Visible = False
                     Me.ToolStripSeparator14.Visible = False
                     Me.cmnuSeasonRescrape.Visible = False
                     Me.ToolStripSeparator15.Visible = False
@@ -7740,7 +7777,7 @@ doCancel:
 
                 Else
                     Me.ToolStripSeparator16.Visible = True
-                    Me.cmnuSeasonChangeImages.Visible = True
+                    Me.cmnuSeasonEdit.Visible = True
                     Me.ToolStripSeparator14.Visible = True
                     Me.cmnuSeasonRescrape.Visible = True
                     Me.ToolStripSeparator15.Visible = True
@@ -7755,7 +7792,7 @@ doCancel:
                     Me.cmnuSeasonMark.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     Me.cmnuSeasonLock.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     If Not CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999 Then Me.cmnuSeasonWatched.Text = If(Convert.ToBoolean(Me.dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
-                    Me.cmnuSeasonChangeImages.Enabled = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
+                    Me.cmnuSeasonEdit.Enabled = Convert.ToInt32(Me.dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
 
                     If Not Me.dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not Me.currList = 1 Then
                         Me.prevRow_TVSeason = -1
@@ -7902,7 +7939,10 @@ doCancel:
 
         Me.dgvTVShows.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
+        If colName = "HasWatched" AndAlso e.RowIndex >= 0 Then
+            oldStatus = GetStatus()
+            Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
+        ElseIf (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
             colName = "ThemePath") AndAlso e.RowIndex >= 0 Then
@@ -8329,6 +8369,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         DBMovie = dEditMovie.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, DBMovie)
+                        Me.tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.SaveMovieToDB(DBMovie, False, False, True, True)
                         RefreshRow_Movie(DBMovie.ID)
                     Case Windows.Forms.DialogResult.Retry
@@ -8358,6 +8399,7 @@ doCancel:
                 Case Windows.Forms.DialogResult.OK
                     DBMovieSet = dEditMovieSet.Result
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
+                    Me.tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                     Master.DB.SaveMovieSetToDB(DBMovieSet, False, False, True)
                     RefreshRow_MovieSet(DBMovieSet.ID)
                 Case Windows.Forms.DialogResult.Retry
@@ -8387,6 +8429,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         DBTVEpisode = dEditTVEpisode.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
+                        Me.tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.SaveTVEpisodeToDB(DBTVEpisode, False, False, True, True, True)
                         RefreshRow_TVEpisode(DBTVEpisode.ID)
                     Case Else
@@ -8407,6 +8450,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         DBTVSeason = dEditTVSeason.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
+                        Me.tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.SaveTVSeasonToDB(DBTVSeason, False, True)
                         RefreshRow_TVSeason(DBTVSeason.ID)
                     Case Else
@@ -8427,6 +8471,7 @@ doCancel:
                     Case Windows.Forms.DialogResult.OK
                         DBTVShow = dEditTVShow.Result
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVShow, Nothing, Nothing, False, DBTVShow)
+                        Me.tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.SaveTVShowToDB(DBTVShow, False, False, True, True, True)
                         RefreshRow_TVShow(DBTVShow.ID)
                     Case Windows.Forms.DialogResult.Retry
@@ -15900,6 +15945,10 @@ doCancel:
                 Dim strDiscArtOnly As String = Master.eLang.GetString(1124, "DiscArt Only")
                 .mnuScrapeModifierDiscArt.Text = strDiscArtOnly
 
+                'Edit Season
+                Dim strEditSeason As String = Master.eLang.GetString(769, "Edit Season")
+                .cmnuSeasonEdit.Text = strEditSeason
+
                 'Extrafanarts Only
                 Dim strExtrafanartsOnly As String = Master.eLang.GetString(975, "Extrafanarts Only")
                 .mnuScrapeModifierExtrafanarts.Text = strExtrafanartsOnly
@@ -16200,7 +16249,6 @@ doCancel:
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
                 .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Data Field")
                 .cmnuSeasonRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
-                .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuSeasonMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuSeasonReload.Text = Master.eLang.GetString(22, "Reload")
