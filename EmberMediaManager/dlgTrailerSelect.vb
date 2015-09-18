@@ -383,10 +383,10 @@ Public Class dlgTrailerSelect
                 If Me.nList.Count > 0 Then
                     AddTrailersToList(nList)
                 Else
-                    MessageBox.Show(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), Master.eLang.GetString(225, "No Trailers Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show(Master.eLang.GetString(225, "No Trailers found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), Master.eLang.GetString(225, "No Trailers Found"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(225, "No Trailers found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
         Me.pnlStatus.Visible = False

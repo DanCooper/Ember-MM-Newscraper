@@ -68,74 +68,51 @@ Namespace IMDB
             Dim BaseURL As String = "http://www.imdb.com"
             Dim SearchURL As String
 
-            Dim TrailerPageNumber As Integer = 0
+            Dim ImdbTrailerPage As String = String.Empty
             Dim Trailers As MatchCollection
-            Dim TrailerPage As String
+            Dim TrailerDetails As Match
+            Dim TrailerDetailsPage As String
+            Dim TrailerDuration As String
             Dim TrailerTitle As String
-            Dim Link As Match
-            Dim currPage As Integer = 0
-            Dim _ImdbTrailerPage As String = String.Empty
             Dim sHTTP As New HTTP
 
             Try
                 If Not String.IsNullOrEmpty(IMDBID) Then
-                    Dim pPattern As String = "of [0-9]{1,3}"                            'Trailer page # of #
-                    Dim tPattern As String = "imdb/(vi[0-9]+)/"                         'Specific trailer website
-                    Dim nPattern As String = "<title>.*?\((?<TITLE>.*?)\).*?</title>"   'Trailer title inside brakets
-                    Dim mPattern As String = "<title>(?<TITLE>.*?)</title>"             'Trailer title without brakets
+                    Dim aPattern As String = "<div class=""article"">.*?<div class=""article"" id=""see_also"">"                                'Video Gallery results
+                    Dim tPattern As String = "imdb\/(vi[0-9]+)"                                                                                 'Specific trailer website
+                    Dim dPattern As String = "class=""vp-video-name"">(?<TITLE>.*?)<.*?class=""duration title-hover"">\((?<DURATION>.*?)\)"     'Trailer title and duration
 
                     SearchURL = String.Concat(BaseURL, "/title/tt", IMDBID, "/videogallery/content_type-trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
 
                     'download trailer website
-                    _ImdbTrailerPage = sHTTP.DownloadData(SearchURL)
+                    ImdbTrailerPage = sHTTP.DownloadData(SearchURL)
                     sHTTP = Nothing
 
-                    If _ImdbTrailerPage.ToLower.Contains("page not found") Then
-                        _ImdbTrailerPage = String.Empty
+                    If ImdbTrailerPage.ToLower.Contains("page not found") Then
+                        ImdbTrailerPage = String.Empty
                     End If
 
-                    If Not String.IsNullOrEmpty(_ImdbTrailerPage) Then
-                        'check if more than one page exist
-                        Link = Regex.Match(_ImdbTrailerPage, pPattern)
+                    If Not String.IsNullOrEmpty(ImdbTrailerPage) Then
+                        'filter HTML to Video Gallery only
+                        Dim VideoGallery = Regex.Match(ImdbTrailerPage, aPattern, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
 
-                        If Link.Success Then
-                            TrailerPageNumber = Convert.ToInt32(Link.Value.Substring(3))
+                        If VideoGallery.Success Then
+                            'search all trailer on trailer website
+                            Dim test = VideoGallery.Groups.Item(0).ToString
+                            Trailers = Regex.Matches(VideoGallery.Groups.Item(0).ToString, tPattern)
+                            Dim linksCollection As String() = From m As Object In Trailers Select CType(m, Match).Value Distinct.ToArray()
 
-                            If TrailerPageNumber > 0 Then
-                                currPage = Convert.ToInt32(Math.Ceiling(TrailerPageNumber / 10))
-
-                                For i As Integer = 1 To currPage
-                                    If Not i = 1 Then
-                                        sHTTP = New HTTP
-                                        _ImdbTrailerPage = sHTTP.DownloadData(String.Concat(SearchURL, "?page=", i))
-                                        sHTTP = Nothing
-                                    End If
-
-                                    'search all trailer on trailer website
-                                    Trailers = Regex.Matches(_ImdbTrailerPage, tPattern)
-                                    Dim linksCollection As String() = From m As Object In Trailers Select CType(m, Match).Value Distinct.ToArray()
-
-                                    For Each trailer As String In linksCollection
-                                        'go to specific trailer website
-                                        Dim Website As String = String.Concat(BaseURL, "/video/", trailer)
-                                        sHTTP = New HTTP
-                                        TrailerPage = sHTTP.DownloadData(Website)
-                                        sHTTP = Nothing
-                                        TrailerTitle = Regex.Match(TrailerPage, nPattern).Groups(1).Value.ToString.Trim
-                                        If String.IsNullOrEmpty(TrailerTitle) Then
-                                            TrailerTitle = Regex.Match(TrailerPage, mPattern).Groups(1).Value.ToString.Trim
-                                            TrailerTitle = TrailerTitle.Replace("- IMDb", String.Empty).Trim
-                                        End If
-                                        'try to get playtime
-                                        Dim Details As String = String.Concat(Website, "imdb/single?format=480p")
-                                        sHTTP = New HTTP
-                                        Dim DetailsPage As String = sHTTP.DownloadData(Details)
-                                        Dim trailerLenght As String = Regex.Match(DetailsPage, "duration title-hover"">\((?<LENGHT>.*?)\)</span>").Groups(1).Value.ToString
-                                        _trailerlist.Add(New MediaContainers.Trailer With {.Title = TrailerTitle, .URLWebsite = Website, .Duration = trailerLenght, .Source = "IMDB"})
-                                    Next
-                                Next
-                            End If
-
+                            For Each trailer As String In linksCollection
+                                'go to specific trailer website
+                                Dim URLWebsite As String = String.Concat(BaseURL, "/video/", trailer)
+                                sHTTP = New HTTP
+                                TrailerDetailsPage = sHTTP.DownloadData(String.Concat(URLWebsite, "/imdb/single"))
+                                sHTTP = Nothing
+                                TrailerDetails = Regex.Match(TrailerDetailsPage, dPattern, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+                                TrailerTitle = TrailerDetails.Groups("TITLE").Value.ToString.Trim
+                                TrailerDuration = TrailerDetails.Groups("DURATION").Value.ToString.Trim
+                                _trailerlist.Add(New MediaContainers.Trailer With {.Title = TrailerTitle, .URLWebsite = URLWebsite, .Duration = TrailerDuration, .Scraper = "IMDB", .Source = "IMDB"})
+                            Next
                         End If
                     End If
                 End If
