@@ -2776,7 +2776,6 @@ Public Class dlgSettings
             Me.cbMovieEFanartsPrefSize.SelectedValue = .MovieEFanartsPrefSize
             Me.cbMovieEThumbsPrefSize.SelectedValue = .MovieEThumbsPrefSize
             Me.cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
-            Me.cbMovieImagesPrefLanguage.SelectedItem = .MovieImagesPrefLanguage
             Me.cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
             Me.cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
             Me.cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
@@ -2791,7 +2790,6 @@ Public Class dlgSettings
             Me.cbTVASPosterPrefSize.SelectedValue = .TVASPosterPrefSize
             Me.cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
             Me.cbTVEpisodePosterPrefSize.SelectedValue = .TVEpisodePosterPrefSize
-            Me.cbTVImagesPrefLanguage.SelectedItem = .TVImagesPrefLanguage
             Me.cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             Me.cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
             Me.cbTVSeasonBannerPrefSize.SelectedValue = .TVSeasonBannerPrefSize
@@ -2878,12 +2876,12 @@ Public Class dlgSettings
             Me.chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
             Me.chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             Me.chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
-            Me.chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
-            If .MovieImagesPrefLanguageOnly Then
-                Me.chkMovieImagesPrefLanguageOnly.Checked = True
+            If .MovieImagesMediaLanguageOnly Then
+                Me.chkMovieImagesMediaLanguageOnly.Checked = True
                 Me.chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
                 Me.chkMovieImagesGetEnglishImages.Checked = .MovieImagesGetEnglishImages
             End If
+            Me.chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
             Me.chkMovieLandscapeOverwrite.Checked = .MovieLandscapeOverwrite
             Me.chkMovieLockActors.Checked = .MovieLockActors
             Me.chkMovieLockCert.Checked = .MovieLockCert
@@ -3049,8 +3047,8 @@ Public Class dlgSettings
             Me.chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
             Me.chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
             Me.chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
-            If .TVImagesPrefLanguageOnly Then
-                Me.chkTVImagesPrefLanguageOnly.Checked = True
+            If .TVImagesMediaLanguageOnly Then
+                Me.chkTVImagesMediaLanguageOnly.Checked = True
                 Me.chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
                 Me.chkTVImagesGetEnglishImages.Checked = .TVImagesGetEnglishImages
             End If
@@ -4682,9 +4680,8 @@ Public Class dlgSettings
             .MovieImagesDisplayImageSelect = Me.chkMovieImagesDisplayImageSelect.Checked
             .MovieImagesGetBlankImages = Me.chkMovieImagesGetBlankImages.Checked
             .MovieImagesGetEnglishImages = Me.chkMovieImagesGetEnglishImages.Checked
+            .MovieImagesMediaLanguageOnly = Me.chkMovieImagesMediaLanguageOnly.Checked
             .MovieImagesNotSaveURLToNfo = Me.chkMovieImagesNotSaveURLToNfo.Checked
-            .MovieImagesPrefLanguage = Me.cbMovieImagesPrefLanguage.Text
-            .MovieImagesPrefLanguageOnly = Me.chkMovieImagesPrefLanguageOnly.Checked
             If Not String.IsNullOrEmpty(Me.txtMovieIMDBURL.Text) Then
                 .MovieIMDBURL = Me.txtMovieIMDBURL.Text.Replace("http://", String.Empty).Trim
             Else
@@ -4911,8 +4908,7 @@ Public Class dlgSettings
             .TVImagesDisplayImageSelect = Me.chkTVImagesDisplayImageSelect.Checked
             .TVImagesGetBlankImages = Me.chkTVImagesGetBlankImages.Checked
             .TVImagesGetEnglishImages = Me.chkTVImagesGetEnglishImages.Checked
-            .TVImagesPrefLanguage = Me.cbTVImagesPrefLanguage.Text
-            .TVImagesPrefLanguageOnly = Me.chkTVImagesPrefLanguageOnly.Checked
+            .TVImagesMediaLanguageOnly = Me.chkTVImagesMediaLanguageOnly.Checked
             .TVLockEpisodeLanguageA = Me.chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = Me.chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
@@ -6047,11 +6043,11 @@ Public Class dlgSettings
         Me.chkTVShowFanartPrefSizeOnly.Text = strOnly
         Me.chkTVShowPosterPrefSizeOnly.Text = strOnly
 
-        'Only Get Images for the Selected Language
-        Dim strOnlyImgSelLang As String = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.chkMovieImagesPrefLanguageOnly.Text = strOnlyImgSelLang
-        Me.chkMovieSetImagesPrefLanguageOnly.Text = strOnlyImgSelLang
-        Me.chkTVImagesPrefLanguageOnly.Text = strOnlyImgSelLang
+        'Only Get Images for the Media Language
+        Dim strOnlyImgMediaLang As String = Master.eLang.GetString(736, "Only Get Images for the Media Language")
+        Me.chkMovieImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
+        Me.chkMovieSetImagesPrefLanguageOnly.Text = strOnlyImgMediaLang
+        Me.chkTVImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
 
         'Optional Images
         Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
@@ -7312,13 +7308,13 @@ Public Class dlgSettings
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
-    Private Sub chkMovieImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesPrefLanguageOnly.CheckedChanged
+    Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesMediaLanguageOnly.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkMovieImagesGetBlankImages.Enabled = Me.chkMovieImagesPrefLanguageOnly.Checked
-        Me.chkMovieImagesGetEnglishImages.Enabled = Me.chkMovieImagesPrefLanguageOnly.Checked
+        Me.chkMovieImagesGetBlankImages.Enabled = Me.chkMovieImagesMediaLanguageOnly.Checked
+        Me.chkMovieImagesGetEnglishImages.Enabled = Me.chkMovieImagesMediaLanguageOnly.Checked
 
-        If Not Me.chkMovieImagesPrefLanguageOnly.Checked Then
+        If Not Me.chkMovieImagesMediaLanguageOnly.Checked Then
             Me.chkMovieImagesGetBlankImages.Checked = False
             Me.chkMovieImagesGetEnglishImages.Checked = False
         End If
@@ -7336,13 +7332,13 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVImagesPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesPrefLanguageOnly.CheckedChanged
+    Private Sub chkTVImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesMediaLanguageOnly.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkTVImagesGetBlankImages.Enabled = Me.chkTVImagesPrefLanguageOnly.Checked
-        Me.chkTVImagesGetEnglishImages.Enabled = Me.chkTVImagesPrefLanguageOnly.Checked
+        Me.chkTVImagesGetBlankImages.Enabled = Me.chkTVImagesMediaLanguageOnly.Checked
+        Me.chkTVImagesGetEnglishImages.Enabled = Me.chkTVImagesMediaLanguageOnly.Checked
 
-        If Not Me.chkTVImagesPrefLanguageOnly.Checked Then
+        If Not Me.chkTVImagesMediaLanguageOnly.Checked Then
             Me.chkTVImagesGetBlankImages.Checked = False
             Me.chkTVImagesGetEnglishImages.Checked = False
         End If
@@ -7360,7 +7356,6 @@ Public Class dlgSettings
         cbMovieEThumbsPrefSize.SelectedIndexChanged, _
         cbMovieFanartPrefSize.SelectedIndexChanged, _
         cbMovieGeneralLang.SelectedIndexChanged, _
-        cbMovieImagesPrefLanguage.SelectedIndexChanged, _
         cbMovieLanguageOverlay.SelectedIndexChanged, _
         cbMoviePosterPrefSize.SelectedIndexChanged, _
         cbMovieScraperCertLang.SelectedIndexChanged, _
@@ -7375,7 +7370,6 @@ Public Class dlgSettings
         cbTVEpisodeFanartPrefSize.SelectedIndexChanged, _
         cbTVEpisodePosterPrefSize.SelectedIndexChanged, _
         cbTVGeneralLang.SelectedIndexChanged, _
-        cbTVImagesPrefLanguage.SelectedIndexChanged, _
         cbTVLanguageOverlay.SelectedIndexChanged, _
         cbTVScraperOptionsOrdering.SelectedIndexChanged, _
         cbTVSeasonBannerPrefType.SelectedIndexChanged, _

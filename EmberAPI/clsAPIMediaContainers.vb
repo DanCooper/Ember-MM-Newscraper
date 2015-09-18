@@ -4539,7 +4539,7 @@ Namespace MediaContainers
             Me._mainposters.Clear()
         End Sub
 
-        Public Sub CreateCachePaths(ByVal tDBElement As Database.DBElement, ByVal tContentType As Enums.ContentType)
+        Public Sub CreateCachePaths(ByRef tDBElement As Database.DBElement, ByVal tContentType As Enums.ContentType)
             Dim sID As String = String.Empty
             Dim sPath As String = String.Empty
 
@@ -4669,25 +4669,25 @@ Namespace MediaContainers
             Next
         End Sub
 
-        Public Sub Sort(ByRef ContentType As Enums.ContentType)
+        Public Sub Sort(ByVal tDBElement As Database.DBElement, ByRef ContentType As Enums.ContentType)
             Dim cSettings As New Settings
 
             Select Case ContentType
                 Case Enums.ContentType.Movie
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
-                    cSettings.PrefLanguage = Master.eSettings.MovieImagesPrefLanguage
-                    cSettings.PrefLanguageOnly = Master.eSettings.MovieImagesPrefLanguageOnly
+                    cSettings.MediaLanguage = tDBElement.Language
+                    cSettings.MediaLanguageOnly = Master.eSettings.MovieImagesMediaLanguageOnly
                 Case Enums.ContentType.MovieSet
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
-                    cSettings.PrefLanguage = Master.eSettings.MovieSetImagesPrefLanguage
-                    cSettings.PrefLanguageOnly = Master.eSettings.MovieSetImagesPrefLanguageOnly
+                    cSettings.MediaLanguage = Master.eSettings.MovieSetImagesPrefLanguage
+                    cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesPrefLanguageOnly
                 Case Enums.ContentType.TV
                     cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
-                    cSettings.PrefLanguage = Master.eSettings.TVImagesPrefLanguage
-                    cSettings.PrefLanguageOnly = Master.eSettings.TVImagesPrefLanguageOnly
+                    cSettings.MediaLanguage = tDBElement.Language
+                    cSettings.MediaLanguageOnly = Master.eSettings.TVImagesMediaLanguageOnly
             End Select
 
             'sort all List(Of Image) by Image.ShortLang
@@ -4724,17 +4724,17 @@ Namespace MediaContainers
         Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
             Dim SortedList As New List(Of Image)
 
-            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.PrefLanguage)
+            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage)
                 SortedList.Add(tmpImage)
             Next
 
-            If (cSettings.GetEnglishImages OrElse Not cSettings.PrefLanguageOnly) AndAlso Not cSettings.PrefLanguage = "en" Then
+            If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso Not cSettings.MediaLanguage = "en" Then
                 For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
                     SortedList.Add(tmpImage)
                 Next
             End If
 
-            If cSettings.GetBlankImages OrElse Not cSettings.PrefLanguageOnly Then
+            If cSettings.GetBlankImages OrElse Not cSettings.MediaLanguageOnly Then
                 For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
                     SortedList.Add(tmpImage)
                 Next
@@ -4743,8 +4743,8 @@ Namespace MediaContainers
                 Next
             End If
 
-            If Not cSettings.PrefLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.PrefLanguage OrElse _
+            If Not cSettings.MediaLanguageOnly Then
+                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage OrElse _
                                                                    Not f.ShortLang = "en" OrElse _
                                                                    Not f.ShortLang = Master.eLang.GetString(1168, "Blank") OrElse _
                                                                    Not f.ShortLang = String.Empty)
@@ -4765,8 +4765,8 @@ Namespace MediaContainers
 
             Dim GetBlankImages As Boolean
             Dim GetEnglishImages As Boolean
-            Dim PrefLanguage As String
-            Dim PrefLanguageOnly As Boolean
+            Dim MediaLanguage As String
+            Dim MediaLanguageOnly As Boolean
 
 #End Region 'Fields
 
