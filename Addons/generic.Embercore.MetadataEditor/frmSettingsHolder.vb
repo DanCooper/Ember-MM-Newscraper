@@ -57,7 +57,7 @@ Public Class frmSettingsHolder
 
     Private Sub btnSetDefaultsAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsAudio.Click
         Using settings = New clsAdvancedSettings()
-            settings.SetDefaults(True, "AudioFormatConverts")
+            settings.SetDefaults("AudioFormatConverts")
         End Using
         LoadAudio()
         RaiseEvent ModuleSettingsChanged()
@@ -65,7 +65,7 @@ Public Class frmSettingsHolder
 
     Private Sub btnSetDefaultsVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsVideo.Click
         Using settings = New clsAdvancedSettings()
-            settings.SetDefaults(True, "VideoFormatConverts")
+            settings.SetDefaults("VideoFormatConverts")
         End Using
         LoadVideo()
         RaiseEvent ModuleSettingsChanged()

@@ -219,29 +219,25 @@ Public Class clsAdvancedSettings
                 Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
                 _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
                 objStreamReader.Close()
-            Else
-                Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults()
-                End Using
             End If
 
             'Add complex settings to general advancedsettings.xml if those settings don't exist
             Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
             If formatconversions Is Nothing Then
                 Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults(True, "VideoFormatConverts")
+                    settings.SetDefaults("VideoFormatConverts")
                 End Using
             End If
             formatconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
             If formatconversions Is Nothing Then
                 Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults(True, "AudioFormatConverts")
+                    settings.SetDefaults("AudioFormatConverts")
                 End Using
             End If
             formatconversions = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
             If formatconversions Is Nothing Then
                 Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults(True, "MovieSources")
+                    settings.SetDefaults("MovieSources")
                 End Using
             End If
 
@@ -358,37 +354,27 @@ Public Class clsAdvancedSettings
         Return True
     End Function
 
-    Public Sub SetDefaults(Optional ByVal loadSingle As Boolean = False, Optional ByVal section As String = "")
+    Public Sub SetDefaults(ByVal section As String)
+        If String.IsNullOrEmpty(section) Then Return
+
         Dim aPath As String
         If _disposed Then
             logger.Error(New StackFrame().GetMethod().Name, "AdvancedSettings.SetDefaults on disposed object")
             Throw New ObjectDisposedException("AdvancedSettings.SetDefaults on disposed object")
         End If
         _DoNotSave = True
-        If loadSingle AndAlso section.Length <> 0 Then
-            aPath = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultAdvancedSettings - " & section & ".xml")
-            Dim objStreamReader As New StreamReader(aPath)
-            Dim aAdvancedSettings As New clsXMLAdvancedSettings
-            Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
+        aPath = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultAdvancedSettings - " & section & ".xml")
+        Dim objStreamReader As New StreamReader(aPath)
+        Dim aAdvancedSettings As New clsXMLAdvancedSettings
+        Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 
-            aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
-            objStreamReader.Close()
-            _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
-            While _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section) IsNot Nothing
-                _AdvancedSettings.ComplexSettings.Remove(_AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section))
-            End While
-            _AdvancedSettings.ComplexSettings.AddRange(aAdvancedSettings.ComplexSettings)
-        End If
-
-        If Not loadSingle Then
-            aPath = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultAdvancedSettings.xml")
-            Dim objStreamReader As New StreamReader(aPath)
-            Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
-
-            _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
-
-            objStreamReader.Close()
-        End If
+        aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+        objStreamReader.Close()
+        _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
+        While _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section) IsNot Nothing
+            _AdvancedSettings.ComplexSettings.Remove(_AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section))
+        End While
+        _AdvancedSettings.ComplexSettings.AddRange(aAdvancedSettings.ComplexSettings)
 
         _DoNotSave = False
     End Sub

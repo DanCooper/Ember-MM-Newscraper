@@ -119,7 +119,7 @@ Public Class frmMediaSources
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
         Using settings = New clsAdvancedSettings()
-            settings.SetDefaults(True, "MovieSources")
+            settings.SetDefaults("MovieSources")
         End Using
         LoadSources()
         RaiseEvent ModuleSettingsChanged()
