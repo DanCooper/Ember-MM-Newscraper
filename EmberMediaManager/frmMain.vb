@@ -6026,19 +6026,6 @@ doCancel:
         Next
     End Sub
 
-    Private Sub mnuMovieCustom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeSubmenuCustom.Click
-        Me.SetControlsEnabled(False)
-        Using dUpdate As New dlgCustomScraperMovie
-            Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
-            CustomUpdater = dUpdate.ShowDialog()
-            If Not CustomUpdater.Canceled Then
-                Me.CreateScrapeList_Movie(CustomUpdater.ScrapeType, CustomUpdater.Options, CustomUpdater.ScrapeModifier)
-            Else
-                Me.SetControlsEnabled(True)
-            End If
-        End Using
-    End Sub
-
 
     Private Sub cmnuMovieRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisk.Click
         Try
@@ -11444,6 +11431,12 @@ doCancel:
         End With
     End Sub
 
+    Private Sub mnuScrapeSubmenu_Opened(sender As Object, e As EventArgs) Handles mnuScrapeSubmenu.Opened
+        If mnuScrapeSubmenu.OwnerItem IsNot Nothing Then
+            _SelectedContentType = mnuScrapeSubmenu.OwnerItem.Tag.ToString
+        End If
+    End Sub
+
     Private Sub mnuScrapeType_Opened(sender As Object, e As EventArgs) Handles mnuScrapeType.Opened
         If mnuScrapeType.OwnerItem.OwnerItem IsNot Nothing Then
             _SelectedScrapeType = mnuScrapeType.OwnerItem.Tag.ToString
@@ -11470,7 +11463,8 @@ doCancel:
         mnuScrapeModifierNFO.Click, _
         mnuScrapeModifierPoster.Click, _
         mnuScrapeModifierTheme.Click, _
-        mnuScrapeModifierTrailer.Click
+        mnuScrapeModifierTrailer.Click, _
+        mnuScrapeSubmenuCustom.Click
 
         Dim ContentType As String = String.Empty
         Dim ModifierType As String = String.Empty
@@ -11483,108 +11477,146 @@ doCancel:
         ScrapeType = String.Concat(_SelectedScrapeType, "_", _SelectedScrapeTypeMode)
         ContentType = _SelectedContentType
 
-        Select Case ModifierType
-            Case "all"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-            Case "actorthumbs"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainActorThumbs, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeActorThumbs, True)
-            Case "banner"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsBanner, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonBanner, True)
-            Case "characterart"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainCharacterArt, True)
-            Case "clearart"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-            Case "clearlogo"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-            Case "discart"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-            Case "extrafanarts"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
-            Case "extrathumbs"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
-            Case "fanart"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsFanart, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonFanart, True)
-            Case "landscape"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsLandscape, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
-            Case "metadata"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeMeta, True)
-            Case "nfo"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeNFO, True)
-            Case "poster"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsPoster, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonPoster, True)
-            Case "subtitle"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainSubtitle, True)
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeSubtitle, True)
-            Case "theme"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTheme, True)
-            Case "trailer"
-                Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTrailer, True)
-        End Select
+        If Not ModifierType = "custom" Then
+            Select Case ModifierType
+                Case "all"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
+                Case "actorthumbs"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainActorThumbs, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeActorThumbs, True)
+                Case "banner"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsBanner, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonBanner, True)
+                Case "characterart"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainCharacterArt, True)
+                Case "clearart"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
+                Case "clearlogo"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
+                Case "discart"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
+                Case "extrafanarts"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
+                Case "extrathumbs"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
+                Case "fanart"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsFanart, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonFanart, True)
+                Case "landscape"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsLandscape, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonLandscape, True)
+                Case "metadata"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainMeta, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeMeta, True)
+                Case "nfo"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeNFO, True)
+                Case "poster"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsPoster, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.SeasonPoster, True)
+                Case "subtitle"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainSubtitle, True)
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeSubtitle, True)
+                Case "theme"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTheme, True)
+                Case "trailer"
+                    Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainTrailer, True)
+            End Select
 
-        Select Case ScrapeType
-            Case "all_ask"
-                Type = Enums.ScrapeType.AllAsk
-            Case "all_auto"
-                Type = Enums.ScrapeType.AllAuto
-            Case "all_skip"
-                Type = Enums.ScrapeType.AllSkip
-            Case "filter_ask"
-                Type = Enums.ScrapeType.FilterAsk
-            Case "filter_auto"
-                Type = Enums.ScrapeType.FilterAuto
-            Case "filter_skip"
-                Type = Enums.ScrapeType.FilterSkip
-            Case "marked_ask"
-                Type = Enums.ScrapeType.MarkedAsk
-            Case "marked_auto"
-                Type = Enums.ScrapeType.MarkedAuto
-            Case "marked_skip"
-                Type = Enums.ScrapeType.MarkedSkip
-            Case "missing_ask"
-                Type = Enums.ScrapeType.MissingAsk
-            Case "missing_auto"
-                Type = Enums.ScrapeType.MissingAuto
-            Case "missing_skip"
-                Type = Enums.ScrapeType.MissingSkip
-            Case "new_ask"
-                Type = Enums.ScrapeType.NewAsk
-            Case "new_auto"
-                Type = Enums.ScrapeType.NewAuto
-            Case "new_skip"
-                Type = Enums.ScrapeType.NewSkip
-            Case "selected_ask"
-                Type = Enums.ScrapeType.SelectedAsk
-            Case "selected_auto"
-                Type = Enums.ScrapeType.SelectedAuto
-            Case "selected_skip"
-                Type = Enums.ScrapeType.SelectedSkip
-        End Select
+            Select Case ScrapeType
+                Case "all_ask"
+                    Type = Enums.ScrapeType.AllAsk
+                Case "all_auto"
+                    Type = Enums.ScrapeType.AllAuto
+                Case "all_skip"
+                    Type = Enums.ScrapeType.AllSkip
+                Case "filter_ask"
+                    Type = Enums.ScrapeType.FilterAsk
+                Case "filter_auto"
+                    Type = Enums.ScrapeType.FilterAuto
+                Case "filter_skip"
+                    Type = Enums.ScrapeType.FilterSkip
+                Case "marked_ask"
+                    Type = Enums.ScrapeType.MarkedAsk
+                Case "marked_auto"
+                    Type = Enums.ScrapeType.MarkedAuto
+                Case "marked_skip"
+                    Type = Enums.ScrapeType.MarkedSkip
+                Case "missing_ask"
+                    Type = Enums.ScrapeType.MissingAsk
+                Case "missing_auto"
+                    Type = Enums.ScrapeType.MissingAuto
+                Case "missing_skip"
+                    Type = Enums.ScrapeType.MissingSkip
+                Case "new_ask"
+                    Type = Enums.ScrapeType.NewAsk
+                Case "new_auto"
+                    Type = Enums.ScrapeType.NewAuto
+                Case "new_skip"
+                    Type = Enums.ScrapeType.NewSkip
+                Case "selected_ask"
+                    Type = Enums.ScrapeType.SelectedAsk
+                Case "selected_auto"
+                    Type = Enums.ScrapeType.SelectedAuto
+                Case "selected_skip"
+                    Type = Enums.ScrapeType.SelectedSkip
+            End Select
 
-        Select Case ContentType
-            Case "movie"
-                Me.CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifier)
-            Case "movieset"
-                Me.CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
-            Case "tvepisode"
-                Me.CreateScrapeList_TVEpisode(Type, Master.DefaultOptions_TV, ScrapeModifier)
-            Case "tvseason"
-                Me.CreateScrapeList_TVSeason(Type, Master.DefaultOptions_TV, ScrapeModifier)
-            Case "tvshow"
-                Me.CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifier)
-        End Select
+            Select Case ContentType
+                Case "movie"
+                    Me.CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifier)
+                Case "movieset"
+                    Me.CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                Case "tvepisode"
+                    Me.CreateScrapeList_TVEpisode(Type, Master.DefaultOptions_TV, ScrapeModifier)
+                Case "tvseason"
+                    Me.CreateScrapeList_TVSeason(Type, Master.DefaultOptions_TV, ScrapeModifier)
+                Case "tvshow"
+                    Me.CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifier)
+            End Select
+        Else
+            Select Case ContentType
+                Case "movie"
+                    Me.SetControlsEnabled(False)
+                    Using dlgCustomScraper As New dlgCustomScraperMovie
+                        Dim CustomScraper As Structures.CustomUpdaterStruct_Movie = Nothing
+                        CustomScraper = dlgCustomScraper.ShowDialog()
+                        If Not CustomScraper.Canceled Then
+                            Me.CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                        Else
+                            Me.SetControlsEnabled(True)
+                        End If
+                    End Using
+                Case "movieset"
+                    Me.SetControlsEnabled(False)
+                    Using dlgCustomScraper As New dlgCustomScraperMovieSet
+                        Dim CustomScraper As Structures.CustomUpdaterStruct_MovieSet = Nothing
+                        CustomScraper = dlgCustomScraper.ShowDialog()
+                        If Not CustomScraper.Canceled Then
+                            Me.CreateScrapeList_MovieSet(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                        Else
+                            Me.SetControlsEnabled(True)
+                        End If
+                    End Using
+                Case "tvshow"
+                    'Me.SetControlsEnabled(False)
+                    'Using dlgCustomScraper As New dlgCustomScraperTV
+                    '    Dim CustomScraper As Structures.CustomUpdaterStruct_TV = Nothing
+                    '    CustomScraper = dlgCustomScraper.ShowDialog()
+                    '    If Not CustomScraper.Canceled Then
+                    '        Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                    '    Else
+                    '        Me.SetControlsEnabled(True)
+                    '    End If
+                    'End Using
+            End Select
+        End If
     End Sub
 
     Private Sub Mono_Shown()

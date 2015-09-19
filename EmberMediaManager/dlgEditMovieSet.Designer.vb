@@ -31,7 +31,7 @@ Partial Class dlgEditMovieSet
         Me.lblTopDetails = New System.Windows.Forms.Label()
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
-        Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
+        Me.ofdLocalFiles = New System.Windows.Forms.OpenFileDialog()
         Me.btnRescrape = New System.Windows.Forms.Button()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.tpFanart = New System.Windows.Forms.TabPage()
@@ -1299,7 +1299,7 @@ Partial Class dlgEditMovieSet
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblTopTitle As System.Windows.Forms.Label
-    Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ofdLocalFiles As System.Windows.Forms.OpenFileDialog
     Friend WithEvents btnRescrape As System.Windows.Forms.Button
     Friend WithEvents tmrDelay As System.Windows.Forms.Timer
     Friend WithEvents tpFanart As System.Windows.Forms.TabPage

@@ -188,6 +188,12 @@
     <Compile Include="dlgAddEditActor.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgCustomScraperMovieSet.designer.vb">
+      <DependentUpon>dlgCustomScraperMovieSet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgCustomScraperMovieSet.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgCustomScraperTV.designer.vb">
       <DependentUpon>dlgCustomScraperTV.vb</DependentUpon>
     </Compile>
@@ -396,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgAddEditActor.resx">
       <DependentUpon>dlgAddEditActor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgCustomScraperMovieSet.resx">
+      <DependentUpon>dlgCustomScraperMovieSet.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgCustomScraperTV.resx">
       <DependentUpon>dlgCustomScraperTV.vb</DependentUpon>

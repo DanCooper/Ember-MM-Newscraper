@@ -28,7 +28,7 @@ Public Class dlgCustomScraperMovie
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Private CustomUpdater As New Structures.CustomUpdaterStruct
+    Private CustomUpdater As New Structures.CustomUpdaterStruct_Movie
 
 #End Region 'Fields
 
@@ -42,7 +42,7 @@ Public Class dlgCustomScraperMovie
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
+    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct_Movie
         '//
         ' Overload to pass data
         '\\

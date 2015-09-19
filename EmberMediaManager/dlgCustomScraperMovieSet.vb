@@ -22,13 +22,13 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class dlgCustomScraperTV
+Public Class dlgCustomScraperMovieSet
 
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Private CustomUpdater As New Structures.CustomUpdaterStruct_Movie
+    Private CustomUpdater As New Structures.CustomUpdaterStruct_MovieSet
 
 #End Region 'Fields
 
@@ -42,11 +42,7 @@ Public Class dlgCustomScraperTV
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct_Movie
-        '//
-        ' Overload to pass data
-        '\\
-
+    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct_MovieSet
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Me.CustomUpdater.Canceled = False
         Else
@@ -58,20 +54,14 @@ Public Class dlgCustomScraperTV
     Private Sub btnModNone_Click(sender As Object, e As EventArgs) Handles btnModNone.Click
         chkModAll.Checked = False
 
-        chkModActorThumbs.Checked = False
         chkModBanner.Checked = False
         chkModClearArt.Checked = False
         chkModClearLogo.Checked = False
         chkModDiscArt.Checked = False
-        chkModEFanarts.Checked = False
-        chkModEThumbs.Checked = False
         chkModFanart.Checked = False
         chkModLandscape.Checked = False
-        chkModMeta.Checked = False
         chkModNFO.Checked = False
         chkModPoster.Checked = False
-        chkModTheme.Checked = False
-        chkModTrailer.Checked = False
 
         CheckEnable()
     End Sub
@@ -80,29 +70,8 @@ Public Class dlgCustomScraperTV
         chkOptsAll.Checked = False
         chkModAll.Checked = False
 
-        chkOptsCast.Checked = False
-        chkOptsCert.Checked = False
-        chkOptsCollectionID.Checked = False
-        chkOptsCountry.Checked = False
-        chkOptsCrew.Checked = False
-        chkOptsDirector.Checked = False
-        chkOptsGenre.Checked = False
-        chkOptsMPAA.Checked = False
-        chkOptsMusicBy.Checked = False
-        chkOptsOriginalTitle.Checked = False
-        chkOptsOutline.Checked = False
         chkOptsPlot.Checked = False
-        chkOptsProducers.Checked = False
-        chkOptsRating.Checked = False
-        chkOptsRelease.Checked = False
-        chkOptsRuntime.Checked = False
-        chkOptsStudio.Checked = False
-        chkOptsTagline.Checked = False
         chkOptsTitle.Checked = False
-        chkOptsTop250.Checked = False
-        chkOptsTrailer.Checked = False
-        chkOptsWriters.Checked = False
-        chkOptsYear.Checked = False
 
         CheckEnable()
     End Sub
@@ -113,39 +82,25 @@ Public Class dlgCustomScraperTV
         With Master.eSettings
 
             If chkModAll.Checked Then
-                chkModActorThumbs.Checked = chkModAll.Checked
                 chkModBanner.Checked = chkModAll.Checked AndAlso .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
                 chkModClearArt.Checked = chkModAll.Checked AndAlso .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
                 chkModClearLogo.Checked = chkModAll.Checked AndAlso .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
                 chkModDiscArt.Checked = chkModAll.Checked AndAlso .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-                chkModEFanarts.Checked = chkModAll.Checked AndAlso .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                chkModEThumbs.Checked = chkModAll.Checked AndAlso .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                 chkModFanart.Checked = chkModAll.Checked AndAlso .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                 chkModLandscape.Checked = chkModAll.Checked AndAlso .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                 chkModPoster.Checked = chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-                chkModMeta.Checked = chkModAll.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan
                 chkModNFO.Checked = chkModAll.Checked
-                chkModTheme.Checked = chkModAll.Checked AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTheme)
-                chkModTrailer.Checked = chkModAll.Checked AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
                 chkOptsAll.Checked = chkModAll.Checked
-            Else
-                If chkModMeta.Checked Then chkModMeta.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkModNFO.Checked)
             End If
 
-            chkModActorThumbs.Enabled = Not chkModAll.Checked
             chkModBanner.Enabled = Not chkModAll.Checked AndAlso .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
             chkModClearArt.Enabled = Not chkModAll.Checked AndAlso .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
             chkModClearLogo.Enabled = Not chkModAll.Checked AndAlso .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
             chkModDiscArt.Enabled = Not chkModAll.Checked AndAlso .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-            chkModEFanarts.Enabled = Not chkModAll.Checked AndAlso .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-            chkModEThumbs.Enabled = Not chkModAll.Checked AndAlso .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-            chkModFanart.Enabled = Not chkModAll.Checked AndAlso .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+           chkModFanart.Enabled = Not chkModAll.Checked AndAlso .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
             chkModLandscape.Enabled = Not chkModAll.Checked AndAlso .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
-            chkModMeta.Enabled = Not chkModAll.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso .MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkModNFO.Checked)
-            chkModNFO.Enabled = Not chkModAll.Checked
+           chkModNFO.Enabled = Not chkModAll.Checked
             chkModPoster.Enabled = Not chkModAll.Checked AndAlso .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-            chkModTheme.Enabled = Not chkModAll.Checked AndAlso .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTheme)
-            chkModTrailer.Enabled = Not chkModAll.Checked AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
             chkOptsAll.Enabled = Not chkModAll.Checked
 
             If Me.chkModAll.Checked Then
@@ -155,93 +110,23 @@ Public Class dlgCustomScraperTV
             End If
 
             If Me.chkOptsAll.Checked Then
-                chkOptsCast.Enabled = False
-                chkOptsCert.Checked = True
-                chkOptsCert.Enabled = False
-                chkOptsCollectionID.Checked = True
-                chkOptsCollectionID.Enabled = False
-                chkOptsCountry.Checked = True
-                chkOptsCountry.Enabled = False
-                chkOptsCrew.Checked = True
-                chkOptsCrew.Enabled = False
-                chkOptsDirector.Checked = True
-                chkOptsDirector.Enabled = False
-                chkOptsGenre.Checked = True
-                chkOptsGenre.Enabled = False
-                chkOptsMPAA.Checked = True
-                chkOptsMPAA.Enabled = False
-                chkOptsMusicBy.Checked = True
-                chkOptsMusicBy.Enabled = False
-                chkOptsOriginalTitle.Checked = True
-                chkOptsOriginalTitle.Enabled = False
-                chkOptsOutline.Checked = True
-                chkOptsOutline.Enabled = False
                 chkOptsPlot.Checked = True
                 chkOptsPlot.Enabled = False
-                chkOptsProducers.Checked = True
-                chkOptsProducers.Enabled = False
-                chkOptsRating.Checked = True
-                chkOptsRating.Enabled = False
-                chkOptsRelease.Checked = True
-                chkOptsRelease.Enabled = False
-                chkOptsRuntime.Checked = True
-                chkOptsRuntime.Enabled = False
-                chkOptsStudio.Checked = True
-                chkOptsStudio.Enabled = False
-                chkOptsTagline.Checked = True
-                chkOptsTagline.Enabled = False
                 chkOptsTitle.Checked = True
                 chkOptsTitle.Enabled = False
-                chkOptsTop250.Checked = True
-                chkOptsTop250.Enabled = False
-                chkOptsTrailer.Checked = True
-                chkOptsTrailer.Enabled = False
-                chkOptsWriters.Checked = True
-                chkOptsWriters.Enabled = False
-                chkOptsYear.Checked = True
-                chkOptsYear.Enabled = False
-                chkOptsCast.Checked = True
             Else
-                chkOptsCast.Enabled = True
-                chkOptsCert.Enabled = True
-                chkOptsCollectionID.Enabled = True
-                chkOptsCountry.Enabled = True
-                chkOptsCrew.Enabled = True
-                chkOptsDirector.Enabled = True
-                chkOptsGenre.Enabled = True
-                chkOptsMPAA.Enabled = True
-                chkOptsMusicBy.Enabled = True
-                chkOptsOriginalTitle.Enabled = True
-                chkOptsOutline.Enabled = True
                 chkOptsPlot.Enabled = True
-                chkOptsProducers.Enabled = True
-                chkOptsRating.Enabled = True
-                chkOptsRelease.Enabled = True
-                chkOptsRuntime.Enabled = True
-                chkOptsStudio.Enabled = True
-                chkOptsTagline.Enabled = True
                 chkOptsTitle.Enabled = True
-                chkOptsTop250.Enabled = True
-                chkOptsTrailer.Enabled = True
-                chkOptsWriters.Enabled = True
-                chkOptsYear.Enabled = True
             End If
 
             If chkModAll.Checked OrElse chkModNFO.Checked Then
-                If chkOptsCast.Checked OrElse chkOptsCrew.Checked OrElse chkOptsDirector.Checked OrElse chkOptsGenre.Checked OrElse _
-                chkOptsMPAA.Checked OrElse chkOptsCert.Checked OrElse chkOptsMusicBy.Checked OrElse chkOptsOriginalTitle.Checked OrElse _
-                chkOptsOutline.Checked OrElse chkOptsPlot.Checked OrElse chkOptsProducers.Checked OrElse chkOptsRating.Checked OrElse _
-                chkOptsRelease.Checked OrElse chkOptsRuntime.Checked OrElse chkOptsStudio.Checked OrElse chkOptsTagline.Checked OrElse _
-                chkOptsTitle.Checked OrElse chkOptsTrailer.Checked OrElse _
-                chkOptsWriters.Checked OrElse chkOptsYear.Checked OrElse chkOptsTop250.Checked OrElse chkOptsCountry.Checked OrElse _
-                chkOptsCollectionID.Checked Then
+                If chkOptsPlot.Checked OrElse chkOptsTitle.Checked  Then
                     Update_Button.Enabled = True
                 Else
                     Update_Button.Enabled = False
                 End If
-            ElseIf chkModActorThumbs.Checked OrElse chkModBanner.Checked OrElse chkModClearArt.Checked OrElse chkModClearLogo.Checked OrElse _
-                chkModDiscArt.Checked OrElse chkModEFanarts.Checked OrElse chkModEThumbs.Checked OrElse chkModFanart.Checked OrElse _
-                chkModLandscape.Checked OrElse chkModMeta.Checked OrElse chkModPoster.Checked OrElse chkModTheme.Checked OrElse chkModTrailer.Checked Then
+            ElseIf chkModBanner.Checked OrElse chkModClearArt.Checked OrElse chkModClearLogo.Checked OrElse _
+                chkModDiscArt.Checked OrElse chkModFanart.Checked OrElse chkModLandscape.Checked OrElse chkModPoster.Checked Then
                 Update_Button.Enabled = True
             Else
                 Update_Button.Enabled = False
@@ -251,21 +136,15 @@ Public Class dlgCustomScraperTV
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.All, True)
             Else
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.All, False)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainActorThumbs, chkModActorThumbs.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainBanner, chkModBanner.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainClearArt, chkModClearArt.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainClearLogo, chkModClearLogo.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainDiscArt, chkModDiscArt.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainFanart, chkModFanart.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainExtrathumbs, chkModEThumbs.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainExtrafanarts, chkModEFanarts.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainFanart, chkModFanart.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainLandscape, chkModLandscape.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainMeta, chkModMeta.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainNFO, chkModNFO.Checked)
                 Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainPoster, chkModPoster.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainTheme, chkModTheme.Checked)
-                Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.MainTrailer, chkModTrailer.Checked)
             End If
 
         End With
@@ -273,22 +152,18 @@ Public Class dlgCustomScraperTV
 
     Private Sub CheckNewAndMark()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS ncount FROM movie WHERE new = 1;")
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idSet) AS ncount FROM sets WHERE new = 1;")
             Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 SQLcount.Read()
                 rbUpdateModifier_New.Enabled = Convert.ToInt32(SQLcount("ncount")) > 0
             End Using
 
-            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie WHERE mark = 1;")
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idSet) AS mcount FROM sets WHERE mark = 1;")
             Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 SQLcount.Read()
                 rbUpdateModifier_Marked.Enabled = Convert.ToInt32(SQLcount("mcount")) > 0
             End Using
         End Using
-    End Sub
-
-    Private Sub chkModActorThumbs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModActorThumbs.Click
-        CheckEnable()
     End Sub
 
     Private Sub chkModAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModAll.Click
@@ -311,23 +186,11 @@ Public Class dlgCustomScraperTV
         CheckEnable()
     End Sub
 
-    Private Sub chkModEFanarts_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModEFanarts.Click
-        CheckEnable()
-    End Sub
-
-    Private Sub chkModEThumbs_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModEThumbs.Click
-        CheckEnable()
-    End Sub
-
     Private Sub chkModFanart_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModFanart.Click
         CheckEnable()
     End Sub
 
     Private Sub chkModLandscape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModLandscape.Click
-        CheckEnable()
-    End Sub
-
-    Private Sub chkModMeta_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModMeta.Click
         CheckEnable()
     End Sub
 
@@ -339,60 +202,7 @@ Public Class dlgCustomScraperTV
         CheckEnable()
     End Sub
 
-    Private Sub chkModTheme_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModTheme.Click
-        CheckEnable()
-    End Sub
-
-    Private Sub chkModTrailer_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkModTrailer.Click
-        CheckEnable()
-    End Sub
-
     Private Sub chkOptsAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkOptsAll.Click
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCast.CheckedChanged
-        CustomUpdater.Options.bCast = chkOptsCast.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCert.CheckedChanged
-        CustomUpdater.Options.bCert = chkOptsCert.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCrew.CheckedChanged
-        CustomUpdater.Options.bOtherCrew = chkOptsCrew.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsDirector.CheckedChanged
-        CustomUpdater.Options.bDirector = chkOptsDirector.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsGenre.CheckedChanged
-        CustomUpdater.Options.bGenre = chkOptsGenre.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsMPAA.CheckedChanged
-        CustomUpdater.Options.bMPAA = chkOptsMPAA.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsMusicBy.CheckedChanged
-        CustomUpdater.Options.bMusicBy = chkOptsMusicBy.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsOriginalTitle.CheckedChanged
-        CustomUpdater.Options.bOriginalTitle = chkOptsOriginalTitle.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsOutline.CheckedChanged
-        CustomUpdater.Options.bOutline = chkOptsOutline.Checked
         CheckEnable()
     End Sub
 
@@ -401,68 +211,8 @@ Public Class dlgCustomScraperTV
         CheckEnable()
     End Sub
 
-    Private Sub chkOptsProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsProducers.CheckedChanged
-        CustomUpdater.Options.bProducers = chkOptsProducers.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsRating.CheckedChanged
-        CustomUpdater.Options.bRating = chkOptsRating.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsRelease.CheckedChanged
-        CustomUpdater.Options.bRelease = chkOptsRelease.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsRuntime.CheckedChanged
-        CustomUpdater.Options.bRuntime = chkOptsRuntime.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsStudio.CheckedChanged
-        CustomUpdater.Options.bStudio = chkOptsStudio.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTagline.CheckedChanged
-        CustomUpdater.Options.bTagline = chkOptsTagline.Checked
-        CheckEnable()
-    End Sub
-
     Private Sub chkOptsTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTitle.CheckedChanged
         CustomUpdater.Options.bTitle = chkOptsTitle.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTop250.CheckedChanged
-        CustomUpdater.Options.bTop250 = chkOptsTop250.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCountry.CheckedChanged
-        CustomUpdater.Options.bCountry = chkOptsCountry.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCollectionID.CheckedChanged
-        CustomUpdater.Options.bCollectionID = chkOptsCollectionID.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTrailer.CheckedChanged
-        CustomUpdater.Options.bTrailer = chkOptsTrailer.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsWriters.CheckedChanged
-        CustomUpdater.Options.bWriters = chkOptsWriters.Checked
-        CheckEnable()
-    End Sub
-
-    Private Sub chkOptsYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsYear.CheckedChanged
-        CustomUpdater.Options.bYear = chkOptsYear.Checked
         CheckEnable()
     End Sub
 
@@ -479,22 +229,8 @@ Public Class dlgCustomScraperTV
             'disable options that are locked
             Me.chkOptsPlot.Enabled = Not Master.eSettings.MovieLockPlot
             Me.chkOptsPlot.Checked = Not Master.eSettings.MovieLockPlot
-            Me.chkOptsOriginalTitle.Enabled = Not Master.eSettings.MovieLockOriginalTitle
-            Me.chkOptsOriginalTitle.Checked = Not Master.eSettings.MovieLockOriginalTitle
-            Me.chkOptsOutline.Enabled = Not Master.eSettings.MovieLockOutline
-            Me.chkOptsOutline.Checked = Not Master.eSettings.MovieLockOutline
             Me.chkOptsTitle.Enabled = Not Master.eSettings.MovieLockTitle
             Me.chkOptsTitle.Checked = Not Master.eSettings.MovieLockTitle
-            Me.chkOptsTagline.Enabled = Not Master.eSettings.MovieLockTagline
-            Me.chkOptsTagline.Checked = Not Master.eSettings.MovieLockTagline
-            Me.chkOptsRating.Enabled = Not Master.eSettings.MovieLockRating
-            Me.chkOptsRating.Checked = Not Master.eSettings.MovieLockRating
-            Me.chkOptsStudio.Enabled = Not Master.eSettings.MovieLockStudio
-            Me.chkOptsStudio.Checked = Not Master.eSettings.MovieLockStudio
-            Me.chkOptsGenre.Enabled = Not Master.eSettings.MovieLockGenre
-            Me.chkOptsGenre.Checked = Not Master.eSettings.MovieLockGenre
-            Me.chkOptsTrailer.Enabled = Not Master.eSettings.MovieLockTrailer
-            Me.chkOptsTrailer.Checked = Not Master.eSettings.MovieLockTrailer
 
             'set defaults
             CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
@@ -540,11 +276,6 @@ Public Class dlgCustomScraperTV
     End Sub
 
     Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_Missing.CheckedChanged
-        If Me.rbUpdateModifier_Missing.Checked Then
-            Me.chkModMeta.Checked = False
-            Me.chkModMeta.Enabled = False
-        End If
-
         If Me.rbUpdate_Auto.Checked Then
             Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
         ElseIf Me.rbUpdate_Ask.Checked Then
@@ -611,45 +342,18 @@ Public Class dlgCustomScraperTV
         Me.Update_Button.Text = Master.eLang.GetString(389, "Begin")
         Me.btnModNone.Text = Master.eLang.GetString(1139, "Select None")
         Me.btnOptsNone.Text = Me.btnModNone.Text
-        Me.chkModActorThumbs.Text = Master.eLang.GetString(991, "Actor Thumbs")
         Me.chkModAll.Text = Master.eLang.GetString(70, "All Items")
         Me.chkModBanner.Text = Master.eLang.GetString(838, "Banner")
         Me.chkModClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
         Me.chkModClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
         Me.chkModDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
-        Me.chkModEFanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
-        Me.chkModEThumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
         Me.chkModFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkModLandscape.Text = Master.eLang.GetString(1059, "Landscape")
-        Me.chkModMeta.Text = Master.eLang.GetString(59, "Meta Data")
         Me.chkModNFO.Text = Master.eLang.GetString(150, "NFO")
         Me.chkModPoster.Text = Master.eLang.GetString(148, "Poster")
-        Me.chkModTheme.Text = Master.eLang.GetString(1118, "Theme")
-        Me.chkModTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkOptsAll.Text = Me.chkModAll.Text
-        Me.chkOptsCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkOptsCert.Text = Master.eLang.GetString(56, "Certification")
-        Me.chkOptsCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
-        Me.chkOptsCountry.Text = Master.eLang.GetString(301, "Country")
-        Me.chkOptsCrew.Text = Master.eLang.GetString(391, "Other Crew")
-        Me.chkOptsDirector.Text = Master.eLang.GetString(62, "Director")
-        Me.chkOptsGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkOptsMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.chkOptsMusicBy.Text = Master.eLang.GetString(392, "Music By")
-        Me.chkOptsOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
-        Me.chkOptsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkOptsPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkOptsProducers.Text = Master.eLang.GetString(393, "Producers")
-        Me.chkOptsRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkOptsRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkOptsRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkOptsStudio.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkOptsTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkOptsTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkOptsTop250.Text = Master.eLang.GetString(591, "Top 250")
-        Me.chkOptsTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkOptsWriters.Text = Master.eLang.GetString(394, "Writers")
-        Me.chkOptsYear.Text = Master.eLang.GetString(278, "Year")
         Me.gbOptions.Text = Master.eLang.GetString(390, "Options")
         Me.gbModifiers.Text = Master.eLang.GetString(388, "Modifiers")
         Me.gbUpdateModifier.Text = Master.eLang.GetString(386, "Selection Filter")

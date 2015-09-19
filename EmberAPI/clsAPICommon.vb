@@ -1813,9 +1813,23 @@ Public Class Structures
 
 #Region "Nested Types"
 
-    Public Structure CustomUpdaterStruct
+    Public Structure CustomUpdaterStruct_Movie
         Dim Canceled As Boolean
         Dim Options As ScrapeOptions_Movie
+        Dim ScrapeModifier As Structures.ScrapeModifier
+        Dim ScrapeType As Enums.ScrapeType
+    End Structure
+
+    Public Structure CustomUpdaterStruct_MovieSet
+        Dim Canceled As Boolean
+        Dim Options As ScrapeOptions_MovieSet
+        Dim ScrapeModifier As Structures.ScrapeModifier
+        Dim ScrapeType As Enums.ScrapeType
+    End Structure
+
+    Public Structure CustomUpdaterStruct_TV
+        Dim Canceled As Boolean
+        Dim Options As ScrapeOptions_TV
         Dim ScrapeModifier As Structures.ScrapeModifier
         Dim ScrapeType As Enums.ScrapeType
     End Structure
