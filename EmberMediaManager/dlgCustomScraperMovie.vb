@@ -43,10 +43,6 @@ Public Class dlgCustomScraperMovie
     End Sub
 
     Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct_Movie
-        '//
-        ' Overload to pass data
-        '\\
-
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Me.CustomUpdater.Canceled = False
         Else
@@ -475,26 +471,6 @@ Public Class dlgCustomScraperMovie
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
-
-            'disable options that are locked
-            Me.chkOptsPlot.Enabled = Not Master.eSettings.MovieLockPlot
-            Me.chkOptsPlot.Checked = Not Master.eSettings.MovieLockPlot
-            Me.chkOptsOriginalTitle.Enabled = Not Master.eSettings.MovieLockOriginalTitle
-            Me.chkOptsOriginalTitle.Checked = Not Master.eSettings.MovieLockOriginalTitle
-            Me.chkOptsOutline.Enabled = Not Master.eSettings.MovieLockOutline
-            Me.chkOptsOutline.Checked = Not Master.eSettings.MovieLockOutline
-            Me.chkOptsTitle.Enabled = Not Master.eSettings.MovieLockTitle
-            Me.chkOptsTitle.Checked = Not Master.eSettings.MovieLockTitle
-            Me.chkOptsTagline.Enabled = Not Master.eSettings.MovieLockTagline
-            Me.chkOptsTagline.Checked = Not Master.eSettings.MovieLockTagline
-            Me.chkOptsRating.Enabled = Not Master.eSettings.MovieLockRating
-            Me.chkOptsRating.Checked = Not Master.eSettings.MovieLockRating
-            Me.chkOptsStudio.Enabled = Not Master.eSettings.MovieLockStudio
-            Me.chkOptsStudio.Checked = Not Master.eSettings.MovieLockStudio
-            Me.chkOptsGenre.Enabled = Not Master.eSettings.MovieLockGenre
-            Me.chkOptsGenre.Checked = Not Master.eSettings.MovieLockGenre
-            Me.chkOptsTrailer.Enabled = Not Master.eSettings.MovieLockTrailer
-            Me.chkOptsTrailer.Checked = Not Master.eSettings.MovieLockTrailer
 
             'set defaults
             CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto

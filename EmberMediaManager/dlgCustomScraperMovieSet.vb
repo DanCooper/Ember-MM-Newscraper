@@ -226,12 +226,6 @@ Public Class dlgCustomScraperMovieSet
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
 
-            'disable options that are locked
-            Me.chkOptsPlot.Enabled = Not Master.eSettings.MovieLockPlot
-            Me.chkOptsPlot.Checked = Not Master.eSettings.MovieLockPlot
-            Me.chkOptsTitle.Enabled = Not Master.eSettings.MovieLockTitle
-            Me.chkOptsTitle.Checked = Not Master.eSettings.MovieLockTitle
-
             'set defaults
             CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
             Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.All, True)
