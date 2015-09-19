@@ -2009,7 +2009,7 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
+    Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.Banner = tImage
@@ -2020,7 +2020,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbBanner.DragEnter
+    Private Sub pbBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbBanner.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2028,7 +2028,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
+    Private Sub pbClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.ClearArt = tImage
@@ -2039,7 +2039,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieClearArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbClearArt.DragEnter
+    Private Sub pbClearArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbClearArt.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2047,7 +2047,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
+    Private Sub pbClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.ClearLogo = tImage
@@ -2058,7 +2058,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieClearLogo_DragEnter(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragEnter
+    Private Sub pbClearLogo_DragEnter(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2066,7 +2066,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragDrop
+    Private Sub pbDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.DiscArt = tImage
@@ -2077,7 +2077,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieDiscArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragEnter
+    Private Sub pbDiscArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2085,7 +2085,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
+    Private Sub pbFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.Fanart = tImage
@@ -2096,7 +2096,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbFanart.DragEnter
+    Private Sub pbFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbFanart.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2104,7 +2104,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
+    Private Sub pbLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.Landscape = tImage
@@ -2115,7 +2115,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMovieLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbLandscape.DragEnter
+    Private Sub pbLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbLandscape.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -2123,7 +2123,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMoviePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
+    Private Sub pbPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
             Me.tmpDBElement.ImagesContainer.Poster = tImage
@@ -2134,7 +2134,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub pbMoviePoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbPoster.DragEnter
+    Private Sub pbPoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbPoster.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
